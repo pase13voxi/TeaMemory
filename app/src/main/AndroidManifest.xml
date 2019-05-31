@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="coolpharaoh.tee.speicher.tea.timer">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".views.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.NewTea"
+            android:label="Tee erstellen/bearbeiten"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.ShowTea"
+            android:label="Information"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.Settings"
+            android:label="Einstellungen"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.About"
+            android:label="About"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.Contact"
+            android:label="Contact"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+        </activity>
+        <activity
+            android:name=".views.Languages"
+            android:label="Languages"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+        </activity>
+
+        <activity
+            android:name=".views.Statistics"
+            android:label="Statistics"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+        </activity>
+        <activity
+            android:name=".views.Software"
+            android:label="Software"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+        </activity>
+        <activity
+            android:name=".views.Problems"
+            android:label="Problems"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+        </activity>
+
+        <service android:name=".services.MediaService" />
+        <service android:name=".services.CountDownService" />
+    </application>
+
+</manifest>

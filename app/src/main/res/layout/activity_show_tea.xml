@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/showtea_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="coolpharaoh.tee.speicher.tea.timer.views.ShowTea">
+
+    <include
+        android:id="@id/tool_bar"
+        layout="@layout/tool_bar_show_tea" />
+
+    <ToggleButton
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:id="@+id/buttonNotification"
+        android:background="@drawable/button_notification"
+        android:textOn=""
+        android:textOff=""
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/tool_bar"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"/>
+
+    <ToggleButton
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:id="@+id/buttonVibration"
+        android:background="@drawable/button_vibration"
+        android:textOn=""
+        android:textOff=""
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/tool_bar"
+        android:layout_toLeftOf="@+id/buttonNotification"
+        android:layout_margin="4dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:textSize="35sp"
+        android:maxLines="2"
+        android:id="@+id/textViewShowName"
+        android:layout_below="@id/tool_bar"
+        android:layout_marginTop="30dip"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:background="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textViewShowTeesorte"
+        android:layout_below="@+id/textViewShowName"
+        android:layout_marginTop="10dip"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerMinutes"
+        android:layout_toStartOf="@+id/textViewDoppelPunkt"
+        android:layout_toLeftOf="@+id/textViewDoppelPunkt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dip"
+        style="@style/spinner_style"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerSeconds"
+        android:layout_toRightOf="@+id/textViewDoppelPunkt"
+        android:layout_toEndOf="@+id/textViewDoppelPunkt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dip"
+        style="@style/spinner_style"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="  :  "
+        android:id="@+id/textViewDoppelPunkt"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="95dip"/>
+
+    <Button
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:id="@+id/buttonNote"
+        android:background="@drawable/button_note"
+        android:layout_above="@id/spinnerSeconds"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="110dip"
+        android:layout_marginRight="10dip"
+        android:visibility="invisible"/>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/buttonExchange"
+        android:background="@drawable/button_temperatureexchange"
+        android:layout_above="@id/spinnerSeconds"
+        android:layout_marginBottom="55dip"
+        android:layout_toLeftOf="@+id/textViewShowTemperatur"
+        android:enabled="false"/>
+
+    <TextView
+        android:layout_width="70dip"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large"
+        android:id="@+id/textViewShowTemperatur"
+        android:layout_above="@id/spinnerSeconds"
+        android:layout_marginBottom="65dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dip" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/buttonCalculateAmount"
+        android:background="@drawable/button_calculateamount"
+        android:layout_above="@id/spinnerSeconds"
+        android:layout_marginBottom="5dp"
+        android:layout_alignLeft="@+id/buttonExchange" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large"
+        android:id="@+id/textViewShowTeelamass"
+        android:layout_above="@id/spinnerSeconds"
+        android:layout_marginBottom="15dip"
+        android:layout_toRightOf="@+id/buttonCalculateAmount" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:textColor="@color/white"
+        android:id="@+id/buttonStartTimer"
+        android:background="@drawable/button_start"
+        android:textSize="17sp"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="45dip"
+        android:layout_alignLeft="@id/spinnerMinutes"
+        android:layout_alignRight="@+id/spinnerSeconds"/>
+
+    <Button
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:id="@+id/buttonInfo"
+        android:visibility="invisible"
+        android:background="@drawable/button_info"
+        android:layout_toRightOf="@id/buttonStartTimer"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dip"/>
+
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         android:textColor="@color/textAppearanceGrey"
+        android:text="@string/showtea_display_min"
+        android:id="@+id/textViewMin"
+        android:layout_above="@id/buttonStartTimer"
+        android:layout_marginBottom="40dip"
+        android:layout_toLeftOf="@+id/textViewDoppelPunkt"
+        android:layout_alignLeft="@id/spinnerMinutes"/>
+
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         android:textColor="@color/textAppearanceGrey"
+        android:text="@string/showtea_display_sec"
+        android:id="@+id/textViewSec"
+        android:layout_above="@+id/buttonStartTimer"
+        android:layout_marginBottom="40dip"
+        android:layout_toRightOf="@+id/textViewDoppelPunkt"
+        android:layout_toEndOf="@+id/textViewDoppelPunkt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="45sp"
+        android:id="@+id/textViewTimer"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="95dip"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/imageViewSteam"
+        android:layout_width="100dip"
+        android:layout_height="60dip"
+        android:src="@drawable/steam"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dip"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/imageViewCup"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:src="@drawable/cup_new"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dip"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/imageViewFill"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:src="@drawable/fill0pr"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dip"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

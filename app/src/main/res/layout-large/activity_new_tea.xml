@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="coolpharaoh.tee.speicher.tea.timer.views.NewTea">
+
+    <include
+        android:id="@id/tool_bar"
+        layout="@layout/tool_bar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewTeaSort"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Teesorte"
+                android:gravity="center_vertical"
+                android:layout_alignBottom="@+id/spinnerTeaSort"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="8dip"
+                android:layout_marginLeft="4dip"
+                android:textColor="@color/grey" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerTeaSort"
+                android:transitionName="Teeart"
+                android:entries="@array/sortsOfTea"
+                android:prompt="@string/tea_sort"
+                android:spinnerMode="dialog"
+                android:layout_toRightOf="@+id/textViewTeaSort"
+                android:layout_marginTop="20dip"
+                android:layout_marginLeft="20dip"
+                style="@android:style/Widget.Holo.Light.Spinner" />
+
+            <CheckBox
+                android:theme="@style/CheckBoxStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="manuell"
+                android:id="@+id/checkBoxSelfInput"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_alignBottom="@id/spinnerTeaSort"
+                android:layout_toRightOf="@id/spinnerTeaSort"
+                android:layout_marginBottom="4dip"
+                android:visibility="invisible"/>
+
+            <EditText
+                android:theme="@style/EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="Teesorte"
+                android:ems="10"
+                android:id="@+id/editTextSelfInput"
+                android:layout_alignBottom="@id/spinnerTeaSort"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@id/spinnerTeaSort"
+                android:visibility="invisible"/>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewChooseColor"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/newtea_color_label"
+                android:layout_below="@id/spinnerTeaSort"
+                android:layout_marginTop="30dip"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:textColor="@color/grey" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:id="@+id/buttonColor"
+                android:background="@drawable/button_color"
+                android:layout_below="@id/spinnerTeaSort"
+                android:layout_toRightOf="@id/textViewChooseColor"
+                android:layout_marginTop="27dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="4dp"
+                style="?android:attr/borderlessButtonStyle" />
+
+            <EditText
+                android:theme="@style/EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="Name"
+                android:ems="10"
+                android:id="@+id/editTextName"
+                android:layout_below="@id/buttonColor"
+                android:layout_marginTop="20dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:id="@+id/spinnerAmountUnit"
+                android:spinnerMode="dropdown"
+                android:entries="@array/newtea_amount"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_below="@id/editTextName"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="18dip"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="4dp"></Spinner>
+
+            <EditText
+                android:theme="@style/EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Menge Tl/L"
+                android:ems="10"
+                android:id="@+id/editTextAmount"
+                android:layout_below="@+id/editTextName"
+                android:layout_marginTop="20dip"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/spinnerAmountUnit"/>
+
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/buttonAddBrew"
+                android:background="@drawable/button_add"
+                android:layout_below="@id/editTextAmount"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="20dp"
+                android:layout_alignParentRight="true"/>
+
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/buttonDeleteBrew"
+                android:background="@drawable/button_delete"
+                android:layout_below="@id/editTextAmount"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toStartOf="@id/buttonAddBrew"
+                android:layout_alignWithParentIfMissing="true"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/linearLayoutBrews"
+                android:layout_below="@id/editTextAmount"
+                android:layout_marginTop="20dp"
+                android:layout_toLeftOf="@id/buttonDeleteBrew">
+
+                <Button
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:id="@+id/buttonArrowLeft"
+                    android:background="@drawable/button_arrowleft"
+                    android:enabled="false"
+                    android:layout_marginLeft="4dp"
+                    android:layout_alignParentLeft="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewCountBrew"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="1. Aufguss"
+                    android:textColor="@color/grey"
+                    android:layout_centerInParent="true"/>
+
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/buttonArrowRight"
+                    android:background="@drawable/button_arrowright"
+                    android:enabled="false"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/buttonShowCoolDownTime"
+                android:background="@drawable/button_arrowdown"
+                android:layout_below="@+id/linearLayoutBrews"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dip"
+                android:layout_marginRight="4dip"
+                android:layout_marginLeft="20dp" />
+
+            <EditText
+                android:theme="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Temperatur (°C)"
+                android:ems="10"
+                android:id="@+id/editTextTemperature"
+                android:layout_below="@+id/linearLayoutBrews"
+                android:layout_marginTop="20dip"
+                android:layout_toLeftOf="@+id/buttonShowCoolDownTime"/>
+
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/buttonAutofillCoolDownTime"
+                android:background="@drawable/button_arrowright"
+                android:layout_below="@+id/editTextTemperature"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_alignParentLeft="true"
+                android:visibility="gone"/>
+
+            <EditText
+                android:theme="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:hint="@string/newtea_hint_cooldowntime"
+                android:ems="10"
+                android:id="@+id/editTextCoolDownTime"
+                android:layout_below="@+id/editTextTemperature"
+                android:layout_marginTop="10dip"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/buttonAutofillCoolDownTime"
+                android:visibility="gone"/>
+
+            <EditText
+                android:theme="@style/EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:hint="@string/newtea_hint_time_other"
+                android:ems="10"
+                android:id="@+id/editTextTime"
+                android:layout_below="@+id/editTextCoolDownTime"
+                android:layout_marginTop="20dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
