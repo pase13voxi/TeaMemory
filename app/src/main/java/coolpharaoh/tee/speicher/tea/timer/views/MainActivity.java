@@ -34,7 +34,6 @@ import com.tooltip.Tooltip;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         CounterDAO counterDAO = database.getCounterDAO();
         ActualSettingsDAO actualSettingsDAO = database.getActualSettingsDAO();
 
-        if(teaDAO.getCountItems()==0) {
+        if(actualSettingsDAO.getCountItems()==0) {
 
             //Liste aller Tees
             teaItems = new TeaCollection();
@@ -230,9 +229,9 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             actualSettings.setAnimation(settings.isAnimation());
             actualSettings.setTemperatureunit(settings.getTemperatureUnit());
             actualSettings.setShowteaalert(settings.isShowteaAlert());
-            actualSettings.setMainProblemAlert(settings.isMainProblemAlert());
-            actualSettings.setMainRateAlert(settings.isMainRateAlert());
-            actualSettings.setMainRatecounter(settings.getMainRatecounter());
+            actualSettings.setMainproblemalert(settings.isMainProblemAlert());
+            actualSettings.setMainratealert(settings.isMainRateAlert());
+            actualSettings.setMainratecounter(settings.getMainRatecounter());
             actualSettings.setSort(settings.getSort());
             actualSettingsDAO.insert(actualSettings);
         }
@@ -256,13 +255,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        mMainActivityViewModel.updateSort(0);
+                        mMainActivityViewModel.setSort(0);
                         break;
                     case 1:
-                        mMainActivityViewModel.updateSort(1);
+                        mMainActivityViewModel.setSort(1);
                         break;
                     case 2:
-                        mMainActivityViewModel.updateSort(2);
+                        mMainActivityViewModel.setSort(2);
                         break;
                 }
             }
@@ -382,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             startActivity(newteaScreen);
         } else if (menuItemName.equals(deleteOption)) {
             int position = info.position;
-            mMainActivityViewModel.removeTea(position);
+            mMainActivityViewModel.deleteTea(position);
         }
         return true;
     }
@@ -450,6 +449,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     public void onResume() {
         super.onResume();
+        mMainActivityViewModel.refreshTeas();
     }
 
     private void showTooltip(View v, int gravity, String text) {

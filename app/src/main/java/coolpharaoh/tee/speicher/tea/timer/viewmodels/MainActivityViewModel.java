@@ -1,6 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -36,7 +35,7 @@ public class MainActivityViewModel extends ViewModel {
         mTeaDAO = database.getTeaDAO();
         mTeas = new MutableLiveData<>();
 
-        updateTeas();
+        refreshTeas();
     }
 
     //Teas
@@ -44,14 +43,14 @@ public class MainActivityViewModel extends ViewModel {
         return mTeas;
     }
 
-    public void removeTea(int position) {
-        mTeaDAO.delete(mTeas.getValue().get(position));
-
-        updateTeas();
-    }
-
     public Tea getTeaByPosition(int position){
         return mTeas.getValue().get(position);
+    }
+
+    public void deleteTea(int position) {
+        mTeaDAO.delete(mTeas.getValue().get(position));
+
+        refreshTeas();
     }
 
     //Settings
@@ -59,51 +58,51 @@ public class MainActivityViewModel extends ViewModel {
         return mActualSettings.getSort();
     }
 
-    public void updateSort(int sort){
+    public void setSort(int sort){
 
         mActualSettings.setSort(sort);
         mActualSettingsDAO.update(mActualSettings);
 
-        updateTeas();
+        refreshTeas();
     }
 
     public boolean isMainRateAlert() {
-        return mActualSettings.isMainRateAlert();
+        return mActualSettings.isMainratealert();
     }
 
     public void setMainRateAlert(boolean mainRateAlert){
 
-        mActualSettings.setMainRateAlert(mainRateAlert);
+        mActualSettings.setMainratealert(mainRateAlert);
         mActualSettingsDAO.update(mActualSettings);
     }
 
     public int getMainRatecounter() {
-        return mActualSettings.getMainRatecounter();
+        return mActualSettings.getMainratecounter();
     }
 
     public void resetMainRatecounter() {
 
-        mActualSettings.setMainRatecounter(0);
+        mActualSettings.setMainratecounter(0);
         mActualSettingsDAO.update(mActualSettings);
     }
 
     public void incrementMainRatecounter() {
 
-        mActualSettings.setMainRatecounter(mActualSettings.getMainRatecounter()+1);
+        mActualSettings.setMainratecounter(mActualSettings.getMainratecounter()+1);
         mActualSettingsDAO.update(mActualSettings);
     }
 
     public boolean isMainProblemAlert(){
-        return mActualSettings.isMainProblemAlert();
+        return mActualSettings.isMainproblemalert();
     }
 
     public void setMainProblemAlert(boolean mainProblemAlert) {
 
-        mActualSettings.setMainRateAlert(mainProblemAlert);
+        mActualSettings.setMainratealert(mainProblemAlert);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    private void updateTeas(){
+    public void refreshTeas(){
         switch(mActualSettings.getSort())
         {
             //activity

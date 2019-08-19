@@ -17,9 +17,9 @@ public class ActualSettings {
     private boolean animation;
     private String temperatureunit;
     private boolean showteaalert;
-    private boolean mainProblemAlert;
-    private boolean mainRateAlert;
-    private int mainRatecounter;
+    private boolean mainproblemalert;
+    private boolean mainratealert;
+    private int mainratecounter;
     //0 = sort by Date, 1 = sort alphabethically, 2 = sort by variety
     private int sort;
 
@@ -88,28 +88,28 @@ public class ActualSettings {
         this.showteaalert = showteaalert;
     }
 
-    public boolean isMainProblemAlert() {
-        return mainProblemAlert;
+    public boolean isMainproblemalert() {
+        return mainproblemalert;
     }
 
-    public void setMainProblemAlert(boolean mainProblemAlert) {
-        this.mainProblemAlert = mainProblemAlert;
+    public void setMainproblemalert(boolean mainproblemalert) {
+        this.mainproblemalert = mainproblemalert;
     }
 
-    public boolean isMainRateAlert() {
-        return mainRateAlert;
+    public boolean isMainratealert() {
+        return mainratealert;
     }
 
-    public void setMainRateAlert(boolean mainRateAlert) {
-        this.mainRateAlert = mainRateAlert;
+    public void setMainratealert(boolean mainratealert) {
+        this.mainratealert = mainratealert;
     }
 
-    public int getMainRatecounter() {
-        return mainRatecounter;
+    public int getMainratecounter() {
+        return mainratecounter;
     }
 
-    public void setMainRatecounter(int mainRatecounter) {
-        this.mainRatecounter = mainRatecounter;
+    public void setMainratecounter(int mainratecounter) {
+        this.mainratecounter = mainratecounter;
     }
 
     public int getSort() {

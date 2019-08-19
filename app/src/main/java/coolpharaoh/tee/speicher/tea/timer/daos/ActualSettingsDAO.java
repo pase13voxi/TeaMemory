@@ -18,8 +18,13 @@ public interface ActualSettingsDAO {
     void update(ActualSettings... items);
     @Delete
     void delete(ActualSettings item);
+
     @Query("SELECT * FROM settings")
     List<ActualSettings> getItems();
+
     @Query("SELECT * FROM settings WHERE id = :id")
     ActualSettings getItemById(Long id);
+
+    @Query("SELECT count(*) FROM settings")
+    int getCountItems();
 }

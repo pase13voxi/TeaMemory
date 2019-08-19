@@ -18,6 +18,9 @@ public interface TeaDAO {
     @Delete
     void delete(Tea item);
 
+    @Query("DELETE FROM tea")
+    public void deleteAll();
+
     @Query("SELECT * from tea")
     List<Tea> getItems();
 
@@ -32,7 +35,4 @@ public interface TeaDAO {
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getItemById(Long id);
-
-    @Query("SELECT count(*) FROM tea")
-    int getCountItems();
 }
