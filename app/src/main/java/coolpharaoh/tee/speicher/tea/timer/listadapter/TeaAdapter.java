@@ -11,19 +11,24 @@ import android.widget.TextView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.N2Tea;
+import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation;
 
 public class TeaAdapter extends BaseAdapter
 {
 
     private LayoutInflater inflater;
-    private List<N2Tea> items;
+    private List<Tea> items;
 
-    public TeaAdapter(Activity context, List<N2Tea> items) {
+    private Context context;
+
+    public TeaAdapter(Activity context, List<Tea> items) {
         super();
 
         this.items = items;
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        this.context = context.getApplicationContext();
     }
 
     @Override
@@ -44,7 +49,7 @@ public class TeaAdapter extends BaseAdapter
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        N2Tea item = items.get(position);
+        Tea item = items.get(position);
 
         View vi=convertView;
 
@@ -55,7 +60,7 @@ public class TeaAdapter extends BaseAdapter
         TextView txtSort = vi.findViewById(R.id.textViewListSortOfTea);
 
         txtName.setText(item.getName());
-        txtSort.setText(item.getSortOfTea().getType());
+        txtSort.setText(LanguageConversation.convertCodeTVariety(item.getVariety(), context));
 
         return vi;
     }

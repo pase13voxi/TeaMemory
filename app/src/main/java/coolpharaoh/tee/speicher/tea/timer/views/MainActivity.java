@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,7 +33,10 @@ import android.widget.Toast;
 import com.tooltip.Tooltip;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.ActualSetting;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.AmountTs;
@@ -45,11 +49,24 @@ import coolpharaoh.tee.speicher.tea.timer.datastructure.TemperatureCelsius;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.Time;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.Variety;
 import coolpharaoh.tee.speicher.tea.timer.listadapter.TeaAdapter;
+import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
+import coolpharaoh.tee.speicher.tea.timer.entities.Note;
+import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.daos.NoteDAO;
+import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     static public TeaCollection teaItems;
     static public ActualSetting settings;
+    private MainActivityViewModel mMainActivityViewModel;
     static private boolean startApplication = true;
 
     private TextView mToolbarCustomTitle;
@@ -76,81 +93,151 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         //hole ListView
         tealist = findViewById(R.id.listViewTealist);
-        //Liste aller Tees
-        teaItems = new TeaCollection();
-        if (!teaItems.loadCollection(getApplicationContext())) {
-            // TODO Auto-generated method stub
-            //kann später entfernt werden
-            if (!teaItems.loadOld2Collection(getApplicationContext())) {
-                if (!teaItems.loadOldCollection(getApplicationContext())) {
-                    ArrayList<Temperature> tmpTemperature = new ArrayList<>();
-                    tmpTemperature.add(new TemperatureCelsius(100));
-                    ArrayList<Time> tmpCoolDownTime = new ArrayList<>();
-                    tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(100)));
-                    ArrayList<Time> tmpTime = new ArrayList<>();
-                    tmpTime.add(new Time("3:30"));
-                    N2Tea teaExample1 = new N2Tea(teaItems.nextId(), "Earl Grey", new SortOfTea("Schwarzer Tee"), tmpTemperature,
-                            tmpCoolDownTime, tmpTime, new AmountTs(5), new Coloring(SortOfTea.getVariatyColor(Variety.BlackTea)));
-                    teaExample1.setCurrentDate();
-                    teaItems.getTeaItems().add(teaExample1);
-                    tmpTemperature = new ArrayList<>();
-                    tmpTemperature.add(new TemperatureCelsius(85));
-                    tmpCoolDownTime = new ArrayList<>();
-                    tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(85)));
-                    tmpTime = new ArrayList<>();
-                    tmpTime.add(new Time("2"));
-                    N2Tea teaExample2 = new N2Tea(teaItems.nextId(), "Pai Mu Tan", new SortOfTea("Weißer Tee"), tmpTemperature,
-                            tmpCoolDownTime, tmpTime, new AmountTs(4), new Coloring(SortOfTea.getVariatyColor(Variety.WhiteTea)));
-                    teaExample2.setCurrentDate();
-                    teaItems.getTeaItems().add(teaExample2);
-                    tmpTemperature = new ArrayList<>();
-                    tmpTemperature.add(new TemperatureCelsius(80));
-                    tmpCoolDownTime = new ArrayList<>();
-                    tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(80)));
-                    tmpTime = new ArrayList<>();
-                    tmpTime.add(new Time("1:30"));
-                    N2Tea teaExample3 = new N2Tea(teaItems.nextId(), "Sencha", new SortOfTea("Grüner Tee"), tmpTemperature,
-                            tmpCoolDownTime, tmpTime, new AmountTs(4), new Coloring(SortOfTea.getVariatyColor(Variety.GreenTea)));
-                    teaExample3.setCurrentDate();
-                    teaItems.getTeaItems().add(teaExample3);
 
-                    teaItems.saveCollection(getApplicationContext());
+        TeaMemoryDatabase database = Room.databaseBuilder(this, TeaMemoryDatabase.class, "teamemory")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+
+        TeaDAO teaDAO = database.getTeaDAO();
+        InfusionDAO infusionDAO = database.getInfusionDAO();
+        NoteDAO noteDAO = database.getNoteDAO();
+        CounterDAO counterDAO = database.getCounterDAO();
+        ActualSettingsDAO actualSettingsDAO = database.getActualSettingsDAO();
+
+        if(teaDAO.getCountItems()==0) {
+
+            //Liste aller Tees
+            teaItems = new TeaCollection();
+            if (!teaItems.loadCollection(getApplicationContext())) {
+                // TODO Auto-generated method stub
+                //kann später entfernt werden
+                if (!teaItems.loadOld2Collection(getApplicationContext())) {
+                    if (!teaItems.loadOldCollection(getApplicationContext())) {
+                        ArrayList<Temperature> tmpTemperature = new ArrayList<>();
+                        tmpTemperature.add(new TemperatureCelsius(100));
+                        ArrayList<Time> tmpCoolDownTime = new ArrayList<>();
+                        tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(100)));
+                        ArrayList<Time> tmpTime = new ArrayList<>();
+                        tmpTime.add(new Time("3:30"));
+                        N2Tea teaExample1 = new N2Tea(teaItems.nextId(), "Earl Grey", new SortOfTea("Schwarzer Tee"), tmpTemperature,
+                                tmpCoolDownTime, tmpTime, new AmountTs(5), new Coloring(SortOfTea.getVariatyColor(Variety.BlackTea)));
+                        teaExample1.setCurrentDate();
+                        teaItems.getTeaItems().add(teaExample1);
+                        tmpTemperature = new ArrayList<>();
+                        tmpTemperature.add(new TemperatureCelsius(85));
+                        tmpCoolDownTime = new ArrayList<>();
+                        tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(85)));
+                        tmpTime = new ArrayList<>();
+                        tmpTime.add(new Time("2"));
+                        N2Tea teaExample2 = new N2Tea(teaItems.nextId(), "Pai Mu Tan", new SortOfTea("Weißer Tee"), tmpTemperature,
+                                tmpCoolDownTime, tmpTime, new AmountTs(4), new Coloring(SortOfTea.getVariatyColor(Variety.WhiteTea)));
+                        teaExample2.setCurrentDate();
+                        teaItems.getTeaItems().add(teaExample2);
+                        tmpTemperature = new ArrayList<>();
+                        tmpTemperature.add(new TemperatureCelsius(80));
+                        tmpCoolDownTime = new ArrayList<>();
+                        tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(80)));
+                        tmpTime = new ArrayList<>();
+                        tmpTime.add(new Time("1:30"));
+                        N2Tea teaExample3 = new N2Tea(teaItems.nextId(), "Sencha", new SortOfTea("Grüner Tee"), tmpTemperature,
+                                tmpCoolDownTime, tmpTime, new AmountTs(4), new Coloring(SortOfTea.getVariatyColor(Variety.GreenTea)));
+                        teaExample3.setCurrentDate();
+                        teaItems.getTeaItems().add(teaExample3);
+
+                        teaItems.saveCollection(getApplicationContext());
+                    } else {
+                        teaItems.convertCollectionToNew();
+                        teaItems.saveCollection(getApplicationContext());
+                    }
                 } else {
-                    teaItems.convertCollectionToNew();
+                    teaItems.convertCollection2ToNew();
                     teaItems.saveCollection(getApplicationContext());
                 }
-            } else {
-                teaItems.convertCollection2ToNew();
-                teaItems.saveCollection(getApplicationContext());
             }
+
+
+            int o = 0;
+            //Tee in Datenbank schreiben
+            for (N2Tea otea : teaItems.getTeaItems()) {
+                Tea ntea = new Tea();
+                ntea.setName(otea.getName());
+                ntea.setVariety(LanguageConversation.convertVarietyToCode(otea.getSortOfTea().getType(),getApplicationContext()));
+                ntea.setAmount(otea.getAmount().getValue());
+                ntea.setAmountkind(otea.getAmount().getUnit());
+                ntea.setColor(otea.getColoring().getColor());
+                ntea.setDate(otea.getDate());
+
+                teaDAO.insert(ntea);
+                long teaid = teaDAO.getItems().get(o++).getId();
+
+                for (int i = 0; i < otea.getTime().size(); i++) {
+                    Infusion infusion = new Infusion();
+                    infusion.setTeaId(teaid);
+                    infusion.setInfusion(i);
+                    if(!otea.getTime().get(i).getTime().equals("-"))
+                    {
+                        infusion.setTime(otea.getTime().get(i).getTime());
+                    }
+                    if(!otea.getCoolDownTime().get(i).getTime().equals("-"))
+                    {
+                        infusion.setCooldowntime(otea.getCoolDownTime().get(i).getTime());
+                    }
+                    infusion.setTemperaturecelsius(otea.getTemperature().get(i).getCelsius());
+                    infusion.setTemperaturefahrenheit(otea.getTemperature().get(i).getFahrenheit());
+
+                    infusionDAO.insert(infusion);
+                }
+
+                Counter ncounter = new Counter();
+                ncounter.setTeaId(teaid);
+                ncounter.setDay(otea.getCounter().getDay());
+                ncounter.setWeek(otea.getCounter().getWeek());
+                ncounter.setMonth(otea.getCounter().getMonth());
+                ncounter.setOverall(otea.getCounter().getOverall());
+                ncounter.setDaydate(Calendar.getInstance().getTime());
+                ncounter.setWeekdate(Calendar.getInstance().getTime());
+                ncounter.setMonthdate(Calendar.getInstance().getTime());
+
+                counterDAO.insert(ncounter);
+
+                if(!otea.getNote().equals(""))
+                {
+                    Note nnote = new Note();
+                    nnote.setTeaId(teaid);
+                    nnote.setPosition(1);
+                    nnote.setDescription(otea.getNote());
+                    noteDAO.insert(nnote);
+                }
+            }
+
+            //Settings holen
+            settings = new ActualSetting();
+            if (!settings.loadSettings(getApplicationContext())) {
+                if (!settings.loadOldSettings(getApplicationContext())) {
+                    //setzte Default wenn nicht vorhanden
+                    settings.saveSettings(getApplicationContext());
+                }
+            }
+
+
+            //Settings in Datenbank schreiben
+            ActualSettings actualSettings = new ActualSettings();
+            actualSettings.setMusicchoice(settings.getMusicChoice());
+            actualSettings.setMusicname(settings.getMusicName());
+            actualSettings.setVibration(settings.isVibration());
+            actualSettings.setNotification(settings.isNotification());
+            actualSettings.setAnimation(settings.isAnimation());
+            actualSettings.setTemperatureunit(settings.getTemperatureUnit());
+            actualSettings.setShowteaalert(settings.isShowteaAlert());
+            actualSettings.setMainProblemAlert(settings.isMainProblemAlert());
+            actualSettings.setMainRateAlert(settings.isMainRateAlert());
+            actualSettings.setMainRatecounter(settings.getMainRatecounter());
+            actualSettings.setSort(settings.getSort());
+            actualSettingsDAO.insert(actualSettings);
         }
 
-        //Settings holen
-        settings = new ActualSetting();
-        if (!settings.loadSettings(getApplicationContext())) {
-            if (!settings.loadOldSettings(getApplicationContext())) {
-                //setzte Default wenn nicht vorhanden
-                settings.saveSettings(getApplicationContext());
-            }
-        }
-
-        //herausfinden welche Sprache gesetzt ist und Übersetztung der Liste starten
-        String tmpLang = "";
-        String language = getResources().getString(R.string.app_name);
-        switch (language) {
-            case "Tee Speicher":
-                tmpLang = "de";
-                break;
-            case "Tea Memory":
-                tmpLang = "en";
-                break;
-        }
-        if (!tmpLang.equals(settings.getLanguage())) {
-            teaItems.translateSortOfTea(getApplicationContext(), settings.getLanguage(), tmpLang);
-            teaItems.saveCollection(getApplicationContext());
-            settings.setLanguage(tmpLang);
-            settings.saveSettings(getApplicationContext());
-        }
+        mMainActivityViewModel = new MainActivityViewModel(getApplicationContext());
 
         //Setzte Spinner Groß
         spinnerSort = findViewById(R.id.spinner_category);
@@ -161,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         spinnerSort.setAdapter(spinnerVarietyAdapter);
 
         //setzte spinner
-        spinnerSort.setSelection(settings.getSort());
+        spinnerSort.setSelection(mMainActivityViewModel.getSort());
 
         //sortierung hat sich verändert
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -169,28 +256,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        settings.setSort(0);
-                        settings.saveSettings(getApplicationContext());
-                        //Liste sortieren und neu aufbauen
-                        teaItems.sort();
-                        teaItems.saveCollection(getApplicationContext());
-                        adapter.notifyDataSetChanged();
+                        mMainActivityViewModel.updateSort(0);
                         break;
                     case 1:
-                        settings.setSort(1);
-                        settings.saveSettings(getApplicationContext());
-                        //Liste sortieren und neu aufbauen
-                        teaItems.sort();
-                        teaItems.saveCollection(getApplicationContext());
-                        adapter.notifyDataSetChanged();
+                        mMainActivityViewModel.updateSort(1);
                         break;
                     case 2:
-                        settings.setSort(2);
-                        settings.saveSettings(getApplicationContext());
-                        //Liste sortieren und neu aufbauen
-                        teaItems.sort();
-                        teaItems.saveCollection(getApplicationContext());
-                        adapter.notifyDataSetChanged();
+                        mMainActivityViewModel.updateSort(2);
                         break;
                 }
             }
@@ -202,9 +274,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         });
 
         //Liste mit Adapter verknüpfen
-        adapter = new TeaAdapter(this, teaItems.getTeaItems());
-        //Adapter dem Listview hinzufügen
-        tealist.setAdapter(adapter);
+        mMainActivityViewModel.getTeas().observe(this, mTeas->{
+            adapter = new TeaAdapter(MainActivity.this, mTeas);
+            //Adapter dem Listview hinzufügen
+            tealist.setAdapter(adapter);
+        });
 
         //Menu wird hinzugefügt (Löschen, Ändern)
         registerForContextMenu(tealist);
@@ -215,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 //Neues Intent anlegen
                 Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
 
-                showteaScreen.putExtra("elementId", teaItems.getTeaItems().get(position).getId());
+                showteaScreen.putExtra("elementId", mMainActivityViewModel.getTeaByPosition(position).getId());
                 // Intent starten und zur zweiten Activity wechseln
                 startActivity(showteaScreen);
             }
@@ -238,17 +312,16 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (startApplication) {
             startApplication = false;
             //show dialog problem
-            if (settings.isMainProblemAlert()) {
+            if (mMainActivityViewModel.isMainProblemAlert()) {
                 dialogMainProblem();
             }
             //show dialog rating
-            if (settings.isMainRateAlert() && settings.getMainRatecounter() >= 20) {
-                settings.resetMainRatecounter();
+            if (mMainActivityViewModel.isMainRateAlert() && mMainActivityViewModel.getMainRatecounter() >= 20) {
+                mMainActivityViewModel.resetMainRatecounter();
                 dialogMainRating();
             } else {
-                settings.incrementMainRatecounter();
+                mMainActivityViewModel.incrementMainRatecounter();
             }
-            settings.saveSettings(getApplicationContext());
         }
     }
 
@@ -281,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.listViewTealist) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            menu.setHeaderTitle(teaItems.getTeaItems().get(info.position).getName());
+            menu.setHeaderTitle(mMainActivityViewModel.getTeaByPosition(info.position).getName());
 
             //Übersetzung Englisch Deutsch
             String[] menuItems = getResources().getStringArray(R.array.itemMenu);
@@ -302,19 +375,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (menuItemName.equals(editOption)) {
             //Neues Intent anlegen
             Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
-            newteaScreen.putExtra("elementId", teaItems.getTeaItems().get(info.position).getId());
+            newteaScreen.putExtra("elementId", mMainActivityViewModel.getTeaByPosition(info.position).getId());
 
 
             // Intent starten und zur zweiten Activity wechseln
             startActivity(newteaScreen);
         } else if (menuItemName.equals(deleteOption)) {
             int position = info.position;
-            teaItems.getTeaItems().remove(position);
-            if (!teaItems.saveCollection(getApplicationContext())) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.main_error_deletion, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            adapter.notifyDataSetChanged();
+            mMainActivityViewModel.removeTea(position);
         }
         return true;
     }
@@ -356,7 +424,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //teaItems.deleteOldCollection();
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
@@ -383,7 +450,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
     private void showTooltip(View v, int gravity, String text) {
@@ -411,8 +477,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             adb.setPositiveButton(R.string.main_dialog_problem_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontshowagain.isChecked()) {
-                        MainActivity.settings.setMainProblemAlert(false);
-                        MainActivity.settings.saveSettings(getApplicationContext());
+                        mMainActivityViewModel.setMainProblemAlert(false);
                     }
                     Intent problemsScreen = new Intent(MainActivity.this, Problems.class);
                     startActivity(problemsScreen);
@@ -421,8 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             adb.setNegativeButton(R.string.main_dialog_problem_cancle, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontshowagain.isChecked()) {
-                        MainActivity.settings.setMainProblemAlert(false);
-                        MainActivity.settings.saveSettings(getApplicationContext());
+                        mMainActivityViewModel.setMainProblemAlert(false);
                     }
                 }
             });
@@ -441,8 +505,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         adb.setTitle(R.string.main_dialog_rating_header);
         adb.setPositiveButton(R.string.main_dialog_rating_positive, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                MainActivity.settings.setMainRateAlert(false);
-                MainActivity.settings.saveSettings(getApplicationContext());
+                mMainActivityViewModel.setMainRateAlert(false);
 
                 final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
                 try {
@@ -459,8 +522,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         adb.setNegativeButton(R.string.main_dialog_rating_negative, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                MainActivity.settings.setMainRateAlert(false);
-                MainActivity.settings.saveSettings(getApplicationContext());
+                mMainActivityViewModel.setMainRateAlert(false);
             }
         });
         adb.show();
