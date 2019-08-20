@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         CounterDAO counterDAO = database.getCounterDAO();
         ActualSettingsDAO actualSettingsDAO = database.getActualSettingsDAO();
 
-        if(actualSettingsDAO.getCountItems()==0) {
+        if (actualSettingsDAO.getCountItems() == 0) {
 
             //Liste aller Tees
             teaItems = new TeaCollection();
@@ -161,25 +161,23 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             for (N2Tea otea : teaItems.getTeaItems()) {
                 Tea ntea = new Tea();
                 ntea.setName(otea.getName());
-                ntea.setVariety(LanguageConversation.convertVarietyToCode(otea.getSortOfTea().getType(),getApplicationContext()));
+                ntea.setVariety(LanguageConversation.convertVarietyToCode(otea.getSortOfTea().getType(), getApplicationContext()));
                 ntea.setAmount(otea.getAmount().getValue());
                 ntea.setAmountkind(otea.getAmount().getUnit());
                 ntea.setColor(otea.getColoring().getColor());
                 ntea.setDate(otea.getDate());
 
                 teaDAO.insert(ntea);
-                long teaid = teaDAO.getItems().get(o++).getId();
+                long teaid = teaDAO.getTeas().get(o++).getId();
 
                 for (int i = 0; i < otea.getTime().size(); i++) {
                     Infusion infusion = new Infusion();
                     infusion.setTeaId(teaid);
                     infusion.setInfusion(i);
-                    if(!otea.getTime().get(i).getTime().equals("-"))
-                    {
+                    if (!otea.getTime().get(i).getTime().equals("-")) {
                         infusion.setTime(otea.getTime().get(i).getTime());
                     }
-                    if(!otea.getCoolDownTime().get(i).getTime().equals("-"))
-                    {
+                    if (!otea.getCoolDownTime().get(i).getTime().equals("-")) {
                         infusion.setCooldowntime(otea.getCoolDownTime().get(i).getTime());
                     }
                     infusion.setTemperaturecelsius(otea.getTemperature().get(i).getCelsius());
@@ -200,8 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
                 counterDAO.insert(ncounter);
 
-                if(!otea.getNote().equals(""))
-                {
+                if (!otea.getNote().equals("")) {
                     Note nnote = new Note();
                     nnote.setTeaId(teaid);
                     nnote.setPosition(1);
@@ -273,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         });
 
         //Liste mit Adapter verknüpfen
-        mMainActivityViewModel.getTeas().observe(this, mTeas->{
+        mMainActivityViewModel.getTeas().observe(this, mTeas -> {
             adapter = new TeaAdapter(MainActivity.this, mTeas);
             //Adapter dem Listview hinzufügen
             tealist.setAdapter(adapter);

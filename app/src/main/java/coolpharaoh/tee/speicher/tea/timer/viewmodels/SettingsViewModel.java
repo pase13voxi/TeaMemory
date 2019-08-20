@@ -15,7 +15,7 @@ public class SettingsViewModel {
 
     private ActualSettings mActualSettings;
 
-    public SettingsViewModel(Context context){
+    public SettingsViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
@@ -28,79 +28,79 @@ public class SettingsViewModel {
     }
 
     //Settings
-    public void setMusicchoice(String musicchoice){
+    public void setMusicchoice(String musicchoice) {
         mActualSettings.setMusicchoice(musicchoice);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public String getMusicname(){
+    public String getMusicname() {
         return mActualSettings.getMusicname();
     }
 
-    public void setMusicname(String musicname){
+    public void setMusicname(String musicname) {
         mActualSettings.setMusicchoice(musicname);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isVibration(){
+    public boolean isVibration() {
         return mActualSettings.isVibration();
     }
 
-    public void setVibration(boolean vibration){
+    public void setVibration(boolean vibration) {
         mActualSettings.setVibration(vibration);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isNotification(){
+    public boolean isNotification() {
         return mActualSettings.isNotification();
     }
 
-    public void setNotification(boolean notification){
+    public void setNotification(boolean notification) {
         mActualSettings.setNotification(notification);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isAnimation(){
+    public boolean isAnimation() {
         return mActualSettings.isAnimation();
     }
 
-    public void setAnimation(boolean animation){
+    public void setAnimation(boolean animation) {
         mActualSettings.setAnimation(animation);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public String getTemperatureunit(){
+    public String getTemperatureunit() {
         return mActualSettings.getTemperatureunit();
     }
 
-    public void setTemperatureunit(String temperatureunit){
+    public void setTemperatureunit(String temperatureunit) {
         mActualSettings.setTemperatureunit(temperatureunit);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isShowteaalert(){
+    public boolean isShowteaalert() {
         return mActualSettings.isShowteaalert();
     }
 
-    public void setShowteaalert(boolean showteaalert){
+    public void setShowteaalert(boolean showteaalert) {
         mActualSettings.setShowteaalert(showteaalert);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isMainproblemalert(){
+    public boolean isMainproblemalert() {
         return mActualSettings.isMainproblemalert();
     }
 
-    public void setMainproblemalert(boolean mainproblemalert){
+    public void setMainproblemalert(boolean mainproblemalert) {
         mActualSettings.setMainproblemalert(mainproblemalert);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isMainratealert(){
+    public boolean isMainratealert() {
         return mActualSettings.isMainratealert();
     }
 
-    public void setMainratealert(boolean mainratealert){
+    public void setMainratealert(boolean mainratealert) {
         mActualSettings.setMainratealert(mainratealert);
         mActualSettingsDAO.update(mActualSettings);
     }
@@ -122,7 +122,7 @@ public class SettingsViewModel {
     }
 
     //Tea
-    public void deleteAllTeas(){
+    public void deleteAllTeas() {
         mTeaDAO.deleteAll();
     }
 }

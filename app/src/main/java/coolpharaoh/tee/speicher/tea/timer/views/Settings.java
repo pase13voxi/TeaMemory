@@ -266,17 +266,17 @@ public class Settings extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 if (checkBoxRating.isChecked()) {
                     mSettingsViewModel.setMainratealert(true);
-                }else {
+                } else {
                     mSettingsViewModel.setMainratealert(false);
                 }
                 if (checkBoxProblems.isChecked()) {
                     mSettingsViewModel.setMainproblemalert(true);
-                }else {
+                } else {
                     mSettingsViewModel.setMainproblemalert(false);
                 }
                 if (checkBoxDescription.isChecked()) {
                     mSettingsViewModel.setShowteaalert(true);
-                }else {
+                } else {
                     mSettingsViewModel.setShowteaalert(true);
                 }
             }

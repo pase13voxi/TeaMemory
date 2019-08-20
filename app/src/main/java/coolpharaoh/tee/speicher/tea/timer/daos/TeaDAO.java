@@ -6,15 +6,19 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
+
 import java.util.List;
+
+import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 
 @Dao
 public interface TeaDAO {
     @Insert
     void insert(Tea... items);
+
     @Update
     void update(Tea... items);
+
     @Delete
     void delete(Tea item);
 
@@ -22,17 +26,17 @@ public interface TeaDAO {
     public void deleteAll();
 
     @Query("SELECT * from tea")
-    List<Tea> getItems();
+    List<Tea> getTeas();
 
     @Query("SELECT * from tea ORDER BY LOWER(date) ASC")
-    List<Tea> getItemsActivity();
+    List<Tea> getTeasOrderByActivity();
 
     @Query("SELECT * from tea ORDER BY LOWER(name) ASC")
-    List<Tea> getItemsAlphabetic();
+    List<Tea> getTeasOrderByAlphabetic();
 
     @Query("SELECT * from tea ORDER BY LOWER(variety) ASC")
-    List<Tea> getItemsVariety();
+    List<Tea> getTeasOrderByVariety();
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
-    Tea getItemById(Long id);
+    Tea getTeaById(Long id);
 }

@@ -23,7 +23,7 @@ public class MainActivityViewModel extends ViewModel {
     private MutableLiveData<List<Tea>> mTeas;
     private ActualSettings mActualSettings;
 
-    public MainActivityViewModel(Context context){
+    public MainActivityViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
@@ -43,7 +43,7 @@ public class MainActivityViewModel extends ViewModel {
         return mTeas;
     }
 
-    public Tea getTeaByPosition(int position){
+    public Tea getTeaByPosition(int position) {
         return mTeas.getValue().get(position);
     }
 
@@ -54,11 +54,11 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     //Settings
-    public int getSort(){
+    public int getSort() {
         return mActualSettings.getSort();
     }
 
-    public void setSort(int sort){
+    public void setSort(int sort) {
 
         mActualSettings.setSort(sort);
         mActualSettingsDAO.update(mActualSettings);
@@ -70,7 +70,7 @@ public class MainActivityViewModel extends ViewModel {
         return mActualSettings.isMainratealert();
     }
 
-    public void setMainRateAlert(boolean mainRateAlert){
+    public void setMainRateAlert(boolean mainRateAlert) {
 
         mActualSettings.setMainratealert(mainRateAlert);
         mActualSettingsDAO.update(mActualSettings);
@@ -88,11 +88,11 @@ public class MainActivityViewModel extends ViewModel {
 
     public void incrementMainRatecounter() {
 
-        mActualSettings.setMainratecounter(mActualSettings.getMainratecounter()+1);
+        mActualSettings.setMainratecounter(mActualSettings.getMainratecounter() + 1);
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public boolean isMainProblemAlert(){
+    public boolean isMainProblemAlert() {
         return mActualSettings.isMainproblemalert();
     }
 
@@ -102,15 +102,20 @@ public class MainActivityViewModel extends ViewModel {
         mActualSettingsDAO.update(mActualSettings);
     }
 
-    public void refreshTeas(){
-        switch(mActualSettings.getSort())
-        {
+    public void refreshTeas() {
+        switch (mActualSettings.getSort()) {
             //activity
-            case 0: mTeas.setValue(mTeaDAO.getItemsActivity()); break;
+            case 0:
+                mTeas.setValue(mTeaDAO.getTeasOrderByActivity());
+                break;
             //alphabetic
-            case 1: mTeas.setValue(mTeaDAO.getItemsAlphabetic()); break;
+            case 1:
+                mTeas.setValue(mTeaDAO.getTeasOrderByAlphabetic());
+                break;
             //variety
-            case 2: mTeas.setValue(mTeaDAO.getItemsVariety()); break;
+            case 2:
+                mTeas.setValue(mTeaDAO.getTeasOrderByVariety());
+                break;
         }
     }
 

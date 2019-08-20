@@ -7,11 +7,13 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
-import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
+
 import java.util.Date;
 
+import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
 
-@Entity(tableName = "counter",foreignKeys = @ForeignKey(entity = Tea.class,parentColumns = "tea_id",childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
+
+@Entity(tableName = "counter", foreignKeys = @ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
 public class Counter {
     @PrimaryKey
     @NonNull
