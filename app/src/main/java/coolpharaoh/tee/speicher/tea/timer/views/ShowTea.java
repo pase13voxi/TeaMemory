@@ -36,16 +36,15 @@ import com.tooltip.Tooltip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Amount;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.N2Tea;
+import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.listadapter.CounterListAdapter;
 import coolpharaoh.tee.speicher.tea.timer.listadapter.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.services.CountDownService;
 import coolpharaoh.tee.speicher.tea.timer.services.MediaService;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -66,22 +65,17 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private Button buttonStartTimer;
     private Button buttonExchange;
     private Button buttonInfo;
-    Button buttonCalcAmount;
+    private Button buttonCalcAmount;
     private ImageView imageViewCup;
     private ImageView imageViewFill;
     private ImageView imageViewSteam;
-    private UUID elementId;
-    private int elementAt;
-    private N2Tea selectedTea;
-    private int brewCount = 0;
-    private String name;
-    private String sortOfTea;
-    private int minutes;
-    private int seconds;
+
+    private ShowTeaViewModel mShowTeaViewModel;
     private boolean infoShown = false;
     //animation
     private long maxMilliSec;
     private int percent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,9 +86,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         mToolbarCustomTitle.setText(R.string.showtea_heading);
         buttonBrewCount = findViewById(R.id.toolbar_brewcount);
         textViewBrewCount = findViewById(R.id.toolbar_text_brewcount);
-        buttonNextBrew  = findViewById(R.id.toolbar_nextbrew);
+        buttonNextBrew = findViewById(R.id.toolbar_nextbrew);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
         }
 
@@ -137,67 +131,64 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         spinnerMinutes.setAdapter(spinnerTimeAdapter);
         spinnerSeconds.setAdapter(spinnerTimeAdapter);
 
-        //Vibration and Notification set
-        toggleVibration.setChecked(MainActivity.settings.isVibration());
-        toggleNotification.setChecked(MainActivity.settings.isNotification());
-
-        //show Description
-        if(MainActivity.settings.isShowteaAlert()){
-            dialogShowTeaDescription();
-        }
-
         //Hole Übergabeparemeter Position des Tees
-        elementId  = (UUID) this.getIntent().getSerializableExtra("elementId");
-        if(elementId == null){
+        long teaId = (long) this.getIntent().getLongExtra("teaId", 0);
+        if (teaId == 0) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.showtea_error_text, Toast.LENGTH_SHORT);
             toast.show();
             buttonBrewCount.setVisibility(View.INVISIBLE);
-        }else {
-            elementAt = MainActivity.teaItems.getPositionById(elementId);
-            selectedTea = MainActivity.teaItems.getTeaItems().get(elementAt);
+        } else {
+            mShowTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
+
+            //Vibration and Notification set
+            toggleVibration.setChecked(mShowTeaViewModel.isVibration());
+            toggleNotification.setChecked(mShowTeaViewModel.isNotification());
+
+            //show Description
+            if (mShowTeaViewModel.isShowteaalert()) {
+                dialogShowTeaDescription();
+            }
 
             //Befülle TextViews
-            name = selectedTea.getName();
-            textViewName.setText(name);
-            sortOfTea = selectedTea.getSortOfTea().getType();
-            textViewSortOfTea.setText(sortOfTea);
-            if(!selectedTea.getNote().equals("")){
+            textViewName.setText(mShowTeaViewModel.getName());
+            textViewSortOfTea.setText(mShowTeaViewModel.getVariety());
+            if (!mShowTeaViewModel.getNote().getDescription().equals("")) {
                 buttonNote.setVisibility(View.VISIBLE);
             }
-            if(selectedTea.getTemperature().get(brewCount).getCelsius()!=-500) {
-                if (MainActivity.settings.getTemperatureUnit().equals("Celsius")) {
-                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(selectedTea.getTemperature().get(brewCount).getCelsius())));
-                } else if(MainActivity.settings.getTemperatureUnit().equals("Fahrenheit")) {
-                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(selectedTea.getTemperature().get(brewCount).getFahrenheit())));
+            if (mShowTeaViewModel.getTemperature() != -500) {
+                if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(mShowTeaViewModel.getTemperature())));
+                } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(mShowTeaViewModel.getTemperature())));
                 }
-            }else {
-                if(MainActivity.settings.getTemperatureUnit().equals("Celsius")) {
+            } else {
+                if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-                }else if(MainActivity.settings.getTemperatureUnit().equals("Fahrenheit")) {
+                } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
                 }
             }
-            if(!selectedTea.getCoolDownTime().get(brewCount).getTime().equals("-")){
+            if (mShowTeaViewModel.getCooldowntime().time != null) {
                 buttonExchange.setEnabled(true);
             }
-            if(selectedTea.getAmount().getValue()!=-500) {
-                if(selectedTea.getAmount().getUnit().equals("Ts"))
-                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(selectedTea.getAmount().getValue())));
-                else if(selectedTea.getAmount().getUnit().equals("Gr"))
-                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(selectedTea.getAmount().getValue())));
-            }else {
+            if (mShowTeaViewModel.getAmount() != -500) {
+                if (mShowTeaViewModel.getAmountkind().equals("Ts"))
+                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(mShowTeaViewModel.getAmount())));
+                else if (mShowTeaViewModel.getAmountkind().equals("Gr"))
+                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(mShowTeaViewModel.getAmount())));
+            } else {
                 buttonCalcAmount.setEnabled(false);
-                if(selectedTea.getAmount().getUnit().equals("Ts"))
+                if (mShowTeaViewModel.getAmountkind().equals("Ts"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, "-"));
-                else if(selectedTea.getAmount().getUnit().equals("Gr"))
+                else if (mShowTeaViewModel.getAmountkind().equals("Gr"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, "-"));
             }
-            minutes = selectedTea.getTime().get(brewCount).getMinutes();
-            spinnerMinutes.setSelection(minutes);
-            seconds = selectedTea.getTime().get(brewCount).getSeconds();
-            spinnerSeconds.setSelection(seconds);
+
+            spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
+            spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
+
             //wenn nur ein Aufguss vorgesehen ist dann verschwindet der button_calculateamount
-            if(selectedTea.getTemperature().size()==1){
+            if (mShowTeaViewModel.getInfusionSize() == 1) {
                 textViewBrewCount.setVisibility(View.INVISIBLE);
                 buttonBrewCount.setVisibility(View.INVISIBLE);
                 buttonNextBrew.setVisibility(View.INVISIBLE);
@@ -207,8 +198,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         toggleVibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.settings.setVibration(toggleVibration.isChecked());
-                MainActivity.settings.saveSettings(getApplicationContext());
+                mShowTeaViewModel.setVibration(toggleVibration.isChecked());
             }
         });
         toggleVibration.setOnLongClickListener(this);
@@ -216,8 +206,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         toggleNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.settings.setNotification(toggleNotification.isChecked());
-                MainActivity.settings.saveSettings(getApplicationContext());
+                mShowTeaViewModel.setNotification(toggleNotification.isChecked());
             }
         });
         toggleNotification.setOnLongClickListener(this);
@@ -242,19 +231,17 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             @Override
             public void onClick(View v) {
                 String[] items = null;
-                if(elementAt != -1) {
-                    int tmpSize = selectedTea.getTemperature().size();
-                    items = new String[tmpSize];
-                    for(int i=0; i<tmpSize; i++){
-                        items[i] = String.valueOf(i+1) +". "+ getResources().getString(R.string.showtea_brew_count_content);
-                    }
+                int tmpSize = mShowTeaViewModel.getInfusionSize();
+                items = new String[tmpSize];
+                for (int i = 0; i < tmpSize; i++) {
+                    items[i] = String.valueOf(i + 1) + ". " + getResources().getString(R.string.showtea_brew_count_content);
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setIcon(R.drawable.brewdark);
                 builder.setTitle(R.string.showtea_brew_count_title);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        brewCount = item;
+                        mShowTeaViewModel.setBrewCount(item);
                         brewCountChanged();
                     }
                 });
@@ -268,7 +255,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonNextBrew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                brewCount++;
+                mShowTeaViewModel.incrementBrewCount();
                 brewCountChanged();
             }
         });
@@ -287,17 +274,17 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonExchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!infoShown){
+                if (!infoShown) {
                     buttonInfo.setVisibility(View.VISIBLE);
                     infoShown = true;
                     //Abkühlzeit anzeigen
-                    spinnerMinutes.setSelection(selectedTea.getCoolDownTime().get(brewCount).getMinutes());
-                    spinnerSeconds.setSelection(selectedTea.getCoolDownTime().get(brewCount).getSeconds());
-                }else {
+                    spinnerMinutes.setSelection(mShowTeaViewModel.getCooldowntime().minutes);
+                    spinnerSeconds.setSelection(mShowTeaViewModel.getCooldowntime().seconds);
+                } else {
                     buttonInfo.setVisibility(View.INVISIBLE);
                     infoShown = false;
-                    spinnerMinutes.setSelection(minutes);
-                    spinnerSeconds.setSelection(seconds);
+                    spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
+                    spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
                 }
             }
         });
@@ -307,13 +294,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonStartTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_start))){
+                if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_start))) {
                     //Mainlist aktualisieren
-                    selectedTea.setCurrentDate();
+                    mShowTeaViewModel.setCurrentDate();
                     //don't count when waiting for the right temperature
-                    if(!infoShown) selectedTea.getCounter().count();
-                    MainActivity.teaItems.sort();
-                    MainActivity.teaItems.saveCollection(getApplicationContext());
+                    if (!infoShown) mShowTeaViewModel.countCounter();
                     //Button umbenennen
                     buttonStartTimer.setText(R.string.showtea_timer_reset);
                     buttonExchange.setEnabled(false);
@@ -329,27 +314,27 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     //Timeranzeige einblenden
                     textViewTimer.setVisibility((View.VISIBLE));
                     //Teetasse anzeigen
-                    if(!infoShown && MainActivity.settings.isAnimation()) {
+                    if (!infoShown && mShowTeaViewModel.isAnimation()) {
                         imageViewCup.setVisibility((View.VISIBLE));
                         imageViewFill.setVisibility((View.VISIBLE));
                         //Farbe des Inhalts der Tasse festlegen
-                        imageViewFill.setColorFilter(selectedTea.getColoring().getColor(), PorterDuff.Mode.SRC_ATOP);
+                        imageViewFill.setColorFilter(mShowTeaViewModel.getColor(), PorterDuff.Mode.SRC_ATOP);
                     }
                     //In millisekunden umrechnen
                     int min = Integer.parseInt(spinnerMinutes.getSelectedItem().toString());
                     int sec = Integer.parseInt(spinnerSeconds.getSelectedItem().toString());
                     long millisec = TimeUnit.MINUTES.toMillis(min) + TimeUnit.SECONDS.toMillis(sec);
                     //for Animation getMaxMillis;
-                    maxMilliSec =millisec;
+                    maxMilliSec = millisec;
                     //Counter erstellen
                     Intent counter = new Intent(getBaseContext(), CountDownService.class);
-                    counter.putExtra("elementName", name);
+                    counter.putExtra("teaName", mShowTeaViewModel.getName());
                     counter.putExtra("millisec", millisec);
                     startService(counter);
-                }else if(buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_reset))){
+                } else if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_reset))) {
                     //Button umbenennen
                     buttonStartTimer.setText(R.string.showtea_timer_start);
-                    if(!selectedTea.getCoolDownTime().get(brewCount).getTime().equals("-")){
+                    if (mShowTeaViewModel.getCooldowntime().time!=null) {
                         buttonExchange.setEnabled(true);
                     }
 
@@ -365,7 +350,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     //Timeranzeige ausblenden
                     textViewTimer.setVisibility((View.INVISIBLE));
                     //Teetasse ausblenden
-                    if(!infoShown && MainActivity.settings.isAnimation()) {
+                    if (!infoShown && mShowTeaViewModel.isAnimation()) {
                         imageViewCup.setVisibility((View.INVISIBLE));
                         imageViewFill.setVisibility((View.INVISIBLE));
                         imageViewFill.setImageResource(R.drawable.fill0pr);
@@ -377,10 +362,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     //Counter canceln
                     stopService(new Intent(getBaseContext(), CountDownService.class));
                     //Mediaplayer zurück setzten
-                    stopService(new Intent(getBaseContext(),MediaService.class));
+                    stopService(new Intent(getBaseContext(), MediaService.class));
                     //Nofications zurücksetzten
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                    if (notificationManager==null){
+                    if (notificationManager == null) {
                         throw new AssertionError("NotificationManager is null.");
                     } else {
                         notificationManager.cancelAll();
@@ -390,29 +375,29 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_show_tea, menu);
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_note){
+        if (id == R.id.action_note) {
             dialogNote();
-        }else if(id == R.id.action_settings){
+        } else if (id == R.id.action_settings) {
             //Neues Intent anlegen
             Intent newteaScreen = new Intent(ShowTea.this, NewTea.class);
-            newteaScreen.putExtra("elementId", elementId);
+            newteaScreen.putExtra("teaId", mShowTeaViewModel.getTeaId());
             newteaScreen.putExtra("showTea", true);
             // Intent starten und zur zweiten Activity wechseln
             startActivity(newteaScreen);
             finish();
             return true;
-        }else if(id == R.id.action_counter){
+        } else if (id == R.id.action_counter) {
             dialogCounter();
         }
 
-        if(id == R.id.home){
+        if (id == R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
         }
 
@@ -435,9 +420,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     @Override
     protected void onDestroy() {
         stopService(new Intent(this, CountDownService.class));
-        stopService(new Intent(getBaseContext(),MediaService.class));
+        stopService(new Intent(getBaseContext(), MediaService.class));
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager==null){
+        if (notificationManager == null) {
             throw new AssertionError("NotificationManager is null.");
         } else {
             notificationManager.cancelAll();
@@ -446,21 +431,21 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         super.onDestroy();
     }
 
-    private void updateClock(Intent intent){
+    private void updateClock(Intent intent) {
         if (intent.getExtras() != null) {
             long millis = intent.getLongExtra("countdown", 0);
             boolean ready = intent.getBooleanExtra("ready", false);
-            if(!infoShown && MainActivity.settings.isAnimation()) {
+            if (!infoShown && mShowTeaViewModel.isAnimation()) {
                 updateImage(millis);
             }
-            if(ready){
+            if (ready) {
                 textViewTimer.setText(R.string.showtea_tea_ready);
-                if(!infoShown && MainActivity.settings.isAnimation()) {
+                if (!infoShown && mShowTeaViewModel.isAnimation()) {
                     imageViewFill.setImageResource(R.drawable.fill100pr);
                     imageViewSteam.setVisibility((View.VISIBLE));
                 }
-            }else {
-                String ms = String.format(Locale.getDefault(),"%02d : %02d",
+            } else {
+                String ms = String.format(Locale.getDefault(), "%02d : %02d",
                         TimeUnit.MILLISECONDS.toMinutes(millis),
                         TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
                 textViewTimer.setText(ms);
@@ -468,139 +453,338 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         }
     }
 
-    private void updateImage(long millisec){
-        int percentTmp = 100-((int)(((float)millisec/(float)maxMilliSec) * 100));
-        if(percentTmp>percent){
+    private void updateImage(long millisec) {
+        int percentTmp = 100 - ((int) (((float) millisec / (float) maxMilliSec) * 100));
+        if (percentTmp > percent) {
             percent = percentTmp;
-            switch(percent){
-                case 1: imageViewFill.setImageResource(R.drawable.fill1pr); break;
-                case 2: imageViewFill.setImageResource(R.drawable.fill2pr); break;
-                case 3: imageViewFill.setImageResource(R.drawable.fill3pr); break;
-                case 4: imageViewFill.setImageResource(R.drawable.fill4pr); break;
-                case 5: imageViewFill.setImageResource(R.drawable.fill5pr); break;
-                case 6: imageViewFill.setImageResource(R.drawable.fill6pr); break;
-                case 7: imageViewFill.setImageResource(R.drawable.fill7pr); break;
-                case 8: imageViewFill.setImageResource(R.drawable.fill8pr); break;
-                case 9: imageViewFill.setImageResource(R.drawable.fill9pr); break;
-                case 10: imageViewFill.setImageResource(R.drawable.fill10pr); break;
-                case 11: imageViewFill.setImageResource(R.drawable.fill11pr); break;
-                case 12: imageViewFill.setImageResource(R.drawable.fill12pr); break;
-                case 13: imageViewFill.setImageResource(R.drawable.fill13pr); break;
-                case 14: imageViewFill.setImageResource(R.drawable.fill14pr); break;
-                case 15: imageViewFill.setImageResource(R.drawable.fill15pr); break;
-                case 16: imageViewFill.setImageResource(R.drawable.fill16pr); break;
-                case 17: imageViewFill.setImageResource(R.drawable.fill17pr); break;
-                case 18: imageViewFill.setImageResource(R.drawable.fill18pr); break;
-                case 19: imageViewFill.setImageResource(R.drawable.fill19pr); break;
-                case 20: imageViewFill.setImageResource(R.drawable.fill20pr); break;
-                case 21: imageViewFill.setImageResource(R.drawable.fill21pr); break;
-                case 22: imageViewFill.setImageResource(R.drawable.fill22pr); break;
-                case 23: imageViewFill.setImageResource(R.drawable.fill23pr); break;
-                case 24: imageViewFill.setImageResource(R.drawable.fill24pr); break;
-                case 25: imageViewFill.setImageResource(R.drawable.fill25pr); break;
-                case 26: imageViewFill.setImageResource(R.drawable.fill26pr); break;
-                case 27: imageViewFill.setImageResource(R.drawable.fill27pr); break;
-                case 28: imageViewFill.setImageResource(R.drawable.fill28pr); break;
-                case 29: imageViewFill.setImageResource(R.drawable.fill29pr); break;
-                case 30: imageViewFill.setImageResource(R.drawable.fill30pr); break;
-                case 31: imageViewFill.setImageResource(R.drawable.fill31pr); break;
-                case 32: imageViewFill.setImageResource(R.drawable.fill32pr); break;
-                case 33: imageViewFill.setImageResource(R.drawable.fill33pr); break;
-                case 34: imageViewFill.setImageResource(R.drawable.fill34pr); break;
-                case 35: imageViewFill.setImageResource(R.drawable.fill35pr); break;
-                case 36: imageViewFill.setImageResource(R.drawable.fill36pr); break;
-                case 37: imageViewFill.setImageResource(R.drawable.fill37pr); break;
-                case 38: imageViewFill.setImageResource(R.drawable.fill38pr); break;
-                case 39: imageViewFill.setImageResource(R.drawable.fill39pr); break;
-                case 40: imageViewFill.setImageResource(R.drawable.fill40pr); break;
-                case 41: imageViewFill.setImageResource(R.drawable.fill41pr); break;
-                case 42: imageViewFill.setImageResource(R.drawable.fill42pr); break;
-                case 43: imageViewFill.setImageResource(R.drawable.fill43pr); break;
-                case 44: imageViewFill.setImageResource(R.drawable.fill44pr); break;
-                case 45: imageViewFill.setImageResource(R.drawable.fill45pr); break;
-                case 46: imageViewFill.setImageResource(R.drawable.fill46pr); break;
-                case 47: imageViewFill.setImageResource(R.drawable.fill47pr); break;
-                case 48: imageViewFill.setImageResource(R.drawable.fill48pr); break;
-                case 49: imageViewFill.setImageResource(R.drawable.fill49pr); break;
-                case 50: imageViewFill.setImageResource(R.drawable.fill50pr); break;
-                case 51: imageViewFill.setImageResource(R.drawable.fill51pr); break;
-                case 52: imageViewFill.setImageResource(R.drawable.fill52pr); break;
-                case 53: imageViewFill.setImageResource(R.drawable.fill53pr); break;
-                case 54: imageViewFill.setImageResource(R.drawable.fill54pr); break;
-                case 55: imageViewFill.setImageResource(R.drawable.fill55pr); break;
-                case 56: imageViewFill.setImageResource(R.drawable.fill56pr); break;
-                case 57: imageViewFill.setImageResource(R.drawable.fill57pr); break;
-                case 58: imageViewFill.setImageResource(R.drawable.fill58pr); break;
-                case 59: imageViewFill.setImageResource(R.drawable.fill59pr); break;
-                case 60: imageViewFill.setImageResource(R.drawable.fill60pr); break;
-                case 61: imageViewFill.setImageResource(R.drawable.fill61pr); break;
-                case 62: imageViewFill.setImageResource(R.drawable.fill62pr); break;
-                case 63: imageViewFill.setImageResource(R.drawable.fill63pr); break;
-                case 64: imageViewFill.setImageResource(R.drawable.fill64pr); break;
-                case 65: imageViewFill.setImageResource(R.drawable.fill65pr); break;
-                case 66: imageViewFill.setImageResource(R.drawable.fill66pr); break;
-                case 67: imageViewFill.setImageResource(R.drawable.fill67pr); break;
-                case 68: imageViewFill.setImageResource(R.drawable.fill68pr); break;
-                case 69: imageViewFill.setImageResource(R.drawable.fill69pr); break;
-                case 70: imageViewFill.setImageResource(R.drawable.fill70pr); break;
-                case 71: imageViewFill.setImageResource(R.drawable.fill71pr); break;
-                case 72: imageViewFill.setImageResource(R.drawable.fill72pr); break;
-                case 73: imageViewFill.setImageResource(R.drawable.fill73pr); break;
-                case 74: imageViewFill.setImageResource(R.drawable.fill74pr); break;
-                case 75: imageViewFill.setImageResource(R.drawable.fill75pr); break;
-                case 76: imageViewFill.setImageResource(R.drawable.fill76pr); break;
-                case 77: imageViewFill.setImageResource(R.drawable.fill77pr); break;
-                case 78: imageViewFill.setImageResource(R.drawable.fill78pr); break;
-                case 79: imageViewFill.setImageResource(R.drawable.fill79pr); break;
-                case 80: imageViewFill.setImageResource(R.drawable.fill80pr); break;
-                case 81: imageViewFill.setImageResource(R.drawable.fill81pr); break;
-                case 82: imageViewFill.setImageResource(R.drawable.fill82pr); break;
-                case 83: imageViewFill.setImageResource(R.drawable.fill83pr); break;
-                case 84: imageViewFill.setImageResource(R.drawable.fill84pr); break;
-                case 85: imageViewFill.setImageResource(R.drawable.fill85pr); break;
-                case 86: imageViewFill.setImageResource(R.drawable.fill86pr); break;
-                case 87: imageViewFill.setImageResource(R.drawable.fill87pr); break;
-                case 88: imageViewFill.setImageResource(R.drawable.fill88pr); break;
-                case 89: imageViewFill.setImageResource(R.drawable.fill89pr); break;
-                case 90: imageViewFill.setImageResource(R.drawable.fill90pr); break;
-                case 91: imageViewFill.setImageResource(R.drawable.fill91pr); break;
-                case 92: imageViewFill.setImageResource(R.drawable.fill92pr); break;
-                case 93: imageViewFill.setImageResource(R.drawable.fill93pr); break;
-                case 94: imageViewFill.setImageResource(R.drawable.fill94pr); break;
-                case 95: imageViewFill.setImageResource(R.drawable.fill95pr); break;
-                case 96: imageViewFill.setImageResource(R.drawable.fill96pr); break;
-                case 97: imageViewFill.setImageResource(R.drawable.fill97pr); break;
-                case 98: imageViewFill.setImageResource(R.drawable.fill98pr); break;
-                case 99: imageViewFill.setImageResource(R.drawable.fill99pr); break;
-                case 100: imageViewFill.setImageResource(R.drawable.fill100pr); break;
+
+            switch (percent) {
+                case 1:
+                    imageViewFill.setImageResource(R.drawable.fill1pr);
+                    break;
+                case 2:
+                    imageViewFill.setImageResource(R.drawable.fill2pr);
+                    break;
+                case 3:
+                    imageViewFill.setImageResource(R.drawable.fill3pr);
+                    break;
+                case 4:
+                    imageViewFill.setImageResource(R.drawable.fill4pr);
+                    break;
+                case 5:
+                    imageViewFill.setImageResource(R.drawable.fill5pr);
+                    break;
+                case 6:
+                    imageViewFill.setImageResource(R.drawable.fill6pr);
+                    break;
+                case 7:
+                    imageViewFill.setImageResource(R.drawable.fill7pr);
+                    break;
+                case 8:
+                    imageViewFill.setImageResource(R.drawable.fill8pr);
+                    break;
+                case 9:
+                    imageViewFill.setImageResource(R.drawable.fill9pr);
+                    break;
+                case 10:
+                    imageViewFill.setImageResource(R.drawable.fill10pr);
+                    break;
+                case 11:
+                    imageViewFill.setImageResource(R.drawable.fill11pr);
+                    break;
+                case 12:
+                    imageViewFill.setImageResource(R.drawable.fill12pr);
+                    break;
+                case 13:
+                    imageViewFill.setImageResource(R.drawable.fill13pr);
+                    break;
+                case 14:
+                    imageViewFill.setImageResource(R.drawable.fill14pr);
+                    break;
+                case 15:
+                    imageViewFill.setImageResource(R.drawable.fill15pr);
+                    break;
+                case 16:
+                    imageViewFill.setImageResource(R.drawable.fill16pr);
+                    break;
+                case 17:
+                    imageViewFill.setImageResource(R.drawable.fill17pr);
+                    break;
+                case 18:
+                    imageViewFill.setImageResource(R.drawable.fill18pr);
+                    break;
+                case 19:
+                    imageViewFill.setImageResource(R.drawable.fill19pr);
+                    break;
+                case 20:
+                    imageViewFill.setImageResource(R.drawable.fill20pr);
+                    break;
+                case 21:
+                    imageViewFill.setImageResource(R.drawable.fill21pr);
+                    break;
+                case 22:
+                    imageViewFill.setImageResource(R.drawable.fill22pr);
+                    break;
+                case 23:
+                    imageViewFill.setImageResource(R.drawable.fill23pr);
+                    break;
+                case 24:
+                    imageViewFill.setImageResource(R.drawable.fill24pr);
+                    break;
+                case 25:
+                    imageViewFill.setImageResource(R.drawable.fill25pr);
+                    break;
+                case 26:
+                    imageViewFill.setImageResource(R.drawable.fill26pr);
+                    break;
+                case 27:
+                    imageViewFill.setImageResource(R.drawable.fill27pr);
+                    break;
+                case 28:
+                    imageViewFill.setImageResource(R.drawable.fill28pr);
+                    break;
+                case 29:
+                    imageViewFill.setImageResource(R.drawable.fill29pr);
+                    break;
+                case 30:
+                    imageViewFill.setImageResource(R.drawable.fill30pr);
+                    break;
+                case 31:
+                    imageViewFill.setImageResource(R.drawable.fill31pr);
+                    break;
+                case 32:
+                    imageViewFill.setImageResource(R.drawable.fill32pr);
+                    break;
+                case 33:
+                    imageViewFill.setImageResource(R.drawable.fill33pr);
+                    break;
+                case 34:
+                    imageViewFill.setImageResource(R.drawable.fill34pr);
+                    break;
+                case 35:
+                    imageViewFill.setImageResource(R.drawable.fill35pr);
+                    break;
+                case 36:
+                    imageViewFill.setImageResource(R.drawable.fill36pr);
+                    break;
+                case 37:
+                    imageViewFill.setImageResource(R.drawable.fill37pr);
+                    break;
+                case 38:
+                    imageViewFill.setImageResource(R.drawable.fill38pr);
+                    break;
+                case 39:
+                    imageViewFill.setImageResource(R.drawable.fill39pr);
+                    break;
+                case 40:
+                    imageViewFill.setImageResource(R.drawable.fill40pr);
+                    break;
+                case 41:
+                    imageViewFill.setImageResource(R.drawable.fill41pr);
+                    break;
+                case 42:
+                    imageViewFill.setImageResource(R.drawable.fill42pr);
+                    break;
+                case 43:
+                    imageViewFill.setImageResource(R.drawable.fill43pr);
+                    break;
+                case 44:
+                    imageViewFill.setImageResource(R.drawable.fill44pr);
+                    break;
+                case 45:
+                    imageViewFill.setImageResource(R.drawable.fill45pr);
+                    break;
+                case 46:
+                    imageViewFill.setImageResource(R.drawable.fill46pr);
+                    break;
+                case 47:
+                    imageViewFill.setImageResource(R.drawable.fill47pr);
+                    break;
+                case 48:
+                    imageViewFill.setImageResource(R.drawable.fill48pr);
+                    break;
+                case 49:
+                    imageViewFill.setImageResource(R.drawable.fill49pr);
+                    break;
+                case 50:
+                    imageViewFill.setImageResource(R.drawable.fill50pr);
+                    break;
+                case 51:
+                    imageViewFill.setImageResource(R.drawable.fill51pr);
+                    break;
+                case 52:
+                    imageViewFill.setImageResource(R.drawable.fill52pr);
+                    break;
+                case 53:
+                    imageViewFill.setImageResource(R.drawable.fill53pr);
+                    break;
+                case 54:
+                    imageViewFill.setImageResource(R.drawable.fill54pr);
+                    break;
+                case 55:
+                    imageViewFill.setImageResource(R.drawable.fill55pr);
+                    break;
+                case 56:
+                    imageViewFill.setImageResource(R.drawable.fill56pr);
+                    break;
+                case 57:
+                    imageViewFill.setImageResource(R.drawable.fill57pr);
+                    break;
+                case 58:
+                    imageViewFill.setImageResource(R.drawable.fill58pr);
+                    break;
+                case 59:
+                    imageViewFill.setImageResource(R.drawable.fill59pr);
+                    break;
+                case 60:
+                    imageViewFill.setImageResource(R.drawable.fill60pr);
+                    break;
+                case 61:
+                    imageViewFill.setImageResource(R.drawable.fill61pr);
+                    break;
+                case 62:
+                    imageViewFill.setImageResource(R.drawable.fill62pr);
+                    break;
+                case 63:
+                    imageViewFill.setImageResource(R.drawable.fill63pr);
+                    break;
+                case 64:
+                    imageViewFill.setImageResource(R.drawable.fill64pr);
+                    break;
+                case 65:
+                    imageViewFill.setImageResource(R.drawable.fill65pr);
+                    break;
+                case 66:
+                    imageViewFill.setImageResource(R.drawable.fill66pr);
+                    break;
+                case 67:
+                    imageViewFill.setImageResource(R.drawable.fill67pr);
+                    break;
+                case 68:
+                    imageViewFill.setImageResource(R.drawable.fill68pr);
+                    break;
+                case 69:
+                    imageViewFill.setImageResource(R.drawable.fill69pr);
+                    break;
+                case 70:
+                    imageViewFill.setImageResource(R.drawable.fill70pr);
+                    break;
+                case 71:
+                    imageViewFill.setImageResource(R.drawable.fill71pr);
+                    break;
+                case 72:
+                    imageViewFill.setImageResource(R.drawable.fill72pr);
+                    break;
+                case 73:
+                    imageViewFill.setImageResource(R.drawable.fill73pr);
+                    break;
+                case 74:
+                    imageViewFill.setImageResource(R.drawable.fill74pr);
+                    break;
+                case 75:
+                    imageViewFill.setImageResource(R.drawable.fill75pr);
+                    break;
+                case 76:
+                    imageViewFill.setImageResource(R.drawable.fill76pr);
+                    break;
+                case 77:
+                    imageViewFill.setImageResource(R.drawable.fill77pr);
+                    break;
+                case 78:
+                    imageViewFill.setImageResource(R.drawable.fill78pr);
+                    break;
+                case 79:
+                    imageViewFill.setImageResource(R.drawable.fill79pr);
+                    break;
+                case 80:
+                    imageViewFill.setImageResource(R.drawable.fill80pr);
+                    break;
+                case 81:
+                    imageViewFill.setImageResource(R.drawable.fill81pr);
+                    break;
+                case 82:
+                    imageViewFill.setImageResource(R.drawable.fill82pr);
+                    break;
+                case 83:
+                    imageViewFill.setImageResource(R.drawable.fill83pr);
+                    break;
+                case 84:
+                    imageViewFill.setImageResource(R.drawable.fill84pr);
+                    break;
+                case 85:
+                    imageViewFill.setImageResource(R.drawable.fill85pr);
+                    break;
+                case 86:
+                    imageViewFill.setImageResource(R.drawable.fill86pr);
+                    break;
+                case 87:
+                    imageViewFill.setImageResource(R.drawable.fill87pr);
+                    break;
+                case 88:
+                    imageViewFill.setImageResource(R.drawable.fill88pr);
+                    break;
+                case 89:
+                    imageViewFill.setImageResource(R.drawable.fill89pr);
+                    break;
+                case 90:
+                    imageViewFill.setImageResource(R.drawable.fill90pr);
+                    break;
+                case 91:
+                    imageViewFill.setImageResource(R.drawable.fill91pr);
+                    break;
+                case 92:
+                    imageViewFill.setImageResource(R.drawable.fill92pr);
+                    break;
+                case 93:
+                    imageViewFill.setImageResource(R.drawable.fill93pr);
+                    break;
+                case 94:
+                    imageViewFill.setImageResource(R.drawable.fill94pr);
+                    break;
+                case 95:
+                    imageViewFill.setImageResource(R.drawable.fill95pr);
+                    break;
+                case 96:
+                    imageViewFill.setImageResource(R.drawable.fill96pr);
+                    break;
+                case 97:
+                    imageViewFill.setImageResource(R.drawable.fill97pr);
+                    break;
+                case 98:
+                    imageViewFill.setImageResource(R.drawable.fill98pr);
+                    break;
+                case 99:
+                    imageViewFill.setImageResource(R.drawable.fill99pr);
+                    break;
+                case 100:
+                    imageViewFill.setImageResource(R.drawable.fill100pr);
+                    break;
             }
         }
     }
 
-    private void brewCountChanged(){
-        if(selectedTea.getTemperature().get(brewCount).getCelsius()!=-500) {
-            if (MainActivity.settings.getTemperatureUnit().equals("Celsius")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(selectedTea.getTemperature().get(brewCount).getCelsius())));
-            } else if(MainActivity.settings.getTemperatureUnit().equals("Fahrenheit")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(selectedTea.getTemperature().get(brewCount).getFahrenheit())));
+    private void brewCountChanged() {
+        if (mShowTeaViewModel.getTemperature() != -500) {
+            if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(mShowTeaViewModel.getTemperature())));
+            } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(mShowTeaViewModel.getTemperature())));
             }
-        }else {
-            if(MainActivity.settings.getTemperatureUnit().equals("Celsius")) {
+        } else {
+            if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-            }else if(MainActivity.settings.getTemperatureUnit().equals("Fahrenheit")) {
+            } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
             }
         }
-        if(!selectedTea.getCoolDownTime().get(brewCount).getTime().equals("-")){
+        if (mShowTeaViewModel.getCooldowntime().time!=null) {
             buttonExchange.setEnabled(true);
-        }else{
+        } else {
             buttonExchange.setEnabled(false);
         }
-        minutes = selectedTea.getTime().get(brewCount).getMinutes();
-        spinnerMinutes.setSelection(minutes);
-        seconds = selectedTea.getTime().get(brewCount).getSeconds();
-        spinnerSeconds.setSelection(seconds);
-        textViewBrewCount.setText(getResources().getString(R.string.showtea_brea_count_point, (brewCount+1)));
+        spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
+        spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
+        textViewBrewCount.setText(getResources().getString(R.string.showtea_brea_count_point, (mShowTeaViewModel.getBrewCount() + 1)));
 
         nextBrewEnable();
 
@@ -608,38 +792,33 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         infoShown = false;
     }
 
-    private void nextBrewEnable(){
-        if(brewCount==selectedTea.getTemperature().size()-1){
+    private void nextBrewEnable() {
+        if (mShowTeaViewModel.getBrewCount() == mShowTeaViewModel.getInfusionSize() - 1) {
             buttonNextBrew.setEnabled(false);
-        }else{
+        } else {
             buttonNextBrew.setEnabled(true);
         }
     }
 
-    private void dialogNote(){
+    private void dialogNote() {
         ViewGroup parent = findViewById(R.id.showtea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogNote = inflater.inflate(R.layout.dialognote,parent,false);
+        View alertLayoutDialogNote = inflater.inflate(R.layout.dialognote, parent, false);
         final EditText editTextNote = alertLayoutDialogNote.findViewById(R.id.editTextNote);
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(alertLayoutDialogNote);
         adb.setTitle(R.string.showtea_action_note);
         adb.setIcon(R.drawable.note);
-        editTextNote.setText(selectedTea.getNote());
+        editTextNote.setText(mShowTeaViewModel.getNote().getDescription());
         editTextNote.setSelected(false);
         adb.setPositiveButton(R.string.showtea_dialog_note_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                selectedTea.setNote(editTextNote.getText().toString());
-                if (!MainActivity.teaItems.saveCollection(getApplicationContext())) {
-
-                    Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_cant_save, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                if(!selectedTea.getNote().equals("")){
+                mShowTeaViewModel.setNote(editTextNote.getText().toString());
+                if (!mShowTeaViewModel.getNote().getDescription().equals("")) {
                     buttonNote.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     buttonNote.setVisibility(View.INVISIBLE);
                 }
             }
@@ -653,17 +832,16 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void dialogCounter() {
-        //aktualisiere den Counter
-        selectedTea.getCounter().refresh();
+        Counter counter = mShowTeaViewModel.getCounter();
 
         List<ListRowItem> counterList = new ArrayList<>();
-        ListRowItem itemToday = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_day), String.valueOf(selectedTea.getCounter().getDay()));
+        ListRowItem itemToday = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_day), String.valueOf(counter.getDay()));
         counterList.add(itemToday);
-        ListRowItem itemWeek = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_week), String.valueOf(selectedTea.getCounter().getWeek()));
+        ListRowItem itemWeek = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_week), String.valueOf(counter.getWeek()));
         counterList.add(itemWeek);
-        ListRowItem itemMonth = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_month), String.valueOf(selectedTea.getCounter().getMonth()));
+        ListRowItem itemMonth = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_month), String.valueOf(counter.getMonth()));
         counterList.add(itemMonth);
-        ListRowItem itemAll = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_overall), String.valueOf(selectedTea.getCounter().getOverall()));
+        ListRowItem itemAll = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_overall), String.valueOf(counter.getOverall()));
         counterList.add(itemAll);
 
         //Liste mit Adapter verknüpfen
@@ -683,11 +861,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.show();
     }
 
-    private void dialogamount(){
+    private void dialogamount() {
         ViewGroup parent = findViewById(R.id.showtea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogNote = inflater.inflate(R.layout.dialogamount,parent,false);
+        View alertLayoutDialogNote = inflater.inflate(R.layout.dialogamount, parent, false);
         final SeekBar seekBarAmountPerAmount = alertLayoutDialogNote.findViewById(R.id.seekBarAmountPerAmount);
         final TextView textViewAmountPerAmount = alertLayoutDialogNote.findViewById(R.id.textViewShowAmountPerAmount);
         // 10 for 1 liter
@@ -722,23 +900,22 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.show();
     }
 
-    private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount){
-        Amount tmpAmount = selectedTea.getAmount();
-        float liter = (float)value/10;
-        float amountPerLiter = (float)tmpAmount.getValue()*liter;
-        if(tmpAmount.getUnit().equals("Ts")){
+    private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
+        float liter = (float) value / 10;
+        float amountPerLiter = (float) mShowTeaViewModel.getAmount() * liter;
+        if (mShowTeaViewModel.getAmountkind().equals("Ts")) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_ts, amountPerLiter, liter));
-        }else if(tmpAmount.getUnit().equals("Gr")){
+        } else if (mShowTeaViewModel.getAmountkind().equals("Gr")) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_gr, amountPerLiter, liter));
         }
 
     }
 
-    private void dialogShowTeaDescription(){
+    private void dialogShowTeaDescription() {
         ViewGroup parent = findViewById(R.id.showtea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogNote = inflater.inflate(R.layout.dialogshowteadescription,parent,false);
+        View alertLayoutDialogNote = inflater.inflate(R.layout.dialogshowteadescription, parent, false);
         final CheckBox dontshowagain = alertLayoutDialogNote.findViewById(R.id.checkboxDialogShowTeaDescription);
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -746,9 +923,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.setTitle(R.string.showtea_dialog_description_header);
         adb.setPositiveButton(R.string.showtea_dialog_description_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                if(dontshowagain.isChecked()){
-                    MainActivity.settings.setShowteaAlert(false);
-                    MainActivity.settings.saveSettings(getApplicationContext());
+                if (dontshowagain.isChecked()) {
+                    mShowTeaViewModel.setShowteaalert(false);
                 }
             }
         });
@@ -758,25 +934,25 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     @Override
     public boolean onLongClick(View view) {
         if (view.getId() == R.id.buttonNotification) {
-            showTooltip(view, Gravity.BOTTOM,getResources().getString(R.string.showtea_tooltip_notification));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_notification));
         } else if (view.getId() == R.id.buttonVibration) {
-            showTooltip(view, Gravity.BOTTOM,getResources().getString(R.string.showtea_tooltip_vibration));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_vibration));
         } else if (view.getId() == R.id.buttonNote) {
-            showTooltip(view, Gravity.TOP,getResources().getString(R.string.showtea_tooltip_note));
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_note));
         } else if (view.getId() == R.id.buttonExchange) {
-            showTooltip(view, Gravity.TOP,getResources().getString(R.string.showtea_tooltip_exchange));
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_exchange));
         } else if (view.getId() == R.id.buttonCalculateAmount) {
-            showTooltip(view, Gravity.BOTTOM,getResources().getString(R.string.showtea_tooltip_calculateamount));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_calculateamount));
         } else if (view.getId() == R.id.toolbar_brewcount) {
-            showTooltip(view, Gravity.BOTTOM,getResources().getString(R.string.showtea_tooltip_brewcount));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_brewcount));
         } else if (view.getId() == R.id.toolbar_nextbrew) {
-            showTooltip(view, Gravity.BOTTOM,getResources().getString(R.string.showtea_tooltip_nextbrew));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_nextbrew));
         }
         return true;
     }
 
     //creates a Tooltip
-    private void showTooltip(View v, int gravity, String text){
+    private void showTooltip(View v, int gravity, String text) {
         Tooltip tooltip = new Tooltip.Builder(v)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))

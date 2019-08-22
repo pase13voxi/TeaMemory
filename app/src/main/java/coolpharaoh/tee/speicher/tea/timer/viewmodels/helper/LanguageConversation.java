@@ -17,7 +17,7 @@ public class LanguageConversation {
         return variety;
     }
 
-    public static String convertCodeTVariety(String code, Context context){
+    public static String convertCodeToVariety(String code, Context context){
         String[] codes = context.getResources().getStringArray(R.array.variety_codes);
         String[] varieties = context.getResources().getStringArray(R.array.sortsOfTea);
 

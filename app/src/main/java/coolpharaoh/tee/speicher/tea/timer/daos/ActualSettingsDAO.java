@@ -25,6 +25,9 @@ public interface ActualSettingsDAO {
     @Query("SELECT * FROM settings WHERE id = :id")
     ActualSettings getItemById(Long id);
 
+    @Query("SELECT * FROM settings LIMIT 1")
+    ActualSettings getSettings();
+
     @Query("SELECT count(*) FROM settings")
     int getCountItems();
 }

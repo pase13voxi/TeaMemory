@@ -5,8 +5,10 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
-import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
+
 import java.util.Date;
+
+import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
 
 @Entity(tableName = "tea")
 public class Tea {
@@ -17,9 +19,10 @@ public class Tea {
 
     private String name;
     private String variety;
-    private double amount;
+    private int amount;
     private String amountkind;
     private int color;
+    private int lastInfusion;
     @TypeConverters(DateConverter.class)
     private Date date;
 
@@ -48,11 +51,11 @@ public class Tea {
         this.variety = variety;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -70,6 +73,14 @@ public class Tea {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public int getLastInfusion() {
+        return lastInfusion;
+    }
+
+    public void setLastInfusion(int lastInfusion) {
+        this.lastInfusion = lastInfusion;
     }
 
     public Date getDate() {

@@ -43,7 +43,7 @@ public class StatisticsViewModel {
     }
 
     private void refreshAllCounter() {
-        for (Counter counter : RefreshCounter.refresh(mCounterDAO.getCounters())) {
+        for (Counter counter : RefreshCounter.refreshCounters(mCounterDAO.getCounters())) {
             mCounterDAO.update(counter);
         }
     }

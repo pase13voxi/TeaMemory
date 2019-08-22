@@ -9,12 +9,14 @@ import android.os.IBinder;
 
 import java.io.IOException;
 
-import coolpharaoh.tee.speicher.tea.timer.views.MainActivity;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.MediaServiceViewModel;
 
 /**
  * Created by CoolPharaoh on 10.02.2016.
  */
 public class MediaService extends Service {
+    private MediaServiceViewModel mMediaServiceViewModel;
+
     MediaPlayer mediaPlayer = null;
     @Override
     public IBinder onBind(Intent intent) {
@@ -24,10 +26,12 @@ public class MediaService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        mMediaServiceViewModel = new MediaServiceViewModel(getApplicationContext());
         //Musikstück initialisieren
-        if(MainActivity.settings.getMusicChoice()!=null) {
+        if(mMediaServiceViewModel.getMusicchoice()!=null) {
             mediaPlayer = new MediaPlayer();
-            Uri uri = Uri.parse(MainActivity.settings.getMusicChoice());
+            Uri uri = Uri.parse(mMediaServiceViewModel.getMusicchoice());
             try {
                 //synchronisiere Musikstreams
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);

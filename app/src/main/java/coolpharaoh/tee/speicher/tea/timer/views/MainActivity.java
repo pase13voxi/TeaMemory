@@ -198,13 +198,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
                 counterDAO.insert(ncounter);
 
-                if (!otea.getNote().equals("")) {
-                    Note nnote = new Note();
-                    nnote.setTeaId(teaid);
-                    nnote.setPosition(1);
-                    nnote.setDescription(otea.getNote());
-                    noteDAO.insert(nnote);
-                }
+
+                Note nnote = new Note();
+                nnote.setTeaId(teaid);
+                nnote.setPosition(1);
+                nnote.setDescription(otea.getNote());
+                noteDAO.insert(nnote);
+
             }
 
             //Settings holen
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 //Neues Intent anlegen
                 Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
 
-                showteaScreen.putExtra("elementId", mMainActivityViewModel.getTeaByPosition(position).getId());
+                showteaScreen.putExtra("teaId", mMainActivityViewModel.getTeaByPosition(position).getId());
                 // Intent starten und zur zweiten Activity wechseln
                 startActivity(showteaScreen);
             }
@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (menuItemName.equals(editOption)) {
             //Neues Intent anlegen
             Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
-            newteaScreen.putExtra("elementId", mMainActivityViewModel.getTeaByPosition(info.position).getId());
+            newteaScreen.putExtra("teaId", mMainActivityViewModel.getTeaByPosition(info.position).getId());
 
 
             // Intent starten und zur zweiten Activity wechseln

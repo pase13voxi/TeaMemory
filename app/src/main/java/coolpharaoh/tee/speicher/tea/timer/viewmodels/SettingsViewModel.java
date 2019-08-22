@@ -22,7 +22,7 @@ public class SettingsViewModel {
                 .build();
 
         mActualSettingsDAO = database.getActualSettingsDAO();
-        mActualSettings = mActualSettingsDAO.getItemById(1l);
+        mActualSettings = mActualSettingsDAO.getSettings();
 
         mTeaDAO = database.getTeaDAO();
     }

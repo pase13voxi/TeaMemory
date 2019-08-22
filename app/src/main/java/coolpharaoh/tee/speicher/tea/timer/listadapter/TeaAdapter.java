@@ -60,7 +60,7 @@ public class TeaAdapter extends BaseAdapter
         TextView txtSort = vi.findViewById(R.id.textViewListSortOfTea);
 
         txtName.setText(item.getName());
-        txtSort.setText(LanguageConversation.convertCodeTVariety(item.getVariety(), context));
+        txtSort.setText(LanguageConversation.convertCodeToVariety(item.getVariety(), context));
 
         return vi;
     }

@@ -30,7 +30,7 @@ public class MainActivityViewModel extends ViewModel {
                 .build();
 
         mActualSettingsDAO = database.getActualSettingsDAO();
-        mActualSettings = mActualSettingsDAO.getItemById(1l);
+        mActualSettings = mActualSettingsDAO.getSettings();
 
         mTeaDAO = database.getTeaDAO();
         mTeas = new MutableLiveData<>();

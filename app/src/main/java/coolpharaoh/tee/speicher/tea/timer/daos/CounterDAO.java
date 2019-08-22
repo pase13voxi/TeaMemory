@@ -26,6 +26,9 @@ public interface CounterDAO {
     @Query("SELECT * FROM counter")
     List<Counter> getCounters();
 
+    @Query("SELECT * FROM counter WHERE tea_id = :id")
+    Counter getCounterByTeaId(long id);
+
     @Query("SELECT tea.name, tea.color, counter.overall as counter FROM tea INNER JOIN counter\n" +
             "ON tea.tea_id = counter.tea_id\n" +
             "ORDER BY counter.overall DESC")

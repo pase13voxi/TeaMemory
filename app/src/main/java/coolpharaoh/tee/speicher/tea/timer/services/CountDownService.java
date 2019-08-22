@@ -15,7 +15,7 @@ import android.os.Vibrator;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.MainActivity;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.CountDownServiceViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.ShowTea;
 
 /**
@@ -32,9 +32,13 @@ public class CountDownService extends Service {
     private NotificationManager notificationManager_counter;
     private Notification.Builder notification_counter;
 
+    private CountDownServiceViewModel mCountDownServiceViewModel;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        mCountDownServiceViewModel = new CountDownServiceViewModel(getApplicationContext());
     }
 
     @Override
@@ -46,11 +50,11 @@ public class CountDownService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Should fix a Nullpointer-Error
-        final String elementName;
-        if(intent.hasExtra("elementName")) {
-            elementName = intent.getStringExtra("elementName");
+        final String teaName;
+        if(intent.hasExtra("teaName")) {
+            teaName = intent.getStringExtra("teaName");
         }else {
-            elementName = "-";
+            teaName = "-";
         }
         long millis = intent.getLongExtra("millisec",0);
 
@@ -74,7 +78,7 @@ public class CountDownService extends Service {
             notification_counter = new Notification.Builder(getApplicationContext())
                     .setChannelId(CHANNEL_ID_COUNTER)
                     .setContentText(ms)
-                    .setContentTitle(elementName)
+                    .setContentTitle(teaName)
                     .setSmallIcon(R.drawable.iconnotification)
                     .setAutoCancel(false)
                     .setOngoing(true)
@@ -122,7 +126,7 @@ public class CountDownService extends Service {
                 BroadcaseIntent.putExtra("ready", true);
                 sendBroadcast(BroadcaseIntent);
                 //ausführen wenn die Vibration aktiviert ist
-                if(MainActivity.settings.isVibration()) {
+                if(mCountDownServiceViewModel.isVibration()) {
                     Vibrator vibrator = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 1000 milliseconds
                     long[] twice = { 0, 500, 400, 500 };
@@ -133,7 +137,7 @@ public class CountDownService extends Service {
                     }
                 }
                 //ausführen wenn die Notification aktiviert ist
-                if(MainActivity.settings.isNotification()){
+                if(mCountDownServiceViewModel.isNotification()){
                     //Back to the Showtea Intent
                     Intent intent_showtea = new Intent(getBaseContext(), ShowTea.class);
                     intent_showtea.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -153,7 +157,7 @@ public class CountDownService extends Service {
                                 .setChannelId(CHANNEL_ID_NOTIFY)
                                 .setTicker(getResources().getString(R.string.notification_ticker))
                                 .setContentTitle(getResources().getString(R.string.notification_title))
-                                .setContentText(elementName)
+                                .setContentText(teaName)
                                 .setSmallIcon(R.drawable.iconnotification)
                                 .setContentIntent(pIntent)
                                 .setAutoCancel(true);
@@ -171,7 +175,7 @@ public class CountDownService extends Service {
                         Notification.Builder notification = new Notification.Builder(getApplicationContext())
                                 .setTicker(getResources().getString(R.string.notification_ticker))
                                 .setContentTitle(getResources().getString(R.string.notification_title))
-                                .setContentText(elementName)
+                                .setContentText(teaName)
                                 .setSmallIcon(R.drawable.iconnotification)
                                 .setContentIntent(pIntent)
                                 .setAutoCancel(true);
