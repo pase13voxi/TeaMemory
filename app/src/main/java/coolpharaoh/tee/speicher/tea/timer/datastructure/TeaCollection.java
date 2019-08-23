@@ -223,6 +223,6 @@ public class TeaCollection {
     private String[] getOtherSortsOfTea(Context context, String language) {
         Configuration configuration = new Configuration(context.getResources().getConfiguration());
         configuration.setLocale(new Locale(language));
-        return context.createConfigurationContext(configuration).getResources().getStringArray(R.array.sortsOfTea);
+        return context.createConfigurationContext(configuration).getResources().getStringArray(R.array.variety_teas);
     }
 }

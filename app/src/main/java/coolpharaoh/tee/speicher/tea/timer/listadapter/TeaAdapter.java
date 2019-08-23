@@ -57,10 +57,14 @@ public class TeaAdapter extends BaseAdapter
             vi = inflater.inflate(R.layout.tealist_single_layout,parent,false);
 
         TextView txtName = vi.findViewById(R.id.textViewListTeaName);
-        TextView txtSort = vi.findViewById(R.id.textViewListSortOfTea);
+        TextView txtVariety = vi.findViewById(R.id.textViewListVarietyOfTea);
 
         txtName.setText(item.getName());
-        txtSort.setText(LanguageConversation.convertCodeToVariety(item.getVariety(), context));
+        if(item.getVariety().equals("")){
+            txtVariety.setText(LanguageConversation.convertCodeToVariety("-", context));
+        }else{
+            txtVariety.setText(LanguageConversation.convertCodeToVariety(item.getVariety(), context));
+        }
 
         return vi;
     }

@@ -49,9 +49,9 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
 
     private Toolbar toolbar;
-    private TextView textViewBrewCount;
-    private Button buttonBrewCount;
-    private Button buttonNextBrew;
+    private TextView textViewInfusionIndex;
+    private Button buttonInfusionIndex;
+    private Button buttonNextInfusion;
     private ToggleButton toggleVibration;
     private ToggleButton toggleNotification;
     private Button buttonNote;
@@ -84,9 +84,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.showtea_heading);
-        buttonBrewCount = findViewById(R.id.toolbar_brewcount);
-        textViewBrewCount = findViewById(R.id.toolbar_text_brewcount);
-        buttonNextBrew = findViewById(R.id.toolbar_nextbrew);
+        buttonInfusionIndex = findViewById(R.id.toolbar_infusionindex);
+        textViewInfusionIndex = findViewById(R.id.toolbar_text_infusionindex);
+        buttonNextInfusion = findViewById(R.id.toolbar_nextinfusion);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(null);
@@ -136,7 +136,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         if (teaId == 0) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.showtea_error_text, Toast.LENGTH_SHORT);
             toast.show();
-            buttonBrewCount.setVisibility(View.INVISIBLE);
+            buttonInfusionIndex.setVisibility(View.INVISIBLE);
         } else {
             mShowTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
 
@@ -189,9 +189,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
             //wenn nur ein Aufguss vorgesehen ist dann verschwindet der button_calculateamount
             if (mShowTeaViewModel.getInfusionSize() == 1) {
-                textViewBrewCount.setVisibility(View.INVISIBLE);
-                buttonBrewCount.setVisibility(View.INVISIBLE);
-                buttonNextBrew.setVisibility(View.INVISIBLE);
+                textViewInfusionIndex.setVisibility(View.INVISIBLE);
+                buttonInfusionIndex.setVisibility(View.INVISIBLE);
+                buttonNextInfusion.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -227,22 +227,22 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         });
         buttonCalcAmount.setOnLongClickListener(this);
 
-        buttonBrewCount.setOnClickListener(new View.OnClickListener() {
+        buttonInfusionIndex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String[] items = null;
                 int tmpSize = mShowTeaViewModel.getInfusionSize();
                 items = new String[tmpSize];
                 for (int i = 0; i < tmpSize; i++) {
-                    items[i] = String.valueOf(i + 1) + ". " + getResources().getString(R.string.showtea_brew_count_content);
+                    items[i] = String.valueOf(i + 1) + ". " + getResources().getString(R.string.showtea_infusion_index_content);
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setIcon(R.drawable.brewdark);
-                builder.setTitle(R.string.showtea_brew_count_title);
+                builder.setIcon(R.drawable.infusiondark);
+                builder.setTitle(R.string.showtea_infusion_count_title);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        mShowTeaViewModel.setBrewCount(item);
-                        brewCountChanged();
+                        mShowTeaViewModel.setInfusionIndex(item);
+                        infusionIndexChanged();
                     }
                 });
                 AlertDialog alert = builder.create();
@@ -250,16 +250,16 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
             }
         });
-        buttonBrewCount.setOnLongClickListener(this);
+        buttonInfusionIndex.setOnLongClickListener(this);
 
-        buttonNextBrew.setOnClickListener(new View.OnClickListener() {
+        buttonNextInfusion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mShowTeaViewModel.incrementBrewCount();
-                brewCountChanged();
+                mShowTeaViewModel.incrementInfusionIndex();
+                infusionIndexChanged();
             }
         });
-        buttonNextBrew.setOnLongClickListener(this);
+        buttonNextInfusion.setOnLongClickListener(this);
 
         buttonInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,8 +309,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     textViewSec.setVisibility(View.INVISIBLE);
                     textViewDoppelPunkt.setVisibility(View.INVISIBLE);
                     //Auswahl des Aufgusses verbieten
-                    buttonBrewCount.setEnabled(false);
-                    buttonNextBrew.setEnabled(false);
+                    buttonInfusionIndex.setEnabled(false);
+                    buttonNextInfusion.setEnabled(false);
                     //Timeranzeige einblenden
                     textViewTimer.setVisibility((View.VISIBLE));
                     //Teetasse anzeigen
@@ -345,8 +345,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     textViewSec.setVisibility(View.VISIBLE);
                     textViewDoppelPunkt.setVisibility(View.VISIBLE);
                     //Auswahl des Aufgusses wieder erlauben
-                    buttonBrewCount.setEnabled(true);
-                    nextBrewEnable();
+                    buttonInfusionIndex.setEnabled(true);
+                    nextInfusionEnable();
                     //Timeranzeige ausblenden
                     textViewTimer.setVisibility((View.INVISIBLE));
                     //Teetasse ausblenden
@@ -763,7 +763,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         }
     }
 
-    private void brewCountChanged() {
+    private void infusionIndexChanged() {
         if (mShowTeaViewModel.getTemperature() != -500) {
             if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(mShowTeaViewModel.getTemperature())));
@@ -784,19 +784,19 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         }
         spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
         spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
-        textViewBrewCount.setText(getResources().getString(R.string.showtea_brea_count_point, (mShowTeaViewModel.getBrewCount() + 1)));
+        textViewInfusionIndex.setText(getResources().getString(R.string.showtea_brea_count_point, (mShowTeaViewModel.getInfusionIndex() + 1)));
 
-        nextBrewEnable();
+        nextInfusionEnable();
 
         buttonInfo.setVisibility(View.INVISIBLE);
         infoShown = false;
     }
 
-    private void nextBrewEnable() {
-        if (mShowTeaViewModel.getBrewCount() == mShowTeaViewModel.getInfusionSize() - 1) {
-            buttonNextBrew.setEnabled(false);
+    private void nextInfusionEnable() {
+        if (mShowTeaViewModel.getInfusionIndex() == mShowTeaViewModel.getInfusionSize() - 1) {
+            buttonNextInfusion.setEnabled(false);
         } else {
-            buttonNextBrew.setEnabled(true);
+            buttonNextInfusion.setEnabled(true);
         }
     }
 
@@ -943,10 +943,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_exchange));
         } else if (view.getId() == R.id.buttonCalculateAmount) {
             showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_calculateamount));
-        } else if (view.getId() == R.id.toolbar_brewcount) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_brewcount));
-        } else if (view.getId() == R.id.toolbar_nextbrew) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_nextbrew));
+        } else if (view.getId() == R.id.toolbar_infusionindex) {
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_infusionindex));
+        } else if (view.getId() == R.id.toolbar_nextinfusion) {
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_nextinfusion));
         }
         return true;
     }

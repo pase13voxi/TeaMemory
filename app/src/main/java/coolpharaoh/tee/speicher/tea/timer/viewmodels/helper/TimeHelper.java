@@ -1,9 +1,12 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels.helper;
 
-public class TimeConversation {
+public class TimeHelper {
+    public String time;
+    public int minutes;
+    public int seconds;
 
-    public static Time getMinutesAndSeconds(String timetext) {
-        Time time = new Time();
+    public static TimeHelper getMinutesAndSeconds(String timetext) {
+        TimeHelper time = new TimeHelper();
         time.time = timetext;
         if (timetext == null) {
             time.minutes = 0;

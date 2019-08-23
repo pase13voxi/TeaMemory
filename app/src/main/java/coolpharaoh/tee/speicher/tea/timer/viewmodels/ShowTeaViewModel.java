@@ -20,8 +20,7 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.RefreshCounter;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.Time;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TimeConversation;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TimeHelper;
 
 public class ShowTeaViewModel {
 
@@ -39,7 +38,7 @@ public class ShowTeaViewModel {
     private Note mNote;
     private ActualSettings mActualSettings;
 
-    private int mBrewCount = 0;
+    private int mInfusionIndex = 0;
 
     public ShowTeaViewModel(long teaId, Context context) {
 
@@ -73,7 +72,12 @@ public class ShowTeaViewModel {
     }
 
     public String getVariety() {
-        return LanguageConversation.convertCodeToVariety(mTea.getVariety(), context);
+        if(mTea.getVariety().equals("")) {
+            return "-";
+        }
+        else {
+            return LanguageConversation.convertCodeToVariety(mTea.getVariety(), context);
+        }
     }
 
     public int getAmount() {
@@ -94,19 +98,19 @@ public class ShowTeaViewModel {
     }
 
     // Infusion
-    public Time getTime(){
-        return TimeConversation.getMinutesAndSeconds(mInfusion.get(mBrewCount).getTime());
+    public TimeHelper getTime(){
+        return TimeHelper.getMinutesAndSeconds(mInfusion.get(mInfusionIndex).getTime());
     }
 
-    public Time getCooldowntime(){
-        return TimeConversation.getMinutesAndSeconds(mInfusion.get(mBrewCount).getCooldowntime());
+    public TimeHelper getCooldowntime(){
+        return TimeHelper.getMinutesAndSeconds(mInfusion.get(mInfusionIndex).getCooldowntime());
     }
 
     public int getTemperature(){
         if(mActualSettings.getTemperatureunit().equals("Celsius")){
-            return mInfusion.get(mBrewCount).getTemperaturecelsius();
+            return mInfusion.get(mInfusionIndex).getTemperaturecelsius();
         }else {
-            return mInfusion.get(mBrewCount).getTemperaturefahrenheit();
+            return mInfusion.get(mInfusionIndex).getTemperaturefahrenheit();
         }
     }
 
@@ -114,16 +118,16 @@ public class ShowTeaViewModel {
         return mInfusion.size();
     }
 
-    public int getBrewCount(){
-        return mBrewCount;
+    public int getInfusionIndex(){
+        return mInfusionIndex;
     }
 
-    public void setBrewCount(int brewCount){
-        mBrewCount = brewCount;
+    public void setInfusionIndex(int infusionIndex){
+        mInfusionIndex = infusionIndex;
     }
 
-    public void incrementBrewCount(){
-        mBrewCount++;
+    public void incrementInfusionIndex(){
+        mInfusionIndex++;
     }
 
     // Notes

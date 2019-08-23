@@ -35,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerTeaSort"
                 android:transitionName="Teeart"
-                android:entries="@array/sortsOfTea"
-                android:prompt="@string/tea_sort"
+                android:entries="@array/variety_teas"
+                android:prompt="@string/tea_variety"
                 android:spinnerMode="dialog"
                 android:layout_toRightOf="@+id/textViewTeaSort"
                 android:layout_marginTop="20dip"
@@ -136,7 +136,7 @@
             <Button
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/buttonAddBrew"
+                android:id="@+id/buttonAddInfusion"
                 android:background="@drawable/button_add"
                 android:layout_below="@id/editTextAmount"
                 android:layout_marginTop="20dp"
@@ -147,22 +147,22 @@
             <Button
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/buttonDeleteBrew"
+                android:id="@+id/buttonDeleteInfusion"
                 android:background="@drawable/button_delete"
                 android:layout_below="@id/editTextAmount"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_toStartOf="@id/buttonAddBrew"
+                android:layout_toStartOf="@id/buttonAddInfusion"
                 android:layout_alignWithParentIfMissing="true"
                 android:visibility="gone"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:id="@+id/linearLayoutBrews"
+                android:id="@+id/linearLayoutInfusions"
                 android:layout_below="@id/editTextAmount"
                 android:layout_marginTop="20dp"
-                android:layout_toLeftOf="@id/buttonDeleteBrew">
+                android:layout_toLeftOf="@id/buttonDeleteInfusion">
 
                 <Button
                     android:layout_width="30dip"
@@ -176,7 +176,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textViewCountBrew"
+                    android:id="@+id/textViewCountInfusion"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="1. Aufguss"
                     android:textColor="@color/grey"
@@ -197,7 +197,7 @@
                 android:layout_height="30dp"
                 android:id="@+id/buttonShowCoolDownTime"
                 android:background="@drawable/button_arrowdown"
-                android:layout_below="@+id/linearLayoutBrews"
+                android:layout_below="@+id/linearLayoutInfusions"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="30dip"
                 android:layout_marginRight="4dip"
@@ -211,7 +211,7 @@
                 android:hint="Temperatur (°C)"
                 android:ems="10"
                 android:id="@+id/editTextTemperature"
-                android:layout_below="@+id/linearLayoutBrews"
+                android:layout_below="@+id/linearLayoutInfusions"
                 android:layout_marginTop="20dip"
                 android:layout_toLeftOf="@+id/buttonShowCoolDownTime"/>
 

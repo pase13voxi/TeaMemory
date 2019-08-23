@@ -30,4 +30,7 @@ public interface InfusionDAO {
 
     @Query("SELECT * FROM infusion WHERE tea_id = :id")
     List<Infusion> getInfusionsByTeaId(Long id);
+
+    @Query("DELETE FROM infusion WHERE tea_id = :id")
+    void deleteInfusionByTeaId(long id);
 }

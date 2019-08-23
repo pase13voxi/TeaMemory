@@ -168,11 +168,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 ntea.setDate(otea.getDate());
 
                 teaDAO.insert(ntea);
-                long teaid = teaDAO.getTeas().get(o++).getId();
+                long teaId = teaDAO.getTeas().get(o++).getId();
 
                 for (int i = 0; i < otea.getTime().size(); i++) {
                     Infusion infusion = new Infusion();
-                    infusion.setTeaId(teaid);
+                    infusion.setTeaId(teaId);
                     infusion.setInfusion(i);
                     if (!otea.getTime().get(i).getTime().equals("-")) {
                         infusion.setTime(otea.getTime().get(i).getTime());
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 }
 
                 Counter ncounter = new Counter();
-                ncounter.setTeaId(teaid);
+                ncounter.setTeaId(teaId);
                 ncounter.setDay(otea.getCounter().getDay());
                 ncounter.setWeek(otea.getCounter().getWeek());
                 ncounter.setMonth(otea.getCounter().getMonth());
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
 
                 Note nnote = new Note();
-                nnote.setTeaId(teaid);
+                nnote.setTeaId(teaId);
                 nnote.setPosition(1);
                 nnote.setDescription(otea.getNote());
                 noteDAO.insert(nnote);

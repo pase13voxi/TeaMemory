@@ -28,15 +28,18 @@ public interface TeaDAO {
     @Query("SELECT * from tea")
     List<Tea> getTeas();
 
-    @Query("SELECT * from tea ORDER BY LOWER(date) ASC")
+    @Query("SELECT * from tea ORDER BY LOWER(date) DESC")
     List<Tea> getTeasOrderByActivity();
 
     @Query("SELECT * from tea ORDER BY LOWER(name) ASC")
     List<Tea> getTeasOrderByAlphabetic();
 
-    @Query("SELECT * from tea ORDER BY LOWER(variety) ASC")
+    @Query("SELECT * from tea ORDER BY variety ASC")
     List<Tea> getTeasOrderByVariety();
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getTeaById(Long id);
+
+    @Query("SELECT * from tea ORDER BY LOWER(date) DESC LIMIT 1")
+    Tea getLastEditedTea();
 }

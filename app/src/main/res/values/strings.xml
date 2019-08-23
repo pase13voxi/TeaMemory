@@ -46,7 +46,7 @@
     <string name="showtea_dialog_description_header">How to use.</string>
     <string name="showtea_dialog_description_temperature">Calculating the time the boiling water needs to cool to the desired temperature.</string>
     <string name="showtea_dialog_description_amount">Calculate the amount of tea required for the preparation.</string>
-    <string name="showtea_dialog_description_brew">Select the desired brew.</string>
+    <string name="showtea_dialog_description_infusion">Select the desired infusion.</string>
     <string name="showtea_dialog_description_checkbox">Do not show me again!</string>
     <string name="showtea_dialog_description_ok">OK</string>
     <string name="showtea_display_celsius">%1$s °C</string>
@@ -63,10 +63,10 @@
     <string name="showtea_display_min">Min</string>
     <string name="showtea_display_sec">Sec</string>
     <string name="showtea_brea_count_point">%1$d.</string>
-    <string name="showtea_brew_count_title">Please choose your brew</string>
-    <string name="showtea_brew_count_content">Brew</string>
+    <string name="showtea_infusion_count_title">Please choose your infusion</string>
+    <string name="showtea_infusion_index_content">Infusion</string>
     <string name="showtea_cooldown_title">Cooling period</string>
-    <string name="showtea_cooldown_text">For green or white tea the cooking water should be cool down before brew the tea.</string>
+    <string name="showtea_cooldown_text">For green or white tea the boiling water should be cool down before infuse the tea.</string>
     <string name="showtea_cooldown_ok">OK</string>
     <string name="showtea_error_text">Error displaying elements.</string>
     <string name="showtea_timer_start">Start</string>
@@ -77,14 +77,14 @@
     <string name="showtea_tooltip_note">Note</string>
     <string name="showtea_tooltip_exchange">Cooldown time</string>
     <string name="showtea_tooltip_calculateamount">Calculate amount</string>
-    <string name="showtea_tooltip_brewcount">Choose brew</string>
-    <string name="showtea_tooltip_nextbrew">Next brew</string>
+    <string name="showtea_tooltip_infusionindex">Choose infusion</string>
+    <string name="showtea_tooltip_nextinfusion">Next infusion</string>
     <string name="showtea_channel_name">Finished tea</string>
     <string name="showtea_channel_description">Will be shown when the tea is ready.</string>
     <!--newtea_en-->
     <string name="newtea_heading">Create/Edit tea</string>
-    <string name="tea_sort">Tea variety</string>
-    <string-array name="sortsOfTea">
+    <string name="tea_variety">Tea variety</string>
+    <string-array name="variety_teas">
         <item>Black tea</item>
         <item>Green tea</item>
         <item>Yellow tea</item>
@@ -178,12 +178,12 @@
     <string name="newtea_error_cant_change">Change could not be performed.</string>
     <string name="newtea_error_cant_save">Store could not be performed.</string>
     <string name="newtea_error_no_name">Please enter the name.</string>
-    <string name="newtea_count_brew">%1$d%2$s Brew</string>
+    <string name="newtea_count_infusion">%1$d%2$s Infusion</string>
     <string name="newtea_tooltip_choosecolor">Choose color</string>
-    <string name="newtea_tooltip_arrowleft">Previous brew</string>
-    <string name="newtea_tooltip_arrowright">Next brew</string>
-    <string name="newtea_tooltip_deletebrew">Delete brew</string>
-    <string name="newtea_tooltip_addbrew">Add brew</string>
+    <string name="newtea_tooltip_arrowleft">Previous infusion</string>
+    <string name="newtea_tooltip_arrowright">Next infusion</string>
+    <string name="newtea_tooltip_deleteinfusion">Delete infusion</string>
+    <string name="newtea_tooltip_addinfusion">Add infusion</string>
     <string name="newtea_tooltip_showcooldowntime">Show cooldown option</string>
     <string name="newtea_tooltip_autofillcooldowntime">Autofill cooldown time</string>
     <string name="newtea_tooltip_done">Save tea</string>
@@ -281,7 +281,7 @@
     <string name="problems_hope">After that, the timer should work in the background again.</string>
     <string name="problems_action">To the setting</string>
     <string name="problems_error">This setting is not available on your Android version.</string>
-    <!--Time-->
+    <!--TimeHelper-->
     <string-array name="itemsTimer">
         <item>00</item>
         <item>01</item>

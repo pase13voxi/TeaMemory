@@ -29,7 +29,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.github.attenzione:android-ColorPickerPreference:9cbe9e7757'
+    implementation 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
     implementation 'com.github.vihtarb:tooltip:0.1.9'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation project(":horizontalbargraph")

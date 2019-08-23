@@ -46,7 +46,7 @@
     <string name="showtea_dialog_description_header">Benutzung</string>
     <string name="showtea_dialog_description_temperature">Berechne die Zeit, die das kochende Wasser auf die gewünschte Temperatur abkühlen muss.</string>
     <string name="showtea_dialog_description_amount">Berechne die benötigte Teemenge für die Zubereitung.</string>
-    <string name="showtea_dialog_description_brew">Wähle den gewünschten Aufguss aus.</string>
+    <string name="showtea_dialog_description_infusion">Wähle den gewünschten Aufguss aus.</string>
     <string name="showtea_dialog_description_checkbox">Bitte nicht mehr zeigen!</string>
     <string name="showtea_dialog_description_ok">Ok</string>
     <string name="showtea_display_celsius">%1$s °C</string>
@@ -63,8 +63,8 @@
     <string name="showtea_display_min">Min</string>
     <string name="showtea_display_sec">Sek</string>
     <string name="showtea_brea_count_point">%1$d.</string>
-    <string name="showtea_brew_count_title">Bitte wähle deinen Aufguss</string>
-    <string name="showtea_brew_count_content">Aufguss</string>
+    <string name="showtea_infusion_count_title">Bitte wähle deinen Aufguss</string>
+    <string name="showtea_infusion_index_content">Aufguss</string>
     <string name="showtea_cooldown_title">Abkühlzeiten</string>
     <string name="showtea_cooldown_text">Bei Grünem oder Weißem Tee sollte man vor dem Aufguss das kochende Wasser abkühlen lassen.</string>
     <string name="showtea_cooldown_ok">Ok</string>
@@ -77,14 +77,14 @@
     <string name="showtea_tooltip_note">Notiz</string>
     <string name="showtea_tooltip_exchange">Abkühlzeit</string>
     <string name="showtea_tooltip_calculateamount">Menge berechnen</string>
-    <string name="showtea_tooltip_brewcount">Aufguss auswählen</string>
-    <string name="showtea_tooltip_nextbrew">Nächster Aufguss</string>
+    <string name="showtea_tooltip_infusionindex">Aufguss auswählen</string>
+    <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
     <string name="showtea_channel_name">Fertiger Tee</string>
     <string name="showtea_channel_description">Wird gezeigt wenn der Tee Fertig ist.</string>
     <!--newtea_de-->
     <string name="newtea_heading">Tee erstellen/bearbeiten</string>
-    <string name="tea_sort">Teesorte</string>
-    <string-array name="sortsOfTea">
+    <string name="tea_variety">Teesorte</string>
+    <string-array name="variety_teas">
         <item>Schwarzer Tee</item>
         <item>Grüner Tee</item>
         <item>Gelber Tee</item>
@@ -178,12 +178,12 @@
     <string name="newtea_error_cant_change">Änderung konnte nicht durchgeführt werden.</string>
     <string name="newtea_error_cant_save">Speichern konnte nicht durchgeführt werden.</string>
     <string name="newtea_error_no_name">Geben Sie bitte den Namen an.</string>
-    <string name="newtea_count_brew">%1$d%2$s Aufguss</string>
+    <string name="newtea_count_infusion">%1$d%2$s Aufguss</string>
     <string name="newtea_tooltip_choosecolor">Farbe auswählen</string>
     <string name="newtea_tooltip_arrowleft">Vorheriger Aufguss</string>
     <string name="newtea_tooltip_arrowright">Nächster Aufguss</string>
-    <string name="newtea_tooltip_deletebrew">Aufguss löschen</string>
-    <string name="newtea_tooltip_addbrew">Aufguss hinzufügen</string>
+    <string name="newtea_tooltip_deleteinfusion">Aufguss löschen</string>
+    <string name="newtea_tooltip_addinfusion">Aufguss hinzufügen</string>
     <string name="newtea_tooltip_showcooldowntime">Abkühlfunktion zeigen</string>
     <string name="newtea_tooltip_autofillcooldowntime">Abkühlzeit berechnen</string>
     <string name="newtea_tooltip_done">Tee speichern</string>
@@ -281,7 +281,7 @@
     <string name="problems_hope">Danach sollte der Timer auch wieder im Hintergrund funktionieren.</string>
     <string name="problems_action">Zur Einstellung</string>
     <string name="problems_error">Diese Einstellung ist bei deiner Android Version nicht vorhanden.</string>
-    <!--Time-->
+    <!--TimeHelper-->
     <string-array name="itemsTimer">
         <item>00</item>
         <item>01</item>
