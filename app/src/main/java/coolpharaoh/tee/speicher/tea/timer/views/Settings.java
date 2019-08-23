@@ -8,19 +8,19 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
 
@@ -72,35 +72,32 @@ public class Settings extends AppCompatActivity {
         ListView listViewSetting = findViewById(R.id.listView_settings);
         listViewSetting.setAdapter(adapter);
 
-        listViewSetting.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItems item = ListItems.values()[position];
-                switch (item) {
-                    case Alarm:
-                        settingAlarm();
-                        break;
-                    case Vibration:
-                        settingVibration();
-                        break;
-                    case Notification:
-                        settingNotification();
-                        break;
-                    case Animation:
-                        settingAnimation(view);
-                        break;
-                    case TemperatureUnit:
-                        settingTemperatureUnit();
-                        break;
-                    case Hints:
-                        settingHints();
-                        break;
-                    case FactorySettings:
-                        settingFactorySettings(view);
-                        break;
-                }
-
+        listViewSetting.setOnItemClickListener((parent, view, position, id) -> {
+            ListItems item = ListItems.values()[position];
+            switch (item) {
+                case Alarm:
+                    settingAlarm();
+                    break;
+                case Vibration:
+                    settingVibration();
+                    break;
+                case Notification:
+                    settingNotification();
+                    break;
+                case Animation:
+                    settingAnimation(view);
+                    break;
+                case TemperatureUnit:
+                    settingTemperatureUnit();
+                    break;
+                case Hints:
+                    settingHints();
+                    break;
+                case FactorySettings:
+                    settingFactorySettings(view);
+                    break;
             }
+
         });
     }
 
@@ -127,20 +124,18 @@ public class Settings extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_vibration);
-        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                    case 0:
-                        mSettingsViewModel.setVibration(true);
-                        break;
-                    case 1:
-                        mSettingsViewModel.setVibration(false);
-                        break;
-                }
-                refreshWindow();
-                adapter.notifyDataSetChanged();
-                radioButtonDialog.dismiss();
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            switch (item) {
+                case 0:
+                    mSettingsViewModel.setVibration(true);
+                    break;
+                case 1:
+                    mSettingsViewModel.setVibration(false);
+                    break;
             }
+            refreshWindow();
+            adapter.notifyDataSetChanged();
+            radioButtonDialog.dismiss();
         });
         radioButtonDialog = builder.create();
         radioButtonDialog.show();
@@ -161,20 +156,18 @@ public class Settings extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_notification);
-        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                    case 0:
-                        mSettingsViewModel.setNotification(true);
-                        break;
-                    case 1:
-                        mSettingsViewModel.setNotification(false);
-                        break;
-                }
-                refreshWindow();
-                adapter.notifyDataSetChanged();
-                radioButtonDialog.dismiss();
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            switch (item) {
+                case 0:
+                    mSettingsViewModel.setNotification(true);
+                    break;
+                case 1:
+                    mSettingsViewModel.setNotification(false);
+                    break;
             }
+            refreshWindow();
+            adapter.notifyDataSetChanged();
+            radioButtonDialog.dismiss();
         });
         radioButtonDialog = builder.create();
         radioButtonDialog.show();
@@ -195,20 +188,18 @@ public class Settings extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_animation);
-        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                    case 0:
-                        mSettingsViewModel.setAnimation(true);
-                        break;
-                    case 1:
-                        mSettingsViewModel.setAnimation(false);
-                        break;
-                }
-                refreshWindow();
-                adapter.notifyDataSetChanged();
-                radioButtonDialog.dismiss();
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            switch (item) {
+                case 0:
+                    mSettingsViewModel.setAnimation(true);
+                    break;
+                case 1:
+                    mSettingsViewModel.setAnimation(false);
+                    break;
             }
+            refreshWindow();
+            adapter.notifyDataSetChanged();
+            radioButtonDialog.dismiss();
         });
         radioButtonDialog = builder.create();
         radioButtonDialog.show();
@@ -229,13 +220,11 @@ public class Settings extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_temperature_unit);
-        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                mSettingsViewModel.setTemperatureunit(items[item]);
-                refreshWindow();
-                adapter.notifyDataSetChanged();
-                radioButtonDialog.dismiss();
-            }
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            mSettingsViewModel.setTemperatureunit(items[item]);
+            refreshWindow();
+            adapter.notifyDataSetChanged();
+            radioButtonDialog.dismiss();
         });
         radioButtonDialog = builder.create();
         radioButtonDialog.show();
@@ -262,54 +251,47 @@ public class Settings extends AppCompatActivity {
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(alertLayoutDialogProblem);
         adb.setTitle(R.string.settings_show_hints_header);
-        adb.setPositiveButton(R.string.settings_show_hints_ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (checkBoxRating.isChecked()) {
-                    mSettingsViewModel.setMainratealert(true);
-                } else {
-                    mSettingsViewModel.setMainratealert(false);
-                }
-                if (checkBoxProblems.isChecked()) {
-                    mSettingsViewModel.setMainproblemalert(true);
-                } else {
-                    mSettingsViewModel.setMainproblemalert(false);
-                }
-                if (checkBoxDescription.isChecked()) {
-                    mSettingsViewModel.setShowteaalert(true);
-                } else {
-                    mSettingsViewModel.setShowteaalert(true);
-                }
+        adb.setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> {
+            if (checkBoxRating.isChecked()) {
+                mSettingsViewModel.setMainratealert(true);
+            } else {
+                mSettingsViewModel.setMainratealert(false);
+            }
+            if (checkBoxProblems.isChecked()) {
+                mSettingsViewModel.setMainproblemalert(true);
+            } else {
+                mSettingsViewModel.setMainproblemalert(false);
+            }
+            if (checkBoxDescription.isChecked()) {
+                mSettingsViewModel.setShowteaalert(true);
+            } else {
+                mSettingsViewModel.setShowteaalert(true);
             }
         });
-        adb.setNegativeButton(R.string.settings_show_hints_cancle, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        adb.setNegativeButton(R.string.settings_show_hints_cancle, (dialog, which) -> {
 
-            }
         });
         adb.show();
 
     }
 
     private void settingFactorySettings(View v) {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        //Einstellungen zurücksetzen und Tees löschen
-                        mSettingsViewModel.setDefaultSettings();
-                        mSettingsViewModel.deleteAllTeas();
-                        //Felder ändern
-                        refreshWindow();
-                        adapter.notifyDataSetChanged();
-                        Toast toast = Toast.makeText(getApplicationContext(), R.string.settings_factory_settings_toast, Toast.LENGTH_SHORT);
-                        toast.show();
-                        break;
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    //Einstellungen zurücksetzen und Tees löschen
+                    mSettingsViewModel.setDefaultSettings();
+                    mSettingsViewModel.deleteAllTeas();
+                    //Felder ändern
+                    refreshWindow();
+                    adapter.notifyDataSetChanged();
+                    Toast toast = Toast.makeText(getApplicationContext(), R.string.settings_factory_settings_toast, Toast.LENGTH_SHORT);
+                    toast.show();
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
             }
         };
 
@@ -340,7 +322,7 @@ public class Settings extends AppCompatActivity {
         settingList.add(itemVibration);
 
         //Get Option for the Notification
-        int notificationOption = -1;
+        int notificationOption;
         if (mSettingsViewModel.isNotification()) {
             notificationOption = 0;
         } else {
@@ -350,7 +332,7 @@ public class Settings extends AppCompatActivity {
         settingList.add(itemNotification);
 
         //Get Option for the Animation
-        int animationOption = -1;
+        int animationOption;
         if (mSettingsViewModel.isAnimation()) {
             animationOption = 0;
         } else {

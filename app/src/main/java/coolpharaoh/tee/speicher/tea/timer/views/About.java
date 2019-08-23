@@ -3,15 +3,14 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,46 +64,43 @@ public class About extends AppCompatActivity {
         ListView listViewAbout = findViewById(R.id.listview_about);
         listViewAbout.setAdapter(adapter);
 
-        listViewAbout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItems item = ListItems.values()[position];
-                switch(item){
-                    case Contact:
-                        //Neues Intent anlegen
-                        Intent contactScreen = new Intent(About.this, Contact.class);
-                        // Intent starten und zur zweiten Activity wechseln
-                        startActivity(contactScreen);
-                        break;
-                    case Rating:
-                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                        try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                        } catch (android.content.ActivityNotFoundException anfe) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                        }
-                        break;
-                    case Statistics:
-                        Intent statisticsScreen = new Intent(About.this, Statistics.class);
-                        startActivity(statisticsScreen);
-                        break;
-                    case Translation:
-                        //Neues Intent anlegen
-                        Intent languagesScreen = new Intent(About.this, Languages.class);
-                        // Intent starten und zur zweiten Activity wechseln
-                        startActivity(languagesScreen);
-                        break;
-                    case Problems:
-                        Intent problemsScreen = new Intent(About.this, Problems.class);
-                        startActivity(problemsScreen);
-                        break;
-                    case Software:
-                        Intent softwareScreen = new Intent(About.this, Software.class);
-                        startActivity(softwareScreen);
-                        break;
-                }
-
+        listViewAbout.setOnItemClickListener((parent, view, position, id) -> {
+            ListItems item = ListItems.values()[position];
+            switch(item){
+                case Contact:
+                    //Neues Intent anlegen
+                    Intent contactScreen = new Intent(About.this, Contact.class);
+                    // Intent starten und zur zweiten Activity wechseln
+                    startActivity(contactScreen);
+                    break;
+                case Rating:
+                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+                    break;
+                case Statistics:
+                    Intent statisticsScreen = new Intent(About.this, Statistics.class);
+                    startActivity(statisticsScreen);
+                    break;
+                case Translation:
+                    //Neues Intent anlegen
+                    Intent languagesScreen = new Intent(About.this, Languages.class);
+                    // Intent starten und zur zweiten Activity wechseln
+                    startActivity(languagesScreen);
+                    break;
+                case Problems:
+                    Intent problemsScreen = new Intent(About.this, Problems.class);
+                    startActivity(problemsScreen);
+                    break;
+                case Software:
+                    Intent softwareScreen = new Intent(About.this, Software.class);
+                    startActivity(softwareScreen);
+                    break;
             }
+
         });
     }
 

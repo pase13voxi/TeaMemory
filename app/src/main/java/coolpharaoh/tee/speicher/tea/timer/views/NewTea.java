@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,11 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import com.tooltip.Tooltip;
 
@@ -222,35 +222,26 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         });
 
         //Checkbox Teeart wurde angeklickt
-        checkboxTeaSort.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    textViewTeaSort.setVisibility(View.INVISIBLE);
-                    spinnerTeaVariety.setVisibility(View.INVISIBLE);
-                    editTextTeaSort.setVisibility(View.VISIBLE);
-                } else {
-                    textViewTeaSort.setVisibility(View.VISIBLE);
-                    spinnerTeaVariety.setVisibility(View.VISIBLE);
-                    editTextTeaSort.setVisibility(View.INVISIBLE);
-                }
+        checkboxTeaSort.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                textViewTeaSort.setVisibility(View.INVISIBLE);
+                spinnerTeaVariety.setVisibility(View.INVISIBLE);
+                editTextTeaSort.setVisibility(View.VISIBLE);
+            } else {
+                textViewTeaSort.setVisibility(View.VISIBLE);
+                spinnerTeaVariety.setVisibility(View.VISIBLE);
+                editTextTeaSort.setVisibility(View.INVISIBLE);
             }
         });
 
-        buttonColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                colorPickerDialog = new ColorPickerDialog(NewTea.this, color);
-                colorPickerDialog.setTitle(getResources().getString(R.string.newtea_color_dialog_title));
-                colorPickerDialog.setOnColorChangedListener(new ColorPickerDialog.OnColorChangedListener() {
-                    @Override
-                    public void onColorChanged(int c) {
-                        color = c;
-                        buttonColorSape.setColor(color);
-                    }
-                });
-                colorPickerDialog.show();
-            }
+        buttonColor.setOnClickListener(view -> {
+            colorPickerDialog = new ColorPickerDialog(NewTea.this, color);
+            colorPickerDialog.setTitle(getResources().getString(R.string.newtea_color_dialog_title));
+            colorPickerDialog.setOnColorChangedListener(c -> {
+                color = c;
+                buttonColorSape.setColor(color);
+            });
+            colorPickerDialog.show();
         });
         buttonColor.setOnLongClickListener(this);
 
@@ -275,87 +266,69 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             }
         });
 
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (changeInfusion()) {
-                    mNewTeaViewModel.previousInfusion();
-                    refreshInfusionConsole();
-                    refreshInfusionInformation();
-                }
-            }
-        });
-        leftArrow.setOnLongClickListener(this);
-
-        rightArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (changeInfusion()) {
-                    mNewTeaViewModel.nextInfusion();
-                    refreshInfusionConsole();
-                    refreshInfusionInformation();
-                }
-            }
-        });
-        rightArrow.setOnLongClickListener(this);
-
-        deleteInfusion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewTeaViewModel.deleteInfusion();
+        leftArrow.setOnClickListener(v -> {
+            if (changeInfusion()) {
+                mNewTeaViewModel.previousInfusion();
                 refreshInfusionConsole();
                 refreshInfusionInformation();
             }
         });
+        leftArrow.setOnLongClickListener(this);
+
+        rightArrow.setOnClickListener(v -> {
+            if (changeInfusion()) {
+                mNewTeaViewModel.nextInfusion();
+                refreshInfusionConsole();
+                refreshInfusionInformation();
+            }
+        });
+        rightArrow.setOnLongClickListener(this);
+
+        deleteInfusion.setOnClickListener(v -> {
+            mNewTeaViewModel.deleteInfusion();
+            refreshInfusionConsole();
+            refreshInfusionInformation();
+        });
         deleteInfusion.setOnLongClickListener(this);
 
-        addInfusion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (changeInfusion()) {
-                    mNewTeaViewModel.addInfusion(false);
-                    refreshInfusionConsole();
-                    clearInfusionInformation();
-                }
+        addInfusion.setOnClickListener(v -> {
+            if (changeInfusion()) {
+                mNewTeaViewModel.addInfusion(false);
+                refreshInfusionConsole();
+                clearInfusionInformation();
             }
         });
         addInfusion.setOnLongClickListener(this);
 
-        buttonShowCoolDowntime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editTextCoolDownTime.getVisibility() == View.VISIBLE) {
-                    buttonShowCoolDowntime.setBackground(getResources().getDrawable(R.drawable.button_arrowdown));
-                    editTextCoolDownTime.setVisibility(View.GONE);
-                    buttonAutofillCoolDownTime.setVisibility(View.GONE);
-                } else {
-                    buttonShowCoolDowntime.setBackground(getResources().getDrawable(R.drawable.button_arrowup));
-                    editTextCoolDownTime.setVisibility(View.VISIBLE);
-                    buttonAutofillCoolDownTime.setVisibility(View.VISIBLE);
-                }
+        buttonShowCoolDowntime.setOnClickListener(v -> {
+            if (editTextCoolDownTime.getVisibility() == View.VISIBLE) {
+                buttonShowCoolDowntime.setBackground(getResources().getDrawable(R.drawable.button_arrowdown));
+                editTextCoolDownTime.setVisibility(View.GONE);
+                buttonAutofillCoolDownTime.setVisibility(View.GONE);
+            } else {
+                buttonShowCoolDowntime.setBackground(getResources().getDrawable(R.drawable.button_arrowup));
+                editTextCoolDownTime.setVisibility(View.VISIBLE);
+                buttonAutofillCoolDownTime.setVisibility(View.VISIBLE);
             }
         });
         buttonShowCoolDowntime.setOnLongClickListener(this);
 
-        buttonAutofillCoolDownTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Ist die Temperatur nicht gesetzt, so ist sie -500
-                int temperatureCelsius = -500;
-                boolean temperatureValid = temperatureStringValid(editTextTemperature.getText().toString());
-                if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
-                    temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
-                }
-                //Falls nötig in Celsius umwandeln
-                if (mNewTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
-                    temperatureCelsius = TemperatureConversation.fahrenheitToCelsius(temperatureCelsius);
-                }
-                if (temperatureCelsius != -500 && temperatureCelsius != 100) {
-                    editTextCoolDownTime.setText(TemperatureConversation.celsiusToCoolDownTime(temperatureCelsius));
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_auto_cooldown_time, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+        buttonAutofillCoolDownTime.setOnClickListener(v -> {
+            //Ist die Temperatur nicht gesetzt, so ist sie -500
+            int temperatureCelsius = -500;
+            boolean temperatureValid = temperatureStringValid(editTextTemperature.getText().toString());
+            if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
+                temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
+            }
+            //Falls nötig in Celsius umwandeln
+            if (mNewTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                temperatureCelsius = TemperatureConversation.fahrenheitToCelsius(temperatureCelsius);
+            }
+            if (temperatureCelsius != -500 && temperatureCelsius != 100) {
+                editTextCoolDownTime.setText(TemperatureConversation.celsiusToCoolDownTime(temperatureCelsius));
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_auto_cooldown_time, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
         buttonAutofillCoolDownTime.setOnLongClickListener(this);
@@ -364,14 +337,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_tea, menu);
 
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                View view = findViewById(R.id.action_done);
+        new Handler().post(() -> {
+            View view = findViewById(R.id.action_done);
 
-                if (view != null) {
-                    view.setOnLongClickListener(NewTea.this);
-                }
+            if (view != null) {
+                view.setOnLongClickListener(NewTea.this);
             }
         });
 

@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.pojos;
 
-import android.arch.persistence.room.ColumnInfo;
+import androidx.room.ColumnInfo;
 
 public class StatisticsPOJO {
     @ColumnInfo(name = "name")

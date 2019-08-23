@@ -3,14 +3,14 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
@@ -24,8 +24,8 @@ public class Languages extends AppCompatActivity {
         setContentView(R.layout.activity_languages);
 
         //Toolbar als ActionBar festlegen
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        mToolbarCustomTitle = (TextView) findViewById(R.id.toolbar_title);
+        Toolbar toolbar = findViewById(R.id.tool_bar);
+        mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.languages_heading);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -33,16 +33,13 @@ public class Languages extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button buttonEmail = (Button) findViewById(R.id.buttonSendLanguagesEmail);
-        buttonEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto", getResources().getString(R.string.languages_email_address), null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.languages_email_subject));
-                    startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.languages_email_chooser)));
+        Button buttonEmail = findViewById(R.id.buttonSendLanguagesEmail);
+        buttonEmail.setOnClickListener(v -> {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", getResources().getString(R.string.languages_email_address), null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.languages_email_subject));
+                startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.languages_email_chooser)));
 
-            }
         });
     }
 

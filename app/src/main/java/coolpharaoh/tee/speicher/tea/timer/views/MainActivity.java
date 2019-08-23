@@ -2,18 +2,18 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -279,28 +279,22 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         //Menu wird hinzugefügt (Löschen, Ändern)
         registerForContextMenu(tealist);
 
-        tealist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Neues Intent anlegen
-                Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
+        tealist.setOnItemClickListener((parent, view, position, id) -> {
+            //Neues Intent anlegen
+            Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
 
-                showteaScreen.putExtra("teaId", mMainActivityViewModel.getTeaByPosition(position).getId());
-                // Intent starten und zur zweiten Activity wechseln
-                startActivity(showteaScreen);
-            }
+            showteaScreen.putExtra("teaId", mMainActivityViewModel.getTeaByPosition(position).getId());
+            // Intent starten und zur zweiten Activity wechseln
+            startActivity(showteaScreen);
         });
 
         //Button NewTea + Aktion
         newTea = findViewById(R.id.newtea);
-        newTea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Neues Intent anlegen
-                Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
-                // Intent starten und zur zweiten Activity wechseln
-                startActivity(newteaScreen);
-            }
+        newTea.setOnClickListener(v -> {
+            //Neues Intent anlegen
+            Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
+            // Intent starten und zur zweiten Activity wechseln
+            startActivity(newteaScreen);
         });
         newTea.setOnLongClickListener(this);
 
@@ -427,7 +421,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -471,20 +464,16 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setView(alertLayoutDialogProblem);
             adb.setTitle(R.string.main_dialog_problem_header);
-            adb.setPositiveButton(R.string.main_dialog_problem_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    if (dontshowagain.isChecked()) {
-                        mMainActivityViewModel.setMainProblemAlert(false);
-                    }
-                    Intent problemsScreen = new Intent(MainActivity.this, Problems.class);
-                    startActivity(problemsScreen);
+            adb.setPositiveButton(R.string.main_dialog_problem_ok, (dialog, which) -> {
+                if (dontshowagain.isChecked()) {
+                    mMainActivityViewModel.setMainProblemAlert(false);
                 }
+                Intent problemsScreen = new Intent(MainActivity.this, Problems.class);
+                startActivity(problemsScreen);
             });
-            adb.setNegativeButton(R.string.main_dialog_problem_cancle, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    if (dontshowagain.isChecked()) {
-                        mMainActivityViewModel.setMainProblemAlert(false);
-                    }
+            adb.setNegativeButton(R.string.main_dialog_problem_cancle, (dialog, which) -> {
+                if (dontshowagain.isChecked()) {
+                    mMainActivityViewModel.setMainProblemAlert(false);
                 }
             });
             adb.show();
@@ -500,28 +489,19 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(alertLayoutDialogProblem);
         adb.setTitle(R.string.main_dialog_rating_header);
-        adb.setPositiveButton(R.string.main_dialog_rating_positive, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mMainActivityViewModel.setMainRateAlert(false);
+        adb.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> {
+            mMainActivityViewModel.setMainRateAlert(false);
 
-                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
+            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
             }
         });
-        adb.setNeutralButton(R.string.main_dialog_rating_neutral, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        adb.setNeutralButton(R.string.main_dialog_rating_neutral, (dialog, which) -> {
         });
-        adb.setNegativeButton(R.string.main_dialog_rating_negative, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mMainActivityViewModel.setMainRateAlert(false);
-            }
-        });
+        adb.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mMainActivityViewModel.setMainRateAlert(false));
         adb.show();
     }
 }

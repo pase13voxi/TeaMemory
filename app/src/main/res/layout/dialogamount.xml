@@ -27,7 +27,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"/>
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBarAmountPerAmount"

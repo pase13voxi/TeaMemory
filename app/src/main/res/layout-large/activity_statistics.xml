@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/tool_bar_layout">
 
         <include
             android:id="@+id/tool_bar"
-            layout="@layout/tool_bar"
-            ></include>
+            layout="@layout/tool_bar" />
 
         <Spinner
             android:id="@+id/spinner_category"
@@ -19,9 +18,9 @@
             android:layout_height="wrap_content"
             android:entries="@array/statistics_category"
             android:layout_margin="2dp"
-            android:layout_gravity="center"></Spinner>
+            android:layout_gravity="center" />
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"

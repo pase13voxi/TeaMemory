@@ -1,18 +1,19 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.arch.persistence.room.Room;
 import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.room.Room;
 
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
 
 public class MainActivityViewModel extends ViewModel {
 

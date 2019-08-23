@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 17
-        targetSdkVersion 26
-        versionCode 63
-        versionName "2.2"
+        targetSdkVersion 29
+        versionCode 65
+        versionName "2.3"
     }
     buildTypes {
         release {
@@ -27,18 +27,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
     implementation 'com.github.vihtarb:tooltip:0.1.9'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation project(":horizontalbargraph")
-    compileOnly "org.projectlombok:lombok:1.18.2"
-    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    compileOnly "org.projectlombok:lombok:1.18.8"
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
     testImplementation 'junit:junit:4.12'
-    implementation  "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor  "android.arch.persistence.room:compiler:1.0.0"
-    implementation 'android.arch.lifecycle:viewmodel:1.1.1'
-    implementation 'android.arch.lifecycle:livedata:1.1.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'androidx.room:room-runtime:2.1.0'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 }

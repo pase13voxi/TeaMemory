@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_parent"
@@ -9,14 +9,13 @@
     android:focusableInTouchMode="true"
     tools:context=".views.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
         <include
             android:id="@+id/tool_bar"
-            layout="@layout/tool_bar"
-            ></include>
+            layout="@layout/tool_bar" />
 
         <Spinner
             android:id="@+id/spinner_category"
@@ -25,9 +24,9 @@
             android:entries="@array/main_sort_menu"
             android:prompt="@string/main_sort"
             android:layout_margin="3dp"
-            android:layout_gravity="center"></Spinner>
+            android:layout_gravity="center" />
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ListView
         android:layout_width="match_parent"
@@ -35,7 +34,7 @@
         android:id="@+id/listViewTealist"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newtea"
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -43,4 +42,4 @@
         android:layout_margin="25dp"
         android:src="@drawable/newtea"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

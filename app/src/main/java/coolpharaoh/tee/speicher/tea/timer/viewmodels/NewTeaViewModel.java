@@ -1,7 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
+
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +24,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversat
 
 public class NewTeaViewModel {
 
-    Context context;
+    private Context context;
 
     private TeaDAO mTeaDAO;
     private InfusionDAO mInfusionDAO;

@@ -1,13 +1,14 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,8 @@ public class Software extends AppCompatActivity {
         setContentView(R.layout.activity_software);
 
         //Toolbar als ActionBar festlegen
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        mToolbarCustomTitle = (TextView) findViewById(R.id.toolbar_title);
+        Toolbar toolbar = findViewById(R.id.tool_bar);
+        mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.software_heading);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -46,7 +47,7 @@ public class Software extends AppCompatActivity {
         //Liste mit Adapter verknüpfen
         SoftwareListAdapter adapter = new SoftwareListAdapter(this, softwareList);
         //Adapter dem Listview hinzufügen
-        ListView listViewAbout = (ListView) findViewById(R.id.listview_software);
+        ListView listViewAbout = findViewById(R.id.listview_software);
         listViewAbout.setAdapter(adapter);
     }
 

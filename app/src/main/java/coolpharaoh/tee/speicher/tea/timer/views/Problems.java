@@ -3,15 +3,15 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
@@ -37,14 +37,11 @@ public class Problems extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button buttonToSettings = findViewById(R.id.buttonToSettings);
-        buttonToSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
-                }else{
-                    Toast.makeText(Problems.this, R.string.problems_error, Toast.LENGTH_SHORT).show();
-                }
+        buttonToSettings.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
+            }else{
+                Toast.makeText(Problems.this, R.string.problems_error, Toast.LENGTH_SHORT).show();
             }
         });
     }

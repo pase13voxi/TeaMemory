@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 
 import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;

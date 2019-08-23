@@ -1,7 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
