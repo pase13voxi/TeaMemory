@@ -1,10 +1,8 @@
 <resources>
-    <string name="app_name">Tee Speicher</string>
     <!--German-->
-    <!--main_de-->
+    <string name="app_name">Tee Speicher</string>
+    <!--Main-->
     <string name="main_action_settings">Einstellungen</string>
-    <string name="main_action_statistics">Statistik</string>
-    <string name="main_action_search">Suche</string>
     <string name="main_action_about">Über den Tee Speicher</string>
     <string name="main_sort">Sortierung</string>
     <string-array name="main_sort_menu">
@@ -17,7 +15,6 @@
         <item>Löschen</item>
     </string-array>
     <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
-    <string name="main_tooltip_search">Suchen</string>
     <string name="main_tooltip_newtea">Tee hinzufügen</string>
     <string name="main_dialog_problem_header">Problem</string>
     <string name="main_dialog_problem">Hey, du verwendest Android 8 oder höher. Mit diesen Versionen hat Android neue Funktionen eingeführt, die Probleme beim Ausführen dieser App verursachen.</string>
@@ -26,11 +23,10 @@
     <string name="main_dialog_problem_cancle">Nicht jetzt</string>
     <string name="main_dialog_rating_header">Bewerte die App</string>
     <string name="main_dialog_rating">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
-    <string name="main_dialog_rating_checkbox">Bitte nicht mehr zeigen!</string>
     <string name="main_dialog_rating_positive">Bewerten</string>
     <string name="main_dialog_rating_neutral">Später</string>
     <string name="main_dialog_rating_negative">Nein, danke</string>
-    <!--showtea_de-->
+    <!--Showtea-->
     <string name="showtea_heading">Information</string>
     <string name="showtea_action_note">Notiz</string>
     <string name="showtea_dialog_note_hint">Notiere dir etwas.</string>
@@ -62,7 +58,7 @@
     <string name="showtea_dialog_amount_ok">Ok</string>
     <string name="showtea_display_min">Min</string>
     <string name="showtea_display_sec">Sek</string>
-    <string name="showtea_brea_count_point">%1$d.</string>
+    <string name="showtea_break_count_point">%1$d.</string>
     <string name="showtea_infusion_count_title">Bitte wähle deinen Aufguss</string>
     <string name="showtea_infusion_index_content">Aufguss</string>
     <string name="showtea_cooldown_title">Abkühlzeiten</string>
@@ -81,9 +77,9 @@
     <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
     <string name="showtea_channel_name">Fertiger Tee</string>
     <string name="showtea_channel_description">Wird gezeigt wenn der Tee Fertig ist.</string>
-    <!--newtea_de-->
+    <!--Newtea-->
     <string name="newtea_heading">Tee erstellen/bearbeiten</string>
-    <string name="tea_variety">Teesorte</string>
+    <string name="newtea_tea_variety">Teesorte</string>
     <string-array name="variety_teas">
         <item>Schwarzer Tee</item>
         <item>Grüner Tee</item>
@@ -187,7 +183,7 @@
     <string name="newtea_tooltip_showcooldowntime">Abkühlfunktion zeigen</string>
     <string name="newtea_tooltip_autofillcooldowntime">Abkühlzeit berechnen</string>
     <string name="newtea_tooltip_done">Tee speichern</string>
-    <!--setting_de-->
+    <!--Settings-->
     <string name="settings_heading">Einstellungen</string>
     <string name="settings_alarm">Alarmsound</string>
     <string name="settings_alarm_selection_title">Alarmsound auswählen</string>
@@ -235,8 +231,6 @@
     <string name="about_problems_description">Läuft der Timer nicht mehr im Hintergrund?</string>
     <string name="about_software_heading">Software Lizenzen</string>
     <string name="about_software_description">Welche Open Source Software wird von dem Tee Speicher genutzt?</string>
-    <string name="about_billing_heading">Unterstützung</string>
-    <string name="about_billing_description">Zahle so viel, wie dir die App wert ist.</string>
     <!--Contact-->
     <string name="contact_heading">Kontakt</string>
     <string name="contact_about_me">Hallo, ich bin Pascal und ich habe den Tee Speicher in meiner Freizeit entwickelt. Für Fragen oder Anregungen schreib mir eine E-mail.</string>
@@ -281,7 +275,7 @@
     <string name="problems_hope">Danach sollte der Timer auch wieder im Hintergrund funktionieren.</string>
     <string name="problems_action">Zur Einstellung</string>
     <string name="problems_error">Diese Einstellung ist bei deiner Android Version nicht vorhanden.</string>
-    <!--TimeHelper-->
+    <!--Time-->
     <string-array name="itemsTimer">
         <item>00</item>
         <item>01</item>

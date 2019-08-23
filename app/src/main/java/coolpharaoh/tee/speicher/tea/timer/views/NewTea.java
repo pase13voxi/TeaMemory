@@ -109,11 +109,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         addInfusion = findViewById(R.id.buttonAddInfusion);
 
         //feste Texte setzten
-        textViewTeaSort.setText(R.string.tea_variety);
+        textViewTeaSort.setText(R.string.newtea_tea_variety);
         editTextName.setHint(getResources().getString(R.string.newtea_hint_name));
-        spinnerTeaVariety.setPrompt(getResources().getString(R.string.tea_variety));
+        spinnerTeaVariety.setPrompt(getResources().getString(R.string.newtea_tea_variety));
         checkboxTeaSort.setText(R.string.newtea_by_hand);
-        editTextTeaSort.setHint(R.string.tea_variety);
+        editTextTeaSort.setHint(R.string.newtea_tea_variety);
         buttonColorSape.setColor(color);
         textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, 1, ". "));
 

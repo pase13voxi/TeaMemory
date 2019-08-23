@@ -36,7 +36,7 @@
                 android:id="@+id/spinnerTeaSort"
                 android:transitionName="Teeart"
                 android:entries="@array/variety_teas"
-                android:prompt="@string/tea_variety"
+                android:prompt="@string/newtea_tea_variety"
                 android:spinnerMode="dialog"
                 android:layout_toRightOf="@+id/textViewTeaSort"
                 android:layout_marginTop="20dip"

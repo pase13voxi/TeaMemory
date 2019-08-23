@@ -784,7 +784,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         }
         spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
         spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
-        textViewInfusionIndex.setText(getResources().getString(R.string.showtea_brea_count_point, (mShowTeaViewModel.getInfusionIndex() + 1)));
+        textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (mShowTeaViewModel.getInfusionIndex() + 1)));
 
         nextInfusionEnable();
 
