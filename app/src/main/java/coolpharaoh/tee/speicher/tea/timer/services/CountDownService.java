@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -27,9 +28,9 @@ public class CountDownService extends Service {
     public static final String COUNTDOWN_BR = "paseb.teeapp.teespeicher.countdown_br";
     private static final String CHANNEL_ID_COUNTER = "3421";
     private static final String CHANNEL_ID_NOTIFY = "3422";
-    Intent BroadcaseIntent = new Intent(COUNTDOWN_BR);
+    private Intent BroadcaseIntent = new Intent(COUNTDOWN_BR);
 
-    CountDownTimer countDownTimer = null;
+    private CountDownTimer countDownTimer = null;
     private NotificationManager notificationManager_counter;
     private Notification.Builder notification_counter;
 
@@ -87,7 +88,7 @@ public class CountDownService extends Service {
                     .setContentIntent(pIntent);
 
             notificationManager_counter = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager_counter.createNotificationChannel(channel);
+            Objects.requireNonNull(notificationManager_counter).createNotificationChannel(channel);
             notificationManager_counter.notify(1, notification_counter.build());
         }else {
             //First time
@@ -104,7 +105,7 @@ public class CountDownService extends Service {
                     .setContentIntent(pIntent);
 
             notificationManager_counter = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager_counter.notify(1, notification_counter.build());
+            Objects.requireNonNull(notificationManager_counter).notify(1, notification_counter.build());
         }
 
         countDownTimer = new CountDownTimer(millis, 250) {

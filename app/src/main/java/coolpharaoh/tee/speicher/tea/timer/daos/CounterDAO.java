@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.daos;
 
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -19,9 +18,6 @@ public interface CounterDAO {
 
     @Update
     void update(Counter... items);
-
-    @Delete
-    void delete(Counter item);
 
     @Query("SELECT * FROM counter")
     List<Counter> getCounters();

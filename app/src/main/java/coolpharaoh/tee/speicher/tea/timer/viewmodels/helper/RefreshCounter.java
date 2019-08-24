@@ -15,15 +15,14 @@ public class RefreshCounter {
         return counters;
     }
 
-    public static Counter refreshCounter(Counter counter){
+    public static void refreshCounter(Counter counter){
         Date currentDate = Calendar.getInstance().getTime();
-        counter = refreshDay(counter, currentDate);
-        counter = refreshWeek(counter, currentDate);
-        counter = refreshMonth(counter, currentDate);
-        return counter;
+        refreshDay(counter, currentDate);
+        refreshWeek(counter, currentDate);
+        refreshMonth(counter, currentDate);
     }
 
-    private static Counter refreshDay(Counter counter, Date currentDate) {
+    private static void refreshDay(Counter counter, Date currentDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(currentDate);
         int currentDay = cal.get(Calendar.DAY_OF_MONTH);
@@ -37,10 +36,9 @@ public class RefreshCounter {
             counter.setDay(0);
             counter.setDaydate(currentDate);
         }
-        return counter;
     }
 
-    private static Counter refreshWeek(Counter counter, Date currentDate) {
+    private static void refreshWeek(Counter counter, Date currentDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(currentDate);
         int currentWeek = cal.get(Calendar.WEEK_OF_YEAR);
@@ -52,10 +50,9 @@ public class RefreshCounter {
             counter.setWeek(0);
             counter.setWeekdate(currentDate);
         }
-        return counter;
     }
 
-    private static Counter refreshMonth(Counter counter, Date currentDate) {
+    private static void refreshMonth(Counter counter, Date currentDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(currentDate);
         int currentMonth = cal.get(Calendar.MONTH);
@@ -67,6 +64,5 @@ public class RefreshCounter {
             counter.setMonth(0);
             counter.setMonthdate(currentDate);
         }
-        return counter;
     }
 }

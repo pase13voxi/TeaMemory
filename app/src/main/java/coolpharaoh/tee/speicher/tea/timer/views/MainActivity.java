@@ -2,17 +2,23 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
+
+import androidx.annotation.NonNull;
 import androidx.room.Room;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -62,14 +68,10 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
-    static public TeaCollection teaItems;
-    static public ActualSetting settings;
+    public static ActualSetting settings;
     private MainActivityViewModel mMainActivityViewModel;
     static private boolean startApplication = true;
 
-    private TextView mToolbarCustomTitle;
-    private FloatingActionButton newTea;
-    private Spinner spinnerSort;
     private ListView tealist;
     private TeaAdapter adapter;
 
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         //Toolbar als ActionBar festlegen
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.app_name);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (actualSettingsDAO.getCountItems() == 0) {
 
             //Liste aller Tees
-            teaItems = new TeaCollection();
+            TeaCollection teaItems = new TeaCollection();
             if (!teaItems.loadCollection(getApplicationContext())) {
                 // TODO Auto-generated method stub
                 //kann später entfernt werden
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mMainActivityViewModel = new MainActivityViewModel(getApplicationContext());
 
         //Setzte Spinner Groß
-        spinnerSort = findViewById(R.id.spinner_category);
+        Spinner spinnerSort = findViewById(R.id.spinner_category);
         ArrayAdapter<CharSequence> spinnerVarietyAdapter = ArrayAdapter.createFromResource(
                 this, R.array.main_sort_menu, R.layout.spinner_item_sort);
 
@@ -288,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         });
 
         //Button NewTea + Aktion
-        newTea = findViewById(R.id.newtea);
+        FloatingActionButton newTea = findViewById(R.id.newtea);
         newTea.setOnClickListener(v -> {
             //Neues Intent anlegen
             Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
@@ -381,56 +383,38 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         1);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
 
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    Toast.makeText(MainActivity.this, "Permission denied to read and write your External storage", Toast.LENGTH_SHORT).show();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
+            // If request is cancelled, the result arrays are empty.
+            if (!(grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+
+                Toast.makeText(MainActivity.this, "Permission denied to read and write your External storage", Toast.LENGTH_SHORT).show();
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
+
+        // other 'case' lines to check for other
+        // permissions this app might request
     }
 
     @Override
     public boolean onLongClick(View view) {
         if (view.getId() == R.id.newtea) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.main_tooltip_newtea));
+            showTooltip(view, getResources().getString(R.string.main_tooltip_newtea));
         }
         return true;
     }
@@ -441,11 +425,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mMainActivityViewModel.refreshTeas();
     }
 
-    private void showTooltip(View v, int gravity, String text) {
+    private void showTooltip(View v, String text) {
         new Tooltip.Builder(v)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))
-                .setGravity(gravity)
+                .setGravity(Gravity.TOP)
                 .setCornerRadius(8f)
                 .setCancelable(true)
                 .setDismissOnClick(true)

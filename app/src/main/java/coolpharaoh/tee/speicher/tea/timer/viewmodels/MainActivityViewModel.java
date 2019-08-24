@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.room.Room;
 
 import java.util.List;
+import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
@@ -45,11 +46,11 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public Tea getTeaByPosition(int position) {
-        return mTeas.getValue().get(position);
+        return Objects.requireNonNull(mTeas.getValue()).get(position);
     }
 
     public void deleteTea(int position) {
-        mTeaDAO.delete(mTeas.getValue().get(position));
+        mTeaDAO.delete(Objects.requireNonNull(mTeas.getValue()).get(position));
 
         refreshTeas();
     }

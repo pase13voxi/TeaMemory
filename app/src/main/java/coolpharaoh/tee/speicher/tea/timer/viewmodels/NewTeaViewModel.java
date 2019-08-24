@@ -150,21 +150,15 @@ public class NewTeaViewModel {
         }
     }
 
-    public boolean previousInfusion() {
+    public void previousInfusion() {
         if (mInfusionIndex - 1 >= 0) {
             mInfusionIndex--;
-            return true;
-        } else {
-            return false;
         }
     }
 
-    public boolean nextInfusion() {
+    public void nextInfusion() {
         if (mInfusionIndex + 1 < mInfusions.size()) {
             mInfusionIndex++;
-            return true;
-        } else {
-            return false;
         }
     }
 

@@ -37,11 +37,8 @@ public class About extends AppCompatActivity {
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.about_heading);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(null);
-        }
-
-        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //ListView beschreiben

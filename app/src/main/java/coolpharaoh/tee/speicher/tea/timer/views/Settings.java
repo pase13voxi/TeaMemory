@@ -86,7 +86,7 @@ public class Settings extends AppCompatActivity {
                     settingNotification();
                     break;
                 case Animation:
-                    settingAnimation(view);
+                    settingAnimation();
                     break;
                 case TemperatureUnit:
                     settingTemperatureUnit();
@@ -174,7 +174,7 @@ public class Settings extends AppCompatActivity {
         radioButtonDialog.show();
     }
 
-    private void settingAnimation(View v) {
+    private void settingAnimation() {
         final String[] items = getResources().getStringArray(R.array.settings_options);
 
         //Get CheckedItem

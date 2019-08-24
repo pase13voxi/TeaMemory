@@ -1,11 +1,13 @@
 package br.com.felix.horizontalbargraph.adapter;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.Locale;
@@ -24,12 +26,10 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
     private Double biggerValue = 0.0;
     private List<BarItem> items;
     private OnItemClickListener listener;
-    private Locale locale;
 
     public BarItemRecycleViewAdapter(List<BarItem> items, OnItemClickListener listener, Locale locale) {
         this.items = items;
         this.listener = listener;
-        this.locale = locale;
         getBiggerValue(items);
     }
 
@@ -45,6 +45,7 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
         }
     }
 
+    @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_balanco, parent, false);
@@ -85,7 +86,7 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
     }
 
     private void changWidthBar(int percent, LinearLayout layout1, LinearLayout layout2) {
-        LinearLayout.LayoutParams params1 = null, params2 = null;
+        LinearLayout.LayoutParams params1, params2;
 
         if (percent == 0) {
             params1 = new LinearLayout.LayoutParams(
@@ -142,11 +143,11 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView txtDesciption, txtValue1, txtValue2;
-        public LinearLayout linearValue1, linearValue1Margin, linearValue2Margin, linearValue2, llRoot;
-        public LinearLayout llValur1Root, llValur2Root;
+        TextView txtDesciption, txtValue1, txtValue2;
+        LinearLayout linearValue1, linearValue1Margin, linearValue2Margin, linearValue2, llRoot;
+        LinearLayout llValur1Root, llValur2Root;
 
-        public ItemViewHolder(View view) {
+        ItemViewHolder(View view) {
             super(view);
             txtDesciption = view.findViewById(R.id.txtMes);
             txtValue1 = view.findViewById(R.id.txtValorDespesa);

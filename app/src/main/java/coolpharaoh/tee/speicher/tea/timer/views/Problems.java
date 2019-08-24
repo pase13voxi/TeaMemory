@@ -19,8 +19,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 
 public class Problems extends AppCompatActivity {
 
-    private TextView mToolbarCustomTitle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +26,7 @@ public class Problems extends AppCompatActivity {
 
         //Toolbar als ActionBar festlegen
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.problems_heading);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {

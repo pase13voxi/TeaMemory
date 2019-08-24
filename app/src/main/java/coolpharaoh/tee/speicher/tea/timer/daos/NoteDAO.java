@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.daos;
 
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -17,9 +16,6 @@ public interface NoteDAO {
 
     @Update
     void update(Note... items);
-
-    @Delete
-    void delete(Note item);
 
     @Query("SELECT * FROM note WHERE tea_id = :id LIMIT 1")
     Note getNoteByTeaId(long id);

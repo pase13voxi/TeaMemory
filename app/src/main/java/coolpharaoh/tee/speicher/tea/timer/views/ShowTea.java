@@ -49,7 +49,6 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
 
-    private Toolbar toolbar;
     private TextView textViewInfusionIndex;
     private Button buttonInfusionIndex;
     private Button buttonNextInfusion;
@@ -66,7 +65,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private Button buttonStartTimer;
     private Button buttonExchange;
     private Button buttonInfo;
-    private Button buttonCalcAmount;
     private ImageView imageViewCup;
     private ImageView imageViewFill;
     private ImageView imageViewSteam;
@@ -82,7 +80,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_tea);
 
-        toolbar = findViewById(R.id.tool_bar);
+        Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.showtea_heading);
         buttonInfusionIndex = findViewById(R.id.toolbar_infusionindex);
@@ -106,7 +104,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonInfo = findViewById(R.id.buttonInfo);
         buttonExchange = findViewById(R.id.buttonExchange);
         TextView textViewTeelamass = findViewById(R.id.textViewShowTeelamass);
-        buttonCalcAmount = findViewById(R.id.buttonCalculateAmount);
+        Button buttonCalcAmount = findViewById(R.id.buttonCalculateAmount);
 
         spinnerMinutes = findViewById(R.id.spinnerMinutes);
         spinnerSeconds = findViewById(R.id.spinnerSeconds);
@@ -906,7 +904,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     //creates a Tooltip
     private void showTooltip(View v, int gravity, String text) {
-        Tooltip tooltip = new Tooltip.Builder(v)
+        new Tooltip.Builder(v)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))
                 .setGravity(gravity)

@@ -40,8 +40,8 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversat
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener {
 
     private Variety variety = Variety.BlackTea;
-    ColorPickerDialog colorPickerDialog;
-    int color = SortOfTea.getVariatyColor(Variety.BlackTea);
+    private ColorPickerDialog colorPickerDialog;
+    private int color = SortOfTea.getVariatyColor(Variety.BlackTea);
     private String amountUnit = "Ts";
 
 
@@ -49,7 +49,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private Spinner spinnerTeaVariety;
     private CheckBox checkboxTeaSort;
     private EditText editTextTeaSort;
-    private Button buttonColor;
     private GradientDrawable buttonColorSape;
     private EditText editTextName;
     private EditText editTextTemperature;
@@ -58,7 +57,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private Button buttonAutofillCoolDownTime;
     private EditText editTextSteepingTime;
     private EditText editTextAmount;
-    private Spinner spinnerAmount;
     private TextView textViewInfusion;
     private Button leftArrow;
     private Button rightArrow;
@@ -93,7 +91,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         spinnerTeaVariety = findViewById(R.id.spinnerTeaSort);
         checkboxTeaSort = findViewById(R.id.checkBoxSelfInput);
         editTextTeaSort = findViewById(R.id.editTextSelfInput);
-        buttonColor = findViewById(R.id.buttonColor);
+        Button buttonColor = findViewById(R.id.buttonColor);
         buttonColorSape = (GradientDrawable) buttonColor.getBackground();
         editTextName = findViewById(R.id.editTextName);
         editTextTemperature = findViewById(R.id.editTextTemperature);
@@ -102,7 +100,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         buttonAutofillCoolDownTime = findViewById(R.id.buttonAutofillCoolDownTime);
         editTextSteepingTime = findViewById(R.id.editTextTime);
         editTextAmount = findViewById(R.id.editTextAmount);
-        spinnerAmount = findViewById(R.id.spinnerAmountUnit);
+        Spinner spinnerAmount = findViewById(R.id.spinnerAmountUnit);
         textViewInfusion = findViewById(R.id.textViewCountInfusion);
         leftArrow = findViewById(R.id.buttonArrowLeft);
         rightArrow = findViewById(R.id.buttonArrowRight);
@@ -405,10 +403,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
                 if (teaId != 0) {
                     //Tee wird geändert
-                    mNewTeaViewModel.editTea(name,sortOfTea,amount,amountUnit,color);
+                    mNewTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, color);
                 } else {
                     //erstelle Tee
-                    mNewTeaViewModel.createNewTea(name,sortOfTea,amount,amountUnit,color);
+                    mNewTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, color);
                 }
                 if (!showTea) {
                     //wechsel das Fenster
@@ -430,8 +428,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private boolean nameValid(String name) {
-        boolean nameValid = true;
-        /*Eventuell später hier Bedingungen platzieren*/
+        boolean nameValid = name.length() < 300;
         return nameValid;
     }
 
@@ -528,11 +525,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             editTextTemperature.setText(String.valueOf(mNewTeaViewModel.getInfusionTemperature()));
         }
 
-        if (mNewTeaViewModel.getInfusionCooldowntime()!=null) {
+        if (mNewTeaViewModel.getInfusionCooldowntime() != null) {
             editTextCoolDownTime.setText(mNewTeaViewModel.getInfusionCooldowntime());
         }
 
-        if (mNewTeaViewModel.getInfusionTime()!=null) {
+        if (mNewTeaViewModel.getInfusionTime() != null) {
             editTextSteepingTime.setText(mNewTeaViewModel.getInfusionTime());
         }
     }
@@ -615,7 +612,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     //creates a Tooltip
     private void showTooltip(View v, int gravity, String text) {
-        Tooltip tooltip = new Tooltip.Builder(v)
+        new Tooltip.Builder(v)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))
                 .setGravity(gravity)

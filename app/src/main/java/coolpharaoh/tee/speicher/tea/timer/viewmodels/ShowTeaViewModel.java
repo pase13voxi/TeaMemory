@@ -1,7 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import androidx.room.Room;
 import android.content.Context;
+
+import androidx.room.Room;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -24,10 +25,9 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TimeHelper;
 
 public class ShowTeaViewModel {
 
-    Context context;
+    private Context context;
 
     private TeaDAO mTeaDAO;
-    private InfusionDAO mInfusionDAO;
     private NoteDAO mNoteDAO;
     private CounterDAO mCounterDAO;
     private ActualSettingsDAO mActualSettingsDAO;
@@ -50,7 +50,7 @@ public class ShowTeaViewModel {
                 .build();
 
         mTeaDAO = database.getTeaDAO();
-        mInfusionDAO = database.getInfusionDAO();
+        InfusionDAO mInfusionDAO = database.getInfusionDAO();
         mNoteDAO = database.getNoteDAO();
         mCounterDAO = database.getCounterDAO();
         mActualSettingsDAO = database.getActualSettingsDAO();
@@ -142,7 +142,7 @@ public class ShowTeaViewModel {
 
     //Counter
     public void countCounter(){
-        mCounter = RefreshCounter.refreshCounter(mCounter);
+        RefreshCounter.refreshCounter(mCounter);
         Date currentDate = Calendar.getInstance().getTime();
         mCounter.setMonthdate(currentDate);
         mCounter.setWeekdate(currentDate);
@@ -155,7 +155,7 @@ public class ShowTeaViewModel {
     }
 
     public Counter getCounter() {
-        mCounter = RefreshCounter.refreshCounter(mCounter);
+        RefreshCounter.refreshCounter(mCounter);
         mCounterDAO.update(mCounter);
         return mCounter;
     }

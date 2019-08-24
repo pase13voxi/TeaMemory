@@ -15,9 +15,8 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.MediaServiceViewModel;
  * Created by CoolPharaoh on 10.02.2016.
  */
 public class MediaService extends Service {
-    private MediaServiceViewModel mMediaServiceViewModel;
 
-    MediaPlayer mediaPlayer = null;
+    private MediaPlayer mediaPlayer = null;
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -27,7 +26,7 @@ public class MediaService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mMediaServiceViewModel = new MediaServiceViewModel(getApplicationContext());
+        MediaServiceViewModel mMediaServiceViewModel = new MediaServiceViewModel(getApplicationContext());
         //Musikstück initialisieren
         if(mMediaServiceViewModel.getMusicchoice()!=null) {
             mediaPlayer = new MediaPlayer();

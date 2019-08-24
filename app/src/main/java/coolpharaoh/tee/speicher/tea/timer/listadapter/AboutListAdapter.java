@@ -19,8 +19,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 public class AboutListAdapter extends BaseAdapter
 {
 
-    LayoutInflater inflater;
-    List<ListRowItem> items;
+    private LayoutInflater inflater;
+    private List<ListRowItem> items;
 
     public AboutListAdapter(Activity context, List<ListRowItem> items) {
         super();

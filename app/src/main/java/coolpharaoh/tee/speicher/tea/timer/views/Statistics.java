@@ -25,8 +25,6 @@ public class Statistics extends AppCompatActivity {
 
     private StatisticsViewModel mStatisticsViewModel;
 
-    private TextView mToolbarCustomTitle;
-    private Spinner spinnerCategory;
     private boolean firstView = true;
 
     @Override
@@ -37,7 +35,7 @@ public class Statistics extends AppCompatActivity {
 
         //Toolbar als ActionBar festlegen
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.statistics_heading);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -53,7 +51,7 @@ public class Statistics extends AppCompatActivity {
         horizontal.init(this).hasAnimation(true).addAll(getItems(mStatisticsViewModel.getStatisticsOverall())).build();
 
 
-        spinnerCategory = findViewById(R.id.spinner_category);
+        Spinner spinnerCategory = findViewById(R.id.spinner_category);
 
         ArrayAdapter<CharSequence> spinnerCategoryAdapter = ArrayAdapter.createFromResource(
                 this, R.array.statistics_category, R.layout.spinner_item_sort);
