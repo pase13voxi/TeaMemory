@@ -7,17 +7,16 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
-@Entity(tableName = "infusion",foreignKeys =
-@ForeignKey(entity = Tea.class,parentColumns = "tea_id",childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
+@Entity(tableName = "infusion", foreignKeys =
+@ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
 public class Infusion {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "infusion_id")
     private Long id;
     @ColumnInfo(name = "tea_id")
     private long teaId;
 
-    private int infusion;
+    private int infusionindex;
     private String time;
     private String cooldowntime;
     private int temperaturecelsius;
@@ -40,12 +39,12 @@ public class Infusion {
         this.teaId = teaId;
     }
 
-    public int getInfusion() {
-        return infusion;
+    public int getInfusionindex() {
+        return infusionindex;
     }
 
-    public void setInfusion(int infusion) {
-        this.infusion = infusion;
+    public void setInfusionindex(int infusionindex) {
+        this.infusionindex = infusionindex;
     }
 
     public String getTime() {

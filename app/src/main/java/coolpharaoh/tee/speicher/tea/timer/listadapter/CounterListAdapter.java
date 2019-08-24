@@ -54,8 +54,8 @@ public class CounterListAdapter extends BaseAdapter
         if(convertView==null)
             vi = inflater.inflate(R.layout.counterlist_single_layout, null);
 
-        TextView txtName = (TextView) vi.findViewById(R.id.textViewListCounterHeading);
-        TextView txtSort = (TextView) vi.findViewById(R.id.textViewListCounterDescription);
+        TextView txtName = vi.findViewById(R.id.textViewListCounterHeading);
+        TextView txtSort = vi.findViewById(R.id.textViewListCounterDescription);
 
         txtName.setText(item.getHeading());
         txtSort.setText(item.getDescription());

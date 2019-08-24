@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.listadapter.ListRowItem;
@@ -55,7 +56,7 @@ public class Settings extends AppCompatActivity {
             getSupportActionBar().setTitle(null);
         }
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSettingsViewModel = new SettingsViewModel(getApplicationContext());

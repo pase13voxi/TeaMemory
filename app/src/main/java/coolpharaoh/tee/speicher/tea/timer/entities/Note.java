@@ -7,11 +7,10 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
-@Entity(tableName = "note",foreignKeys =
-@ForeignKey(entity = Tea.class,parentColumns = "tea_id",childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
+@Entity(tableName = "note", foreignKeys =
+@ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
 public class Note {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "note_id")
     private Long id;
     @ColumnInfo(name = "tea_id")

@@ -3,7 +3,6 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.Manifest;
 import android.app.AlertDialog;
 import androidx.room.Room;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 for (int i = 0; i < otea.getTime().size(); i++) {
                     Infusion infusion = new Infusion();
                     infusion.setTeaId(teaId);
-                    infusion.setInfusion(i);
+                    infusion.setInfusionindex(i);
                     if (!otea.getTime().get(i).getTime().equals("-")) {
                         infusion.setTime(otea.getTime().get(i).getTime());
                     }

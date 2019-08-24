@@ -14,6 +14,7 @@ import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.listadapter.AboutListAdapter;
@@ -40,7 +41,7 @@ public class About extends AppCompatActivity {
             getSupportActionBar().setTitle(null);
         }
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //ListView beschreiben

@@ -54,8 +54,8 @@ public class AboutListAdapter extends BaseAdapter
         if(convertView==null)
             vi = inflater.inflate(R.layout.aboutlist_single_layout, null);
 
-        TextView txtName = (TextView) vi.findViewById(R.id.textViewListAboutHeading);
-        TextView txtSort = (TextView) vi.findViewById(R.id.textViewListAboutDescription);
+        TextView txtName = vi.findViewById(R.id.textViewListAboutHeading);
+        TextView txtSort = vi.findViewById(R.id.textViewListAboutDescription);
 
         txtName.setText(item.getHeading());
         txtSort.setText(item.getDescription());

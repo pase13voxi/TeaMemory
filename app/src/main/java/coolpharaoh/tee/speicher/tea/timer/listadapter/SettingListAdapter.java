@@ -54,8 +54,8 @@ public class SettingListAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.settinglist_single_layout, null);
 
-        TextView txtName = (TextView) vi.findViewById(R.id.textViewListSettingHeading);
-        TextView txtSort = (TextView) vi.findViewById(R.id.textViewListSettingDescription);
+        TextView txtName = vi.findViewById(R.id.textViewListSettingHeading);
+        TextView txtSort = vi.findViewById(R.id.textViewListSettingDescription);
 
         txtName.setText(item.getHeading());
         txtSort.setText(item.getDescription());

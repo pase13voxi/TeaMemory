@@ -6,8 +6,7 @@ import androidx.annotation.NonNull;
 
 @Entity(tableName = "settings")
 public class ActualSettings {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     private Long id;
 
     private String musicchoice;

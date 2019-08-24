@@ -12,6 +12,7 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.Vibrator;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -72,7 +73,7 @@ public class CountDownService extends Service {
             channel.setDescription(description);
             channel.setSound(null, null);
             //First time
-            String ms = String.format("%02d : %02d",
+            String ms = String.format(Locale.ENGLISH,"%02d : %02d",
                     TimeUnit.MILLISECONDS.toMinutes(millis),
                     TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
             notification_counter = new Notification.Builder(getApplicationContext())
@@ -90,7 +91,7 @@ public class CountDownService extends Service {
             notificationManager_counter.notify(1, notification_counter.build());
         }else {
             //First time
-            String ms = String.format("%02d : %02d",
+            String ms = String.format(Locale.ENGLISH,"%02d : %02d",
                     TimeUnit.MILLISECONDS.toMinutes(millis),
                     TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
             notification_counter = new Notification.Builder(getApplicationContext())
@@ -112,7 +113,7 @@ public class CountDownService extends Service {
                 BroadcaseIntent.putExtra("countdown", millisUntilFinished);
                 sendBroadcast(BroadcaseIntent);
 
-                String ms = String.format("%02d : %02d",
+                String ms = String.format(Locale.ENGLISH,"%02d : %02d",
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                 //Second time

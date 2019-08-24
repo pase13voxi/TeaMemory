@@ -15,8 +15,7 @@ import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
 
 @Entity(tableName = "counter", foreignKeys = @ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
 public class Counter {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "counter_id")
     private Long id;
     @ColumnInfo(name = "tea_id")

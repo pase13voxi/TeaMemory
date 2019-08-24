@@ -234,7 +234,7 @@ public class NewTeaViewModel {
         mInfusionDAO.deleteInfusionByTeaId(teaId);
         for (int i = 0; i < mInfusions.size(); i++) {
             mInfusions.get(i).setTeaId(teaId);
-            mInfusions.get(i).setInfusion(i);
+            mInfusions.get(i).setInfusionindex(i);
             mInfusionDAO.insert(mInfusions.get(i));
         }
     }

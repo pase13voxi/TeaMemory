@@ -54,8 +54,8 @@ public class SoftwareListAdapter extends BaseAdapter
         if(convertView==null)
             vi = inflater.inflate(R.layout.softwarelist_single_layout, null);
 
-        TextView txtName = (TextView) vi.findViewById(R.id.textViewListSoftwareHeading);
-        TextView txtSort = (TextView) vi.findViewById(R.id.textViewListSoftwareDescription);
+        TextView txtName = vi.findViewById(R.id.textViewListSoftwareHeading);
+        TextView txtSort = vi.findViewById(R.id.textViewListSoftwareDescription);
 
         txtName.setText(item.getHeading());
         txtSort.setText(item.getDescription());

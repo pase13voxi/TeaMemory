@@ -77,6 +77,12 @@
     <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
     <string name="showtea_channel_name">Fertiger Tee</string>
     <string name="showtea_channel_description">Wird gezeigt wenn der Tee Fertig ist.</string>
+    <string name="showtea_content_description_steam">Dampf</string>
+    <string name="showtea_content_description_cup">Tasse</string>
+    <string name="showtea_content_description_filling">Füllung</string>
+    <string name="showtea_content_description_temperature">Thermometer</string>
+    <string name="showtea_content_description_amount">Löffel</string>
+    <string name="showtea_content_description_infusion">Tasse</string>
     <!--Newtea-->
     <string name="newtea_heading">Tee erstellen/bearbeiten</string>
     <string name="newtea_tea_variety">Teesorte</string>
@@ -233,6 +239,7 @@
     <string name="about_software_description">Welche Open Source Software wird von dem Tee Speicher genutzt?</string>
     <!--Contact-->
     <string name="contact_heading">Kontakt</string>
+    <string name="contact_content_description_photo">Foto</string>
     <string name="contact_about_me">Hallo, ich bin Pascal und ich habe den Tee Speicher in meiner Freizeit entwickelt. Für Fragen oder Anregungen schreib mir eine E-mail.</string>
     <string name="contact_email">Sende mir eine E-mail.</string>
     <string name="contact_email_address">pase.b@outlook.com</string>
@@ -266,6 +273,7 @@
     <string name="languages_email_address">pase.b@outlook.com</string>
     <string name="languages_email_subject">Tee Speicher Sprachen</string>
     <string name="languages_email_chooser">Sende eine E-Mail&#8230;</string>
+    <string name="languages_content_description_bulletpoint">Aufzählungszeichen</string>
     <!--Problems-->
     <string name="problems_heading">Problem</string>
     <string name="problems_question">Läuft der Timer nicht mehr im Hintergrund?</string>
@@ -275,6 +283,7 @@
     <string name="problems_hope">Danach sollte der Timer auch wieder im Hintergrund funktionieren.</string>
     <string name="problems_action">Zur Einstellung</string>
     <string name="problems_error">Diese Einstellung ist bei deiner Android Version nicht vorhanden.</string>
+    <string name="problems_content_description_bulletpoint">Aufzählungszeichen</string>
     <!--Time-->
     <string-array name="itemsTimer">
         <item>00</item>

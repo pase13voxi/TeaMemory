@@ -18,5 +18,5 @@
         android:layout_height="wrap_content"
         android:text="@string/main_dialog_problem_checkbox"
         android:textSize="14sp"
-        android:theme="@style/CheckBoxStyle"></CheckBox>
+        android:theme="@style/CheckBoxStyle" />
 </LinearLayout>

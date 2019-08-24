@@ -12,8 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
 
 @Entity(tableName = "tea")
 public class Tea {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tea_id")
     private Long id;
 

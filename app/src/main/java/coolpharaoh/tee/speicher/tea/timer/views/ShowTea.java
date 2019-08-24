@@ -36,6 +36,7 @@ import com.tooltip.Tooltip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -92,7 +93,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             getSupportActionBar().setTitle(null);
         }
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Hole TextViews

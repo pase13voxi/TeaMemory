@@ -26,6 +26,7 @@ import com.tooltip.Tooltip;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -84,7 +85,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             getSupportActionBar().setTitle(null);
         }
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Eingabefelder bestimmen

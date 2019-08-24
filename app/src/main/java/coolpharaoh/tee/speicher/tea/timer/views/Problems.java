@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 
+import java.util.Objects;
+
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 public class Problems extends AppCompatActivity {
@@ -33,7 +35,7 @@ public class Problems extends AppCompatActivity {
             getSupportActionBar().setTitle(null);
         }
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button buttonToSettings = findViewById(R.id.buttonToSettings);

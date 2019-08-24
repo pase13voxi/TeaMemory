@@ -12,6 +12,7 @@
             android:layout_height="50dp"
             android:id="@+id/imageViewDialogDescriptionTemperature"
             android:src="@drawable/temperatureexchange"
+            android:contentDescription="@string/showtea_content_description_temperature"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"/>
         <TextView
@@ -32,6 +33,7 @@
             android:layout_height="50dp"
             android:id="@+id/imageViewDialogDescriptionAmount"
             android:src="@drawable/spoon"
+            android:contentDescription="@string/showtea_content_description_amount"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"/>
         <TextView
@@ -52,6 +54,7 @@
             android:layout_height="40dp"
             android:id="@+id/imageViewDialogDescriptionInfusion"
             android:src="@drawable/infusiondark"
+            android:contentDescription="@string/showtea_content_description_infusion"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
             android:layout_margin="5dp"/>
