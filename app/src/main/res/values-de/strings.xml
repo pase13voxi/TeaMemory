@@ -73,7 +73,7 @@
     <string name="showtea_tooltip_note">Notiz</string>
     <string name="showtea_tooltip_exchange">Abkühlzeit</string>
     <string name="showtea_tooltip_calculateamount">Menge berechnen</string>
-    <string name="showtea_tooltip_infusionindex">Aufguss auswählen</string>
+    <string name="showtea_tooltip_infusion">Aufguss auswählen</string>
     <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
     <string name="showtea_channel_name">Fertiger Tee</string>
     <string name="showtea_channel_description">Wird gezeigt wenn der Tee Fertig ist.</string>

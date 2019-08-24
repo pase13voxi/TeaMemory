@@ -74,7 +74,7 @@
     <string name="showtea_tooltip_note">Note</string>
     <string name="showtea_tooltip_exchange">Temps de refroidissement</string>
     <string name="showtea_tooltip_calculateamount">Calculer les quantités</string>
-    <string name="showtea_tooltip_infusionindex">Choisir l\'infusionindex</string>
+    <string name="showtea_tooltip_infusion">Choisir l\'infusionindex</string>
     <string name="showtea_tooltip_nextinfusion">Infusion suivante</string>
     <!--Strange was macht dieser Text hier überhaupt-->
     <string name="showtea_channel_name">Préparation terminée</string>

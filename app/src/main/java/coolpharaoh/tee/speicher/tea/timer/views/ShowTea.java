@@ -895,7 +895,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         } else if (view.getId() == R.id.buttonCalculateAmount) {
             showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_calculateamount));
         } else if (view.getId() == R.id.toolbar_infusionindex) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_infusionindex));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_infusion));
         } else if (view.getId() == R.id.toolbar_nextinfusion) {
             showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_nextinfusion));
         }
