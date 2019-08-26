@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 // TODO Auto-generated method stub
                 //kann später entfernt werden
                 if (!teaItems.loadOld2Collection(getApplicationContext())) {
-                    if (!teaItems.loadOldCollection(getApplicationContext())) {
+                    if (teaItems.loadOldCollection(getApplicationContext())) {
+                        /*
                         ArrayList<Temperature> tmpTemperature = new ArrayList<>();
                         tmpTemperature.add(new TemperatureCelsius(100));
                         ArrayList<Time> tmpCoolDownTime = new ArrayList<>();
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                         teaItems.getTeaItems().add(teaExample3);
 
                         teaItems.saveCollection(getApplicationContext());
-                    } else {
+                        */
                         teaItems.convertCollectionToNew();
                         teaItems.saveCollection(getApplicationContext());
                     }
@@ -212,8 +213,19 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             settings = new ActualSetting();
             if (!settings.loadSettings(getApplicationContext())) {
                 if (!settings.loadOldSettings(getApplicationContext())) {
-                    //setzte Default wenn nicht vorhanden
-                    settings.saveSettings(getApplicationContext());
+                    ActualSettings actualSettings = new ActualSettings();
+                    actualSettings.setMusicchoice("content://settings/system/ringtone");
+                    actualSettings.setMusicname("Default");
+                    actualSettings.setVibration(false);
+                    actualSettings.setNotification(true);
+                    actualSettings.setAnimation(true);
+                    actualSettings.setTemperatureunit("Celsius");
+                    actualSettings.setShowteaalert(true);
+                    actualSettings.setMainproblemalert(true);
+                    actualSettings.setMainratealert(true);
+                    actualSettings.setMainratecounter(0);
+                    actualSettings.setSort(0);
+                    actualSettingsDAO.insert(actualSettings);
                 }
             }
 

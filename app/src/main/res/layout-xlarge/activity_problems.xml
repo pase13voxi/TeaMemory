@@ -30,7 +30,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/textViewProblemsInfo"
         android:layout_marginTop="60dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:textSize="35sp"
         android:textColor="@color/grey"/>
 
@@ -42,7 +42,7 @@
         android:contentDescription="@string/problems_content_description_bulletpoint"
         android:layout_below="@+id/textViewProblemSolve"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginStart="40dp"/>
 
     <TextView
         android:id="@+id/textViewStep1Text"
@@ -53,7 +53,7 @@
         android:layout_toEndOf="@id/imageView1BulletPoint"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:textSize="35sp"
         android:textColor="@color/grey"/>
 
@@ -66,7 +66,7 @@
         android:contentDescription="@string/problems_content_description_bulletpoint"
         android:layout_below="@+id/textViewStep1Text"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginStart="40dp"/>
 
     <TextView
         android:id="@+id/textViewStep2Text"
@@ -77,7 +77,7 @@
         android:layout_toEndOf="@id/imageView2BulletPoint"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:textSize="35sp"
         android:textColor="@color/grey"/>
 
@@ -90,7 +90,7 @@
         android:contentDescription="@string/problems_content_description_bulletpoint"
         android:layout_below="@+id/textViewStep2Text"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginStart="40dp"/>
 
     <TextView
         android:id="@+id/textViewStep3Text"
@@ -101,7 +101,7 @@
         android:layout_toEndOf="@id/imageView3BulletPoint"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:textSize="35sp"
         android:textColor="@color/grey"/>
 

@@ -39,7 +39,7 @@
         android:id="@+id/buttonSendEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/email"
+        android:drawableStart="@drawable/email"
         android:text="@string/contact_email"
         android:textSize="20sp"
         android:background="@null"

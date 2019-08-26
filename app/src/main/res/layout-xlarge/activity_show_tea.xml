@@ -23,7 +23,7 @@
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
         android:layout_below="@id/tool_bar"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="10dp"/>
 
     <ToggleButton
@@ -37,7 +37,7 @@
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
         android:layout_below="@id/tool_bar"
-        android:layout_toLeftOf="@+id/buttonNotification"
+        android:layout_toStartOf="@+id/buttonNotification"
         android:layout_margin="10dp"/>
 
     <TextView
@@ -72,8 +72,7 @@
         android:id="@+id/spinnerMinutes"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="125dip"
-        android:layout_toStartOf="@+id/textViewDoppelPunkt"
-        android:layout_toLeftOf="@+id/textViewDoppelPunkt"/>
+        android:layout_toStartOf="@+id/textViewDoppelPunkt"/>
 
     <Spinner
         android:layout_width="wrap_content"
@@ -81,14 +80,13 @@
         android:id="@+id/spinnerSeconds"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="125dip"
-        android:layout_toRightOf="@+id/textViewDoppelPunkt"
         android:layout_toEndOf="@+id/textViewDoppelPunkt"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="  :  "
+        android:text="@string/showtea_double_point"
         android:textSize="50sp"
         android:id="@+id/textViewDoppelPunkt"
         android:layout_alignParentBottom="true"
@@ -102,9 +100,9 @@
         android:id="@+id/buttonNote"
         android:background="@drawable/button_note"
         android:layout_above="@id/spinnerSeconds"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="200dip"
-        android:layout_marginRight="50dip"
+        android:layout_marginEnd="50dip"
         android:visibility="invisible"/>
 
     <Button
@@ -114,20 +112,19 @@
         android:background="@drawable/button_temperatureexchange"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="130dip"
-        android:layout_toLeftOf="@+id/textViewShowTemperatur"
+        android:layout_toStartOf="@+id/textViewShowTemperatur"
         android:enabled="false"/>
 
     <TextView
         android:layout_width="130dip"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large"
         android:textSize="40sp"
         android:id="@+id/textViewShowTemperatur"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="140dip"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dip" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dip" />
 
     <Button
         android:layout_width="70dp"
@@ -136,24 +133,23 @@
         android:background="@drawable/button_calculateamount"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="40dp"
-        android:layout_alignLeft="@+id/buttonExchange" />
+        android:layout_alignStart="@+id/buttonExchange" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large"
         android:textSize="40sp"
         android:id="@+id/textViewShowTeelamass"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="50dp"
-        android:layout_toRightOf="@+id/buttonCalculateAmount" />
+        android:layout_toEndOf="@+id/buttonCalculateAmount" />
 
     <Button
        style="?android:attr/buttonStyleSmall"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:text="Start"
+       android:text="@string/showtea_timer_start"
         android:textColor="@color/white"
        android:textSize="40sp"
        android:id="@+id/buttonStartTimer"
@@ -161,8 +157,8 @@
        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
        android:layout_alignParentBottom="true"
        android:layout_marginBottom="80dip"
-       android:layout_alignLeft="@id/spinnerMinutes"
-       android:layout_alignRight="@+id/spinnerSeconds"/>
+       android:layout_alignStart="@id/spinnerMinutes"
+       android:layout_alignEnd="@+id/spinnerSeconds"/>
 
     <Button
         android:layout_width="55dip"
@@ -171,9 +167,9 @@
         android:visibility="invisible"
         android:background="@drawable/button_info"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/buttonStartTimer"
+        android:layout_toEndOf="@id/buttonStartTimer"
         android:layout_marginBottom="170dip"
-        android:layout_marginLeft="10dip"/>
+        android:layout_marginStart="10dip"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -183,8 +179,8 @@
         android:id="@+id/textViewMin"
         android:layout_above="@id/buttonStartTimer"
         android:layout_marginBottom="65dip"
-        android:layout_toLeftOf="@+id/textViewDoppelPunkt"
-        android:layout_alignLeft="@id/spinnerMinutes"/>
+        android:layout_toStartOf="@+id/textViewDoppelPunkt"
+        android:layout_alignStart="@id/spinnerMinutes"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -194,7 +190,6 @@
         android:id="@+id/textViewSec"
         android:layout_above="@id/buttonStartTimer"
         android:layout_marginBottom="65dip"
-        android:layout_toRightOf="@+id/textViewDoppelPunkt"
         android:layout_toEndOf="@+id/textViewDoppelPunkt" />
 
     <TextView
@@ -215,7 +210,7 @@
         android:layout_height="130dip"
         android:src="@drawable/steam"
         android:contentDescription="@string/showtea_content_description_steam"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="200dip"
         android:visibility="invisible"/>
@@ -226,7 +221,7 @@
         android:layout_height="230dip"
         android:src="@drawable/cup_new"
         android:contentDescription="@string/showtea_content_description_cup"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dip"
         android:visibility="invisible"/>
@@ -236,7 +231,7 @@
         android:layout_height="230dip"
         android:src="@drawable/fill0pr"
         android:contentDescription="@string/showtea_content_description_filling"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dip"
         android:visibility="invisible"/>

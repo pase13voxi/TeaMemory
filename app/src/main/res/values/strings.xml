@@ -58,6 +58,7 @@
     <string name="showtea_dialog_amount_ok">OK</string>
     <string name="showtea_display_min">Min</string>
     <string name="showtea_display_sec">Sec</string>
+    <string name="showtea_first_infusion_index">1.</string>
     <string name="showtea_break_count_point">%1$d.</string>
     <string name="showtea_infusion_count_title">Please choose your infusion</string>
     <string name="showtea_infusion_index_content">Infusion</string>
@@ -65,6 +66,7 @@
     <string name="showtea_cooldown_text">For green or white tea the boiling water should be cool down before infuse the tea.</string>
     <string name="showtea_cooldown_ok">OK</string>
     <string name="showtea_error_text">Error displaying elements.</string>
+    <string name="showtea_double_point">\u0020\u0020:\u0020\u0020</string>
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Ready</string>
@@ -189,6 +191,7 @@
     <string name="newtea_tooltip_showcooldowntime">Show cooldown option</string>
     <string name="newtea_tooltip_autofillcooldowntime">Autofill cooldown time</string>
     <string name="newtea_tooltip_done">Save tea</string>
+    <string name="newtea_tooltip_done_title">Done</string>
     <!--Settings-->
     <string name="settings_heading">Settings</string>
     <string name="settings_alarm">Alarm sound</string>

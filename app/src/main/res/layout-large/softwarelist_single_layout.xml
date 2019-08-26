@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/textViewListSoftwareHeading"
-        android:text="abc"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
         android:textColor="@color/colorPrimaryDark"
         />
@@ -21,8 +20,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/textAppearanceGrey"
         android:id="@+id/textViewListSoftwareDescription"
-        android:text="abc"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         />
 
 </LinearLayout>

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/textViewListAboutHeading"
-        android:text="abc"
         android:textSize="40sp"
         />
     <TextView
@@ -19,7 +18,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/textAppearanceGrey"
         android:id="@+id/textViewListAboutDescription"
-        android:text="abc"
         android:textSize="25sp"
         />
 
