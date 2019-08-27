@@ -368,7 +368,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateClock(intent); // or whatever method used to update your GUI fields
+            updateClock(intent);
         }
     };
 
@@ -382,11 +382,16 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     protected void onDestroy() {
         stopService(new Intent(this, CountDownService.class));
         stopService(new Intent(getBaseContext(), MediaService.class));
+
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {
             throw new AssertionError("NotificationManager is null.");
         } else {
             notificationManager.cancelAll();
+        }
+
+        if(broadcastReceiver!=null){
+                unregisterReceiver(broadcastReceiver);
         }
 
         super.onDestroy();
