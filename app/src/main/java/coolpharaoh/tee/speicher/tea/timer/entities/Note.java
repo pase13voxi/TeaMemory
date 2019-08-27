@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
@@ -19,6 +20,16 @@ public class Note {
     private int position;
     private String header;
     private String description;
+
+    public Note(){}
+
+    @Ignore
+    public Note(long teaId, int position, String header, String description) {
+        this.teaId = teaId;
+        this.position = position;
+        this.header = header;
+        this.description = description;
+    }
 
     @NonNull
     public Long getId() {

@@ -2,23 +2,11 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
-
-import androidx.annotation.NonNull;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,36 +23,38 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.room.Room;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tooltip.Tooltip;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.ActualSetting;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.AmountTs;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Coloring;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.N2Tea;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.SortOfTea;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.TeaCollection;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Temperature;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.TemperatureCelsius;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Time;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Variety;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.TeaAdapter;
-import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.daos.CounterDAO;
 import coolpharaoh.tee.speicher.tea.timer.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.daos.NoteDAO;
 import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.datastructure.ActualSetting;
+import coolpharaoh.tee.speicher.tea.timer.datastructure.N2Tea;
+import coolpharaoh.tee.speicher.tea.timer.datastructure.TeaCollection;
+import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
+import coolpharaoh.tee.speicher.tea.timer.entities.Note;
+import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.listadapter.TeaAdapter;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -107,47 +97,48 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         if (actualSettingsDAO.getCountItems() == 0) {
 
+
+            //temporärer Check
+            boolean teasExist = true;
             //Liste aller Tees
             TeaCollection teaItems = new TeaCollection();
             if (!teaItems.loadCollection(getApplicationContext())) {
                 // TODO Auto-generated method stub
                 //kann später entfernt werden
                 if (!teaItems.loadOld2Collection(getApplicationContext())) {
-                    if (teaItems.loadOldCollection(getApplicationContext())) {
-                        /*
-                        ArrayList<Temperature> tmpTemperature = new ArrayList<>();
-                        tmpTemperature.add(new TemperatureCelsius(100));
-                        ArrayList<Time> tmpCoolDownTime = new ArrayList<>();
-                        tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(100)));
-                        ArrayList<Time> tmpTime = new ArrayList<>();
-                        tmpTime.add(new Time("3:30"));
-                        N2Tea teaExample1 = new N2Tea(teaItems.nextId(), "Earl Grey", new SortOfTea("Schwarzer Tee"), tmpTemperature,
-                                tmpCoolDownTime, tmpTime, new AmountTs(5), new Coloring(SortOfTea.getVariatyColor(Variety.BlackTea)));
-                        teaExample1.setCurrentDate();
-                        teaItems.getTeaItems().add(teaExample1);
-                        tmpTemperature = new ArrayList<>();
-                        tmpTemperature.add(new TemperatureCelsius(85));
-                        tmpCoolDownTime = new ArrayList<>();
-                        tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(85)));
-                        tmpTime = new ArrayList<>();
-                        tmpTime.add(new Time("2"));
-                        N2Tea teaExample2 = new N2Tea(teaItems.nextId(), "Pai Mu Tan", new SortOfTea("Weißer Tee"), tmpTemperature,
-                                tmpCoolDownTime, tmpTime, new AmountTs(4), new Coloring(SortOfTea.getVariatyColor(Variety.WhiteTea)));
-                        teaExample2.setCurrentDate();
-                        teaItems.getTeaItems().add(teaExample2);
-                        tmpTemperature = new ArrayList<>();
-                        tmpTemperature.add(new TemperatureCelsius(80));
-                        tmpCoolDownTime = new ArrayList<>();
-                        tmpCoolDownTime.add(new Time(Temperature.celsiusToCoolDownTime(80)));
-                        tmpTime = new ArrayList<>();
-                        tmpTime.add(new Time("1:30"));
-                        N2Tea teaExample3 = new N2Tea(teaItems.nextId(), "Sencha", new SortOfTea("Grüner Tee"), tmpTemperature,
-                                tmpCoolDownTime, tmpTime, new AmountTs(4), new Coloring(SortOfTea.getVariatyColor(Variety.GreenTea)));
-                        teaExample3.setCurrentDate();
-                        teaItems.getTeaItems().add(teaExample3);
+                    if (!teaItems.loadOldCollection(getApplicationContext())) {
+                        teasExist = false;
 
-                        teaItems.saveCollection(getApplicationContext());
-                        */
+                        Tea ntea1 = new Tea("Earl Grey", getApplicationContext().getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, getApplicationContext()), 0, Calendar.getInstance().getTime());
+                        teaDAO.insert(ntea1);
+                        long teaId1 = teaDAO.getTeas().get(0).getId();
+                        Infusion ninfusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
+                        infusionDAO.insert(ninfusion1);
+                        Counter ncounter1 = new Counter(teaId1, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+                        counterDAO.insert(ncounter1);
+                        Note nnote1 = new Note(teaId1, 1, null, "");
+                        noteDAO.insert(nnote1);
+
+                        Tea ntea2 = new Tea("Pai Mu Tan", getApplicationContext().getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, getApplicationContext()), 0, Calendar.getInstance().getTime());
+                        teaDAO.insert(ntea2);
+                        long teaId2 = teaDAO.getTeas().get(1).getId();
+                        Infusion ninfusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
+                        infusionDAO.insert(ninfusion2);
+                        Counter ncounter2 = new Counter(teaId2, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+                        counterDAO.insert(ncounter2);
+                        Note nnote2 = new Note(teaId2, 1, null, "");
+                        noteDAO.insert(nnote2);
+
+                        Tea ntea3 = new Tea("Sencha", getApplicationContext().getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, getApplicationContext()), 0, Calendar.getInstance().getTime());
+                        teaDAO.insert(ntea3);
+                        long teaId3 = teaDAO.getTeas().get(2).getId();
+                        Infusion ninfusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
+                        infusionDAO.insert(ninfusion3);
+                        Counter ncounter3 = new Counter(teaId3, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+                        counterDAO.insert(ncounter3);
+                        Note nnote3 = new Note(teaId3, 1, null, "");
+                        noteDAO.insert(nnote3);
+                    } else {
                         teaItems.convertCollectionToNew();
                         teaItems.saveCollection(getApplicationContext());
                     }
@@ -157,62 +148,48 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 }
             }
 
+            //wenn tees existieren dann konvertieren
+            if (teasExist) {
+                int o = 0;
+                //Tee in Datenbank schreiben
+                for (N2Tea otea : teaItems.getTeaItems()) {
+                    Tea ntea = new Tea(otea.getName(), LanguageConversation.convertVarietyToCode(otea.getSortOfTea().getType(), getApplicationContext()), otea.getAmount().getValue(), otea.getAmount().getUnit(), otea.getColoring().getColor(), 0, otea.getDate());
+                    teaDAO.insert(ntea);
+                    long teaId = teaDAO.getTeas().get(o++).getId();
 
-            int o = 0;
-            //Tee in Datenbank schreiben
-            for (N2Tea otea : teaItems.getTeaItems()) {
-                Tea ntea = new Tea();
-                ntea.setName(otea.getName());
-                ntea.setVariety(LanguageConversation.convertVarietyToCode(otea.getSortOfTea().getType(), getApplicationContext()));
-                ntea.setAmount(otea.getAmount().getValue());
-                ntea.setAmountkind(otea.getAmount().getUnit());
-                ntea.setColor(otea.getColoring().getColor());
-                ntea.setDate(otea.getDate());
+                    for (int i = 0; i < otea.getTime().size(); i++) {
+                        Infusion infusion = new Infusion();
+                        infusion.setTeaId(teaId);
+                        infusion.setInfusionindex(i);
+                        if (!otea.getTime().get(i).getTime().equals("-")) {
+                            infusion.setTime(otea.getTime().get(i).getTime());
+                        }
+                        if (!otea.getCoolDownTime().get(i).getTime().equals("-")) {
+                            infusion.setCooldowntime(otea.getCoolDownTime().get(i).getTime());
+                        }
+                        infusion.setTemperaturecelsius(otea.getTemperature().get(i).getCelsius());
+                        infusion.setTemperaturefahrenheit(otea.getTemperature().get(i).getFahrenheit());
 
-                teaDAO.insert(ntea);
-                long teaId = teaDAO.getTeas().get(o++).getId();
-
-                for (int i = 0; i < otea.getTime().size(); i++) {
-                    Infusion infusion = new Infusion();
-                    infusion.setTeaId(teaId);
-                    infusion.setInfusionindex(i);
-                    if (!otea.getTime().get(i).getTime().equals("-")) {
-                        infusion.setTime(otea.getTime().get(i).getTime());
+                        infusionDAO.insert(infusion);
                     }
-                    if (!otea.getCoolDownTime().get(i).getTime().equals("-")) {
-                        infusion.setCooldowntime(otea.getCoolDownTime().get(i).getTime());
-                    }
-                    infusion.setTemperaturecelsius(otea.getTemperature().get(i).getCelsius());
-                    infusion.setTemperaturefahrenheit(otea.getTemperature().get(i).getFahrenheit());
 
-                    infusionDAO.insert(infusion);
+                    Counter ncounter = new Counter(teaId, otea.getCounter().getDay(), otea.getCounter().getWeek(), otea.getCounter().getMonth(), otea.getCounter().getOverall(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+                    counterDAO.insert(ncounter);
+
+
+                    Note nnote = new Note(teaId, 1, null, otea.getNote());
+                    noteDAO.insert(nnote);
+
                 }
-
-                Counter ncounter = new Counter();
-                ncounter.setTeaId(teaId);
-                ncounter.setDay(otea.getCounter().getDay());
-                ncounter.setWeek(otea.getCounter().getWeek());
-                ncounter.setMonth(otea.getCounter().getMonth());
-                ncounter.setOverall(otea.getCounter().getOverall());
-                ncounter.setDaydate(Calendar.getInstance().getTime());
-                ncounter.setWeekdate(Calendar.getInstance().getTime());
-                ncounter.setMonthdate(Calendar.getInstance().getTime());
-
-                counterDAO.insert(ncounter);
-
-
-                Note nnote = new Note();
-                nnote.setTeaId(teaId);
-                nnote.setPosition(1);
-                nnote.setDescription(otea.getNote());
-                noteDAO.insert(nnote);
-
             }
 
+            boolean settingsExist = true;
             //Settings holen
             settings = new ActualSetting();
             if (!settings.loadSettings(getApplicationContext())) {
                 if (!settings.loadOldSettings(getApplicationContext())) {
+                    settingsExist = false;
+
                     ActualSettings actualSettings = new ActualSettings();
                     actualSettings.setMusicchoice("content://settings/system/ringtone");
                     actualSettings.setMusicname("Default");
@@ -229,21 +206,23 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 }
             }
 
+            if (settingsExist) {
+                //Settings in Datenbank schreiben
+                ActualSettings actualSettings = new ActualSettings();
+                actualSettings.setMusicchoice(settings.getMusicChoice());
+                actualSettings.setMusicname(settings.getMusicName());
+                actualSettings.setVibration(settings.isVibration());
+                actualSettings.setNotification(settings.isNotification());
+                actualSettings.setAnimation(settings.isAnimation());
+                actualSettings.setTemperatureunit(settings.getTemperatureUnit());
+                actualSettings.setShowteaalert(settings.isShowteaAlert());
+                actualSettings.setMainproblemalert(settings.isMainProblemAlert());
+                actualSettings.setMainratealert(settings.isMainRateAlert());
+                actualSettings.setMainratecounter(settings.getMainRatecounter());
+                actualSettings.setSort(settings.getSort());
+                actualSettingsDAO.insert(actualSettings);
 
-            //Settings in Datenbank schreiben
-            ActualSettings actualSettings = new ActualSettings();
-            actualSettings.setMusicchoice(settings.getMusicChoice());
-            actualSettings.setMusicname(settings.getMusicName());
-            actualSettings.setVibration(settings.isVibration());
-            actualSettings.setNotification(settings.isNotification());
-            actualSettings.setAnimation(settings.isAnimation());
-            actualSettings.setTemperatureunit(settings.getTemperatureUnit());
-            actualSettings.setShowteaalert(settings.isShowteaAlert());
-            actualSettings.setMainproblemalert(settings.isMainProblemAlert());
-            actualSettings.setMainratealert(settings.isMainRateAlert());
-            actualSettings.setMainratecounter(settings.getMainRatecounter());
-            actualSettings.setSort(settings.getSort());
-            actualSettingsDAO.insert(actualSettings);
+            }
         }
 
         mMainActivityViewModel = new MainActivityViewModel(getApplicationContext());

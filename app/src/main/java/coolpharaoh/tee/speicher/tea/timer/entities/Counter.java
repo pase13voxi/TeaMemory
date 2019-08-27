@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -31,6 +32,20 @@ public class Counter {
     private Date weekdate;
     @TypeConverters(DateConverter.class)
     private Date monthdate;
+
+    public Counter(){}
+
+    @Ignore
+    public Counter(long teaId, int day, int week, int month, long overall, Date daydate, Date weekdate, Date monthdate) {
+        this.teaId = teaId;
+        this.day = day;
+        this.week = week;
+        this.month = month;
+        this.overall = overall;
+        this.daydate = daydate;
+        this.weekdate = weekdate;
+        this.monthdate = monthdate;
+    }
 
     @NonNull
     public Long getId() {

@@ -17,9 +17,9 @@ import java.util.Objects;
 import br.com.felix.horizontalbargraph.HorizontalBar;
 import br.com.felix.horizontalbargraph.model.BarItem;
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Coloring;
 import coolpharaoh.tee.speicher.tea.timer.pojos.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.StatisticsViewModel;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 
 public class Statistics extends AppCompatActivity {
 
@@ -99,7 +99,7 @@ public class Statistics extends AppCompatActivity {
         List<BarItem> items = new ArrayList<>();
 
         for (StatisticsPOJO statistic : statistics) {
-            items.add(new BarItem(statistic.teaname, (double) statistic.counter, statistic.teacolor, Coloring.discoverForegroundColor(statistic.teacolor)));
+            items.add(new BarItem(statistic.teaname, (double) statistic.counter, statistic.teacolor, ColorConversation.discoverForegroundColor(statistic.teacolor)));
         }
 
         return items;

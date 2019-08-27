@@ -1,11 +1,12 @@
 package coolpharaoh.tee.speicher.tea.timer.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 @Entity(tableName = "infusion", foreignKeys =
 @ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
@@ -21,6 +22,18 @@ public class Infusion {
     private String cooldowntime;
     private int temperaturecelsius;
     private int temperaturefahrenheit;
+
+    public Infusion(){}
+
+    @Ignore
+    public Infusion(long teaId, int infusionindex, String time, String cooldowntime, int temperaturecelsius, int temperaturefahrenheit) {
+        this.teaId = teaId;
+        this.infusionindex = infusionindex;
+        this.time = time;
+        this.cooldowntime = cooldowntime;
+        this.temperaturecelsius = temperaturecelsius;
+        this.temperaturefahrenheit = temperaturefahrenheit;
+    }
 
     @NonNull
     public Long getId() {

@@ -10,4 +10,15 @@
     <color name="whitepicture">#88FFFFFF</color>
     <color name="darkpicture">#880d0d0f</color>
     <color name="darkbutton">#4f4e4e</color>
+    <!-- Teacolors -->
+    <color name="blacktea">#141450</color>
+    <color name="greentea">#9ACD32</color>
+    <color name="yellowtea">#FFC24B</color>
+    <color name="whitetea">#FFF996</color>
+    <color name="oolongtea">#FFA500</color>
+    <color name="puerhtea">#8B2500</color>
+    <color name="herbaltea">#439936</color>
+    <color name="fruittea">#FF2A16</color>
+    <color name="rooibustea">#FA5A00</color>
+    <color name="other">#7F7FBA</color>
 </resources>

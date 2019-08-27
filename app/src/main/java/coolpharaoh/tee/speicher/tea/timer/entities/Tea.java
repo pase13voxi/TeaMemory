@@ -1,10 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-import androidx.annotation.NonNull;
 
 import java.util.Date;
 
@@ -24,6 +25,19 @@ public class Tea {
     private int lastInfusion;
     @TypeConverters(DateConverter.class)
     private Date date;
+
+    public Tea(){}
+
+    @Ignore
+    public Tea(String name, String variety, int amount, String amountkind, int color, int lastInfusion, Date date) {
+        this.name = name;
+        this.variety = variety;
+        this.amount = amount;
+        this.amountkind = amountkind;
+        this.color = color;
+        this.lastInfusion = lastInfusion;
+        this.date = date;
+    }
 
     @NonNull
     public Long getId() {

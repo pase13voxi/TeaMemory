@@ -30,18 +30,22 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.SortOfTea;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Temperature;
-import coolpharaoh.tee.speicher.tea.timer.datastructure.Variety;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.NewTeaViewModel;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.HintConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
 
 
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener {
 
+    private enum Variety {
+        BlackTea, GreenTea, YellowTea, WhiteTea, OolongTea, PuErhTea,
+        HerbalTea, FruitTea, RooibusTea, Other
+    }
+
     private Variety variety = Variety.BlackTea;
     private ColorPickerDialog colorPickerDialog;
-    private int color = SortOfTea.getVariatyColor(Variety.BlackTea);
+    private int color;
     private String amountUnit = "Ts";
 
 
@@ -106,6 +110,8 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         rightArrow = findViewById(R.id.buttonArrowRight);
         deleteInfusion = findViewById(R.id.buttonDeleteInfusion);
         addInfusion = findViewById(R.id.buttonAddInfusion);
+
+        color = ColorConversation.getVarietyColor(Variety.BlackTea.ordinal(), getApplicationContext());
 
         //feste Texte setzten
         textViewTeaSort.setText(R.string.newtea_tea_variety);
@@ -201,7 +207,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 variety = Variety.values()[position];
                 //Farbe soll am Anfang nicht geändert werden, wenn der Tee geändert wird
                 if (!colorChange) {
-                    color = SortOfTea.getVariatyColor(variety);
+                    color = ColorConversation.getVarietyColor(variety.ordinal(), getApplicationContext());
                     buttonColorSape.setColor(color);
                 } else {
                     colorChange = false;
@@ -428,8 +434,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private boolean nameValid(String name) {
-        boolean nameValid = name.length() < 300;
-        return nameValid;
+        return name.length() < 300;
     }
 
     private boolean temperatureStringValid(String temperature) {
@@ -442,7 +447,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 if (mNewTeaViewModel.getTemperatureunit().equals("Celsius"))
                     checktemperature = Integer.parseInt(temperature);
                 else if (mNewTeaViewModel.getTemperatureunit().equals("Fahrenheit"))
-                    checktemperature = Temperature.fahrenheitToCelsius(Integer.parseInt(temperature));
+                    checktemperature = TemperatureConversation.fahrenheitToCelsius(Integer.parseInt(temperature));
 
                 if (checktemperature > 100 || checktemperature < 0) {
                     temperatureValid = false;
@@ -483,10 +488,9 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private void sethints() {
         //set Hint for variety
-        editTextTemperature.setHint(SortOfTea.getHintTemperature(getApplicationContext(), variety,
-                mNewTeaViewModel.getTemperatureunit()));
-        editTextAmount.setHint(SortOfTea.getHintAmount(getApplicationContext(), variety, amountUnit));
-        editTextSteepingTime.setHint(SortOfTea.getHintTime(getApplicationContext(), variety));
+        editTextTemperature.setHint(HintConversation.getHintTemperature(variety.ordinal(), mNewTeaViewModel.getTemperatureunit(), getApplicationContext()));
+        editTextAmount.setHint(HintConversation.getHintAmount(variety.ordinal(), amountUnit, getApplicationContext()));
+        editTextSteepingTime.setHint(HintConversation.getHintTime(variety.ordinal(), getApplicationContext()));
     }
 
     private void refreshInfusionConsole() {
