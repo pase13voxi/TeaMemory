@@ -19,14 +19,14 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class ActualSettingsDAOTest {
-    private ActualSettingsDAO mActualSettingsDao;
+    private ActualSettingsDAO mActualSettingsDAO;
     private TeaMemoryDatabase db;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mActualSettingsDao = db.getActualSettingsDAO();
+        mActualSettingsDAO = db.getActualSettingsDAO();
     }
 
     @After
@@ -37,11 +37,11 @@ public class ActualSettingsDAOTest {
     @Test
     public void insertSettings() {
         ActualSettings actualSettingsBefore = createSettings(false);
-        mActualSettingsDao.insert(actualSettingsBefore);
+        mActualSettingsDAO.insert(actualSettingsBefore);
 
-        assertEquals(mActualSettingsDao.getCountItems(), 1);
+        assertEquals(mActualSettingsDAO.getCountItems(), 1);
 
-        ActualSettings actualSettingsAfter = mActualSettingsDao.getSettings();
+        ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
         assertEquals(actualSettingsAfter.getMusicchoice(),actualSettingsBefore.getMusicchoice());
         assertEquals(actualSettingsAfter.getMusicname(),actualSettingsBefore.getMusicname());
         assertEquals(actualSettingsAfter.isVibration(),actualSettingsBefore.isVibration());
@@ -58,11 +58,11 @@ public class ActualSettingsDAOTest {
     @Test
     public void insertIncompleteSettings() {
         ActualSettings actualSettingsBefore = createSettings(true);
-        mActualSettingsDao.insert(actualSettingsBefore);
+        mActualSettingsDAO.insert(actualSettingsBefore);
 
-        assertEquals(mActualSettingsDao.getCountItems(), 1);
+        assertEquals(mActualSettingsDAO.getCountItems(), 1);
 
-        ActualSettings actualSettingsAfter = mActualSettingsDao.getSettings();
+        ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
         assertEquals(actualSettingsAfter.getMusicchoice(),actualSettingsBefore.getMusicchoice());
         assertEquals(actualSettingsAfter.getMusicname(),actualSettingsBefore.getMusicname());
         assertEquals(actualSettingsAfter.isVibration(),actualSettingsBefore.isVibration());
@@ -79,16 +79,18 @@ public class ActualSettingsDAOTest {
     @Test
     public void updateSettings() {
         ActualSettings actualSettingsBefore = createSettings(false);
-        mActualSettingsDao.insert(actualSettingsBefore);
+        mActualSettingsDAO.insert(actualSettingsBefore);
 
-        ActualSettings actualSettingsUpdate = mActualSettingsDao.getSettings();
+        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+
+        ActualSettings actualSettingsUpdate = mActualSettingsDAO.getSettings();
         actualSettingsUpdate.setTemperatureunit("Fahrenheit");
         actualSettingsUpdate.setVibration(false);
-        mActualSettingsDao.update(actualSettingsUpdate);
+        mActualSettingsDAO.update(actualSettingsUpdate);
 
-        assertEquals(mActualSettingsDao.getCountItems(), 1);
+        assertEquals(mActualSettingsDAO.getCountItems(), 1);
 
-        ActualSettings actualSettingsAfter = mActualSettingsDao.getSettings();
+        ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
         assertEquals(actualSettingsAfter.getMusicchoice(),actualSettingsUpdate.getMusicchoice());
         assertEquals(actualSettingsAfter.getMusicname(),actualSettingsUpdate.getMusicname());
         assertEquals(actualSettingsAfter.isVibration(),actualSettingsUpdate.isVibration());
@@ -102,10 +104,24 @@ public class ActualSettingsDAOTest {
         assertEquals(actualSettingsAfter.getSort(),actualSettingsUpdate.getSort());
     }
 
+    @Test
+    public void countSettings() {
+        assertEquals(mActualSettingsDAO.getCountItems(), 0);
+
+        mActualSettingsDAO.insert(createSettings(false));
+
+        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+
+        mActualSettingsDAO.insert(createSettings(false));
+        mActualSettingsDAO.insert(createSettings(false));
+
+        assertEquals(mActualSettingsDAO.getCountItems(), 3);
+    }
+
     private ActualSettings createSettings(boolean incomplete){
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setMusicchoice("abc");
-        actualSettings.setMusicname("abc");
+        actualSettings.setMusicchoice("choice");
+        actualSettings.setMusicname("name");
         actualSettings.setVibration(true);
         actualSettings.setNotification(true);
         if(incomplete) {
