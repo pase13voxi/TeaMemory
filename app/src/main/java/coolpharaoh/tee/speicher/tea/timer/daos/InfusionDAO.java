@@ -14,6 +14,9 @@ public interface InfusionDAO {
     @Insert
     void insert(Infusion... items);
 
+    @Query("SELECT * FROM infusion")
+    List<Infusion> getInfusions();
+
     @Query("SELECT * FROM infusion WHERE tea_id = :id")
     List<Infusion> getInfusionsByTeaId(Long id);
 
