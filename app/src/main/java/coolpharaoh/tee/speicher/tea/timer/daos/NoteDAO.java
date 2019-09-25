@@ -14,10 +14,10 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Note;
 @Dao
 public interface NoteDAO {
     @Insert
-    void insert(Note... items);
+    void insert(Note items);
 
     @Update
-    void update(Note... items);
+    void update(Note items);
 
     @Query("SELECT * FROM note")
     List<Note> getNotes();

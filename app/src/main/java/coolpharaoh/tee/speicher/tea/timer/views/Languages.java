@@ -33,7 +33,7 @@ public class Languages extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button buttonEmail = findViewById(R.id.buttonSendLanguagesEmail);
+        Button buttonEmail = findViewById(R.id.buttonExport);
         buttonEmail.setOnClickListener(v -> {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", getResources().getString(R.string.languages_email_address), null));

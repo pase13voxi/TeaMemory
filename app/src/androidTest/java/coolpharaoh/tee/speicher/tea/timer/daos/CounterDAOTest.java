@@ -42,8 +42,7 @@ public class CounterDAOTest {
 
     @Test
     public void insertCounter(){
-        mTeaDAO.insert(createTea("name"));
-        long teaId = mTeaDAO.getTeas().get(0).getId();
+        long teaId = mTeaDAO.insert(createTea("name"));
 
         assertEquals(mCounterDAO.getCounters().size(), 0);
 
@@ -64,8 +63,7 @@ public class CounterDAOTest {
 
     @Test
     public void updateCounter(){
-        mTeaDAO.insert(createTea("name"));
-        long teaId = mTeaDAO.getTeas().get(0).getId();
+        long teaId = mTeaDAO.insert(createTea("name"));
 
         Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
         mCounterDAO.insert(counterBefore);

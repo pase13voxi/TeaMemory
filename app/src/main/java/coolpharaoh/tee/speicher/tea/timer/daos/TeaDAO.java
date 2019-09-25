@@ -14,10 +14,10 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 @Dao
 public interface TeaDAO {
     @Insert
-    void insert(Tea... items);
+    long insert(Tea items);
 
     @Update
-    void update(Tea... items);
+    void update(Tea items);
 
     @Delete
     void delete(Tea item);
@@ -25,21 +25,18 @@ public interface TeaDAO {
     @Query("DELETE FROM tea")
     void deleteAll();
 
-    @Query("SELECT * from tea")
+    @Query("SELECT * FROM tea")
     List<Tea> getTeas();
 
-    @Query("SELECT * from tea ORDER BY LOWER(date) DESC")
+    @Query("SELECT * FROM tea ORDER BY LOWER(date) DESC")
     List<Tea> getTeasOrderByActivity();
 
-    @Query("SELECT * from tea ORDER BY LOWER(name) ASC")
+    @Query("SELECT * FROM tea ORDER BY LOWER(name) ASC")
     List<Tea> getTeasOrderByAlphabetic();
 
-    @Query("SELECT * from tea ORDER BY variety ASC")
+    @Query("SELECT * FROM tea ORDER BY variety ASC")
     List<Tea> getTeasOrderByVariety();
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getTeaById(Long id);
-
-    @Query("SELECT * from tea ORDER BY LOWER(date) DESC LIMIT 1")
-    Tea getLastEditedTea();
 }

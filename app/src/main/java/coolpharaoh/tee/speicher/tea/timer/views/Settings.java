@@ -266,7 +266,7 @@ public class Settings extends AppCompatActivity {
             if (checkBoxDescription.isChecked()) {
                 mSettingsViewModel.setShowteaalert(true);
             } else {
-                mSettingsViewModel.setShowteaalert(true);
+                mSettingsViewModel.setShowteaalert(false);
             }
         });
         adb.setNegativeButton(R.string.settings_show_hints_cancle, (dialog, which) -> {
@@ -386,5 +386,6 @@ public class Settings extends AppCompatActivity {
             refreshWindow();
             adapter.notifyDataSetChanged();
         }
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 }

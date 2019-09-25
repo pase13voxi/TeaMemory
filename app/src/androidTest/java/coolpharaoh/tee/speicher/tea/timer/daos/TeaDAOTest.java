@@ -151,14 +151,10 @@ public class TeaDAOTest {
     @Test
     public void getTeaById(){
         Tea teaBefore1 = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
-        mTeaDAO.insert(teaBefore1);
-
-        long teaId1 = mTeaDAO.getTeas().get(0).getId();
+        long teaId1 = mTeaDAO.insert(teaBefore1);
 
         Tea teaBefore2 = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        mTeaDAO.insert(teaBefore2);
-
-        long teaId2 = mTeaDAO.getTeas().get(1).getId();
+        long teaId2 = mTeaDAO.insert(teaBefore2);
 
         Tea teaAfter1 = mTeaDAO.getTeaById(teaId1);
         assertEquals(teaAfter1.getName(), teaBefore1.getName());
@@ -177,25 +173,6 @@ public class TeaDAOTest {
         assertEquals(teaAfter2.getColor(), teaBefore2.getColor());
         assertEquals(teaAfter2.getLastInfusion(), teaBefore2.getLastInfusion());
         assertEquals(teaAfter2.getDate(), teaBefore2.getDate());
-    }
-
-    @Test
-    public void getLastEditedTea(){
-        Tea teaOld = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
-        mTeaDAO.insert(teaOld);
-        Tea teaMiddle = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        mTeaDAO.insert(teaMiddle);
-        Tea teaNew = createTea("nameNew", "varietyNew", new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
-        mTeaDAO.insert(teaNew);
-
-        Tea teaLastEdited = mTeaDAO.getLastEditedTea();
-        assertEquals(teaLastEdited.getName(), teaNew.getName());
-        assertEquals(teaLastEdited.getVariety(), teaNew.getVariety());
-        assertEquals(teaLastEdited.getAmount(), teaNew.getAmount());
-        assertEquals(teaLastEdited.getAmountkind(), teaNew.getAmountkind());
-        assertEquals(teaLastEdited.getColor(), teaNew.getColor());
-        assertEquals(teaLastEdited.getLastInfusion(), teaNew.getLastInfusion());
-        assertEquals(teaLastEdited.getDate(), teaNew.getDate());
     }
 
     @Test

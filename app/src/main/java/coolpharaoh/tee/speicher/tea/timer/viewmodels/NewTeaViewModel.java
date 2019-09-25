@@ -180,17 +180,15 @@ public class NewTeaViewModel {
         setTeaInformation(name, variety, amount, amountkind, color);
 
         mTeaDAO.update(mTea);
-        long teaId = mTeaDAO.getLastEditedTea().getId();
 
-        setInfusionInformation(teaId);
+        setInfusionInformation(mTea.getId());
     }
 
     public void createNewTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
         mTea.setLastInfusion(0);
 
-        mTeaDAO.insert(mTea);
-        long teaId = mTeaDAO.getLastEditedTea().getId();
+        long teaId = mTeaDAO.insert(mTea);
 
         setInfusionInformation(teaId);
 

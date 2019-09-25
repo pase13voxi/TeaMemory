@@ -12,7 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
 @Dao
 public interface InfusionDAO {
     @Insert
-    void insert(Infusion... items);
+    void insert(Infusion items);
 
     @Query("SELECT * FROM infusion")
     List<Infusion> getInfusions();

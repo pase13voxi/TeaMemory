@@ -42,8 +42,7 @@ public class NoteDAOTest {
     public void insertNote(){
         assertEquals(mNoteDAO.getNotes().size(), 0);
 
-        mTeaDAO.insert(createTea());
-        long teaId = mTeaDAO.getTeas().get(0).getId();
+        long teaId = mTeaDAO.insert(createTea());
 
         Note noteBefore = new Note(teaId, 1, "header", "description");
         mNoteDAO.insert(noteBefore);
@@ -61,8 +60,7 @@ public class NoteDAOTest {
     public void updateNote(){
         assertEquals(mNoteDAO.getNotes().size(), 0);
 
-        mTeaDAO.insert(createTea());
-        long teaId = mTeaDAO.getTeas().get(0).getId();
+        long teaId = mTeaDAO.insert(createTea());
 
         Note noteBefore = new Note(teaId, 1, "header", "description");
         mNoteDAO.insert(noteBefore);

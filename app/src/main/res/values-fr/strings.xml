@@ -4,6 +4,7 @@
     <!--Main-->
     <string name="main_action_settings">Paramètres</string>
     <string name="main_action_about">A propos</string>
+    <string name="main_action_export">Export/Import Teas</string>
     <string name="main_sort">Trier</string>
     <string-array name="main_sort_menu">
         <item>Trier par date</item>

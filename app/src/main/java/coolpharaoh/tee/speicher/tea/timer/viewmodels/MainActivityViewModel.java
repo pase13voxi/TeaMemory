@@ -100,7 +100,7 @@ public class MainActivityViewModel extends ViewModel {
 
     public void setMainProblemAlert(boolean mainProblemAlert) {
 
-        mActualSettings.setMainratealert(mainProblemAlert);
+        mActualSettings.setMainproblemalert(mainProblemAlert);
         mActualSettingsDAO.update(mActualSettings);
     }
 

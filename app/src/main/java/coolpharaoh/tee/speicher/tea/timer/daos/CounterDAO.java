@@ -14,10 +14,10 @@ import coolpharaoh.tee.speicher.tea.timer.pojos.StatisticsPOJO;
 @Dao
 public interface CounterDAO {
     @Insert
-    void insert(Counter... items);
+    void insert(Counter items);
 
     @Update
-    void update(Counter... items);
+    void update(Counter items);
 
     @Query("SELECT * FROM counter")
     List<Counter> getCounters();

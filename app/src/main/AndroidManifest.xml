@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="coolpharaoh.tee.speicher.tea.timer">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="false"
         android:xlargeScreens="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -28,7 +30,7 @@
         </activity>
         <activity
             android:name=".views.NewTea"
-            android:label="Tee erstellen/bearbeiten"
+            android:label="Create/Edit tea"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <meta-data
@@ -46,7 +48,15 @@
         </activity>
         <activity
             android:name=".views.Settings"
-            android:label="Einstellungen"
+            android:label="Settings"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.ExportImport"
+            android:label="ExportImport"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -76,7 +86,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
         </activity>
-
         <activity
             android:name=".views.Statistics"
             android:label="Statistics"
@@ -105,6 +114,5 @@
         <service android:name=".services.MediaService" />
         <service android:name=".services.CountDownService" />
     </application>
-
 
 </manifest>

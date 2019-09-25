@@ -4,6 +4,7 @@
     <!--Main-->
     <string name="main_action_settings">Einstellungen</string>
     <string name="main_action_about">Über den Tee Speicher</string>
+    <string name="main_action_export">Export/Import Teas</string>
     <string name="main_sort">Sortierung</string>
     <string-array name="main_sort_menu">
         <item>Sortiere nach Aktivität</item>

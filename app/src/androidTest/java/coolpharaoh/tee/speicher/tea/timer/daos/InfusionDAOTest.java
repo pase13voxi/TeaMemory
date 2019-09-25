@@ -44,8 +44,7 @@ public class InfusionDAOTest {
     public void insertInfusion(){
         assertEquals(mInfusionDAO.getInfusions().size(), 0);
 
-        mTeaDAO.insert(createTea());
-        long teaId = mTeaDAO.getTeas().get(0).getId();
+        long teaId = mTeaDAO.insert(createTea());
 
         Infusion infusionBefore = new Infusion(teaId, 1, "03:00", "10:00", 70, 158);
         mInfusionDAO.insert(infusionBefore);
@@ -65,8 +64,7 @@ public class InfusionDAOTest {
     public void getInfusionsByTeaId(){
         assertEquals(mInfusionDAO.getInfusions().size(), 0);
 
-        mTeaDAO.insert(createTea());
-        long teaId1 = mTeaDAO.getTeas().get(0).getId();
+        long teaId1 = mTeaDAO.insert(createTea());
 
         List<Infusion> infusionBefore1 = new ArrayList<>();
         infusionBefore1.add(new Infusion(teaId1, 1, "03:00", "10:00", 70, 158));
@@ -78,8 +76,7 @@ public class InfusionDAOTest {
         assertEquals(mInfusionDAO.getInfusions().size(), 2);
 
 
-        mTeaDAO.insert(createTea());
-        long teaId2 = mTeaDAO.getTeas().get(1).getId();
+        long teaId2 = mTeaDAO.insert(createTea());
 
         Infusion infusionBefore2 = new Infusion(teaId2, 4, "07:00", "5:00", 100, 212);
         mInfusionDAO.insert(infusionBefore2);
@@ -118,8 +115,7 @@ public class InfusionDAOTest {
     public void deleteInfusionsByTeaId(){
         assertEquals(mInfusionDAO.getInfusions().size(), 0);
 
-        mTeaDAO.insert(createTea());
-        long teaId1 = mTeaDAO.getTeas().get(0).getId();
+        long teaId1 = mTeaDAO.insert(createTea());
 
         List<Infusion> infusionBefore1 = new ArrayList<>();
         infusionBefore1.add(new Infusion(teaId1, 1, "03:00", "10:00", 70, 158));
@@ -131,8 +127,7 @@ public class InfusionDAOTest {
         assertEquals(mInfusionDAO.getInfusions().size(), 2);
 
 
-        mTeaDAO.insert(createTea());
-        long teaId2 = mTeaDAO.getTeas().get(1).getId();
+        long teaId2 = mTeaDAO.insert(createTea());
 
         Infusion infusionBefore2 = new Infusion(teaId2, 4, "07:00", "5:00", 100, 212);
         mInfusionDAO.insert(infusionBefore2);

@@ -45,6 +45,7 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.ActualSetting;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.N2Tea;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.TeaCollection;
+import coolpharaoh.tee.speicher.tea.timer.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
@@ -57,7 +58,6 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
-
     public static ActualSetting settings;
     private MainActivityViewModel mMainActivityViewModel;
     static private boolean startApplication = true;
@@ -110,8 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                         teasExist = false;
 
                         Tea ntea1 = new Tea("Earl Grey", getApplicationContext().getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, getApplicationContext()), 0, Calendar.getInstance().getTime());
-                        teaDAO.insert(ntea1);
-                        long teaId1 = teaDAO.getTeas().get(0).getId();
+                        long teaId1 = teaDAO.insert(ntea1);
                         Infusion ninfusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
                         infusionDAO.insert(ninfusion1);
                         Counter ncounter1 = new Counter(teaId1, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
@@ -120,8 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                         noteDAO.insert(nnote1);
 
                         Tea ntea2 = new Tea("Pai Mu Tan", getApplicationContext().getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, getApplicationContext()), 0, Calendar.getInstance().getTime());
-                        teaDAO.insert(ntea2);
-                        long teaId2 = teaDAO.getTeas().get(1).getId();
+                        long teaId2 = teaDAO.insert(ntea2);
                         Infusion ninfusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
                         infusionDAO.insert(ninfusion2);
                         Counter ncounter2 = new Counter(teaId2, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
@@ -130,8 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                         noteDAO.insert(nnote2);
 
                         Tea ntea3 = new Tea("Sencha", getApplicationContext().getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, getApplicationContext()), 0, Calendar.getInstance().getTime());
-                        teaDAO.insert(ntea3);
-                        long teaId3 = teaDAO.getTeas().get(2).getId();
+                        long teaId3 = teaDAO.insert(ntea3);
                         Infusion ninfusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
                         infusionDAO.insert(ninfusion3);
                         Counter ncounter3 = new Counter(teaId3, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
@@ -150,12 +147,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
             //wenn tees existieren dann konvertieren
             if (teasExist) {
-                int o = 0;
                 //Tee in Datenbank schreiben
                 for (N2Tea otea : teaItems.getTeaItems()) {
                     Tea ntea = new Tea(otea.getName(), LanguageConversation.convertVarietyToCode(otea.getSortOfTea().getType(), getApplicationContext()), otea.getAmount().getValue(), otea.getAmount().getUnit(), otea.getColoring().getColor(), 0, otea.getDate());
-                    teaDAO.insert(ntea);
-                    long teaId = teaDAO.getTeas().get(o++).getId();
+                    long teaId = teaDAO.insert(ntea);
 
                     for (int i = 0; i < otea.getTime().size(); i++) {
                         Infusion infusion = new Infusion();
@@ -322,6 +317,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             Intent settingScreen = new Intent(MainActivity.this, Settings.class);
             // Intent starten und zur zweiten Activity wechseln
             startActivity(settingScreen);
+        } else if (id == R.id.action_exportImport) {
+            //Neues Intent anlegen
+            Intent exportImportScreen = new Intent(MainActivity.this, ExportImport.class);
+            // Intent starten und zur zweiten Activity wechseln
+            startActivity(exportImportScreen);
         } else if (id == R.id.action_about) {
             //Neues Intent anlegen
             Intent aboutScreen = new Intent(MainActivity.this, About.class);
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     private void askPermissions() {
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+        /*if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -382,6 +382,20 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                         1);
 
             }
+        }*/
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        2);
+
+            }
         }
     }
 
@@ -389,6 +403,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
+
+            // If request is cancelled, the result arrays are empty.
+            if (!(grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+
+                Toast.makeText(MainActivity.this, "Permission denied to read and write your External storage", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == 2) {
 
             // If request is cancelled, the result arrays are empty.
             if (!(grantResults.length > 0
