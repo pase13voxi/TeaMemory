@@ -226,6 +226,15 @@
     <string name="settings_factory_settings_ok">OK</string>
     <string name="settings_factory_settings_cancel">Annuler</string>
     <string name="settings_factory_settings_toast">Restauration des paramètres d\'usine</string>
+    <!--ExportImport-->
+    <string name="exportimport_heading">Export and Import Teas</string>
+    <string name="exportimport_info_top">While using the Import and Export you can transfer your teas to a different device.</string>
+    <string name="exportimport_procedure">Procedure:</string>
+    <string name="exportimport_step1_text">Export your Tealist as a Jsonfile called tealist.json</string>
+    <string name="exportimport_step2_text">Transfer the file to the other device.</string>
+    <string name="exportimport_step3_text">Import the file into the Application on the other device.</string>
+    <string name="exportimport_export">Export</string>
+    <string name="exportimport_import">Import</string>
     <!--Notification-->
     <string name="notification_ticker">C\'est l\'heure du thé!</string>
     <string name="notification_title">Votre thé est prêt.</string>

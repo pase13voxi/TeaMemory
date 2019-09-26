@@ -29,8 +29,8 @@
     <string name="main_dialog_rating">Do you like the app? I would look forward to a review.</string>
     <string name="main_dialog_rating_positive">Rate now</string>
     <string name="main_dialog_rating_neutral">Later</string>
-    <!--Showtea-->
     <string name="main_dialog_rating_negative">No, thanks</string>
+    <!--Showtea-->
     <string name="showtea_heading">Information</string>
     <string name="showtea_action_note">Note</string>
     <string name="showtea_dialog_note_hint">Write down something.</string>
@@ -88,8 +88,8 @@
     <string name="showtea_content_description_filling">filling</string>
     <string name="showtea_content_description_temperature">thermometer</string>
     <string name="showtea_content_description_amount">spoon</string>
-    <!--Newtea-->
     <string name="showtea_content_description_infusion">cup</string>
+    <!--Newtea-->
     <string name="newtea_heading">Create/Edit tea</string>
     <string name="newtea_tea_variety">Tea variety</string>
     <string name="newtea_by_hand">by hand</string>
@@ -168,9 +168,9 @@
     <string name="newtea_tooltip_autofillcooldowntime">Autofill cooldown time</string>
     <string name="newtea_tooltip_done">Save tea</string>
     <string name="newtea_tooltip_done_title">Done</string>
+    <!--Settings-->
     <string name="settings_heading">Settings</string>
     <string name="settings_alarm">Alarm sound</string>
-    <!--Settings-->
     <string name="settings_alarm_selection_title">Choose alarm sound</string>
     <string name="settings_vibration">Vibration</string>
     <string name="settings_notification">Notification</string>
@@ -191,14 +191,23 @@
     <string name="settings_factory_settings_ok">OK</string>
     <string name="settings_factory_settings_cancel">Cancel</string>
     <string name="settings_factory_settings_toast">Reset to factory setting</string>
+    <!--ExportImport-->
+    <string name="exportimport_heading">Export and Import Teas</string>
+    <string name="exportimport_info_top">While using the Import and Export you can transfer your teas to a different device.</string>
+    <string name="exportimport_procedure">Procedure:</string>
+    <string name="exportimport_step1_text">Export your Tealist as a Jsonfile called tealist.json</string>
+    <string name="exportimport_step2_text">Transfer the file to the other device.</string>
+    <string name="exportimport_step3_text">Import the file into the Application on the other device.</string>
+    <string name="exportimport_export">Export</string>
+    <string name="exportimport_import">Import</string>
+    <!--Notification-->
     <string name="notification_ticker">Tea Time!</string>
     <string name="notification_title">Your tea is ready.</string>
+    <!--About-->
     <string name="about_heading">About</string>
     <string name="about_contact_heading">Contact</string>
-    <!--Notification-->
     <string name="about_contact_description">Who is behind the Tea Memory?</string>
     <string name="about_rating_heading">Rate this app</string>
-    <!--About-->
     <string name="about_rating_description">Do you like the app? I would look forward to a review.</string>
     <string name="about_statistics_heading">Statistics</string>
     <string name="about_statistics_description">Look at your drinking behavior in the overview.</string>
@@ -208,30 +217,30 @@
     <string name="about_problems_description">Is the timer no longer running in the background?</string>
     <string name="about_software_heading">Software Licences</string>
     <string name="about_software_description">Which open source software is used by the Tea Memory?</string>
+    <!--Contact-->
     <string name="contact_heading">Contact</string>
     <string name="contact_about_me">Hello, I am Pascal and I have developed the Tea Memory in my spare time. For questions or suggestions write me an email.</string>
     <string name="contact_email">Send me an email.</string>
     <string name="contact_email_address">pase.b@outlook.com</string>
-    <!--Contact-->
     <string name="contact_email_subject">Tea Memory Feedback</string>
     <string name="contact_email_chooser">Send email&#8230;</string>
     <string name="contact_content_description_photo">photo</string>
+    <!--Statistics-->
     <string name="statistics_heading">Statistics</string>
+    <!--Software-->
     <string name="software_heading">Software Licenses</string>
     <string name="software_colorpicker_heading">ColorPickerPreference</string>
     <string name="software_colorpicker_description">The ColorPicker is an open source software, which allows the selection of a color.</string>
-    <!--Statistics-->
     <string name="software_tooltip_heading">Android Tooltips</string>
     <string name="software_tooltip_description">Android Tooltips is an open source software, which provides nice tooltips.</string>
-    <!--Software-->
     <string name="software_statistic_heading">Horizontal Bar Graph</string>
     <string name="software_statistic_description">Horizontal Bar Graph is an open source software that can be used to display graphics.</string>
+    <!--Languages-->
     <string name="languages_heading">Languages</string>
     <string name="languages_info_top">You can help me translate the app into another language?</string>
     <string name="languages_procedure">Procedure:</string>
     <string name="languages_step1_text">Send me a translation request.</string>
     <string name="languages_step2_text">I will send you a file with the texts to be translated.</string>
-    <!--Languages-->
     <string name="languages_step3_text">You translate the texts and send me back the file.</string>
     <string name="languages_step4_text">I check the translation and paste it into the program.</string>
     <string name="languages_email">Contact me.</string>
@@ -239,12 +248,12 @@
     <string name="languages_email_subject">Tea Memory Languages</string>
     <string name="languages_email_chooser">Send email&#8230;</string>
     <string name="languages_content_description_bulletpoint">bulletpoint</string>
+    <!--Problems-->
     <string name="problems_heading">Problem</string>
     <string name="problems_question">Is the timer no longer running in the background?</string>
     <string name="problems_solve">Solve the problem</string>
     <string name="problems_description">The latest update of Android automatically stops all background processes after a few minutes as an energy-saving feature.</string>
     <string name="problems_result">Set the Tea Memory as an exception to the power-saving function.</string>
-    <!--Problems-->
     <string name="problems_hope">After that, the timer should work in the background again.</string>
     <string name="problems_action">To the setting</string>
     <string name="problems_error">This setting is not available on your Android version.</string>

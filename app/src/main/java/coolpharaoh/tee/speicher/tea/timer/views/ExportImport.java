@@ -31,7 +31,7 @@ public class ExportImport extends AppCompatActivity {
         //Toolbar als ActionBar festlegen
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText("Export and Import Teas");
+        mToolbarCustomTitle.setText(R.string.exportimport_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
 
