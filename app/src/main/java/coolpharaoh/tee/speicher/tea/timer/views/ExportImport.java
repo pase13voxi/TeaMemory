@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,14 +46,12 @@ public class ExportImport extends AppCompatActivity {
 
         mExportImportViewModel = new ExportImportViewModel(getApplicationContext());
 
-        TextView textViewNotice = findViewById(R.id.textViewNotice);
-
         Button buttonExport = findViewById(R.id.buttonExport);
         buttonExport.setOnClickListener(v -> {
             ExportJson exportJson = new ExportJson(mExportImportViewModel.getTeaList(),
                     mExportImportViewModel.getInfusionList(), mExportImportViewModel.getCounterList(), mExportImportViewModel.getNoteList());
             exportJson.write(getApplicationContext());
-            textViewNotice.setVisibility(View.VISIBLE);
+            dialogExportLocation(v.getContext());
         });
 
         Button buttonImport = findViewById(R.id.buttonImport);
@@ -83,6 +82,13 @@ public class ExportImport extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData);
+    }
+
+    private void dialogExportLocation(Context context){
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.exportimport_location_dialog_header);
+        builder.setMessage(R.string.exportimport_location_dialog_description).setNeutralButton("OK", null).show();
     }
 
     private void dialogImport() {

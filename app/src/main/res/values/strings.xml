@@ -200,6 +200,8 @@
     <string name="exportimport_step3_text">Import the file into the Application on the other device.</string>
     <string name="exportimport_export">Export</string>
     <string name="exportimport_saved">tealist.json saved</string>
+    <string name="exportimport_location_dialog_header">Location of the file</string>
+    <string name="exportimport_location_dialog_description">The file tealist.json could be found in the internal storage of your smartphone in the folder TeaMemory.</string>
     <string name="exportimport_import">Import</string>
     <string name="exportimport_import_dialog_header">Import Teas</string>
     <string name="exportimport_import_dialog_delete_desciption">Delete all stored teas and take over only the new ones.</string>
@@ -207,7 +209,6 @@
     <string name="exportimport_import_dialog_keep_desciption">Keep the stored teas and add the new ones.</string>
     <string name="exportimport_import_dialog_keep_button">Keep stored Teas</string>
     <string name="exportimport_import_choose_file">Choose File to Import</string>
-    <string name="exportimport_notice">The file tealist.json could be found in the internal storage of your smartphone in the folder TeaMemory.</string>
     <!--Notification-->
     <string name="notification_ticker">Tea Time!</string>
     <string name="notification_title">Your tea is ready.</string>
