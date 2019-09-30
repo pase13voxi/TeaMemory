@@ -1,10 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.datatransfer.pojo;
 
-import androidx.room.TypeConverters;
-
 import java.util.Date;
-
-import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
 
 public class CounterPOJO {
 
@@ -12,11 +8,8 @@ public class CounterPOJO {
     private int week;
     private int month;
     private long overall;
-    @TypeConverters(DateConverter.class)
     private Date daydate;
-    @TypeConverters(DateConverter.class)
     private Date weekdate;
-    @TypeConverters(DateConverter.class)
     private Date monthdate;
 
     public int getDay() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -29,11 +30,11 @@ public class ImportJson {
         mFileUri = fileUri;
     }
 
-    public void read(Context context, ExportImportViewModel exportImportViewModel) {
+    public void read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
         mJson = readJsonFile(context);
         mTeaList = createTeaListFromJson();
         POJOToDatabase pojoToDatabase = new POJOToDatabase(exportImportViewModel);
-        pojoToDatabase.fillDatabaseWithTeaList(mTeaList);
+        pojoToDatabase.fillDatabaseWithTeaList(mTeaList, keepStoredTeas);
     }
 
     private String readJsonFile(Context context){
@@ -53,7 +54,10 @@ public class ImportJson {
     }
 
     private List<TeaPOJO> createTeaListFromJson(){
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
         Type listType = new TypeToken<ArrayList<TeaPOJO>>(){}.getType();
-        return new Gson().fromJson(mJson, listType);
+
+        return gson.fromJson(mJson, listType);
     }
 }

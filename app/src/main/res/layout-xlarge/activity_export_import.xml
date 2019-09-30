@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/exportimport_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.ExportImport">
@@ -130,5 +131,19 @@
         android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/textViewNotice"
+        android:layout_width="700dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="@string/exportimport_notice"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/buttonImport"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"/>
 
 </RelativeLayout>

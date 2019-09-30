@@ -1,7 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import androidx.room.Room;
 import android.content.Context;
+
+import androidx.room.Room;
 
 import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
@@ -38,7 +39,7 @@ public class SettingsViewModel {
     }
 
     public void setMusicname(String musicname) {
-        mActualSettings.setMusicchoice(musicname);
+        mActualSettings.setMusicname(musicname);
         mActualSettingsDAO.update(mActualSettings);
     }
 

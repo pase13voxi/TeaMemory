@@ -1,11 +1,15 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +26,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 
 public class ExportImport extends AppCompatActivity {
     private ExportImportViewModel mExportImportViewModel;
+    private Boolean mKeepStoredTeas = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +45,18 @@ public class ExportImport extends AppCompatActivity {
 
         mExportImportViewModel = new ExportImportViewModel(getApplicationContext());
 
+        TextView textViewNotice = findViewById(R.id.textViewNotice);
+
         Button buttonExport = findViewById(R.id.buttonExport);
         buttonExport.setOnClickListener(v -> {
             ExportJson exportJson = new ExportJson(mExportImportViewModel.getTeaList(),
                     mExportImportViewModel.getInfusionList(), mExportImportViewModel.getCounterList(), mExportImportViewModel.getNoteList());
             exportJson.write(getApplicationContext());
+            textViewNotice.setVisibility(View.VISIBLE);
         });
 
         Button buttonImport = findViewById(R.id.buttonImport);
-        buttonImport.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("application/octet-stream");
-            startActivityForResult(Intent.createChooser(intent,
-                    "Choose File to Upload.."), ImportJson.READ_REQUEST_CODE);
-        });
+        buttonImport.setOnClickListener(v -> dialogImport());
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,12 +77,48 @@ public class ExportImport extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri uri = null;
             if (resultData != null) {
                 ImportJson importJson = new ImportJson(resultData.getData());
-                importJson.read(getApplicationContext(), mExportImportViewModel);
+                importJson.read(getApplicationContext(), mExportImportViewModel, mKeepStoredTeas);
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData);
+    }
+
+    private void dialogImport() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ViewGroup parent = findViewById(R.id.exportimport_parent);
+
+            LayoutInflater inflater = getLayoutInflater();
+            View layoutDialogImport = inflater.inflate(R.layout.dialogimport, parent, false);
+
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setView(layoutDialogImport);
+            alertDialog.setTitle(R.string.exportimport_import_dialog_header);
+
+            final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.buttonImportDelete);
+            buttonImportDelete.setOnClickListener(view -> {
+                dialogImportFile();
+                mKeepStoredTeas = false;
+                alertDialog.cancel();
+            });
+            final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.buttonImportKeep);
+            buttonImportKeep.setOnClickListener(view -> {
+                dialogImportFile();
+                mKeepStoredTeas = true;
+                alertDialog.cancel();
+            });
+
+            alertDialog.show();
+
+        }
+    }
+
+    private void dialogImportFile(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/octet-stream");
+        startActivityForResult(Intent.createChooser(intent,
+                getApplicationContext().getResources().getString(R.string.exportimport_import_choose_file)), ImportJson.READ_REQUEST_CODE);
     }
 }

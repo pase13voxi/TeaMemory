@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.datatransfer.pojo.TeaPOJO;
 import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
@@ -39,11 +41,11 @@ public class ExportJson {
         String storageDirectory = folder.toString();
 
         try {
-            File file = new File(storageDirectory, "data.json");
+            File file = new File(storageDirectory, "tealist.json");
             Writer output = new BufferedWriter(new FileWriter(file));
             output.write(mJson);
             output.close();
-            Toast.makeText(context, "Composition saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -51,6 +53,8 @@ public class ExportJson {
     }
 
     private String createJsonFromTeaList() {
-        return new Gson().toJson(mTeaList);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+        return gson.toJson(mTeaList);
     }
 }

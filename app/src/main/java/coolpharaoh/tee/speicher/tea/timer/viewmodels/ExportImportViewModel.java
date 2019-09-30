@@ -46,6 +46,10 @@ public class ExportImportViewModel extends ViewModel {
         return mTeaDAO.insert(tea);
     }
 
+    public void deleteAllTeas(){
+        mTeaDAO.deleteAll();
+    }
+
     //Infusions
     public List<Infusion> getInfusionList(){
         return mInfusionDAO.getInfusions();

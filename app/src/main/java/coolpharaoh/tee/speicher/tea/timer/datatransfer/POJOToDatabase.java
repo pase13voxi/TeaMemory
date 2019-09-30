@@ -19,7 +19,10 @@ class POJOToDatabase {
         mExportImportViewModel = exportImportViewModel;
     }
 
-    void fillDatabaseWithTeaList(List<TeaPOJO> teaList) {
+    void fillDatabaseWithTeaList(List<TeaPOJO> teaList, boolean keepStoredTeas) {
+        if(!keepStoredTeas){
+            deleteStoredTeas();
+        }
         int o = 0;
         for (TeaPOJO teaPOJO : teaList) {
             // insert Tea first
@@ -30,6 +33,10 @@ class POJOToDatabase {
             insertCounters(teaId, teaPOJO.getCounters());
             insertNotes(teaId, teaPOJO.getNotes());
         }
+    }
+
+    private void deleteStoredTeas(){
+        mExportImportViewModel.deleteAllTeas();
     }
 
     private void insertInfusions(long teaId, List<InfusionPOJO> infusionList) {

@@ -1,11 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.datatransfer.pojo;
 
-import androidx.room.TypeConverters;
-
 import java.util.Date;
 import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.entities.converter.DateConverter;
 
 public class TeaPOJO {
     private String name;
@@ -14,7 +10,6 @@ public class TeaPOJO {
     private String amountkind;
     private int color;
     private int lastInfusion;
-    @TypeConverters(DateConverter.class)
     private Date date;
     private List<InfusionPOJO> infusions;
     private List<CounterPOJO> counters;
