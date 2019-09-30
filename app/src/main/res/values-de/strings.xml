@@ -230,11 +230,11 @@
     <string name="exportimport_procedure">Vorgehen:</string>
     <string name="exportimport_step1_text">Exportiere deine Teeliste als Json-Datei mit dem Namen tealist.json.</string>
     <string name="exportimport_step2_text">Übertrage die Datei auf das andere Gerät.</string>
-    <string name="exportimport_step3_text">Importiere die Datei in App auf dem anderen Gerät.</string>
+    <string name="exportimport_step3_text">Importiere die Datei in die App auf dem anderen Gerät.</string>
     <string name="exportimport_export">Exportieren</string>
     <string name="exportimport_saved">tealist.json gespeichert</string>
     <string name="exportimport_location_dialog_header">Speicherort der Datei</string>
-    <string name="exportimport_location_dialog_description">Die Datei tealist.json befindet sich im internen Speicher Ihres Smartphones in dem Ordner TeaMemory.</string>
+    <string name="exportimport_location_dialog_description">Die Datei tealist.json befindet sich im internen Speicher deines Smartphones in dem Ordner TeaMemory.</string>
     <string name="exportimport_import">Importieren</string>
     <string name="exportimport_import_dialog_header">Importiere Tees</string>
     <string name="exportimport_import_dialog_delete_desciption">Lösche alle gespeicherten Tees und übernehme nur die neuen.</string>
