@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.datatransfer;
 
 import android.content.Context;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.datatransfer.pojo.TeaPOJO;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 
@@ -35,6 +37,7 @@ public class ImportJson {
         mTeaList = createTeaListFromJson();
         POJOToDatabase pojoToDatabase = new POJOToDatabase(exportImportViewModel);
         pojoToDatabase.fillDatabaseWithTeaList(mTeaList, keepStoredTeas);
+        Toast.makeText(context, R.string.exportimport_teas_imported, Toast.LENGTH_LONG).show();
     }
 
     private String readJsonFile(Context context){

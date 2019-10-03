@@ -235,7 +235,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             //Infomationen anzeigen
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             builder.setTitle(R.string.showtea_cooldown_title);
-            builder.setMessage(R.string.showtea_cooldown_text).setNeutralButton("OK", null).show();
+            builder.setMessage(R.string.showtea_cooldown_text).setPositiveButton("OK", null).show();
         });
 
         buttonExchange.setOnClickListener(v -> {

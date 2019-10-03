@@ -79,6 +79,7 @@ public class ExportImport extends AppCompatActivity {
             if (resultData != null) {
                 ImportJson importJson = new ImportJson(resultData.getData());
                 importJson.read(getApplicationContext(), mExportImportViewModel, mKeepStoredTeas);
+                dialogImportComplete(this);
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData);
@@ -88,7 +89,19 @@ public class ExportImport extends AppCompatActivity {
         //Infomationen anzeigen
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.exportimport_location_dialog_header);
-        builder.setMessage(R.string.exportimport_location_dialog_description).setNeutralButton("OK", null).show();
+        builder.setMessage(R.string.exportimport_location_dialog_description).setPositiveButton(R.string.exportimport_location_dialog_ok, null).show();
+    }
+
+    private void dialogImportComplete(Context context){
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.exportimport_import_complete_dialog_header);
+        if(mKeepStoredTeas) {
+            builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
+        }
+        else {
+            builder.setMessage(R.string.exportimport_import_complete_delete_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
+        }
     }
 
     private void dialogImport() {

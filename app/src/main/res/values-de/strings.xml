@@ -235,6 +235,7 @@
     <string name="exportimport_saved">tealist.json gespeichert</string>
     <string name="exportimport_location_dialog_header">Speicherort der Datei</string>
     <string name="exportimport_location_dialog_description">Die Datei tealist.json befindet sich im internen Speicher deines Smartphones in dem Ordner TeaMemory.</string>
+    <string name="exportimport_location_dialog_ok">Ok</string>
     <string name="exportimport_import">Importieren</string>
     <string name="exportimport_import_dialog_header">Importiere Tees</string>
     <string name="exportimport_import_dialog_delete_desciption">Lösche alle gespeicherten Tees und übernehme nur die neuen.</string>
@@ -242,6 +243,11 @@
     <string name="exportimport_import_dialog_keep_desciption">Behalte die gespeicherten Tees und füge die neuen hinzu.</string>
     <string name="exportimport_import_dialog_keep_button">Behalte gespeicherte Tees</string>
     <string name="exportimport_import_choose_file">Wähle eine Datei für die Importierung aus</string>
+    <string name="exportimport_teas_imported">Die Teeliste wurde importiert</string>
+    <string name="exportimport_import_complete_dialog_header">Importierung abgeschlossen</string>
+    <string name="exportimport_import_complete_delete_dialog_description">Die Datei wurde Importiert und alle gespeicherten Tees wurden gelöscht.</string>
+    <string name="exportimport_import_complete_keep_dialog_description">Die Datei wurde Importiert und zu den gespeicherten Tees hinzugefügt.</string>
+    <string name="exportimport_import_complete_dialog_ok">Ok</string>
     <!--Notification-->
     <string name="notification_ticker">Tea Time!</string>
     <string name="notification_title">Ihr Tee ist fertig.</string>
