@@ -10,7 +10,7 @@ import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 
 public class MediaServiceViewModel {
 
-    private ActualSettings mActualSettings;
+    private ActualSettings actualSettings;
 
     public MediaServiceViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
@@ -19,11 +19,11 @@ public class MediaServiceViewModel {
                 .build();
 
         ActualSettingsDAO mActualSettingsDAO = database.getActualSettingsDAO();
-        mActualSettings = mActualSettingsDAO.getSettings();
+        actualSettings = mActualSettingsDAO.getSettings();
     }
 
     public String getMusicchoice(){
-        return mActualSettings.getMusicchoice();
+        return actualSettings.getMusicchoice();
     }
 
 }

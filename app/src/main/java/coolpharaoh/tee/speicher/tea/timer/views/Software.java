@@ -27,8 +27,8 @@ public class Software extends AppCompatActivity {
 
         //Toolbar als ActionBar festlegen
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText(R.string.software_heading);
+        TextView toolbarCustomTitle = findViewById(R.id.toolbar_title);
+        toolbarCustomTitle.setText(R.string.software_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
 

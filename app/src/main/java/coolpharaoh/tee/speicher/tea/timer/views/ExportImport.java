@@ -26,8 +26,8 @@ import coolpharaoh.tee.speicher.tea.timer.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 
 public class ExportImport extends AppCompatActivity {
-    private ExportImportViewModel mExportImportViewModel;
-    private Boolean mKeepStoredTeas = true;
+    private ExportImportViewModel exportImportViewModel;
+    private Boolean keepStoredTeas = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +44,12 @@ public class ExportImport extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mExportImportViewModel = new ExportImportViewModel(getApplicationContext());
+        exportImportViewModel = new ExportImportViewModel(getApplicationContext());
 
         Button buttonExport = findViewById(R.id.buttonExport);
         buttonExport.setOnClickListener(v -> {
-            ExportJson exportJson = new ExportJson(mExportImportViewModel.getTeaList(),
-                    mExportImportViewModel.getInfusionList(), mExportImportViewModel.getCounterList(), mExportImportViewModel.getNoteList());
+            ExportJson exportJson = new ExportJson(exportImportViewModel.getTeaList(),
+                    exportImportViewModel.getInfusionList(), exportImportViewModel.getCounterList(), exportImportViewModel.getNoteList());
             exportJson.write(getApplicationContext());
             dialogExportLocation(v.getContext());
         });
@@ -78,7 +78,7 @@ public class ExportImport extends AppCompatActivity {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 ImportJson importJson = new ImportJson(resultData.getData());
-                importJson.read(getApplicationContext(), mExportImportViewModel, mKeepStoredTeas);
+                importJson.read(getApplicationContext(), exportImportViewModel, keepStoredTeas);
                 dialogImportComplete(this);
             }
         }
@@ -96,7 +96,7 @@ public class ExportImport extends AppCompatActivity {
         //Infomationen anzeigen
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.exportimport_import_complete_dialog_header);
-        if(mKeepStoredTeas) {
+        if(keepStoredTeas) {
             builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
         }
         else {
@@ -118,13 +118,13 @@ public class ExportImport extends AppCompatActivity {
             final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.buttonImportDelete);
             buttonImportDelete.setOnClickListener(view -> {
                 dialogImportFile();
-                mKeepStoredTeas = false;
+                keepStoredTeas = false;
                 alertDialog.cancel();
             });
             final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.buttonImportKeep);
             buttonImportKeep.setOnClickListener(view -> {
                 dialogImportFile();
-                mKeepStoredTeas = true;
+                keepStoredTeas = true;
                 alertDialog.cancel();
             });
 

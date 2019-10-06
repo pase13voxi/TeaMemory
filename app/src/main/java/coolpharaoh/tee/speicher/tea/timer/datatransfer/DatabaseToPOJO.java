@@ -13,22 +13,22 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 
 class DatabaseToPOJO {
-    private List<Tea> mTeas;
-    private List<Infusion> mInfusions;
-    private List<Counter> mCounters;
-    private List<Note> mNotes;
+    private List<Tea> teas;
+    private List<Infusion> infusions;
+    private List<Counter> counters;
+    private List<Note> notes;
 
     DatabaseToPOJO(List<Tea> teas, List<Infusion> infusions, List<Counter> counters, List<Note> notes) {
-        mTeas = teas;
-        mInfusions = infusions;
-        mCounters = counters;
-        mNotes = notes;
+        this.teas = teas;
+        this.infusions = infusions;
+        this.counters = counters;
+        this.notes = notes;
     }
 
     List<TeaPOJO> createTeaList() {
         List<TeaPOJO> mTeaList = new ArrayList<>();
 
-        for (Tea tea : mTeas) {
+        for (Tea tea : teas) {
             TeaPOJO teaPOJO = createTeaPOJO(tea);
             teaPOJO.setInfusions(createInfusionList(tea.getId()));
             teaPOJO.setCounters(createCounterList(tea.getId()));
@@ -54,7 +54,7 @@ class DatabaseToPOJO {
     private List<InfusionPOJO> createInfusionList(long teaId) {
         List<InfusionPOJO> infusionPOJOList = new ArrayList<>();
 
-        for (Infusion infusion : mInfusions) {
+        for (Infusion infusion : infusions) {
             if (infusion.getTeaId() == teaId) {
                 InfusionPOJO infusionPOJO = createInfusionPOJO(infusion);
                 infusionPOJOList.add(infusionPOJO);
@@ -76,7 +76,7 @@ class DatabaseToPOJO {
     private List<CounterPOJO> createCounterList(long teaId) {
         List<CounterPOJO> counterPOJOList = new ArrayList<>();
 
-        for (Counter counter : mCounters) {
+        for (Counter counter : counters) {
             if (counter.getTeaId() == teaId) {
                 CounterPOJO counterPOJO = createCounterPOJO(counter);
                 counterPOJOList.add(counterPOJO);
@@ -100,7 +100,7 @@ class DatabaseToPOJO {
     private List<NotePOJO> createNoteList(long teaId) {
         List<NotePOJO> notePOJOList = new ArrayList<>();
 
-        for (Note note : mNotes) {
+        for (Note note : notes) {
             if (note.getTeaId() == teaId) {
                 NotePOJO notePOJO = createNotePOJO(note);
                 notePOJOList.add(notePOJO);

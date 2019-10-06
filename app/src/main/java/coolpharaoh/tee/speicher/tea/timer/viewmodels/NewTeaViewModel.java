@@ -26,17 +26,17 @@ public class NewTeaViewModel {
 
     private Context context;
 
-    private TeaDAO mTeaDAO;
-    private InfusionDAO mInfusionDAO;
-    private NoteDAO mNoteDAO;
-    private CounterDAO mCounterDAO;
-    private ActualSettingsDAO mActualSettingsDAO;
+    private TeaDAO teaDAO;
+    private InfusionDAO infusionDAO;
+    private NoteDAO noteDAO;
+    private CounterDAO counterDAO;
+    private ActualSettingsDAO actualSettingsDAO;
 
-    private Tea mTea;
-    private List<Infusion> mInfusions;
-    private ActualSettings mActualSettings;
+    private Tea tea;
+    private List<Infusion> infusions;
+    private ActualSettings actualSettings;
 
-    private int mInfusionIndex = 0;
+    private int infusionIndex = 0;
 
     public NewTeaViewModel(long teaId, Context context) {
         this.context = context;
@@ -46,15 +46,15 @@ public class NewTeaViewModel {
                 .allowMainThreadQueries()
                 .build();
 
-        mTeaDAO = database.getTeaDAO();
-        mInfusionDAO = database.getInfusionDAO();
-        mNoteDAO = database.getNoteDAO();
-        mCounterDAO = database.getCounterDAO();
-        mActualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDAO();
+        infusionDAO = database.getInfusionDAO();
+        noteDAO = database.getNoteDAO();
+        counterDAO = database.getCounterDAO();
+        actualSettingsDAO = database.getActualSettingsDAO();
 
-        mTea = mTeaDAO.getTeaById(teaId);
-        mInfusions = mInfusionDAO.getInfusionsByTeaId(teaId);
-        mActualSettings = mActualSettingsDAO.getSettings();
+        tea = teaDAO.getTeaById(teaId);
+        infusions = infusionDAO.getInfusionsByTeaId(teaId);
+        actualSettings = actualSettingsDAO.getSettings();
     }
 
     public NewTeaViewModel(Context context) {
@@ -65,41 +65,41 @@ public class NewTeaViewModel {
                 .allowMainThreadQueries()
                 .build();
 
-        mTeaDAO = database.getTeaDAO();
-        mInfusionDAO = database.getInfusionDAO();
-        mNoteDAO = database.getNoteDAO();
-        mCounterDAO = database.getCounterDAO();
-        mActualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDAO();
+        infusionDAO = database.getInfusionDAO();
+        noteDAO = database.getNoteDAO();
+        counterDAO = database.getCounterDAO();
+        actualSettingsDAO = database.getActualSettingsDAO();
 
-        mTea = new Tea();
-        mInfusions = new ArrayList<>();
+        tea = new Tea();
+        infusions = new ArrayList<>();
         addInfusion(true);
-        mActualSettings = mActualSettingsDAO.getSettings();
+        actualSettings = actualSettingsDAO.getSettings();
     }
 
     // Tea
     public long getTeaId() {
-        return mTea.getId();
+        return tea.getId();
     }
 
     public String getName() {
-        return mTea.getName();
+        return tea.getName();
     }
 
     public String getVariety() {
-        return mTea.getVariety();
+        return tea.getVariety();
     }
 
     public int getAmount() {
-        return mTea.getAmount();
+        return tea.getAmount();
     }
 
     public String getAmountkind() {
-        return mTea.getAmountkind();
+        return tea.getAmountkind();
     }
 
     public int getColor() {
-        return mTea.getColor();
+        return tea.getColor();
     }
 
     // Infusion
@@ -107,88 +107,88 @@ public class NewTeaViewModel {
         Infusion infusion = new Infusion();
         infusion.setTemperaturecelsius(-500);
         infusion.setTemperaturefahrenheit(-500);
-        mInfusions.add(infusion);
+        infusions.add(infusion);
         if (!first){
-            mInfusionIndex++;
+            infusionIndex++;
         }
     }
 
     public void takeInfusionInformation(String time, String cooldowntime, int temperature) {
-        mInfusions.get(mInfusionIndex).setTime(time);
-        mInfusions.get(mInfusionIndex).setCooldowntime(cooldowntime);
-        if (mActualSettings.getTemperatureunit().equals("Celsius")) {
-            mInfusions.get(mInfusionIndex).setTemperaturecelsius(temperature);
-            mInfusions.get(mInfusionIndex).setTemperaturefahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
+        infusions.get(infusionIndex).setTime(time);
+        infusions.get(infusionIndex).setCooldowntime(cooldowntime);
+        if (actualSettings.getTemperatureunit().equals("Celsius")) {
+            infusions.get(infusionIndex).setTemperaturecelsius(temperature);
+            infusions.get(infusionIndex).setTemperaturefahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
         } else {
-            mInfusions.get(mInfusionIndex).setTemperaturefahrenheit(temperature);
-            mInfusions.get(mInfusionIndex).setTemperaturecelsius(TemperatureConversation.fahrenheitToCelsius(temperature));
+            infusions.get(infusionIndex).setTemperaturefahrenheit(temperature);
+            infusions.get(infusionIndex).setTemperaturecelsius(TemperatureConversation.fahrenheitToCelsius(temperature));
         }
     }
 
     public void deleteInfusion() {
-        if (mInfusions.size() > 1) {
-            mInfusions.remove(mInfusionIndex);
-            if (mInfusionIndex == mInfusions.size()) {
-                mInfusionIndex--;
+        if (infusions.size() > 1) {
+            infusions.remove(infusionIndex);
+            if (infusionIndex == infusions.size()) {
+                infusionIndex--;
             }
         }
     }
 
     public String getInfusionTime() {
-        return mInfusions.get(mInfusionIndex).getTime();
+        return infusions.get(infusionIndex).getTime();
     }
 
     public String getInfusionCooldowntime() {
-        return mInfusions.get(mInfusionIndex).getCooldowntime();
+        return infusions.get(infusionIndex).getCooldowntime();
     }
 
     public int getInfusionTemperature() {
-        if (mActualSettings.getTemperatureunit().equals("Celsius")) {
-            return mInfusions.get(mInfusionIndex).getTemperaturecelsius();
+        if (actualSettings.getTemperatureunit().equals("Celsius")) {
+            return infusions.get(infusionIndex).getTemperaturecelsius();
         } else {
-            return mInfusions.get(mInfusionIndex).getTemperaturefahrenheit();
+            return infusions.get(infusionIndex).getTemperaturefahrenheit();
         }
     }
 
     public void previousInfusion() {
-        if (mInfusionIndex - 1 >= 0) {
-            mInfusionIndex--;
+        if (infusionIndex - 1 >= 0) {
+            infusionIndex--;
         }
     }
 
     public void nextInfusion() {
-        if (mInfusionIndex + 1 < mInfusions.size()) {
-            mInfusionIndex++;
+        if (infusionIndex + 1 < infusions.size()) {
+            infusionIndex++;
         }
     }
 
     public int getInfusionIndex() {
-        return mInfusionIndex;
+        return infusionIndex;
     }
 
     public int getInfusionSize() {
-        return mInfusions.size();
+        return infusions.size();
     }
 
     // Settings
     public String getTemperatureunit(){
-        return mActualSettings.getTemperatureunit();
+        return actualSettings.getTemperatureunit();
     }
 
     // Overall
     public void editTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
 
-        mTeaDAO.update(mTea);
+        teaDAO.update(tea);
 
-        setInfusionInformation(mTea.getId());
+        setInfusionInformation(tea.getId());
     }
 
     public void createNewTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
-        mTea.setLastInfusion(0);
+        tea.setLastInfusion(0);
 
-        long teaId = mTeaDAO.insert(mTea);
+        long teaId = teaDAO.insert(tea);
 
         setInfusionInformation(teaId);
 
@@ -203,31 +203,31 @@ public class NewTeaViewModel {
         counter.setWeekdate(Calendar.getInstance().getTime());
         counter.setMonthdate(Calendar.getInstance().getTime());
 
-        mCounterDAO.insert(counter);
+        counterDAO.insert(counter);
 
         // create standard note
         Note note = new Note();
         note.setTeaId(teaId);
         note.setPosition(1);
         note.setDescription("");
-        mNoteDAO.insert(note);
+        noteDAO.insert(note);
     }
 
     private void setTeaInformation(String name, String variety, int amount, String amountkind, int color) {
-        mTea.setName(name);
-        mTea.setVariety(LanguageConversation.convertVarietyToCode(variety,context));
-        mTea.setAmount(amount);
-        mTea.setAmountkind(amountkind);
-        mTea.setColor(color);
-        mTea.setDate(Calendar.getInstance().getTime());
+        tea.setName(name);
+        tea.setVariety(LanguageConversation.convertVarietyToCode(variety,context));
+        tea.setAmount(amount);
+        tea.setAmountkind(amountkind);
+        tea.setColor(color);
+        tea.setDate(Calendar.getInstance().getTime());
     }
 
     private void setInfusionInformation(long teaId) {
-        mInfusionDAO.deleteInfusionByTeaId(teaId);
-        for (int i = 0; i < mInfusions.size(); i++) {
-            mInfusions.get(i).setTeaId(teaId);
-            mInfusions.get(i).setInfusionindex(i);
-            mInfusionDAO.insert(mInfusions.get(i));
+        infusionDAO.deleteInfusionByTeaId(teaId);
+        for (int i = 0; i < infusions.size(); i++) {
+            infusions.get(i).setTeaId(teaId);
+            infusions.get(i).setInfusionindex(i);
+            infusionDAO.insert(infusions.get(i));
         }
     }
 }

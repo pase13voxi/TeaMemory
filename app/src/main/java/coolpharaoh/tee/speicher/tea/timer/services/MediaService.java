@@ -26,11 +26,11 @@ public class MediaService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        MediaServiceViewModel mMediaServiceViewModel = new MediaServiceViewModel(getApplicationContext());
+        MediaServiceViewModel mediaServiceViewModel = new MediaServiceViewModel(getApplicationContext());
         //Musikstück initialisieren
-        if(mMediaServiceViewModel.getMusicchoice()!=null) {
+        if(mediaServiceViewModel.getMusicchoice()!=null) {
             mediaPlayer = new MediaPlayer();
-            Uri uri = Uri.parse(mMediaServiceViewModel.getMusicchoice());
+            Uri uri = Uri.parse(mediaServiceViewModel.getMusicchoice());
             try {
                 //synchronisiere Musikstreams
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);

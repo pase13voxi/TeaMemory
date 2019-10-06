@@ -36,7 +36,7 @@ public class Settings extends AppCompatActivity {
         Alarm, Vibration, Notification, Animation, TemperatureUnit, Hints, FactorySettings
     }
 
-    private SettingsViewModel mSettingsViewModel;
+    private SettingsViewModel settingsViewModel;
 
     private ArrayList<ListRowItem> settingList;
     private SettingListAdapter adapter;
@@ -59,7 +59,7 @@ public class Settings extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mSettingsViewModel = new SettingsViewModel(getApplicationContext());
+        settingsViewModel = new SettingsViewModel(getApplicationContext());
 
         //write ListView
         settingList = new ArrayList<>();
@@ -115,7 +115,7 @@ public class Settings extends AppCompatActivity {
 
         //Get CheckedItem
         int checkedItem;
-        if (mSettingsViewModel.isVibration()) {
+        if (settingsViewModel.isVibration()) {
             checkedItem = 0;
         } else {
             checkedItem = 1;
@@ -128,10 +128,10 @@ public class Settings extends AppCompatActivity {
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             switch (item) {
                 case 0:
-                    mSettingsViewModel.setVibration(true);
+                    settingsViewModel.setVibration(true);
                     break;
                 case 1:
-                    mSettingsViewModel.setVibration(false);
+                    settingsViewModel.setVibration(false);
                     break;
             }
             refreshWindow();
@@ -147,7 +147,7 @@ public class Settings extends AppCompatActivity {
 
         //Get CheckedItem
         int checkedItem;
-        if (mSettingsViewModel.isNotification()) {
+        if (settingsViewModel.isNotification()) {
             checkedItem = 0;
         } else {
             checkedItem = 1;
@@ -160,10 +160,10 @@ public class Settings extends AppCompatActivity {
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             switch (item) {
                 case 0:
-                    mSettingsViewModel.setNotification(true);
+                    settingsViewModel.setNotification(true);
                     break;
                 case 1:
-                    mSettingsViewModel.setNotification(false);
+                    settingsViewModel.setNotification(false);
                     break;
             }
             refreshWindow();
@@ -179,7 +179,7 @@ public class Settings extends AppCompatActivity {
 
         //Get CheckedItem
         int checkedItem;
-        if (mSettingsViewModel.isAnimation()) {
+        if (settingsViewModel.isAnimation()) {
             checkedItem = 0;
         } else {
             checkedItem = 1;
@@ -192,10 +192,10 @@ public class Settings extends AppCompatActivity {
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             switch (item) {
                 case 0:
-                    mSettingsViewModel.setAnimation(true);
+                    settingsViewModel.setAnimation(true);
                     break;
                 case 1:
-                    mSettingsViewModel.setAnimation(false);
+                    settingsViewModel.setAnimation(false);
                     break;
             }
             refreshWindow();
@@ -211,7 +211,7 @@ public class Settings extends AppCompatActivity {
 
         //Get CheckedItem
         int checkedItem;
-        if (mSettingsViewModel.getTemperatureunit().equals(items[0])) {
+        if (settingsViewModel.getTemperatureunit().equals(items[0])) {
             checkedItem = 0;
         } else {
             checkedItem = 1;
@@ -222,7 +222,7 @@ public class Settings extends AppCompatActivity {
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_temperature_unit);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
-            mSettingsViewModel.setTemperatureunit(items[item]);
+            settingsViewModel.setTemperatureunit(items[item]);
             refreshWindow();
             adapter.notifyDataSetChanged();
             radioButtonDialog.dismiss();
@@ -237,15 +237,15 @@ public class Settings extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogsettingshints, parent, false);
         final CheckBox checkBoxRating = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsRating);
-        if (mSettingsViewModel.isMainratealert()) {
+        if (settingsViewModel.isMainratealert()) {
             checkBoxRating.setChecked(true);
         }
         final CheckBox checkBoxProblems = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsProblems);
-        if (mSettingsViewModel.isMainproblemalert()) {
+        if (settingsViewModel.isMainproblemalert()) {
             checkBoxProblems.setChecked(true);
         }
         final CheckBox checkBoxDescription = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsDescription);
-        if (mSettingsViewModel.isShowteaalert()) {
+        if (settingsViewModel.isShowteaalert()) {
             checkBoxDescription.setChecked(true);
         }
 
@@ -254,19 +254,19 @@ public class Settings extends AppCompatActivity {
         adb.setTitle(R.string.settings_show_hints_header);
         adb.setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> {
             if (checkBoxRating.isChecked()) {
-                mSettingsViewModel.setMainratealert(true);
+                settingsViewModel.setMainratealert(true);
             } else {
-                mSettingsViewModel.setMainratealert(false);
+                settingsViewModel.setMainratealert(false);
             }
             if (checkBoxProblems.isChecked()) {
-                mSettingsViewModel.setMainproblemalert(true);
+                settingsViewModel.setMainproblemalert(true);
             } else {
-                mSettingsViewModel.setMainproblemalert(false);
+                settingsViewModel.setMainproblemalert(false);
             }
             if (checkBoxDescription.isChecked()) {
-                mSettingsViewModel.setShowteaalert(true);
+                settingsViewModel.setShowteaalert(true);
             } else {
-                mSettingsViewModel.setShowteaalert(false);
+                settingsViewModel.setShowteaalert(false);
             }
         });
         adb.setNegativeButton(R.string.settings_show_hints_cancle, (dialog, which) -> {
@@ -281,8 +281,8 @@ public class Settings extends AppCompatActivity {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     //Einstellungen zurücksetzen und Tees löschen
-                    mSettingsViewModel.setDefaultSettings();
-                    mSettingsViewModel.deleteAllTeas();
+                    settingsViewModel.setDefaultSettings();
+                    settingsViewModel.deleteAllTeas();
                     //Felder ändern
                     refreshWindow();
                     adapter.notifyDataSetChanged();
@@ -306,7 +306,7 @@ public class Settings extends AppCompatActivity {
     private void refreshWindow() {
         settingList.clear();
 
-        ListRowItem itemSound = new ListRowItem(getResources().getString(R.string.settings_alarm), mSettingsViewModel.getMusicname());
+        ListRowItem itemSound = new ListRowItem(getResources().getString(R.string.settings_alarm), settingsViewModel.getMusicname());
         settingList.add(itemSound);
 
         //Decision for Animation, Vibration and Notification
@@ -314,7 +314,7 @@ public class Settings extends AppCompatActivity {
 
         //Get Option for the Vibration
         int vibrationOption;
-        if (mSettingsViewModel.isVibration()) {
+        if (settingsViewModel.isVibration()) {
             vibrationOption = 0;
         } else {
             vibrationOption = 1;
@@ -324,7 +324,7 @@ public class Settings extends AppCompatActivity {
 
         //Get Option for the Notification
         int notificationOption;
-        if (mSettingsViewModel.isNotification()) {
+        if (settingsViewModel.isNotification()) {
             notificationOption = 0;
         } else {
             notificationOption = 1;
@@ -334,7 +334,7 @@ public class Settings extends AppCompatActivity {
 
         //Get Option for the Animation
         int animationOption;
-        if (mSettingsViewModel.isAnimation()) {
+        if (settingsViewModel.isAnimation()) {
             animationOption = 0;
         } else {
             animationOption = 1;
@@ -343,7 +343,7 @@ public class Settings extends AppCompatActivity {
         settingList.add(itemAnimation);
 
         //TemperatureUnit
-        ListRowItem itemTemperatureUnit = new ListRowItem(getResources().getString(R.string.settings_temperature_unit), mSettingsViewModel.getTemperatureunit());
+        ListRowItem itemTemperatureUnit = new ListRowItem(getResources().getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureunit());
         settingList.add(itemTemperatureUnit);
 
         //Hints
@@ -377,11 +377,11 @@ public class Settings extends AppCompatActivity {
             Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
             String name = ringtone.getTitle(this);
             if (uri != null) {
-                mSettingsViewModel.setMusicchoice(uri.toString());
-                mSettingsViewModel.setMusicname(name);
+                settingsViewModel.setMusicchoice(uri.toString());
+                settingsViewModel.setMusicname(name);
             } else {
-                mSettingsViewModel.setMusicchoice(null);
-                mSettingsViewModel.setMusicname("-");
+                settingsViewModel.setMusicchoice(null);
+                settingsViewModel.setMusicname("-");
             }
             refreshWindow();
             adapter.notifyDataSetChanged();

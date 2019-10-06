@@ -67,7 +67,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private Button deleteInfusion;
     private Button addInfusion;
 
-    private NewTeaViewModel mNewTeaViewModel;
+    private NewTeaViewModel newTeaViewModel;
     private long teaId;
     private boolean showTea, colorChange;
 
@@ -141,16 +141,16 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         //Falls Änderung, dann wird ein Wert übergeben.
         teaId = this.getIntent().getLongExtra("teaId", 0);
         if (teaId == 0) {
-            mNewTeaViewModel = new NewTeaViewModel(getApplicationContext());
+            newTeaViewModel = new NewTeaViewModel(getApplicationContext());
         } else {
-            mNewTeaViewModel = new NewTeaViewModel(teaId, getApplicationContext());
+            newTeaViewModel = new NewTeaViewModel(teaId, getApplicationContext());
 
             //richtige SpinnerId bekommen
             int spinnerId = -1;
             String[] spinnerElements = getResources().getStringArray(R.array.variety_codes);
 
             for (int i = 0; i < spinnerElements.length; i++) {
-                if (spinnerElements[i].equals(mNewTeaViewModel.getVariety())) {
+                if (spinnerElements[i].equals(newTeaViewModel.getVariety())) {
                     spinnerId = i;
                     break;
                 }
@@ -164,16 +164,16 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 checkboxTeaSort.setVisibility(View.VISIBLE);
                 checkboxTeaSort.setChecked(true);
                 editTextTeaSort.setVisibility(View.VISIBLE);
-                editTextTeaSort.setText(mNewTeaViewModel.getVariety());
+                editTextTeaSort.setText(newTeaViewModel.getVariety());
             } else {
                 spinnerTeaVariety.setSelection(spinnerId);
             }
-            color = mNewTeaViewModel.getColor();
+            color = newTeaViewModel.getColor();
             buttonColorSape.setColor(color);
             colorChange = true;
-            editTextName.setText(mNewTeaViewModel.getName());
+            editTextName.setText(newTeaViewModel.getName());
             //richtige SpinnerId bekommen
-            amountUnit = mNewTeaViewModel.getAmountkind();
+            amountUnit = newTeaViewModel.getAmountkind();
             switch (amountUnit) {
                 case "Ts":
                     spinnerAmount.setSelection(0);
@@ -182,19 +182,19 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                     spinnerAmount.setSelection(1);
                     break;
             }
-            if (mNewTeaViewModel.getAmount() != -500)
-                editTextAmount.setText(String.valueOf(mNewTeaViewModel.getAmount()));
+            if (newTeaViewModel.getAmount() != -500)
+                editTextAmount.setText(String.valueOf(newTeaViewModel.getAmount()));
 
-            if (mNewTeaViewModel.getInfusionTemperature() != -500) {
-                editTextTemperature.setText(String.valueOf(mNewTeaViewModel.getInfusionTemperature()));
+            if (newTeaViewModel.getInfusionTemperature() != -500) {
+                editTextTemperature.setText(String.valueOf(newTeaViewModel.getInfusionTemperature()));
             }
 
-            if (mNewTeaViewModel.getInfusionCooldowntime() != null) {
-                editTextCoolDownTime.setText(mNewTeaViewModel.getInfusionCooldowntime());
+            if (newTeaViewModel.getInfusionCooldowntime() != null) {
+                editTextCoolDownTime.setText(newTeaViewModel.getInfusionCooldowntime());
             }
 
-            if (mNewTeaViewModel.getInfusionTime() != null)
-                editTextSteepingTime.setText(mNewTeaViewModel.getInfusionTime());
+            if (newTeaViewModel.getInfusionTime() != null)
+                editTextSteepingTime.setText(newTeaViewModel.getInfusionTime());
 
             refreshInfusionConsole();
 
@@ -273,7 +273,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         leftArrow.setOnClickListener(v -> {
             if (changeInfusion()) {
-                mNewTeaViewModel.previousInfusion();
+                newTeaViewModel.previousInfusion();
                 refreshInfusionConsole();
                 refreshInfusionInformation();
             }
@@ -282,7 +282,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         rightArrow.setOnClickListener(v -> {
             if (changeInfusion()) {
-                mNewTeaViewModel.nextInfusion();
+                newTeaViewModel.nextInfusion();
                 refreshInfusionConsole();
                 refreshInfusionInformation();
             }
@@ -290,7 +290,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         rightArrow.setOnLongClickListener(this);
 
         deleteInfusion.setOnClickListener(v -> {
-            mNewTeaViewModel.deleteInfusion();
+            newTeaViewModel.deleteInfusion();
             refreshInfusionConsole();
             refreshInfusionInformation();
         });
@@ -298,7 +298,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         addInfusion.setOnClickListener(v -> {
             if (changeInfusion()) {
-                mNewTeaViewModel.addInfusion(false);
+                newTeaViewModel.addInfusion(false);
                 refreshInfusionConsole();
                 clearInfusionInformation();
             }
@@ -326,7 +326,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
             }
             //Falls nötig in Celsius umwandeln
-            if (mNewTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                 temperatureCelsius = TemperatureConversation.fahrenheitToCelsius(temperatureCelsius);
             }
             if (temperatureCelsius != -500 && temperatureCelsius != 100) {
@@ -361,7 +361,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         } else if (showTea) {
             //Neues Intent anlegen
             Intent showteaScreen = new Intent(NewTea.this, ShowTea.class);
-            showteaScreen.putExtra("teaId", mNewTeaViewModel.getTeaId());
+            showteaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
             // Intent starten und zur zweiten Activity wechseln
             startActivity(showteaScreen);
             finish();
@@ -409,10 +409,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
                 if (teaId != 0) {
                     //Tee wird geändert
-                    mNewTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, color);
+                    newTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, color);
                 } else {
                     //erstelle Tee
-                    mNewTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, color);
+                    newTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, color);
                 }
                 if (!showTea) {
                     //wechsel das Fenster
@@ -421,7 +421,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                     //Neues Intent anlegen
                     Intent showteaScreen = new Intent(NewTea.this, ShowTea.class);
                     //find out teaAt by Name
-                    showteaScreen.putExtra("teaId", mNewTeaViewModel.getTeaId());
+                    showteaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
                     // Intent starten und zur zweiten Activity wechseln
                     startActivity(showteaScreen);
                     finish();
@@ -444,9 +444,9 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 temperatureValid = false;
             } else {
                 int checktemperature = 0;
-                if (mNewTeaViewModel.getTemperatureunit().equals("Celsius"))
+                if (newTeaViewModel.getTemperatureunit().equals("Celsius"))
                     checktemperature = Integer.parseInt(temperature);
-                else if (mNewTeaViewModel.getTemperatureunit().equals("Fahrenheit"))
+                else if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit"))
                     checktemperature = TemperatureConversation.fahrenheitToCelsius(Integer.parseInt(temperature));
 
                 if (checktemperature > 100 || checktemperature < 0) {
@@ -488,53 +488,53 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private void sethints() {
         //set Hint for variety
-        editTextTemperature.setHint(HintConversation.getHintTemperature(variety.ordinal(), mNewTeaViewModel.getTemperatureunit(), getApplicationContext()));
+        editTextTemperature.setHint(HintConversation.getHintTemperature(variety.ordinal(), newTeaViewModel.getTemperatureunit(), getApplicationContext()));
         editTextAmount.setHint(HintConversation.getHintAmount(variety.ordinal(), amountUnit, getApplicationContext()));
         editTextSteepingTime.setHint(HintConversation.getHintTime(variety.ordinal(), getApplicationContext()));
     }
 
     private void refreshInfusionConsole() {
         //Show Delete or Not
-        if (mNewTeaViewModel.getInfusionSize() > 1) {
+        if (newTeaViewModel.getInfusionSize() > 1) {
             deleteInfusion.setVisibility(View.VISIBLE);
         } else {
             deleteInfusion.setVisibility(View.GONE);
         }
         //show Add or Not
-        if (((mNewTeaViewModel.getInfusionIndex() + 1) == mNewTeaViewModel.getInfusionSize()) && (mNewTeaViewModel.getInfusionSize() < 20)) {
+        if (((newTeaViewModel.getInfusionIndex() + 1) == newTeaViewModel.getInfusionSize()) && (newTeaViewModel.getInfusionSize() < 20)) {
             addInfusion.setVisibility(View.VISIBLE);
         } else {
             addInfusion.setVisibility(View.GONE);
         }
         //enable Left
-        if (mNewTeaViewModel.getInfusionIndex() == 0) {
+        if (newTeaViewModel.getInfusionIndex() == 0) {
             leftArrow.setEnabled(false);
         } else {
             leftArrow.setEnabled(true);
         }
         //enable Right
-        if ((mNewTeaViewModel.getInfusionIndex() + 1) == mNewTeaViewModel.getInfusionSize()) {
+        if ((newTeaViewModel.getInfusionIndex() + 1) == newTeaViewModel.getInfusionSize()) {
             rightArrow.setEnabled(false);
         } else {
             rightArrow.setEnabled(true);
         }
         //show Text
-        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, mNewTeaViewModel.getInfusionIndex() + 1, ". "));
+        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, newTeaViewModel.getInfusionIndex() + 1, ". "));
     }
 
     private void refreshInfusionInformation() {
         clearInfusionInformation();
 
-        if (mNewTeaViewModel.getInfusionTemperature() != -500) {
-            editTextTemperature.setText(String.valueOf(mNewTeaViewModel.getInfusionTemperature()));
+        if (newTeaViewModel.getInfusionTemperature() != -500) {
+            editTextTemperature.setText(String.valueOf(newTeaViewModel.getInfusionTemperature()));
         }
 
-        if (mNewTeaViewModel.getInfusionCooldowntime() != null) {
-            editTextCoolDownTime.setText(mNewTeaViewModel.getInfusionCooldowntime());
+        if (newTeaViewModel.getInfusionCooldowntime() != null) {
+            editTextCoolDownTime.setText(newTeaViewModel.getInfusionCooldowntime());
         }
 
-        if (mNewTeaViewModel.getInfusionTime() != null) {
-            editTextSteepingTime.setText(mNewTeaViewModel.getInfusionTime());
+        if (newTeaViewModel.getInfusionTime() != null) {
+            editTextSteepingTime.setText(newTeaViewModel.getInfusionTime());
         }
     }
 
@@ -570,10 +570,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         if (!temperatureValid) {
             works = false;
-            if (mNewTeaViewModel.getTemperatureunit().equals("Celsius")) {
+            if (newTeaViewModel.getTemperatureunit().equals("Celsius")) {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_celsius, Toast.LENGTH_SHORT);
                 toast.show();
-            } else if (mNewTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            } else if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_fahrenheit, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -586,7 +586,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_time_format, Toast.LENGTH_SHORT);
             toast.show();
         } else {
-            mNewTeaViewModel.takeInfusionInformation(time, coolDownTime, temperature);
+            newTeaViewModel.takeInfusionInformation(time, coolDownTime, temperature);
         }
         return works;
     }

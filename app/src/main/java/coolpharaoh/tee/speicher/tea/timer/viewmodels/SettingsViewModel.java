@@ -11,10 +11,10 @@ import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 
 public class SettingsViewModel {
 
-    private ActualSettingsDAO mActualSettingsDAO;
-    private TeaDAO mTeaDAO;
+    private ActualSettingsDAO actualSettingsDAO;
+    private TeaDAO teaDAO;
 
-    private ActualSettings mActualSettings;
+    private ActualSettings actualSettings;
 
     public SettingsViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
@@ -22,108 +22,108 @@ public class SettingsViewModel {
                 .allowMainThreadQueries()
                 .build();
 
-        mActualSettingsDAO = database.getActualSettingsDAO();
-        mActualSettings = mActualSettingsDAO.getSettings();
+        actualSettingsDAO = database.getActualSettingsDAO();
+        actualSettings = actualSettingsDAO.getSettings();
 
-        mTeaDAO = database.getTeaDAO();
+        teaDAO = database.getTeaDAO();
     }
 
     //Settings
     public void setMusicchoice(String musicchoice) {
-        mActualSettings.setMusicchoice(musicchoice);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMusicchoice(musicchoice);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public String getMusicname() {
-        return mActualSettings.getMusicname();
+        return actualSettings.getMusicname();
     }
 
     public void setMusicname(String musicname) {
-        mActualSettings.setMusicname(musicname);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMusicname(musicname);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isVibration() {
-        return mActualSettings.isVibration();
+        return actualSettings.isVibration();
     }
 
     public void setVibration(boolean vibration) {
-        mActualSettings.setVibration(vibration);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setVibration(vibration);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isNotification() {
-        return mActualSettings.isNotification();
+        return actualSettings.isNotification();
     }
 
     public void setNotification(boolean notification) {
-        mActualSettings.setNotification(notification);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setNotification(notification);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isAnimation() {
-        return mActualSettings.isAnimation();
+        return actualSettings.isAnimation();
     }
 
     public void setAnimation(boolean animation) {
-        mActualSettings.setAnimation(animation);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setAnimation(animation);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public String getTemperatureunit() {
-        return mActualSettings.getTemperatureunit();
+        return actualSettings.getTemperatureunit();
     }
 
     public void setTemperatureunit(String temperatureunit) {
-        mActualSettings.setTemperatureunit(temperatureunit);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setTemperatureunit(temperatureunit);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isShowteaalert() {
-        return mActualSettings.isShowteaalert();
+        return actualSettings.isShowteaalert();
     }
 
     public void setShowteaalert(boolean showteaalert) {
-        mActualSettings.setShowteaalert(showteaalert);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setShowteaalert(showteaalert);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isMainproblemalert() {
-        return mActualSettings.isMainproblemalert();
+        return actualSettings.isMainproblemalert();
     }
 
     public void setMainproblemalert(boolean mainproblemalert) {
-        mActualSettings.setMainproblemalert(mainproblemalert);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMainproblemalert(mainproblemalert);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isMainratealert() {
-        return mActualSettings.isMainratealert();
+        return actualSettings.isMainratealert();
     }
 
     public void setMainratealert(boolean mainratealert) {
-        mActualSettings.setMainratealert(mainratealert);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMainratealert(mainratealert);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public void setDefaultSettings() {
-        mActualSettings.setMusicchoice("content://settings/system/ringtone");
-        mActualSettings.setMusicname("Default");
-        mActualSettings.setVibration(false);
-        mActualSettings.setNotification(true);
-        mActualSettings.setAnimation(true);
-        mActualSettings.setTemperatureunit("Celsius");
-        mActualSettings.setShowteaalert(true);
-        mActualSettings.setMainproblemalert(true);
-        mActualSettings.setMainratealert(true);
-        mActualSettings.setMainratecounter(0);
-        mActualSettings.setSort(0);
+        actualSettings.setMusicchoice("content://settings/system/ringtone");
+        actualSettings.setMusicname("Default");
+        actualSettings.setVibration(false);
+        actualSettings.setNotification(true);
+        actualSettings.setAnimation(true);
+        actualSettings.setTemperatureunit("Celsius");
+        actualSettings.setShowteaalert(true);
+        actualSettings.setMainproblemalert(true);
+        actualSettings.setMainratealert(true);
+        actualSettings.setMainratecounter(0);
+        actualSettings.setSort(0);
 
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettingsDAO.update(actualSettings);
     }
 
     //Tea
     public void deleteAllTeas() {
-        mTeaDAO.deleteAll();
+        teaDAO.deleteAll();
     }
 }

@@ -69,7 +69,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private ImageView imageViewFill;
     private ImageView imageViewSteam;
 
-    private ShowTeaViewModel mShowTeaViewModel;
+    private ShowTeaViewModel showTeaViewModel;
     private boolean infoShown = false;
     //animation
     private long maxMilliSec;
@@ -137,67 +137,67 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             toast.show();
             buttonInfusionIndex.setVisibility(View.INVISIBLE);
         } else {
-            mShowTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
+            showTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
 
             //Vibration and Notification set
-            toggleVibration.setChecked(mShowTeaViewModel.isVibration());
-            toggleNotification.setChecked(mShowTeaViewModel.isNotification());
+            toggleVibration.setChecked(showTeaViewModel.isVibration());
+            toggleNotification.setChecked(showTeaViewModel.isNotification());
 
             //show Description
-            if (mShowTeaViewModel.isShowteaalert()) {
+            if (showTeaViewModel.isShowteaalert()) {
                 dialogShowTeaDescription();
             }
 
             //Befülle TextViews
-            textViewName.setText(mShowTeaViewModel.getName());
-            textViewSortOfTea.setText(mShowTeaViewModel.getVariety());
-            if (!mShowTeaViewModel.getNote().getDescription().equals("")) {
+            textViewName.setText(showTeaViewModel.getName());
+            textViewSortOfTea.setText(showTeaViewModel.getVariety());
+            if (!showTeaViewModel.getNote().getDescription().equals("")) {
                 buttonNote.setVisibility(View.VISIBLE);
             }
-            if (mShowTeaViewModel.getTemperature() != -500) {
-                if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
-                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(mShowTeaViewModel.getTemperature())));
-                } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
-                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(mShowTeaViewModel.getTemperature())));
+            if (showTeaViewModel.getTemperature() != -500) {
+                if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
+                } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                    textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
                 }
             } else {
-                if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-                } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
                 }
             }
-            if (mShowTeaViewModel.getCooldowntime().time != null) {
+            if (showTeaViewModel.getCooldowntime().time != null) {
                 buttonExchange.setEnabled(true);
             }
-            if (mShowTeaViewModel.getAmount() != -500) {
-                if (mShowTeaViewModel.getAmountkind().equals("Ts"))
-                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(mShowTeaViewModel.getAmount())));
-                else if (mShowTeaViewModel.getAmountkind().equals("Gr"))
-                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(mShowTeaViewModel.getAmount())));
+            if (showTeaViewModel.getAmount() != -500) {
+                if (showTeaViewModel.getAmountkind().equals("Ts"))
+                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
+                else if (showTeaViewModel.getAmountkind().equals("Gr"))
+                    textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
             } else {
                 buttonCalcAmount.setEnabled(false);
-                if (mShowTeaViewModel.getAmountkind().equals("Ts"))
+                if (showTeaViewModel.getAmountkind().equals("Ts"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, "-"));
-                else if (mShowTeaViewModel.getAmountkind().equals("Gr"))
+                else if (showTeaViewModel.getAmountkind().equals("Gr"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, "-"));
             }
 
-            spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
-            spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
+            spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
+            spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
 
             //wenn nur ein Aufguss vorgesehen ist dann verschwindet der button_calculateamount
-            if (mShowTeaViewModel.getInfusionSize() == 1) {
+            if (showTeaViewModel.getInfusionSize() == 1) {
                 textViewInfusionIndex.setVisibility(View.INVISIBLE);
                 buttonInfusionIndex.setVisibility(View.INVISIBLE);
                 buttonNextInfusion.setVisibility(View.INVISIBLE);
             }
         }
 
-        toggleVibration.setOnClickListener(view -> mShowTeaViewModel.setVibration(toggleVibration.isChecked()));
+        toggleVibration.setOnClickListener(view -> showTeaViewModel.setVibration(toggleVibration.isChecked()));
         toggleVibration.setOnLongClickListener(this);
 
-        toggleNotification.setOnClickListener(view -> mShowTeaViewModel.setNotification(toggleNotification.isChecked()));
+        toggleNotification.setOnClickListener(view -> showTeaViewModel.setNotification(toggleNotification.isChecked()));
         toggleNotification.setOnLongClickListener(this);
 
         buttonNote.setOnClickListener(view -> dialogNote());
@@ -207,7 +207,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonCalcAmount.setOnLongClickListener(this);
 
         buttonInfusionIndex.setOnClickListener(v -> {
-            int tmpSize = mShowTeaViewModel.getInfusionSize();
+            int tmpSize = showTeaViewModel.getInfusionSize();
             String[] items = new String[tmpSize];
             for (int i = 0; i < tmpSize; i++) {
                 items[i] = (i + 1) + ". " + getResources().getString(R.string.showtea_infusion_index_content);
@@ -216,7 +216,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             builder.setIcon(R.drawable.infusiondark);
             builder.setTitle(R.string.showtea_infusion_count_title);
             builder.setItems(items, (dialog, item) -> {
-                mShowTeaViewModel.setInfusionIndex(item);
+                showTeaViewModel.setInfusionIndex(item);
                 infusionIndexChanged();
             });
             AlertDialog alert = builder.create();
@@ -226,7 +226,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonInfusionIndex.setOnLongClickListener(this);
 
         buttonNextInfusion.setOnClickListener(v -> {
-            mShowTeaViewModel.incrementInfusionIndex();
+            showTeaViewModel.incrementInfusionIndex();
             infusionIndexChanged();
         });
         buttonNextInfusion.setOnLongClickListener(this);
@@ -243,13 +243,13 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 buttonInfo.setVisibility(View.VISIBLE);
                 infoShown = true;
                 //Abkühlzeit anzeigen
-                spinnerMinutes.setSelection(mShowTeaViewModel.getCooldowntime().minutes);
-                spinnerSeconds.setSelection(mShowTeaViewModel.getCooldowntime().seconds);
+                spinnerMinutes.setSelection(showTeaViewModel.getCooldowntime().minutes);
+                spinnerSeconds.setSelection(showTeaViewModel.getCooldowntime().seconds);
             } else {
                 buttonInfo.setVisibility(View.INVISIBLE);
                 infoShown = false;
-                spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
-                spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
+                spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
+                spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
             }
         });
         buttonExchange.setOnLongClickListener(this);
@@ -258,9 +258,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonStartTimer.setOnClickListener(v -> {
             if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_start))) {
                 //Mainlist aktualisieren
-                mShowTeaViewModel.setCurrentDate();
+                showTeaViewModel.setCurrentDate();
                 //don't count when waiting for the right temperature
-                if (!infoShown) mShowTeaViewModel.countCounter();
+                if (!infoShown) showTeaViewModel.countCounter();
                 //Button umbenennen
                 buttonStartTimer.setText(R.string.showtea_timer_reset);
                 buttonExchange.setEnabled(false);
@@ -276,11 +276,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 //Timeranzeige einblenden
                 textViewTimer.setVisibility((View.VISIBLE));
                 //Teetasse anzeigen
-                if (!infoShown && mShowTeaViewModel.isAnimation()) {
+                if (!infoShown && showTeaViewModel.isAnimation()) {
                     imageViewCup.setVisibility((View.VISIBLE));
                     imageViewFill.setVisibility((View.VISIBLE));
                     //Farbe des Inhalts der Tasse festlegen
-                    imageViewFill.setColorFilter(mShowTeaViewModel.getColor(), PorterDuff.Mode.SRC_ATOP);
+                    imageViewFill.setColorFilter(showTeaViewModel.getColor(), PorterDuff.Mode.SRC_ATOP);
                 }
                 //In millisekunden umrechnen
                 int min = Integer.parseInt(spinnerMinutes.getSelectedItem().toString());
@@ -290,13 +290,13 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 maxMilliSec = millisec;
                 //Counter erstellen
                 Intent counter = new Intent(getBaseContext(), CountDownService.class);
-                counter.putExtra("teaName", mShowTeaViewModel.getName());
+                counter.putExtra("teaName", showTeaViewModel.getName());
                 counter.putExtra("millisec", millisec);
                 startService(counter);
             } else if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_reset))) {
                 //Button umbenennen
                 buttonStartTimer.setText(R.string.showtea_timer_start);
-                if (mShowTeaViewModel.getCooldowntime().time!=null) {
+                if (showTeaViewModel.getCooldowntime().time!=null) {
                     buttonExchange.setEnabled(true);
                 }
 
@@ -312,7 +312,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 //Timeranzeige ausblenden
                 textViewTimer.setVisibility((View.INVISIBLE));
                 //Teetasse ausblenden
-                if (!infoShown && mShowTeaViewModel.isAnimation()) {
+                if (!infoShown && showTeaViewModel.isAnimation()) {
                     imageViewCup.setVisibility((View.INVISIBLE));
                     imageViewFill.setVisibility((View.INVISIBLE));
                     imageViewFill.setImageResource(R.drawable.fill0pr);
@@ -348,7 +348,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         } else if (id == R.id.action_settings) {
             //Neues Intent anlegen
             Intent newteaScreen = new Intent(ShowTea.this, NewTea.class);
-            newteaScreen.putExtra("teaId", mShowTeaViewModel.getTeaId());
+            newteaScreen.putExtra("teaId", showTeaViewModel.getTeaId());
             newteaScreen.putExtra("showTea", true);
             // Intent starten und zur zweiten Activity wechseln
             startActivity(newteaScreen);
@@ -401,12 +401,12 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         if (intent.getExtras() != null) {
             long millis = intent.getLongExtra("countdown", 0);
             boolean ready = intent.getBooleanExtra("ready", false);
-            if (!infoShown && mShowTeaViewModel.isAnimation()) {
+            if (!infoShown && showTeaViewModel.isAnimation()) {
                 updateImage(millis);
             }
             if (ready) {
                 textViewTimer.setText(R.string.showtea_tea_ready);
-                if (!infoShown && mShowTeaViewModel.isAnimation()) {
+                if (!infoShown && showTeaViewModel.isAnimation()) {
                     imageViewFill.setImageResource(R.drawable.fill100pr);
                     imageViewSteam.setVisibility((View.VISIBLE));
                 }
@@ -730,27 +730,27 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void infusionIndexChanged() {
-        if (mShowTeaViewModel.getTemperature() != -500) {
-            if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(mShowTeaViewModel.getTemperature())));
-            } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(mShowTeaViewModel.getTemperature())));
+        if (showTeaViewModel.getTemperature() != -500) {
+            if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
+            } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
-            if (mShowTeaViewModel.getTemperatureunit().equals("Celsius")) {
+            if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-            } else if (mShowTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
             }
         }
-        if (mShowTeaViewModel.getCooldowntime().time!=null) {
+        if (showTeaViewModel.getCooldowntime().time!=null) {
             buttonExchange.setEnabled(true);
         } else {
             buttonExchange.setEnabled(false);
         }
-        spinnerMinutes.setSelection(mShowTeaViewModel.getTime().minutes);
-        spinnerSeconds.setSelection(mShowTeaViewModel.getTime().seconds);
-        textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (mShowTeaViewModel.getInfusionIndex() + 1)));
+        spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
+        spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
+        textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (showTeaViewModel.getInfusionIndex() + 1)));
 
         nextInfusionEnable();
 
@@ -759,7 +759,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void nextInfusionEnable() {
-        if (mShowTeaViewModel.getInfusionIndex() == mShowTeaViewModel.getInfusionSize() - 1) {
+        if (showTeaViewModel.getInfusionIndex() == showTeaViewModel.getInfusionSize() - 1) {
             buttonNextInfusion.setEnabled(false);
         } else {
             buttonNextInfusion.setEnabled(true);
@@ -777,11 +777,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.setView(alertLayoutDialogNote);
         adb.setTitle(R.string.showtea_action_note);
         adb.setIcon(R.drawable.note);
-        editTextNote.setText(mShowTeaViewModel.getNote().getDescription());
+        editTextNote.setText(showTeaViewModel.getNote().getDescription());
         editTextNote.setSelected(false);
         adb.setPositiveButton(R.string.showtea_dialog_note_ok, (dialog, which) -> {
-            mShowTeaViewModel.setNote(editTextNote.getText().toString());
-            if (!mShowTeaViewModel.getNote().getDescription().equals("")) {
+            showTeaViewModel.setNote(editTextNote.getText().toString());
+            if (!showTeaViewModel.getNote().getDescription().equals("")) {
                 buttonNote.setVisibility(View.VISIBLE);
             } else {
                 buttonNote.setVisibility(View.INVISIBLE);
@@ -794,7 +794,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void dialogCounter() {
-        Counter counter = mShowTeaViewModel.getCounter();
+        Counter counter = showTeaViewModel.getCounter();
 
         List<ListRowItem> counterList = new ArrayList<>();
         ListRowItem itemToday = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_day), String.valueOf(counter.getDay()));
@@ -860,10 +860,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
         float liter = (float) value / 10;
-        float amountPerLiter = (float) mShowTeaViewModel.getAmount() * liter;
-        if (mShowTeaViewModel.getAmountkind().equals("Ts")) {
+        float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
+        if (showTeaViewModel.getAmountkind().equals("Ts")) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_ts, amountPerLiter, liter));
-        } else if (mShowTeaViewModel.getAmountkind().equals("Gr")) {
+        } else if (showTeaViewModel.getAmountkind().equals("Gr")) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_gr, amountPerLiter, liter));
         }
 
@@ -881,7 +881,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.setTitle(R.string.showtea_dialog_description_header);
         adb.setPositiveButton(R.string.showtea_dialog_description_ok, (dialog, which) -> {
             if (dontshowagain.isChecked()) {
-                mShowTeaViewModel.setShowteaalert(false);
+                showTeaViewModel.setShowteaalert(false);
             }
         });
         adb.show();

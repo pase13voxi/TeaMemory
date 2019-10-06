@@ -19,11 +19,11 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 public class MainActivityViewModel extends ViewModel {
 
 
-    private TeaDAO mTeaDAO;
-    private ActualSettingsDAO mActualSettingsDAO;
+    private TeaDAO teaDAO;
+    private ActualSettingsDAO actualSettingsDAO;
 
-    private MutableLiveData<List<Tea>> mTeas;
-    private ActualSettings mActualSettings;
+    private MutableLiveData<List<Tea>> teas;
+    private ActualSettings actualSettings;
 
     public MainActivityViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
@@ -31,92 +31,92 @@ public class MainActivityViewModel extends ViewModel {
                 .allowMainThreadQueries()
                 .build();
 
-        mActualSettingsDAO = database.getActualSettingsDAO();
-        mActualSettings = mActualSettingsDAO.getSettings();
+        actualSettingsDAO = database.getActualSettingsDAO();
+        actualSettings = actualSettingsDAO.getSettings();
 
-        mTeaDAO = database.getTeaDAO();
-        mTeas = new MutableLiveData<>();
+        teaDAO = database.getTeaDAO();
+        teas = new MutableLiveData<>();
 
         refreshTeas();
     }
 
     //Teas
     public LiveData<List<Tea>> getTeas() {
-        return mTeas;
+        return teas;
     }
 
     public Tea getTeaByPosition(int position) {
-        return Objects.requireNonNull(mTeas.getValue()).get(position);
+        return Objects.requireNonNull(teas.getValue()).get(position);
     }
 
     public void deleteTea(int position) {
-        mTeaDAO.delete(Objects.requireNonNull(mTeas.getValue()).get(position));
+        teaDAO.delete(Objects.requireNonNull(teas.getValue()).get(position));
 
         refreshTeas();
     }
 
     //Settings
     public int getSort() {
-        return mActualSettings.getSort();
+        return actualSettings.getSort();
     }
 
     public void setSort(int sort) {
 
-        mActualSettings.setSort(sort);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setSort(sort);
+        actualSettingsDAO.update(actualSettings);
 
         refreshTeas();
     }
 
     public boolean isMainRateAlert() {
-        return mActualSettings.isMainratealert();
+        return actualSettings.isMainratealert();
     }
 
     public void setMainRateAlert(boolean mainRateAlert) {
 
-        mActualSettings.setMainratealert(mainRateAlert);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMainratealert(mainRateAlert);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public int getMainRatecounter() {
-        return mActualSettings.getMainratecounter();
+        return actualSettings.getMainratecounter();
     }
 
     public void resetMainRatecounter() {
 
-        mActualSettings.setMainratecounter(0);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMainratecounter(0);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public void incrementMainRatecounter() {
 
-        mActualSettings.setMainratecounter(mActualSettings.getMainratecounter() + 1);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMainratecounter(actualSettings.getMainratecounter() + 1);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isMainProblemAlert() {
-        return mActualSettings.isMainproblemalert();
+        return actualSettings.isMainproblemalert();
     }
 
     public void setMainProblemAlert(boolean mainProblemAlert) {
 
-        mActualSettings.setMainproblemalert(mainProblemAlert);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setMainproblemalert(mainProblemAlert);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public void refreshTeas() {
-        switch (mActualSettings.getSort()) {
+        switch (actualSettings.getSort()) {
             //activity
             case 0:
-                mTeas.setValue(mTeaDAO.getTeasOrderByActivity());
+                teas.setValue(teaDAO.getTeasOrderByActivity());
                 break;
             //alphabetic
             case 1:
-                mTeas.setValue(mTeaDAO.getTeasOrderByAlphabetic());
+                teas.setValue(teaDAO.getTeasOrderByAlphabetic());
                 break;
             //variety
             case 2:
-                mTeas.setValue(mTeaDAO.getTeasOrderByVariety());
+                teas.setValue(teaDAO.getTeasOrderByVariety());
                 break;
         }
     }

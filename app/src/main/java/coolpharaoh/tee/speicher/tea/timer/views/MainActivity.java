@@ -45,7 +45,6 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.ActualSetting;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.N2Tea;
 import coolpharaoh.tee.speicher.tea.timer.datastructure.TeaCollection;
-import coolpharaoh.tee.speicher.tea.timer.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
@@ -59,7 +58,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversat
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     public static ActualSetting settings;
-    private MainActivityViewModel mMainActivityViewModel;
+    private MainActivityViewModel mainActivityViewModel;
     static private boolean startApplication = true;
 
     private ListView tealist;
@@ -220,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             }
         }
 
-        mMainActivityViewModel = new MainActivityViewModel(getApplicationContext());
+        mainActivityViewModel = new MainActivityViewModel(getApplicationContext());
 
         //Setzte Spinner Groß
         Spinner spinnerSort = findViewById(R.id.spinner_category);
@@ -231,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         spinnerSort.setAdapter(spinnerVarietyAdapter);
 
         //setzte spinner
-        spinnerSort.setSelection(mMainActivityViewModel.getSort());
+        spinnerSort.setSelection(mainActivityViewModel.getSort());
 
         //sortierung hat sich verändert
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -239,13 +238,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        mMainActivityViewModel.setSort(0);
+                        mainActivityViewModel.setSort(0);
                         break;
                     case 1:
-                        mMainActivityViewModel.setSort(1);
+                        mainActivityViewModel.setSort(1);
                         break;
                     case 2:
-                        mMainActivityViewModel.setSort(2);
+                        mainActivityViewModel.setSort(2);
                         break;
                 }
             }
@@ -257,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         });
 
         //Liste mit Adapter verknüpfen
-        mMainActivityViewModel.getTeas().observe(this, mTeas -> {
+        mainActivityViewModel.getTeas().observe(this, mTeas -> {
             adapter = new TeaAdapter(MainActivity.this, mTeas);
             //Adapter dem Listview hinzufügen
             tealist.setAdapter(adapter);
@@ -270,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             //Neues Intent anlegen
             Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
 
-            showteaScreen.putExtra("teaId", mMainActivityViewModel.getTeaByPosition(position).getId());
+            showteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(position).getId());
             // Intent starten und zur zweiten Activity wechseln
             startActivity(showteaScreen);
         });
@@ -289,15 +288,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (startApplication) {
             startApplication = false;
             //show dialog problem
-            if (mMainActivityViewModel.isMainProblemAlert()) {
+            if (mainActivityViewModel.isMainProblemAlert()) {
                 dialogMainProblem();
             }
             //show dialog rating
-            if (mMainActivityViewModel.isMainRateAlert() && mMainActivityViewModel.getMainRatecounter() >= 20) {
-                mMainActivityViewModel.resetMainRatecounter();
+            if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
+                mainActivityViewModel.resetMainRatecounter();
                 dialogMainRating();
             } else {
-                mMainActivityViewModel.incrementMainRatecounter();
+                mainActivityViewModel.incrementMainRatecounter();
             }
         }
     }
@@ -336,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.listViewTealist) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            menu.setHeaderTitle(mMainActivityViewModel.getTeaByPosition(info.position).getName());
+            menu.setHeaderTitle(mainActivityViewModel.getTeaByPosition(info.position).getName());
 
             //Übersetzung Englisch Deutsch
             String[] menuItems = getResources().getStringArray(R.array.itemMenu);
@@ -357,14 +356,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (menuItemName.equals(editOption)) {
             //Neues Intent anlegen
             Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
-            newteaScreen.putExtra("teaId", mMainActivityViewModel.getTeaByPosition(info.position).getId());
+            newteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(info.position).getId());
 
 
             // Intent starten und zur zweiten Activity wechseln
             startActivity(newteaScreen);
         } else if (menuItemName.equals(deleteOption)) {
             int position = info.position;
-            mMainActivityViewModel.deleteTea(position);
+            mainActivityViewModel.deleteTea(position);
         }
         return true;
     }
@@ -436,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     public void onResume() {
         super.onResume();
-        mMainActivityViewModel.refreshTeas();
+        mainActivityViewModel.refreshTeas();
     }
 
     private void showTooltip(View v, String text) {
@@ -463,14 +462,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             adb.setTitle(R.string.main_dialog_problem_header);
             adb.setPositiveButton(R.string.main_dialog_problem_ok, (dialog, which) -> {
                 if (dontshowagain.isChecked()) {
-                    mMainActivityViewModel.setMainProblemAlert(false);
+                    mainActivityViewModel.setMainProblemAlert(false);
                 }
                 Intent problemsScreen = new Intent(MainActivity.this, Problems.class);
                 startActivity(problemsScreen);
             });
             adb.setNegativeButton(R.string.main_dialog_problem_cancle, (dialog, which) -> {
                 if (dontshowagain.isChecked()) {
-                    mMainActivityViewModel.setMainProblemAlert(false);
+                    mainActivityViewModel.setMainProblemAlert(false);
                 }
             });
             adb.show();
@@ -487,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         adb.setView(alertLayoutDialogProblem);
         adb.setTitle(R.string.main_dialog_rating_header);
         adb.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> {
-            mMainActivityViewModel.setMainRateAlert(false);
+            mainActivityViewModel.setMainRateAlert(false);
 
             final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
             try {
@@ -498,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         });
         adb.setNeutralButton(R.string.main_dialog_rating_neutral, (dialog, which) -> {
         });
-        adb.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mMainActivityViewModel.setMainRateAlert(false));
+        adb.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));
         adb.show();
     }
 }

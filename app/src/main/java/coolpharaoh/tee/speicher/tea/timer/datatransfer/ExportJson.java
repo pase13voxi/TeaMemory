@@ -21,13 +21,13 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 
 public class ExportJson {
-    private List<TeaPOJO> mTeaList;
-    private String mJson;
+    private List<TeaPOJO> teaList;
+    private String json;
 
     public ExportJson(List<Tea> teas, List<Infusion> infusions, List<Counter> counters, List<Note> notes) {
         DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(teas, infusions, counters, notes);
-        mTeaList = databaseToPojo.createTeaList();
-        mJson = createJsonFromTeaList();
+        teaList = databaseToPojo.createTeaList();
+        json = createJsonFromTeaList();
     }
 
     public void write(Context context) {
@@ -43,7 +43,7 @@ public class ExportJson {
         try {
             File file = new File(storageDirectory, "tealist.json");
             Writer output = new BufferedWriter(new FileWriter(file));
-            output.write(mJson);
+            output.write(json);
             output.close();
             Toast.makeText(context, context.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
 
@@ -55,6 +55,6 @@ public class ExportJson {
     private String createJsonFromTeaList() {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
-        return gson.toJson(mTeaList);
+        return gson.toJson(teaList);
     }
 }

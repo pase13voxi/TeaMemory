@@ -24,26 +24,26 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
 
-    private Uri mFileUri;
-    private String mJson;
-    private List<TeaPOJO> mTeaList;
+    private Uri fileUri;
+    private String json;
+    private List<TeaPOJO> teaList;
 
     public ImportJson(Uri fileUri) {
-        mFileUri = fileUri;
+        this.fileUri = fileUri;
     }
 
     public void read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
-        mJson = readJsonFile(context);
-        mTeaList = createTeaListFromJson();
+        json = readJsonFile(context);
+        teaList = createTeaListFromJson();
         POJOToDatabase pojoToDatabase = new POJOToDatabase(exportImportViewModel);
-        pojoToDatabase.fillDatabaseWithTeaList(mTeaList, keepStoredTeas);
+        pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
         Toast.makeText(context, R.string.exportimport_teas_imported, Toast.LENGTH_LONG).show();
     }
 
     private String readJsonFile(Context context){
         StringBuilder stringBuilder = new StringBuilder();
         try (InputStream inputStream =
-                     context.getContentResolver().openInputStream(mFileUri);
+                     context.getContentResolver().openInputStream(fileUri);
              BufferedReader reader = new BufferedReader(
                      new InputStreamReader(Objects.requireNonNull(inputStream)))) {
             String line;
@@ -61,6 +61,6 @@ public class ImportJson {
 
         Type listType = new TypeToken<ArrayList<TeaPOJO>>(){}.getType();
 
-        return gson.fromJson(mJson, listType);
+        return gson.fromJson(json, listType);
     }
 }

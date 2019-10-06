@@ -10,7 +10,7 @@ import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
 
 public class CountDownServiceViewModel {
 
-    private ActualSettings mActualSettings;
+    private ActualSettings actualSettings;
 
     public CountDownServiceViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
@@ -19,14 +19,14 @@ public class CountDownServiceViewModel {
                 .build();
 
         ActualSettingsDAO mActualSettingsDAO = database.getActualSettingsDAO();
-        mActualSettings = mActualSettingsDAO.getSettings();
+        actualSettings = mActualSettingsDAO.getSettings();
     }
 
     public boolean isVibration(){
-        return mActualSettings.isVibration();
+        return actualSettings.isVibration();
     }
 
     public boolean isNotification(){
-        return mActualSettings.isNotification();
+        return actualSettings.isNotification();
     }
 }

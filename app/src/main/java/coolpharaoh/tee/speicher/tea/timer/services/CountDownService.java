@@ -34,13 +34,13 @@ public class CountDownService extends Service {
     private NotificationManager notificationManager_counter;
     private Notification.Builder notification_counter;
 
-    private CountDownServiceViewModel mCountDownServiceViewModel;
+    private CountDownServiceViewModel countDownServiceViewModel;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mCountDownServiceViewModel = new CountDownServiceViewModel(getApplicationContext());
+        countDownServiceViewModel = new CountDownServiceViewModel(getApplicationContext());
     }
 
     @Override
@@ -128,7 +128,7 @@ public class CountDownService extends Service {
                 BroadcaseIntent.putExtra("ready", true);
                 sendBroadcast(BroadcaseIntent);
                 //ausführen wenn die Vibration aktiviert ist
-                if(mCountDownServiceViewModel.isVibration()) {
+                if(countDownServiceViewModel.isVibration()) {
                     Vibrator vibrator = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 1000 milliseconds
                     long[] twice = { 0, 500, 400, 500 };
@@ -139,7 +139,7 @@ public class CountDownService extends Service {
                     }
                 }
                 //ausführen wenn die Notification aktiviert ist
-                if(mCountDownServiceViewModel.isNotification()){
+                if(countDownServiceViewModel.isNotification()){
                     //Back to the Showtea Intent
                     Intent intent_showtea = new Intent(getBaseContext(), ShowTea.class);
                     intent_showtea.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

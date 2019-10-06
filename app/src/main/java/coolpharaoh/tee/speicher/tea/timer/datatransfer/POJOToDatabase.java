@@ -13,10 +13,10 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 
 class POJOToDatabase {
-    private ExportImportViewModel mExportImportViewModel;
+    private ExportImportViewModel exportImportViewModel;
 
     POJOToDatabase(ExportImportViewModel exportImportViewModel) {
-        mExportImportViewModel = exportImportViewModel;
+        this.exportImportViewModel = exportImportViewModel;
     }
 
     void fillDatabaseWithTeaList(List<TeaPOJO> teaList, boolean keepStoredTeas) {
@@ -26,7 +26,7 @@ class POJOToDatabase {
         int o = 0;
         for (TeaPOJO teaPOJO : teaList) {
             // insert Tea first
-            long teaId = mExportImportViewModel.insertTea(new Tea(teaPOJO.getName(), teaPOJO.getVariety(),
+            long teaId = exportImportViewModel.insertTea(new Tea(teaPOJO.getName(), teaPOJO.getVariety(),
                     teaPOJO.getAmount(), teaPOJO.getAmountkind(), teaPOJO.getColor(),
                     teaPOJO.getLastInfusion(), teaPOJO.getDate()));
             insertInfusions(teaId, teaPOJO.getInfusions());
@@ -36,12 +36,12 @@ class POJOToDatabase {
     }
 
     private void deleteStoredTeas(){
-        mExportImportViewModel.deleteAllTeas();
+        exportImportViewModel.deleteAllTeas();
     }
 
     private void insertInfusions(long teaId, List<InfusionPOJO> infusionList) {
         for (InfusionPOJO infusionPOJO : infusionList) {
-            mExportImportViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionindex(),
+            exportImportViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionindex(),
                     infusionPOJO.getTime(), infusionPOJO.getCooldowntime(),
                     infusionPOJO.getTemperaturecelsius(), infusionPOJO.getTemperaturefahrenheit()));
         }
@@ -49,7 +49,7 @@ class POJOToDatabase {
 
     private void insertCounters(long teaId, List<CounterPOJO> counterList) {
         for (CounterPOJO counterPOJO : counterList) {
-            mExportImportViewModel.insertCounter(new Counter(teaId, counterPOJO.getDay(),
+            exportImportViewModel.insertCounter(new Counter(teaId, counterPOJO.getDay(),
                     counterPOJO.getWeek(), counterPOJO.getMonth(), counterPOJO.getOverall(),
                     counterPOJO.getDaydate(), counterPOJO.getWeekdate(), counterPOJO.getMonthdate()));
         }
@@ -57,7 +57,7 @@ class POJOToDatabase {
 
     private void insertNotes(long teaId, List<NotePOJO> noteList) {
         for (NotePOJO notePOJO : noteList) {
-            mExportImportViewModel.insertNote(new Note(teaId, notePOJO.getPosition(),
+            exportImportViewModel.insertNote(new Note(teaId, notePOJO.getPosition(),
                     notePOJO.getHeader(), notePOJO.getDescription()));
         }
     }

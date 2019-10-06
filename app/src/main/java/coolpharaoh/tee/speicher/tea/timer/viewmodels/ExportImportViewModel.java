@@ -20,10 +20,10 @@ import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
 public class ExportImportViewModel extends ViewModel {
 
 
-    private TeaDAO mTeaDAO;
-    private InfusionDAO mInfusionDAO;
-    private CounterDAO mCounterDAO;
-    private NoteDAO mNoteDAO;
+    private TeaDAO teaDAO;
+    private InfusionDAO infusionDAO;
+    private CounterDAO counterDAO;
+    private NoteDAO noteDAO;
 
     public ExportImportViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
@@ -31,50 +31,50 @@ public class ExportImportViewModel extends ViewModel {
                 .allowMainThreadQueries()
                 .build();
 
-        mTeaDAO = database.getTeaDAO();
-        mInfusionDAO = database.getInfusionDAO();
-        mCounterDAO = database.getCounterDAO();
-        mNoteDAO = database.getNoteDAO();
+        teaDAO = database.getTeaDAO();
+        infusionDAO = database.getInfusionDAO();
+        counterDAO = database.getCounterDAO();
+        noteDAO = database.getNoteDAO();
     }
 
     //Teas
     public List<Tea> getTeaList(){
-        return mTeaDAO.getTeas();
+        return teaDAO.getTeas();
     }
 
     public long insertTea(Tea tea){
-        return mTeaDAO.insert(tea);
+        return teaDAO.insert(tea);
     }
 
     public void deleteAllTeas(){
-        mTeaDAO.deleteAll();
+        teaDAO.deleteAll();
     }
 
     //Infusions
     public List<Infusion> getInfusionList(){
-        return mInfusionDAO.getInfusions();
+        return infusionDAO.getInfusions();
     }
 
     public void insertInfusion(Infusion infusion){
-        mInfusionDAO.insert(infusion);
+        infusionDAO.insert(infusion);
     }
 
     //Counters
     public List<Counter> getCounterList(){
-        return mCounterDAO.getCounters();
+        return counterDAO.getCounters();
     }
 
     public void insertCounter(Counter counter){
-        mCounterDAO.insert(counter);
+        counterDAO.insert(counter);
     }
 
     //Notes
     public List<Note> getNoteList(){
-        return mNoteDAO.getNotes();
+        return noteDAO.getNotes();
     }
 
     public void insertNote(Note note){
-        mNoteDAO.insert(note);
+        noteDAO.insert(note);
 
     }
 

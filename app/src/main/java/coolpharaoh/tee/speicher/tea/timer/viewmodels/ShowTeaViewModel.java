@@ -27,18 +27,18 @@ public class ShowTeaViewModel {
 
     private Context context;
 
-    private TeaDAO mTeaDAO;
-    private NoteDAO mNoteDAO;
-    private CounterDAO mCounterDAO;
-    private ActualSettingsDAO mActualSettingsDAO;
+    private TeaDAO teaDAO;
+    private NoteDAO noteDAO;
+    private CounterDAO counterDAO;
+    private ActualSettingsDAO actualSettingsDAO;
 
-    private Tea mTea;
-    private List<Infusion> mInfusion;
-    private Counter mCounter;
-    private Note mNote;
-    private ActualSettings mActualSettings;
+    private Tea tea;
+    private List<Infusion> infusions;
+    private Counter counter;
+    private Note note;
+    private ActualSettings actualSettings;
 
-    private int mInfusionIndex = 0;
+    private int infusionIndex = 0;
 
     public ShowTeaViewModel(long teaId, Context context) {
 
@@ -49,149 +49,149 @@ public class ShowTeaViewModel {
                 .allowMainThreadQueries()
                 .build();
 
-        mTeaDAO = database.getTeaDAO();
+        teaDAO = database.getTeaDAO();
         InfusionDAO mInfusionDAO = database.getInfusionDAO();
-        mNoteDAO = database.getNoteDAO();
-        mCounterDAO = database.getCounterDAO();
-        mActualSettingsDAO = database.getActualSettingsDAO();
+        noteDAO = database.getNoteDAO();
+        counterDAO = database.getCounterDAO();
+        actualSettingsDAO = database.getActualSettingsDAO();
 
-        mTea = mTeaDAO.getTeaById(teaId);
-        mInfusion = mInfusionDAO.getInfusionsByTeaId(teaId);
-        mCounter = mCounterDAO.getCounterByTeaId(teaId);
-        mNote = mNoteDAO.getNoteByTeaId(teaId);
-        mActualSettings = mActualSettingsDAO.getSettings();
+        tea = teaDAO.getTeaById(teaId);
+        infusions = mInfusionDAO.getInfusionsByTeaId(teaId);
+        counter = counterDAO.getCounterByTeaId(teaId);
+        note = noteDAO.getNoteByTeaId(teaId);
+        actualSettings = actualSettingsDAO.getSettings();
     }
 
     // Tea
     public long getTeaId(){
-        return mTea.getId();
+        return tea.getId();
     }
 
     public String getName() {
-        return mTea.getName();
+        return tea.getName();
     }
 
     public String getVariety() {
-        if(mTea.getVariety().equals("")) {
+        if(tea.getVariety().equals("")) {
             return "-";
         }
         else {
-            return LanguageConversation.convertCodeToVariety(mTea.getVariety(), context);
+            return LanguageConversation.convertCodeToVariety(tea.getVariety(), context);
         }
     }
 
     public int getAmount() {
-        return mTea.getAmount();
+        return tea.getAmount();
     }
 
     public String getAmountkind(){
-        return mTea.getAmountkind();
+        return tea.getAmountkind();
     }
 
     public int getColor(){
-        return mTea.getColor();
+        return tea.getColor();
     }
 
     public void setCurrentDate(){
-        mTea.setDate(Calendar.getInstance().getTime());
-        mTeaDAO.update(mTea);
+        tea.setDate(Calendar.getInstance().getTime());
+        teaDAO.update(tea);
     }
 
     // Infusion
     public TimeHelper getTime(){
-        return TimeHelper.getMinutesAndSeconds(mInfusion.get(mInfusionIndex).getTime());
+        return TimeHelper.getMinutesAndSeconds(infusions.get(infusionIndex).getTime());
     }
 
     public TimeHelper getCooldowntime(){
-        return TimeHelper.getMinutesAndSeconds(mInfusion.get(mInfusionIndex).getCooldowntime());
+        return TimeHelper.getMinutesAndSeconds(infusions.get(infusionIndex).getCooldowntime());
     }
 
     public int getTemperature(){
-        if(mActualSettings.getTemperatureunit().equals("Celsius")){
-            return mInfusion.get(mInfusionIndex).getTemperaturecelsius();
+        if(actualSettings.getTemperatureunit().equals("Celsius")){
+            return infusions.get(infusionIndex).getTemperaturecelsius();
         }else {
-            return mInfusion.get(mInfusionIndex).getTemperaturefahrenheit();
+            return infusions.get(infusionIndex).getTemperaturefahrenheit();
         }
     }
 
     public int getInfusionSize(){
-        return mInfusion.size();
+        return infusions.size();
     }
 
     public int getInfusionIndex(){
-        return mInfusionIndex;
+        return infusionIndex;
     }
 
     public void setInfusionIndex(int infusionIndex){
-        mInfusionIndex = infusionIndex;
+        this.infusionIndex = infusionIndex;
     }
 
     public void incrementInfusionIndex(){
-        mInfusionIndex++;
+        infusionIndex++;
     }
 
     // Notes
     public Note getNote(){
-        return mNote;
+        return note;
     }
 
     public void setNote(String note){
-        mNote.setDescription(note);
-        mNoteDAO.update(mNote);
+        this.note.setDescription(note);
+        noteDAO.update(this.note);
     }
 
     //Counter
     public void countCounter(){
-        RefreshCounter.refreshCounter(mCounter);
+        RefreshCounter.refreshCounter(counter);
         Date currentDate = Calendar.getInstance().getTime();
-        mCounter.setMonthdate(currentDate);
-        mCounter.setWeekdate(currentDate);
-        mCounter.setDaydate(currentDate);
-        mCounter.setOverall(mCounter.getOverall()+1);
-        mCounter.setMonth(mCounter.getMonth()+1);
-        mCounter.setWeek(mCounter.getWeek()+1);
-        mCounter.setDay(mCounter.getDay()+1);
-        mCounterDAO.update(mCounter);
+        counter.setMonthdate(currentDate);
+        counter.setWeekdate(currentDate);
+        counter.setDaydate(currentDate);
+        counter.setOverall(counter.getOverall()+1);
+        counter.setMonth(counter.getMonth()+1);
+        counter.setWeek(counter.getWeek()+1);
+        counter.setDay(counter.getDay()+1);
+        counterDAO.update(counter);
     }
 
     public Counter getCounter() {
-        RefreshCounter.refreshCounter(mCounter);
-        mCounterDAO.update(mCounter);
-        return mCounter;
+        RefreshCounter.refreshCounter(counter);
+        counterDAO.update(counter);
+        return counter;
     }
     // Settings
     public boolean isVibration() {
-        return mActualSettings.isVibration();
+        return actualSettings.isVibration();
     }
 
     public void setVibration(boolean vibration) {
-        mActualSettings.setVibration(vibration);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setVibration(vibration);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isNotification() {
-        return mActualSettings.isNotification();
+        return actualSettings.isNotification();
     }
 
     public void setNotification(boolean notification) {
-        mActualSettings.setNotification(notification);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setNotification(notification);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isAnimation(){
-        return mActualSettings.isAnimation();
+        return actualSettings.isAnimation();
     }
 
     public boolean isShowteaalert() {
-        return mActualSettings.isShowteaalert();
+        return actualSettings.isShowteaalert();
     }
 
     public void setShowteaalert(boolean showteaalert) {
-        mActualSettings.setShowteaalert(showteaalert);
-        mActualSettingsDAO.update(mActualSettings);
+        actualSettings.setShowteaalert(showteaalert);
+        actualSettingsDAO.update(actualSettings);
     }
 
     public String getTemperatureunit(){
-        return mActualSettings.getTemperatureunit();
+        return actualSettings.getTemperatureunit();
     }
 }

@@ -1,7 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import androidx.room.Room;
 import android.content.Context;
+
+import androidx.room.Room;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import coolpharaoh.tee.speicher.tea.timer.pojos.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.RefreshCounter;
 
 public class StatisticsViewModel {
-    private CounterDAO mCounterDAO;
+    private CounterDAO counterDAO;
 
     public StatisticsViewModel(Context context) {
         TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
@@ -21,30 +22,30 @@ public class StatisticsViewModel {
                 .build();
 
 
-        mCounterDAO = database.getCounterDAO();
+        counterDAO = database.getCounterDAO();
 
         refreshAllCounter();
     }
 
     public List<StatisticsPOJO> getStatisticsOverall() {
-        return mCounterDAO.getTeaCounterOverall();
+        return counterDAO.getTeaCounterOverall();
     }
 
     public List<StatisticsPOJO> getStatisticsMonth() {
-        return mCounterDAO.getTeaCounterMonth();
+        return counterDAO.getTeaCounterMonth();
     }
 
     public List<StatisticsPOJO> getStatisticsWeek() {
-        return mCounterDAO.getTeaCounterWeek();
+        return counterDAO.getTeaCounterWeek();
     }
 
     public List<StatisticsPOJO> getStatisticsDay() {
-        return mCounterDAO.getTeaCounterDay();
+        return counterDAO.getTeaCounterDay();
     }
 
     private void refreshAllCounter() {
-        for (Counter counter : RefreshCounter.refreshCounters(mCounterDAO.getCounters())) {
-            mCounterDAO.update(counter);
+        for (Counter counter : RefreshCounter.refreshCounters(counterDAO.getCounters())) {
+            counterDAO.update(counter);
         }
     }
 }

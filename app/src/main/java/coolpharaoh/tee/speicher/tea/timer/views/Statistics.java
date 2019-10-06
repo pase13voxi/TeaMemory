@@ -23,7 +23,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 
 public class Statistics extends AppCompatActivity {
 
-    private StatisticsViewModel mStatisticsViewModel;
+    private StatisticsViewModel statisticsViewModel;
 
     private boolean firstView = true;
 
@@ -45,10 +45,10 @@ public class Statistics extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mStatisticsViewModel = new StatisticsViewModel(getApplicationContext());
+        statisticsViewModel = new StatisticsViewModel(getApplicationContext());
 
         final HorizontalBar horizontal = findViewById(R.id.statistic_chart);
-        horizontal.init(this).hasAnimation(true).addAll(getItems(mStatisticsViewModel.getStatisticsOverall())).build();
+        horizontal.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
 
 
         Spinner spinnerCategory = findViewById(R.id.spinner_category);
@@ -67,22 +67,22 @@ public class Statistics extends AppCompatActivity {
                     case 0:
                         if (!firstView) {
                             horizontal.removeAll();
-                            horizontal.addAll(getItems(mStatisticsViewModel.getStatisticsOverall()));
+                            horizontal.addAll(getItems(statisticsViewModel.getStatisticsOverall()));
                         } else {
                             firstView = false;
                         }
                         break;
                     case 1:
                         horizontal.removeAll();
-                        horizontal.addAll(getItems(mStatisticsViewModel.getStatisticsMonth()));
+                        horizontal.addAll(getItems(statisticsViewModel.getStatisticsMonth()));
                         break;
                     case 2:
                         horizontal.removeAll();
-                        horizontal.addAll(getItems(mStatisticsViewModel.getStatisticsWeek()));
+                        horizontal.addAll(getItems(statisticsViewModel.getStatisticsWeek()));
                         break;
                     case 3:
                         horizontal.removeAll();
-                        horizontal.addAll(getItems(mStatisticsViewModel.getStatisticsDay()));
+                        horizontal.addAll(getItems(statisticsViewModel.getStatisticsDay()));
                         break;
                 }
             }
