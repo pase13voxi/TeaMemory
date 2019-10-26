@@ -136,7 +136,7 @@ public class ExportImport extends AppCompatActivity {
     private void dialogImportFile(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/octet-stream");
+        intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent,
                 getApplicationContext().getResources().getString(R.string.exportimport_import_choose_file)), ImportJson.READ_REQUEST_CODE);
     }
