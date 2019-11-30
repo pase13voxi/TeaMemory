@@ -231,11 +231,18 @@
     <string name="exportimport_step1_text">Exportiere deine Teeliste als Json-Datei mit dem Namen tealist.json.</string>
     <string name="exportimport_step2_text">Übertrage die Datei auf das andere Gerät.</string>
     <string name="exportimport_step3_text">Importiere die Datei in die App auf dem anderen Gerät.</string>
+    <string name="exportimport_content_description_bulletpoint">Aufzählungszeichen</string>
+    <string name="exportimport_write_permission_dialog_header">Genehmigung</string>
+    <string name="exportimport_write_permission_dialog_description">Die Anwendung benötigt Schreibrechte, um die Datei zu exportieren.</string>
+    <string name="exportimport_write_permission_denied">Erlaubnis verweigert.</string>
     <string name="exportimport_export">Exportieren</string>
     <string name="exportimport_saved">tealist.json gespeichert</string>
     <string name="exportimport_location_dialog_header">Speicherort der Datei</string>
     <string name="exportimport_location_dialog_description">Die Datei tealist.json befindet sich im internen Speicher deines Smartphones in dem Ordner TeaMemory.</string>
     <string name="exportimport_location_dialog_ok">Ok</string>
+    <string name="exportimport_read_permission_dialog_header">Genehmigung</string>
+    <string name="exportimport_read_permission_dialog_description">Die Anwendung benötigt Leserechte, um die Datei zu importieren.</string>
+    <string name="exportimport_read_permission_denied">Erlaubnis verweigert.</string>
     <string name="exportimport_import">Importieren</string>
     <string name="exportimport_import_dialog_header">Importiere Tees</string>
     <string name="exportimport_import_dialog_delete_desciption">Lösche alle gespeicherten Tees und übernehme nur die neuen.</string>
@@ -289,19 +296,6 @@
     <string name="software_tooltip_description">Android Tooltips ist eine Open Source Software, welche schöne Kurzinfos zur Verfügung stellt.</string>
     <string name="software_statistic_heading">Horizontal Bar Graph</string>
     <string name="software_statistic_description">Horizontal Bar Graph ist eine Open-Source-Software, mit der Grafiken angezeigt werden können.</string>
-    <!--Languages-->
-    <string name="languages_heading">Sprachen</string>
-    <string name="languages_info_top">Du kannst mir helfen, die App in eine andere Sprache zu übersetzen?</string>
-    <string name="languages_procedure">Ablauf:</string>
-    <string name="languages_step1_text">Sende mir eine Anfrage zur Übersetzung.</string>
-    <string name="languages_step2_text">Ich sende dir eine Datei mit den zu übersetzenden Texten.</string>
-    <string name="languages_step3_text">Du übersetzt die Texte und sendest mir die Datei zurück.</string>
-    <string name="languages_step4_text">Ich prüfe die Übersetzung und füge sie in das Programm ein.</string>
-    <string name="languages_email">Kontaktiere mich.</string>
-    <string name="languages_email_address">pase.b@outlook.com</string>
-    <string name="languages_email_subject">Tee Speicher Sprachen</string>
-    <string name="languages_email_chooser">Sende eine E-Mail&#8230;</string>
-    <string name="languages_content_description_bulletpoint">Aufzählungszeichen</string>
     <!--Problems-->
     <string name="problems_heading">Problem</string>
     <string name="problems_question">Läuft der Timer nicht mehr im Hintergrund?</string>

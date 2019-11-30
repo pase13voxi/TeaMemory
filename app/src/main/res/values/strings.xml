@@ -198,11 +198,18 @@
     <string name="exportimport_step1_text">Export your Tealist as a Jsonfile called tealist.json</string>
     <string name="exportimport_step2_text">Transfer the file to the other device.</string>
     <string name="exportimport_step3_text">Import the file into the Application on the other device.</string>
+    <string name="exportimport_content_description_bulletpoint">bulletpoint</string>
+    <string name="exportimport_write_permission_dialog_header">Permission</string>
+    <string name="exportimport_write_permission_dialog_description">The application needs write permission to export the file.</string>
+    <string name="exportimport_write_permission_denied">Permission denied.</string>
     <string name="exportimport_export">Export</string>
     <string name="exportimport_saved">tealist.json saved</string>
     <string name="exportimport_location_dialog_header">Location of the file</string>
     <string name="exportimport_location_dialog_description">The file tealist.json could be found in the internal storage of your smartphone in the folder TeaMemory.</string>
     <string name="exportimport_location_dialog_ok">OK</string>
+    <string name="exportimport_read_permission_dialog_header">Permission</string>
+    <string name="exportimport_read_permission_dialog_description">The application needs read permission to import the file.</string>
+    <string name="exportimport_read_permission_denied">Permission denied.</string>
     <string name="exportimport_import">Import</string>
     <string name="exportimport_import_dialog_header">Import Teas</string>
     <string name="exportimport_import_dialog_delete_desciption">Delete all stored teas and take over only the new ones.</string>
@@ -250,19 +257,6 @@
     <string name="software_tooltip_description">Android Tooltips is an open source software, which provides nice tooltips.</string>
     <string name="software_statistic_heading">Horizontal Bar Graph</string>
     <string name="software_statistic_description">Horizontal Bar Graph is an open source software that can be used to display graphics.</string>
-    <!--Languages-->
-    <string name="languages_heading">Languages</string>
-    <string name="languages_info_top">You can help me translate the app into another language?</string>
-    <string name="languages_procedure">Procedure:</string>
-    <string name="languages_step1_text">Send me a translation request.</string>
-    <string name="languages_step2_text">I will send you a file with the texts to be translated.</string>
-    <string name="languages_step3_text">You translate the texts and send me back the file.</string>
-    <string name="languages_step4_text">I check the translation and paste it into the program.</string>
-    <string name="languages_email">Contact me.</string>
-    <string name="languages_email_address">pase.b@outlook.com</string>
-    <string name="languages_email_subject">Tea Memory Languages</string>
-    <string name="languages_email_chooser">Send email&#8230;</string>
-    <string name="languages_content_description_bulletpoint">bulletpoint</string>
     <!--Problems-->
     <string name="problems_heading">Problem</string>
     <string name="problems_question">Is the timer no longer running in the background?</string>

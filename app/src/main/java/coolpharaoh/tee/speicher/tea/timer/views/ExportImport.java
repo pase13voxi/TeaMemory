@@ -26,10 +26,10 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
-import coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions;
+import coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.CODE_REQUEST_READ;
-import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.CODE_REQUEST_WRITE;
+import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_REQUEST_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_REQUEST_WRITE;
 
 public class ExportImport extends AppCompatActivity {
     private ExportImportViewModel exportImportViewModel;
@@ -89,8 +89,8 @@ public class ExportImport extends AppCompatActivity {
     private void dialogAfterWritePermissionDenied() {
         //Infomationen anzeigen
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissions");
-        builder.setMessage("To Import a Json-File the application needs Write Permissions.");
+        builder.setTitle(R.string.exportimport_write_permission_dialog_header);
+        builder.setMessage(R.string.exportimport_write_permission_dialog_description);
         builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getWritePermission(this));
         builder.show();
     }
@@ -104,27 +104,6 @@ public class ExportImport extends AppCompatActivity {
             }
         } else {
             exportJson();
-        }
-    }
-
-    private void dialogAfterReadPermissionDenied() {
-        //Infomationen anzeigen
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissions");
-        builder.setMessage("To Import a Json-File the application needs Read Permissions.");
-        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getReadPermission(this));
-        builder.show();
-    }
-
-    private void checkPermissionsBeforeImport() {
-        if (!Permissions.checkReadPermission(this)) {
-            if (Permissions.checkReadPermissionDeniedBefore(this)) {
-                dialogAfterReadPermissionDenied();
-            } else {
-                Permissions.getReadPermission(this);
-            }
-        } else {
-            dialogImport();
         }
     }
 
@@ -142,17 +121,26 @@ public class ExportImport extends AppCompatActivity {
         builder.setMessage(R.string.exportimport_location_dialog_description).setPositiveButton(R.string.exportimport_location_dialog_ok, null).show();
     }
 
-    private void dialogImportComplete() {
+    private void dialogAfterReadPermissionDenied() {
         //Infomationen anzeigen
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.exportimport_import_complete_dialog_header);
-        if (keepStoredTeas) {
-            builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
-        } else {
-            builder.setMessage(R.string.exportimport_import_complete_delete_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
-        }
+        builder.setTitle(R.string.exportimport_read_permission_dialog_header);
+        builder.setMessage(R.string.exportimport_read_permission_dialog_description);
+        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getReadPermission(this));
+        builder.show();
     }
 
+    private void checkPermissionsBeforeImport() {
+        if (!Permissions.checkReadPermission(this)) {
+            if (Permissions.checkReadPermissionDeniedBefore(this)) {
+                dialogAfterReadPermissionDenied();
+            } else {
+                Permissions.getReadPermission(this);
+            }
+        } else {
+            dialogImport();
+        }
+    }
 
     private void dialogImport() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -191,29 +179,36 @@ public class ExportImport extends AppCompatActivity {
                 getApplicationContext().getResources().getString(R.string.exportimport_import_choose_file)), ImportJson.READ_REQUEST_CODE);
     }
 
+    private void dialogImportComplete() {
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.exportimport_import_complete_dialog_header);
+        if (keepStoredTeas) {
+            builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
+        } else {
+            builder.setMessage(R.string.exportimport_import_complete_delete_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case CODE_REQUEST_READ: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     dialogImport();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Read Permission denied", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.exportimport_read_permission_denied, Toast.LENGTH_LONG).show();
                 }
-                return;
             }
             case CODE_REQUEST_WRITE: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     exportJson();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Write Permission denied", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.exportimport_write_permission_denied, Toast.LENGTH_LONG).show();
                 }
-                return;
             }
         }
     }

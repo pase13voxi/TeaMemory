@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.permissions;
+package coolpharaoh.tee.speicher.tea.timer.views.helper;
 
 import android.Manifest;
 import android.app.Activity;

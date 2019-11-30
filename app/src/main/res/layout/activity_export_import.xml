@@ -39,7 +39,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/bulletpoint"
-        android:contentDescription="@string/languages_content_description_bulletpoint"
+        android:contentDescription="@string/exportimport_content_description_bulletpoint"
         android:layout_below="@+id/textViewImportExportProcedure"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"/>
@@ -62,7 +62,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/bulletpoint"
-        android:contentDescription="@string/languages_content_description_bulletpoint"
+        android:contentDescription="@string/exportimport_content_description_bulletpoint"
         android:layout_below="@+id/textViewStep1Text"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"/>
@@ -85,7 +85,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/bulletpoint"
-        android:contentDescription="@string/languages_content_description_bulletpoint"
+        android:contentDescription="@string/exportimport_content_description_bulletpoint"
         android:layout_below="@+id/textViewStep2Text"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"/>

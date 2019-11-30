@@ -31,10 +31,10 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.SettingsViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.SettingListAdapter;
-import coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions;
+import coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.CODE_REQUEST_READ;
-import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.checkReadPermissionDeniedBefore;
+import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_REQUEST_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.checkReadPermissionDeniedBefore;
 
 public class Settings extends AppCompatActivity {
 
@@ -108,6 +108,7 @@ public class Settings extends AppCompatActivity {
         });
     }
 
+    //TODO find out if this Permission is need
     private void settingAlarm() {
         if(!Permissions.checkReadPermission(this) && !checkReadPermissionDeniedBefore(this)){
             Permissions.getReadPermission(this);
@@ -408,7 +409,6 @@ public class Settings extends AppCompatActivity {
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case CODE_REQUEST_READ: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     createAlarmRequest();

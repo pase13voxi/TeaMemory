@@ -23,7 +23,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 public class About extends AppCompatActivity {
 
     private enum ListItems {
-        Contact, Rating, Statistics, Translation, Problems, Software
+        Contact, Rating, Statistics, Problems, Software
     }
 
 
@@ -32,7 +32,7 @@ public class About extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        //Toolbar als ActionBar festlegen
+        //define toolbar as a actionbar
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.about_heading);
@@ -41,7 +41,7 @@ public class About extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //ListView beschreiben
+        //write into listView
         List<ListRowItem> aboutList = new ArrayList<>();
         ListRowItem itemContact = new ListRowItem(getResources().getString(R.string.about_contact_heading),getResources().getString(R.string.about_contact_description));
         aboutList.add(itemContact);
@@ -49,16 +49,14 @@ public class About extends AppCompatActivity {
         aboutList.add(itemRating);
         ListRowItem itemStatistics = new ListRowItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
         aboutList.add(itemStatistics);
-        ListRowItem itemTranslation = new ListRowItem(getResources().getString(R.string.about_translation_heading),getResources().getString(R.string.about_translation_description));
-        aboutList.add(itemTranslation);
         ListRowItem itemProblems = new ListRowItem(getResources().getString(R.string.about_problems_heading),getResources().getString(R.string.about_problems_description));
         aboutList.add(itemProblems);
         ListRowItem itemSoftware = new ListRowItem(getResources().getString(R.string.about_software_heading),getResources().getString(R.string.about_software_description));
         aboutList.add(itemSoftware);
 
-        //Liste mit Adapter verknüpfen
+        //bind list with adapter
         AboutListAdapter adapter = new AboutListAdapter(this, aboutList);
-        //Adapter dem Listview hinzufügen
+        //add adapter to listview
         ListView listViewAbout = findViewById(R.id.listview_about);
         listViewAbout.setAdapter(adapter);
 
@@ -66,13 +64,13 @@ public class About extends AppCompatActivity {
             ListItems item = ListItems.values()[position];
             switch(item){
                 case Contact:
-                    //Neues Intent anlegen
+                    //create new intent
                     Intent contactScreen = new Intent(About.this, Contact.class);
-                    // Intent starten und zur zweiten Activity wechseln
+                    //start intent and switch to the other activity
                     startActivity(contactScreen);
                     break;
                 case Rating:
-                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                    final String appPackageName = getPackageName();
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
                     } catch (android.content.ActivityNotFoundException anfe) {
@@ -82,12 +80,6 @@ public class About extends AppCompatActivity {
                 case Statistics:
                     Intent statisticsScreen = new Intent(About.this, Statistics.class);
                     startActivity(statisticsScreen);
-                    break;
-                case Translation:
-                    //Neues Intent anlegen
-                    Intent languagesScreen = new Intent(About.this, Languages.class);
-                    // Intent starten und zur zweiten Activity wechseln
-                    startActivity(languagesScreen);
                     break;
                 case Problems:
                     Intent problemsScreen = new Intent(About.this, Problems.class);

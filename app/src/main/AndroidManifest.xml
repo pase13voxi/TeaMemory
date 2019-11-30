@@ -79,14 +79,6 @@
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
         </activity>
         <activity
-            android:name=".views.Languages"
-            android:label="Languages"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
-        </activity>
-        <activity
             android:name=".views.Statistics"
             android:label="Statistics"
             android:screenOrientation="portrait">
