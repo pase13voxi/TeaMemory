@@ -1,8 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.models.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 @Entity(tableName = "settings")
 public class ActualSettings {
@@ -19,6 +19,7 @@ public class ActualSettings {
     private boolean mainproblemalert;
     private boolean mainratealert;
     private int mainratecounter;
+    private boolean settingspermissionalert;
     //0 = sort by Date, 1 = sort alphabethically, 2 = sort by variety
     private int sort;
 
@@ -109,6 +110,14 @@ public class ActualSettings {
 
     public void setMainratecounter(int mainratecounter) {
         this.mainratecounter = mainratecounter;
+    }
+
+    public boolean isSettingspermissionalert() {
+        return settingspermissionalert;
+    }
+
+    public void setSettingspermissionalert(boolean settingspermissionalert) {
+        this.settingspermissionalert = settingspermissionalert;
     }
 
     public int getSort() {

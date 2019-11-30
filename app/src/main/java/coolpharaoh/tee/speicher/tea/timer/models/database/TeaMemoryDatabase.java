@@ -14,7 +14,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 
-@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 1, exportSchema = false)
+@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 2, exportSchema = false)
 public abstract class TeaMemoryDatabase extends RoomDatabase {
     public abstract TeaDAO getTeaDAO();
     public abstract InfusionDAO getInfusionDAO();

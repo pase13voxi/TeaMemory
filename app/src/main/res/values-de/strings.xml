@@ -197,6 +197,11 @@
     <string name="settings_heading">Einstellungen</string>
     <string name="settings_alarm">Alarmsound</string>
     <string name="settings_alarm_selection_title">Alarmsound auswählen</string>
+    <string name="settings_read_permission_dialog_header">Genehmigung</string>
+    <string name="settings_read_permission_dialog_description">Um Ihre eigene Musik auswählen zu können, benötigt die Anwendung eine Leseberechtigung.</string>
+    <string name="settings_read_permission_dialog_checkbox">Bitte nicht mehr zeigen!</string>
+    <string name="settings_read_permission_dialog_ok">Ok</string>
+    <string name="settings_read_permission_dialog_cancle">Abbrechen</string>
     <string name="settings_vibration">Vibration</string>
     <string name="settings_notification">Benachrichtigung</string>
     <string name="settings_animation">Animation</string>
@@ -215,9 +220,11 @@
     <string name="settings_show_hints_header">Hinweise</string>
     <string name="settings_show_hints_ok">Ok</string>
     <string name="settings_show_hints_cancle">Abbrechen</string>
+    <string name="settings_read_permission_denied">Erlaubnis verweigert.</string>
     <string name="settings_show_hints_rating_checkbox">Bewertungshinweis</string>
     <string name="settings_show_hints_problem_checkbox">Problemhinweis</string>
     <string name="settings_show_hints_desciption_checkbox">Hilfe im Informationsfenster</string>
+    <string name="settings_show_hints_permission_checkbox">Bitte um Leseberechtigung</string>
     <string name="settings_factory_settings">Werkseinstellungen</string>
     <string name="settings_factory_settings_description">Zurücksetzen auf Werkseinstellungen</string>
     <string name="settings_factory_settings_text">Es werden alle Tees gelöscht und die Einstellungen zurückgesetzt.</string>

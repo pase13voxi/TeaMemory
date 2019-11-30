@@ -29,12 +29,11 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.SettingsViewModel;
+import coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.SettingListAdapter;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions;
 
 import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_REQUEST_READ;
-import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.checkReadPermissionDeniedBefore;
 
 public class Settings extends AppCompatActivity {
 
@@ -108,16 +107,39 @@ public class Settings extends AppCompatActivity {
         });
     }
 
-    //TODO find out if this Permission is need
     private void settingAlarm() {
-        if(!Permissions.checkReadPermission(this) && !checkReadPermissionDeniedBefore(this)){
-            Permissions.getReadPermission(this);
-        }else{
+        if (!Permissions.checkReadPermission(this) && settingsViewModel.isSettingspermissionalert()) {
+            readPermissionDialog();
+        } else {
             createAlarmRequest();
         }
     }
 
-    private void createAlarmRequest(){
+    private void readPermissionDialog() {
+        ViewGroup parent = findViewById(R.id.main_parent);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogalarmpermission, parent, false);
+        final CheckBox dontshowagain = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsReadPermission);
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setView(alertLayoutDialogProblem);
+        adb.setTitle(R.string.settings_read_permission_dialog_header);
+        adb.setPositiveButton(R.string.settings_read_permission_dialog_ok, (dialog, which) -> {
+            if (dontshowagain.isChecked()) {
+                settingsViewModel.setSettingsPermissionAlert(false);
+            }
+            Permissions.getReadPermission(this);
+        });
+        adb.setNegativeButton(R.string.settings_read_permission_dialog_cancle, (dialog, which) -> {
+            if (dontshowagain.isChecked()) {
+                settingsViewModel.setSettingsPermissionAlert(false);
+            }
+        });
+        adb.show();
+    }
+
+    private void createAlarmRequest() {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, R.string.settings_alarm_selection_title);
@@ -252,37 +274,26 @@ public class Settings extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogsettingshints, parent, false);
         final CheckBox checkBoxRating = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsRating);
-        if (settingsViewModel.isMainratealert()) {
-            checkBoxRating.setChecked(true);
-        }
+        checkBoxRating.setChecked(settingsViewModel.isMainratealert());
+
         final CheckBox checkBoxProblems = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsProblems);
-        if (settingsViewModel.isMainproblemalert()) {
-            checkBoxProblems.setChecked(true);
-        }
+        checkBoxProblems.setChecked(settingsViewModel.isMainproblemalert());
+
         final CheckBox checkBoxDescription = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsDescription);
-        if (settingsViewModel.isShowteaalert()) {
-            checkBoxDescription.setChecked(true);
-        }
+        checkBoxDescription.setChecked(settingsViewModel.isShowteaalert());
+
+        final CheckBox checkBoxPermission = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsPermission);
+        checkBoxPermission.setChecked(settingsViewModel.isSettingspermissionalert());
+
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(alertLayoutDialogProblem);
         adb.setTitle(R.string.settings_show_hints_header);
         adb.setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> {
-            if (checkBoxRating.isChecked()) {
-                settingsViewModel.setMainratealert(true);
-            } else {
-                settingsViewModel.setMainratealert(false);
-            }
-            if (checkBoxProblems.isChecked()) {
-                settingsViewModel.setMainproblemalert(true);
-            } else {
-                settingsViewModel.setMainproblemalert(false);
-            }
-            if (checkBoxDescription.isChecked()) {
-                settingsViewModel.setShowteaalert(true);
-            } else {
-                settingsViewModel.setShowteaalert(false);
-            }
+            settingsViewModel.setMainratealert(checkBoxRating.isChecked());
+            settingsViewModel.setMainproblemalert(checkBoxProblems.isChecked());
+            settingsViewModel.setShowteaalert(checkBoxDescription.isChecked());
+            settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
         });
         adb.setNegativeButton(R.string.settings_show_hints_cancle, (dialog, which) -> {
 
@@ -409,12 +420,11 @@ public class Settings extends AppCompatActivity {
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case CODE_REQUEST_READ: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    createAlarmRequest();
-                } else {
-                    createAlarmRequest();
+                if (!(grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(getApplicationContext(), R.string.settings_read_permission_denied, Toast.LENGTH_LONG).show();
                 }
+                createAlarmRequest();
             }
         }
     }

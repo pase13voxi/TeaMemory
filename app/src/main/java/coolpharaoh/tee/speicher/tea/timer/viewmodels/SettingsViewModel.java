@@ -106,6 +106,15 @@ public class SettingsViewModel {
         actualSettingsDAO.update(actualSettings);
     }
 
+    public boolean isSettingspermissionalert(){
+        return actualSettings.isSettingspermissionalert();
+    }
+
+    public void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
+        actualSettings.setSettingspermissionalert(settingsPermissionAlert);
+        actualSettingsDAO.update(actualSettings);
+    }
+
     public void setDefaultSettings() {
         actualSettings.setMusicchoice("content://settings/system/ringtone");
         actualSettings.setMusicname("Default");

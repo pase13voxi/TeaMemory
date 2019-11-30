@@ -102,6 +102,7 @@ public class MainActivityViewModel extends ViewModel {
         actualSettings.setMainproblemalert(true);
         actualSettings.setMainratealert(true);
         actualSettings.setMainratecounter(0);
+        actualSettings.setSettingspermissionalert(true);
         actualSettings.setSort(0);
         actualSettingsDAO.insert(actualSettings);
     }
@@ -127,7 +128,6 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void setSort(int sort) {
-
         actualSettings.setSort(sort);
         actualSettingsDAO.update(actualSettings);
 
@@ -139,7 +139,6 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void setMainRateAlert(boolean mainRateAlert) {
-
         actualSettings.setMainratealert(mainRateAlert);
         actualSettingsDAO.update(actualSettings);
     }
@@ -155,7 +154,6 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void incrementMainRatecounter() {
-
         actualSettings.setMainratecounter(actualSettings.getMainratecounter() + 1);
         actualSettingsDAO.update(actualSettings);
     }
@@ -165,7 +163,6 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void setMainProblemAlert(boolean mainProblemAlert) {
-
         actualSettings.setMainproblemalert(mainProblemAlert);
         actualSettingsDAO.update(actualSettings);
     }
