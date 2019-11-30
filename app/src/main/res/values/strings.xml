@@ -176,7 +176,6 @@
     <string name="settings_read_permission_dialog_description">To be able to select your own music, the application needs a read permission.</string>
     <string name="settings_read_permission_dialog_checkbox">Do not show me again!</string>
     <string name="settings_read_permission_dialog_ok">OK</string>
-    <string name="settings_read_permission_dialog_cancle">Cancle</string>
     <string name="settings_read_permission_denied">Permission denied.</string>
     <string name="settings_vibration">Vibration</string>
     <string name="settings_notification">Notification</string>

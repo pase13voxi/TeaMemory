@@ -131,11 +131,6 @@ public class Settings extends AppCompatActivity {
             }
             Permissions.getReadPermission(this);
         });
-        adb.setNegativeButton(R.string.settings_read_permission_dialog_cancle, (dialog, which) -> {
-            if (dontshowagain.isChecked()) {
-                settingsViewModel.setSettingsPermissionAlert(false);
-            }
-        });
         adb.show();
     }
 

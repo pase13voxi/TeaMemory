@@ -201,7 +201,6 @@
     <string name="settings_read_permission_dialog_description">Um Ihre eigene Musik auswählen zu können, benötigt die Anwendung eine Leseberechtigung.</string>
     <string name="settings_read_permission_dialog_checkbox">Bitte nicht mehr zeigen!</string>
     <string name="settings_read_permission_dialog_ok">Ok</string>
-    <string name="settings_read_permission_dialog_cancle">Abbrechen</string>
     <string name="settings_vibration">Vibration</string>
     <string name="settings_notification">Benachrichtigung</string>
     <string name="settings_animation">Animation</string>
