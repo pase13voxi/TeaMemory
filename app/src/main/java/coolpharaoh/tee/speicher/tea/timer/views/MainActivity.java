@@ -1,9 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,13 +19,9 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,21 +30,21 @@ import com.tooltip.Tooltip;
 import java.util.Calendar;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.CounterDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.InfusionDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.NoteDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.TeaAdapter;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.TeaAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     private MainActivityViewModel mainActivityViewModel;
@@ -63,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        askPermissions();
 
         //Toolbar als ActionBar festlegen
         Toolbar toolbar = findViewById(R.id.tool_bar);
@@ -227,19 +219,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            //Neues Intent anlegen
+            //create new Intent
             Intent settingScreen = new Intent(MainActivity.this, Settings.class);
-            // Intent starten und zur zweiten Activity wechseln
+            // start Intent and switch to the other activity
             startActivity(settingScreen);
         } else if (id == R.id.action_exportImport) {
-            //Neues Intent anlegen
             Intent exportImportScreen = new Intent(MainActivity.this, ExportImport.class);
-            // Intent starten und zur zweiten Activity wechseln
             startActivity(exportImportScreen);
         } else if (id == R.id.action_about) {
-            //Neues Intent anlegen
             Intent aboutScreen = new Intent(MainActivity.this, About.class);
-            // Intent starten und zur zweiten Activity wechseln
             startActivity(aboutScreen);
         }
 
@@ -281,62 +269,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             mainActivityViewModel.deleteTea(position);
         }
         return true;
-    }
-
-    private void askPermissions() {
-        /*if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        1);
-
-            }
-        }*/
-
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        2);
-
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1) {
-
-            // If request is cancelled, the result arrays are empty.
-            if (!(grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-
-                Toast.makeText(MainActivity.this, "Permission denied to read and write your External storage", Toast.LENGTH_SHORT).show();
-            }
-        }
-        if (requestCode == 2) {
-
-            // If request is cancelled, the result arrays are empty.
-            if (!(grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-
-                Toast.makeText(MainActivity.this, "Permission denied to read and write your External storage", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // other 'case' lines to check for other
-        // permissions this app might request
     }
 
     @Override

@@ -111,8 +111,8 @@
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
         </activity>
 
-        <service android:name=".services.MediaService" />
-        <service android:name=".services.CountDownService" />
+        <service android:name=".views.services.MediaService" />
+        <service android:name=".views.services.CountDownService" />
     </application>
 
 </manifest>

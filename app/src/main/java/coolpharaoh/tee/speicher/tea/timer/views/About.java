@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.AboutListAdapter;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.AboutListAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 
 public class About extends AppCompatActivity {
 

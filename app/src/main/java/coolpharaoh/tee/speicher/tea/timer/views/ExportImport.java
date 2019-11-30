@@ -2,8 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
@@ -21,9 +23,13 @@ import androidx.core.app.NavUtils;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.datatransfer.ExportJson;
-import coolpharaoh.tee.speicher.tea.timer.datatransfer.ImportJson;
+import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ExportJson;
+import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
+import coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions;
+
+import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.CODE_REQUEST_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.CODE_REQUEST_WRITE;
 
 public class ExportImport extends AppCompatActivity {
     private ExportImportViewModel exportImportViewModel;
@@ -47,15 +53,10 @@ public class ExportImport extends AppCompatActivity {
         exportImportViewModel = new ExportImportViewModel(getApplicationContext());
 
         Button buttonExport = findViewById(R.id.buttonExport);
-        buttonExport.setOnClickListener(v -> {
-            ExportJson exportJson = new ExportJson(exportImportViewModel.getTeaList(),
-                    exportImportViewModel.getInfusionList(), exportImportViewModel.getCounterList(), exportImportViewModel.getNoteList());
-            exportJson.write(getApplicationContext());
-            dialogExportLocation(v.getContext());
-        });
+        buttonExport.setOnClickListener(v -> checkPermissionsBeforeExport());
 
         Button buttonImport = findViewById(R.id.buttonImport);
-        buttonImport.setOnClickListener(v -> dialogImport());
+        buttonImport.setOnClickListener(v -> checkPermissionsBeforeImport());
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,30 +80,79 @@ public class ExportImport extends AppCompatActivity {
             if (resultData != null) {
                 ImportJson importJson = new ImportJson(resultData.getData());
                 importJson.read(getApplicationContext(), exportImportViewModel, keepStoredTeas);
-                dialogImportComplete(this);
+                dialogImportComplete();
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData);
     }
 
-    private void dialogExportLocation(Context context){
+    private void dialogAfterWritePermissionDenied() {
         //Infomationen anzeigen
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permissions");
+        builder.setMessage("To Import a Json-File the application needs Write Permissions.");
+        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getWritePermission(this));
+        builder.show();
+    }
+
+    private void checkPermissionsBeforeExport() {
+        if (!Permissions.checkWritePermission(this)) {
+            if (Permissions.checkReadPermissionDeniedBefore(this)) {
+                dialogAfterWritePermissionDenied();
+            } else {
+                Permissions.getWritePermission(this);
+            }
+        } else {
+            exportJson();
+        }
+    }
+
+    private void dialogAfterReadPermissionDenied() {
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permissions");
+        builder.setMessage("To Import a Json-File the application needs Read Permissions.");
+        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getReadPermission(this));
+        builder.show();
+    }
+
+    private void checkPermissionsBeforeImport() {
+        if (!Permissions.checkReadPermission(this)) {
+            if (Permissions.checkReadPermissionDeniedBefore(this)) {
+                dialogAfterReadPermissionDenied();
+            } else {
+                Permissions.getReadPermission(this);
+            }
+        } else {
+            dialogImport();
+        }
+    }
+
+    private void exportJson() {
+        ExportJson exportJson = new ExportJson(exportImportViewModel.getTeaList(),
+                exportImportViewModel.getInfusionList(), exportImportViewModel.getCounterList(), exportImportViewModel.getNoteList());
+        exportJson.write(getApplicationContext());
+        dialogExportLocation();
+    }
+
+    private void dialogExportLocation() {
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.exportimport_location_dialog_header);
         builder.setMessage(R.string.exportimport_location_dialog_description).setPositiveButton(R.string.exportimport_location_dialog_ok, null).show();
     }
 
-    private void dialogImportComplete(Context context){
+    private void dialogImportComplete() {
         //Infomationen anzeigen
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.exportimport_import_complete_dialog_header);
-        if(keepStoredTeas) {
+        if (keepStoredTeas) {
             builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
-        }
-        else {
+        } else {
             builder.setMessage(R.string.exportimport_import_complete_delete_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
         }
     }
+
 
     private void dialogImport() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -133,11 +183,38 @@ public class ExportImport extends AppCompatActivity {
         }
     }
 
-    private void dialogImportFile(){
+    private void dialogImportFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent,
                 getApplicationContext().getResources().getString(R.string.exportimport_import_choose_file)), ImportJson.READ_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CODE_REQUEST_READ: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    dialogImport();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Read Permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+            case CODE_REQUEST_WRITE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    exportJson();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Write Permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 }

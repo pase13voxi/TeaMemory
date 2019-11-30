@@ -4,9 +4,9 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import coolpharaoh.tee.speicher.tea.timer.daos.ActualSettingsDAO;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.entities.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
 public class MediaServiceViewModel {
 

@@ -6,10 +6,10 @@ import androidx.room.Room;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.daos.CounterDAO;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.pojos.StatisticsPOJO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.RefreshCounter;
 
 public class StatisticsViewModel {

@@ -40,11 +40,11 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.CounterListAdapter;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.ListRowItem;
-import coolpharaoh.tee.speicher.tea.timer.services.CountDownService;
-import coolpharaoh.tee.speicher.tea.timer.services.MediaService;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.CounterListAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.services.CountDownService;
+import coolpharaoh.tee.speicher.tea.timer.views.services.MediaService;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
@@ -26,9 +28,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.ListRowItem;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.SettingListAdapter;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.SettingsViewModel;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.SettingListAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions;
+
+import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.CODE_REQUEST_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.permissions.Permissions.checkReadPermissionDeniedBefore;
 
 public class Settings extends AppCompatActivity {
 
@@ -103,6 +109,14 @@ public class Settings extends AppCompatActivity {
     }
 
     private void settingAlarm() {
+        if(!Permissions.checkReadPermission(this) && !checkReadPermissionDeniedBefore(this)){
+            Permissions.getReadPermission(this);
+        }else{
+            createAlarmRequest();
+        }
+    }
+
+    private void createAlarmRequest(){
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, R.string.settings_alarm_selection_title);
@@ -387,5 +401,21 @@ public class Settings extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CODE_REQUEST_READ: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    createAlarmRequest();
+                } else {
+                    createAlarmRequest();
+                }
+            }
+        }
     }
 }

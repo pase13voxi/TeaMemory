@@ -7,15 +7,15 @@ import androidx.room.Room;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.daos.CounterDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.InfusionDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.NoteDAO;
-import coolpharaoh.tee.speicher.tea.timer.daos.TeaDAO;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.entities.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
 public class ExportImportViewModel extends ViewModel {
 

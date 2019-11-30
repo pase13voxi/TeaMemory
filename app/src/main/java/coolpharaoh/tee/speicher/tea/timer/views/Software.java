@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.ListRowItem;
-import coolpharaoh.tee.speicher.tea.timer.listadapter.SoftwareListAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.listadapter.SoftwareListAdapter;
 
 public class Software extends AppCompatActivity {
 

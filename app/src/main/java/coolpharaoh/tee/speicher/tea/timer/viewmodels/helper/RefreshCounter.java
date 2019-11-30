@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 
 public class RefreshCounter {
 

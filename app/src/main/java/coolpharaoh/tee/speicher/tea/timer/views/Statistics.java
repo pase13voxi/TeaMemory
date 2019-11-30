@@ -17,7 +17,7 @@ import java.util.Objects;
 import br.com.felix.horizontalbargraph.HorizontalBar;
 import br.com.felix.horizontalbargraph.model.BarItem;
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.pojos.StatisticsPOJO;
+import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.StatisticsViewModel;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 
