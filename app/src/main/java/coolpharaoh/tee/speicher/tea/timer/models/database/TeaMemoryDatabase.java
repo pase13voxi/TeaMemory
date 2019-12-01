@@ -57,7 +57,7 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE settings "
-                    + " ADD COLUMN settingspermissionalert INTEGER DEFAULT 1");
+                    + " ADD COLUMN settingspermissionalert INTEGER DEFAULT 1 NOT NULL");
         }
     };
 

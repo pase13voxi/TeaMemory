@@ -420,7 +420,7 @@ public class Settings extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.settings_read_permission_denied, Toast.LENGTH_LONG).show();
                 }
                 createAlarmRequest();
-            }
+            } break;
         }
     }
 }

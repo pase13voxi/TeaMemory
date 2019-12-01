@@ -201,7 +201,7 @@ public class ExportImport extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.exportimport_read_permission_denied, Toast.LENGTH_LONG).show();
                 }
-            }
+            } break;
             case CODE_REQUEST_WRITE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -209,7 +209,7 @@ public class ExportImport extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.exportimport_write_permission_denied, Toast.LENGTH_LONG).show();
                 }
-            }
+            } break;
         }
     }
 }
