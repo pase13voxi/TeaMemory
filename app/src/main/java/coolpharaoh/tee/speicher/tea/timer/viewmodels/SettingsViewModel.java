@@ -2,8 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -17,10 +15,7 @@ public class SettingsViewModel {
     private ActualSettings actualSettings;
 
     public SettingsViewModel(Context context) {
-        TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
 
         actualSettingsDAO = database.getActualSettingsDAO();
         actualSettings = actualSettingsDAO.getSettings();

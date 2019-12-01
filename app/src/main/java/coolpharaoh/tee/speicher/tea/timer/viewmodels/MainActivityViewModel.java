@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.room.Room;
 
 import java.util.Calendar;
 import java.util.List;
@@ -39,10 +38,8 @@ public class MainActivityViewModel extends ViewModel {
     private ActualSettings actualSettings;
 
     public MainActivityViewModel(Context context) {
-        TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
+
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();
         noteDAO = database.getNoteDAO();

@@ -41,10 +41,7 @@ public class NewTeaViewModel {
     public NewTeaViewModel(long teaId, Context context) {
         this.context = context;
 
-        TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
 
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();

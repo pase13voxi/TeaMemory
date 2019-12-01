@@ -2,8 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,10 +42,7 @@ public class ShowTeaViewModel {
 
         this.context = context;
 
-        TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
 
         teaDAO = database.getTeaDAO();
         InfusionDAO mInfusionDAO = database.getInfusionDAO();
