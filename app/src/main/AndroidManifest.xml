@@ -13,6 +13,8 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -89,14 +91,6 @@
         <activity
             android:name=".views.Software"
             android:label="Software"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
-        </activity>
-        <activity
-            android:name=".views.Problems"
-            android:label="Problems"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

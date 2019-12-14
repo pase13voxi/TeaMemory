@@ -20,11 +20,11 @@
     <string name="main_sort">Sort</string>
     <string name="main_error_deletion">Deletion could not be performed.</string>
     <string name="main_tooltip_newtea">Add tea</string>
-    <string name="main_dialog_problem_header">Problem</string>
-    <string name="main_dialog_problem">Hey, you are using Android 8 or higher. With these versions, Android has introduced new features that cause problems running this app.</string>
-    <string name="main_dialog_problem_checkbox">Do not show me again!</string>
-    <string name="main_dialog_problem_ok">Solve the problem</string>
-    <string name="main_dialog_problem_cancle">Not now</string>
+    <string name="main_dialog_ignore_optimization_header">Permission</string>
+    <string name="main_dialog_ignore_optimization_body">In order for the timer of this application to run properly in the background, it requires a permit. The permission is only used to run a timer you started.</string>
+    <string name="main_dialog_ignore_optimization_checkbox">Do not show me again!</string>
+    <string name="main_dialog_ignore_optimization_ok">grant</string>
+    <string name="main_dialog_ignore_optimization_cancle">deny</string>
     <string name="main_dialog_rating_header">Rate this app</string>
     <string name="main_dialog_rating">Do you like the app? I would look forward to a review.</string>
     <string name="main_dialog_rating_positive">Rate now</string>
@@ -188,8 +188,8 @@
     <string name="settings_show_hints_ok">OK</string>
     <string name="settings_show_hints_cancle">Cancle</string>
     <string name="settings_show_hints_rating_checkbox">Rating hint</string>
-    <string name="settings_show_hints_problem_checkbox">Problem hint</string>
     <string name="settings_show_hints_desciption_checkbox">Desciption in the information window</string>
+    <string name="settings_show_hints_ignore_optimization_checkbox">Ask for background process permission</string>
     <string name="settings_show_hints_permission_checkbox">Ask for read permission</string>
     <string name="settings_factory_settings">Factory setting</string>
     <string name="settings_factory_settings_description">Reset everything to factory setting</string>
@@ -263,16 +263,6 @@
     <string name="software_tooltip_description">Android Tooltips is an open source software, which provides nice tooltips.</string>
     <string name="software_statistic_heading">Horizontal Bar Graph</string>
     <string name="software_statistic_description">Horizontal Bar Graph is an open source software that can be used to display graphics.</string>
-    <!--Problems-->
-    <string name="problems_heading">Problem</string>
-    <string name="problems_question">Is the timer no longer running in the background?</string>
-    <string name="problems_solve">Solve the problem</string>
-    <string name="problems_description">The latest update of Android automatically stops all background processes after a few minutes as an energy-saving feature.</string>
-    <string name="problems_result">Set the Tea Memory as an exception to the power-saving function.</string>
-    <string name="problems_hope">After that, the timer should work in the background again.</string>
-    <string name="problems_action">To the setting</string>
-    <string name="problems_error">This setting is not available on your Android version.</string>
-    <string name="problems_content_description_bulletpoint">bulletpoint</string>
     <string-array name="main_sort_menu">
         <item>Sort by last activity</item>
         <item>Sort alphabetical</item>

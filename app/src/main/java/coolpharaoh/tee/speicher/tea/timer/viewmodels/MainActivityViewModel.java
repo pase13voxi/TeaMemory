@@ -155,11 +155,11 @@ public class MainActivityViewModel extends ViewModel {
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isMainProblemAlert() {
+    public boolean isMainIgnoreOptimizationAlert() {
         return actualSettings.isMainproblemalert();
     }
 
-    public void setMainProblemAlert(boolean mainProblemAlert) {
+    public void setMainIgnoreOptimiziationAlert(boolean mainProblemAlert) {
         actualSettings.setMainproblemalert(mainProblemAlert);
         actualSettingsDAO.update(actualSettings);
     }

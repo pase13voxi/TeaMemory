@@ -14,11 +14,11 @@
         android:theme="@style/CheckBoxStyle" />
 
     <CheckBox
-        android:id="@+id/checkboxDialogSettingsProblems"
+        android:id="@+id/checkboxDialogSettingsIgnoreOptimization"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/settings_show_hints_problem_checkbox"
+        android:text="@string/settings_show_hints_ignore_optimization_checkbox"
         android:textSize="17sp"
         android:theme="@style/CheckBoxStyle" />
 

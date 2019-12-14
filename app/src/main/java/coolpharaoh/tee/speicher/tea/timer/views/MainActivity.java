@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +31,8 @@ import com.tooltip.Tooltip;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.TeaAdapter;
+
+import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     private MainActivityViewModel mainActivityViewModel;
@@ -121,17 +125,9 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         //Show theses Hints only on start of the application
         if (startApplication) {
             startApplication = false;
-            //show dialog problem
-            if (mainActivityViewModel.isMainProblemAlert()) {
-                dialogMainProblem();
-            }
-            //show dialog rating
-            if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
-                mainActivityViewModel.resetMainRatecounter();
-                dialogMainRating();
-            } else {
-                mainActivityViewModel.incrementMainRatecounter();
-            }
+
+            dialogMainIgnoreOptimization();
+            dialogMainRating();
         }
     }
 
@@ -221,55 +217,82 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 .show();
     }
 
-    private void dialogMainProblem() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    private void dialogMainRating() {
+        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
+            mainActivityViewModel.resetMainRatecounter();
+
             ViewGroup parent = findViewById(R.id.main_parent);
 
             LayoutInflater inflater = getLayoutInflater();
-            View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogmainproblem, parent, false);
+            View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogmainrating, parent, false);
+
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setView(alertLayoutDialogProblem);
+            adb.setTitle(R.string.main_dialog_rating_header);
+            adb.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> {
+                mainActivityViewModel.setMainRateAlert(false);
+
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+            });
+            adb.setNeutralButton(R.string.main_dialog_rating_neutral, (dialog, which) -> {
+            });
+            adb.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));
+            adb.show();
+
+        } else {
+            mainActivityViewModel.incrementMainRatecounter();
+        }
+    }
+
+    private void dialogMainIgnoreOptimization() {
+        if (mainActivityViewModel.isMainIgnoreOptimizationAlert() && !isIgnoringOptimization()) {
+            ViewGroup parent = findViewById(R.id.main_parent);
+
+            LayoutInflater inflater = getLayoutInflater();
+            View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogmainignoreoptimization, parent, false);
             final CheckBox dontshowagain = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogMainProblem);
 
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setView(alertLayoutDialogProblem);
-            adb.setTitle(R.string.main_dialog_problem_header);
-            adb.setPositiveButton(R.string.main_dialog_problem_ok, (dialog, which) -> {
+            adb.setTitle(R.string.main_dialog_ignore_optimization_header);
+            adb.setPositiveButton(R.string.main_dialog_ignore_optimization_ok, (dialog, which) -> {
                 if (dontshowagain.isChecked()) {
-                    mainActivityViewModel.setMainProblemAlert(false);
+                    mainActivityViewModel.setMainIgnoreOptimiziationAlert(false);
                 }
-                Intent problemsScreen = new Intent(MainActivity.this, Problems.class);
-                startActivity(problemsScreen);
+                ignoreOptimization();
             });
-            adb.setNegativeButton(R.string.main_dialog_problem_cancle, (dialog, which) -> {
+            adb.setNegativeButton(R.string.main_dialog_ignore_optimization_cancle, (dialog, which) -> {
                 if (dontshowagain.isChecked()) {
-                    mainActivityViewModel.setMainProblemAlert(false);
+                    mainActivityViewModel.setMainIgnoreOptimiziationAlert(false);
                 }
             });
             adb.show();
         }
     }
 
-    private void dialogMainRating() {
-        ViewGroup parent = findViewById(R.id.main_parent);
+    private void ignoreOptimization() {
+        Intent intent = new Intent();
+        String packageName = getPackageName();
+        intent.setAction(ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+        intent.setData(Uri.parse("package:" + packageName));
+        startActivity(intent);
+    }
 
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogmainrating, parent, false);
-
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(alertLayoutDialogProblem);
-        adb.setTitle(R.string.main_dialog_rating_header);
-        adb.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> {
-            mainActivityViewModel.setMainRateAlert(false);
-
-            final String appPackageName = getPackageName();
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+    private boolean isIgnoringOptimization() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if(pm != null){
+                return pm.isIgnoringBatteryOptimizations(packageName);
+            } else {
+                Log.i("isIgnoringOptimization","PowerManager does not exist.");
             }
-        });
-        adb.setNeutralButton(R.string.main_dialog_rating_neutral, (dialog, which) -> {
-        });
-        adb.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));
-        adb.show();
+        }
+        return false;
     }
 }

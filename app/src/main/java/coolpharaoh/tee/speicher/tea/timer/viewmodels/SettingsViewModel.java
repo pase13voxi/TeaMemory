@@ -83,11 +83,11 @@ public class SettingsViewModel {
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isMainproblemalert() {
+    public boolean isMainIgnoreOptimizationAlert() {
         return actualSettings.isMainproblemalert();
     }
 
-    public void setMainproblemalert(boolean mainproblemalert) {
+    public void setMainIgnoreOptimizationAlert(boolean mainproblemalert) {
         actualSettings.setMainproblemalert(mainproblemalert);
         actualSettingsDAO.update(actualSettings);
     }

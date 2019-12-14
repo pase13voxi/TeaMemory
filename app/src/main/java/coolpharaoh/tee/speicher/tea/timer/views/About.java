@@ -23,7 +23,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 public class About extends AppCompatActivity {
 
     private enum ListItems {
-        Contact, Rating, Statistics, Problems, Software
+        Contact, Rating, Statistics, Software
     }
 
 
@@ -49,8 +49,6 @@ public class About extends AppCompatActivity {
         aboutList.add(itemRating);
         ListRowItem itemStatistics = new ListRowItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
         aboutList.add(itemStatistics);
-        ListRowItem itemProblems = new ListRowItem(getResources().getString(R.string.about_problems_heading),getResources().getString(R.string.about_problems_description));
-        aboutList.add(itemProblems);
         ListRowItem itemSoftware = new ListRowItem(getResources().getString(R.string.about_software_heading),getResources().getString(R.string.about_software_description));
         aboutList.add(itemSoftware);
 
@@ -80,10 +78,6 @@ public class About extends AppCompatActivity {
                 case Statistics:
                     Intent statisticsScreen = new Intent(About.this, Statistics.class);
                     startActivity(statisticsScreen);
-                    break;
-                case Problems:
-                    Intent problemsScreen = new Intent(About.this, Problems.class);
-                    startActivity(problemsScreen);
                     break;
                 case Software:
                     Intent softwareScreen = new Intent(About.this, Software.class);

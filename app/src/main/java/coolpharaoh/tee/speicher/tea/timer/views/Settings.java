@@ -271,11 +271,11 @@ public class Settings extends AppCompatActivity {
         final CheckBox checkBoxRating = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsRating);
         checkBoxRating.setChecked(settingsViewModel.isMainratealert());
 
-        final CheckBox checkBoxProblems = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsProblems);
-        checkBoxProblems.setChecked(settingsViewModel.isMainproblemalert());
-
         final CheckBox checkBoxDescription = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsDescription);
         checkBoxDescription.setChecked(settingsViewModel.isShowteaalert());
+
+        final CheckBox checkBoxIgnoreOptimization = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsIgnoreOptimization);
+        checkBoxIgnoreOptimization.setChecked(settingsViewModel.isMainIgnoreOptimizationAlert());
 
         final CheckBox checkBoxPermission = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsPermission);
         checkBoxPermission.setChecked(settingsViewModel.isSettingspermissionalert());
@@ -286,8 +286,8 @@ public class Settings extends AppCompatActivity {
         adb.setTitle(R.string.settings_show_hints_header);
         adb.setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> {
             settingsViewModel.setMainratealert(checkBoxRating.isChecked());
-            settingsViewModel.setMainproblemalert(checkBoxProblems.isChecked());
             settingsViewModel.setShowteaalert(checkBoxDescription.isChecked());
+            settingsViewModel.setMainIgnoreOptimizationAlert(checkBoxIgnoreOptimization.isChecked());
             settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
         });
         adb.setNegativeButton(R.string.settings_show_hints_cancle, (dialog, which) -> {
