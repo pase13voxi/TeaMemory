@@ -1,15 +1,25 @@
 package coolpharaoh.tee.speicher.tea.timer.views.timer;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
 
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 
-class Vibrator {
+class Vibrator extends Service {
 
-    static void vibrate(Context context){
-        TimerViewModel timerViewModel = new TimerViewModel(context);
+    private android.os.Vibrator vibrator = null;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        TimerViewModel timerViewModel = new TimerViewModel(getApplicationContext());
         if(timerViewModel.isVibration()) {
-            android.os.Vibrator vibrator = (android.os.Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator = (android.os.Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 1000 milliseconds
             long[] twice = { 0, 500, 400, 500 };
             if (vibrator==null){
@@ -18,5 +28,11 @@ class Vibrator {
                 vibrator.vibrate(twice, -1);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

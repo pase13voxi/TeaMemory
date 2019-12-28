@@ -10,7 +10,7 @@ public class TeaCompleteReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
        final long teaId = intent.getLongExtra("teaName",0);
         Notifier.notify(context, teaId);
-        Vibrator.vibrate(context);
+        context.startService(new Intent (context, Vibrator.class));
         context.startService(new Intent(context, MusicPlayer.class));
     }
 }
