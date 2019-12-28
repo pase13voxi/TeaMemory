@@ -17,11 +17,6 @@
     </string-array>
     <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
     <string name="main_tooltip_newtea">Tee hinzufügen</string>
-    <string name="main_dialog_ignore_optimization_header">Genemigung</string>
-    <string name="main_dialog_ignore_optimization_body">Damit der Timer dieser Anwendung einwandfrei im Hintergrund ausgeführt werden kann benötigt er eine Genemigung. Die Genemigung wird ausschließlich verwendet, um einen von dir gestarteten Timer auszuführen.</string>
-    <string name="main_dialog_ignore_optimization_checkbox">Bitte nicht mehr zeigen!</string>
-    <string name="main_dialog_ignore_optimization_ok">erteilen</string>
-    <string name="main_dialog_ignore_optimization_cancle">verweigern</string>
     <string name="main_dialog_rating_header">Bewerte die App</string>
     <string name="main_dialog_rating">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
     <string name="main_dialog_rating_positive">Bewerten</string>

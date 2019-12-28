@@ -20,11 +20,6 @@
     <string name="main_sort">Sort</string>
     <string name="main_error_deletion">Deletion could not be performed.</string>
     <string name="main_tooltip_newtea">Add tea</string>
-    <string name="main_dialog_ignore_optimization_header">Permission</string>
-    <string name="main_dialog_ignore_optimization_body">In order for the timer of this application to run properly in the background, it requires a permit. The permission is only used to run a timer you started.</string>
-    <string name="main_dialog_ignore_optimization_checkbox">Do not show me again!</string>
-    <string name="main_dialog_ignore_optimization_ok">grant</string>
-    <string name="main_dialog_ignore_optimization_cancle">deny</string>
     <string name="main_dialog_rating_header">Rate this app</string>
     <string name="main_dialog_rating">Do you like the app? I would look forward to a review.</string>
     <string name="main_dialog_rating_positive">Rate now</string>

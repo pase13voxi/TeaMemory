@@ -83,15 +83,6 @@ public class SettingsViewModel {
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isMainIgnoreOptimizationAlert() {
-        return actualSettings.isMainproblemalert();
-    }
-
-    public void setMainIgnoreOptimizationAlert(boolean mainproblemalert) {
-        actualSettings.setMainproblemalert(mainproblemalert);
-        actualSettingsDAO.update(actualSettings);
-    }
-
     public boolean isMainratealert() {
         return actualSettings.isMainratealert();
     }
@@ -118,7 +109,6 @@ public class SettingsViewModel {
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureunit("Celsius");
         actualSettings.setShowteaalert(true);
-        actualSettings.setMainproblemalert(true);
         actualSettings.setMainratealert(true);
         actualSettings.setMainratecounter(0);
         actualSettings.setSort(0);

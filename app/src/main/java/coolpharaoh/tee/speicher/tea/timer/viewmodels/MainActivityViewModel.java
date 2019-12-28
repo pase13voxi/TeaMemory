@@ -96,7 +96,6 @@ public class MainActivityViewModel extends ViewModel {
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureunit("Celsius");
         actualSettings.setShowteaalert(true);
-        actualSettings.setMainproblemalert(true);
         actualSettings.setMainratealert(true);
         actualSettings.setMainratecounter(0);
         actualSettings.setSettingspermissionalert(true);
@@ -152,15 +151,6 @@ public class MainActivityViewModel extends ViewModel {
 
     public void incrementMainRatecounter() {
         actualSettings.setMainratecounter(actualSettings.getMainratecounter() + 1);
-        actualSettingsDAO.update(actualSettings);
-    }
-
-    public boolean isMainIgnoreOptimizationAlert() {
-        return actualSettings.isMainproblemalert();
-    }
-
-    public void setMainIgnoreOptimiziationAlert(boolean mainProblemAlert) {
-        actualSettings.setMainproblemalert(mainProblemAlert);
         actualSettingsDAO.update(actualSettings);
     }
 

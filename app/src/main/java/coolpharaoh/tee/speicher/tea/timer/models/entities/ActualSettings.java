@@ -16,6 +16,7 @@ public class ActualSettings {
     private boolean animation;
     private String temperatureunit;
     private boolean showteaalert;
+    //unused should be renamed or deleted
     private boolean mainproblemalert;
     private boolean mainratealert;
     private int mainratecounter;

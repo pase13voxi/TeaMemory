@@ -3,10 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,8 +27,6 @@ import com.tooltip.Tooltip;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.TeaAdapter;
-
-import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     private MainActivityViewModel mainActivityViewModel;
@@ -126,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (startApplication) {
             startApplication = false;
 
-            //dialogMainIgnoreOptimization();
             dialogMainRating();
         }
     }
@@ -247,52 +240,5 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         } else {
             mainActivityViewModel.incrementMainRatecounter();
         }
-    }
-
-    private void dialogMainIgnoreOptimization() {
-        if (mainActivityViewModel.isMainIgnoreOptimizationAlert() && !isIgnoringOptimization()) {
-            ViewGroup parent = findViewById(R.id.main_parent);
-
-            LayoutInflater inflater = getLayoutInflater();
-            View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogmainignoreoptimization, parent, false);
-            final CheckBox dontshowagain = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogMainProblem);
-
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setView(alertLayoutDialogProblem);
-            adb.setTitle(R.string.main_dialog_ignore_optimization_header);
-            adb.setPositiveButton(R.string.main_dialog_ignore_optimization_ok, (dialog, which) -> {
-                if (dontshowagain.isChecked()) {
-                    mainActivityViewModel.setMainIgnoreOptimiziationAlert(false);
-                }
-                ignoreOptimization();
-            });
-            adb.setNegativeButton(R.string.main_dialog_ignore_optimization_cancle, (dialog, which) -> {
-                if (dontshowagain.isChecked()) {
-                    mainActivityViewModel.setMainIgnoreOptimiziationAlert(false);
-                }
-            });
-            adb.show();
-        }
-    }
-
-    private void ignoreOptimization() {
-        Intent intent = new Intent();
-        String packageName = getPackageName();
-        intent.setAction(ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-        intent.setData(Uri.parse("package:" + packageName));
-        startActivity(intent);
-    }
-
-    private boolean isIgnoringOptimization() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String packageName = getPackageName();
-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            if(pm != null){
-                return pm.isIgnoringBatteryOptimizations(packageName);
-            } else {
-                Log.i("isIgnoringOptimization","PowerManager does not exist.");
-            }
-        }
-        return false;
     }
 }
