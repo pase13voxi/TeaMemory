@@ -7,13 +7,12 @@
         android:normalScreens="true"
         android:smallScreens="false"
         android:xlargeScreens="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -97,8 +96,8 @@
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
         </activity>
 
-        <service android:name=".views.services.MediaService" />
-        <service android:name=".views.services.CountDownService" />
+        <service android:name=".views.timer.MusicPlayer" />
+        <receiver android:name=".views.timer.TeaCompleteReceiver"/>
     </application>
 
 </manifest>

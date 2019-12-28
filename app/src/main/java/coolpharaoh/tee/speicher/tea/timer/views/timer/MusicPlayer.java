@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.services;
+package coolpharaoh.tee.speicher.tea.timer.views.timer;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,12 +9,9 @@ import android.os.IBinder;
 
 import java.io.IOException;
 
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.MediaServiceViewModel;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 
-/**
- * Created by CoolPharaoh on 10.02.2016.
- */
-public class MediaService extends Service {
+public class MusicPlayer extends Service {
 
     private MediaPlayer mediaPlayer = null;
     @Override
@@ -26,11 +23,11 @@ public class MediaService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        MediaServiceViewModel mediaServiceViewModel = new MediaServiceViewModel(getApplicationContext());
+        TimerViewModel timerViewModel = new TimerViewModel(getApplicationContext());
         //Musikstück initialisieren
-        if(mediaServiceViewModel.getMusicchoice()!=null) {
+        if(timerViewModel.getMusicchoice()!=null) {
             mediaPlayer = new MediaPlayer();
-            Uri uri = Uri.parse(mediaServiceViewModel.getMusicchoice());
+            Uri uri = Uri.parse(timerViewModel.getMusicchoice());
             try {
                 //synchronisiere Musikstreams
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);

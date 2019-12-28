@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (startApplication) {
             startApplication = false;
 
-            dialogMainIgnoreOptimization();
+            //dialogMainIgnoreOptimization();
             dialogMainRating();
         }
     }

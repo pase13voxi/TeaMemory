@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,11 +40,10 @@ import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.CounterListAdapter;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
-import coolpharaoh.tee.speicher.tea.timer.views.services.CountDownService;
-import coolpharaoh.tee.speicher.tea.timer.views.services.MediaService;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
+import coolpharaoh.tee.speicher.tea.timer.views.timer.ForegroundTimer;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -74,6 +72,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     //animation
     private long maxMilliSec;
     private int percent;
+
+
+    private ForegroundTimer foregroundTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,10 +133,13 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         //Hole Übergabeparemeter Position des Tees
         long teaId = this.getIntent().getLongExtra("teaId", 0);
+        // initialisiere Timer
+        foregroundTimer = new ForegroundTimer(this, teaId);
         if (teaId == 0) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.showtea_error_text, Toast.LENGTH_SHORT);
             toast.show();
             buttonInfusionIndex.setVisibility(View.INVISIBLE);
+            // initialisiere Timer
         } else {
             showTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
 
@@ -289,10 +293,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 //for Animation getMaxMillis;
                 maxMilliSec = millisec;
                 //Counter erstellen
-                Intent counter = new Intent(getBaseContext(), CountDownService.class);
-                counter.putExtra("teaName", showTeaViewModel.getName());
-                counter.putExtra("millisec", millisec);
-                startService(counter);
+                foregroundTimer.startForegroundTimer(millisec);
             } else if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_reset))) {
                 //Button umbenennen
                 buttonStartTimer.setText(R.string.showtea_timer_start);
@@ -321,17 +322,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     imageViewCup.setImageResource(R.drawable.cup_new);
                     percent = 0;
                 }
-                //Counter canceln
-                stopService(new Intent(getBaseContext(), CountDownService.class));
-                //Mediaplayer zurück setzten
-                stopService(new Intent(getBaseContext(), MediaService.class));
-                //Nofications zurücksetzten
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                if (notificationManager == null) {
-                    throw new AssertionError("NotificationManager is null.");
-                } else {
-                    notificationManager.cancelAll();
-                }
+                foregroundTimer.reset();
             }
         });
     }
@@ -375,25 +366,26 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(broadcastReceiver, new IntentFilter(CountDownService.COUNTDOWN_BR));
+
+        registerReceiver(broadcastReceiver, new IntentFilter(ForegroundTimer.COUNTDOWN_BR));
+
+        foregroundTimer.resumeForegroundTimer();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        foregroundTimer.startBackgroundTimer();
     }
 
     @Override
     protected void onDestroy() {
-        stopService(new Intent(this, CountDownService.class));
-        stopService(new Intent(getBaseContext(), MediaService.class));
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null) {
-            throw new AssertionError("NotificationManager is null.");
-        } else {
-            notificationManager.cancelAll();
-        }
+        foregroundTimer.reset();
 
         if(broadcastReceiver!=null){
-                unregisterReceiver(broadcastReceiver);
+            unregisterReceiver(broadcastReceiver);
         }
-
         super.onDestroy();
     }
 
