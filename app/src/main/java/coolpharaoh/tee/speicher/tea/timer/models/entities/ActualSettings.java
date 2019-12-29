@@ -16,8 +16,6 @@ public class ActualSettings {
     private boolean animation;
     private String temperatureunit;
     private boolean showteaalert;
-    //unused should be renamed or deleted
-    private boolean mainproblemalert;
     private boolean mainratealert;
     private int mainratecounter;
     private boolean settingspermissionalert;
@@ -87,14 +85,6 @@ public class ActualSettings {
 
     public void setShowteaalert(boolean showteaalert) {
         this.showteaalert = showteaalert;
-    }
-
-    public boolean isMainproblemalert() {
-        return mainproblemalert;
-    }
-
-    public void setMainproblemalert(boolean mainproblemalert) {
-        this.mainproblemalert = mainproblemalert;
     }
 
     public boolean isMainratealert() {
