@@ -19,8 +19,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 public class CounterListAdapter extends BaseAdapter
 {
 
-    private LayoutInflater inflater;
-    private List<ListRowItem> items;
+    private final LayoutInflater inflater;
+    private final List<ListRowItem> items;
 
     public CounterListAdapter(Activity context, List<ListRowItem> items) {
         super();

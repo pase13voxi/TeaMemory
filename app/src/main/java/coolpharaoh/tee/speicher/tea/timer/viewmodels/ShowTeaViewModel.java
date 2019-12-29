@@ -23,18 +23,18 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TimeHelper;
 
 public class ShowTeaViewModel {
 
-    private Context context;
+    private final Context context;
 
-    private TeaDAO teaDAO;
-    private NoteDAO noteDAO;
-    private CounterDAO counterDAO;
-    private ActualSettingsDAO actualSettingsDAO;
+    private final TeaDAO teaDAO;
+    private final NoteDAO noteDAO;
+    private final CounterDAO counterDAO;
+    private final ActualSettingsDAO actualSettingsDAO;
 
-    private Tea tea;
-    private List<Infusion> infusions;
-    private Counter counter;
-    private Note note;
-    private ActualSettings actualSettings;
+    private final Tea tea;
+    private final List<Infusion> infusions;
+    private final Counter counter;
+    private final Note note;
+    private final ActualSettings actualSettings;
 
     private int infusionIndex = 0;
 

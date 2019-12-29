@@ -13,10 +13,10 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
 class DatabaseToPOJO {
-    private List<Tea> teas;
-    private List<Infusion> infusions;
-    private List<Counter> counters;
-    private List<Note> notes;
+    private final List<Tea> teas;
+    private final List<Infusion> infusions;
+    private final List<Counter> counters;
+    private final List<Note> notes;
 
     DatabaseToPOJO(List<Tea> teas, List<Infusion> infusions, List<Counter> counters, List<Note> notes) {
         this.teas = teas;

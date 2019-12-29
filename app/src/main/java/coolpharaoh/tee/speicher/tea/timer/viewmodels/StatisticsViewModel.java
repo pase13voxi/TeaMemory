@@ -11,7 +11,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.RefreshCounter;
 
 public class StatisticsViewModel {
-    private CounterDAO counterDAO;
+    private final CounterDAO counterDAO;
 
     public StatisticsViewModel(Context context) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);

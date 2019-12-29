@@ -9,10 +9,10 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
 public class SettingsViewModel {
 
-    private ActualSettingsDAO actualSettingsDAO;
-    private TeaDAO teaDAO;
+    private final ActualSettingsDAO actualSettingsDAO;
+    private final TeaDAO teaDAO;
 
-    private ActualSettings actualSettings;
+    private final ActualSettings actualSettings;
 
     public SettingsViewModel(Context context) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);

@@ -9,8 +9,8 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
 public class TimerViewModel {
 
-    private TeaDAO teaDAO;
-    private ActualSettings actualSettings;
+    private final TeaDAO teaDAO;
+    private final ActualSettings actualSettings;
 
     public TimerViewModel(Context context) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);

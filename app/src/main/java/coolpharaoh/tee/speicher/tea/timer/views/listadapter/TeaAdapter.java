@@ -17,10 +17,10 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation
 public class TeaAdapter extends BaseAdapter
 {
 
-    private LayoutInflater inflater;
-    private List<Tea> items;
+    private final LayoutInflater inflater;
+    private final List<Tea> items;
 
-    private Context context;
+    private final Context context;
 
     public TeaAdapter(Activity context, List<Tea> items) {
         super();

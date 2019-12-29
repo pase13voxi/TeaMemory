@@ -14,6 +14,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 public class MusicPlayer extends Service {
 
     private MediaPlayer mediaPlayer = null;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -24,32 +25,32 @@ public class MusicPlayer extends Service {
         super.onCreate();
 
         TimerViewModel timerViewModel = new TimerViewModel(getApplicationContext());
-        //Musikstück initialisieren
-        if(timerViewModel.getMusicchoice()!=null) {
+        //initial music track
+        if (timerViewModel.getMusicchoice() != null) {
             mediaPlayer = new MediaPlayer();
             Uri uri = Uri.parse(timerViewModel.getMusicchoice());
             try {
-                //synchronisiere Musikstreams
+                //synchronize musicstreams
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
                 mediaPlayer.setDataSource(getApplicationContext(), uri);
                 mediaPlayer.prepare();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //mediaPlayer = MediaPlayer.create(this, uri);
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(mediaPlayer != null)
+        if (mediaPlayer != null)
             mediaPlayer.start();
         return START_STICKY;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer != null)
+        if (mediaPlayer != null)
             mediaPlayer.release();
     }
 }

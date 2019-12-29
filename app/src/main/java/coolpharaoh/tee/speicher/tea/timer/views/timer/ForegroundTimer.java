@@ -19,42 +19,42 @@ public class ForegroundTimer {
     private final BackgroundTimer backgroundTimer;
 
     private CountDownTimer countDownTimer;
-    private Intent broadcastIntent = new Intent(COUNTDOWN_BR);
+    private final Intent broadcastIntent = new Intent(COUNTDOWN_BR);
 
     //helper
     private long time = 0;
     private long timeToStart;
     private TimerState timerState = TimerState.STOPPED;
 
-    public ForegroundTimer(final Context context, final long teaId){
+    public ForegroundTimer(final Context context, final long teaId) {
         this.context = context;
         this.teaId = teaId;
         sharedPreferences = new SharedTimerPreferences(context);
         backgroundTimer = new BackgroundTimer(context, sharedPreferences);
     }
 
-    public void startForegroundTimer(long time){
+    public void startForegroundTimer(long time) {
         this.time = time;
         initTimer();
         startTimer();
         sharedPreferences.setStartedTime(getNow());
     }
 
-    public void startBackgroundTimer(){
+    public void startBackgroundTimer() {
         if (timerState == TimerState.RUNNING) {
             countDownTimer.cancel();
             backgroundTimer.setAlarmManager(teaId, time);
         }
     }
 
-    public void resumeForegroundTimer(){
+    public void resumeForegroundTimer() {
         initTimer();
         backgroundTimer.removeAlarmManager();
     }
 
-    public void reset(){
+    public void reset() {
         //cancle foregroundtimer
-        if(countDownTimer != null)
+        if (countDownTimer != null)
             countDownTimer.cancel();
         sharedPreferences.setStartedTime(0);
         timerState = TimerState.STOPPED;
@@ -62,8 +62,6 @@ public class ForegroundTimer {
         backgroundTimer.removeAlarmManager();
         //stop music
         context.stopService(new Intent(context, MusicPlayer.class));
-        //stop vibration
-        context.stopService(new Intent(context, Vibrator.class));
         //stop notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {

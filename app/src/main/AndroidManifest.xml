@@ -96,8 +96,8 @@
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
         </activity>
 
+        <receiver android:name=".views.timer.TeaCompleteReceiver" />
         <service android:name=".views.timer.MusicPlayer" />
-        <receiver android:name=".views.timer.TeaCompleteReceiver"/>
     </application>
 
 </manifest>

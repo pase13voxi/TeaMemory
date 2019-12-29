@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 class SharedTimerPreferences {
 
     private static final String START_TIME = "countdown_timer";
-    private SharedPreferences mPreferences;
+    private final SharedPreferences mPreferences;
 
     SharedTimerPreferences(Context context) {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);

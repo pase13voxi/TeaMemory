@@ -13,7 +13,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 
 class POJOToDatabase {
-    private ExportImportViewModel exportImportViewModel;
+    private final ExportImportViewModel exportImportViewModel;
 
     POJOToDatabase(ExportImportViewModel exportImportViewModel) {
         this.exportImportViewModel = exportImportViewModel;
@@ -23,7 +23,6 @@ class POJOToDatabase {
         if(!keepStoredTeas){
             deleteStoredTeas();
         }
-        int o = 0;
         for (TeaPOJO teaPOJO : teaList) {
             // insert Tea first
             long teaId = exportImportViewModel.insertTea(new Tea(teaPOJO.getName(), teaPOJO.getVariety(),

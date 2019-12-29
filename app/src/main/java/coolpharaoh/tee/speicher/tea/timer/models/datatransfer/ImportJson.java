@@ -24,7 +24,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
 
-    private Uri fileUri;
+    private final Uri fileUri;
     private String json;
     private List<TeaPOJO> teaList;
 

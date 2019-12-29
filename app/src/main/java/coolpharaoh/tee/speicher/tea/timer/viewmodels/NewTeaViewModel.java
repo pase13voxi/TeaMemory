@@ -24,17 +24,17 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversat
 
 public class NewTeaViewModel {
 
-    private Context context;
+    private final Context context;
 
-    private TeaDAO teaDAO;
-    private InfusionDAO infusionDAO;
-    private NoteDAO noteDAO;
-    private CounterDAO counterDAO;
-    private ActualSettingsDAO actualSettingsDAO;
+    private final TeaDAO teaDAO;
+    private final InfusionDAO infusionDAO;
+    private final NoteDAO noteDAO;
+    private final CounterDAO counterDAO;
+    private final ActualSettingsDAO actualSettingsDAO;
 
-    private Tea tea;
-    private List<Infusion> infusions;
-    private ActualSettings actualSettings;
+    private final Tea tea;
+    private final List<Infusion> infusions;
+    private final ActualSettings actualSettings;
 
     private int infusionIndex = 0;
 

@@ -28,14 +28,14 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversat
 public class MainActivityViewModel extends ViewModel {
 
 
-    private TeaDAO teaDAO;
-    private InfusionDAO infusionDAO;
-    private NoteDAO noteDAO;
-    private CounterDAO counterDAO;
-    private ActualSettingsDAO actualSettingsDAO;
+    private final TeaDAO teaDAO;
+    private final InfusionDAO infusionDAO;
+    private final NoteDAO noteDAO;
+    private final CounterDAO counterDAO;
+    private final ActualSettingsDAO actualSettingsDAO;
 
-    private MutableLiveData<List<Tea>> teas;
-    private ActualSettings actualSettings;
+    private final MutableLiveData<List<Tea>> teas;
+    private final ActualSettings actualSettings;
 
     public MainActivityViewModel(Context context) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);

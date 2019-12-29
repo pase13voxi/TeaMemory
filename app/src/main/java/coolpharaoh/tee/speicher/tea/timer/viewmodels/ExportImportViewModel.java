@@ -19,10 +19,10 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 public class ExportImportViewModel extends ViewModel {
 
 
-    private TeaDAO teaDAO;
-    private InfusionDAO infusionDAO;
-    private CounterDAO counterDAO;
-    private NoteDAO noteDAO;
+    private final TeaDAO teaDAO;
+    private final InfusionDAO infusionDAO;
+    private final CounterDAO counterDAO;
+    private final NoteDAO noteDAO;
 
     public ExportImportViewModel(Context context) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);

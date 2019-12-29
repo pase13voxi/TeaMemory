@@ -21,8 +21,8 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
 public class ExportJson {
-    private List<TeaPOJO> teaList;
-    private String json;
+    private final List<TeaPOJO> teaList;
+    private final String json;
 
     public ExportJson(List<Tea> teas, List<Infusion> infusions, List<Counter> counters, List<Note> notes) {
         DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(teas, infusions, counters, notes);

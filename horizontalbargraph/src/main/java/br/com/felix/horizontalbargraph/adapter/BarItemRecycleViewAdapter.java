@@ -24,8 +24,8 @@ import br.com.felix.horizontalbargraph.util.Util;
 public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecycleViewAdapter.ItemViewHolder> {
 
     private Double biggerValue = 0.0;
-    private List<BarItem> items;
-    private OnItemClickListener listener;
+    private final List<BarItem> items;
+    private final OnItemClickListener listener;
 
     public BarItemRecycleViewAdapter(List<BarItem> items, OnItemClickListener listener, Locale locale) {
         this.items = items;
@@ -143,9 +143,16 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView txtDesciption, txtValue1, txtValue2;
-        LinearLayout linearValue1, linearValue1Margin, linearValue2Margin, linearValue2, llRoot;
-        LinearLayout llValur1Root, llValur2Root;
+        final TextView txtDesciption;
+        final TextView txtValue1;
+        final TextView txtValue2;
+        final LinearLayout linearValue1;
+        final LinearLayout linearValue1Margin;
+        final LinearLayout linearValue2Margin;
+        final LinearLayout linearValue2;
+        final LinearLayout llRoot;
+        final LinearLayout llValur1Root;
+        final LinearLayout llValur2Root;
 
         ItemViewHolder(View view) {
             super(view);

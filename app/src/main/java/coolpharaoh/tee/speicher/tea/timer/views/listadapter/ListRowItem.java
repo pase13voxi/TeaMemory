@@ -5,8 +5,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.listadapter;
  */
 
 public class ListRowItem {
-    private String heading;
-    private String description;
+    private final String heading;
+    private final String description;
     public ListRowItem(String heading, String description){
         this.heading = heading;
         this.description = description;

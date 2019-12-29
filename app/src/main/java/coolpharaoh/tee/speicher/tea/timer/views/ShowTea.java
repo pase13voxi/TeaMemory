@@ -356,7 +356,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         return super.onOptionsItemSelected(item);
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateClock(intent);
@@ -382,10 +382,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     @Override
     protected void onDestroy() {
         foregroundTimer.reset();
+        unregisterReceiver(broadcastReceiver);
 
-        if(broadcastReceiver!=null){
-            unregisterReceiver(broadcastReceiver);
-        }
         super.onDestroy();
     }
 
