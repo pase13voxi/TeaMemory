@@ -61,7 +61,9 @@ public class ForegroundTimer {
         //cancle Backgroundtimer
         backgroundTimer.removeAlarmManager();
         //stop music
-        context.stopService(new Intent(context, MusicPlayer.class));
+        context.stopService(new Intent(context, MediaService.class));
+        //stop vibration
+        context.stopService(new Intent(context, VibrationService.class));
         //stop notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {

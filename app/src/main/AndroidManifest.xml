@@ -97,7 +97,8 @@
         </activity>
 
         <receiver android:name=".views.timer.TeaCompleteReceiver" />
-        <service android:name=".views.timer.MusicPlayer" />
+        <service android:name=".views.timer.MediaService" />
+        <service android:name=".views.timer.VibrationService" />
     </application>
 
 </manifest>

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 
-public class MusicPlayer extends Service {
+public class MediaService extends Service {
 
     private MediaPlayer mediaPlayer = null;
 
