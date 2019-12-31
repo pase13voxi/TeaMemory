@@ -224,6 +224,7 @@
     <string name="exportimport_import_dialog_keep_desciption">Keep the stored teas and add the new ones.</string>
     <string name="exportimport_import_dialog_keep_button">Keep stored Teas</string>
     <string name="exportimport_import_choose_file">Choose File to Import</string>
+    <string name="exportimport_import_parse_teas_failed">Could not parse tea list from file</string>
     <string name="exportimport_teas_imported">The tea list has been imported</string>
     <string name="exportimport_import_complete_dialog_header">Import complete</string>
     <string name="exportimport_import_complete_delete_dialog_description">The file has been imported and all stored teas have been deleted.</string>

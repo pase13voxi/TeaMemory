@@ -257,6 +257,7 @@
     <string name="exportimport_import_dialog_keep_desciption">Behalte die gespeicherten Tees und füge die neuen hinzu.</string>
     <string name="exportimport_import_dialog_keep_button">Behalte gespeicherte Tees</string>
     <string name="exportimport_import_choose_file">Wähle eine Datei für die Importierung aus</string>
+    <string name="exportimport_import_parse_teas_failed">Teeliste konnte nicht aus Datei gelesen werden</string>
     <string name="exportimport_teas_imported">Die Teeliste wurde importiert</string>
     <string name="exportimport_import_complete_dialog_header">Importierung abgeschlossen</string>
     <string name="exportimport_import_complete_delete_dialog_description">Die Datei wurde Importiert und alle gespeicherten Tees wurden gelöscht.</string>

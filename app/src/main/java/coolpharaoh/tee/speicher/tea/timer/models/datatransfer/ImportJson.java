@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -33,7 +34,7 @@ public class ImportJson {
 
     public boolean read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
         json = readJsonFile(context);
-        List<TeaPOJO> teaList = createTeaListFromJson();
+        List<TeaPOJO> teaList = createTeaListFromJson(context);
         if(teaList == null){
             return false;
         }
@@ -59,12 +60,17 @@ public class ImportJson {
         return stringBuilder.toString();
     }
 
-    private List<TeaPOJO> createTeaListFromJson() {
+    private List<TeaPOJO> createTeaListFromJson(Context context) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
         Type listType = new TypeToken<ArrayList<TeaPOJO>>() {
         }.getType();
 
-        return gson.fromJson(json, listType);
+        try{
+            return gson.fromJson(json, listType);
+        }catch(JsonSyntaxException e){
+            Toast.makeText(context, R.string.exportimport_import_parse_teas_failed, Toast.LENGTH_LONG).show();
+            return null;
+        }
     }
 }
