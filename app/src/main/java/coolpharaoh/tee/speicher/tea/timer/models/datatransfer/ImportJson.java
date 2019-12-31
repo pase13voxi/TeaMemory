@@ -26,7 +26,6 @@ public class ImportJson {
 
     private final Uri fileUri;
     private String json;
-    private List<TeaPOJO> teaList;
 
     public ImportJson(Uri fileUri) {
         this.fileUri = fileUri;
@@ -34,7 +33,7 @@ public class ImportJson {
 
     public boolean read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
         json = readJsonFile(context);
-        teaList = createTeaListFromJson();
+        List<TeaPOJO> teaList = createTeaListFromJson();
         if(teaList == null){
             return false;
         }
