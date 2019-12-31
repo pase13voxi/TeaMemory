@@ -241,6 +241,12 @@
     <string name="exportimport_location_dialog_header">Speicherort der Datei</string>
     <string name="exportimport_location_dialog_description">Die Datei tealist.json befindet sich im internen Speicher deines Smartphones in dem Ordner TeaMemory.</string>
     <string name="exportimport_location_dialog_ok">Ok</string>
+    <string name="exportimport_export_folder_name">/TeaMemory</string>
+    <string name="exportimport_export_file_name">"tealist.json"</string>
+    <string name="exportimport_export_create_folder_failed">Der Ordner /TeaMemory konnte nicht erstellt werden</string>
+    <string name="exportimport_export_failed_dialog_header">Export fehlgeschlagen</string>
+    <string name="exportimport_export_failed_dialog_description">Während des Exports ist etwas schief gelaufen.</string>
+    <string name="exportimport_export_failed_dialog_ok">Ok</string>
     <string name="exportimport_read_permission_dialog_header">Genehmigung</string>
     <string name="exportimport_read_permission_dialog_description">Die Anwendung benötigt Leserechte, um die Datei zu importieren.</string>
     <string name="exportimport_read_permission_denied">Erlaubnis verweigert.</string>
@@ -256,6 +262,10 @@
     <string name="exportimport_import_complete_delete_dialog_description">Die Datei wurde Importiert und alle gespeicherten Tees wurden gelöscht.</string>
     <string name="exportimport_import_complete_keep_dialog_description">Die Datei wurde Importiert und zu den gespeicherten Tees hinzugefügt.</string>
     <string name="exportimport_import_complete_dialog_ok">Ok</string>
+    <string name="exportimport_import_failed_dialog_header">Import fehlgeschlagen</string>
+    <string name="exportimport_import_failed_dialog_description">Während des Imports ist etwas schief gelaufen.</string>
+    <string name="exportimport_import_failed_dialog_ok">Ok</string>
+    <string name="exportimport_warning">Vorsicht! Die Importfunktion ist derzeit für Ihre Android-Version nicht verfügbar.</string>
     <!--Notification-->
     <string name="notification_ticker">Tea Time!</string>
     <string name="notification_title">Ihr Tee ist fertig.</string>

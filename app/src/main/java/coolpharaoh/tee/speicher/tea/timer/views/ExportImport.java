@@ -57,6 +57,11 @@ public class ExportImport extends AppCompatActivity {
 
         Button buttonImport = findViewById(R.id.buttonImport);
         buttonImport.setOnClickListener(v -> checkPermissionsBeforeImport());
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            TextView warning = findViewById(R.id.textViewWarning);
+            warning.setVisibility(View.VISIBLE);
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,8 +84,11 @@ public class ExportImport extends AppCompatActivity {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 ImportJson importJson = new ImportJson(resultData.getData());
-                importJson.read(getApplicationContext(), exportImportViewModel, keepStoredTeas);
-                dialogImportComplete();
+                if(importJson.read(getApplicationContext(), exportImportViewModel, keepStoredTeas)){
+                    dialogImportComplete();
+                } else {
+                    dialogImportFailed();
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData);
@@ -97,7 +105,7 @@ public class ExportImport extends AppCompatActivity {
 
     private void checkPermissionsBeforeExport() {
         if (!Permissions.checkWritePermission(this)) {
-            if (Permissions.checkReadPermissionDeniedBefore(this)) {
+            if (Permissions.checkWritePermissionDeniedBefore(this)) {
                 dialogAfterWritePermissionDenied();
             } else {
                 Permissions.getWritePermission(this);
@@ -110,8 +118,12 @@ public class ExportImport extends AppCompatActivity {
     private void exportJson() {
         ExportJson exportJson = new ExportJson(exportImportViewModel.getTeaList(),
                 exportImportViewModel.getInfusionList(), exportImportViewModel.getCounterList(), exportImportViewModel.getNoteList());
-        exportJson.write(getApplicationContext());
-        dialogExportLocation();
+        if(exportJson.write(getApplicationContext())){
+            dialogExportLocation();
+        } else {
+            dialogExportFailed();
+        }
+
     }
 
     private void dialogExportLocation() {
@@ -119,6 +131,13 @@ public class ExportImport extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.exportimport_location_dialog_header);
         builder.setMessage(R.string.exportimport_location_dialog_description).setPositiveButton(R.string.exportimport_location_dialog_ok, null).show();
+    }
+
+    private void dialogExportFailed() {
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.exportimport_export_failed_dialog_header);
+        builder.setMessage(R.string.exportimport_export_failed_dialog_description).setPositiveButton(R.string.exportimport_export_failed_dialog_ok, null).show();
     }
 
     private void dialogAfterReadPermissionDenied() {
@@ -188,6 +207,13 @@ public class ExportImport extends AppCompatActivity {
         } else {
             builder.setMessage(R.string.exportimport_import_complete_delete_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
         }
+    }
+
+    private void dialogImportFailed() {
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.exportimport_import_failed_dialog_header);
+        builder.setMessage(R.string.exportimport_import_failed_dialog_description).setPositiveButton(R.string.exportimport_import_failed_dialog_ok, null).show();
     }
 
     @Override

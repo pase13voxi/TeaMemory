@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#277c4b</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
     <color name="grey">#363434</color>
     <color name="lightgrey">#c5c5c5</color>
     <color name="textAppearanceGrey">#797979</color>

@@ -32,15 +32,19 @@ public class ImportJson {
         this.fileUri = fileUri;
     }
 
-    public void read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
+    public boolean read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
         json = readJsonFile(context);
         teaList = createTeaListFromJson();
+        if(teaList == null){
+            return false;
+        }
         POJOToDatabase pojoToDatabase = new POJOToDatabase(exportImportViewModel);
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
         Toast.makeText(context, R.string.exportimport_teas_imported, Toast.LENGTH_LONG).show();
+        return true;
     }
 
-    private String readJsonFile(Context context){
+    private String readJsonFile(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         try (InputStream inputStream =
                      context.getContentResolver().openInputStream(fileUri);
@@ -53,13 +57,14 @@ public class ImportJson {
         } catch (IOException e) {
             e.printStackTrace();
         }
-         return stringBuilder.toString();
+        return stringBuilder.toString();
     }
 
-    private List<TeaPOJO> createTeaListFromJson(){
+    private List<TeaPOJO> createTeaListFromJson() {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
-        Type listType = new TypeToken<ArrayList<TeaPOJO>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<TeaPOJO>>() {
+        }.getType();
 
         return gson.fromJson(json, listType);
     }

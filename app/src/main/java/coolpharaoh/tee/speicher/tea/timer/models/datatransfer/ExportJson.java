@@ -30,18 +30,21 @@ public class ExportJson {
         json = createJsonFromTeaList();
     }
 
-    public void write(Context context) {
+    public boolean write(Context context) {
         //Create Folder
-        File folder = new File(Environment.getExternalStorageDirectory().toString()+"/TeaMemory");
+        File folder = new File(Environment.getExternalStorageDirectory().toString()+ context.getString(R.string.exportimport_export_folder_name));
         if(!folder.exists()) {
-            folder.mkdirs();
+            if(!folder.mkdirs()){
+                Toast.makeText(context, context.getString(R.string.exportimport_export_create_folder_failed), Toast.LENGTH_LONG).show();
+                return false;
+            }
         }
 
         //Save the path as a string value
         String storageDirectory = folder.toString();
 
         try {
-            File file = new File(storageDirectory, "tealist.json");
+            File file = new File(storageDirectory, context.getString(R.string.exportimport_export_file_name));
             Writer output = new BufferedWriter(new FileWriter(file));
             output.write(json);
             output.close();
@@ -49,7 +52,9 @@ public class ExportJson {
 
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            return false;
         }
+        return true;
     }
 
     private String createJsonFromTeaList() {
