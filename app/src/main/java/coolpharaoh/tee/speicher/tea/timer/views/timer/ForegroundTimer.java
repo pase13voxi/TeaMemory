@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.timer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.CountDownTimer;
 
 import java.util.Calendar;
@@ -96,13 +95,11 @@ public class ForegroundTimer {
     }
 
     private void startNotificationService(){
-        Intent notificationService = new Intent(context, NotificationService.class);
-        notificationService.putExtra("teaId", teaId);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            context.startForegroundService(notificationService);
-        } else {
-            context.startService(notificationService);
-        }
+        Intent intent = new Intent();
+        intent.putExtra("teaId", teaId);
+
+        TeaCompleteReceiver receiver = new TeaCompleteReceiver();
+        receiver.onReceive(context, intent);
     }
 
     private void onTimerFinish() {

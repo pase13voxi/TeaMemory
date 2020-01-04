@@ -19,9 +19,9 @@ class BackgroundTimer {
     void setAlarmManager(final long teaId, final long time) {
         long wakeUpTime = sharedPreferences.getStartedTime() + time;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent notificationService = new Intent(context, NotificationService.class);
-        notificationService.putExtra("teaId", teaId);
-        PendingIntent sender = PendingIntent.getService(context, REQUEST_CODE, notificationService, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent teaCompleteReceiver = new Intent(context, TeaCompleteReceiver.class);
+        teaCompleteReceiver.putExtra("teaId", teaId);
+        PendingIntent sender = PendingIntent.getBroadcast(context, REQUEST_CODE, teaCompleteReceiver, PendingIntent.FLAG_CANCEL_CURRENT);
         if (alarmManager != null) {
             alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(wakeUpTime, sender), sender);
         } else {
@@ -31,8 +31,8 @@ class BackgroundTimer {
     }
 
     void removeAlarmManager() {
-        Intent notificationService = new Intent(context, NotificationService.class);
-        PendingIntent sender = PendingIntent.getService(context, REQUEST_CODE, notificationService, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent teaCompleteReceiver = new Intent(context, TeaCompleteReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, REQUEST_CODE, teaCompleteReceiver, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.cancel(sender);
