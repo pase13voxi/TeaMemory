@@ -49,7 +49,6 @@ public class ActualSettingsDAOTest {
         assertEquals(actualSettingsAfter.isAnimation(),actualSettingsBefore.isAnimation());
         assertEquals(actualSettingsAfter.getTemperatureunit(),actualSettingsBefore.getTemperatureunit());
         assertEquals(actualSettingsAfter.isShowteaalert(),actualSettingsBefore.isShowteaalert());
-        assertEquals(actualSettingsAfter.isMainproblemalert(),actualSettingsBefore.isMainproblemalert());
         assertEquals(actualSettingsAfter.isMainratealert(),actualSettingsBefore.isMainratealert());
         assertEquals(actualSettingsAfter.getMainratecounter(),actualSettingsBefore.getMainratecounter());
         assertEquals(actualSettingsAfter.getSort(),actualSettingsBefore.getSort());
@@ -70,7 +69,6 @@ public class ActualSettingsDAOTest {
         assertEquals(actualSettingsAfter.isAnimation(),actualSettingsBefore.isAnimation());
         assertEquals(actualSettingsAfter.getTemperatureunit(),actualSettingsBefore.getTemperatureunit());
         assertEquals(actualSettingsAfter.isShowteaalert(),actualSettingsBefore.isShowteaalert());
-        assertEquals(actualSettingsAfter.isMainproblemalert(),actualSettingsBefore.isMainproblemalert());
         assertEquals(actualSettingsAfter.isMainratealert(),actualSettingsBefore.isMainratealert());
         assertEquals(actualSettingsAfter.getMainratecounter(),actualSettingsBefore.getMainratecounter());
         assertEquals(actualSettingsAfter.getSort(),actualSettingsBefore.getSort());
@@ -98,7 +96,6 @@ public class ActualSettingsDAOTest {
         assertEquals(actualSettingsAfter.isAnimation(),actualSettingsUpdate.isAnimation());
         assertEquals(actualSettingsAfter.getTemperatureunit(),actualSettingsUpdate.getTemperatureunit());
         assertEquals(actualSettingsAfter.isShowteaalert(),actualSettingsUpdate.isShowteaalert());
-        assertEquals(actualSettingsAfter.isMainproblemalert(),actualSettingsUpdate.isMainproblemalert());
         assertEquals(actualSettingsAfter.isMainratealert(),actualSettingsUpdate.isMainratealert());
         assertEquals(actualSettingsAfter.getMainratecounter(),actualSettingsUpdate.getMainratecounter());
         assertEquals(actualSettingsAfter.getSort(),actualSettingsUpdate.getSort());
@@ -130,7 +127,6 @@ public class ActualSettingsDAOTest {
             actualSettings.setMainratecounter(10);
         }
         actualSettings.setShowteaalert(true);
-        actualSettings.setMainproblemalert(true);
         actualSettings.setMainratealert(true);
         actualSettings.setSort(3);
         return actualSettings;

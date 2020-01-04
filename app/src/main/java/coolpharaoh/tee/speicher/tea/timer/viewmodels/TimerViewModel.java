@@ -30,13 +30,6 @@ public class TimerViewModel {
     }
 
     //actualSettingsDAO
-    public boolean isVibration(){
-        return actualSettings.isVibration();
-    }
-
-    public boolean isNotification(){
-        return actualSettings.isNotification();
-    }
 
     public String getMusicchoice(){
         return actualSettings.getMusicchoice();

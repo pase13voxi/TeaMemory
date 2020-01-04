@@ -24,7 +24,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -50,8 +49,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private TextView textViewInfusionIndex;
     private Button buttonInfusionIndex;
     private Button buttonNextInfusion;
-    private ToggleButton toggleVibration;
-    private ToggleButton toggleNotification;
     private Button buttonNote;
     private TextView textViewTemperature;
     private Spinner spinnerMinutes;
@@ -96,8 +93,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Hole TextViews
-        toggleVibration = findViewById(R.id.buttonVibration);
-        toggleNotification = findViewById(R.id.buttonNotification);
         TextView textViewName = findViewById(R.id.textViewShowName);
         TextView textViewSortOfTea = findViewById(R.id.textViewShowTeesorte);
         buttonNote = findViewById(R.id.buttonNote);
@@ -142,10 +137,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             // initialisiere Timer
         } else {
             showTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
-
-            //Vibration and Notification set
-            toggleVibration.setChecked(showTeaViewModel.isVibration());
-            toggleNotification.setChecked(showTeaViewModel.isNotification());
 
             //show Description
             if (showTeaViewModel.isShowteaalert()) {
@@ -197,12 +188,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 buttonNextInfusion.setVisibility(View.INVISIBLE);
             }
         }
-
-        toggleVibration.setOnClickListener(view -> showTeaViewModel.setVibration(toggleVibration.isChecked()));
-        toggleVibration.setOnLongClickListener(this);
-
-        toggleNotification.setOnClickListener(view -> showTeaViewModel.setNotification(toggleNotification.isChecked()));
-        toggleNotification.setOnLongClickListener(this);
 
         buttonNote.setOnClickListener(view -> dialogNote());
         buttonNote.setOnLongClickListener(this);
@@ -879,11 +864,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     @Override
     public boolean onLongClick(View view) {
-        if (view.getId() == R.id.buttonNotification) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_notification));
-        } else if (view.getId() == R.id.buttonVibration) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_vibration));
-        } else if (view.getId() == R.id.buttonNote) {
+        if (view.getId() == R.id.buttonNote) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_note));
         } else if (view.getId() == R.id.buttonExchange) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_exchange));

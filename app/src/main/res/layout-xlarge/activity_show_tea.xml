@@ -11,35 +11,6 @@
         android:id="@id/tool_bar"
         layout="@layout/tool_bar_show_tea" />
 
-
-    <ToggleButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/buttonNotification"
-        android:background="@drawable/button_notification"
-        android:textOn=""
-        android:textOff=""
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/tool_bar"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"/>
-
-    <ToggleButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/buttonVibration"
-        android:background="@drawable/button_vibration"
-        android:textOn=""
-        android:textOff=""
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/tool_bar"
-        android:layout_toStartOf="@+id/buttonNotification"
-        android:layout_margin="10dp"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

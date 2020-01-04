@@ -155,24 +155,6 @@ public class ShowTeaViewModel {
         return counter;
     }
     // Settings
-    public boolean isVibration() {
-        return actualSettings.isVibration();
-    }
-
-    public void setVibration(boolean vibration) {
-        actualSettings.setVibration(vibration);
-        actualSettingsDAO.update(actualSettings);
-    }
-
-    public boolean isNotification() {
-        return actualSettings.isNotification();
-    }
-
-    public void setNotification(boolean notification) {
-        actualSettings.setNotification(notification);
-        actualSettingsDAO.update(actualSettings);
-    }
-
     public boolean isAnimation(){
         return actualSettings.isAnimation();
     }

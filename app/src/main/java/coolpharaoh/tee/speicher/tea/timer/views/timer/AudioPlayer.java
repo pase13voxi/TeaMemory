@@ -1,30 +1,24 @@
 package coolpharaoh.tee.speicher.tea.timer.views.timer;
 
-import android.app.Service;
-import android.content.Intent;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.IBinder;
 
 import java.io.IOException;
 
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 
-public class MediaService extends Service {
+class AudioPlayer{
+    private Context context;
+    private MediaPlayer mediaPlayer;
 
-    private MediaPlayer mediaPlayer = null;
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    AudioPlayer(Context context){
+        this.context = context;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        TimerViewModel timerViewModel = new TimerViewModel(getApplicationContext());
+    void start(){
+        TimerViewModel timerViewModel = new TimerViewModel(context);
         //initial music track
         if (timerViewModel.getMusicchoice() != null) {
             mediaPlayer = new MediaPlayer();
@@ -32,24 +26,16 @@ public class MediaService extends Service {
             try {
                 //synchronize musicstreams
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
-                mediaPlayer.setDataSource(getApplicationContext(), uri);
+                mediaPlayer.setDataSource(context, uri);
                 mediaPlayer.prepare();
+                mediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (mediaPlayer != null)
-            mediaPlayer.start();
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    void reset() {
         if (mediaPlayer != null)
             mediaPlayer.release();
     }

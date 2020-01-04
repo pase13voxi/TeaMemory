@@ -69,8 +69,6 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Ready</string>
-    <string name="showtea_tooltip_notification">Notification</string>
-    <string name="showtea_tooltip_vibration">Vibration</string>
     <string name="showtea_tooltip_note">Note</string>
     <string name="showtea_tooltip_exchange">Cooldown time</string>
     <string name="showtea_tooltip_calculateamount">Calculate amount</string>
@@ -172,8 +170,6 @@
     <string name="settings_read_permission_dialog_checkbox">Do not show me again!</string>
     <string name="settings_read_permission_dialog_ok">OK</string>
     <string name="settings_read_permission_denied">Permission denied.</string>
-    <string name="settings_vibration">Vibration</string>
-    <string name="settings_notification">Notification</string>
     <string name="settings_animation">Animation</string>
     <string name="settings_cancle">Cancle</string>
     <string name="settings_temperature_unit">Temperature unit</string>

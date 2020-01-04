@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -97,9 +99,7 @@
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
         </activity>
 
-        <receiver android:name=".views.timer.TeaCompleteReceiver" />
-        <service android:name=".views.timer.MediaService" />
-        <service android:name=".views.timer.VibrationService" />
+        <service android:name=".views.timer.NotificationService" />
     </application>
 
 </manifest>

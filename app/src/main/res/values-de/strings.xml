@@ -66,8 +66,6 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Fertig</string>
-    <string name="showtea_tooltip_notification">Benachrichtigung</string>
-    <string name="showtea_tooltip_vibration">Vibration</string>
     <string name="showtea_tooltip_note">Notiz</string>
     <string name="showtea_tooltip_exchange">Abkühlzeit</string>
     <string name="showtea_tooltip_calculateamount">Menge berechnen</string>
@@ -196,8 +194,6 @@
     <string name="settings_read_permission_dialog_description">Um Ihre eigene Musik auswählen zu können, benötigt die Anwendung eine Leseberechtigung.</string>
     <string name="settings_read_permission_dialog_checkbox">Bitte nicht mehr zeigen!</string>
     <string name="settings_read_permission_dialog_ok">Ok</string>
-    <string name="settings_vibration">Vibration</string>
-    <string name="settings_notification">Benachrichtigung</string>
     <string name="settings_animation">Animation</string>
     <array name="settings_options">
         <item>An</item>

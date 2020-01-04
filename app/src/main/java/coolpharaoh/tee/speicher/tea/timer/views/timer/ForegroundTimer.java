@@ -1,13 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.timer;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.CountDownTimer;
 
 import java.util.Calendar;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class ForegroundTimer {
     public static final String COUNTDOWN_BR = "paseb.teeapp.teespeicher.countdown_br";
@@ -61,16 +59,7 @@ public class ForegroundTimer {
         //cancle Backgroundtimer
         backgroundTimer.removeAlarmManager();
         //stop music
-        context.stopService(new Intent(context, MediaService.class));
-        //stop vibration
-        context.stopService(new Intent(context, VibrationService.class));
-        //stop notification
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null) {
-            throw new AssertionError("NotificationManager is null.");
-        } else {
-            notificationManager.cancelAll();
-        }
+        context.stopService(new Intent(context, NotificationService.class));
     }
 
     private void initTimer() {
@@ -99,17 +88,21 @@ public class ForegroundTimer {
 
             @Override
             public void onFinish() {
-                //transfer teaName
-                Intent intent = new Intent();
-                intent.putExtra("teaName", teaId);
-                //trigger alarm vibration and notification
-                TeaCompleteReceiver receiver = new TeaCompleteReceiver();
-                receiver.onReceive(context, intent);
-
+                startNotificationService();
                 onTimerFinish();
             }
         }.start();
         timerState = TimerState.RUNNING;
+    }
+
+    private void startNotificationService(){
+        Intent notificationService = new Intent(context, NotificationService.class);
+        notificationService.putExtra("teaId", teaId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            context.startForegroundService(notificationService);
+        } else {
+            context.startService(notificationService);
+        }
     }
 
     private void onTimerFinish() {
