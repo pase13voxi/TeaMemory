@@ -170,6 +170,7 @@
     <string name="settings_read_permission_dialog_checkbox">Do not show me again!</string>
     <string name="settings_read_permission_dialog_ok">OK</string>
     <string name="settings_read_permission_denied">Permission denied.</string>
+    <string name="settings_vibration">Vibration</string>
     <string name="settings_animation">Animation</string>
     <string name="settings_cancle">Cancle</string>
     <string name="settings_temperature_unit">Temperature unit</string>

@@ -38,7 +38,7 @@ import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_R
 public class Settings extends AppCompatActivity {
 
     private enum ListItems {
-        Alarm, Animation, TemperatureUnit, Hints, FactorySettings
+        Alarm, Vibration, Animation, TemperatureUnit, Hints, FactorySettings
     }
 
     private SettingsViewModel settingsViewModel;
@@ -83,6 +83,9 @@ public class Settings extends AppCompatActivity {
             switch (item) {
                 case Alarm:
                     settingAlarm();
+                    break;
+                case Vibration:
+                    settingVibration();
                     break;
                 case Animation:
                     settingAnimation();
@@ -134,6 +137,38 @@ public class Settings extends AppCompatActivity {
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, R.string.settings_alarm_selection_title);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
         startActivityForResult(intent, 5);
+    }
+
+    private void settingVibration() {
+        final String[] items = getResources().getStringArray(R.array.settings_options);
+
+        //Get CheckedItem
+        int checkedItem;
+        if (settingsViewModel.isVibration()) {
+            checkedItem = 0;
+        } else {
+            checkedItem = 1;
+        }
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.MaterialThemeDialog);
+        builder.setTitle(R.string.settings_vibration);
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            switch (item) {
+                case 0:
+                    settingsViewModel.setVibration(true);
+                    break;
+                case 1:
+                    settingsViewModel.setVibration(false);
+                    break;
+            }
+            refreshWindow();
+            adapter.notifyDataSetChanged();
+            radioButtonDialog.dismiss();
+        });
+        radioButtonDialog = builder.create();
+        radioButtonDialog.show();
     }
 
     private void settingAnimation() {
@@ -256,8 +291,18 @@ public class Settings extends AppCompatActivity {
         ListRowItem itemSound = new ListRowItem(getResources().getString(R.string.settings_alarm), settingsViewModel.getMusicname());
         settingList.add(itemSound);
 
-        //Decision for Animation
+        //Decision for Vibration and Animation
         String[] itemsOnOff = getResources().getStringArray(R.array.settings_options);
+
+        //Get Option for the Vibration
+        int vibrationOption;
+        if (settingsViewModel.isVibration()) {
+            vibrationOption = 0;
+        } else {
+            vibrationOption = 1;
+        }
+        ListRowItem itemVibration = new ListRowItem(getResources().getString(R.string.settings_vibration), itemsOnOff[vibrationOption]);
+        settingList.add(itemVibration);
 
         //Get Option for the Animation
         int animationOption;

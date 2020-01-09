@@ -38,6 +38,15 @@ public class SettingsViewModel {
         actualSettingsDAO.update(actualSettings);
     }
 
+    public boolean isVibration() {
+        return actualSettings.isVibration();
+    }
+
+    public void setVibration(boolean vibration) {
+        actualSettings.setVibration(vibration);
+        actualSettingsDAO.update(actualSettings);
+    }
+
     public boolean isAnimation() {
         return actualSettings.isAnimation();
     }

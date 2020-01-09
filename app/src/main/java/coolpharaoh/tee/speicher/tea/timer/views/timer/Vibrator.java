@@ -5,10 +5,15 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.VibrationEffect;
 
+import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
+
 class Vibrator {
 
     static void vibrate(Context context) {
-        if(!isSilent(context)) {
+
+        TimerViewModel timerViewModel = new TimerViewModel(context);
+
+        if(!isSilent(context) && timerViewModel.isVibration()) {
             android.os.Vibrator vibrator = (android.os.Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             if (vibrator == null) {
                 throw new AssertionError("Vibrator is null.");
