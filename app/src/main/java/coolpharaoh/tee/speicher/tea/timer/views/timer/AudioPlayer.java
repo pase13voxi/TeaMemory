@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import java.io.IOException;
 
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 
 class AudioPlayer{
@@ -18,7 +19,7 @@ class AudioPlayer{
     }
 
     void start(){
-        TimerViewModel timerViewModel = new TimerViewModel(context);
+        TimerViewModel timerViewModel = new TimerViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
         //initial music track
         if (timerViewModel.getMusicchoice() != null) {
             mediaPlayer = new MediaPlayer();

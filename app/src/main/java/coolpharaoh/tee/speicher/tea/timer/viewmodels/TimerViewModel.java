@@ -1,24 +1,18 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.content.Context;
-
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
 public class TimerViewModel {
 
     private final TeaDAO teaDAO;
-    private final ActualSettings actualSettings;
+    private final ActualSettingsDAO actualSettingsDAO;
 
-    public TimerViewModel(Context context) {
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
+    public TimerViewModel(TeaMemoryDatabase database) {
 
         teaDAO = database.getTeaDAO();
-
-        ActualSettingsDAO mActualSettingsDAO = database.getActualSettingsDAO();
-        actualSettings = mActualSettingsDAO.getSettings();
+        actualSettingsDAO = database.getActualSettingsDAO();
     }
 
     //teaDAO
@@ -31,10 +25,10 @@ public class TimerViewModel {
 
     //actualSettingsDAO
     public boolean isVibration(){
-        return actualSettings.isVibration();
+        return actualSettingsDAO.getSettings().isVibration();
     }
 
     public String getMusicchoice(){
-        return actualSettings.getMusicchoice();
+        return actualSettingsDAO.getSettings().getMusicchoice();
     }
 }

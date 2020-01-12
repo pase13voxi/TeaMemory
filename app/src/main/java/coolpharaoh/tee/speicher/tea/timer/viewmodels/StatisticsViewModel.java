@@ -1,7 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.content.Context;
-
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
@@ -13,8 +11,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.RefreshCounter;
 public class StatisticsViewModel {
     private final CounterDAO counterDAO;
 
-    public StatisticsViewModel(Context context) {
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
+    public StatisticsViewModel(TeaMemoryDatabase database) {
 
         counterDAO = database.getCounterDAO();
 
@@ -37,7 +34,7 @@ public class StatisticsViewModel {
         return counterDAO.getTeaCounterDay();
     }
 
-    private void refreshAllCounter() {
+    void refreshAllCounter() {
         for (Counter counter : RefreshCounter.refreshCounters(counterDAO.getCounters())) {
             counterDAO.update(counter);
         }

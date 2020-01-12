@@ -17,6 +17,7 @@ import java.util.Objects;
 import br.com.felix.horizontalbargraph.HorizontalBar;
 import br.com.felix.horizontalbargraph.model.BarItem;
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.StatisticsViewModel;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
@@ -45,7 +46,7 @@ public class Statistics extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        statisticsViewModel = new StatisticsViewModel(getApplicationContext());
+        statisticsViewModel = new StatisticsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
         final HorizontalBar horizontal = findViewById(R.id.statistic_chart);
         horizontal.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();

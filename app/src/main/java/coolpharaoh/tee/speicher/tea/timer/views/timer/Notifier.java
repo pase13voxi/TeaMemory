@@ -10,6 +10,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.ShowTea;
 
@@ -26,7 +27,7 @@ class Notifier {
     Notifier(final Context context, final long teaId){
         this.context = context;
         this.teaId = teaId;
-        timerViewModel = new TimerViewModel(context);
+        timerViewModel = new TimerViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
     }
 
     android.app.Notification getNotification() {

@@ -5,13 +5,14 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.VibrationEffect;
 
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.TimerViewModel;
 
 class Vibrator {
 
     static void vibrate(Context context) {
 
-        TimerViewModel timerViewModel = new TimerViewModel(context);
+        TimerViewModel timerViewModel = new TimerViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
 
         if(!isSilent(context) && timerViewModel.isVibration()) {
             android.os.Vibrator vibrator = (android.os.Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
