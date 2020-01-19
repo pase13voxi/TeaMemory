@@ -23,14 +23,14 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class TeaDAOTest {
-    private TeaDAO mTeaDAO;
+    private TeaDAO teaDAO;
     private TeaMemoryDatabase db;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mTeaDAO = db.getTeaDAO();
+        teaDAO = db.getTeaDAO();
     }
 
     @After
@@ -40,14 +40,14 @@ public class TeaDAOTest {
 
     @Test
     public void insertTea(){
-        assertEquals(mTeaDAO.getTeas().size(), 0);
+        assertEquals(teaDAO.getTeas().size(), 0);
 
         Tea teaBefore = createTea("name", "variety", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaBefore);
+        teaDAO.insert(teaBefore);
 
-        assertEquals(mTeaDAO.getTeas().size(), 1);
+        assertEquals(teaDAO.getTeas().size(), 1);
 
-        Tea teaAfter = mTeaDAO.getTeas().get(0);
+        Tea teaAfter = teaDAO.getTeas().get(0);
         assertEquals(teaAfter.getName(), teaBefore.getName());
         assertEquals(teaAfter.getVariety(), teaBefore.getVariety());
         assertEquals(teaAfter.getAmount(), teaBefore.getAmount());
@@ -59,19 +59,19 @@ public class TeaDAOTest {
 
     @Test
     public void updateTea(){
-        assertEquals(mTeaDAO.getTeas().size(), 0);
+        assertEquals(teaDAO.getTeas().size(), 0);
 
         Tea teaBefore = createTea("name", "variety", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaBefore);
+        teaDAO.insert(teaBefore);
 
-        assertEquals(mTeaDAO.getTeas().size(), 1);
+        assertEquals(teaDAO.getTeas().size(), 1);
 
-        Tea teaUpdate = mTeaDAO.getTeas().get(0);
+        Tea teaUpdate = teaDAO.getTeas().get(0);
         teaUpdate.setName("NameChanged");
         teaUpdate.setName("VarietyChanged");
-        mTeaDAO.update(teaUpdate);
+        teaDAO.update(teaUpdate);
 
-        Tea teaAfter = mTeaDAO.getTeas().get(0);
+        Tea teaAfter = teaDAO.getTeas().get(0);
         assertEquals(teaAfter.getName(), teaUpdate.getName());
         assertEquals(teaAfter.getVariety(), teaUpdate.getVariety());
         assertEquals(teaAfter.getAmount(), teaUpdate.getAmount());
@@ -83,21 +83,21 @@ public class TeaDAOTest {
 
     @Test
     public void deleteTea(){
-        assertEquals(mTeaDAO.getTeas().size(), 0);
+        assertEquals(teaDAO.getTeas().size(), 0);
 
         Tea teaBefore1 = createTea("name1", "variety1", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaBefore1);
+        teaDAO.insert(teaBefore1);
 
         Tea teaBefore2 = createTea("name2", "variety2", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaBefore2);
+        teaDAO.insert(teaBefore2);
 
-        assertEquals(mTeaDAO.getTeas().size(), 2);
+        assertEquals(teaDAO.getTeas().size(), 2);
 
-        mTeaDAO.delete(mTeaDAO.getTeas().get(0));
+        teaDAO.delete(teaDAO.getTeas().get(0));
 
-        assertEquals(mTeaDAO.getTeas().size(), 1);
+        assertEquals(teaDAO.getTeas().size(), 1);
 
-        Tea teaAfter2 = mTeaDAO.getTeas().get(0);
+        Tea teaAfter2 = teaDAO.getTeas().get(0);
         assertEquals(teaAfter2.getName(), teaBefore2.getName());
         assertEquals(teaAfter2.getVariety(), teaBefore2.getVariety());
         assertEquals(teaAfter2.getAmount(), teaBefore2.getAmount());
@@ -109,31 +109,31 @@ public class TeaDAOTest {
 
     @Test
     public void deleteAllTeas(){
-        assertEquals(mTeaDAO.getTeas().size(), 0);
+        assertEquals(teaDAO.getTeas().size(), 0);
 
         Tea teaBefore1 = createTea("name1", "variety1", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaBefore1);
+        teaDAO.insert(teaBefore1);
 
         Tea teaBefore2 = createTea("name2", "variety2", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaBefore2);
+        teaDAO.insert(teaBefore2);
 
-        assertEquals(mTeaDAO.getTeas().size(), 2);
+        assertEquals(teaDAO.getTeas().size(), 2);
 
-        mTeaDAO.deleteAll();
+        teaDAO.deleteAll();
 
-        assertEquals(mTeaDAO.getTeas().size(), 0);
+        assertEquals(teaDAO.getTeas().size(), 0);
     }
 
     @Test
     public void getTeaOrderByActivity(){
         Tea teaOld = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
-        mTeaDAO.insert(teaOld);
+        teaDAO.insert(teaOld);
         Tea teaMiddle = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        mTeaDAO.insert(teaMiddle);
+        teaDAO.insert(teaMiddle);
         Tea teaNew = createTea("nameNew", "varietyNew", new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
-        mTeaDAO.insert(teaNew);
+        teaDAO.insert(teaNew);
 
-        List<Tea> teaList = mTeaDAO.getTeasOrderByActivity();
+        List<Tea> teaList = teaDAO.getTeasOrderByActivity();
 
         assertEquals(teaList.get(0).getName(), teaNew.getName());
         assertEquals(teaList.get(0).getVariety(), teaNew.getVariety());
@@ -151,12 +151,12 @@ public class TeaDAOTest {
     @Test
     public void getTeaById(){
         Tea teaBefore1 = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
-        long teaId1 = mTeaDAO.insert(teaBefore1);
+        long teaId1 = teaDAO.insert(teaBefore1);
 
         Tea teaBefore2 = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        long teaId2 = mTeaDAO.insert(teaBefore2);
+        long teaId2 = teaDAO.insert(teaBefore2);
 
-        Tea teaAfter1 = mTeaDAO.getTeaById(teaId1);
+        Tea teaAfter1 = teaDAO.getTeaById(teaId1);
         assertEquals(teaAfter1.getName(), teaBefore1.getName());
         assertEquals(teaAfter1.getVariety(), teaBefore1.getVariety());
         assertEquals(teaAfter1.getAmount(), teaBefore1.getAmount());
@@ -165,7 +165,7 @@ public class TeaDAOTest {
         assertEquals(teaAfter1.getLastInfusion(), teaBefore1.getLastInfusion());
         assertEquals(teaAfter1.getDate(), teaBefore1.getDate());
 
-        Tea teaAfter2 = mTeaDAO.getTeaById(teaId2);
+        Tea teaAfter2 = teaDAO.getTeaById(teaId2);
         assertEquals(teaAfter2.getName(), teaBefore2.getName());
         assertEquals(teaAfter2.getVariety(), teaBefore2.getVariety());
         assertEquals(teaAfter2.getAmount(), teaBefore2.getAmount());
@@ -178,13 +178,13 @@ public class TeaDAOTest {
     @Test
     public void getTeaOrderByAlphabetic(){
         Tea teaC = createTea("nameC", "varietyC", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaC);
+        teaDAO.insert(teaC);
         Tea teaA = createTea("nameA", "varietyA", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaA);
+        teaDAO.insert(teaA);
         Tea teaB = createTea("nameB", "varietyB", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaB);
+        teaDAO.insert(teaB);
 
-        List<Tea> teaList = mTeaDAO.getTeasOrderByAlphabetic();
+        List<Tea> teaList = teaDAO.getTeasOrderByAlphabetic();
 
         assertEquals(teaList.get(0).getName(), teaA.getName());
         assertEquals(teaList.get(0).getVariety(), teaA.getVariety());
@@ -202,13 +202,13 @@ public class TeaDAOTest {
     @Test
     public void getTeaOrderByVariety(){
         Tea teaC = createTea("nameC", "varietyC", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaC);
+        teaDAO.insert(teaC);
         Tea teaA = createTea("nameA", "varietyA", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaA);
+        teaDAO.insert(teaA);
         Tea teaB = createTea("nameB", "varietyB", Calendar.getInstance().getTime());
-        mTeaDAO.insert(teaB);
+        teaDAO.insert(teaB);
 
-        List<Tea> teaList = mTeaDAO.getTeasOrderByVariety();
+        List<Tea> teaList = teaDAO.getTeasOrderByVariety();
 
         assertEquals(teaList.get(0).getName(), teaA.getName());
         assertEquals(teaList.get(0).getVariety(), teaA.getVariety());

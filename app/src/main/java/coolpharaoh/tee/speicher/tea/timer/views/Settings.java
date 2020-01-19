@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.SettingsViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
@@ -64,7 +65,7 @@ public class Settings extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        settingsViewModel = new SettingsViewModel(getApplicationContext());
+        settingsViewModel = new SettingsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
         //write ListView
         settingList = new ArrayList<>();

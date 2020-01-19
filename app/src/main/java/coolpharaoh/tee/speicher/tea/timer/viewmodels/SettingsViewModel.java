@@ -1,7 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.content.Context;
-
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -14,8 +12,7 @@ public class SettingsViewModel {
 
     private final ActualSettings actualSettings;
 
-    public SettingsViewModel(Context context) {
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
+    public SettingsViewModel(TeaMemoryDatabase database) {
 
         actualSettingsDAO = database.getActualSettingsDAO();
         actualSettings = actualSettingsDAO.getSettings();
@@ -95,7 +92,7 @@ public class SettingsViewModel {
     public void setDefaultSettings() {
         actualSettings.setMusicchoice("content://settings/system/ringtone");
         actualSettings.setMusicname("Default");
-        actualSettings.setVibration(false);
+        actualSettings.setVibration(true);
         actualSettings.setNotification(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureunit("Celsius");

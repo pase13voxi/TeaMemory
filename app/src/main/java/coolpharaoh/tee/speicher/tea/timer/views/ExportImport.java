@@ -23,6 +23,7 @@ import androidx.core.app.NavUtils;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
@@ -50,7 +51,7 @@ public class ExportImport extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        exportImportViewModel = new ExportImportViewModel(getApplicationContext());
+        exportImportViewModel = new ExportImportViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
         Button buttonExport = findViewById(R.id.buttonExport);
         buttonExport.setOnClickListener(v -> checkPermissionsBeforeExport());

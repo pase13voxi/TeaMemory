@@ -38,6 +38,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.CounterListAdapter;
@@ -136,7 +137,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             buttonInfusionIndex.setVisibility(View.INVISIBLE);
             // initialisiere Timer
         } else {
-            showTeaViewModel = new ShowTeaViewModel(teaId, getApplicationContext());
+            showTeaViewModel = new ShowTeaViewModel(teaId, TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()),
+                    getApplicationContext());
 
             //show Description
             if (showTeaViewModel.isShowteaalert()) {
@@ -282,7 +284,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             } else if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_reset))) {
                 //Button umbenennen
                 buttonStartTimer.setText(R.string.showtea_timer_start);
-                if (showTeaViewModel.getCooldowntime().time!=null) {
+                if (showTeaViewModel.getCooldowntime().time != null) {
                     buttonExchange.setEnabled(true);
                 }
 
@@ -358,7 +360,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
 
         foregroundTimer.startBackgroundTimer();
@@ -718,7 +720,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
             }
         }
-        if (showTeaViewModel.getCooldowntime().time!=null) {
+        if (showTeaViewModel.getCooldowntime().time != null) {
             buttonExchange.setEnabled(true);
         } else {
             buttonExchange.setEnabled(false);

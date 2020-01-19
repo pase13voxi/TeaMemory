@@ -38,5 +38,5 @@ public interface TeaDAO {
     List<Tea> getTeasOrderByVariety();
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
-    Tea getTeaById(Long id);
+    Tea getTeaById(long id);
 }

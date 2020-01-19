@@ -1,7 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
-import android.content.Context;
-
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
@@ -24,9 +22,7 @@ public class ExportImportViewModel extends ViewModel {
     private final CounterDAO counterDAO;
     private final NoteDAO noteDAO;
 
-    public ExportImportViewModel(Context context) {
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
-
+    public ExportImportViewModel(TeaMemoryDatabase database) {
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();
         counterDAO = database.getCounterDAO();
