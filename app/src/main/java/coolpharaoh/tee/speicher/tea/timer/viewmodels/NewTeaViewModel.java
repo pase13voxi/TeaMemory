@@ -2,8 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.viewmodels;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,7 +12,6 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
@@ -23,7 +20,6 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.LanguageConversation
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
 
 public class NewTeaViewModel {
-
     private final Context context;
 
     private final TeaDAO teaDAO;
@@ -34,14 +30,11 @@ public class NewTeaViewModel {
 
     private final Tea tea;
     private final List<Infusion> infusions;
-    private final ActualSettings actualSettings;
 
     private int infusionIndex = 0;
 
-    public NewTeaViewModel(long teaId, Context context) {
+    public NewTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
         this.context = context;
-
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
 
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();
@@ -51,16 +44,10 @@ public class NewTeaViewModel {
 
         tea = teaDAO.getTeaById(teaId);
         infusions = infusionDAO.getInfusionsByTeaId(teaId);
-        actualSettings = actualSettingsDAO.getSettings();
     }
 
-    public NewTeaViewModel(Context context) {
+    public NewTeaViewModel(TeaMemoryDatabase database, Context context) {
         this.context = context;
-
-        TeaMemoryDatabase database = Room.databaseBuilder(context, TeaMemoryDatabase.class, "teamemory")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
 
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();
@@ -70,8 +57,7 @@ public class NewTeaViewModel {
 
         tea = new Tea();
         infusions = new ArrayList<>();
-        addInfusion(true);
-        actualSettings = actualSettingsDAO.getSettings();
+        addInfusion();
     }
 
     // Tea
@@ -100,12 +86,12 @@ public class NewTeaViewModel {
     }
 
     // Infusion
-    public void addInfusion(boolean first) {
+    public void addInfusion() {
         Infusion infusion = new Infusion();
         infusion.setTemperaturecelsius(-500);
         infusion.setTemperaturefahrenheit(-500);
         infusions.add(infusion);
-        if (!first){
+        if (getInfusionSize() > 1) {
             infusionIndex++;
         }
     }
@@ -113,7 +99,7 @@ public class NewTeaViewModel {
     public void takeInfusionInformation(String time, String cooldowntime, int temperature) {
         infusions.get(infusionIndex).setTime(time);
         infusions.get(infusionIndex).setCooldowntime(cooldowntime);
-        if (actualSettings.getTemperatureunit().equals("Celsius")) {
+        if (actualSettingsDAO.getSettings().getTemperatureunit().equals("Celsius")) {
             infusions.get(infusionIndex).setTemperaturecelsius(temperature);
             infusions.get(infusionIndex).setTemperaturefahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
         } else {
@@ -123,9 +109,9 @@ public class NewTeaViewModel {
     }
 
     public void deleteInfusion() {
-        if (infusions.size() > 1) {
+        if (getInfusionSize() > 1) {
             infusions.remove(infusionIndex);
-            if (infusionIndex == infusions.size()) {
+            if (infusionIndex == getInfusionSize()) {
                 infusionIndex--;
             }
         }
@@ -140,7 +126,7 @@ public class NewTeaViewModel {
     }
 
     public int getInfusionTemperature() {
-        if (actualSettings.getTemperatureunit().equals("Celsius")) {
+        if (getTemperatureunit().equals("Celsius")) {
             return infusions.get(infusionIndex).getTemperaturecelsius();
         } else {
             return infusions.get(infusionIndex).getTemperaturefahrenheit();
@@ -154,7 +140,7 @@ public class NewTeaViewModel {
     }
 
     public void nextInfusion() {
-        if (infusionIndex + 1 < infusions.size()) {
+        if (infusionIndex + 1 < getInfusionSize()) {
             infusionIndex++;
         }
     }
@@ -168,8 +154,8 @@ public class NewTeaViewModel {
     }
 
     // Settings
-    public String getTemperatureunit(){
-        return actualSettings.getTemperatureunit();
+    public String getTemperatureunit() {
+        return actualSettingsDAO.getSettings().getTemperatureunit();
     }
 
     // Overall
@@ -212,7 +198,7 @@ public class NewTeaViewModel {
 
     private void setTeaInformation(String name, String variety, int amount, String amountkind, int color) {
         tea.setName(name);
-        tea.setVariety(LanguageConversation.convertVarietyToCode(variety,context));
+        tea.setVariety(LanguageConversation.convertVarietyToCode(variety, context));
         tea.setAmount(amount);
         tea.setAmountkind(amountkind);
         tea.setColor(color);
@@ -221,7 +207,7 @@ public class NewTeaViewModel {
 
     private void setInfusionInformation(long teaId) {
         infusionDAO.deleteInfusionByTeaId(teaId);
-        for (int i = 0; i < infusions.size(); i++) {
+        for (int i = 0; i < getInfusionSize(); i++) {
             infusions.get(i).setTeaId(teaId);
             infusions.get(i).setInfusionindex(i);
             infusionDAO.insert(infusions.get(i));

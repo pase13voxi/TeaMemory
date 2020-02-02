@@ -59,11 +59,6 @@ public class ShowTeaViewModelTest {
 
     private static final long TEA_ID = 1L;
 
-    String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-    "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
-    String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
-            "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-
     @Before
     public void setUp() {
         mockDB();

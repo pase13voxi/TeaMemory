@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.NewTeaViewModel;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.HintConversation;
@@ -141,9 +142,9 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         //Falls Änderung, dann wird ein Wert übergeben.
         teaId = this.getIntent().getLongExtra("teaId", 0);
         if (teaId == 0) {
-            newTeaViewModel = new NewTeaViewModel(getApplicationContext());
+            newTeaViewModel = new NewTeaViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
         } else {
-            newTeaViewModel = new NewTeaViewModel(teaId, getApplicationContext());
+            newTeaViewModel = new NewTeaViewModel(teaId, TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
 
             //richtige SpinnerId bekommen
             int spinnerId = -1;
@@ -298,7 +299,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         addInfusion.setOnClickListener(v -> {
             if (changeInfusion()) {
-                newTeaViewModel.addInfusion(false);
+                newTeaViewModel.addInfusion();
                 refreshInfusionConsole();
                 clearInfusionInformation();
             }
