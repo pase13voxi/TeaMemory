@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tooltip.Tooltip;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.TeaAdapter;
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         //get listView
         tealist = findViewById(R.id.listViewTealist);
 
-        mainActivityViewModel = new MainActivityViewModel(getApplicationContext());
+        mainActivityViewModel = new MainActivityViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
 
         //set big spinner
         Spinner spinnerSort = findViewById(R.id.spinner_category);

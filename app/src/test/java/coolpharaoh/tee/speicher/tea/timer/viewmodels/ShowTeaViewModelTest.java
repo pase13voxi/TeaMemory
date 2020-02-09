@@ -30,8 +30,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TimeHelper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,7 +82,7 @@ public class ShowTeaViewModelTest {
 
         long teaIdAfter = showTeaViewModel.getTeaId();
 
-        assertEquals(teaIdBefore, teaIdAfter);
+        assertThat(teaIdAfter).isEqualTo(teaIdBefore);
     }
 
     @Test
@@ -96,7 +95,7 @@ public class ShowTeaViewModelTest {
 
         String teaNameAfter = showTeaViewModel.getName();
 
-        assertEquals(teaNameBefore, teaNameAfter);
+        assertThat(teaNameAfter).isEqualTo(teaNameBefore);
     }
 
     @Test
@@ -120,7 +119,7 @@ public class ShowTeaViewModelTest {
 
         String varietyAfter = showTeaViewModel.getVariety();
 
-        assertEquals(varietyBefore, varietyAfter);
+        assertThat(varietyAfter).isEqualTo(varietyBefore);
     }
 
     @Test
@@ -142,7 +141,7 @@ public class ShowTeaViewModelTest {
 
         String varietyAfter = showTeaViewModel.getVariety();
 
-        assertEquals(varietyBefore, varietyAfter);
+        assertThat(varietyAfter).isEqualTo(varietyBefore);
     }
 
     @Test
@@ -155,7 +154,7 @@ public class ShowTeaViewModelTest {
 
         String varietyAfter = showTeaViewModel.getVariety();
 
-        assertEquals("-", varietyAfter);
+        assertThat(varietyAfter).isEqualTo("-");
     }
 
     @Test
@@ -168,7 +167,7 @@ public class ShowTeaViewModelTest {
 
         int amountAfter = showTeaViewModel.getAmount();
 
-        assertEquals(amountBefore, amountAfter);
+        assertThat(amountAfter).isEqualTo(amountBefore);
     }
 
     @Test
@@ -181,7 +180,7 @@ public class ShowTeaViewModelTest {
 
         String amountKindAfter = showTeaViewModel.getAmountkind();
 
-        assertEquals(amountKindBefore, amountKindAfter);
+        assertThat(amountKindAfter).isEqualTo(amountKindBefore);
     }
 
     @Test
@@ -194,7 +193,7 @@ public class ShowTeaViewModelTest {
 
         int colorAfter = showTeaViewModel.getColor();
 
-        assertEquals(colorBefore, colorAfter);
+        assertThat(colorAfter).isEqualTo(colorBefore);
     }
 
     @Test
@@ -212,9 +211,9 @@ public class ShowTeaViewModelTest {
 
         Calendar currentDate = Calendar.getInstance();
 
-        assertEquals(currentDate.get(Calendar.DAY_OF_MONTH), teaDateAfter.get(Calendar.DAY_OF_MONTH));
-        assertEquals(currentDate.get(Calendar.MONTH), teaDateAfter.get(Calendar.MONTH));
-        assertEquals(currentDate.get(Calendar.YEAR), teaDateAfter.get(Calendar.YEAR));
+        assertThat(teaDateAfter.get(Calendar.DAY_OF_MONTH)).isEqualTo(currentDate.get(Calendar.DAY_OF_MONTH));
+        assertThat(teaDateAfter.get(Calendar.MONTH)).isEqualTo(currentDate.get(Calendar.MONTH));
+        assertThat(teaDateAfter.get(Calendar.YEAR)).isEqualTo(currentDate.get(Calendar.YEAR));
     }
 
     @Test
@@ -232,42 +231,42 @@ public class ShowTeaViewModelTest {
 
         when(infusionDAO.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
 
-        assertEquals(infusions.size(), showTeaViewModel.getInfusionSize());
-        assertEquals(0, showTeaViewModel.getInfusionIndex());
+        assertThat(showTeaViewModel.getInfusionSize()).isEqualTo(infusions.size());
+        assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(0);
 
         TimeHelper time1 = showTeaViewModel.getTime();
         TimeHelper cooldownTime1 = showTeaViewModel.getCooldowntime();
         int temperature1 = showTeaViewModel.getTemperature();
 
-        assertEquals(infusions.get(0).getTime(), time1.time);
-        assertEquals(1, time1.minutes);
-        assertEquals(0, time1.seconds);
-        assertEquals(infusions.get(0).getCooldowntime(), cooldownTime1.time);
-        assertEquals(2, cooldownTime1.minutes);
-        assertEquals(0, cooldownTime1.seconds);
-        assertEquals(infusions.get(0).getTemperaturecelsius(), temperature1);
+        assertThat(time1.time).isEqualTo(infusions.get(0).getTime());
+        assertThat(time1.minutes).isEqualTo(1);
+        assertThat(time1.seconds).isEqualTo(0);
+        assertThat(cooldownTime1.time).isEqualTo(infusions.get(0).getCooldowntime());
+        assertThat(cooldownTime1.minutes).isEqualTo(2);
+        assertThat(cooldownTime1.seconds).isEqualTo(0);
+        assertThat(temperature1).isEqualTo(infusions.get(0).getTemperaturecelsius());
 
         showTeaViewModel.incrementInfusionIndex();
-        assertEquals(1, showTeaViewModel.getInfusionIndex());
+        assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
 
         TimeHelper time2 = showTeaViewModel.getTime();
         TimeHelper cooldownTime2 = showTeaViewModel.getCooldowntime();
         int temperature2 = showTeaViewModel.getTemperature();
 
-        assertEquals(infusions.get(1).getTime(), time2.time);
-        assertEquals(2, time2.minutes);
-        assertEquals(30, time2.seconds);
-        assertEquals(infusions.get(1).getCooldowntime(), cooldownTime2.time);
-        assertEquals(5, cooldownTime2.minutes);
-        assertEquals(30, cooldownTime2.seconds);
-        assertEquals(infusions.get(1).getTemperaturecelsius(), temperature2);
+        assertThat(time2.time).isEqualTo(infusions.get(1).getTime());
+        assertThat(time2.minutes).isEqualTo(2);
+        assertThat(time2.seconds).isEqualTo(30);
+        assertThat(cooldownTime2.time).isEqualTo(infusions.get(1).getCooldowntime());
+        assertThat(cooldownTime2.minutes).isEqualTo(5);
+        assertThat(cooldownTime2.seconds).isEqualTo(30);
+        assertThat(temperature2).isEqualTo(infusions.get(1).getTemperaturecelsius());
 
         actualSettings.setTemperatureunit("Fahrenheit");
         showTeaViewModel.setInfusionIndex(0);
-        assertEquals(0, showTeaViewModel.getInfusionIndex());
+        assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(0);
 
         int temperature3 = showTeaViewModel.getTemperature();
-        assertEquals(infusions.get(0).getTemperaturefahrenheit(), temperature3);
+        assertThat(temperature3).isEqualTo(infusions.get(0).getTemperaturefahrenheit());
     }
 
     @Test
@@ -280,9 +279,9 @@ public class ShowTeaViewModelTest {
 
         TimeHelper timeAfter = showTeaViewModel.getTime();
 
-        assertNull( timeAfter.time);
-        assertEquals(0, timeAfter.minutes);
-        assertEquals(0, timeAfter.seconds);
+        assertThat( timeAfter.time).isNull();
+        assertThat(timeAfter.minutes).isEqualTo(0);
+        assertThat(timeAfter.seconds).isEqualTo(0);
     }
 
     @Test
@@ -292,7 +291,7 @@ public class ShowTeaViewModelTest {
 
         Note noteAfter = showTeaViewModel.getNote();
 
-        assertEquals(noteBefore, noteAfter);
+        assertThat(noteAfter).isEqualTo(noteBefore);
     }
 
     @Test
@@ -308,7 +307,7 @@ public class ShowTeaViewModelTest {
         verify(noteDAO).update((captor.capture()));
         Note noteAfter = captor.getValue();
 
-        assertEquals(differentNote, noteAfter.getDescription());
+        assertThat(noteAfter.getDescription()).isEqualTo(differentNote);
     }
 
     @Test
@@ -323,10 +322,10 @@ public class ShowTeaViewModelTest {
         verify(counterDAO).update((captor.capture()));
         Counter counterAfter = captor.getValue();
 
-        assertEquals(2, counterAfter.getDay());
-        assertEquals(2, counterAfter.getWeek());
-        assertEquals(2, counterAfter.getMonth());
-        assertEquals(2, counterAfter.getOverall());
+        assertThat(counterAfter.getDay()).isEqualTo(2);
+        assertThat(counterAfter.getWeek()).isEqualTo(2);
+        assertThat(counterAfter.getMonth()).isEqualTo(2);
+        assertThat(counterAfter.getOverall()).isEqualTo(2);
     }
 
     @Test
@@ -337,7 +336,7 @@ public class ShowTeaViewModelTest {
 
         Counter counterAfter = showTeaViewModel.getCounter();
 
-        assertEquals(counterBefore, counterAfter);
+        assertThat(counterAfter).isEqualTo(counterBefore);
     }
 
     @Test
@@ -350,7 +349,7 @@ public class ShowTeaViewModelTest {
 
         boolean animationAfter = showTeaViewModel.isAnimation();
 
-        assertEquals(animationBefore, animationAfter);
+        assertThat(animationAfter).isEqualTo(animationBefore);
     }
 
     @Test
@@ -363,7 +362,7 @@ public class ShowTeaViewModelTest {
 
         boolean showTeaAlertAfter = showTeaViewModel.isShowteaalert();
 
-        assertEquals(showTeaAlertBefore, showTeaAlertAfter);
+        assertThat(showTeaAlertAfter).isEqualTo(showTeaAlertBefore);
     }
 
     @Test
@@ -379,6 +378,6 @@ public class ShowTeaViewModelTest {
         verify(actualSettingsDAO).update((captor.capture()));
         ActualSettings actualSettingsAfter = captor.getValue();
 
-        assertEquals(showTeaAlertBefore, actualSettingsAfter.isShowteaalert());
+        assertThat(actualSettingsAfter.isShowteaalert()).isEqualTo(showTeaAlertBefore);
     }
 }

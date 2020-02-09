@@ -12,9 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,6 +27,7 @@ public class TimerViewModelTest {
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
 
+
     @Before
     public void setUp(){
         when(teaMemoryDatabase.getActualSettingsDAO()).thenReturn(actualSettingsDAO);
@@ -37,18 +36,22 @@ public class TimerViewModelTest {
         timerViewModel = new TimerViewModel(teaMemoryDatabase);
     }
 
+
+
     @Test
     public void isVibration(){
+
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setVibration(true);
 
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 
-        assertTrue(timerViewModel.isVibration());
+        assertThat(timerViewModel.isVibration()).isTrue();
 
         actualSettings.setVibration(false);
 
-        assertFalse(timerViewModel.isVibration());
+        assertThat(timerViewModel.isVibration()).isFalse();
+
     }
 
     @Test
@@ -60,7 +63,7 @@ public class TimerViewModelTest {
 
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 
-        assertEquals(musicChoice, timerViewModel.getMusicchoice());
+        assertThat(timerViewModel.getMusicchoice()).isEqualTo(musicChoice);
     }
 
     @Test
@@ -72,7 +75,8 @@ public class TimerViewModelTest {
 
         when(teaDAO.getTeaById(1L)).thenReturn(tea);
 
-        assertEquals("Default Tea", timerViewModel.getName(0L));
-        assertEquals(teaName, timerViewModel.getName(1L));
+        assertThat(timerViewModel.getName(0L)).isEqualTo("Default Tea");
+        assertThat(timerViewModel.getName(1L)).isEqualTo(teaName);
     }
+
 }

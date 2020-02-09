@@ -37,8 +37,7 @@ public class MainActivityViewModel extends ViewModel {
     private final MutableLiveData<List<Tea>> teas;
     private final ActualSettings actualSettings;
 
-    public MainActivityViewModel(Context context) {
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(context);
+    public MainActivityViewModel(TeaMemoryDatabase database, Context context) {
 
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();
@@ -91,7 +90,7 @@ public class MainActivityViewModel extends ViewModel {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setMusicchoice("content://settings/system/ringtone");
         actualSettings.setMusicname("Default");
-        actualSettings.setVibration(false);
+        actualSettings.setVibration(true);
         actualSettings.setNotification(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureunit("Celsius");

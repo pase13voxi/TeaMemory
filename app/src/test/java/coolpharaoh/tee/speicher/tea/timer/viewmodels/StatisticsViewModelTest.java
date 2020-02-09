@@ -18,7 +18,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,7 +60,7 @@ public class StatisticsViewModelTest {
 
         List<StatisticsPOJO> counterOverallAfter = statisticsViewModel.getStatisticsOverall();
 
-        assertEquals(counterOverallBefore, counterOverallAfter);
+        assertThat(counterOverallAfter).isEqualTo(counterOverallBefore);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class StatisticsViewModelTest {
 
         List<StatisticsPOJO> counterMonthAfter = statisticsViewModel.getStatisticsMonth();
 
-        assertEquals(counterMonthBefore, counterMonthAfter);
+        assertThat(counterMonthAfter).isEqualTo(counterMonthBefore);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class StatisticsViewModelTest {
 
         List<StatisticsPOJO> counterWeekAfter = statisticsViewModel.getStatisticsWeek();
 
-        assertEquals(counterWeekBefore, counterWeekAfter);
+        assertThat(counterWeekAfter).isEqualTo(counterWeekBefore);
     }
 
     @Test
@@ -129,7 +129,7 @@ public class StatisticsViewModelTest {
 
         List<StatisticsPOJO> counterDayAfter = statisticsViewModel.getStatisticsDay();
 
-        assertEquals(counterDayBefore, counterDayAfter);
+        assertThat(counterDayAfter).isEqualTo(counterDayBefore);
     }
 
     @Test
@@ -162,26 +162,26 @@ public class StatisticsViewModelTest {
 
         List<Counter> counterAfter = captor.getAllValues();
 
-        assertEquals(noRefresh, counterAfter.get(0));
+        assertThat(counterAfter.get(0)).isEqualTo(noRefresh);
 
-        assertEquals(0, counterAfter.get(1).getDay());
-        assertEquals(7, counterAfter.get(1).getWeek());
-        assertEquals(9, counterAfter.get(1).getMonth());
-        assertEquals(15L, counterAfter.get(1).getOverall());
+        assertThat(counterAfter.get(1).getDay()).isEqualTo(0);
+        assertThat(counterAfter.get(1).getWeek()).isEqualTo(7);
+        assertThat(counterAfter.get(1).getMonth()).isEqualTo(9);
+        assertThat(counterAfter.get(1).getOverall()).isEqualTo(15L);
 
-        assertEquals(4, counterAfter.get(2).getDay());
-        assertEquals(0, counterAfter.get(2).getWeek());
-        assertEquals(9, counterAfter.get(2).getMonth());
-        assertEquals(15L, counterAfter.get(2).getOverall());
+        assertThat(counterAfter.get(2).getDay()).isEqualTo(4);
+        assertThat(counterAfter.get(2).getWeek()).isEqualTo(0);
+        assertThat(counterAfter.get(2).getMonth()).isEqualTo(9);
+        assertThat(counterAfter.get(2).getOverall()).isEqualTo(15L);
 
-        assertEquals(4, counterAfter.get(3).getDay());
-        assertEquals(7, counterAfter.get(3).getWeek());
-        assertEquals(0, counterAfter.get(3).getMonth());
-        assertEquals(15L, counterAfter.get(3).getOverall());
+        assertThat(counterAfter.get(3).getDay()).isEqualTo(4);
+        assertThat(counterAfter.get(3).getWeek()).isEqualTo(7);
+        assertThat(counterAfter.get(3).getMonth()).isEqualTo(0);
+        assertThat(counterAfter.get(3).getOverall()).isEqualTo(15L);
 
-        assertEquals(0, counterAfter.get(4).getDay());
-        assertEquals(0, counterAfter.get(4).getWeek());
-        assertEquals(0, counterAfter.get(4).getMonth());
-        assertEquals(15L, counterAfter.get(4).getOverall());
+        assertThat(counterAfter.get(4).getDay()).isEqualTo(0);
+        assertThat(counterAfter.get(4).getWeek()).isEqualTo(0);
+        assertThat(counterAfter.get(4).getMonth()).isEqualTo(0);
+        assertThat(counterAfter.get(4).getOverall()).isEqualTo(15L);
     }
 }

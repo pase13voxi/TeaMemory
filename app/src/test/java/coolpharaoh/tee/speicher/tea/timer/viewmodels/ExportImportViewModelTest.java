@@ -22,7 +22,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,7 +65,7 @@ public class ExportImportViewModelTest {
 
         List<Tea> teasAfter = exportImportViewModel.getTeaList();
 
-        assertEquals(teasBefore, teasAfter);
+        assertThat(teasAfter).isEqualTo(teasBefore);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class ExportImportViewModelTest {
         verify(teaDAO).insert(captor.capture());
         Tea teaAfter = captor.getValue();
 
-        assertEquals(teaBefore, teaAfter);
+        assertThat(teaAfter).isEqualTo(teaBefore);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class ExportImportViewModelTest {
 
         List<Infusion> infusionsAfter = exportImportViewModel.getInfusionList();
 
-        assertEquals(infusionsBefore, infusionsAfter);
+        assertThat(infusionsAfter).isEqualTo(infusionsBefore);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ExportImportViewModelTest {
         verify(infusionDAO).insert(captor.capture());
         Infusion infusionAfter = captor.getValue();
 
-        assertEquals(infusionBefore, infusionAfter);
+        assertThat(infusionAfter).isEqualTo(infusionBefore);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ExportImportViewModelTest {
 
         List<Counter> countersAfter = exportImportViewModel.getCounterList();
 
-        assertEquals(countersBefore, countersAfter);
+        assertThat(countersAfter).isEqualTo(countersBefore);
     }
 
     @Test
@@ -145,7 +145,7 @@ public class ExportImportViewModelTest {
         verify(counterDAO).insert(captor.capture());
         Counter counterAfter = captor.getValue();
 
-        assertEquals(counterBefore, counterAfter);
+        assertThat(counterAfter).isEqualTo(counterBefore);
     }
 
     @Test
@@ -160,7 +160,7 @@ public class ExportImportViewModelTest {
 
         List<Note> notesAfter = exportImportViewModel.getNoteList();
 
-        assertEquals(notesBefore, notesAfter);
+        assertThat(notesAfter).isEqualTo(notesBefore);
     }
 
     @Test
@@ -173,6 +173,6 @@ public class ExportImportViewModelTest {
         verify(noteDAO).insert(captor.capture());
         Note noteAfter = captor.getValue();
 
-        assertEquals(noteBefore, noteAfter);
+        assertThat(noteAfter).isEqualTo(noteBefore);
     }
 }

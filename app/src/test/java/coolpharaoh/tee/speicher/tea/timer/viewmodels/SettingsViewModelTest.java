@@ -12,8 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +46,7 @@ public class SettingsViewModelTest {
         verify(actualSettingsDAO).update((captor.capture()));
         ActualSettings actualSettings = captor.getValue();
 
-        assertEquals(musicChoice, actualSettings.getMusicchoice());
+        assertThat(actualSettings.getMusicchoice()).isEqualTo(musicChoice);
     }
 
     @Test
@@ -57,7 +56,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(musicName, settingsViewModel.getMusicname());
+        assertThat(settingsViewModel.getMusicname()).isEqualTo(musicName);
     }
 
     @Test
@@ -67,7 +66,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(vibration, settingsViewModel.isVibration());
+        assertThat(settingsViewModel.isVibration()).isEqualTo(vibration);
     }
 
     @Test
@@ -77,7 +76,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(animation, settingsViewModel.isAnimation());
+        assertThat(settingsViewModel.isAnimation()).isEqualTo(animation);
     }
 
     @Test
@@ -87,7 +86,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(temperatureUnit, settingsViewModel.getTemperatureunit());
+        assertThat(settingsViewModel.getTemperatureunit()).isEqualTo(temperatureUnit);
     }
 
     @Test
@@ -97,7 +96,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(showTeaAlert, settingsViewModel.isShowteaalert());
+        assertThat(settingsViewModel.isShowteaalert()).isEqualTo(showTeaAlert);
     }
 
     @Test
@@ -107,7 +106,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(mainRateAlert, settingsViewModel.isMainratealert());
+        assertThat(settingsViewModel.isMainratealert()).isEqualTo(mainRateAlert);
     }
 
     @Test
@@ -117,7 +116,7 @@ public class SettingsViewModelTest {
 
         verify(actualSettingsDAO).update(any());
 
-        assertEquals(settingsPermissionAlert, settingsViewModel.isSettingspermissionalert());
+        assertThat(settingsViewModel.isSettingspermissionalert()).isEqualTo(settingsPermissionAlert);
     }
 
     @Test
@@ -128,16 +127,16 @@ public class SettingsViewModelTest {
         verify(actualSettingsDAO).update(captor.capture());
         ActualSettings actualSettings = captor.getValue();
 
-        assertEquals("content://settings/system/ringtone", actualSettings.getMusicchoice());
-        assertEquals("Default", actualSettings.getMusicname());
-        assertTrue(actualSettings.isVibration());
-        assertTrue(actualSettings.isNotification());
-        assertTrue(actualSettings.isVibration());
-        assertEquals("Celsius", actualSettings.getTemperatureunit());
-        assertTrue(actualSettings.isShowteaalert());
-        assertTrue(actualSettings.isMainratealert());
-        assertEquals(0, actualSettings.getMainratecounter());
-        assertEquals(0, actualSettings.getSort());
+        assertThat(actualSettings.getMusicchoice()).isEqualTo("content://settings/system/ringtone");
+        assertThat(actualSettings.getMusicname()).isEqualTo("Default");
+        assertThat(actualSettings.isVibration()).isTrue();
+        assertThat(actualSettings.isNotification()).isTrue();
+        assertThat(actualSettings.isVibration()).isTrue();
+        assertThat(actualSettings.getTemperatureunit()).isEqualTo("Celsius");
+        assertThat(actualSettings.isShowteaalert()).isTrue();
+        assertThat(actualSettings.isMainratealert()).isTrue();
+        assertThat(actualSettings.getMainratecounter()).isEqualTo(0);
+        assertThat(actualSettings.getSort()).isEqualTo(0);
     }
 
     @Test
