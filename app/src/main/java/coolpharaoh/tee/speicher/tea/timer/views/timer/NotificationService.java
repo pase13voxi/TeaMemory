@@ -9,18 +9,13 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 public class NotificationService extends Service {
-    private final int NOTIFICATION_ID = 7684;
+    private static final int NOTIFICATION_ID = 7684;
     AudioPlayer audioPlayer = null;
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
     }
 
     @Override
@@ -31,7 +26,7 @@ public class NotificationService extends Service {
         startAudioPlayer();
         Vibrator.vibrate(getApplicationContext());
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     private Notification getNotification(final long teaId){

@@ -1,6 +1,8 @@
 <resources>
     <!--German-->
     <string name="app_name">Tee Speicher</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="celsius">Celsius</string>
     <!--Main-->
     <string name="main_action_settings">Einstellungen</string>
     <string name="main_action_about">Über den Tee Speicher</string>

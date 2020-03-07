@@ -4,6 +4,9 @@
         <item>ts/L</item>
         <item>g/L</item>
     </array>
+
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="celsius">Celsius</string>
     <!--Main-->
     <array name="settings_options">
         <item>On</item>

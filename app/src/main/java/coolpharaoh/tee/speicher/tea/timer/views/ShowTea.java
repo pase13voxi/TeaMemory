@@ -48,20 +48,14 @@ import coolpharaoh.tee.speicher.tea.timer.views.timer.ForegroundTimer;
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
 
     private TextView textViewInfusionIndex;
-    private Button buttonInfusionIndex;
     private Button buttonNextInfusion;
     private Button buttonNote;
     private TextView textViewTemperature;
     private Spinner spinnerMinutes;
     private Spinner spinnerSeconds;
-    private TextView textViewMin;
-    private TextView textViewSec;
-    private TextView textViewDoppelPunkt;
     private TextView textViewTimer;
-    private Button buttonStartTimer;
     private Button buttonExchange;
     private Button buttonInfo;
-    private ImageView imageViewCup;
     private ImageView imageViewFill;
     private ImageView imageViewSteam;
 
@@ -82,7 +76,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.showtea_heading);
-        buttonInfusionIndex = findViewById(R.id.toolbar_infusionindex);
+        Button buttonInfusionIndex = findViewById(R.id.toolbar_infusionindex);
         textViewInfusionIndex = findViewById(R.id.toolbar_text_infusionindex);
         buttonNextInfusion = findViewById(R.id.toolbar_nextinfusion);
         setSupportActionBar(toolbar);
@@ -105,11 +99,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         spinnerMinutes = findViewById(R.id.spinnerMinutes);
         spinnerSeconds = findViewById(R.id.spinnerSeconds);
-        textViewMin = findViewById(R.id.textViewMin);
-        textViewSec = findViewById(R.id.textViewSec);
-        textViewDoppelPunkt = findViewById(R.id.textViewDoppelPunkt);
+        TextView textViewMin = findViewById(R.id.textViewMin);
+        TextView textViewSec = findViewById(R.id.textViewSec);
+        TextView textViewDoppelPunkt = findViewById(R.id.textViewDoppelPunkt);
         textViewTimer = findViewById(R.id.textViewTimer);
-        imageViewCup = findViewById(R.id.imageViewCup);
+        ImageView imageViewCup = findViewById(R.id.imageViewCup);
         imageViewFill = findViewById(R.id.imageViewFill);
         imageViewSteam = findViewById(R.id.imageViewSteam);
 
@@ -148,19 +142,19 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             //Befülle TextViews
             textViewName.setText(showTeaViewModel.getName());
             textViewSortOfTea.setText(showTeaViewModel.getVariety());
-            if (!showTeaViewModel.getNote().getDescription().equals("")) {
+            if (!"".equals(showTeaViewModel.getNote().getDescription())) {
                 buttonNote.setVisibility(View.VISIBLE);
             }
             if (showTeaViewModel.getTemperature() != -500) {
-                if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                if (getResources().getString(R.string.celsius).equals(showTeaViewModel.getTemperatureunit())) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
-                } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                } else if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
                 }
             } else {
-                if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                if (getResources().getString(R.string.celsius).equals(showTeaViewModel.getTemperatureunit())) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-                } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                } else if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
                     textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
                 }
             }
@@ -245,9 +239,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         });
         buttonExchange.setOnLongClickListener(this);
 
-        buttonStartTimer = findViewById(R.id.buttonStartTimer);
+        Button buttonStartTimer = findViewById(R.id.buttonStartTimer);
         buttonStartTimer.setOnClickListener(v -> {
-            if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_start))) {
+            if (getResources().getString(R.string.showtea_timer_start).contentEquals(buttonStartTimer.getText())) {
                 //Mainlist aktualisieren
                 showTeaViewModel.setCurrentDate();
                 //don't count when waiting for the right temperature
@@ -281,7 +275,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 maxMilliSec = millisec;
                 //Counter erstellen
                 foregroundTimer.startForegroundTimer(millisec);
-            } else if (buttonStartTimer.getText().equals(getResources().getString(R.string.showtea_timer_reset))) {
+            } else if (getResources().getString(R.string.showtea_timer_reset).contentEquals(buttonStartTimer.getText())) {
                 //Button umbenennen
                 buttonStartTimer.setText(R.string.showtea_timer_start);
                 if (showTeaViewModel.getCooldowntime().time != null) {
