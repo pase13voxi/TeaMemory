@@ -183,6 +183,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 buttonInfusionIndex.setVisibility(View.INVISIBLE);
                 buttonNextInfusion.setVisibility(View.INVISIBLE);
             }
+
+            if (decideToContinueNextInfusion()) {
+                showNotificationContinueNextInfusion();
+            }
         }
 
         buttonNote.setOnClickListener(view -> dialogNote());
@@ -242,6 +246,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         Button buttonStartTimer = findViewById(R.id.buttonStartTimer);
         buttonStartTimer.setOnClickListener(v -> {
             if (getResources().getString(R.string.showtea_timer_start).contentEquals(buttonStartTimer.getText())) {
+                //updateLastInfusion
+                showTeaViewModel.updateNextInfusion();
                 //Mainlist aktualisieren
                 showTeaViewModel.setCurrentDate();
                 //don't count when waiting for the right temperature
@@ -306,6 +312,27 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 foregroundTimer.reset();
             }
         });
+    }
+
+    private boolean decideToContinueNextInfusion() {
+        return showTeaViewModel.getNextInfusion() != 0 && showTeaViewModel.getInfusionSize() != 1;
+    }
+
+    private void showNotificationContinueNextInfusion() {
+        int lastInfusion = showTeaViewModel.getNextInfusion();
+        int nextInfusion = showTeaViewModel.getNextInfusion() + 1;
+        //Infomationen anzeigen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.showtea_dialog_following_infusion_header);
+        builder.setMessage(getResources().getString(R.string.showtea_dialog_following_infusion_description, lastInfusion, nextInfusion));
+        builder.setPositiveButton(R.string.showtea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
+        builder.setNegativeButton(R.string.showtea_dialog_following_infusion_no, null);
+        builder.show();
+    }
+
+    private void continueNextInfusion() {
+        showTeaViewModel.setInfusionIndex(showTeaViewModel.getNextInfusion());
+        infusionIndexChanged();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

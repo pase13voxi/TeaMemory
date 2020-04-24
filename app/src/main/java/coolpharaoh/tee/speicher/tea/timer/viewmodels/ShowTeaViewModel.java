@@ -78,6 +78,20 @@ public class ShowTeaViewModel {
         teaDAO.update(tea);
     }
 
+    public int getNextInfusion() {
+        return teaDAO.getTeaById(teaId).getLastInfusion();
+    }
+
+    public void updateNextInfusion() {
+        Tea tea = teaDAO.getTeaById(teaId);
+        if ((infusionIndex + 1) >= getInfusionSize()) {
+            tea.setLastInfusion(0);
+        } else {
+            tea.setLastInfusion(infusionIndex + 1);
+        }
+        teaDAO.update(tea);
+    }
+
     // Infusion
     public TimeHelper getTime() {
         return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());

@@ -11,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -214,6 +216,53 @@ public class ShowTeaViewModelTest {
         assertThat(teaDateAfter.get(Calendar.DAY_OF_MONTH)).isEqualTo(currentDate.get(Calendar.DAY_OF_MONTH));
         assertThat(teaDateAfter.get(Calendar.MONTH)).isEqualTo(currentDate.get(Calendar.MONTH));
         assertThat(teaDateAfter.get(Calendar.YEAR)).isEqualTo(currentDate.get(Calendar.YEAR));
+    }
+
+    @Test
+    public void getLastInfusion() {
+        int lastInfusionBefore = 0;
+
+        Tea tea = new Tea();
+        tea.setLastInfusion(lastInfusionBefore);
+        when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
+
+        int lastInfusionAfter = showTeaViewModel.getNextInfusion();
+
+        assertThat(lastInfusionAfter).isEqualTo(lastInfusionBefore);
+    }
+
+    @Test
+    public void updateLastInfusion() {
+        Tea tea = new Tea();
+        tea.setLastInfusion(0);
+        when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
+
+        when(infusionDAO.getInfusionsByTeaId(TEA_ID)).thenReturn(Arrays.asList(new Infusion(), new Infusion()));
+
+        showTeaViewModel.updateNextInfusion();
+
+        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+        verify(teaDAO).update((captor.capture()));
+        Tea lastInfusionAfter = captor.getValue();
+
+        assertThat(lastInfusionAfter.getLastInfusion()).isEqualTo(1);
+    }
+
+    @Test
+    public void updateLastInfusionBiggerOrEqual() {
+        Tea tea = new Tea();
+        tea.setLastInfusion(0);
+        when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
+
+        when(infusionDAO.getInfusionsByTeaId(TEA_ID)).thenReturn(Collections.singletonList(new Infusion()));
+
+        showTeaViewModel.updateNextInfusion();
+
+        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+        verify(teaDAO).update((captor.capture()));
+        Tea lastInfusionAfter = captor.getValue();
+
+        assertThat(lastInfusionAfter.getLastInfusion()).isEqualTo(0);
     }
 
     @Test

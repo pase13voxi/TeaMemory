@@ -47,6 +47,10 @@
     <string name="showtea_dialog_description_infusion">Select the desired infusion.</string>
     <string name="showtea_dialog_description_checkbox">Do not show me again!</string>
     <string name="showtea_dialog_description_ok">OK</string>
+    <string name="showtea_dialog_following_infusion_header">Next infusion</string>
+    <string name="showtea_dialog_following_infusion_description">You last poured the tea %1$d time(s). Do you want to continue with the %2$d. infusion?</string>
+    <string name="showtea_dialog_following_infusion_yes">Yes</string>
+    <string name="showtea_dialog_following_infusion_no">No</string>
     <string name="showtea_display_celsius">%1$s °C</string>
     <string name="showtea_display_fahrenheit">%1$s °F</string>
     <string name="showtea_display_ts">%1$s ts/L</string>

@@ -43,6 +43,10 @@
     <string name="showtea_dialog_description_infusion">Wähle den gewünschten Aufguss aus.</string>
     <string name="showtea_dialog_description_checkbox">Bitte nicht mehr zeigen!</string>
     <string name="showtea_dialog_description_ok">Ok</string>
+    <string name="showtea_dialog_following_infusion_header">Nächster Aufguss</string>
+    <string name="showtea_dialog_following_infusion_description">Du hast diesen Tee zuletzt %1$d-mal aufgegossen. Möchtest du mit dem %2$d. Aufguss fortfahren?</string>
+    <string name="showtea_dialog_following_infusion_yes">Ja</string>
+    <string name="showtea_dialog_following_infusion_no">Nein</string>
     <string name="showtea_display_celsius">%1$s °C</string>
     <string name="showtea_display_fahrenheit">%1$s °F</string>
     <string name="showtea_display_ts">%1$s TL/L</string>
