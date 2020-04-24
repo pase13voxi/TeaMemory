@@ -64,8 +64,8 @@ public class ShowTeaViewModel {
         return teaDAO.getTeaById(teaId).getAmount();
     }
 
-    public String getAmountkind() {
-        return teaDAO.getTeaById(teaId).getAmountkind();
+    public String getAmountKind() {
+        return teaDAO.getTeaById(teaId).getAmountKind();
     }
 
     public int getColor() {
@@ -79,15 +79,15 @@ public class ShowTeaViewModel {
     }
 
     public int getNextInfusion() {
-        return teaDAO.getTeaById(teaId).getLastInfusion();
+        return teaDAO.getTeaById(teaId).getNextInfusion();
     }
 
     public void updateNextInfusion() {
         Tea tea = teaDAO.getTeaById(teaId);
         if ((infusionIndex + 1) >= getInfusionSize()) {
-            tea.setLastInfusion(0);
+            tea.setNextInfusion(0);
         } else {
-            tea.setLastInfusion(infusionIndex + 1);
+            tea.setNextInfusion(infusionIndex + 1);
         }
         teaDAO.update(tea);
     }
@@ -98,14 +98,14 @@ public class ShowTeaViewModel {
     }
 
     public TimeHelper getCooldowntime() {
-        return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getCooldowntime());
+        return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
     }
 
     public int getTemperature() {
         if (getTemperatureunit().equals("Celsius")) {
-            return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperaturecelsius();
+            return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
         } else {
-            return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperaturefahrenheit();
+            return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureFahrenheit();
         }
     }
 
@@ -141,9 +141,9 @@ public class ShowTeaViewModel {
         Counter counter = counterDAO.getCounterByTeaId(teaId);
         RefreshCounter.refreshCounter(counter);
         Date currentDate = Calendar.getInstance().getTime();
-        counter.setMonthdate(currentDate);
-        counter.setWeekdate(currentDate);
-        counter.setDaydate(currentDate);
+        counter.setMonthDate(currentDate);
+        counter.setWeekDate(currentDate);
+        counter.setDayDate(currentDate);
         counter.setOverall(counter.getOverall() + 1);
         counter.setMonth(counter.getMonth() + 1);
         counter.setWeek(counter.getWeek() + 1);
@@ -164,16 +164,16 @@ public class ShowTeaViewModel {
     }
 
     public boolean isShowteaalert() {
-        return actualSettingsDAO.getSettings().isShowteaalert();
+        return actualSettingsDAO.getSettings().isShowTeaAlert();
     }
 
     public void setShowteaalert(boolean showteaalert) {
         ActualSettings actualSettings = actualSettingsDAO.getSettings();
-        actualSettings.setShowteaalert(showteaalert);
+        actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsDAO.update(actualSettings);
     }
 
     public String getTemperatureunit() {
-        return actualSettingsDAO.getSettings().getTemperatureunit();
+        return actualSettingsDAO.getSettings().getTemperatureUnit();
     }
 }

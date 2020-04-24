@@ -53,11 +53,11 @@ public class InfusionDAOTest {
 
         Infusion infusionAfter = mInfusionDAO.getInfusions().get(0);
         assertEquals(infusionAfter.getTeaId(), infusionBefore.getTeaId());
-        assertEquals(infusionAfter.getInfusionindex(), infusionBefore.getInfusionindex());
+        assertEquals(infusionAfter.getInfusionIndex(), infusionBefore.getInfusionIndex());
         assertEquals(infusionAfter.getTime(), infusionBefore.getTime());
-        assertEquals(infusionAfter.getCooldowntime(), infusionBefore.getCooldowntime());
-        assertEquals(infusionAfter.getTemperaturecelsius(), infusionBefore.getTemperaturecelsius());
-        assertEquals(infusionAfter.getTemperaturefahrenheit(), infusionBefore.getTemperaturefahrenheit());
+        assertEquals(infusionAfter.getCoolDownTime(), infusionBefore.getCoolDownTime());
+        assertEquals(infusionAfter.getTemperatureCelsius(), infusionBefore.getTemperatureCelsius());
+        assertEquals(infusionAfter.getTemperatureFahrenheit(), infusionBefore.getTemperatureFahrenheit());
     }
 
     @Test
@@ -87,28 +87,28 @@ public class InfusionDAOTest {
         assertEquals(infusionAfter1.size(), 2);
 
         assertEquals(infusionAfter1.get(0).getTeaId(), infusionBefore1.get(0).getTeaId());
-        assertEquals(infusionAfter1.get(0).getInfusionindex(), infusionBefore1.get(0).getInfusionindex());
+        assertEquals(infusionAfter1.get(0).getInfusionIndex(), infusionBefore1.get(0).getInfusionIndex());
         assertEquals(infusionAfter1.get(0).getTime(), infusionBefore1.get(0).getTime());
-        assertEquals(infusionAfter1.get(0).getCooldowntime(), infusionBefore1.get(0).getCooldowntime());
-        assertEquals(infusionAfter1.get(0).getTemperaturecelsius(), infusionBefore1.get(0).getTemperaturecelsius());
-        assertEquals(infusionAfter1.get(0).getTemperaturefahrenheit(), infusionBefore1.get(0).getTemperaturefahrenheit());
+        assertEquals(infusionAfter1.get(0).getCoolDownTime(), infusionBefore1.get(0).getCoolDownTime());
+        assertEquals(infusionAfter1.get(0).getTemperatureCelsius(), infusionBefore1.get(0).getTemperatureCelsius());
+        assertEquals(infusionAfter1.get(0).getTemperatureFahrenheit(), infusionBefore1.get(0).getTemperatureFahrenheit());
 
         assertEquals(infusionAfter1.get(1).getTeaId(), infusionBefore1.get(1).getTeaId());
-        assertEquals(infusionAfter1.get(1).getInfusionindex(), infusionBefore1.get(1).getInfusionindex());
+        assertEquals(infusionAfter1.get(1).getInfusionIndex(), infusionBefore1.get(1).getInfusionIndex());
         assertEquals(infusionAfter1.get(1).getTime(), infusionBefore1.get(1).getTime());
-        assertEquals(infusionAfter1.get(1).getCooldowntime(), infusionBefore1.get(1).getCooldowntime());
-        assertEquals(infusionAfter1.get(1).getTemperaturecelsius(), infusionBefore1.get(1).getTemperaturecelsius());
-        assertEquals(infusionAfter1.get(1).getTemperaturefahrenheit(), infusionBefore1.get(1).getTemperaturefahrenheit());
+        assertEquals(infusionAfter1.get(1).getCoolDownTime(), infusionBefore1.get(1).getCoolDownTime());
+        assertEquals(infusionAfter1.get(1).getTemperatureCelsius(), infusionBefore1.get(1).getTemperatureCelsius());
+        assertEquals(infusionAfter1.get(1).getTemperatureFahrenheit(), infusionBefore1.get(1).getTemperatureFahrenheit());
 
         List<Infusion> infusionAfter2 = mInfusionDAO.getInfusionsByTeaId(teaId2);
         assertEquals(infusionAfter2.size(), 1);
 
         assertEquals(infusionAfter2.get(0).getTeaId(), infusionBefore2.getTeaId());
-        assertEquals(infusionAfter2.get(0).getInfusionindex(), infusionBefore2.getInfusionindex());
+        assertEquals(infusionAfter2.get(0).getInfusionIndex(), infusionBefore2.getInfusionIndex());
         assertEquals(infusionAfter2.get(0).getTime(), infusionBefore2.getTime());
-        assertEquals(infusionAfter2.get(0).getCooldowntime(), infusionBefore2.getCooldowntime());
-        assertEquals(infusionAfter2.get(0).getTemperaturecelsius(), infusionBefore2.getTemperaturecelsius());
-        assertEquals(infusionAfter2.get(0).getTemperaturefahrenheit(), infusionBefore2.getTemperaturefahrenheit());
+        assertEquals(infusionAfter2.get(0).getCoolDownTime(), infusionBefore2.getCoolDownTime());
+        assertEquals(infusionAfter2.get(0).getTemperatureCelsius(), infusionBefore2.getTemperatureCelsius());
+        assertEquals(infusionAfter2.get(0).getTemperatureFahrenheit(), infusionBefore2.getTemperatureFahrenheit());
     }
 
     @Test
@@ -141,11 +141,11 @@ public class InfusionDAOTest {
         List<Infusion> infusionAfter = mInfusionDAO.getInfusions();
 
         assertEquals(infusionAfter.get(0).getTeaId(), infusionBefore2.getTeaId());
-        assertEquals(infusionAfter.get(0).getInfusionindex(), infusionBefore2.getInfusionindex());
+        assertEquals(infusionAfter.get(0).getInfusionIndex(), infusionBefore2.getInfusionIndex());
         assertEquals(infusionAfter.get(0).getTime(), infusionBefore2.getTime());
-        assertEquals(infusionAfter.get(0).getCooldowntime(), infusionBefore2.getCooldowntime());
-        assertEquals(infusionAfter.get(0).getTemperaturecelsius(), infusionBefore2.getTemperaturecelsius());
-        assertEquals(infusionAfter.get(0).getTemperaturefahrenheit(), infusionBefore2.getTemperaturefahrenheit());
+        assertEquals(infusionAfter.get(0).getCoolDownTime(), infusionBefore2.getCoolDownTime());
+        assertEquals(infusionAfter.get(0).getTemperatureCelsius(), infusionBefore2.getTemperatureCelsius());
+        assertEquals(infusionAfter.get(0).getTemperatureFahrenheit(), infusionBefore2.getTemperatureFahrenheit());
     }
 
     private Tea createTea(){

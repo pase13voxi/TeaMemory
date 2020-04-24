@@ -46,7 +46,7 @@ public class SettingsViewModelTest {
         verify(actualSettingsDAO).update((captor.capture()));
         ActualSettings actualSettings = captor.getValue();
 
-        assertThat(actualSettings.getMusicchoice()).isEqualTo(musicChoice);
+        assertThat(actualSettings.getMusicChoice()).isEqualTo(musicChoice);
     }
 
     @Test
@@ -127,15 +127,14 @@ public class SettingsViewModelTest {
         verify(actualSettingsDAO).update(captor.capture());
         ActualSettings actualSettings = captor.getValue();
 
-        assertThat(actualSettings.getMusicchoice()).isEqualTo("content://settings/system/ringtone");
-        assertThat(actualSettings.getMusicname()).isEqualTo("Default");
+        assertThat(actualSettings.getMusicChoice()).isEqualTo("content://settings/system/ringtone");
+        assertThat(actualSettings.getMusicName()).isEqualTo("Default");
         assertThat(actualSettings.isVibration()).isTrue();
-        assertThat(actualSettings.isNotification()).isTrue();
         assertThat(actualSettings.isVibration()).isTrue();
-        assertThat(actualSettings.getTemperatureunit()).isEqualTo("Celsius");
-        assertThat(actualSettings.isShowteaalert()).isTrue();
-        assertThat(actualSettings.isMainratealert()).isTrue();
-        assertThat(actualSettings.getMainratecounter()).isEqualTo(0);
+        assertThat(actualSettings.getTemperatureUnit()).isEqualTo("Celsius");
+        assertThat(actualSettings.isShowTeaAlert()).isTrue();
+        assertThat(actualSettings.isMainRateAlert()).isTrue();
+        assertThat(actualSettings.getMainRateCounter()).isEqualTo(0);
         assertThat(actualSettings.getSort()).isEqualTo(0);
     }
 

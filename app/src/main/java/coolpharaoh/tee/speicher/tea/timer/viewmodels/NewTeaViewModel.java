@@ -78,7 +78,7 @@ public class NewTeaViewModel {
     }
 
     public String getAmountkind() {
-        return tea.getAmountkind();
+        return tea.getAmountKind();
     }
 
     public int getColor() {
@@ -88,8 +88,8 @@ public class NewTeaViewModel {
     // Infusion
     public void addInfusion() {
         Infusion infusion = new Infusion();
-        infusion.setTemperaturecelsius(-500);
-        infusion.setTemperaturefahrenheit(-500);
+        infusion.setTemperatureCelsius(-500);
+        infusion.setTemperatureFahrenheit(-500);
         infusions.add(infusion);
         if (getInfusionSize() > 1) {
             infusionIndex++;
@@ -98,13 +98,13 @@ public class NewTeaViewModel {
 
     public void takeInfusionInformation(String time, String cooldowntime, int temperature) {
         infusions.get(infusionIndex).setTime(time);
-        infusions.get(infusionIndex).setCooldowntime(cooldowntime);
-        if (actualSettingsDAO.getSettings().getTemperatureunit().equals("Celsius")) {
-            infusions.get(infusionIndex).setTemperaturecelsius(temperature);
-            infusions.get(infusionIndex).setTemperaturefahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
+        infusions.get(infusionIndex).setCoolDownTime(cooldowntime);
+        if (actualSettingsDAO.getSettings().getTemperatureUnit().equals("Celsius")) {
+            infusions.get(infusionIndex).setTemperatureCelsius(temperature);
+            infusions.get(infusionIndex).setTemperatureFahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
         } else {
-            infusions.get(infusionIndex).setTemperaturefahrenheit(temperature);
-            infusions.get(infusionIndex).setTemperaturecelsius(TemperatureConversation.fahrenheitToCelsius(temperature));
+            infusions.get(infusionIndex).setTemperatureFahrenheit(temperature);
+            infusions.get(infusionIndex).setTemperatureCelsius(TemperatureConversation.fahrenheitToCelsius(temperature));
         }
     }
 
@@ -122,14 +122,14 @@ public class NewTeaViewModel {
     }
 
     public String getInfusionCooldowntime() {
-        return infusions.get(infusionIndex).getCooldowntime();
+        return infusions.get(infusionIndex).getCoolDownTime();
     }
 
     public int getInfusionTemperature() {
         if (getTemperatureunit().equals("Celsius")) {
-            return infusions.get(infusionIndex).getTemperaturecelsius();
+            return infusions.get(infusionIndex).getTemperatureCelsius();
         } else {
-            return infusions.get(infusionIndex).getTemperaturefahrenheit();
+            return infusions.get(infusionIndex).getTemperatureFahrenheit();
         }
     }
 
@@ -155,7 +155,7 @@ public class NewTeaViewModel {
 
     // Settings
     public String getTemperatureunit() {
-        return actualSettingsDAO.getSettings().getTemperatureunit();
+        return actualSettingsDAO.getSettings().getTemperatureUnit();
     }
 
     // Overall
@@ -169,7 +169,7 @@ public class NewTeaViewModel {
 
     public void createNewTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
-        tea.setLastInfusion(0);
+        tea.setNextInfusion(0);
 
         long teaId = teaDAO.insert(tea);
 
@@ -182,9 +182,9 @@ public class NewTeaViewModel {
         counter.setWeek(0);
         counter.setMonth(0);
         counter.setOverall(0);
-        counter.setDaydate(Calendar.getInstance().getTime());
-        counter.setWeekdate(Calendar.getInstance().getTime());
-        counter.setMonthdate(Calendar.getInstance().getTime());
+        counter.setDayDate(Calendar.getInstance().getTime());
+        counter.setWeekDate(Calendar.getInstance().getTime());
+        counter.setMonthDate(Calendar.getInstance().getTime());
 
         counterDAO.insert(counter);
 
@@ -200,7 +200,7 @@ public class NewTeaViewModel {
         tea.setName(name);
         tea.setVariety(LanguageConversation.convertVarietyToCode(variety, context));
         tea.setAmount(amount);
-        tea.setAmountkind(amountkind);
+        tea.setAmountKind(amountkind);
         tea.setColor(color);
         tea.setDate(Calendar.getInstance().getTime());
     }
@@ -209,7 +209,7 @@ public class NewTeaViewModel {
         infusionDAO.deleteInfusionByTeaId(teaId);
         for (int i = 0; i < getInfusionSize(); i++) {
             infusions.get(i).setTeaId(teaId);
-            infusions.get(i).setInfusionindex(i);
+            infusions.get(i).setInfusionIndex(i);
             infusionDAO.insert(infusions.get(i));
         }
     }

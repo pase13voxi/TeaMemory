@@ -7,9 +7,9 @@ public class TeaPOJO {
     private String name;
     private String variety;
     private int amount;
-    private String amountkind;
+    private String amountKind;
     private int color;
-    private int lastInfusion;
+    private int nextInfusion;
     private Date date;
     private List<InfusionPOJO> infusions;
     private List<CounterPOJO> counters;
@@ -39,12 +39,12 @@ public class TeaPOJO {
         this.amount = amount;
     }
 
-    public String getAmountkind() {
-        return amountkind;
+    public String getAmountKind() {
+        return amountKind;
     }
 
-    public void setAmountkind(String amountkind) {
-        this.amountkind = amountkind;
+    public void setAmountKind(String amountKind) {
+        this.amountKind = amountKind;
     }
 
     public int getColor() {
@@ -55,12 +55,12 @@ public class TeaPOJO {
         this.color = color;
     }
 
-    public int getLastInfusion() {
-        return lastInfusion;
+    public int getNextInfusion() {
+        return nextInfusion;
     }
 
-    public void setLastInfusion(int lastInfusion) {
-        this.lastInfusion = lastInfusion;
+    public void setNextInfusion(int nextInfusion) {
+        this.nextInfusion = nextInfusion;
     }
 
     public Date getDate() {

@@ -15,9 +15,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 
 import static org.junit.Assert.assertEquals;
 
@@ -56,9 +56,9 @@ public class CounterDAOTest {
         assertEquals(counterAfter.getWeek(), counterBefore.getWeek());
         assertEquals(counterAfter.getMonth(), counterBefore.getMonth());
         assertEquals(counterAfter.getOverall(), counterBefore.getOverall());
-        assertEquals(counterAfter.getDaydate(), counterBefore.getDaydate());
-        assertEquals(counterAfter.getWeekdate(), counterBefore.getWeekdate());
-        assertEquals(counterAfter.getMonthdate(), counterBefore.getMonthdate());
+        assertEquals(counterAfter.getDayDate(), counterBefore.getDayDate());
+        assertEquals(counterAfter.getWeekDate(), counterBefore.getWeekDate());
+        assertEquals(counterAfter.getMonthDate(), counterBefore.getMonthDate());
     }
 
     @Test
@@ -81,9 +81,9 @@ public class CounterDAOTest {
         assertEquals(counterAfter.getWeek(), counterUpdate.getWeek());
         assertEquals(counterAfter.getMonth(), counterUpdate.getMonth());
         assertEquals(counterAfter.getOverall(), counterUpdate.getOverall());
-        assertEquals(counterAfter.getDaydate(), counterUpdate.getDaydate());
-        assertEquals(counterAfter.getWeekdate(), counterUpdate.getWeekdate());
-        assertEquals(counterAfter.getMonthdate(), counterUpdate.getMonthdate());
+        assertEquals(counterAfter.getDayDate(), counterUpdate.getDayDate());
+        assertEquals(counterAfter.getWeekDate(), counterUpdate.getWeekDate());
+        assertEquals(counterAfter.getMonthDate(), counterUpdate.getMonthDate());
     }
 
     @Test

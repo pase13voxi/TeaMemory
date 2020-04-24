@@ -162,15 +162,15 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 buttonExchange.setEnabled(true);
             }
             if (showTeaViewModel.getAmount() != -500) {
-                if (showTeaViewModel.getAmountkind().equals("Ts"))
+                if (showTeaViewModel.getAmountKind().equals("Ts"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
-                else if (showTeaViewModel.getAmountkind().equals("Gr"))
+                else if (showTeaViewModel.getAmountKind().equals("Gr"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
             } else {
                 buttonCalcAmount.setEnabled(false);
-                if (showTeaViewModel.getAmountkind().equals("Ts"))
+                if (showTeaViewModel.getAmountKind().equals("Ts"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, "-"));
-                else if (showTeaViewModel.getAmountkind().equals("Gr"))
+                else if (showTeaViewModel.getAmountKind().equals("Gr"))
                     textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, "-"));
             }
 
@@ -859,9 +859,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
-        if (showTeaViewModel.getAmountkind().equals("Ts")) {
+        if (showTeaViewModel.getAmountKind().equals("Ts")) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_ts, amountPerLiter, liter));
-        } else if (showTeaViewModel.getAmountkind().equals("Gr")) {
+        } else if (showTeaViewModel.getAmountKind().equals("Gr")) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_gr, amountPerLiter, liter));
         }
 

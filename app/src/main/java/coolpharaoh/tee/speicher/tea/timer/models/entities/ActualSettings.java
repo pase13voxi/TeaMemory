@@ -1,25 +1,45 @@
 package coolpharaoh.tee.speicher.tea.timer.models.entities;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "settings")
 public class ActualSettings {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "settings_id")
     private Long id;
 
-    private String musicchoice;
-    private String musicname;
+    @ColumnInfo(name = "musicchoice")
+    private String musicChoice;
+
+    @ColumnInfo(name = "musicname")
+    private String musicName;
+
+    @ColumnInfo(name = "vibration")
     private boolean vibration;
-    private boolean notification;
+
+    @ColumnInfo(name = "animation")
     private boolean animation;
-    private String temperatureunit;
-    private boolean showteaalert;
-    private boolean mainratealert;
-    private int mainratecounter;
-    private boolean settingspermissionalert;
+
+    @ColumnInfo(name = "temperatureunit")
+    private String temperatureUnit;
+
+    @ColumnInfo(name = "showteaalert")
+    private boolean showTeaAlert;
+
+    @ColumnInfo(name = "mainratealert")
+    private boolean mainRateAlert;
+
+    @ColumnInfo(name = "mainratecounter")
+    private int mainRateCounter;
+
+    @ColumnInfo(name = "settingspermissionalert")
+    private boolean settingsPermissionAlert;
+
     //0 = sort by Date, 1 = sort alphabethically, 2 = sort by variety
+    @ColumnInfo(name = "sort")
     private int sort;
 
     @NonNull
@@ -31,20 +51,20 @@ public class ActualSettings {
         this.id = id;
     }
 
-    public String getMusicchoice() {
-        return musicchoice;
+    public String getMusicChoice() {
+        return musicChoice;
     }
 
-    public void setMusicchoice(String musicchoice) {
-        this.musicchoice = musicchoice;
+    public void setMusicChoice(String musicChoice) {
+        this.musicChoice = musicChoice;
     }
 
-    public String getMusicname() {
-        return musicname;
+    public String getMusicName() {
+        return musicName;
     }
 
-    public void setMusicname(String musicname) {
-        this.musicname = musicname;
+    public void setMusicName(String musicName) {
+        this.musicName = musicName;
     }
 
     public boolean isVibration() {
@@ -55,14 +75,6 @@ public class ActualSettings {
         this.vibration = vibration;
     }
 
-    public boolean isNotification() {
-        return notification;
-    }
-
-    public void setNotification(boolean notification) {
-        this.notification = notification;
-    }
-
     public boolean isAnimation() {
         return animation;
     }
@@ -71,44 +83,44 @@ public class ActualSettings {
         this.animation = animation;
     }
 
-    public String getTemperatureunit() {
-        return temperatureunit;
+    public String getTemperatureUnit() {
+        return temperatureUnit;
     }
 
-    public void setTemperatureunit(String temperatureunit) {
-        this.temperatureunit = temperatureunit;
+    public void setTemperatureUnit(String temperatureUnit) {
+        this.temperatureUnit = temperatureUnit;
     }
 
-    public boolean isShowteaalert() {
-        return showteaalert;
+    public boolean isShowTeaAlert() {
+        return showTeaAlert;
     }
 
-    public void setShowteaalert(boolean showteaalert) {
-        this.showteaalert = showteaalert;
+    public void setShowTeaAlert(boolean showTeaAlert) {
+        this.showTeaAlert = showTeaAlert;
     }
 
-    public boolean isMainratealert() {
-        return mainratealert;
+    public boolean isMainRateAlert() {
+        return mainRateAlert;
     }
 
-    public void setMainratealert(boolean mainratealert) {
-        this.mainratealert = mainratealert;
+    public void setMainRateAlert(boolean mainRateAlert) {
+        this.mainRateAlert = mainRateAlert;
     }
 
-    public int getMainratecounter() {
-        return mainratecounter;
+    public int getMainRateCounter() {
+        return mainRateCounter;
     }
 
-    public void setMainratecounter(int mainratecounter) {
-        this.mainratecounter = mainratecounter;
+    public void setMainRateCounter(int mainRateCounter) {
+        this.mainRateCounter = mainRateCounter;
     }
 
-    public boolean isSettingspermissionalert() {
-        return settingspermissionalert;
+    public boolean isSettingsPermissionAlert() {
+        return settingsPermissionAlert;
     }
 
-    public void setSettingspermissionalert(boolean settingspermissionalert) {
-        this.settingspermissionalert = settingspermissionalert;
+    public void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
+        this.settingsPermissionAlert = settingsPermissionAlert;
     }
 
     public int getSort() {

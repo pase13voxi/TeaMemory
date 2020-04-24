@@ -177,10 +177,10 @@ public class ShowTeaViewModelTest {
         String amountKindBefore = "AMOUNT_KIND";
 
         Tea tea = new Tea();
-        tea.setAmountkind(amountKindBefore);
+        tea.setAmountKind(amountKindBefore);
         when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
 
-        String amountKindAfter = showTeaViewModel.getAmountkind();
+        String amountKindAfter = showTeaViewModel.getAmountKind();
 
         assertThat(amountKindAfter).isEqualTo(amountKindBefore);
     }
@@ -223,7 +223,7 @@ public class ShowTeaViewModelTest {
         int lastInfusionBefore = 0;
 
         Tea tea = new Tea();
-        tea.setLastInfusion(lastInfusionBefore);
+        tea.setNextInfusion(lastInfusionBefore);
         when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
 
         int lastInfusionAfter = showTeaViewModel.getNextInfusion();
@@ -234,7 +234,7 @@ public class ShowTeaViewModelTest {
     @Test
     public void updateLastInfusion() {
         Tea tea = new Tea();
-        tea.setLastInfusion(0);
+        tea.setNextInfusion(0);
         when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(infusionDAO.getInfusionsByTeaId(TEA_ID)).thenReturn(Arrays.asList(new Infusion(), new Infusion()));
@@ -245,13 +245,13 @@ public class ShowTeaViewModelTest {
         verify(teaDAO).update((captor.capture()));
         Tea lastInfusionAfter = captor.getValue();
 
-        assertThat(lastInfusionAfter.getLastInfusion()).isEqualTo(1);
+        assertThat(lastInfusionAfter.getNextInfusion()).isEqualTo(1);
     }
 
     @Test
     public void updateLastInfusionBiggerOrEqual() {
         Tea tea = new Tea();
-        tea.setLastInfusion(0);
+        tea.setNextInfusion(0);
         when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(infusionDAO.getInfusionsByTeaId(TEA_ID)).thenReturn(Collections.singletonList(new Infusion()));
@@ -262,13 +262,13 @@ public class ShowTeaViewModelTest {
         verify(teaDAO).update((captor.capture()));
         Tea lastInfusionAfter = captor.getValue();
 
-        assertThat(lastInfusionAfter.getLastInfusion()).isEqualTo(0);
+        assertThat(lastInfusionAfter.getNextInfusion()).isEqualTo(0);
     }
 
     @Test
     public void navigateBetweenInfusions(){
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureunit("Celsius");
+        actualSettings.setTemperatureUnit("Celsius");
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 
         List<Infusion> infusions = new ArrayList<>();
@@ -290,10 +290,10 @@ public class ShowTeaViewModelTest {
         assertThat(time1.time).isEqualTo(infusions.get(0).getTime());
         assertThat(time1.minutes).isEqualTo(1);
         assertThat(time1.seconds).isEqualTo(0);
-        assertThat(cooldownTime1.time).isEqualTo(infusions.get(0).getCooldowntime());
+        assertThat(cooldownTime1.time).isEqualTo(infusions.get(0).getCoolDownTime());
         assertThat(cooldownTime1.minutes).isEqualTo(2);
         assertThat(cooldownTime1.seconds).isEqualTo(0);
-        assertThat(temperature1).isEqualTo(infusions.get(0).getTemperaturecelsius());
+        assertThat(temperature1).isEqualTo(infusions.get(0).getTemperatureCelsius());
 
         showTeaViewModel.incrementInfusionIndex();
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
@@ -305,17 +305,17 @@ public class ShowTeaViewModelTest {
         assertThat(time2.time).isEqualTo(infusions.get(1).getTime());
         assertThat(time2.minutes).isEqualTo(2);
         assertThat(time2.seconds).isEqualTo(30);
-        assertThat(cooldownTime2.time).isEqualTo(infusions.get(1).getCooldowntime());
+        assertThat(cooldownTime2.time).isEqualTo(infusions.get(1).getCoolDownTime());
         assertThat(cooldownTime2.minutes).isEqualTo(5);
         assertThat(cooldownTime2.seconds).isEqualTo(30);
-        assertThat(temperature2).isEqualTo(infusions.get(1).getTemperaturecelsius());
+        assertThat(temperature2).isEqualTo(infusions.get(1).getTemperatureCelsius());
 
-        actualSettings.setTemperatureunit("Fahrenheit");
+        actualSettings.setTemperatureUnit("Fahrenheit");
         showTeaViewModel.setInfusionIndex(0);
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(0);
 
         int temperature3 = showTeaViewModel.getTemperature();
-        assertThat(temperature3).isEqualTo(infusions.get(0).getTemperaturefahrenheit());
+        assertThat(temperature3).isEqualTo(infusions.get(0).getTemperatureFahrenheit());
     }
 
     @Test
@@ -406,7 +406,7 @@ public class ShowTeaViewModelTest {
         boolean showTeaAlertBefore = true;
 
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setShowteaalert(showTeaAlertBefore);
+        actualSettings.setShowTeaAlert(showTeaAlertBefore);
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 
         boolean showTeaAlertAfter = showTeaViewModel.isShowteaalert();
@@ -427,6 +427,6 @@ public class ShowTeaViewModelTest {
         verify(actualSettingsDAO).update((captor.capture()));
         ActualSettings actualSettingsAfter = captor.getValue();
 
-        assertThat(actualSettingsAfter.isShowteaalert()).isEqualTo(showTeaAlertBefore);
+        assertThat(actualSettingsAfter.isShowTeaAlert()).isEqualTo(showTeaAlertBefore);
     }
 }

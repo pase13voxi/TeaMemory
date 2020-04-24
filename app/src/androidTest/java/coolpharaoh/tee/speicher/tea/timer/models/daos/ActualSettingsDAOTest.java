@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -39,19 +39,10 @@ public class ActualSettingsDAOTest {
         ActualSettings actualSettingsBefore = createSettings(false);
         mActualSettingsDAO.insert(actualSettingsBefore);
 
-        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
         ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
-        assertEquals(actualSettingsAfter.getMusicchoice(),actualSettingsBefore.getMusicchoice());
-        assertEquals(actualSettingsAfter.getMusicname(),actualSettingsBefore.getMusicname());
-        assertEquals(actualSettingsAfter.isVibration(),actualSettingsBefore.isVibration());
-        assertEquals(actualSettingsAfter.isNotification(),actualSettingsBefore.isNotification());
-        assertEquals(actualSettingsAfter.isAnimation(),actualSettingsBefore.isAnimation());
-        assertEquals(actualSettingsAfter.getTemperatureunit(),actualSettingsBefore.getTemperatureunit());
-        assertEquals(actualSettingsAfter.isShowteaalert(),actualSettingsBefore.isShowteaalert());
-        assertEquals(actualSettingsAfter.isMainratealert(),actualSettingsBefore.isMainratealert());
-        assertEquals(actualSettingsAfter.getMainratecounter(),actualSettingsBefore.getMainratecounter());
-        assertEquals(actualSettingsAfter.getSort(),actualSettingsBefore.getSort());
+        assertThat(actualSettingsAfter).isEqualToIgnoringGivenFields(actualSettingsBefore, "id");
     }
 
     @Test
@@ -59,19 +50,10 @@ public class ActualSettingsDAOTest {
         ActualSettings actualSettingsBefore = createSettings(true);
         mActualSettingsDAO.insert(actualSettingsBefore);
 
-        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
         ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
-        assertEquals(actualSettingsAfter.getMusicchoice(),actualSettingsBefore.getMusicchoice());
-        assertEquals(actualSettingsAfter.getMusicname(),actualSettingsBefore.getMusicname());
-        assertEquals(actualSettingsAfter.isVibration(),actualSettingsBefore.isVibration());
-        assertEquals(actualSettingsAfter.isNotification(),actualSettingsBefore.isNotification());
-        assertEquals(actualSettingsAfter.isAnimation(),actualSettingsBefore.isAnimation());
-        assertEquals(actualSettingsAfter.getTemperatureunit(),actualSettingsBefore.getTemperatureunit());
-        assertEquals(actualSettingsAfter.isShowteaalert(),actualSettingsBefore.isShowteaalert());
-        assertEquals(actualSettingsAfter.isMainratealert(),actualSettingsBefore.isMainratealert());
-        assertEquals(actualSettingsAfter.getMainratecounter(),actualSettingsBefore.getMainratecounter());
-        assertEquals(actualSettingsAfter.getSort(),actualSettingsBefore.getSort());
+        assertThat(actualSettingsAfter).isEqualToIgnoringGivenFields(actualSettingsBefore, "id");
     }
 
     @Test
@@ -79,55 +61,45 @@ public class ActualSettingsDAOTest {
         ActualSettings actualSettingsBefore = createSettings(false);
         mActualSettingsDAO.insert(actualSettingsBefore);
 
-        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
         ActualSettings actualSettingsUpdate = mActualSettingsDAO.getSettings();
-        actualSettingsUpdate.setTemperatureunit("Fahrenheit");
+        actualSettingsUpdate.setTemperatureUnit("Fahrenheit");
         actualSettingsUpdate.setVibration(false);
         mActualSettingsDAO.update(actualSettingsUpdate);
 
-        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
         ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
-        assertEquals(actualSettingsAfter.getMusicchoice(),actualSettingsUpdate.getMusicchoice());
-        assertEquals(actualSettingsAfter.getMusicname(),actualSettingsUpdate.getMusicname());
-        assertEquals(actualSettingsAfter.isVibration(),actualSettingsUpdate.isVibration());
-        assertEquals(actualSettingsAfter.isNotification(),actualSettingsUpdate.isNotification());
-        assertEquals(actualSettingsAfter.isAnimation(),actualSettingsUpdate.isAnimation());
-        assertEquals(actualSettingsAfter.getTemperatureunit(),actualSettingsUpdate.getTemperatureunit());
-        assertEquals(actualSettingsAfter.isShowteaalert(),actualSettingsUpdate.isShowteaalert());
-        assertEquals(actualSettingsAfter.isMainratealert(),actualSettingsUpdate.isMainratealert());
-        assertEquals(actualSettingsAfter.getMainratecounter(),actualSettingsUpdate.getMainratecounter());
-        assertEquals(actualSettingsAfter.getSort(),actualSettingsUpdate.getSort());
+        assertThat(actualSettingsAfter).isEqualToComparingFieldByField(actualSettingsUpdate);
     }
 
     @Test
     public void countSettings() {
-        assertEquals(mActualSettingsDAO.getCountItems(), 0);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(0);
 
         mActualSettingsDAO.insert(createSettings(false));
 
-        assertEquals(mActualSettingsDAO.getCountItems(), 1);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
         mActualSettingsDAO.insert(createSettings(false));
         mActualSettingsDAO.insert(createSettings(false));
 
-        assertEquals(mActualSettingsDAO.getCountItems(), 3);
+        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(3);
     }
 
     private ActualSettings createSettings(boolean incomplete){
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setMusicchoice("choice");
-        actualSettings.setMusicname("name");
+        actualSettings.setMusicChoice("choice");
+        actualSettings.setMusicName("name");
         actualSettings.setVibration(true);
-        actualSettings.setNotification(true);
         if(incomplete) {
             actualSettings.setAnimation(true);
-            actualSettings.setTemperatureunit("Celsius");
-            actualSettings.setMainratecounter(10);
+            actualSettings.setTemperatureUnit("Celsius");
+            actualSettings.setMainRateCounter(10);
         }
-        actualSettings.setShowteaalert(true);
-        actualSettings.setMainratealert(true);
+        actualSettings.setShowTeaAlert(true);
+        actualSettings.setMainRateAlert(true);
         actualSettings.setSort(3);
         return actualSettings;
     }

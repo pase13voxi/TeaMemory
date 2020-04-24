@@ -14,25 +14,35 @@ public class Infusion {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "infusion_id")
     private Long id;
+
     @ColumnInfo(name = "tea_id")
     private long teaId;
 
-    private int infusionindex;
+    @ColumnInfo(name = "infusionindex")
+    private int infusionIndex;
+
+    @ColumnInfo(name = "time")
     private String time;
-    private String cooldowntime;
-    private int temperaturecelsius;
-    private int temperaturefahrenheit;
+
+    @ColumnInfo(name = "cooldowntime")
+    private String coolDownTime;
+
+    @ColumnInfo(name = "temperaturecelsius")
+    private int temperatureCelsius;
+
+    @ColumnInfo(name = "temperaturefahrenheit")
+    private int temperatureFahrenheit;
 
     public Infusion(){}
 
     @Ignore
-    public Infusion(long teaId, int infusionindex, String time, String cooldowntime, int temperaturecelsius, int temperaturefahrenheit) {
+    public Infusion(long teaId, int infusionIndex, String time, String coolDownTime, int temperatureCelsius, int temperatureFahrenheit) {
         this.teaId = teaId;
-        this.infusionindex = infusionindex;
+        this.infusionIndex = infusionIndex;
         this.time = time;
-        this.cooldowntime = cooldowntime;
-        this.temperaturecelsius = temperaturecelsius;
-        this.temperaturefahrenheit = temperaturefahrenheit;
+        this.coolDownTime = coolDownTime;
+        this.temperatureCelsius = temperatureCelsius;
+        this.temperatureFahrenheit = temperatureFahrenheit;
     }
 
     @NonNull
@@ -52,12 +62,12 @@ public class Infusion {
         this.teaId = teaId;
     }
 
-    public int getInfusionindex() {
-        return infusionindex;
+    public int getInfusionIndex() {
+        return infusionIndex;
     }
 
-    public void setInfusionindex(int infusionindex) {
-        this.infusionindex = infusionindex;
+    public void setInfusionIndex(int infusionIndex) {
+        this.infusionIndex = infusionIndex;
     }
 
     public String getTime() {
@@ -68,27 +78,27 @@ public class Infusion {
         this.time = time;
     }
 
-    public String getCooldowntime() {
-        return cooldowntime;
+    public String getCoolDownTime() {
+        return coolDownTime;
     }
 
-    public void setCooldowntime(String cooldowntime) {
-        this.cooldowntime = cooldowntime;
+    public void setCoolDownTime(String coolDownTime) {
+        this.coolDownTime = coolDownTime;
     }
 
-    public int getTemperaturecelsius() {
-        return temperaturecelsius;
+    public int getTemperatureCelsius() {
+        return temperatureCelsius;
     }
 
-    public void setTemperaturecelsius(int temperaturecelsius) {
-        this.temperaturecelsius = temperaturecelsius;
+    public void setTemperatureCelsius(int temperatureCelsius) {
+        this.temperatureCelsius = temperatureCelsius;
     }
 
-    public int getTemperaturefahrenheit() {
-        return temperaturefahrenheit;
+    public int getTemperatureFahrenheit() {
+        return temperatureFahrenheit;
     }
 
-    public void setTemperaturefahrenheit(int temperaturefahrenheit) {
-        this.temperaturefahrenheit = temperaturefahrenheit;
+    public void setTemperatureFahrenheit(int temperatureFahrenheit) {
+        this.temperatureFahrenheit = temperatureFahrenheit;
     }
 }

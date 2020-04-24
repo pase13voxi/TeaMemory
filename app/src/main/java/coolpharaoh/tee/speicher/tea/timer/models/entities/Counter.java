@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.models.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -7,7 +8,6 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-import androidx.annotation.NonNull;
 
 import java.util.Date;
 
@@ -19,32 +19,46 @@ public class Counter {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "counter_id")
     private Long id;
+
     @ColumnInfo(name = "tea_id")
     private long teaId;
 
+    @ColumnInfo(name = "day")
     private int day;
+
+    @ColumnInfo(name = "week")
     private int week;
+
+    @ColumnInfo(name = "month")
     private int month;
+
+    @ColumnInfo(name = "overall")
     private long overall;
+
     @TypeConverters(DateConverter.class)
-    private Date daydate;
+    @ColumnInfo(name = "daydate")
+    private Date dayDate;
+
     @TypeConverters(DateConverter.class)
-    private Date weekdate;
+    @ColumnInfo(name = "weekdate")
+    private Date weekDate;
+
     @TypeConverters(DateConverter.class)
-    private Date monthdate;
+    @ColumnInfo(name = "monthdate")
+    private Date monthDate;
 
     public Counter(){}
 
     @Ignore
-    public Counter(long teaId, int day, int week, int month, long overall, Date daydate, Date weekdate, Date monthdate) {
+    public Counter(long teaId, int day, int week, int month, long overall, Date dayDate, Date weekDate, Date monthDate) {
         this.teaId = teaId;
         this.day = day;
         this.week = week;
         this.month = month;
         this.overall = overall;
-        this.daydate = daydate;
-        this.weekdate = weekdate;
-        this.monthdate = monthdate;
+        this.dayDate = dayDate;
+        this.weekDate = weekDate;
+        this.monthDate = monthDate;
     }
 
     @NonNull
@@ -96,27 +110,27 @@ public class Counter {
         this.overall = overall;
     }
 
-    public Date getDaydate() {
-        return daydate;
+    public Date getDayDate() {
+        return dayDate;
     }
 
-    public void setDaydate(Date daydate) {
-        this.daydate = daydate;
+    public void setDayDate(Date dayDate) {
+        this.dayDate = dayDate;
     }
 
-    public Date getWeekdate() {
-        return weekdate;
+    public Date getWeekDate() {
+        return weekDate;
     }
 
-    public void setWeekdate(Date weekdate) {
-        this.weekdate = weekdate;
+    public void setWeekDate(Date weekDate) {
+        this.weekDate = weekDate;
     }
 
-    public Date getMonthdate() {
-        return monthdate;
+    public Date getMonthDate() {
+        return monthDate;
     }
 
-    public void setMonthdate(Date monthdate) {
-        this.monthdate = monthdate;
+    public void setMonthDate(Date monthDate) {
+        this.monthDate = monthDate;
     }
 }

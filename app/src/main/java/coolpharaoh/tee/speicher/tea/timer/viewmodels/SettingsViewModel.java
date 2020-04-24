@@ -22,16 +22,16 @@ public class SettingsViewModel {
 
     //Settings
     public void setMusicchoice(String musicchoice) {
-        actualSettings.setMusicchoice(musicchoice);
+        actualSettings.setMusicChoice(musicchoice);
         actualSettingsDAO.update(actualSettings);
     }
 
     public String getMusicname() {
-        return actualSettings.getMusicname();
+        return actualSettings.getMusicName();
     }
 
     public void setMusicname(String musicname) {
-        actualSettings.setMusicname(musicname);
+        actualSettings.setMusicName(musicname);
         actualSettingsDAO.update(actualSettings);
     }
 
@@ -54,51 +54,50 @@ public class SettingsViewModel {
     }
 
     public String getTemperatureunit() {
-        return actualSettings.getTemperatureunit();
+        return actualSettings.getTemperatureUnit();
     }
 
     public void setTemperatureunit(String temperatureunit) {
-        actualSettings.setTemperatureunit(temperatureunit);
+        actualSettings.setTemperatureUnit(temperatureunit);
         actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isShowteaalert() {
-        return actualSettings.isShowteaalert();
+        return actualSettings.isShowTeaAlert();
     }
 
     public void setShowteaalert(boolean showteaalert) {
-        actualSettings.setShowteaalert(showteaalert);
+        actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isMainratealert() {
-        return actualSettings.isMainratealert();
+        return actualSettings.isMainRateAlert();
     }
 
     public void setMainratealert(boolean mainratealert) {
-        actualSettings.setMainratealert(mainratealert);
+        actualSettings.setMainRateAlert(mainratealert);
         actualSettingsDAO.update(actualSettings);
     }
 
     public boolean isSettingspermissionalert(){
-        return actualSettings.isSettingspermissionalert();
+        return actualSettings.isSettingsPermissionAlert();
     }
 
     public void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
-        actualSettings.setSettingspermissionalert(settingsPermissionAlert);
+        actualSettings.setSettingsPermissionAlert(settingsPermissionAlert);
         actualSettingsDAO.update(actualSettings);
     }
 
     public void setDefaultSettings() {
-        actualSettings.setMusicchoice("content://settings/system/ringtone");
-        actualSettings.setMusicname("Default");
+        actualSettings.setMusicChoice("content://settings/system/ringtone");
+        actualSettings.setMusicName("Default");
         actualSettings.setVibration(true);
-        actualSettings.setNotification(true);
         actualSettings.setAnimation(true);
-        actualSettings.setTemperatureunit("Celsius");
-        actualSettings.setShowteaalert(true);
-        actualSettings.setMainratealert(true);
-        actualSettings.setMainratecounter(0);
+        actualSettings.setTemperatureUnit("Celsius");
+        actualSettings.setShowTeaAlert(true);
+        actualSettings.setMainRateAlert(true);
+        actualSettings.setMainRateCounter(0);
         actualSettings.setSort(0);
 
         actualSettingsDAO.update(actualSettings);

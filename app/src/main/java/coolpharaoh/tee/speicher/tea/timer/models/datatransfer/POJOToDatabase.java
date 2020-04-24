@@ -26,8 +26,8 @@ class POJOToDatabase {
         for (TeaPOJO teaPOJO : teaList) {
             // insert Tea first
             long teaId = exportImportViewModel.insertTea(new Tea(teaPOJO.getName(), teaPOJO.getVariety(),
-                    teaPOJO.getAmount(), teaPOJO.getAmountkind(), teaPOJO.getColor(),
-                    teaPOJO.getLastInfusion(), teaPOJO.getDate()));
+                    teaPOJO.getAmount(), teaPOJO.getAmountKind(), teaPOJO.getColor(),
+                    teaPOJO.getNextInfusion(), teaPOJO.getDate()));
             insertInfusions(teaId, teaPOJO.getInfusions());
             insertCounters(teaId, teaPOJO.getCounters());
             insertNotes(teaId, teaPOJO.getNotes());

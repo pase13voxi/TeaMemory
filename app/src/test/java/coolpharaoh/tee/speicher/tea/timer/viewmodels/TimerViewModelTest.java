@@ -59,7 +59,7 @@ public class TimerViewModelTest {
         String musicChoice = "MUSICPATH";
 
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setMusicchoice(musicChoice);
+        actualSettings.setMusicChoice(musicChoice);
 
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 

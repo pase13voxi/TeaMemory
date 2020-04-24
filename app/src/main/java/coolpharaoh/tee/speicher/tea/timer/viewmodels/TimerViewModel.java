@@ -29,6 +29,6 @@ public class TimerViewModel {
     }
 
     public String getMusicchoice(){
-        return actualSettingsDAO.getSettings().getMusicchoice();
+        return actualSettingsDAO.getSettings().getMusicChoice();
     }
 }

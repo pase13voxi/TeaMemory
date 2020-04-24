@@ -1,12 +1,12 @@
 package coolpharaoh.tee.speicher.tea.timer.models.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 @Entity(tableName = "note", foreignKeys =
 @ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
@@ -14,11 +14,17 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "note_id")
     private Long id;
+
     @ColumnInfo(name = "tea_id")
     private long teaId;
 
+    @ColumnInfo(name = "position")
     private int position;
+
+    @ColumnInfo(name = "header")
     private String header;
+
+    @ColumnInfo(name = "description")
     private String description;
 
     public Note(){}

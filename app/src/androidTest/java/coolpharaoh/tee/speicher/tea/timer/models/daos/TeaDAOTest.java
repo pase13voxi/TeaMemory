@@ -51,9 +51,9 @@ public class TeaDAOTest {
         assertEquals(teaAfter.getName(), teaBefore.getName());
         assertEquals(teaAfter.getVariety(), teaBefore.getVariety());
         assertEquals(teaAfter.getAmount(), teaBefore.getAmount());
-        assertEquals(teaAfter.getAmountkind(), teaBefore.getAmountkind());
+        assertEquals(teaAfter.getAmountKind(), teaBefore.getAmountKind());
         assertEquals(teaAfter.getColor(), teaBefore.getColor());
-        assertEquals(teaAfter.getLastInfusion(), teaBefore.getLastInfusion());
+        assertEquals(teaAfter.getNextInfusion(), teaBefore.getNextInfusion());
         assertEquals(teaAfter.getDate(), teaBefore.getDate());
     }
 
@@ -75,9 +75,9 @@ public class TeaDAOTest {
         assertEquals(teaAfter.getName(), teaUpdate.getName());
         assertEquals(teaAfter.getVariety(), teaUpdate.getVariety());
         assertEquals(teaAfter.getAmount(), teaUpdate.getAmount());
-        assertEquals(teaAfter.getAmountkind(), teaUpdate.getAmountkind());
+        assertEquals(teaAfter.getAmountKind(), teaUpdate.getAmountKind());
         assertEquals(teaAfter.getColor(), teaUpdate.getColor());
-        assertEquals(teaAfter.getLastInfusion(), teaUpdate.getLastInfusion());
+        assertEquals(teaAfter.getNextInfusion(), teaUpdate.getNextInfusion());
         assertEquals(teaAfter.getDate(), teaUpdate.getDate());
     }
 
@@ -101,9 +101,9 @@ public class TeaDAOTest {
         assertEquals(teaAfter2.getName(), teaBefore2.getName());
         assertEquals(teaAfter2.getVariety(), teaBefore2.getVariety());
         assertEquals(teaAfter2.getAmount(), teaBefore2.getAmount());
-        assertEquals(teaAfter2.getAmountkind(), teaBefore2.getAmountkind());
+        assertEquals(teaAfter2.getAmountKind(), teaBefore2.getAmountKind());
         assertEquals(teaAfter2.getColor(), teaBefore2.getColor());
-        assertEquals(teaAfter2.getLastInfusion(), teaBefore2.getLastInfusion());
+        assertEquals(teaAfter2.getNextInfusion(), teaBefore2.getNextInfusion());
         assertEquals(teaAfter2.getDate(), teaBefore2.getDate());
     }
 
@@ -160,18 +160,18 @@ public class TeaDAOTest {
         assertEquals(teaAfter1.getName(), teaBefore1.getName());
         assertEquals(teaAfter1.getVariety(), teaBefore1.getVariety());
         assertEquals(teaAfter1.getAmount(), teaBefore1.getAmount());
-        assertEquals(teaAfter1.getAmountkind(), teaBefore1.getAmountkind());
+        assertEquals(teaAfter1.getAmountKind(), teaBefore1.getAmountKind());
         assertEquals(teaAfter1.getColor(), teaBefore1.getColor());
-        assertEquals(teaAfter1.getLastInfusion(), teaBefore1.getLastInfusion());
+        assertEquals(teaAfter1.getNextInfusion(), teaBefore1.getNextInfusion());
         assertEquals(teaAfter1.getDate(), teaBefore1.getDate());
 
         Tea teaAfter2 = teaDAO.getTeaById(teaId2);
         assertEquals(teaAfter2.getName(), teaBefore2.getName());
         assertEquals(teaAfter2.getVariety(), teaBefore2.getVariety());
         assertEquals(teaAfter2.getAmount(), teaBefore2.getAmount());
-        assertEquals(teaAfter2.getAmountkind(), teaBefore2.getAmountkind());
+        assertEquals(teaAfter2.getAmountKind(), teaBefore2.getAmountKind());
         assertEquals(teaAfter2.getColor(), teaBefore2.getColor());
-        assertEquals(teaAfter2.getLastInfusion(), teaBefore2.getLastInfusion());
+        assertEquals(teaAfter2.getNextInfusion(), teaBefore2.getNextInfusion());
         assertEquals(teaAfter2.getDate(), teaBefore2.getDate());
     }
 

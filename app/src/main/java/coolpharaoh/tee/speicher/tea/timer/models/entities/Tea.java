@@ -17,25 +17,38 @@ public class Tea {
     @ColumnInfo(name = "tea_id")
     private Long id;
 
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "variety")
     private String variety;
+
+    @ColumnInfo(name = "amount")
     private int amount;
-    private String amountkind;
+
+    @ColumnInfo(name = "amountkind")
+    private String amountKind;
+
+    @ColumnInfo(name = "color")
     private int color;
-    private int lastInfusion;
+
+    @ColumnInfo(name = "nextinfusion")
+    private int nextInfusion;
+
     @TypeConverters(DateConverter.class)
+    @ColumnInfo(name = "date")
     private Date date;
 
     public Tea(){}
 
     @Ignore
-    public Tea(String name, String variety, int amount, String amountkind, int color, int lastInfusion, Date date) {
+    public Tea(String name, String variety, int amount, String amountKind, int color, int nextInfusion, Date date) {
         this.name = name;
         this.variety = variety;
         this.amount = amount;
-        this.amountkind = amountkind;
+        this.amountKind = amountKind;
         this.color = color;
-        this.lastInfusion = lastInfusion;
+        this.nextInfusion = nextInfusion;
         this.date = date;
     }
 
@@ -72,12 +85,12 @@ public class Tea {
         this.amount = amount;
     }
 
-    public String getAmountkind() {
-        return amountkind;
+    public String getAmountKind() {
+        return amountKind;
     }
 
-    public void setAmountkind(String amountkind) {
-        this.amountkind = amountkind;
+    public void setAmountKind(String amountKind) {
+        this.amountKind = amountKind;
     }
 
     public int getColor() {
@@ -88,12 +101,12 @@ public class Tea {
         this.color = color;
     }
 
-    public int getLastInfusion() {
-        return lastInfusion;
+    public int getNextInfusion() {
+        return nextInfusion;
     }
 
-    public void setLastInfusion(int lastInfusion) {
-        this.lastInfusion = lastInfusion;
+    public void setNextInfusion(int nextInfusion) {
+        this.nextInfusion = nextInfusion;
     }
 
     public Date getDate() {

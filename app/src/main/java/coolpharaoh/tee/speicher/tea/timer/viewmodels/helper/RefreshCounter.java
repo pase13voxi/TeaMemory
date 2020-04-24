@@ -8,6 +8,9 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 
 public class RefreshCounter {
 
+    private RefreshCounter() {
+    }
+
     public static List<Counter> refreshCounters(List<Counter> counters) {
         for (Counter counter : counters) {
             refreshCounter(counter);
@@ -28,13 +31,13 @@ public class RefreshCounter {
         int currentDay = cal.get(Calendar.DAY_OF_MONTH);
         int currentMonth = cal.get(Calendar.MONTH);
         int currentYear = cal.get(Calendar.YEAR);
-        cal.setTime(counter.getDaydate());
+        cal.setTime(counter.getDayDate());
         int countDay = cal.get(Calendar.DAY_OF_MONTH);
         int countMonth = cal.get(Calendar.MONTH);
         int countYear = cal.get(Calendar.YEAR);
         if (currentDay != countDay || currentMonth != countMonth || currentYear != countYear) {
             counter.setDay(0);
-            counter.setDaydate(currentDate);
+            counter.setDayDate(currentDate);
         }
     }
 
@@ -43,12 +46,12 @@ public class RefreshCounter {
         cal.setTime(currentDate);
         int currentWeek = cal.get(Calendar.WEEK_OF_YEAR);
         int currentYear = cal.get(Calendar.YEAR);
-        cal.setTime(counter.getWeekdate());
+        cal.setTime(counter.getWeekDate());
         int countWeek = cal.get(Calendar.WEEK_OF_YEAR);
         int countYear = cal.get(Calendar.YEAR);
         if (currentWeek != countWeek || currentYear != countYear) {
             counter.setWeek(0);
-            counter.setWeekdate(currentDate);
+            counter.setWeekDate(currentDate);
         }
     }
 
@@ -57,12 +60,12 @@ public class RefreshCounter {
         cal.setTime(currentDate);
         int currentMonth = cal.get(Calendar.MONTH);
         int currentYear = cal.get(Calendar.YEAR);
-        cal.setTime(counter.getMonthdate());
+        cal.setTime(counter.getMonthDate());
         int countMonth = cal.get(Calendar.MONTH);
         int countYear = cal.get(Calendar.YEAR);
         if (currentMonth != countMonth || currentYear != countYear) {
             counter.setMonth(0);
-            counter.setMonthdate(currentDate);
+            counter.setMonthDate(currentDate);
         }
     }
 }

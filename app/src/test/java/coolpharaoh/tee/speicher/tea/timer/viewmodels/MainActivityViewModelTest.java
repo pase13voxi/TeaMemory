@@ -83,16 +83,15 @@ public class MainActivityViewModelTest {
 
     private void mockSettings() {
         actualSettings = new ActualSettings();
-        actualSettings.setMusicchoice("content://settings/system/ringtone");
-        actualSettings.setMusicname("Default");
+        actualSettings.setMusicChoice("content://settings/system/ringtone");
+        actualSettings.setMusicName("Default");
         actualSettings.setVibration(true);
-        actualSettings.setNotification(true);
         actualSettings.setAnimation(true);
-        actualSettings.setTemperatureunit("Celsius");
-        actualSettings.setShowteaalert(true);
-        actualSettings.setMainratealert(true);
-        actualSettings.setMainratecounter(0);
-        actualSettings.setSettingspermissionalert(true);
+        actualSettings.setTemperatureUnit("Celsius");
+        actualSettings.setShowTeaAlert(true);
+        actualSettings.setMainRateAlert(true);
+        actualSettings.setMainRateCounter(0);
+        actualSettings.setSettingsPermissionAlert(true);
         actualSettings.setSort(0);
         actualSettingsDAO.insert(actualSettings);
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
@@ -142,7 +141,7 @@ public class MainActivityViewModelTest {
 
     @Test
     public void isMainRateAlert() {
-        assertThat(mainActivityViewModel.isMainRateAlert()).isEqualTo(actualSettings.isMainratealert());
+        assertThat(mainActivityViewModel.isMainRateAlert()).isEqualTo(actualSettings.isMainRateAlert());
     }
 
     @Test
@@ -155,7 +154,7 @@ public class MainActivityViewModelTest {
     @Test
     public void getMainRatecounter() {
         int counter = mainActivityViewModel.getMainRatecounter();
-        assertThat(counter).isEqualTo(actualSettings.getMainratecounter());
+        assertThat(counter).isEqualTo(actualSettings.getMainRateCounter());
     }
 
     @Test

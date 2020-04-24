@@ -94,44 +94,44 @@ public class NewTeaViewModelTest {
     @Test
     public void navigateBetweenInfusions() {
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureunit("Celsius");
+        actualSettings.setTemperatureUnit("Celsius");
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(2);
         assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(0);
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
-        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCooldowntime());
-        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(0).getTemperaturecelsius());
+        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCoolDownTime());
+        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(0).getTemperatureCelsius());
 
         newTeaViewModelFilled.nextInfusion();
 
         assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(1);
 
-        actualSettings.setTemperatureunit("Fahrenheit");
+        actualSettings.setTemperatureUnit("Fahrenheit");
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(1).getTime());
-        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(1).getCooldowntime());
-        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(1).getTemperaturefahrenheit());
+        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(1).getCoolDownTime());
+        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(1).getTemperatureFahrenheit());
 
         newTeaViewModelFilled.previousInfusion();
 
         assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(0);
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
-        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCooldowntime());
-        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(0).getTemperaturecelsius());
+        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCoolDownTime());
+        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(0).getTemperatureCelsius());
     }
 
     @Test
     public void takeInfusionInformation() {
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureunit("Celsius");
+        actualSettings.setTemperatureUnit("Celsius");
         when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
-        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCooldowntime());
-        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(0).getTemperaturecelsius());
+        assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCoolDownTime());
+        assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(infusions.get(0).getTemperatureCelsius());
 
         String newTime1 = "15";
         String newCooldowntime1 = "15";
@@ -143,7 +143,7 @@ public class NewTeaViewModelTest {
         assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(newCooldowntime1);
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newCelsiusTemperature1);
 
-        actualSettings.setTemperatureunit("Fahrenheit");
+        actualSettings.setTemperatureUnit("Fahrenheit");
 
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newFahrenheitTemperature1);
 
@@ -153,7 +153,7 @@ public class NewTeaViewModelTest {
 
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newFahrenheitTemperature2);
 
-        actualSettings.setTemperatureunit("Celsius");
+        actualSettings.setTemperatureUnit("Celsius");
 
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newCelsiusTemperature2);
     }
@@ -186,7 +186,7 @@ public class NewTeaViewModelTest {
         assertThat(newTeaViewModelFilled.getName()).isEqualTo(tea.getName());
         assertThat(newTeaViewModelFilled.getVariety()).isEqualTo(tea.getVariety());
         assertThat(newTeaViewModelFilled.getAmount()).isEqualTo(tea.getAmount());
-        assertThat(newTeaViewModelFilled.getAmountkind()).isEqualTo(tea.getAmountkind());
+        assertThat(newTeaViewModelFilled.getAmountkind()).isEqualTo(tea.getAmountKind());
         assertThat(newTeaViewModelFilled.getColor()).isEqualTo(tea.getColor());
 
         String newName = "NEW_TEA";

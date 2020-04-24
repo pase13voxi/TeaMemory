@@ -87,19 +87,18 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     private void createDefaultSettings(){
-        ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setMusicchoice("content://settings/system/ringtone");
-        actualSettings.setMusicname("Default");
-        actualSettings.setVibration(true);
-        actualSettings.setNotification(true);
-        actualSettings.setAnimation(true);
-        actualSettings.setTemperatureunit("Celsius");
-        actualSettings.setShowteaalert(true);
-        actualSettings.setMainratealert(true);
-        actualSettings.setMainratecounter(0);
-        actualSettings.setSettingspermissionalert(true);
-        actualSettings.setSort(0);
-        actualSettingsDAO.insert(actualSettings);
+        ActualSettings defaultSettings = new ActualSettings();
+        defaultSettings.setMusicChoice("content://settings/system/ringtone");
+        defaultSettings.setMusicName("Default");
+        defaultSettings.setVibration(true);
+        defaultSettings.setAnimation(true);
+        defaultSettings.setTemperatureUnit("Celsius");
+        defaultSettings.setShowTeaAlert(true);
+        defaultSettings.setMainRateAlert(true);
+        defaultSettings.setMainRateCounter(0);
+        defaultSettings.setSettingsPermissionAlert(true);
+        defaultSettings.setSort(0);
+        actualSettingsDAO.insert(defaultSettings);
     }
 
     // Teas
@@ -130,26 +129,26 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public boolean isMainRateAlert() {
-        return actualSettings.isMainratealert();
+        return actualSettings.isMainRateAlert();
     }
 
     public void setMainRateAlert(boolean mainRateAlert) {
-        actualSettings.setMainratealert(mainRateAlert);
+        actualSettings.setMainRateAlert(mainRateAlert);
         actualSettingsDAO.update(actualSettings);
     }
 
     public int getMainRatecounter() {
-        return actualSettings.getMainratecounter();
+        return actualSettings.getMainRateCounter();
     }
 
     public void resetMainRatecounter() {
 
-        actualSettings.setMainratecounter(0);
+        actualSettings.setMainRateCounter(0);
         actualSettingsDAO.update(actualSettings);
     }
 
     public void incrementMainRatecounter() {
-        actualSettings.setMainratecounter(actualSettings.getMainratecounter() + 1);
+        actualSettings.setMainRateCounter(actualSettings.getMainRateCounter() + 1);
         actualSettingsDAO.update(actualSettings);
     }
 
