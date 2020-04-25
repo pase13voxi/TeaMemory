@@ -17,7 +17,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class NoteDAOTest {
@@ -40,32 +40,29 @@ public class NoteDAOTest {
 
     @Test
     public void insertNote(){
-        assertEquals(mNoteDAO.getNotes().size(), 0);
+        assertThat(mNoteDAO.getNotes()).hasSize(0);
 
         long teaId = mTeaDAO.insert(createTea());
 
         Note noteBefore = new Note(teaId, 1, "header", "description");
         mNoteDAO.insert(noteBefore);
 
-        assertEquals(mNoteDAO.getNotes().size(), 1);
+        assertThat(mNoteDAO.getNotes()).hasSize(1);
 
         Note noteAfter = mNoteDAO.getNotes().get(0);
-        assertEquals(noteAfter.getTeaId(), noteBefore.getTeaId());
-        assertEquals(noteAfter.getPosition(), noteBefore.getPosition());
-        assertEquals(noteAfter.getHeader(), noteBefore.getHeader());
-        assertEquals(noteAfter.getDescription(), noteBefore.getDescription());
+        assertThat(noteAfter).isEqualToIgnoringGivenFields(noteBefore, "id");
     }
 
     @Test
     public void updateNote(){
-        assertEquals(mNoteDAO.getNotes().size(), 0);
+        assertThat(mNoteDAO.getNotes()).hasSize(0);
 
         long teaId = mTeaDAO.insert(createTea());
 
         Note noteBefore = new Note(teaId, 1, "header", "description");
         mNoteDAO.insert(noteBefore);
 
-        assertEquals(mNoteDAO.getNotes().size(), 1);
+        assertThat(mNoteDAO.getNotes()).hasSize(1);
 
         Note noteUpdate = mNoteDAO.getNoteByTeaId(teaId);
         noteUpdate.setPosition(2);
@@ -74,10 +71,7 @@ public class NoteDAOTest {
         mNoteDAO.update(noteUpdate);
 
         Note noteAfter = mNoteDAO.getNoteByTeaId(teaId);
-        assertEquals(noteAfter.getTeaId(), noteUpdate.getTeaId());
-        assertEquals(noteAfter.getPosition(), noteUpdate.getPosition());
-        assertEquals(noteAfter.getHeader(), noteUpdate.getHeader());
-        assertEquals(noteAfter.getDescription(), noteUpdate.getDescription());
+        assertThat(noteAfter).isEqualToComparingFieldByField(noteUpdate);
     }
 
     private Tea createTea(){
