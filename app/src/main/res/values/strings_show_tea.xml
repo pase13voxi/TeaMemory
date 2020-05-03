@@ -1,0 +1,128 @@
+<resources>
+    <string name="showtea_heading">Information</string>
+    <string name="showtea_action_note">Note</string>
+    <string name="showtea_dialog_note_hint">Write down something.</string>
+    <string name="showtea_dialog_note_ok">OK</string>
+    <string name="showtea_dialog_note_cancle">Cancle</string>
+    <string name="showtea_action_edit">Edit</string>
+    <string name="showtea_action_counter">Drinking behavior</string>
+    <string name="showtea_dialog_counter_day">Today</string>
+    <string name="showtea_dialog_counter_week">This week</string>
+    <string name="showtea_dialog_counter_month">This month</string>
+    <string name="showtea_dialog_counter_overall">Overall</string>
+    <string name="showtea_dialog_counter_ok">OK</string>
+    <string name="showtea_dialog_description_header">How to use.</string>
+    <string name="showtea_dialog_description_temperature">Calculating the time the boiling water needs to cool to the desired temperature.</string>
+    <string name="showtea_dialog_description_amount">Calculate the amount of tea required for the preparation.</string>
+    <string name="showtea_dialog_description_infusion">Select the desired infusion.</string>
+    <string name="showtea_dialog_description_checkbox">Do not show me again!</string>
+    <string name="showtea_dialog_description_ok">OK</string>
+    <string name="showtea_dialog_following_infusion_header">Next infusion</string>
+    <string name="showtea_dialog_following_infusion_description">You last poured the tea %1$d time(s). Do you want to continue with the %2$d. infusion?</string>
+    <string name="showtea_dialog_following_infusion_yes">Yes</string>
+    <string name="showtea_dialog_following_infusion_no">No</string>
+    <string name="showtea_display_celsius">%1$s °C</string>
+    <string name="showtea_display_fahrenheit">%1$s °F</string>
+    <string name="showtea_display_ts">%1$s ts/L</string>
+    <string name="showtea_display_gr">%1$s g/L</string>
+    <string name="showtea_dialog_amount">Amount</string>
+    <string name="showtea_dialog_amount_scala_left">0.0l</string>
+    <string name="showtea_dialog_amount_scala_center">1.0l</string>
+    <string name="showtea_dialog_amount_scala_right">2.0l</string>
+    <string name="showtea_dialog_amount_per_amount_ts">%1$.1f ts / %2$.1f L</string>
+    <string name="showtea_dialog_amount_per_amount_gr">%1$.1f g / %2$.1f L</string>
+    <string name="showtea_dialog_amount_ok">OK</string>
+    <string name="showtea_display_min">Min</string>
+    <string name="showtea_display_sec">Sec</string>
+    <string name="showtea_first_infusion_index">1.</string>
+    <string name="showtea_break_count_point">%1$d.</string>
+    <string name="showtea_infusion_count_title">Please choose your infusion</string>
+    <string name="showtea_infusion_index_content">Infusion</string>
+    <string name="showtea_cooldown_title">Cooling period</string>
+    <string name="showtea_cooldown_text">For green or white tea the boiling water should be cool down before infuse the tea.</string>
+    <string name="showtea_cooldown_ok">OK</string>
+    <string name="showtea_error_text">Error displaying elements.</string>
+    <string name="showtea_double_point">\u0020\u0020:\u0020\u0020</string>
+    <string name="showtea_timer_start">Start</string>
+    <string name="showtea_timer_reset">Reset</string>
+    <string name="showtea_tea_ready">Ready</string>
+    <string name="showtea_tooltip_note">Note</string>
+    <string name="showtea_tooltip_exchange">Cooldown time</string>
+    <string name="showtea_tooltip_calculateamount">Calculate amount</string>
+    <string name="showtea_tooltip_infusion">Choose infusion</string>
+    <string name="showtea_tooltip_nextinfusion">Next infusion</string>
+    <string name="showtea_channel_name">Finished tea</string>
+    <string name="showtea_channel_description">Will be shown when the tea is ready.</string>
+    <string name="showtea_content_description_steam">steam</string>
+    <string name="showtea_content_description_cup">cup</string>
+    <string name="showtea_content_description_filling">filling</string>
+    <string name="showtea_content_description_temperature">thermometer</string>
+    <string name="showtea_content_description_amount">spoon</string>
+    <string name="showtea_content_description_infusion">cup</string>
+    <!--Notification-->
+    <string name="notification_ticker">Tea Time!</string>
+    <string name="notification_title">Your tea is ready.</string>
+    <!--Time-->
+    <string-array name="itemsTimer">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+    </string-array>
+</resources>

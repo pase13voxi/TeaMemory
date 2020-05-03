@@ -1,0 +1,37 @@
+<resources>
+    <string name="settings_heading">Settings</string>
+    <string name="settings_alarm">Alarm sound</string>
+    <string name="settings_alarm_selection_title">Choose alarm sound</string>
+    <string name="settings_read_permission_dialog_header">Permission</string>
+    <string name="settings_read_permission_dialog_description">To be able to select your own music, the application needs a read permission.</string>
+    <string name="settings_read_permission_dialog_checkbox">Do not show me again!</string>
+    <string name="settings_read_permission_dialog_ok">OK</string>
+    <string name="settings_read_permission_denied">Permission denied.</string>
+    <string name="settings_vibration">Vibration</string>
+    <string name="settings_animation">Animation</string>
+    <string name="settings_cancle">Cancle</string>
+    <string name="settings_temperature_unit">Temperature unit</string>
+    <string name="settings_show_hints">Hints</string>
+    <string name="settings_show_hints_description">Activate/Deactivate hints</string>
+    <string name="settings_show_hints_header">Hints</string>
+    <string name="settings_show_hints_ok">OK</string>
+    <string name="settings_show_hints_cancle">Cancle</string>
+    <string name="settings_show_hints_rating_checkbox">Rating hint</string>
+    <string name="settings_show_hints_desciption_checkbox">Desciption in the information window</string>
+    <string name="settings_show_hints_ignore_optimization_checkbox">Ask for background process permission</string>
+    <string name="settings_show_hints_permission_checkbox">Ask for read permission</string>
+    <string name="settings_factory_settings">Factory setting</string>
+    <string name="settings_factory_settings_description">Reset everything to factory setting</string>
+    <string name="settings_factory_settings_text">Every tea will be deleted and the settings will be reseted.</string>
+    <string name="settings_factory_settings_ok">OK</string>
+    <string name="settings_factory_settings_cancel">Cancel</string>
+    <string name="settings_factory_settings_toast">Reset to factory setting</string>
+    <array name="settings_options">
+        <item>On</item>
+        <item>Off</item>
+    </array>
+    <array name="settings_temperature_units">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </array>
+</resources>

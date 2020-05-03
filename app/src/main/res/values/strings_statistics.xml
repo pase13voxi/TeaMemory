@@ -1,0 +1,9 @@
+<resources>
+    <string name="statistics_heading">Statistics</string>
+    <string-array name="statistics_category">
+        <item>Overall</item>
+        <item>This month</item>
+        <item>This week</item>
+        <item>Today</item>
+    </string-array>
+</resources>

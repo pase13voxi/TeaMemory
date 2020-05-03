@@ -1,0 +1,128 @@
+<resources>
+    <string name="showtea_heading">Information</string>
+    <string name="showtea_action_note">Notiz</string>
+    <string name="showtea_dialog_note_hint">Notiere dir etwas.</string>
+    <string name="showtea_dialog_note_ok">Ok</string>
+    <string name="showtea_dialog_note_cancle">Abbrechen</string>
+    <string name="showtea_action_edit">Bearbeiten</string>
+    <string name="showtea_action_counter">Trinkverhalten</string>
+    <string name="showtea_dialog_counter_day">Heute</string>
+    <string name="showtea_dialog_counter_week">Diese Woche</string>
+    <string name="showtea_dialog_counter_month">Dieser Monat</string>
+    <string name="showtea_dialog_counter_overall">Insgesamt</string>
+    <string name="showtea_dialog_counter_ok">Ok</string>
+    <string name="showtea_dialog_description_header">Benutzung</string>
+    <string name="showtea_dialog_description_temperature">Berechne die Zeit, die das kochende Wasser auf die gewünschte Temperatur abkühlen muss.</string>
+    <string name="showtea_dialog_description_amount">Berechne die benötigte Teemenge für die Zubereitung.</string>
+    <string name="showtea_dialog_description_infusion">Wähle den gewünschten Aufguss aus.</string>
+    <string name="showtea_dialog_description_checkbox">Bitte nicht mehr zeigen!</string>
+    <string name="showtea_dialog_description_ok">Ok</string>
+    <string name="showtea_dialog_following_infusion_header">Nächster Aufguss</string>
+    <string name="showtea_dialog_following_infusion_description">Du hast diesen Tee zuletzt %1$d-mal aufgegossen. Möchtest du mit dem %2$d. Aufguss fortfahren?</string>
+    <string name="showtea_dialog_following_infusion_yes">Ja</string>
+    <string name="showtea_dialog_following_infusion_no">Nein</string>
+    <string name="showtea_display_celsius">%1$s °C</string>
+    <string name="showtea_display_fahrenheit">%1$s °F</string>
+    <string name="showtea_display_ts">%1$s TL/L</string>
+    <string name="showtea_display_gr">%1$s g/L</string>
+    <string name="showtea_dialog_amount">Menge</string>
+    <string name="showtea_dialog_amount_scala_left">0.0l</string>
+    <string name="showtea_dialog_amount_scala_center">1.0l</string>
+    <string name="showtea_dialog_amount_scala_right">2.0l</string>
+    <string name="showtea_dialog_amount_per_amount_ts">%1$.1f TL / %2$.1f L</string>
+    <string name="showtea_dialog_amount_per_amount_gr">%1$.1f g / %2$.1f L</string>
+    <string name="showtea_dialog_amount_ok">Ok</string>
+    <string name="showtea_display_min">Min</string>
+    <string name="showtea_display_sec">Sek</string>
+    <string name="showtea_first_infusion_index">1.</string>
+    <string name="showtea_break_count_point">%1$d.</string>
+    <string name="showtea_infusion_count_title">Bitte wähle deinen Aufguss</string>
+    <string name="showtea_infusion_index_content">Aufguss</string>
+    <string name="showtea_cooldown_title">Abkühlzeiten</string>
+    <string name="showtea_cooldown_text">Bei Grünem oder Weißem Tee sollte man vor dem Aufguss das kochende Wasser abkühlen lassen.</string>
+    <string name="showtea_cooldown_ok">Ok</string>
+    <string name="showtea_error_text">Fehler beim Anzeigen des Elements.</string>
+    <string name="showtea_double_point">\u0020\u0020:\u0020\u0020</string>
+    <string name="showtea_timer_start">Start</string>
+    <string name="showtea_timer_reset">Reset</string>
+    <string name="showtea_tea_ready">Fertig</string>
+    <string name="showtea_tooltip_note">Notiz</string>
+    <string name="showtea_tooltip_exchange">Abkühlzeit</string>
+    <string name="showtea_tooltip_calculateamount">Menge berechnen</string>
+    <string name="showtea_tooltip_infusion">Aufguss auswählen</string>
+    <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
+    <string name="showtea_channel_name">Fertiger Tee</string>
+    <string name="showtea_channel_description">Wird gezeigt wenn der Tee Fertig ist.</string>
+    <string name="showtea_content_description_steam">Dampf</string>
+    <string name="showtea_content_description_cup">Tasse</string>
+    <string name="showtea_content_description_filling">Füllung</string>
+    <string name="showtea_content_description_temperature">Thermometer</string>
+    <string name="showtea_content_description_amount">Löffel</string>
+    <string name="showtea_content_description_infusion">Tasse</string>
+    <!--Notification-->
+    <string name="notification_ticker">Tea Time!</string>
+    <string name="notification_title">Ihr Tee ist fertig.</string>
+    <!--Time-->
+    <string-array name="itemsTimer">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+    </string-array>
+</resources>

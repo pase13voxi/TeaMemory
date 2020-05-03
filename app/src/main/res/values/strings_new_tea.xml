@@ -1,0 +1,110 @@
+<resources>
+    <string name="newtea_heading">Create/Edit tea</string>
+    <string name="newtea_tea_variety">Tea variety</string>
+    <string name="newtea_by_hand">by hand</string>
+    <string name="newtea_hint_name">Name</string>
+    <string name="newtea_color_label">Color</string>
+    <string name="newtea_color_dialog_title">Choose Color: </string>
+    <string name="newtea_hint_celsius_blacktea">Temperature (95 &#8211; 100°C)</string>
+    <string name="newtea_hint_celsius_greentea">Temperature (60 &#8211; 90°C)</string>
+    <string name="newtea_hint_celsius_yellowtea">Temperature (75°C)</string>
+    <string name="newtea_hint_celsius_whitetea">Temperature (70 &#8211; 80°C)</string>
+    <string name="newtea_hint_celsius_oolongtea">Temperature (75 &#8211; 90°C)</string>
+    <string name="newtea_hint_celsius_puerhtea">Temperature (100°C)</string>
+    <string name="newtea_hint_celsius_herbaltea">Temperature (100°C)</string>
+    <string name="newtea_hint_celsius_fruittea">Temperature (100°C)</string>
+    <string name="newtea_hint_celsius_rooibustea">Temperature (100°C)</string>
+    <string name="newtea_hint_celsius_other">Temperature (°C)</string>
+    <string name="newtea_hint_fahrenheit_blacktea">Temperature (203 &#8211; 212°F)</string>
+    <string name="newtea_hint_fahrenheit_greentea">Temperature (140 &#8211; 194°F)</string>
+    <string name="newtea_hint_fahrenheit_yellowtea">Temperature (167°C)</string>
+    <string name="newtea_hint_fahrenheit_whitetea">Temperature (158 &#8211; 176°F)</string>
+    <string name="newtea_hint_fahrenheit_oolongtea">Temperature (167 &#8211; 194°F)</string>
+    <string name="newtea_hint_fahrenheit_puerhtea">Temperature (212°F)</string>
+    <string name="newtea_hint_fahrenheit_herbaltea">Temperature (212°F)</string>
+    <string name="newtea_hint_fahrenheit_fruittea">Temperature (212°F)</string>
+    <string name="newtea_hint_fahrenheit_rooibustea">Temperature (212°F)</string>
+    <string name="newtea_hint_fahrenheit_other">Temperature (°F)</string>
+    <string name="newtea_hint_cooldowntime">Cooldown time "mm:ss" or "mm"</string>
+    <string name="newtea_hint_ts_blacktea">Amount  (3 &#8211; 5ts/L)</string>
+    <string name="newtea_hint_ts_greentea">Amount (6 &#8211; 8ts/L)</string>
+    <string name="newtea_hint_ts_yellowtea">Amount (4 &#8211; 5ts/L)</string>
+    <string name="newtea_hint_ts_whitetea">Amount (3 &#8211; 4ts/L)</string>
+    <string name="newtea_hint_ts_oolongtea">Amount (4 &#8211; 6ts/L)</string>
+    <string name="newtea_hint_ts_puerhtea">Amount (4 &#8211; 6ts/L)</string>
+    <string name="newtea_hint_ts_herbaltea">Amount (4 &#8211; 6ts/L)</string>
+    <string name="newtea_hint_ts_fruittea">Amount (8 &#8211; 10ts/L)</string>
+    <string name="newtea_hint_ts_rooibustea">Amount (4 &#8211; 6ts/L)</string>
+    <string name="newtea_hint_ts_other">Amount ts/L</string>
+    <string name="newtea_hint_gr_blacktea">Amount  (8 &#8211; 13g/L)</string>
+    <string name="newtea_hint_gr_greentea">Amount (10 &#8211; 14g/L)</string>
+    <string name="newtea_hint_gr_yellowtea">Amount (10 &#8211; 12g/L)</string>
+    <string name="newtea_hint_gr_whitetea">Amount (8 &#8211; 12g/L)</string>
+    <string name="newtea_hint_gr_oolongtea">Amount (10 &#8211; 12g/L)</string>
+    <string name="newtea_hint_gr_puerhtea">Amount (8 &#8211; 12g/L)</string>
+    <string name="newtea_hint_gr_herbaltea">Amount (10 &#8211; 15g/L)</string>
+    <string name="newtea_hint_gr_fruittea">Amount (15 &#8211; 20g/L)</string>
+    <string name="newtea_hint_gr_rooibustea">Amount (12 &#8211; 15g/L)</string>
+    <string name="newtea_hint_gr_other">Amount g/L</string>
+    <string name="newtea_hint_time_blacktea">Steeping time "mm:ss" or "mm" (3 &#8211; 5min)</string>
+    <string name="newtea_hint_time_greentea">Steeping time "mm:ss" or "mm" (1 &#8211; 3min)</string>
+    <string name="newtea_hint_time_yellowtea">Steeping time "mm:ss" or "mm" (1 &#8211; 3min)</string>
+    <string name="newtea_hint_time_whitetea">Steeping time "mm:ss" or "mm" (1 &#8211; 4min)</string>
+    <string name="newtea_hint_time_oolongtea">Steeping time "mm:ss" or "mm" (0:30 &#8211; 4min)</string>
+    <string name="newtea_hint_time_puerhtea">Steeping time "mm:ss" or "mm" (5 &#8211; 15sec)</string>
+    <string name="newtea_hint_time_herbaltea">Steeping time "mm:ss" or "mm" (5 &#8211; 10min)</string>
+    <string name="newtea_hint_time_fruittea">Steeping time "mm:ss" or "mm" (5 &#8211; 10min)</string>
+    <string name="newtea_hint_time_rooibustea">Steeping time "mm:ss" or "mm" (5 &#8211; 10min)</string>
+    <string name="newtea_hint_time_other">Steeping time "mm:ss" or "mm"</string>
+    <string name="newtea_error_30Char">The type of tea exceeds the limit number of 30 characters.</string>
+    <string name="newtea_error_name">The name exceeds the limit number of 300 characters.</string>
+    <string name="newtea_error_wrong_celsius">The temperature should be between 0 °C and 100 °C.</string>
+    <string name="newtea_error_wrong_fahrenheit">The temperature should be between 32 °F and 212 °F.</string>
+    <string name="newtea_error_auto_cooldown_time">Cooldown time can not be determined.</string>
+    <string name="newtea_error_cooldown_time">Please follow the format of the cooldown time.</string>
+    <string name="newtea_error_time_format">Please follow the format of the steeping time.</string>
+    <string name="newtea_error_amount">The amount should not be more than three digits.</string>
+    <string name="newtea_error_cant_change">Change could not be performed.</string>
+    <string name="newtea_error_cant_save">Store could not be performed.</string>
+    <string name="newtea_error_no_name">Please enter the name.</string>
+    <string name="newtea_count_infusion">%1$d%2$s Infusion</string>
+    <string name="newtea_tooltip_choosecolor">Choose color</string>
+    <string name="newtea_tooltip_arrowleft">Previous infusion</string>
+    <string name="newtea_tooltip_arrowright">Next infusion</string>
+    <string name="newtea_tooltip_deleteinfusion">Delete infusion</string>
+    <string name="newtea_tooltip_addinfusion">Add infusion</string>
+    <string name="newtea_tooltip_showcooldowntime">Show cooldown option</string>
+    <string name="newtea_tooltip_autofillcooldowntime">Autofill cooldown time</string>
+    <string name="newtea_tooltip_done">Save tea</string>
+    <string name="newtea_tooltip_done_title">Done</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="celsius">Celsius</string>
+    <string-array name="variety_teas">
+        <item>Black tea</item>
+        <item>Green tea</item>
+        <item>Yellow tea</item>
+        <item>White tea</item>
+        <item>Oolong tea</item>
+        <item>Pu-erh tea</item>
+        <item>Herbal tea</item>
+        <item>Fruit tea</item>
+        <item>Rooibus tea</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="variety_codes">
+        <item>01_black</item>
+        <item>02_green</item>
+        <item>03_yellow</item>
+        <item>04_white</item>
+        <item>05_oolong</item>
+        <item>06_pu</item>
+        <item>07_herbal</item>
+        <item>08_fruit</item>
+        <item>09_rooibus</item>
+        <item>10_other</item>
+    </string-array>
+    <array name="newtea_amount">
+        <item>ts/L</item>
+        <item>g/L</item>
+    </array>
+</resources>

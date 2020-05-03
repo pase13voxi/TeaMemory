@@ -1,0 +1,9 @@
+<resources>
+    <string name="statistics_heading">Statistiken</string>
+    <string-array name="statistics_category">
+        <item>Insgesamt</item>
+        <item>Dieser Monat</item>
+        <item>Diese Woche</item>
+        <item>Heute</item>
+    </string-array>
+</resources>

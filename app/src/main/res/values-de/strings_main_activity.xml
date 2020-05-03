@@ -1,0 +1,22 @@
+<resources>
+    <string name="main_action_settings">Einstellungen</string>
+    <string name="main_action_about">Über den Tee Speicher</string>
+    <string name="main_action_export">Export/Import Tees</string>
+    <string name="main_sort">Sortierung</string>
+    <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
+    <string name="main_tooltip_newtea">Tee hinzufügen</string>
+    <string name="main_dialog_rating_header">Bewerte die App</string>
+    <string name="main_dialog_rating">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
+    <string name="main_dialog_rating_positive">Bewerten</string>
+    <string name="main_dialog_rating_neutral">Später</string>
+    <string name="main_dialog_rating_negative">Nein, danke</string>
+    <string-array name="main_sort_menu">
+        <item>Sortiere nach Aktivität</item>
+        <item>Sortiere alphabetisch</item>
+        <item>Sortiere nach Sorte</item>
+    </string-array>
+    <string-array name="itemMenu">
+        <item>Bearbeiten</item>
+        <item>Löschen</item>
+    </string-array>
+</resources>
