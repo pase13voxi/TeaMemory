@@ -16,7 +16,7 @@
         android:layout_width="40dip"
         android:layout_height="40dip"
         android:id="@+id/toolbar_statistics"
-        android:background="@drawable/statistics_white"
+        android:background="@drawable/button_statistics"
         android:orientation="horizontal"
         android:layout_gravity="end"
         android:layout_marginEnd="5dip" />
