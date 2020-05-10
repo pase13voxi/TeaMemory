@@ -1,10 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +24,9 @@ public class Statistics extends AppCompatActivity {
 
     private StatisticsViewModel statisticsViewModel;
 
-    private boolean firstView = true;
+    private HorizontalBar horizontal;
+
+    private int checkedItem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,52 +48,48 @@ public class Statistics extends AppCompatActivity {
 
         statisticsViewModel = new StatisticsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
-        final HorizontalBar horizontal = findViewById(R.id.statistic_chart);
+        horizontal = findViewById(R.id.statistic_chart);
         horizontal.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
 
+        Button buttonPeriod = findViewById(R.id.toolbar_statistics);
+        buttonPeriod.setOnClickListener(view -> dialogSortOption());
+    }
 
-        Spinner spinnerCategory = findViewById(R.id.spinner_category);
+    private void dialogSortOption() {
+        final String[] items = getResources().getStringArray(R.array.statistics_category);
 
-        ArrayAdapter<CharSequence> spinnerCategoryAdapter = ArrayAdapter.createFromResource(
-                this, R.array.statistics_category, R.layout.spinner_item_sort);
-
-        spinnerCategoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_sort);
-        spinnerCategory.setAdapter(spinnerCategoryAdapter);
-
-        //sortierung hat sich verändert
-        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        if (!firstView) {
-                            horizontal.removeAll();
-                            horizontal.addAll(getItems(statisticsViewModel.getStatisticsOverall()));
-                        } else {
-                            firstView = false;
-                        }
-                        break;
-                    case 1:
-                        horizontal.removeAll();
-                        horizontal.addAll(getItems(statisticsViewModel.getStatisticsMonth()));
-                        break;
-                    case 2:
-                        horizontal.removeAll();
-                        horizontal.addAll(getItems(statisticsViewModel.getStatisticsWeek()));
-                        break;
-                    case 3:
-                        horizontal.removeAll();
-                        horizontal.addAll(getItems(statisticsViewModel.getStatisticsDay()));
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.MaterialThemeDialog);
+        builder.setIcon(R.drawable.statistics_black);
+        builder.setTitle(R.string.statistics_dialog_title);
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            checkedItem = item;
+            changePeriod(item);
+            dialog.dismiss();
         });
+        builder.setNegativeButton(R.string.statistics_dialog_negative, null);
+        builder.create().show();
+    }
 
+    private void changePeriod(int choice) {
+        horizontal.removeAll();
+        switch (choice) {
+            case 0:
+                horizontal.addAll(getItems(statisticsViewModel.getStatisticsOverall()));
+                break;
+            case 1:
+                horizontal.addAll(getItems(statisticsViewModel.getStatisticsMonth()));
+                break;
+            case 2:
+                horizontal.addAll(getItems(statisticsViewModel.getStatisticsWeek()));
+                break;
+            case 3:
+                horizontal.addAll(getItems(statisticsViewModel.getStatisticsDay()));
+                break;
+            default:
+                break;
+        }
     }
 
     private List<BarItem> getItems(List<StatisticsPOJO> statistics) {

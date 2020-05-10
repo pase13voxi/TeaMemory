@@ -15,8 +15,8 @@
     <Button
         android:layout_width="30dip"
         android:layout_height="30dip"
-        android:id="@+id/toolbar_sort"
-        android:background="@drawable/sort_white"
+        android:id="@+id/toolbar_statistics"
+        android:background="@drawable/statistics_white"
         android:orientation="horizontal"
         android:layout_gravity="end"
         android:layout_marginEnd="5dip" />

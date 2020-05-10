@@ -1,5 +1,7 @@
 <resources>
     <string name="statistics_heading">Statistics</string>
+    <string name="statistics_dialog_title">Select period</string>
+    <string name="statistics_dialog_negative">Cancle</string>
     <string-array name="statistics_category">
         <item>Overall</item>
         <item>This month</item>

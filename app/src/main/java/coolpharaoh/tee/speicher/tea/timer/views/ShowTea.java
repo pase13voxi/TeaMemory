@@ -715,7 +715,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         int tmpSize = showTeaViewModel.getInfusionSize();
         String[] items = new String[tmpSize];
         for (int i = 0; i < tmpSize; i++) {
-            items[i] = getResources().getString(R.string.showtea_infusion_index_content, i + 1);
+            items[i] = getResources().getString(R.string.showtea_dialog_infusion_count_desciption, i + 1);
         }
 
         //Get CheckedItem
@@ -724,14 +724,14 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         // Creating and Building the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
-        builder.setIcon(R.drawable.infusiondark);
-        builder.setTitle(R.string.showtea_infusion_count_title);
+        builder.setIcon(R.drawable.infusion_black);
+        builder.setTitle(R.string.showtea_dialog_infusion_count_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             showTeaViewModel.setInfusionIndex(item);
             infusionIndexChanged();
             dialog.dismiss();
         });
-        builder.setNegativeButton("Abbrechen", null);
+        builder.setNegativeButton(R.string.showtea_dialog_infusion_count_negative, null);
         builder.create().show();
     }
 
@@ -821,7 +821,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(listViewCounter);
         adb.setTitle(R.string.showtea_action_counter);
-        adb.setIcon(R.drawable.ic_action_counter);
+        adb.setIcon(R.drawable.statistics_black);
         adb.setPositiveButton(R.string.showtea_dialog_counter_ok, (dialog, which) -> {
         });
         adb.show();

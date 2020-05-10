@@ -177,13 +177,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         // Creating and Building the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
-        builder.setIcon(R.drawable.dark_sort);
+        builder.setIcon(R.drawable.sort_black);
         builder.setTitle(R.string.main_dialog_sort_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             mainActivityViewModel.setSort(item);
             dialog.dismiss();
         });
-        builder.setNegativeButton(R.string.main_dialog_sort_negativ, null);
+        builder.setNegativeButton(R.string.main_dialog_sort_negative, null);
         builder.create().show();
     }
 

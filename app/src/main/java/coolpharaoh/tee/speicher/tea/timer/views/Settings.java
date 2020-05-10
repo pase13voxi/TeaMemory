@@ -46,7 +46,6 @@ public class Settings extends AppCompatActivity {
 
     private ArrayList<ListRowItem> settingList;
     private SettingListAdapter adapter;
-    private AlertDialog radioButtonDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +99,7 @@ public class Settings extends AppCompatActivity {
                 case FactorySettings:
                     settingFactorySettings(view);
                     break;
+                default:
             }
 
         });
@@ -163,13 +163,13 @@ public class Settings extends AppCompatActivity {
                 case 1:
                     settingsViewModel.setVibration(false);
                     break;
+                default:
             }
             refreshWindow();
             adapter.notifyDataSetChanged();
-            radioButtonDialog.dismiss();
+            dialog.dismiss();
         });
-        radioButtonDialog = builder.create();
-        radioButtonDialog.show();
+        builder.create().show();
     }
 
     private void settingAnimation() {
@@ -195,13 +195,13 @@ public class Settings extends AppCompatActivity {
                 case 1:
                     settingsViewModel.setAnimation(false);
                     break;
+                default:
             }
             refreshWindow();
             adapter.notifyDataSetChanged();
-            radioButtonDialog.dismiss();
+            dialog.dismiss();
         });
-        radioButtonDialog = builder.create();
-        radioButtonDialog.show();
+        builder.create().show();
     }
 
     private void settingTemperatureUnit() {
@@ -223,10 +223,9 @@ public class Settings extends AppCompatActivity {
             settingsViewModel.setTemperatureunit(items[item]);
             refreshWindow();
             adapter.notifyDataSetChanged();
-            radioButtonDialog.dismiss();
+            dialog.dismiss();
         });
-        radioButtonDialog = builder.create();
-        radioButtonDialog.show();
+        builder.create().show();
     }
 
     private void settingHints() {
@@ -276,6 +275,7 @@ public class Settings extends AppCompatActivity {
                 case DialogInterface.BUTTON_NEGATIVE:
                     //No button clicked
                     break;
+                default:
             }
         };
 
@@ -373,6 +373,7 @@ public class Settings extends AppCompatActivity {
                 }
                 createAlarmRequest();
             } break;
+            default:
         }
     }
 }

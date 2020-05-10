@@ -3,7 +3,7 @@
     <string name="main_action_about">Über den Tee Speicher</string>
     <string name="main_action_export">Export/Import Tees</string>
     <string name="main_dialog_sort_title">Sortiermodus</string>
-    <string name="main_dialog_sort_negativ">Abbrechen</string>
+    <string name="main_dialog_sort_negative">Abbrechen</string>
     <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
     <string name="main_tooltip_newtea">Tee hinzufügen</string>
     <string name="main_dialog_rating_header">Bewerte die App</string>

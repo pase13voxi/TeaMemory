@@ -36,8 +36,9 @@
     <string name="showtea_display_sec">Sec</string>
     <string name="showtea_first_infusion_index">1.</string>
     <string name="showtea_break_count_point">%1$d.</string>
-    <string name="showtea_infusion_count_title">Choose your infusion</string>
-    <string name="showtea_infusion_index_content">Infusion %1$d</string>
+    <string name="showtea_dialog_infusion_count_title">Choose your infusion</string>
+    <string name="showtea_dialog_infusion_count_desciption">Infusion %1$d</string>
+    <string name="showtea_dialog_infusion_count_negative">Cancle</string>
     <string name="showtea_cooldown_title">Cooling period</string>
     <string name="showtea_cooldown_text">For green or white tea the boiling water should be cool down before infuse the tea.</string>
     <string name="showtea_cooldown_ok">OK</string>

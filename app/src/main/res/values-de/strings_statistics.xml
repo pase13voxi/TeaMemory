@@ -1,5 +1,7 @@
 <resources>
     <string name="statistics_heading">Statistiken</string>
+    <string name="statistics_dialog_title">Zeitraum wählen</string>
+    <string name="statistics_dialog_negative">Abbrechen</string>
     <string-array name="statistics_category">
         <item>Insgesamt</item>
         <item>Dieser Monat</item>

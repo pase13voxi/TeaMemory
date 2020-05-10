@@ -16,7 +16,7 @@
         android:layout_width="40dip"
         android:layout_height="40dip"
         android:id="@+id/toolbar_sort"
-        android:background="@drawable/light_sort"
+        android:background="@drawable/sort_white"
         android:orientation="horizontal"
         android:layout_gravity="end"
         android:layout_marginEnd="5dip" />
