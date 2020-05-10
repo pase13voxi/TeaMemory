@@ -195,23 +195,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonCalcAmount.setOnClickListener(view -> dialogamount());
         buttonCalcAmount.setOnLongClickListener(this);
 
-        buttonInfusionIndex.setOnClickListener(v -> {
-            int tmpSize = showTeaViewModel.getInfusionSize();
-            String[] items = new String[tmpSize];
-            for (int i = 0; i < tmpSize; i++) {
-                items[i] = (i + 1) + ". " + getResources().getString(R.string.showtea_infusion_index_content);
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-            builder.setIcon(R.drawable.infusiondark);
-            builder.setTitle(R.string.showtea_infusion_count_title);
-            builder.setItems(items, (dialog, item) -> {
-                showTeaViewModel.setInfusionIndex(item);
-                infusionIndexChanged();
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-
-        });
+        buttonInfusionIndex.setOnClickListener(v -> dialoagChangeInfusion());
         buttonInfusionIndex.setOnLongClickListener(this);
 
         buttonNextInfusion.setOnClickListener(v -> {
@@ -725,6 +709,30 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                     break;
             }
         }
+    }
+
+    private void dialoagChangeInfusion() {
+        int tmpSize = showTeaViewModel.getInfusionSize();
+        String[] items = new String[tmpSize];
+        for (int i = 0; i < tmpSize; i++) {
+            items[i] = getResources().getString(R.string.showtea_infusion_index_content, i + 1);
+        }
+
+        //Get CheckedItem
+        int checkedItem = showTeaViewModel.getInfusionIndex();
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.MaterialThemeDialog);
+        builder.setIcon(R.drawable.infusiondark);
+        builder.setTitle(R.string.showtea_infusion_count_title);
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            showTeaViewModel.setInfusionIndex(item);
+            infusionIndexChanged();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Abbrechen", null);
+        builder.create().show();
     }
 
     private void infusionIndexChanged() {

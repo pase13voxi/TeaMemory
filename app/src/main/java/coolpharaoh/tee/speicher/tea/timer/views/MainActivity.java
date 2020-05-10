@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     private static boolean startApplication = true;
 
     private TeaAdapter adapter;
-    private AlertDialog radioButtonDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mainActivityViewModel = new MainActivityViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
 
         Button buttonSort = findViewById(R.id.toolbar_sort);
-        buttonSort.setOnClickListener(view -> sortOption());
+        buttonSort.setOnClickListener(view -> dialogSortOption());
 
         //bind list with adapter
         mainActivityViewModel.getTeas().observe(this, mTeas -> {
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mainActivityViewModel.refreshTeas();
     }
 
-    private void sortOption() {
+    private void dialogSortOption() {
         final String[] items = getResources().getStringArray(R.array.main_sort_options);
 
         //Get CheckedItem
@@ -178,14 +177,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         // Creating and Building the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this,
                 R.style.MaterialThemeDialog);
+        builder.setIcon(R.drawable.dark_sort);
         builder.setTitle(R.string.main_dialog_sort_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             mainActivityViewModel.setSort(item);
-            radioButtonDialog.dismiss();
+            dialog.dismiss();
         });
-        builder.setNegativeButton("Abbrechen", null);
-        radioButtonDialog = builder.create();
-        radioButtonDialog.show();
+        builder.setNegativeButton(R.string.main_dialog_sort_negativ, null);
+        builder.create().show();
     }
 
     private void showTooltip(View v, String text) {

@@ -36,8 +36,8 @@
     <string name="showtea_display_sec">Sek</string>
     <string name="showtea_first_infusion_index">1.</string>
     <string name="showtea_break_count_point">%1$d.</string>
-    <string name="showtea_infusion_count_title">Bitte wähle deinen Aufguss</string>
-    <string name="showtea_infusion_index_content">Aufguss</string>
+    <string name="showtea_infusion_count_title">Wähle deinen Aufguss</string>
+    <string name="showtea_infusion_index_content">Aufguss %1$d</string>
     <string name="showtea_cooldown_title">Abkühlzeiten</string>
     <string name="showtea_cooldown_text">Bei Grünem oder Weißem Tee sollte man vor dem Aufguss das kochende Wasser abkühlen lassen.</string>
     <string name="showtea_cooldown_ok">Ok</string>
