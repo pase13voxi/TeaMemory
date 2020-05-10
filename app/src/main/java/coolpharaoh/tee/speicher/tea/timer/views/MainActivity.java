@@ -13,9 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,10 +30,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.listadapter.TeaAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     private MainActivityViewModel mainActivityViewModel;
-    static private boolean startApplication = true;
+    private static boolean startApplication = true;
 
-    private ListView tealist;
     private TeaAdapter adapter;
+    private AlertDialog radioButtonDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,43 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         }
 
         //get listView
-        tealist = findViewById(R.id.listViewTealist);
+        ListView tealist = findViewById(R.id.listViewTealist);
 
         mainActivityViewModel = new MainActivityViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
 
-        //set big spinner
-        Spinner spinnerSort = findViewById(R.id.spinner_category);
-        ArrayAdapter<CharSequence> spinnerVarietyAdapter = ArrayAdapter.createFromResource(
-                this, R.array.main_sort_menu, R.layout.spinner_item_sort);
-
-        spinnerVarietyAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_sort);
-        spinnerSort.setAdapter(spinnerVarietyAdapter);
-
-        //set spinner
-        spinnerSort.setSelection(mainActivityViewModel.getSort());
-
-        //sort has changed
-        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        mainActivityViewModel.setSort(0);
-                        break;
-                    case 1:
-                        mainActivityViewModel.setSort(1);
-                        break;
-                    case 2:
-                        mainActivityViewModel.setSort(2);
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        Button buttonSort = findViewById(R.id.toolbar_sort);
+        buttonSort.setOnClickListener(view -> sortOption());
 
         //bind list with adapter
         mainActivityViewModel.getTeas().observe(this, mTeas -> {
@@ -170,7 +138,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         int menuItemIndex = item.getItemId();
         String[] menuItems = getResources().getStringArray(R.array.itemMenu);
         String menuItemName = menuItems[menuItemIndex];
-        String editOption = menuItems[0], deleteOption = menuItems[1];
+        String editOption = menuItems[0];
+        String deleteOption = menuItems[1];
 
         if (menuItemName.equals(editOption)) {
             //create new intent
@@ -198,6 +167,25 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public void onResume() {
         super.onResume();
         mainActivityViewModel.refreshTeas();
+    }
+
+    private void sortOption() {
+        final String[] items = getResources().getStringArray(R.array.main_sort_options);
+
+        //Get CheckedItem
+        int checkedItem = mainActivityViewModel.getSort();
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.MaterialThemeDialog);
+        builder.setTitle(R.string.main_dialog_sort_title);
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
+            mainActivityViewModel.setSort(item);
+            radioButtonDialog.dismiss();
+        });
+        builder.setNegativeButton("Abbrechen", null);
+        radioButtonDialog = builder.create();
+        radioButtonDialog.show();
     }
 
     private void showTooltip(View v, String text) {
