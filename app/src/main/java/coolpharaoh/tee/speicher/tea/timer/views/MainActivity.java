@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.main_tooltip_newtea));
         }
         if (view.getId() == R.id.toolbar_sort) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.main_tooltip_newtea));
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.main_tooltip_sort));
         }
         return true;
     }
