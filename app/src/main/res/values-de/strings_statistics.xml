@@ -8,4 +8,5 @@
         <item>Diese Woche</item>
         <item>Heute</item>
     </string-array>
+    <string name="statistics_tool_bar_period">Zeitraum wählen</string>
 </resources>

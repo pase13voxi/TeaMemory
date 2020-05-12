@@ -2,11 +2,15 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.tooltip.Tooltip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJ
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.StatisticsViewModel;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 
-public class Statistics extends AppCompatActivity {
+public class Statistics extends AppCompatActivity implements View.OnLongClickListener {
 
     private StatisticsViewModel statisticsViewModel;
 
@@ -53,6 +57,7 @@ public class Statistics extends AppCompatActivity {
 
         Button buttonPeriod = findViewById(R.id.toolbar_statistics);
         buttonPeriod.setOnClickListener(view -> dialogSortOption());
+        buttonPeriod.setOnLongClickListener(this);
     }
 
     private void dialogSortOption() {
@@ -100,5 +105,25 @@ public class Statistics extends AppCompatActivity {
         }
 
         return items;
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if (view.getId() == R.id.toolbar_statistics) {
+            showTooltip(view, getResources().getString(R.string.statistics_tool_bar_period));
+        }
+        return true;
+    }
+
+
+    private void showTooltip(View v, String text) {
+        new Tooltip.Builder(v)
+                .setText(text)
+                .setTextColor(getResources().getColor(R.color.white))
+                .setGravity(Gravity.BOTTOM)
+                .setCornerRadius(8f)
+                .setCancelable(true)
+                .setDismissOnClick(true)
+                .show();
     }
 }

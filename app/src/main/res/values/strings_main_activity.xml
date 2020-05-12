@@ -6,6 +6,7 @@
     <string name="main_dialog_sort_negative">Cancle</string>
     <string name="main_error_deletion">Deletion could not be performed.</string>
     <string name="main_tooltip_newtea">Add tea</string>
+    <string name="main_tooltip_sort">Sort mode</string>
     <string name="main_dialog_rating_header">Rate this app</string>
     <string name="main_dialog_rating">Do you like the app? I would look forward to a review.</string>
     <string name="main_dialog_rating_positive">Rate now</string>

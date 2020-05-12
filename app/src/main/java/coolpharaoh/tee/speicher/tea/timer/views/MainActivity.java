@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         Button buttonSort = findViewById(R.id.toolbar_sort);
         buttonSort.setOnClickListener(view -> dialogSortOption());
+        buttonSort.setOnLongClickListener(this);
 
         //bind list with adapter
         mainActivityViewModel.getTeas().observe(this, mTeas -> {
@@ -157,7 +158,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     public boolean onLongClick(View view) {
         if (view.getId() == R.id.newtea) {
-            showTooltip(view, getResources().getString(R.string.main_tooltip_newtea));
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.main_tooltip_newtea));
+        }
+        if (view.getId() == R.id.toolbar_sort) {
+            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.main_tooltip_newtea));
         }
         return true;
     }
@@ -187,11 +191,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         builder.create().show();
     }
 
-    private void showTooltip(View v, String text) {
+    private void showTooltip(View v, int gravity, String text) {
         new Tooltip.Builder(v)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))
-                .setGravity(Gravity.TOP)
+                .setGravity(gravity)
                 .setCornerRadius(8f)
                 .setCancelable(true)
                 .setDismissOnClick(true)
