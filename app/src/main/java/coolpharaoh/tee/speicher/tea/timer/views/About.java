@@ -42,8 +42,9 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         defineToolbarAsActionbar();
+        enableAndShowBackButton();
 
-        fillAndShowListView();
+        configureAndShowListView();
     }
 
     private void defineToolbarAsActionbar() {
@@ -52,16 +53,18 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
         mToolbarCustomTitle.setText(R.string.about_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
-        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void enableAndShowBackButton() {
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void fillAndShowListView() {
+    private void configureAndShowListView() {
         List<ListRowItem> aboutList = generateListItems();
 
-        //bind list with adapter
         AboutListAdapter adapter = new AboutListAdapter(this, aboutList);
-        //add adapter to listview
+
         ListView listViewAbout = findViewById(R.id.listview_about);
         listViewAbout.setAdapter(adapter);
         listViewAbout.setOnItemClickListener(this);
