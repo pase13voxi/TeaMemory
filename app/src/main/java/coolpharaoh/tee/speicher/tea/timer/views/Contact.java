@@ -19,47 +19,54 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 
 public class Contact extends AppCompatActivity {
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+        defineToolbarAsActionbar();
+        enableAndShowBackButton();
 
-        //Toolbar als ActionBar festlegen
+        Button buttonEmail = findViewById(R.id.buttonSendEmail);
+        buttonEmail.setOnClickListener(v -> writeEmail());
+    }
+
+    private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.contact_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Button buttonEmail = findViewById(R.id.buttonSendEmail);
-        buttonEmail.setOnClickListener(v -> {
-            try {
-                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                String versionname = pInfo.versionName;
-                int versioncode = pInfo.versionCode;
-
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto", getResources().getString(R.string.contact_email_address), null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.contact_email_subject));
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Release: " + versioncode
-                        +"\nApp: " + versionname + "\n\n");
-                startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.contact_email_chooser)));
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
+    private void enableAndShowBackButton() {
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        if(id == R.id.home){
-            NavUtils.navigateUpFromSameTask(this);
+    private void writeEmail() {
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionname = pInfo.versionName;
+            int versioncode = pInfo.versionCode;
+
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", getResources().getString(R.string.contact_email_address), null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.contact_email_subject));
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Release: " + versioncode
+                    + "\nApp: " + versionname + "\n\n");
+            startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.contact_email_chooser)));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
