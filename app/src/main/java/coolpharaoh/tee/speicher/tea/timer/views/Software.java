@@ -1,13 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +16,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.SoftwareListAdapter;
 
 public class Software extends AppCompatActivity {
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

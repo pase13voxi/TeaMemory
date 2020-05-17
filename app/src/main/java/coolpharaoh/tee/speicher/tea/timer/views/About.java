@@ -3,7 +3,6 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +23,6 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
 
     private enum ListItems {
         CONTACT, RATING, STATISTICS, SOFTWARE
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class Statistics extends AppCompatActivity implements View.OnLongClickLis
 
     private StatisticsViewModel statisticsViewModel;
 
-    private HorizontalBar horizontal;
+    private HorizontalBar horizontalBar;
 
     private int checkedItem = 0;
 
@@ -36,25 +36,35 @@ public class Statistics extends AppCompatActivity implements View.OnLongClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
+        defineToolbarAsActionbar();
+        enableAndShowBackButton();
 
+        statisticsViewModel = new StatisticsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
-        //Toolbar als ActionBar festlegen
+        initHorizontalBar();
+
+        configurePeriodButton();
+    }
+
+    private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.statistics_heading);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(null);
-        }
+        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+    }
 
+    private void enableAndShowBackButton() {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        statisticsViewModel = new StatisticsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
+    private void initHorizontalBar() {
+        horizontalBar = findViewById(R.id.statistic_chart);
+        horizontalBar.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
+    }
 
-        horizontal = findViewById(R.id.statistic_chart);
-        horizontal.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
-
+    private void configurePeriodButton() {
         Button buttonPeriod = findViewById(R.id.toolbar_statistics);
         buttonPeriod.setOnClickListener(view -> dialogSortOption());
         buttonPeriod.setOnLongClickListener(this);
@@ -78,22 +88,21 @@ public class Statistics extends AppCompatActivity implements View.OnLongClickLis
     }
 
     private void changePeriod(int choice) {
-        horizontal.removeAll();
+        horizontalBar.removeAll();
         switch (choice) {
             case 0:
-                horizontal.addAll(getItems(statisticsViewModel.getStatisticsOverall()));
+                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsOverall()));
                 break;
             case 1:
-                horizontal.addAll(getItems(statisticsViewModel.getStatisticsMonth()));
+                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsMonth()));
                 break;
             case 2:
-                horizontal.addAll(getItems(statisticsViewModel.getStatisticsWeek()));
+                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsWeek()));
                 break;
             case 3:
-                horizontal.addAll(getItems(statisticsViewModel.getStatisticsDay()));
+                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsDay()));
                 break;
             default:
-                break;
         }
     }
 
