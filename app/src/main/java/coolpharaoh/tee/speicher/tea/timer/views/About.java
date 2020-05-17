@@ -3,8 +3,9 @@ package coolpharaoh.tee.speicher.tea.timer.views;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,19 +21,32 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.AboutListAdapter;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
 
-public class About extends AppCompatActivity {
+public class About extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private enum ListItems {
-        Contact, Rating, Statistics, Software
+        CONTACT, RATING, STATISTICS, SOFTWARE
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        defineToolbarAsActionbar();
 
-        //define toolbar as a actionbar
+        fillAndShowListView();
+    }
+
+    private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.about_heading);
@@ -40,7 +54,20 @@ public class About extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    private void fillAndShowListView() {
+        List<ListRowItem> aboutList = generateListItems();
+
+        //bind list with adapter
+        AboutListAdapter adapter = new AboutListAdapter(this, aboutList);
+        //add adapter to listview
+        ListView listViewAbout = findViewById(R.id.listview_about);
+        listViewAbout.setAdapter(adapter);
+        listViewAbout.setOnItemClickListener(this);
+    }
+
+    private List<ListRowItem> generateListItems() {
         //write into listView
         List<ListRowItem> aboutList = new ArrayList<>();
         ListRowItem itemContact = new ListRowItem(getResources().getString(R.string.about_contact_heading),getResources().getString(R.string.about_contact_description));
@@ -51,55 +78,50 @@ public class About extends AppCompatActivity {
         aboutList.add(itemStatistics);
         ListRowItem itemSoftware = new ListRowItem(getResources().getString(R.string.about_software_heading),getResources().getString(R.string.about_software_description));
         aboutList.add(itemSoftware);
-
-        //bind list with adapter
-        AboutListAdapter adapter = new AboutListAdapter(this, aboutList);
-        //add adapter to listview
-        ListView listViewAbout = findViewById(R.id.listview_about);
-        listViewAbout.setAdapter(adapter);
-
-        listViewAbout.setOnItemClickListener((parent, view, position, id) -> {
-            ListItems item = ListItems.values()[position];
-            switch(item){
-                case Contact:
-                    //create new intent
-                    Intent contactScreen = new Intent(About.this, Contact.class);
-                    //start intent and switch to the other activity
-                    startActivity(contactScreen);
-                    break;
-                case Rating:
-                    final String appPackageName = getPackageName();
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                    break;
-                case Statistics:
-                    Intent statisticsScreen = new Intent(About.this, Statistics.class);
-                    startActivity(statisticsScreen);
-                    break;
-                case Software:
-                    Intent softwareScreen = new Intent(About.this, Software.class);
-                    startActivity(softwareScreen);
-                    break;
-            }
-
-        });
+        return aboutList;
     }
 
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_about, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-
-        if(id == R.id.home){
-            NavUtils.navigateUpFromSameTask(this);
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        ListItems item = ListItems.values()[position];
+        switch (item) {
+            case CONTACT:
+                navigateToContact();
+                break;
+            case RATING:
+                navigateToStore();
+                break;
+            case STATISTICS:
+                navigateToStatistics();
+                break;
+            case SOFTWARE:
+                navigateToSoftware();
+                break;
+            default:
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void navigateToContact() {
+        Intent contactScreen = new Intent(About.this, Contact.class);
+        startActivity(contactScreen);
+    }
+
+    private void navigateToStore() {
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    private void navigateToStatistics() {
+        Intent statisticsScreen = new Intent(About.this, Statistics.class);
+        startActivity(statisticsScreen);
+    }
+
+    private void navigateToSoftware() {
+        Intent softwareScreen = new Intent(About.this, Software.class);
+        startActivity(softwareScreen);
     }
 }

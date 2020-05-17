@@ -10,7 +10,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -326,11 +325,6 @@ public class Settings extends AppCompatActivity {
         //Factory Setting
         ListRowItem itemFactorySettings = new ListRowItem(getResources().getString(R.string.settings_factory_settings), getResources().getString(R.string.settings_factory_settings_description));
         settingList.add(itemFactorySettings);
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

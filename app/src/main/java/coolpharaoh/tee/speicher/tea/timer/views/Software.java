@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,11 +47,6 @@ public class Software extends AppCompatActivity {
         //Adapter dem Listview hinzufügen
         ListView listViewAbout = findViewById(R.id.listview_software);
         listViewAbout.setAdapter(adapter);
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_about, menu);
-        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

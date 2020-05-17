@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,11 +62,6 @@ public class ExportImport extends AppCompatActivity {
             TextView warning = findViewById(R.id.textViewWarning);
             warning.setVisibility(View.VISIBLE);
         }
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_about, menu);
-        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
