@@ -8,8 +8,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class Permissions {
-    public final static int CODE_REQUEST_READ = 7685;
-    public final static int CODE_REQUEST_WRITE = 4356;
+    public static final int REQUEST_CODE_READ = 7685;
+    public static final int REQUEST_CODE_WRITE = 4356;
+
+    private Permissions() {
+    }
 
     public static boolean checkReadPermission(Activity activity) {
         return ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -33,13 +36,13 @@ public class Permissions {
 
     public static void getReadPermission(Activity activity) {
         ActivityCompat.requestPermissions(activity,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE_REQUEST_READ);
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ);
 
     }
 
     public static void getWritePermission(Activity activity) {
         ActivityCompat.requestPermissions(activity,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_REQUEST_WRITE);
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE);
 
     }
 }

@@ -26,8 +26,8 @@ import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.ExportImportViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_REQUEST_READ;
-import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.CODE_REQUEST_WRITE;
+import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.REQUEST_CODE_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.helper.Permissions.REQUEST_CODE_WRITE;
 
 public class ExportImport extends AppCompatActivity {
     private ExportImportViewModel exportImportViewModel;
@@ -108,10 +108,10 @@ public class ExportImport extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case CODE_REQUEST_READ:
+            case REQUEST_CODE_READ:
                 codeRequestRead(grantResults);
                 break;
-            case CODE_REQUEST_WRITE:
+            case REQUEST_CODE_WRITE:
                 codeRequestWrite(grantResults);
                 break;
             default:

@@ -16,13 +16,13 @@ import coolpharaoh.tee.speicher.tea.timer.R;
  * Created by paseb on 14.02.2018.
  */
 
-public class SettingListAdapter extends BaseAdapter {
+public class SettingsListAdapter extends BaseAdapter {
 
 
     private final LayoutInflater inflater;
     private final List<ListRowItem> items;
 
-    public SettingListAdapter(Activity context, List<ListRowItem> items) {
+    public SettingsListAdapter(Activity context, List<ListRowItem> items) {
         super();
 
         this.items = items;
