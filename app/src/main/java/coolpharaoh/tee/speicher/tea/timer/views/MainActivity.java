@@ -1,27 +1,29 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tooltip.Tooltip;
+
+import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -38,58 +40,157 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        defineToolbarAsActionbar();
 
-        //define toolbar as a actionbar
+        mainActivityViewModel = new MainActivityViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
+
+        initializeSortButton();
+        initializeTeaList();
+        initializeNewTeaButton();
+        showRatingDialogOnStart();
+    }
+
+    private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.app_name);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(null);
-        }
+        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+    }
 
-        //get listView
-        ListView tealist = findViewById(R.id.listViewTealist);
-
-        mainActivityViewModel = new MainActivityViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
-
+    private void initializeSortButton() {
         Button buttonSort = findViewById(R.id.toolbar_sort);
         buttonSort.setOnClickListener(view -> dialogSortOption());
         buttonSort.setOnLongClickListener(this);
+    }
 
-        //bind list with adapter
+    private void dialogSortOption() {
+        final String[] items = getResources().getStringArray(R.array.main_sort_options);
+        int checkedItem = mainActivityViewModel.getSort();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MaterialThemeDialog);
+        builder.setIcon(R.drawable.sort_black);
+        builder.setTitle(R.string.main_dialog_sort_title);
+        builder.setSingleChoiceItems(items, checkedItem, this::changeSortOption);
+        builder.setNegativeButton(R.string.main_dialog_sort_negative, null);
+        builder.create().show();
+    }
+
+    private void changeSortOption(DialogInterface dialog, int item) {
+        mainActivityViewModel.setSort(item);
+        dialog.dismiss();
+    }
+
+    private void initializeTeaList() {
+        ListView teaList = findViewById(R.id.listViewTealist);
+
+        bindTeaListWithTeaAdapterAndObserve(teaList);
+
+        teaList.setOnItemClickListener((parent, view, position, id) -> navigateToShowTea(position));
+
+        registerForContextMenu(teaList);
+    }
+
+    private void bindTeaListWithTeaAdapterAndObserve(ListView tealist) {
         mainActivityViewModel.getTeas().observe(this, mTeas -> {
             adapter = new TeaAdapter(MainActivity.this, mTeas);
             //add adapter to listview
             tealist.setAdapter(adapter);
         });
+    }
 
-        //added menu (delete, change)
-        registerForContextMenu(tealist);
+    private void navigateToShowTea(int position) {
+        Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
+        showteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(position).getId());
+        startActivity(showteaScreen);
+    }
 
-        tealist.setOnItemClickListener((parent, view, position, id) -> {
-            //create new intent
-            Intent showteaScreen = new Intent(MainActivity.this, ShowTea.class);
-            showteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(position).getId());
-            //start Intent and switch to the other activity
-            startActivity(showteaScreen);
-        });
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.listViewTealist) {
+            showEditAndDeleteMenu(menu, (AdapterView.AdapterContextMenuInfo) menuInfo);
+        }
+    }
 
-        //Button NewTea + Aktion
+    private void showEditAndDeleteMenu(ContextMenu menu, AdapterView.AdapterContextMenuInfo menuInfo) {
+        menu.setHeaderTitle(mainActivityViewModel.getTeaByPosition(menuInfo.position).getName());
+
+        String[] menuItems = getResources().getStringArray(R.array.itemMenu);
+        for (int i = 0; i < menuItems.length; i++) {
+            menu.add(Menu.NONE, i, i, menuItems[i]);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        return editOrDeleteTea(item);
+    }
+
+    private boolean editOrDeleteTea(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.itemMenu);
+        String menuItemName = menuItems[menuItemIndex];
+        String editOption = menuItems[0];
+        String deleteOption = menuItems[1];
+
+        if (menuItemName.equals(editOption)) {
+            navigateToNewOrEditTea(mainActivityViewModel.getTeaByPosition(info.position).getId());
+        } else if (menuItemName.equals(deleteOption)) {
+            mainActivityViewModel.deleteTea(info.position);
+        }
+        return true;
+    }
+
+    private void initializeNewTeaButton() {
         FloatingActionButton newTea = findViewById(R.id.newtea);
-        newTea.setOnClickListener(v -> {
-            //create new intent
-            Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
-            //start Intent and switch to the other activity
-            startActivity(newteaScreen);
-        });
+        newTea.setOnClickListener(v -> navigateToNewOrEditTea(null));
         newTea.setOnLongClickListener(this);
+    }
 
-        //Show theses Hints only on start of the application
+    private void navigateToNewOrEditTea(Long teaId) {
+        Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
+        if (teaId != null) {
+            newteaScreen.putExtra("teaId", teaId);
+        }
+        startActivity(newteaScreen);
+    }
+
+    private void showRatingDialogOnStart() {
         if (startApplication) {
             startApplication = false;
+            showRatingDialogOrIncrementRateCounter();
+        }
+    }
 
-            dialogMainRating();
+    private void showRatingDialogOrIncrementRateCounter() {
+        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
+            showRatingDialog();
+        } else {
+            mainActivityViewModel.incrementMainRatecounter();
+        }
+    }
+
+    private void showRatingDialog() {
+        mainActivityViewModel.resetMainRatecounter();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.main_dialog_rating_header);
+        builder.setMessage(R.string.main_dialog_rating);
+        builder.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
+        builder.setNeutralButton(R.string.main_dialog_rating_neutral, null);
+        builder.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));
+        builder.show();
+    }
+
+    private void navigateToStoreForRating() {
+        mainActivityViewModel.setMainRateAlert(false);
+
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
 
@@ -104,55 +205,29 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            //create new intent
-            Intent settingScreen = new Intent(MainActivity.this, Settings.class);
-            //start intent and switch to the other activity
-            startActivity(settingScreen);
+            navigateToSettings();
         } else if (id == R.id.action_exportImport) {
-            Intent exportImportScreen = new Intent(MainActivity.this, ExportImport.class);
-            startActivity(exportImportScreen);
+            navigateToExportImport();
         } else if (id == R.id.action_about) {
-            Intent aboutScreen = new Intent(MainActivity.this, About.class);
-            startActivity(aboutScreen);
+            navigateToAbout();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId() == R.id.listViewTealist) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            menu.setHeaderTitle(mainActivityViewModel.getTeaByPosition(info.position).getName());
-
-            String[] menuItems = getResources().getStringArray(R.array.itemMenu);
-            for (int i = 0; i < menuItems.length; i++) {
-                menu.add(Menu.NONE, i, i, menuItems[i]);
-            }
-        }
+    private void navigateToSettings() {
+        Intent settingScreen = new Intent(MainActivity.this, Settings.class);
+        startActivity(settingScreen);
     }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int menuItemIndex = item.getItemId();
-        String[] menuItems = getResources().getStringArray(R.array.itemMenu);
-        String menuItemName = menuItems[menuItemIndex];
-        String editOption = menuItems[0];
-        String deleteOption = menuItems[1];
+    private void navigateToExportImport() {
+        Intent exportImportScreen = new Intent(MainActivity.this, ExportImport.class);
+        startActivity(exportImportScreen);
+    }
 
-        if (menuItemName.equals(editOption)) {
-            //create new intent
-            Intent newteaScreen = new Intent(MainActivity.this, NewTea.class);
-            newteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(info.position).getId());
-
-            //start intent and switch to the other activity
-            startActivity(newteaScreen);
-        } else if (menuItemName.equals(deleteOption)) {
-            int position = info.position;
-            mainActivityViewModel.deleteTea(position);
-        }
-        return true;
+    private void navigateToAbout() {
+        Intent aboutScreen = new Intent(MainActivity.this, About.class);
+        startActivity(aboutScreen);
     }
 
     @Override
@@ -166,31 +241,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         return true;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mainActivityViewModel.refreshTeas();
-    }
-
-    private void dialogSortOption() {
-        final String[] items = getResources().getStringArray(R.array.main_sort_options);
-
-        //Get CheckedItem
-        int checkedItem = mainActivityViewModel.getSort();
-
-        // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                R.style.MaterialThemeDialog);
-        builder.setIcon(R.drawable.sort_black);
-        builder.setTitle(R.string.main_dialog_sort_title);
-        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
-            mainActivityViewModel.setSort(item);
-            dialog.dismiss();
-        });
-        builder.setNegativeButton(R.string.main_dialog_sort_negative, null);
-        builder.create().show();
-    }
-
     private void showTooltip(View v, int gravity, String text) {
         new Tooltip.Builder(v)
                 .setText(text)
@@ -202,35 +252,9 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 .show();
     }
 
-    private void dialogMainRating() {
-        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
-            mainActivityViewModel.resetMainRatecounter();
-
-            ViewGroup parent = findViewById(R.id.main_parent);
-
-            LayoutInflater inflater = getLayoutInflater();
-            View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogmainrating, parent, false);
-
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setView(alertLayoutDialogProblem);
-            adb.setTitle(R.string.main_dialog_rating_header);
-            adb.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> {
-                mainActivityViewModel.setMainRateAlert(false);
-
-                final String appPackageName = getPackageName();
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
-            });
-            adb.setNeutralButton(R.string.main_dialog_rating_neutral, (dialog, which) -> {
-            });
-            adb.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));
-            adb.show();
-
-        } else {
-            mainActivityViewModel.incrementMainRatecounter();
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityViewModel.refreshTeas();
     }
 }
