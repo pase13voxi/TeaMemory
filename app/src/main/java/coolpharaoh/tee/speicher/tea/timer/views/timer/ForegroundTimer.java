@@ -11,7 +11,6 @@ public class ForegroundTimer {
 
     //general
     private final Context context;
-    private final long teaId;
     private final SharedTimerPreferences sharedPreferences;
     private final BackgroundTimer backgroundTimer;
 
@@ -19,18 +18,19 @@ public class ForegroundTimer {
     private final Intent broadcastIntent = new Intent(COUNTDOWN_BR);
 
     //helper
+    private long teaId;
     private long time = 0;
     private long timeToStart;
     private TimerState timerState = TimerState.STOPPED;
 
-    public ForegroundTimer(final Context context, final long teaId) {
+    public ForegroundTimer(final Context context) {
         this.context = context;
-        this.teaId = teaId;
         sharedPreferences = new SharedTimerPreferences(context);
         backgroundTimer = new BackgroundTimer(context, sharedPreferences);
     }
 
-    public void startForegroundTimer(long time) {
+    public void startForegroundTimer(long time, long teaId) {
+        this.teaId = teaId;
         this.time = time;
         initTimer();
         startTimer();
