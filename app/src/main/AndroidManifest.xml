@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.NewTea"
+            android:name=".views.newtea.NewTea"
             android:label="Create/Edit tea"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">

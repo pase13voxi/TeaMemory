@@ -29,6 +29,7 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.MainActivityViewModel;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.TeaAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     private MainActivityViewModel mainActivityViewModel;

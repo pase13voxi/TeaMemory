@@ -45,6 +45,7 @@ import coolpharaoh.tee.speicher.tea.timer.viewmodels.ShowTeaViewModel;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TimeHelper;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.CounterListAdapter;
 import coolpharaoh.tee.speicher.tea.timer.views.listadapter.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.timer.ForegroundTimer;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {

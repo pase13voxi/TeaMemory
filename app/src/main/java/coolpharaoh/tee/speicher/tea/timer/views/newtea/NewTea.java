@@ -1,7 +1,6 @@
-package coolpharaoh.tee.speicher.tea.timer.views;
+package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -32,21 +31,20 @@ import java.util.regex.Pattern;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.NewTeaViewModel;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.HintConversation;
 import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.ShowTea;
 
 
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener {
 
     private enum Variety {
-        BlackTea, GreenTea, YellowTea, WhiteTea, OolongTea, PuErhTea,
-        HerbalTea, FruitTea, RooibusTea, Other
+        BLACK_TEA, GREEN_TEA, YELLOW_TEA, WHITE_TEA, OOLONG_TEA, PU_ERH_TEA,
+        HERBAL_TEA, FRUIT_TEA, ROOIBUS_TEA, OTHER
     }
 
-    private Variety variety = Variety.BlackTea;
+    private Variety variety = Variety.BLACK_TEA;
     private ColorPickerDialog colorPickerDialog;
-    private int color;
     private String amountUnit = "Ts";
 
 
@@ -54,7 +52,8 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private Spinner spinnerTeaVariety;
     private CheckBox checkboxTeaSort;
     private EditText editTextTeaSort;
-    private GradientDrawable buttonColorSape;
+    private Button buttonColor;
+    private ButtonColorShape buttonColorShape;
     private EditText editTextName;
     private EditText editTextTemperature;
     private Button buttonShowCoolDowntime;
@@ -62,6 +61,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private Button buttonAutofillCoolDownTime;
     private EditText editTextSteepingTime;
     private EditText editTextAmount;
+    private Spinner spinnerAmount;
     private TextView textViewInfusion;
     private Button leftArrow;
     private Button rightArrow;
@@ -76,66 +76,13 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tea);
+        hideKeyboardAtFirst();
+        defineToolbarAsActionbar();
+        enableAndShowBackButton();
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        //Toolbar definieren und erstellen
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText(R.string.newtea_heading);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(null);
-        }
-
-        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //Eingabefelder bestimmen
-        textViewTeaSort = findViewById(R.id.textViewTeaSort);
-        spinnerTeaVariety = findViewById(R.id.spinnerTeaSort);
-        checkboxTeaSort = findViewById(R.id.checkBoxSelfInput);
-        editTextTeaSort = findViewById(R.id.editTextSelfInput);
-        Button buttonColor = findViewById(R.id.buttonColor);
-        buttonColorSape = (GradientDrawable) buttonColor.getBackground();
-        editTextName = findViewById(R.id.editTextName);
-        editTextTemperature = findViewById(R.id.editTextTemperature);
-        buttonShowCoolDowntime = findViewById(R.id.buttonShowCoolDownTime);
-        editTextCoolDownTime = findViewById(R.id.editTextCoolDownTime);
-        buttonAutofillCoolDownTime = findViewById(R.id.buttonAutofillCoolDownTime);
-        editTextSteepingTime = findViewById(R.id.editTextTime);
-        editTextAmount = findViewById(R.id.editTextAmount);
-        Spinner spinnerAmount = findViewById(R.id.spinnerAmountUnit);
-        textViewInfusion = findViewById(R.id.textViewCountInfusion);
-        leftArrow = findViewById(R.id.buttonArrowLeft);
-        rightArrow = findViewById(R.id.buttonArrowRight);
-        deleteInfusion = findViewById(R.id.buttonDeleteInfusion);
-        addInfusion = findViewById(R.id.buttonAddInfusion);
-
-        color = ColorConversation.getVarietyColor(Variety.BlackTea.ordinal(), getApplicationContext());
-
-        //feste Texte setzten
-        textViewTeaSort.setText(R.string.newtea_tea_variety);
-        editTextName.setHint(getResources().getString(R.string.newtea_hint_name));
-        spinnerTeaVariety.setPrompt(getResources().getString(R.string.newtea_tea_variety));
-        checkboxTeaSort.setText(R.string.newtea_by_hand);
-        editTextTeaSort.setHint(R.string.newtea_tea_variety);
-        buttonColorSape.setColor(color);
-        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, 1, ". "));
-
-        //Setzte Spinner Groß
-        ArrayAdapter<CharSequence> spinnerVarietyAdapter = ArrayAdapter.createFromResource(
-                this, R.array.variety_teas, R.layout.spinner_item_varietyoftea);
-
-        spinnerVarietyAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_varietyoftea);
-        spinnerTeaVariety.setAdapter(spinnerVarietyAdapter);
-
-        //Setzte Spinner Groß
-        ArrayAdapter<CharSequence> spinnerAmountAdapter = ArrayAdapter.createFromResource(
-                this, R.array.newtea_amount, R.layout.spinner_item_amount_unit);
-
-        spinnerAmountAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_amount_unit);
-        spinnerAmount.setAdapter(spinnerAmountAdapter);
+        declareViewElements();
+        initializeSpinnerWithBigCharacters();
+        setDefaultTexts();
 
         //showTea wird übergeben, falls die Navigation von showTea erfolgt
         showTea = this.getIntent().getBooleanExtra("showTea", false);
@@ -169,19 +116,17 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             } else {
                 spinnerTeaVariety.setSelection(spinnerId);
             }
-            color = newTeaViewModel.getColor();
-            buttonColorSape.setColor(color);
+
+            buttonColorShape.setColor(newTeaViewModel.getColor());
             colorChange = true;
+
             editTextName.setText(newTeaViewModel.getName());
             //richtige SpinnerId bekommen
             amountUnit = newTeaViewModel.getAmountkind();
-            switch (amountUnit) {
-                case "Ts":
-                    spinnerAmount.setSelection(0);
-                    break;
-                case "Gr":
-                    spinnerAmount.setSelection(1);
-                    break;
+            if ("Ts".equals(amountUnit)) {
+                spinnerAmount.setSelection(0);
+            } else if ("Gr".equals(amountUnit)) {
+                spinnerAmount.setSelection(1);
             }
             if (newTeaViewModel.getAmount() != -500)
                 editTextAmount.setText(String.valueOf(newTeaViewModel.getAmount()));
@@ -208,12 +153,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 variety = Variety.values()[position];
                 //Farbe soll am Anfang nicht geändert werden, wenn der Tee geändert wird
                 if (!colorChange) {
-                    color = ColorConversation.getVarietyColor(variety.ordinal(), getApplicationContext());
-                    buttonColorSape.setColor(color);
+                    buttonColorShape.setColorByVariety(variety.ordinal());
                 } else {
                     colorChange = false;
                 }
-                if (variety.equals(Variety.Other)) {
+                if (variety.equals(Variety.OTHER)) {
                     checkboxTeaSort.setVisibility(View.VISIBLE);
                 } else {
                     checkboxTeaSort.setVisibility(View.INVISIBLE);
@@ -241,12 +185,9 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         });
 
         buttonColor.setOnClickListener(view -> {
-            colorPickerDialog = new ColorPickerDialog(NewTea.this, color);
+            colorPickerDialog = new ColorPickerDialog(NewTea.this, buttonColorShape.getColor());
             colorPickerDialog.setTitle(getResources().getString(R.string.newtea_color_dialog_title));
-            colorPickerDialog.setOnColorChangedListener(c -> {
-                color = c;
-                buttonColorSape.setColor(color);
-            });
+            colorPickerDialog.setOnColorChangedListener(color -> buttonColorShape.setColor(color));
             colorPickerDialog.show();
         });
         buttonColor.setOnLongClickListener(this);
@@ -255,13 +196,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         spinnerAmount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        amountUnit = "Ts";
-                        break;
-                    case 1:
-                        amountUnit = "Gr";
-                        break;
+                if (position == 0) {
+                    amountUnit = "Ts";
+                } else if (position == 1) {
+                    amountUnit = "Gr";
                 }
                 sethints();
             }
@@ -340,6 +278,68 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         buttonAutofillCoolDownTime.setOnLongClickListener(this);
     }
 
+    private void hideKeyboardAtFirst() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void defineToolbarAsActionbar() {
+        Toolbar toolbar = findViewById(R.id.tool_bar);
+        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        mToolbarCustomTitle.setText(R.string.newtea_heading);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+    }
+
+    private void enableAndShowBackButton() {
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void declareViewElements() {
+        textViewTeaSort = findViewById(R.id.textViewTeaSort);
+        spinnerTeaVariety = findViewById(R.id.spinnerTeaSort);
+        checkboxTeaSort = findViewById(R.id.checkBoxSelfInput);
+        editTextTeaSort = findViewById(R.id.editTextSelfInput);
+        buttonColor = findViewById(R.id.buttonColor);
+        buttonColorShape = new ButtonColorShape(buttonColor.getBackground(), getApplicationContext());
+        editTextName = findViewById(R.id.editTextName);
+        editTextTemperature = findViewById(R.id.editTextTemperature);
+        buttonShowCoolDowntime = findViewById(R.id.buttonShowCoolDownTime);
+        editTextCoolDownTime = findViewById(R.id.editTextCoolDownTime);
+        buttonAutofillCoolDownTime = findViewById(R.id.buttonAutofillCoolDownTime);
+        editTextSteepingTime = findViewById(R.id.editTextTime);
+        editTextAmount = findViewById(R.id.editTextAmount);
+        spinnerAmount = findViewById(R.id.spinnerAmountUnit);
+        textViewInfusion = findViewById(R.id.textViewCountInfusion);
+        leftArrow = findViewById(R.id.buttonArrowLeft);
+        rightArrow = findViewById(R.id.buttonArrowRight);
+        deleteInfusion = findViewById(R.id.buttonDeleteInfusion);
+        addInfusion = findViewById(R.id.buttonAddInfusion);
+    }
+
+    private void initializeSpinnerWithBigCharacters() {
+        initializeSpinnerWithBigCharacters(R.array.variety_teas, R.layout.spinner_item_varietyoftea, R.layout.spinner_dropdown_item_varietyoftea, spinnerTeaVariety);
+
+        initializeSpinnerWithBigCharacters(R.array.newtea_amount, R.layout.spinner_item_amount_unit, R.layout.spinner_dropdown_item_amount_unit, spinnerAmount);
+    }
+
+    private void initializeSpinnerWithBigCharacters(int texts, int spinnerItemLayout, int dropdownItemLayout, Spinner spinner) {
+        ArrayAdapter<CharSequence> spinnerVarietyAdapter = ArrayAdapter.createFromResource(
+                this, texts, spinnerItemLayout);
+
+        spinnerVarietyAdapter.setDropDownViewResource(dropdownItemLayout);
+        spinner.setAdapter(spinnerVarietyAdapter);
+    }
+
+    private void setDefaultTexts() {
+        textViewTeaSort.setText(R.string.newtea_tea_variety);
+        editTextName.setHint(getResources().getString(R.string.newtea_hint_name));
+        spinnerTeaVariety.setPrompt(getResources().getString(R.string.newtea_tea_variety));
+        checkboxTeaSort.setText(R.string.newtea_by_hand);
+        editTextTeaSort.setHint(R.string.newtea_tea_variety);
+        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, 1, ". "));
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_tea, menu);
 
@@ -381,7 +381,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             String sortOfTea;
             if (checkboxTeaSort.isChecked()) {
                 sortOfTea = editTextTeaSort.getText().toString();
-                sortValid = !(sortOfTea.length() > 30);
+                sortValid = sortOfTea.length() <= 30;
             } else {
                 sortOfTea = (String) spinnerTeaVariety.getSelectedItem();
             }
@@ -410,10 +410,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
                 if (teaId != 0) {
                     //Tee wird geändert
-                    newTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, color);
+                    newTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, buttonColorShape.getColor());
                 } else {
                     //erstelle Tee
-                    newTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, color);
+                    newTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, buttonColorShape.getColor());
                 }
                 if (!showTea) {
                     //wechsel das Fenster

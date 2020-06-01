@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="coolpharaoh.tee.speicher.tea.timer.views.NewTea">
+    tools:context="coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea">
 
     <include
         android:id="@id/tool_bar"
