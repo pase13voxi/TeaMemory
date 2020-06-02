@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
 
 import com.tooltip.Tooltip;
 
@@ -654,10 +653,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             return navigateToEditTea();
         } else if (id == R.id.action_counter) {
             dialogCounter();
-        }
-
-        if (id == R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
         }
 
         return super.onOptionsItemSelected(item);

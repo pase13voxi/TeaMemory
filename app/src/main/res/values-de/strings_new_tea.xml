@@ -68,6 +68,7 @@
     <string name="newtea_error_cant_save">Speichern konnte nicht durchgeführt werden.</string>
     <string name="newtea_error_no_name">Geben Sie bitte den Namen an.</string>
     <string name="newtea_count_infusion">%1$d%2$s Aufguss</string>
+    <string name="newtea_count_infusion_first">1. Aufguss</string>
     <string name="newtea_tooltip_choosecolor">Farbe auswählen</string>
     <string name="newtea_tooltip_arrowleft">Vorheriger Aufguss</string>
     <string name="newtea_tooltip_arrowright">Nächster Aufguss</string>

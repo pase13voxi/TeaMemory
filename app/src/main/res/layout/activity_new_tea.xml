@@ -21,10 +21,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewTeaSort"
+                android:id="@+id/textViewTeaVariety"
+                android:text="@string/newtea_tea_variety"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="center_vertical"
-                android:layout_alignBottom="@+id/spinnerTeaSort"
+                android:layout_alignBottom="@+id/spinnerTeaVariety"
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="8dip"
                 android:layout_marginStart="4dip"
@@ -33,12 +34,12 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinnerTeaSort"
+                android:id="@+id/spinnerTeaVariety"
                 android:transitionName="Teeart"
                 android:entries="@array/variety_teas"
                 android:prompt="@string/newtea_tea_variety"
                 android:spinnerMode="dialog"
-                android:layout_toEndOf="@+id/textViewTeaSort"
+                android:layout_toEndOf="@+id/textViewTeaVariety"
                 android:layout_marginTop="10dip"
                 android:layout_marginStart="20dip"
                 style="@android:style/Widget.Holo.Light.Spinner" />
@@ -48,9 +49,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkBoxSelfInput"
+                android:text="@string/newtea_by_hand"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_alignBottom="@id/spinnerTeaSort"
-                android:layout_toEndOf="@id/spinnerTeaSort"
+                android:layout_alignBottom="@id/spinnerTeaVariety"
+                android:layout_toEndOf="@id/spinnerTeaVariety"
                 android:layout_marginBottom="4dip"
                 android:visibility="invisible"/>
 
@@ -63,9 +65,9 @@
                 android:importantForAutofill="no"
                 android:ems="10"
                 android:id="@+id/editTextSelfInput"
-                android:layout_alignBottom="@id/spinnerTeaSort"
+                android:layout_alignBottom="@id/spinnerTeaVariety"
                 android:layout_alignParentStart="true"
-                android:layout_alignEnd="@id/spinnerTeaSort"
+                android:layout_alignEnd="@id/spinnerTeaVariety"
                 android:visibility="invisible"/>
 
             <TextView
@@ -74,7 +76,7 @@
                 android:id="@+id/textViewChooseColor"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/newtea_color_label"
-                android:layout_below="@id/spinnerTeaSort"
+                android:layout_below="@id/spinnerTeaVariety"
                 android:layout_marginTop="20dip"
                 android:layout_marginLeft="4dip"
                 android:layout_marginRight="4dip"
@@ -85,7 +87,7 @@
                 android:layout_height="25dip"
                 android:id="@+id/buttonColor"
                 android:background="@drawable/button_color"
-                android:layout_below="@id/spinnerTeaSort"
+                android:layout_below="@id/spinnerTeaVariety"
                 android:layout_toEndOf="@id/textViewChooseColor"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="15dp"
@@ -177,6 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textViewCountInfusion"
+                    android:text="@string/newtea_count_infusion_first"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/grey"
                     android:layout_centerInParent="true" />
