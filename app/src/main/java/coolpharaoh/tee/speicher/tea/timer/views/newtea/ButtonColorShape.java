@@ -14,6 +14,8 @@ class ButtonColorShape {
     private final GradientDrawable gradientDrawable;
     private int color;
 
+    private boolean changeColor = false;
+
     ButtonColorShape(Drawable drawable, Context context) {
         gradientDrawable = (GradientDrawable) drawable;
         this.context = context;
@@ -22,20 +24,26 @@ class ButtonColorShape {
     }
 
     private void setDefaultColor() {
-        setColorByVariety(VARIETY_BLACK_TEA);
+        int varietyColor = ColorConversation.getVarietyColor(VARIETY_BLACK_TEA, context);
+        setColor(varietyColor);
     }
 
-    void setColor(int argb) {
-        this.color = argb;
-        gradientDrawable.setColor(argb);
+    void setColorByVariety(int variety) {
+        //Bad Style! Color should only be adjusted on the second call
+        if (changeColor) {
+            int varietyColor = ColorConversation.getVarietyColor(variety, context);
+            setColor(varietyColor);
+        } else {
+            changeColor = true;
+        }
+    }
+
+    void setColor(int color) {
+        this.color = color;
+        gradientDrawable.setColor(color);
     }
 
     int getColor() {
         return color;
-    }
-
-    void setColorByVariety(int variety) {
-        color = ColorConversation.getVarietyColor(variety, context);
-        gradientDrawable.setColor(color);
     }
 }
