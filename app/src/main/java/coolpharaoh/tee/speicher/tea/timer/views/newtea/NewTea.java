@@ -462,54 +462,76 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         return super.onOptionsItemSelected(item);
     }
 
-    private void navigateToShowTeaActivity() {
-        Intent showteaScreen = new Intent(NewTea.this, ShowTea.class);
-        showteaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
-        startActivity(showteaScreen);
-        finish();
+    private void addTea() {
+        String nameInput = editTextName.getText().toString();
+        String varietyInput = getVarietyInput();
+        String amountInput = editTextAmount.getText().toString();
+
+        if (inputIsValid(nameInput, varietyInput, amountInput)) {
+            createOrEditTea(varietyInput, nameInput, parseAmountInteger(amountInput));
+            navigateToMainOrShowTea();
+        }
     }
 
-    //TODO auseinanderziehen check + Fehlermeldung in Methoden ziehen
-    private void addTea() {
-        //Der Name muss eingegeben werden
-        if (!editTextName.getText().toString().equals("")) {
-            //Attribute auslesen
-            boolean varietyValid = true;
-            String varietyOfTea;
-            if (checkboxTeaSort.isChecked()) {
-                varietyOfTea = editTextTeaSort.getText().toString();
-                varietyValid = varietyOfTea.length() <= 30;
-            } else {
-                varietyOfTea = (String) spinnerTeaVariety.getSelectedItem();
-            }
-            //Ist der Name Valide
-            String name = editTextName.getText().toString();
-            boolean nameValid = isNameValid(name);
-
-            //Ist teelamass nicht gesetzt so ist es -500
-            int amount = -500;
-            boolean amountValid = isAmountValid(editTextAmount.getText().toString());
-            if (amountValid && !editTextAmount.getText().toString().equals("")) {
-                amount = Integer.parseInt(editTextAmount.getText().toString());
-            }
-
-            //Überprüfe ob alle Werte Valide sind
-            if (!varietyValid) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_30Char, Toast.LENGTH_SHORT);
-                toast.show();
-            } else if (!nameValid) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_name, Toast.LENGTH_SHORT);
-                toast.show();
-            } else if (!amountValid) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_amount, Toast.LENGTH_SHORT);
-                toast.show();
-            } else if (changeInfusion()) {
-                createOrEditTea(varietyOfTea, name, amount);
-                navigateToMainOrShowTea();
-            }
+    private String getVarietyInput() {
+        if (checkboxTeaSort.isChecked()) {
+            return editTextTeaSort.getText().toString();
         } else {
+            return (String) spinnerTeaVariety.getSelectedItem();
+        }
+    }
+
+    private boolean inputIsValid(String nameInput, String varietyInput, String amountInput) {
+        return nameIsNotEmpty(nameInput) &&
+                nameIsValid(nameInput) &&
+                varietyIsValid(varietyInput) &&
+                amountIsValid(amountInput) &&
+                changeInfusion();
+    }
+
+    private boolean nameIsNotEmpty(String nameInput) {
+        if (nameInput.equals("")) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_no_name, Toast.LENGTH_SHORT);
             toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean nameIsValid(String nameInput) {
+        if (nameInput.length() > 300) {
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_name, Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean varietyIsValid(String varietyInput) {
+        if (varietyInput.length() > 30) {
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_30Char, Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean amountIsValid(String amountInput) {
+        if (amountInput.equals("")) {
+            return true;
+        } else if (amountInput.contains(".") || amountInput.length() > 3) {
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_amount, Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private int parseAmountInteger(String amountInput) {
+        if (amountInput.equals("")) {
+            return -500;
+        } else {
+            return Integer.parseInt(amountInput);
         }
     }
 
@@ -529,8 +551,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         }
     }
 
-    private boolean isNameValid(String name) {
-        return name.length() < 300;
+    private void navigateToShowTeaActivity() {
+        Intent showteaScreen = new Intent(NewTea.this, ShowTea.class);
+        showteaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
+        startActivity(showteaScreen);
+        finish();
     }
 
     private boolean isTemperatureValid(String temperature) {
@@ -551,16 +576,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             }
         }
         return temperatureValid;
-    }
-
-    private boolean isAmountValid(String teelamass) {
-        boolean amountValid = true;
-        if (!teelamass.equals("")) {
-            if (teelamass.contains(".") || teelamass.length() > 3) {
-                amountValid = false;
-            }
-        }
-        return amountValid;
     }
 
     private boolean isTimeValid(String time) {
