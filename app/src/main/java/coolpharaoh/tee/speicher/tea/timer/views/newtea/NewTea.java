@@ -416,7 +416,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void autofillCoolDownTime() {
         //Ist die Temperatur nicht gesetzt, so ist sie -500
         int temperatureCelsius = -500;
-        boolean temperatureValid = temperatureValid(editTextTemperature.getText().toString());
+        boolean temperatureValid = isTemperatureValid(editTextTemperature.getText().toString());
         if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
             temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
         }
@@ -469,32 +469,32 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         finish();
     }
 
-    //TODO auseinanderziehen
+    //TODO auseinanderziehen check + Fehlermeldung in Methoden ziehen
     private void addTea() {
         //Der Name muss eingegeben werden
         if (!editTextName.getText().toString().equals("")) {
             //Attribute auslesen
-            boolean sortValid = true;
-            String sortOfTea;
+            boolean varietyValid = true;
+            String varietyOfTea;
             if (checkboxTeaSort.isChecked()) {
-                sortOfTea = editTextTeaSort.getText().toString();
-                sortValid = sortOfTea.length() <= 30;
+                varietyOfTea = editTextTeaSort.getText().toString();
+                varietyValid = varietyOfTea.length() <= 30;
             } else {
-                sortOfTea = (String) spinnerTeaVariety.getSelectedItem();
+                varietyOfTea = (String) spinnerTeaVariety.getSelectedItem();
             }
             //Ist der Name Valide
             String name = editTextName.getText().toString();
-            boolean nameValid = nameValid(name);
+            boolean nameValid = isNameValid(name);
 
             //Ist teelamass nicht gesetzt so ist es -500
             int amount = -500;
-            boolean amountValid = amountValid(editTextAmount.getText().toString());
+            boolean amountValid = isAmountValid(editTextAmount.getText().toString());
             if (amountValid && !editTextAmount.getText().toString().equals("")) {
                 amount = Integer.parseInt(editTextAmount.getText().toString());
             }
 
             //Überprüfe ob alle Werte Valide sind
-            if (!sortValid) {
+            if (!varietyValid) {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_30Char, Toast.LENGTH_SHORT);
                 toast.show();
             } else if (!nameValid) {
@@ -504,19 +504,8 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_amount, Toast.LENGTH_SHORT);
                 toast.show();
             } else if (changeInfusion()) {
-
-                if (teaId != 0) {
-                    //Tee wird geändert
-                    newTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, buttonColorShape.getColor());
-                } else {
-                    //erstelle Tee
-                    newTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, buttonColorShape.getColor());
-                }
-                if (!showTea) {
-                    finish();
-                } else {
-                    navigateToShowTeaActivity();
-                }
+                createOrEditTea(varietyOfTea, name, amount);
+                navigateToMainOrShowTea();
             }
         } else {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_no_name, Toast.LENGTH_SHORT);
@@ -524,11 +513,27 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         }
     }
 
-    private boolean nameValid(String name) {
+    private void createOrEditTea(String sortOfTea, String name, int amount) {
+        if (teaId != 0) {
+            newTeaViewModel.editTea(name, sortOfTea, amount, amountUnit, buttonColorShape.getColor());
+        } else {
+            newTeaViewModel.createNewTea(name, sortOfTea, amount, amountUnit, buttonColorShape.getColor());
+        }
+    }
+
+    private void navigateToMainOrShowTea() {
+        if (!showTea) {
+            finish();
+        } else {
+            navigateToShowTeaActivity();
+        }
+    }
+
+    private boolean isNameValid(String name) {
         return name.length() < 300;
     }
 
-    private boolean temperatureValid(String temperature) {
+    private boolean isTemperatureValid(String temperature) {
         boolean temperatureValid = true;
         if (!temperature.equals("")) {
             if (temperature.contains(".") || temperature.length() > 3) {
@@ -548,7 +553,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         return temperatureValid;
     }
 
-    private boolean amountValid(String teelamass) {
+    private boolean isAmountValid(String teelamass) {
         boolean amountValid = true;
         if (!teelamass.equals("")) {
             if (teelamass.contains(".") || teelamass.length() > 3) {
@@ -558,7 +563,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         return amountValid;
     }
 
-    private boolean timeValid(String time) {
+    private boolean isTimeValid(String time) {
         boolean timeValid;
         //ist die Zeit gesetzt so wird sie geprüft
         timeValid = time.length() < 6;
@@ -590,21 +595,21 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         //Ist die Temperatur nicht gesetzt, so ist sie -500
         int temperature = -500;
-        boolean temperatureValid = temperatureValid(editTextTemperature.getText().toString());
+        boolean temperatureValid = isTemperatureValid(editTextTemperature.getText().toString());
         if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
             temperature = Integer.parseInt(editTextTemperature.getText().toString());
         }
 
         //Ist Zeit nicht gesetzt so ist sie null
         String coolDownTime = null;
-        boolean coolDownTimeValid = timeValid(editTextCoolDownTime.getText().toString());
+        boolean coolDownTimeValid = isTimeValid(editTextCoolDownTime.getText().toString());
         if (coolDownTimeValid && !editTextCoolDownTime.getText().toString().equals("")) {
             coolDownTime = editTextCoolDownTime.getText().toString();
         }
 
         //Ist Zeit nicht gesetzt so ist sie null
         String time = null;
-        boolean timeValid = timeValid(editTextSteepingTime.getText().toString());
+        boolean timeValid = isTimeValid(editTextSteepingTime.getText().toString());
         if (timeValid && !editTextSteepingTime.getText().toString().equals("")) {
             time = editTextSteepingTime.getText().toString();
         }
