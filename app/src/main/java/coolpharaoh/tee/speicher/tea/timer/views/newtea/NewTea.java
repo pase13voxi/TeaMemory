@@ -376,14 +376,14 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void navigateToPreviousInfusion() {
-        if (changeInfusion()) {
+        if (changeInfusions()) {
             newTeaViewModel.previousInfusion();
             refreshInfusionBar();
         }
     }
 
     private void navigateToNextInfusion() {
-        if (changeInfusion()) {
+        if (changeInfusions()) {
             newTeaViewModel.nextInfusion();
             refreshInfusionBar();
         }
@@ -395,7 +395,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void addInfusion() {
-        if (changeInfusion()) {
+        if (changeInfusions()) {
             newTeaViewModel.addInfusion();
             refreshInfusionBar();
         }
@@ -416,7 +416,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void autofillCoolDownTime() {
         //Ist die Temperatur nicht gesetzt, so ist sie -500
         int temperatureCelsius = -500;
-        boolean temperatureValid = isTemperatureValid(editTextTemperature.getText().toString());
+        boolean temperatureValid = temperatureInputIsValid(editTextTemperature.getText().toString());
         if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
             temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
         }
@@ -468,7 +468,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         String amountInput = editTextAmount.getText().toString();
 
         if (inputIsValid(nameInput, varietyInput, amountInput)) {
-            createOrEditTea(varietyInput, nameInput, parseAmountInteger(amountInput));
+            createOrEditTea(varietyInput, nameInput, parseInteger(amountInput));
             navigateToMainOrShowTea();
         }
     }
@@ -482,11 +482,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private boolean inputIsValid(String nameInput, String varietyInput, String amountInput) {
-        return nameIsNotEmpty(nameInput) &&
-                nameIsValid(nameInput) &&
-                varietyIsValid(varietyInput) &&
-                amountIsValid(amountInput) &&
-                changeInfusion();
+        return nameIsNotEmpty(nameInput)
+                && nameIsValid(nameInput)
+                && varietyIsValid(varietyInput)
+                && amountIsValid(amountInput)
+                && changeInfusions();
     }
 
     private boolean nameIsNotEmpty(String nameInput) {
@@ -527,7 +527,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         return true;
     }
 
-    private int parseAmountInteger(String amountInput) {
+    private int parseInteger(String amountInput) {
         if (amountInput.equals("")) {
             return -500;
         } else {
@@ -558,7 +558,46 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         finish();
     }
 
-    private boolean isTemperatureValid(String temperature) {
+    private void sethints() {
+        //set Hint for variety
+        editTextTemperature.setHint(HintConversation.getHintTemperature(variety.ordinal(), newTeaViewModel.getTemperatureunit(), getApplicationContext()));
+        editTextAmount.setHint(HintConversation.getHintAmount(variety.ordinal(), amountUnit, getApplicationContext()));
+        editTextSteepingTime.setHint(HintConversation.getHintTime(variety.ordinal(), getApplicationContext()));
+    }
+
+    private boolean changeInfusions() {
+        String temperatureInput = editTextTemperature.getText().toString();
+        String coolDownTimeInput = editTextCoolDownTime.getText().toString();
+        String timeInput = editTextSteepingTime.getText().toString();
+
+        if (infusionIsValid(temperatureInput, coolDownTimeInput, timeInput)) {
+            newTeaViewModel.takeInfusionInformation(parseTextInput(timeInput), parseTextInput(coolDownTimeInput), parseInteger(temperatureInput));
+            return true;
+        }
+        return false;
+    }
+
+    private boolean infusionIsValid(String temperatureInput, String coolDownTimeInput, String timeInput) {
+        return temperatureIsValid(temperatureInput)
+                && coolDownTimeIsValid(coolDownTimeInput)
+                && steepingTimeIsValid(timeInput);
+    }
+
+    private boolean temperatureIsValid(String temperatureInput) {
+        if (!temperatureInputIsValid(temperatureInput)) {
+            if (newTeaViewModel.getTemperatureunit().equals("Celsius")) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_celsius, Toast.LENGTH_SHORT);
+                toast.show();
+            } else if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_fahrenheit, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean temperatureInputIsValid(String temperature) {
         boolean temperatureValid = true;
         if (!temperature.equals("")) {
             if (temperature.contains(".") || temperature.length() > 3) {
@@ -578,9 +617,18 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         return temperatureValid;
     }
 
-    private boolean isTimeValid(String time) {
+    private boolean coolDownTimeIsValid(String coolDownTimeInput) {
+        if (!timeIsValid(coolDownTimeInput)) {
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_cooldown_time, Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean timeIsValid(String time) {
         boolean timeValid;
-        //ist die Zeit gesetzt so wird sie geprüft
+
         timeValid = time.length() < 6;
         if (timeValid && !time.equals("")) {
             boolean formatMinutes = Pattern.matches("\\d\\d", time) || Pattern.matches("\\d", time);
@@ -597,59 +645,20 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         return timeValid;
     }
 
-    private void sethints() {
-        //set Hint for variety
-        editTextTemperature.setHint(HintConversation.getHintTemperature(variety.ordinal(), newTeaViewModel.getTemperatureunit(), getApplicationContext()));
-        editTextAmount.setHint(HintConversation.getHintAmount(variety.ordinal(), amountUnit, getApplicationContext()));
-        editTextSteepingTime.setHint(HintConversation.getHintTime(variety.ordinal(), getApplicationContext()));
-    }
-
-    //TODO auseinanderziehen
-    private boolean changeInfusion() {
-        boolean works = true;
-
-        //Ist die Temperatur nicht gesetzt, so ist sie -500
-        int temperature = -500;
-        boolean temperatureValid = isTemperatureValid(editTextTemperature.getText().toString());
-        if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
-            temperature = Integer.parseInt(editTextTemperature.getText().toString());
-        }
-
-        //Ist Zeit nicht gesetzt so ist sie null
-        String coolDownTime = null;
-        boolean coolDownTimeValid = isTimeValid(editTextCoolDownTime.getText().toString());
-        if (coolDownTimeValid && !editTextCoolDownTime.getText().toString().equals("")) {
-            coolDownTime = editTextCoolDownTime.getText().toString();
-        }
-
-        //Ist Zeit nicht gesetzt so ist sie null
-        String time = null;
-        boolean timeValid = isTimeValid(editTextSteepingTime.getText().toString());
-        if (timeValid && !editTextSteepingTime.getText().toString().equals("")) {
-            time = editTextSteepingTime.getText().toString();
-        }
-
-        if (!temperatureValid) {
-            works = false;
-            if (newTeaViewModel.getTemperatureunit().equals("Celsius")) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_celsius, Toast.LENGTH_SHORT);
-                toast.show();
-            } else if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_fahrenheit, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        } else if (!coolDownTimeValid) {
-            works = false;
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_cooldown_time, Toast.LENGTH_SHORT);
-            toast.show();
-        } else if (!timeValid) {
-            works = false;
+    private boolean steepingTimeIsValid(String timeInput) {
+        if (!timeIsValid(timeInput)) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_time_format, Toast.LENGTH_SHORT);
             toast.show();
-        } else {
-            newTeaViewModel.takeInfusionInformation(time, coolDownTime, temperature);
+            return false;
         }
-        return works;
+        return true;
+    }
+
+    private String parseTextInput(String textInput) {
+        if (textInput.equals("")) {
+            return null;
+        }
+        return textInput;
     }
 
     @Override
