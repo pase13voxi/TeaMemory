@@ -8,4 +8,5 @@
     <string name="about_statistics_description">Look at your drinking behavior in the overview.</string>
     <string name="about_software_heading">Software Licences</string>
     <string name="about_software_description">Which open source software is used by the Tea Memory?</string>
+    <string name="about_version">Version %1$s</string>
 </resources>

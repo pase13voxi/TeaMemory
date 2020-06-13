@@ -14,6 +14,17 @@
         android:id="@+id/listview_about"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tool_bar" />
+        android:layout_below="@+id/tool_bar"
+        android:layout_above="@id/textViewVersion" />
+
+    <TextView
+        android:id="@+id/textViewVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/textAppearanceGrey"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp" />
 
 </RelativeLayout>

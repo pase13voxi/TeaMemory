@@ -1,6 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +35,7 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
         enableAndShowBackButton();
 
         configureAndShowListView();
+        displayVersion();
     }
 
     private void defineToolbarAsActionbar() {
@@ -67,9 +70,21 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
         aboutList.add(itemRating);
         ListRowItem itemStatistics = new ListRowItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
         aboutList.add(itemStatistics);
-        ListRowItem itemSoftware = new ListRowItem(getResources().getString(R.string.about_software_heading),getResources().getString(R.string.about_software_description));
+        ListRowItem itemSoftware = new ListRowItem(getResources().getString(R.string.about_software_heading), getResources().getString(R.string.about_software_description));
         aboutList.add(itemSoftware);
         return aboutList;
+    }
+
+    private void displayVersion() {
+        TextView textViewVersion = findViewById(R.id.textViewVersion);
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = packageInfo.versionName;
+
+            textViewVersion.setText(getResources().getString(R.string.about_version, version));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
