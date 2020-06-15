@@ -7,19 +7,28 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="autoCompleteTextViewStyle">@style/SearchTextView</item>
     </style>
     <style name="spinner_style" >
         <item name="android:background">@drawable/spinner_time</item>
     </style>
+
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="colorControlNormal">@color/lightgrey</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@color/lightgrey</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
     <style name="MaterialThemeDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="SearchTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
     </style>
 </resources>

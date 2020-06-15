@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".views.MainActivity"
+            android:name=".views.main.Main"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,68 +39,68 @@
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
         </activity>
         <activity
-            android:name=".views.ShowTea"
+            android:name=".views.showtea.ShowTea"
             android:label="Information"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
         </activity>
         <activity
-            android:name=".views.Settings"
+            android:name=".views.settings.Settings"
             android:label="Settings"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
         </activity>
         <activity
-            android:name=".views.ExportImport"
+            android:name=".views.exportimport.ExportImport"
             android:label="ExportImport"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
         </activity>
         <activity
-            android:name=".views.About"
+            android:name=".views.about.About"
             android:label="About"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.MainActivity" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
         </activity>
         <activity
-            android:name=".views.Contact"
+            android:name=".views.contact.Contact"
             android:label="Contact"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
         </activity>
         <activity
-            android:name=".views.Statistics"
+            android:name=".views.statistics.Statistics"
             android:label="Statistics"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
         </activity>
         <activity
-            android:name=".views.Software"
+            android:name=".views.software.Software"
             android:label="Software"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.About" />
+                android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
         </activity>
 
-        <receiver android:name=".views.timer.TeaCompleteReceiver" />
-        <service android:name=".views.timer.NotificationService" />
+        <receiver android:name=".views.showtea.timer.TeaCompleteReceiver" />
+        <service android:name=".views.showtea.timer.NotificationService" />
     </application>
 
 </manifest>

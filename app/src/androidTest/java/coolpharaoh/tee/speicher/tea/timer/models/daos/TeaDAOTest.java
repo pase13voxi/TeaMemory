@@ -108,7 +108,7 @@ public class TeaDAOTest {
     }
 
     @Test
-    public void getTeaOrderByActivity(){
+    public void getTeasOrderByActivity() {
         Tea teaOld = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
         teaDAO.insert(teaOld);
         Tea teaMiddle = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
@@ -158,7 +158,7 @@ public class TeaDAOTest {
     }
 
     @Test
-    public void getTeaOrderByAlphabetic(){
+    public void getTeasOrderByAlphabetic() {
         Tea teaC = createTea("nameC", "variety", Calendar.getInstance().getTime());
         teaDAO.insert(teaC);
         Tea teaA = createTea("nameA", "variety", Calendar.getInstance().getTime());
@@ -193,7 +193,7 @@ public class TeaDAOTest {
     }
 
     @Test
-    public void getTeaOrderByVariety(){
+    public void getTeasOrderByVariety() {
         Tea teaC = createTea("name", "varietyC", Calendar.getInstance().getTime());
         teaDAO.insert(teaC);
         Tea teaA = createTea("name", "varietyA", Calendar.getInstance().getTime());
@@ -227,7 +227,37 @@ public class TeaDAOTest {
                 );
     }
 
-    private Tea createTea(String name, String variety, Date date){
+    @Test
+    public void getTeasBySearchString() {
+        Tea teaA = createTea("A", "variety", Calendar.getInstance().getTime());
+        teaDAO.insert(teaA);
+        Tea teaC = createTea("nameC", "variety", Calendar.getInstance().getTime());
+        teaDAO.insert(teaC);
+        Tea teaB = createTea("nameB", "variety", Calendar.getInstance().getTime());
+        teaDAO.insert(teaB);
+
+        List<Tea> teaList = teaDAO.getTeasBySearchString("name");
+
+        assertThat(teaList)
+                .extracting(
+                        Tea::getName,
+                        Tea::getVariety,
+                        Tea::getDate)
+                .containsSequence(
+                        Tuple.tuple(
+                                teaB.getName(),
+                                teaB.getVariety(),
+                                teaB.getDate()
+                        ),
+                        Tuple.tuple(
+                                teaC.getName(),
+                                teaC.getVariety(),
+                                teaC.getDate()
+                        )
+                );
+    }
+
+    private Tea createTea(String name, String variety, Date date) {
         return new Tea(name, variety, 3, "ts", 15, 0, date);
     }
 }

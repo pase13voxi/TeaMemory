@@ -9,7 +9,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
+import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 @Dao
 public interface CounterDAO {

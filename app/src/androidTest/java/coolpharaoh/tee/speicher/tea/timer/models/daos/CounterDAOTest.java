@@ -15,9 +15,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.models.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 

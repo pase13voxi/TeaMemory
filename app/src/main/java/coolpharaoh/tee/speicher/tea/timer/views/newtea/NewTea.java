@@ -31,10 +31,9 @@ import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.NewTeaViewModel;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.HintConversation;
-import coolpharaoh.tee.speicher.tea.timer.viewmodels.helper.TemperatureConversation;
-import coolpharaoh.tee.speicher.tea.timer.views.ShowTea;
+import coolpharaoh.tee.speicher.tea.timer.views.helper.HintConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.helper.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener {

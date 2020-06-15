@@ -39,4 +39,7 @@ public interface TeaDAO {
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getTeaById(long id);
+
+    @Query("SELECT * FROM tea WHERE name LIKE ('%' || :searchString || '%') ORDER BY LOWER(name) ASC")
+    List<Tea> getTeasBySearchString(String searchString);
 }
