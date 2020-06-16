@@ -22,8 +22,8 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.ColorConversation;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.ColorConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
 
 public class MainViewModel extends ViewModel {
 

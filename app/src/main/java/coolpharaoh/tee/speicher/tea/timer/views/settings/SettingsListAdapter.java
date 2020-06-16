@@ -17,17 +17,17 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
  * Created by paseb on 14.02.2018.
  */
 
-public class SettingsListAdapter extends BaseAdapter {
+class SettingsListAdapter extends BaseAdapter {
 
 
     private final LayoutInflater inflater;
     private final List<ListRowItem> items;
 
-    public SettingsListAdapter(Activity context, List<ListRowItem> items) {
+    SettingsListAdapter(Activity context, List<ListRowItem> items) {
         super();
 
         this.items = items;
-        this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -45,6 +45,7 @@ public class SettingsListAdapter extends BaseAdapter {
         return 0;
     }
 
+    // TODO avoid passing null
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 

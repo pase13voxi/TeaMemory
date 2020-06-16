@@ -15,9 +15,8 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.LanguageConversation;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.RefreshCounter;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.TimeHelper;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.RefreshCounter;
 
 public class ShowTeaViewModel {
 

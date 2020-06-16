@@ -1,15 +1,16 @@
-package coolpharaoh.tee.speicher.tea.timer.views.helper;
+package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.content.Context;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-public class HintConversation {
+class HintConversation {
 
     private HintConversation() {
     }
 
-    public static String getHintTemperature(int variety, String temperatureunit, Context context) {
+    // TODO reduce complexity
+    static String getHintTemperature(int variety, String temperatureunit, Context context) {
         switch (variety) {
             case 0:
                 return temperatureunit.equals("Celsius") ?
@@ -54,7 +55,8 @@ public class HintConversation {
         }
     }
 
-    public static String getHintAmount(int variety, String amountkind, Context context) {
+    // TODO reduce complexity
+    static String getHintAmount(int variety, String amountkind, Context context) {
         switch (variety) {
             case 0:
                 return amountkind.equals("Ts") ?
@@ -99,7 +101,7 @@ public class HintConversation {
         }
     }
 
-    public static String getHintTime(int variety, Context context) {
+    static String getHintTime(int variety, Context context) {
         switch (variety) {
             case 0:
                 return context.getResources().getString(R.string.newtea_hint_time_blacktea);

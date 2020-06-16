@@ -12,21 +12,20 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.LanguageConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 
-public class TeaAdapter extends BaseAdapter
-{
+class TeaAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private final List<Tea> items;
 
     private final Context context;
 
-    public TeaAdapter(Activity context, List<Tea> items) {
+    TeaAdapter(Activity context, List<Tea> items) {
         super();
 
         this.items = items;
-        this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         this.context = context.getApplicationContext();
     }

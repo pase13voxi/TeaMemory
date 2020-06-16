@@ -1,11 +1,11 @@
-package coolpharaoh.tee.speicher.tea.timer.views.helper;
+package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
-public class TimeHelper {
-    public String time;
-    public int minutes;
-    public int seconds;
+class TimeHelper {
+    String time;
+    int minutes;
+    int seconds;
 
-    public static TimeHelper getMinutesAndSeconds(String timetext) {
+    static TimeHelper getMinutesAndSeconds(String timetext) {
         TimeHelper time = new TimeHelper();
         time.time = timetext;
         if (timetext == null) {

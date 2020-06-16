@@ -40,7 +40,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.TimeHelper;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.timer.ForegroundTimer;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;

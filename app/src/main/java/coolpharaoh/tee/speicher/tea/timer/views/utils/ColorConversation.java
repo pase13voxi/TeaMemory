@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.helper;
+package coolpharaoh.tee.speicher.tea.timer.views.utils;
 
 import android.content.Context;
 import android.graphics.Color;

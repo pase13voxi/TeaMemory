@@ -6,7 +6,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.helper.RefreshCounter;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.RefreshCounter;
 
 public class StatisticsViewModel {
     private final CounterDAO counterDAO;
