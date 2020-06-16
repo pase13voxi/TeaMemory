@@ -234,6 +234,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_vibration);
         builder.setSingleChoiceItems(items, checkedItem, this::vibrationChanged);
+        builder.setNegativeButton(R.string.settings_cancle, null);
         builder.create().show();
     }
 
@@ -259,6 +260,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_animation);
         builder.setSingleChoiceItems(items, checkedItem, this::animationChanged);
+        builder.setNegativeButton(R.string.settings_cancle, null);
         builder.create().show();
     }
 
@@ -284,6 +286,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_temperature_unit);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog));
+        builder.setNegativeButton(R.string.settings_cancle, null);
         builder.create().show();
     }
 

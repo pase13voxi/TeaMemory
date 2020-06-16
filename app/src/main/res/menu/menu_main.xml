@@ -23,14 +23,14 @@
         android:id="@+id/action_sort"
         android:orderInCategory="4"
         android:icon="@drawable/button_sort"
-        android:title="Sort"
+        android:title="@string/main_action_sort"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_search"
         android:orderInCategory="5"
         android:icon="@drawable/search_white"
-        android:title="Search"
+        android:title="@string/main_action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
 

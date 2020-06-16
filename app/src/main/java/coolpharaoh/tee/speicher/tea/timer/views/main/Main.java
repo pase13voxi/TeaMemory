@@ -190,6 +190,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         }
     }
 
+    // TODO reduce complexity by outsourcing into searchview.class
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
