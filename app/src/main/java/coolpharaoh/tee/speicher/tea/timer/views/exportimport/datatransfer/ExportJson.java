@@ -14,27 +14,32 @@ import java.io.Writer;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.TeaPOJO;
 
 public class ExportJson {
+
+    private final Context context;
     private final List<TeaPOJO> teaList;
     private final String json;
 
-    public ExportJson(List<Tea> teas, List<Infusion> infusions, List<Counter> counters, List<Note> notes) {
-        DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(teas, infusions, counters, notes);
+    public ExportJson(Context context) {
+        this.context = context;
+        DataTransferViewModel dataTransferViewModel = new DataTransferViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
+
+        DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(dataTransferViewModel.getTeaList(),
+                dataTransferViewModel.getInfusionList(), dataTransferViewModel.getCounterList(),
+                dataTransferViewModel.getNoteList());
+
         teaList = databaseToPojo.createTeaList();
         json = createJsonFromTeaList();
     }
 
-    public boolean write(Context context) {
+    public boolean write() {
         //Create Folder
-        File folder = new File(Environment.getExternalStorageDirectory().toString()+ context.getString(R.string.exportimport_export_folder_name));
-        if(!folder.exists()) {
-            if(!folder.mkdirs()){
+        File folder = new File(Environment.getExternalStorageDirectory().toString() + context.getString(R.string.exportimport_export_folder_name));
+        if (!folder.exists()) {
+            if (!folder.mkdirs()) {
                 Toast.makeText(context, context.getString(R.string.exportimport_export_create_folder_failed), Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -45,6 +50,7 @@ public class ExportJson {
 
         try {
             File file = new File(storageDirectory, context.getString(R.string.exportimport_export_file_name));
+            //TODO Warning:(53, 29) Use try-with-resources or close this "BufferedWriter" in a "finally" clause.
             Writer output = new BufferedWriter(new FileWriter(file));
             output.write(json);
             output.close();

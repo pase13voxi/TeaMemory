@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.about;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -44,15 +45,17 @@ class AboutListAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         ListRowItem item = items.get(position);
 
-        View vi=convertView;
+        View vi = convertView;
 
-        if(convertView==null)
-            vi = inflater.inflate(R.layout.aboutlist_single_layout, parent, false);
+        if (convertView == null)
+            // Pass null because parent, false destroys Layout
+            vi = inflater.inflate(R.layout.aboutlist_single_layout, null);
 
         TextView txtName = vi.findViewById(R.id.textViewListAboutHeading);
         TextView txtSort = vi.findViewById(R.id.textViewListAboutDescription);

@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.exportimport;
+package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +27,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ExportImportViewModelTest {
+public class DataTransferViewModelTest {
 
-    private ExportImportViewModel exportImportViewModel;
+    private DataTransferViewModel dataTransferViewModel;
 
     @Mock
     TeaDAO teaDAO;
@@ -49,7 +49,7 @@ public class ExportImportViewModelTest {
         when(teaMemoryDatabase.getCounterDAO()).thenReturn(counterDAO);
         when(teaMemoryDatabase.getNoteDAO()).thenReturn(noteDAO);
 
-        exportImportViewModel = new ExportImportViewModel(teaMemoryDatabase);
+        dataTransferViewModel = new DataTransferViewModel(teaMemoryDatabase);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ExportImportViewModelTest {
         teasBefore.add(tea2);
         when(teaDAO.getTeas()).thenReturn(teasBefore);
 
-        List<Tea> teasAfter = exportImportViewModel.getTeaList();
+        List<Tea> teasAfter = dataTransferViewModel.getTeaList();
 
         assertThat(teasAfter).isEqualTo(teasBefore);
     }
@@ -74,7 +74,7 @@ public class ExportImportViewModelTest {
 
         Tea teaBefore = new Tea("Tea", "Variety", 1, "Kind", 1, 1, date);
 
-        exportImportViewModel.insertTea(teaBefore);
+        dataTransferViewModel.insertTea(teaBefore);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaDAO).insert(captor.capture());
@@ -85,7 +85,7 @@ public class ExportImportViewModelTest {
 
     @Test
     public void deleteAll() {
-        exportImportViewModel.deleteAllTeas();
+        dataTransferViewModel.deleteAllTeas();
         verify(teaDAO).deleteAll();
     }
 
@@ -99,7 +99,7 @@ public class ExportImportViewModelTest {
 
         when(infusionDAO.getInfusions()).thenReturn(infusionsBefore);
 
-        List<Infusion> infusionsAfter = exportImportViewModel.getInfusionList();
+        List<Infusion> infusionsAfter = dataTransferViewModel.getInfusionList();
 
         assertThat(infusionsAfter).isEqualTo(infusionsBefore);
     }
@@ -108,7 +108,7 @@ public class ExportImportViewModelTest {
     public void insertInfusion() {
         Infusion infusionBefore = new Infusion(1L, 1, "1", "1", 1, 1);
 
-        exportImportViewModel.insertInfusion(infusionBefore);
+        dataTransferViewModel.insertInfusion(infusionBefore);
 
         ArgumentCaptor<Infusion> captor = ArgumentCaptor.forClass(Infusion.class);
         verify(infusionDAO).insert(captor.capture());
@@ -129,7 +129,7 @@ public class ExportImportViewModelTest {
 
         when(counterDAO.getCounters()).thenReturn(countersBefore);
 
-        List<Counter> countersAfter = exportImportViewModel.getCounterList();
+        List<Counter> countersAfter = dataTransferViewModel.getCounterList();
 
         assertThat(countersAfter).isEqualTo(countersBefore);
     }
@@ -139,7 +139,7 @@ public class ExportImportViewModelTest {
         Date date = new GregorianCalendar(2020, 1, 18).getTime();
         Counter counterBefore = new Counter(1L, 1, 1, 1, 1L, date, date, date);
 
-        exportImportViewModel.insertCounter(counterBefore);
+        dataTransferViewModel.insertCounter(counterBefore);
 
         ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
         verify(counterDAO).insert(captor.capture());
@@ -158,7 +158,7 @@ public class ExportImportViewModelTest {
 
         when(noteDAO.getNotes()).thenReturn(notesBefore);
 
-        List<Note> notesAfter = exportImportViewModel.getNoteList();
+        List<Note> notesAfter = dataTransferViewModel.getNoteList();
 
         assertThat(notesAfter).isEqualTo(notesBefore);
     }
@@ -167,7 +167,7 @@ public class ExportImportViewModelTest {
     public void insertNote() {
         Note noteBefore = new Note(1L,1,"Header","Description");
 
-        exportImportViewModel.insertNote(noteBefore);
+        dataTransferViewModel.insertNote(noteBefore);
 
         ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
         verify(noteDAO).insert(captor.capture());

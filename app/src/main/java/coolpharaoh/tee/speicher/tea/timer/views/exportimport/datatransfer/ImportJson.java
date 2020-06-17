@@ -19,26 +19,31 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImportViewModel;
+import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.TeaPOJO;
 
 public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
 
+    private final Context context;
+    private final DataTransferViewModel dataTransferViewModel;
     private final Uri fileUri;
+
     private String json;
 
-    public ImportJson(Uri fileUri) {
+    public ImportJson(Uri fileUri, Context context) {
+        this.context = context;
+        dataTransferViewModel = new DataTransferViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
         this.fileUri = fileUri;
     }
 
-    public boolean read(Context context, ExportImportViewModel exportImportViewModel, boolean keepStoredTeas) {
+    public boolean read(boolean keepStoredTeas) {
         json = readJsonFile(context);
         List<TeaPOJO> teaList = createTeaListFromJson(context);
-        if(teaList == null){
+        if (teaList == null) {
             return false;
         }
-        POJOToDatabase pojoToDatabase = new POJOToDatabase(exportImportViewModel);
+        POJOToDatabase pojoToDatabase = new POJOToDatabase(dataTransferViewModel);
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
         Toast.makeText(context, R.string.exportimport_teas_imported, Toast.LENGTH_LONG).show();
         return true;
@@ -55,6 +60,7 @@ public class ImportJson {
                 stringBuilder.append(line);
             }
         } catch (IOException e) {
+            //TODO Warning:(63, 15) Use a logger to log this exception.
             e.printStackTrace();
         }
         return stringBuilder.toString();
@@ -70,6 +76,7 @@ public class ImportJson {
             return gson.fromJson(json, listType);
         }catch(JsonSyntaxException e){
             Toast.makeText(context, R.string.exportimport_import_parse_teas_failed, Toast.LENGTH_LONG).show();
+            //TODO Warning:(78, 20) Return an empty collection instead of null.
             return null;
         }
     }

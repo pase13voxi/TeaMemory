@@ -20,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions;
@@ -29,7 +28,6 @@ import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST_CODE_WRITE;
 
 public class ExportImport extends AppCompatActivity {
-    private ExportImportViewModel exportImportViewModel;
     private boolean keepStoredTeas = true;
 
     @Override
@@ -38,8 +36,6 @@ public class ExportImport extends AppCompatActivity {
         setContentView(R.layout.activity_export_import);
         defineToolbarAsActionbar();
         enableAndShowBackButton();
-
-        exportImportViewModel = new ExportImportViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
         Button buttonExport = findViewById(R.id.buttonExport);
         buttonExport.setOnClickListener(v -> checkPermissionsBeforeExport());
@@ -126,9 +122,8 @@ public class ExportImport extends AppCompatActivity {
     }
 
     private void exportJson() {
-        ExportJson exportJson = new ExportJson(exportImportViewModel.getTeaList(),
-                exportImportViewModel.getInfusionList(), exportImportViewModel.getCounterList(), exportImportViewModel.getNoteList());
-        if (exportJson.write(getApplicationContext())) {
+        ExportJson exportJson = new ExportJson(getApplicationContext());
+        if (exportJson.write()) {
             dialogExportLocation();
         } else {
             dialogExportFailed();
@@ -192,8 +187,8 @@ public class ExportImport extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
-            ImportJson importJson = new ImportJson(resultData.getData());
-            if (importJson.read(getApplicationContext(), exportImportViewModel, keepStoredTeas)) {
+            ImportJson importJson = new ImportJson(resultData.getData(), getApplicationContext());
+            if (importJson.read(keepStoredTeas)) {
                 dialogImportComplete();
             } else {
                 dialogImportFailed();
