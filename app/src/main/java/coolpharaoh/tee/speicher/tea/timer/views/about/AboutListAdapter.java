@@ -44,7 +44,6 @@ class AboutListAdapter extends BaseAdapter {
         return 0;
     }
 
-    // TODO avoid passing null
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -53,7 +52,7 @@ class AboutListAdapter extends BaseAdapter {
         View vi=convertView;
 
         if(convertView==null)
-            vi = inflater.inflate(R.layout.aboutlist_single_layout, null);
+            vi = inflater.inflate(R.layout.aboutlist_single_layout, parent, false);
 
         TextView txtName = vi.findViewById(R.id.textViewListAboutHeading);
         TextView txtSort = vi.findViewById(R.id.textViewListAboutDescription);

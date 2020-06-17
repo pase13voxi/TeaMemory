@@ -4,10 +4,12 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.VibrationEffect;
+import android.util.Log;
 
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 
 class Vibrator {
+    public static final String LOG_TAG = Vibrator.class.getSimpleName();
 
     private Vibrator() {
     }
@@ -32,13 +34,13 @@ class Vibrator {
         }
     }
 
-    private static boolean isSilent(Context context){
+    private static boolean isSilent(Context context) {
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        try {
-            // TODO May Produce a Nullpointer Exception
-            return audio.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
-        } catch (NullPointerException e){
+        if (audio == null) {
+            Log.w(LOG_TAG, "Cannot discover ringer mode because audio manager is not available");
             return false;
+        } else {
+            return audio.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
         }
     }
 }

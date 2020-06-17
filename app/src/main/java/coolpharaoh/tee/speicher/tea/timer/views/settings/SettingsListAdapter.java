@@ -45,7 +45,6 @@ class SettingsListAdapter extends BaseAdapter {
         return 0;
     }
 
-    // TODO avoid passing null
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -54,7 +53,7 @@ class SettingsListAdapter extends BaseAdapter {
         View vi=convertView;
 
         if(convertView==null)
-            vi = inflater.inflate(R.layout.settinglist_single_layout, null);
+            vi = inflater.inflate(R.layout.settinglist_single_layout, parent, false);
 
         TextView txtName = vi.findViewById(R.id.textViewListSettingHeading);
         TextView txtSort = vi.findViewById(R.id.textViewListSettingDescription);

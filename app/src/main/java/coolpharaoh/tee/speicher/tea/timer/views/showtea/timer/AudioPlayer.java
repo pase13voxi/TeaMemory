@@ -4,20 +4,23 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.IOException;
 
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 
-class AudioPlayer{
-    private Context context;
+class AudioPlayer {
+    private static final String LOG_TAG = AudioPlayer.class.getSimpleName();
+
+    private final Context context;
     private MediaPlayer mediaPlayer;
 
-    AudioPlayer(Context context){
+    AudioPlayer(Context context) {
         this.context = context;
     }
 
-    void start(){
+    void start() {
         TimerViewModel timerViewModel = new TimerViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
         //initial music track
         if (timerViewModel.getMusicchoice() != null) {
@@ -30,7 +33,7 @@ class AudioPlayer{
                 mediaPlayer.prepare();
                 mediaPlayer.start();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Something went wrong when start playing the Ringtone.", e);
             }
         }
     }

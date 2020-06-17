@@ -53,7 +53,7 @@ class TeaAdapter extends BaseAdapter {
         View vi=convertView;
 
         if(convertView==null)
-            vi = inflater.inflate(R.layout.tealist_single_layout,parent,false);
+            vi = inflater.inflate(R.layout.tealist_single_layout, parent, false);
 
         TextView txtName = vi.findViewById(R.id.textViewListTeaName);
         TextView txtVariety = vi.findViewById(R.id.textViewListVarietyOfTea);

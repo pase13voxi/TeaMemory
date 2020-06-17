@@ -28,7 +28,7 @@ public class ShowTeaViewModel {
     private final CounterDAO counterDAO;
     private final ActualSettingsDAO actualSettingsDAO;
 
-    private long teaId;
+    private final long teaId;
     private int infusionIndex = 0;
 
     public ShowTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {

@@ -153,6 +153,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
     private void showRatingDialogOnStart() {
         if (startApplication) {
+            //TODO Make the enclosing method "static and remove this set"
             startApplication = false;
             showRatingDialogOrIncrementRateCounter();
         }
@@ -233,16 +234,16 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     @Override
     public boolean onLongClick(View view) {
         if (view.getId() == R.id.newtea) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.main_tooltip_newtea));
+            showTooltip(view, getResources().getString(R.string.main_tooltip_newtea));
         }
         return true;
     }
 
-    private void showTooltip(View v, int gravity, String text) {
-        new Tooltip.Builder(v)
+    private void showTooltip(View view, String text) {
+        new Tooltip.Builder(view)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))
-                .setGravity(gravity)
+                .setGravity(Gravity.TOP)
                 .setCornerRadius(8f)
                 .setCancelable(true)
                 .setDismissOnClick(true)
