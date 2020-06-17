@@ -55,7 +55,7 @@ class SearchView {
         });
     }
 
-    static void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
+    private static void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
         for (int i = 0; i < menu.size(); ++i) {
             MenuItem item = menu.getItem(i);
             if (item != exception) item.setVisible(visible);

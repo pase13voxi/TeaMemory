@@ -19,7 +19,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
 
-public class NewTeaViewModel {
+class NewTeaViewModel {
     private final Context context;
 
     private final TeaDAO teaDAO;
@@ -33,7 +33,7 @@ public class NewTeaViewModel {
 
     private int infusionIndex = 0;
 
-    public NewTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
+    NewTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
         this.context = context;
 
         teaDAO = database.getTeaDAO();
@@ -46,7 +46,7 @@ public class NewTeaViewModel {
         infusions = infusionDAO.getInfusionsByTeaId(teaId);
     }
 
-    public NewTeaViewModel(TeaMemoryDatabase database, Context context) {
+    NewTeaViewModel(TeaMemoryDatabase database, Context context) {
         this.context = context;
 
         teaDAO = database.getTeaDAO();
@@ -61,32 +61,32 @@ public class NewTeaViewModel {
     }
 
     // Tea
-    public long getTeaId() {
+    long getTeaId() {
         return tea.getId();
     }
 
-    public String getName() {
+    String getName() {
         return tea.getName();
     }
 
-    public String getVariety() {
+    String getVariety() {
         return tea.getVariety();
     }
 
-    public int getAmount() {
+    int getAmount() {
         return tea.getAmount();
     }
 
-    public String getAmountkind() {
+    String getAmountkind() {
         return tea.getAmountKind();
     }
 
-    public int getColor() {
+    int getColor() {
         return tea.getColor();
     }
 
     // Infusion
-    public void addInfusion() {
+    void addInfusion() {
         Infusion infusion = new Infusion();
         infusion.setTemperatureCelsius(-500);
         infusion.setTemperatureFahrenheit(-500);
@@ -96,7 +96,7 @@ public class NewTeaViewModel {
         }
     }
 
-    public void takeInfusionInformation(String time, String cooldowntime, int temperature) {
+    void takeInfusionInformation(String time, String cooldowntime, int temperature) {
         infusions.get(infusionIndex).setTime(time);
         infusions.get(infusionIndex).setCoolDownTime(cooldowntime);
         if (actualSettingsDAO.getSettings().getTemperatureUnit().equals("Celsius")) {
@@ -108,7 +108,7 @@ public class NewTeaViewModel {
         }
     }
 
-    public void deleteInfusion() {
+    void deleteInfusion() {
         if (getInfusionSize() > 1) {
             infusions.remove(infusionIndex);
             if (infusionIndex == getInfusionSize()) {
@@ -117,15 +117,15 @@ public class NewTeaViewModel {
         }
     }
 
-    public String getInfusionTime() {
+    String getInfusionTime() {
         return infusions.get(infusionIndex).getTime();
     }
 
-    public String getInfusionCooldowntime() {
+    String getInfusionCooldowntime() {
         return infusions.get(infusionIndex).getCoolDownTime();
     }
 
-    public int getInfusionTemperature() {
+    int getInfusionTemperature() {
         if (getTemperatureunit().equals("Celsius")) {
             return infusions.get(infusionIndex).getTemperatureCelsius();
         } else {
@@ -133,33 +133,33 @@ public class NewTeaViewModel {
         }
     }
 
-    public void previousInfusion() {
+    void previousInfusion() {
         if (infusionIndex - 1 >= 0) {
             infusionIndex--;
         }
     }
 
-    public void nextInfusion() {
+    void nextInfusion() {
         if (infusionIndex + 1 < getInfusionSize()) {
             infusionIndex++;
         }
     }
 
-    public int getInfusionIndex() {
+    int getInfusionIndex() {
         return infusionIndex;
     }
 
-    public int getInfusionSize() {
+    int getInfusionSize() {
         return infusions.size();
     }
 
     // Settings
-    public String getTemperatureunit() {
+    String getTemperatureunit() {
         return actualSettingsDAO.getSettings().getTemperatureUnit();
     }
 
     // Overall
-    public void editTea(String name, String variety, int amount, String amountkind, int color) {
+    void editTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
 
         teaDAO.update(tea);
@@ -167,7 +167,7 @@ public class NewTeaViewModel {
         setInfusionInformation(tea.getId());
     }
 
-    public void createNewTea(String name, String variety, int amount, String amountkind, int color) {
+    void createNewTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
         tea.setNextInfusion(0);
 
@@ -196,7 +196,7 @@ public class NewTeaViewModel {
         noteDAO.insert(note);
     }
 
-    private void setTeaInformation(String name, String variety, int amount, String amountkind, int color) {
+    void setTeaInformation(String name, String variety, int amount, String amountkind, int color) {
         tea.setName(name);
         tea.setVariety(LanguageConversation.convertVarietyToCode(variety, context));
         tea.setAmount(amount);
@@ -205,7 +205,7 @@ public class NewTeaViewModel {
         tea.setDate(Calendar.getInstance().getTime());
     }
 
-    private void setInfusionInformation(long teaId) {
+    void setInfusionInformation(long teaId) {
         infusionDAO.deleteInfusionByTeaId(teaId);
         for (int i = 0; i < getInfusionSize(); i++) {
             infusions.get(i).setTeaId(teaId);

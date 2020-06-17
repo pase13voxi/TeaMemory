@@ -5,7 +5,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
-public class SettingsViewModel {
+class SettingsViewModel {
 
     private final ActualSettingsDAO actualSettingsDAO;
     private final TeaDAO teaDAO;
@@ -21,75 +21,75 @@ public class SettingsViewModel {
     }
 
     //Settings
-    public void setMusicchoice(String musicchoice) {
+    void setMusicchoice(String musicchoice) {
         actualSettings.setMusicChoice(musicchoice);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public String getMusicname() {
+    String getMusicname() {
         return actualSettings.getMusicName();
     }
 
-    public void setMusicname(String musicname) {
+    void setMusicname(String musicname) {
         actualSettings.setMusicName(musicname);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isVibration() {
+    boolean isVibration() {
         return actualSettings.isVibration();
     }
 
-    public void setVibration(boolean vibration) {
+    void setVibration(boolean vibration) {
         actualSettings.setVibration(vibration);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isAnimation() {
+    boolean isAnimation() {
         return actualSettings.isAnimation();
     }
 
-    public void setAnimation(boolean animation) {
+    void setAnimation(boolean animation) {
         actualSettings.setAnimation(animation);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public String getTemperatureunit() {
+    String getTemperatureunit() {
         return actualSettings.getTemperatureUnit();
     }
 
-    public void setTemperatureunit(String temperatureunit) {
+    void setTemperatureunit(String temperatureunit) {
         actualSettings.setTemperatureUnit(temperatureunit);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isShowteaalert() {
+    boolean isShowteaalert() {
         return actualSettings.isShowTeaAlert();
     }
 
-    public void setShowteaalert(boolean showteaalert) {
+    void setShowteaalert(boolean showteaalert) {
         actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isMainratealert() {
+    boolean isMainratealert() {
         return actualSettings.isMainRateAlert();
     }
 
-    public void setMainratealert(boolean mainratealert) {
+    void setMainratealert(boolean mainratealert) {
         actualSettings.setMainRateAlert(mainratealert);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public boolean isSettingspermissionalert(){
+    boolean isSettingspermissionalert() {
         return actualSettings.isSettingsPermissionAlert();
     }
 
-    public void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
+    void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
         actualSettings.setSettingsPermissionAlert(settingsPermissionAlert);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public void setDefaultSettings() {
+    void setDefaultSettings() {
         actualSettings.setMusicChoice("content://settings/system/ringtone");
         actualSettings.setMusicName("Default");
         actualSettings.setVibration(true);
@@ -104,7 +104,7 @@ public class SettingsViewModel {
     }
 
     //Tea
-    public void deleteAllTeas() {
+    void deleteAllTeas() {
         teaDAO.deleteAll();
     }
 }

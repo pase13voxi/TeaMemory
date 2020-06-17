@@ -18,7 +18,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.RefreshCounter;
 
-public class ShowTeaViewModel {
+class ShowTeaViewModel {
 
     private final Context context;
 
@@ -31,7 +31,7 @@ public class ShowTeaViewModel {
     private final long teaId;
     private int infusionIndex = 0;
 
-    public ShowTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
+    ShowTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
         this.teaId = teaId;
         this.context = context;
 
@@ -43,15 +43,15 @@ public class ShowTeaViewModel {
     }
 
     // Tea
-    public long getTeaId() {
+    long getTeaId() {
         return teaDAO.getTeaById(teaId).getId();
     }
 
-    public String getName() {
+    String getName() {
         return teaDAO.getTeaById(teaId).getName();
     }
 
-    public String getVariety() {
+    String getVariety() {
         if (teaDAO.getTeaById(teaId).getVariety().equals("")) {
             return "-";
         } else {
@@ -59,29 +59,29 @@ public class ShowTeaViewModel {
         }
     }
 
-    public int getAmount() {
+    int getAmount() {
         return teaDAO.getTeaById(teaId).getAmount();
     }
 
-    public String getAmountKind() {
+    String getAmountKind() {
         return teaDAO.getTeaById(teaId).getAmountKind();
     }
 
-    public int getColor() {
+    int getColor() {
         return teaDAO.getTeaById(teaId).getColor();
     }
 
-    public void setCurrentDate() {
+    void setCurrentDate() {
         Tea tea = teaDAO.getTeaById(teaId);
         tea.setDate(Calendar.getInstance().getTime());
         teaDAO.update(tea);
     }
 
-    public int getNextInfusion() {
+    int getNextInfusion() {
         return teaDAO.getTeaById(teaId).getNextInfusion();
     }
 
-    public void updateNextInfusion() {
+    void updateNextInfusion() {
         Tea tea = teaDAO.getTeaById(teaId);
         if ((infusionIndex + 1) >= getInfusionSize()) {
             tea.setNextInfusion(0);
@@ -92,15 +92,15 @@ public class ShowTeaViewModel {
     }
 
     // Infusion
-    public TimeHelper getTime() {
+    TimeHelper getTime() {
         return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
     }
 
-    public TimeHelper getCooldowntime() {
+    TimeHelper getCooldowntime() {
         return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
     }
 
-    public int getTemperature() {
+    int getTemperature() {
         if (getTemperatureunit().equals("Celsius")) {
             return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
         } else {
@@ -108,35 +108,35 @@ public class ShowTeaViewModel {
         }
     }
 
-    public int getInfusionSize() {
+    int getInfusionSize() {
         return infusionDAO.getInfusionsByTeaId(teaId).size();
     }
 
-    public int getInfusionIndex() {
+    int getInfusionIndex() {
         return infusionIndex;
     }
 
-    public void setInfusionIndex(int infusionIndex) {
+    void setInfusionIndex(int infusionIndex) {
         this.infusionIndex = infusionIndex;
     }
 
-    public void incrementInfusionIndex() {
+    void incrementInfusionIndex() {
         infusionIndex++;
     }
 
     // Notes
-    public Note getNote() {
+    Note getNote() {
         return noteDAO.getNoteByTeaId(teaId);
     }
 
-    public void setNote(String noteText) {
+    void setNote(String noteText) {
         Note note = noteDAO.getNoteByTeaId(teaId);
         note.setDescription(noteText);
         noteDAO.update(note);
     }
 
     //Counter
-    public void countCounter() {
+    void countCounter() {
         Counter counter = counterDAO.getCounterByTeaId(teaId);
         RefreshCounter.refreshCounter(counter);
         Date currentDate = Calendar.getInstance().getTime();
@@ -158,21 +158,21 @@ public class ShowTeaViewModel {
     }
 
     // Settings
-    public boolean isAnimation() {
+    boolean isAnimation() {
         return actualSettingsDAO.getSettings().isAnimation();
     }
 
-    public boolean isShowteaalert() {
+    boolean isShowteaalert() {
         return actualSettingsDAO.getSettings().isShowTeaAlert();
     }
 
-    public void setShowteaalert(boolean showteaalert) {
+    void setShowteaalert(boolean showteaalert) {
         ActualSettings actualSettings = actualSettingsDAO.getSettings();
         actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public String getTemperatureunit() {
+    String getTemperatureunit() {
         return actualSettingsDAO.getSettings().getTemperatureUnit();
     }
 }

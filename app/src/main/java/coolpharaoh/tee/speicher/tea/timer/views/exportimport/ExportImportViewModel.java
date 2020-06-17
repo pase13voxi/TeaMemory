@@ -14,6 +14,8 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
+
+//TODO eventuell aufteilen in datatransferViewModel aufteilen
 public class ExportImportViewModel extends ViewModel {
 
 

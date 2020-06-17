@@ -25,7 +25,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
 
-public class MainViewModel extends ViewModel {
+class MainViewModel extends ViewModel {
 
 
     private final TeaDAO teaDAO;
@@ -37,7 +37,7 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<Tea>> teas;
     private final ActualSettings actualSettings;
 
-    public MainViewModel(TeaMemoryDatabase database, Context context) {
+    MainViewModel(TeaMemoryDatabase database, Context context) {
 
         teaDAO = database.getTeaDAO();
         infusionDAO = database.getInfusionDAO();
@@ -102,21 +102,21 @@ public class MainViewModel extends ViewModel {
     }
 
     // Teas
-    public LiveData<List<Tea>> getTeas() {
+    LiveData<List<Tea>> getTeas() {
         return teas;
     }
 
-    public Tea getTeaByPosition(int position) {
+    Tea getTeaByPosition(int position) {
         return Objects.requireNonNull(teas.getValue()).get(position);
     }
 
-    public void deleteTea(int position) {
+    void deleteTea(int position) {
         teaDAO.delete(Objects.requireNonNull(teas.getValue()).get(position));
 
         refreshTeas();
     }
 
-    public void visualizeTeasBySearchString(String searchString) {
+    void visualizeTeasBySearchString(String searchString) {
         if ("".equals(searchString)) {
             refreshTeas();
         } else {
@@ -125,42 +125,42 @@ public class MainViewModel extends ViewModel {
     }
 
     // Settings
-    public int getSort() {
+    int getSort() {
         return actualSettings.getSort();
     }
 
-    public void setSort(int sort) {
+    void setSort(int sort) {
         actualSettings.setSort(sort);
         actualSettingsDAO.update(actualSettings);
 
         refreshTeas();
     }
 
-    public boolean isMainRateAlert() {
+    boolean isMainRateAlert() {
         return actualSettings.isMainRateAlert();
     }
 
-    public void setMainRateAlert(boolean mainRateAlert) {
+    void setMainRateAlert(boolean mainRateAlert) {
         actualSettings.setMainRateAlert(mainRateAlert);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public int getMainRatecounter() {
+    int getMainRatecounter() {
         return actualSettings.getMainRateCounter();
     }
 
-    public void resetMainRatecounter() {
+    void resetMainRatecounter() {
 
         actualSettings.setMainRateCounter(0);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public void incrementMainRatecounter() {
+    void incrementMainRatecounter() {
         actualSettings.setMainRateCounter(actualSettings.getMainRateCounter() + 1);
         actualSettingsDAO.update(actualSettings);
     }
 
-    public void refreshTeas() {
+    void refreshTeas() {
         switch (actualSettings.getSort()) {
             //activity
             case 0:

@@ -9,7 +9,7 @@ import android.util.Log;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 
 class Vibrator {
-    public static final String LOG_TAG = Vibrator.class.getSimpleName();
+    private static final String LOG_TAG = Vibrator.class.getSimpleName();
 
     private Vibrator() {
     }
