@@ -9,96 +9,66 @@ class HintConversation {
     private HintConversation() {
     }
 
-    // TODO reduce complexity
-    static String getHintTemperature(int variety, String temperatureunit, Context context) {
+    static String getHintTemperature(int variety, String temperatureUnit, Context context) {
         switch (variety) {
             case 0:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_blacktea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_blacktea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_blacktea, R.string.newtea_hint_fahrenheit_blacktea, context);
             case 1:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_greentea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_greentea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_greentea, R.string.newtea_hint_fahrenheit_greentea, context);
             case 2:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_yellowtea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_yellowtea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_yellowtea, R.string.newtea_hint_fahrenheit_yellowtea, context);
             case 3:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_whitetea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_whitetea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_whitetea, R.string.newtea_hint_fahrenheit_whitetea, context);
             case 4:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_oolongtea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_oolongtea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_oolongtea, R.string.newtea_hint_fahrenheit_oolongtea, context);
             case 5:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_puerhtea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_puerhtea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_puerhtea, R.string.newtea_hint_fahrenheit_puerhtea, context);
             case 6:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_herbaltea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_herbaltea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_herbaltea, R.string.newtea_hint_fahrenheit_herbaltea, context);
             case 7:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_fruittea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_fruittea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_fruittea, R.string.newtea_hint_fahrenheit_fruittea, context);
             case 8:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_rooibustea) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_rooibustea);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_rooibustea, R.string.newtea_hint_fahrenheit_rooibustea, context);
             default:
-                return temperatureunit.equals("Celsius") ?
-                        context.getResources().getString(R.string.newtea_hint_celsius_other) :
-                        context.getResources().getString(R.string.newtea_hint_fahrenheit_other);
+                return getTemperatureHint(temperatureUnit, R.string.newtea_hint_celsius_other, R.string.newtea_hint_fahrenheit_other, context);
         }
     }
 
-    // TODO reduce complexity
+    private static String getTemperatureHint(String temperatureunit, int hintCelsius, int hintFahrenheit, Context context) {
+        return temperatureunit.equals("Celsius") ?
+                context.getResources().getString(hintCelsius) :
+                context.getResources().getString(hintFahrenheit);
+    }
+
     static String getHintAmount(int variety, String amountkind, Context context) {
         switch (variety) {
             case 0:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_blacktea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_blacktea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_blacktea, R.string.newtea_hint_gr_blacktea, context);
             case 1:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_greentea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_greentea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_greentea, R.string.newtea_hint_gr_greentea, context);
             case 2:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_yellowtea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_yellowtea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_yellowtea, R.string.newtea_hint_gr_yellowtea, context);
             case 3:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_whitetea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_whitetea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_whitetea, R.string.newtea_hint_gr_whitetea, context);
             case 4:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_oolongtea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_oolongtea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_oolongtea, R.string.newtea_hint_gr_oolongtea, context);
             case 5:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_puerhtea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_puerhtea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_puerhtea, R.string.newtea_hint_gr_puerhtea, context);
             case 6:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_herbaltea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_herbaltea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_herbaltea, R.string.newtea_hint_gr_herbaltea, context);
             case 7:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_fruittea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_fruittea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_fruittea, R.string.newtea_hint_gr_fruittea, context);
             case 8:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_rooibustea) :
-                        context.getResources().getString(R.string.newtea_hint_gr_rooibustea);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_rooibustea, R.string.newtea_hint_gr_rooibustea, context);
             default:
-                return amountkind.equals("Ts") ?
-                        context.getResources().getString(R.string.newtea_hint_ts_other) :
-                        context.getResources().getString(R.string.newtea_hint_gr_other);
+                return getAmountHint(amountkind, R.string.newtea_hint_ts_other, R.string.newtea_hint_gr_other, context);
         }
+    }
+
+    private static String getAmountHint(String amountkind, int hintTs, int hintGr, Context context) {
+        return amountkind.equals("Ts") ?
+                context.getResources().getString(hintTs) :
+                context.getResources().getString(hintGr);
     }
 
     static String getHintTime(int variety, Context context) {

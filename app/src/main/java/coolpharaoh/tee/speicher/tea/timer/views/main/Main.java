@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -190,55 +189,14 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         }
     }
 
-    // TODO reduce complexity by outsourcing into searchview.class
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-
-        searchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-
-            @Override
-            public void onViewDetachedFromWindow(View view) {
-                setItemsVisibility(menu, searchItem, true);
-                mainActivityViewModel.refreshTeas();
-            }
-
-            @Override
-            public void onViewAttachedToWindow(View view) {
-                setItemsVisibility(menu, searchItem, false);
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String searchString) {
-                mainActivityViewModel.visualizeTeasBySearchString(searchString);
-                return false;
-            }
-
-
-        });
+        SearchView.configureSearchView(menu, mainActivityViewModel);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-
-    private void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
-        for (int i = 0; i < menu.size(); ++i) {
-            MenuItem item = menu.getItem(i);
-            if (item != exception) item.setVisible(visible);
-        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
