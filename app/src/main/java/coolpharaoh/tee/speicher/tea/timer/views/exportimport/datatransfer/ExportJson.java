@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
@@ -48,18 +49,17 @@ public class ExportJson {
         //Save the path as a string value
         String storageDirectory = folder.toString();
 
-        try {
-            File file = new File(storageDirectory, context.getString(R.string.exportimport_export_file_name));
-            //TODO Warning:(53, 29) Use try-with-resources or close this "BufferedWriter" in a "finally" clause.
-            Writer output = new BufferedWriter(new FileWriter(file));
-            output.write(json);
-            output.close();
-            Toast.makeText(context, context.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
 
-        } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        File file = new File(storageDirectory, context.getString(R.string.exportimport_export_file_name));
+        try (Writer output = new BufferedWriter(new FileWriter(file))) {
+            output.write(json);
+        } catch (IOException e) {
+            Toast.makeText(context, R.string.exportimport_save_failed, Toast.LENGTH_LONG).show();
             return false;
         }
+        Toast.makeText(context, context.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
+
+
         return true;
     }
 

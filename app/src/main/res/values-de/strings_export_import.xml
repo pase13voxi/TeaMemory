@@ -11,6 +11,7 @@
     <string name="exportimport_write_permission_denied">Erlaubnis verweigert.</string>
     <string name="exportimport_export">Exportieren</string>
     <string name="exportimport_saved">tealist.json gespeichert</string>
+    <string name="exportimport_save_failed">tealist.json speichern fehlgeschlagen</string>
     <string name="exportimport_location_dialog_header">Speicherort der Datei</string>
     <string name="exportimport_location_dialog_description">Die Datei tealist.json befindet sich im internen Speicher deines Smartphones in dem Ordner TeaMemory.</string>
     <string name="exportimport_location_dialog_ok">Ok</string>

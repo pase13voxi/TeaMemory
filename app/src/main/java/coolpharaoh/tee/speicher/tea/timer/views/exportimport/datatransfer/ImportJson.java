@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -24,6 +25,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.T
 
 public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
+    private static final String LOG_TAG = ImportJson.class.getSimpleName();
 
     private final Context context;
     private final DataTransferViewModel dataTransferViewModel;
@@ -60,8 +62,7 @@ public class ImportJson {
                 stringBuilder.append(line);
             }
         } catch (IOException e) {
-            //TODO Warning:(63, 15) Use a logger to log this exception.
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Cannot read from file uri", e);
         }
         return stringBuilder.toString();
     }
@@ -76,7 +77,6 @@ public class ImportJson {
             return gson.fromJson(json, listType);
         }catch(JsonSyntaxException e){
             Toast.makeText(context, R.string.exportimport_import_parse_teas_failed, Toast.LENGTH_LONG).show();
-            //TODO Warning:(78, 20) Return an empty collection instead of null.
             return null;
         }
     }
