@@ -76,8 +76,7 @@
     <string name="newtea_tooltip_addinfusion">Aufguss hinzufügen</string>
     <string name="newtea_tooltip_showcooldowntime">Abkühlfunktion zeigen</string>
     <string name="newtea_tooltip_autofillcooldowntime">Abkühlzeit berechnen</string>
-    <string name="newtea_tooltip_done">Tee speichern</string>
-    <string name="newtea_tooltip_done_title">Done</string>
+    <string name="newtea_action_done_title">Tee speichern</string>
     <string name="fahrenheit">Fahrenheit</string>
     <string name="celsius">Celsius</string>
     <string-array name="variety_teas">

@@ -76,8 +76,7 @@
     <string name="newtea_tooltip_addinfusion">Add infusion</string>
     <string name="newtea_tooltip_showcooldowntime">Show cooldown option</string>
     <string name="newtea_tooltip_autofillcooldowntime">Autofill cooldown time</string>
-    <string name="newtea_tooltip_done">Save tea</string>
-    <string name="newtea_tooltip_done_title">Done</string>
+    <string name="newtea_action_done_title">Save tea</string>
     <string name="fahrenheit">Fahrenheit</string>
     <string name="celsius">Celsius</string>
     <string-array name="variety_teas">

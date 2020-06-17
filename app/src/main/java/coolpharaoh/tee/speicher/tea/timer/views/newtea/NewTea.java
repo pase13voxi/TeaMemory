@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -433,14 +432,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_tea, menu);
 
-        new Handler().post(() -> {
-            View view = findViewById(R.id.action_done);
-
-            if (view != null) {
-                view.setOnLongClickListener(NewTea.this);
-            }
-        });
-
         return true;
     }
 
@@ -675,8 +666,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_showcooldowntime));
         } else if (view.getId() == R.id.buttonAutofillCoolDownTime) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_autofillcooldowntime));
-        } else if (view.getId() == R.id.action_done) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.newtea_tooltip_done));
         }
         return true;
     }
