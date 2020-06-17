@@ -54,7 +54,7 @@ class AboutListAdapter extends BaseAdapter {
         View vi = convertView;
 
         if (convertView == null)
-            // Pass null because parent, false destroys Layout
+            // Pass null because (parent, false) destroys the layout
             vi = inflater.inflate(R.layout.aboutlist_single_layout, null);
 
         TextView txtName = vi.findViewById(R.id.textViewListAboutHeading);

@@ -8,19 +8,19 @@ import android.preference.PreferenceManager;
 class SharedTimerPreferences {
 
     private static final String START_TIME = "countdown_timer";
-    private final SharedPreferences mPreferences;
+    private final SharedPreferences preferences;
 
     SharedTimerPreferences(Context context) {
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
         setStartedTime(0);
     }
 
     long getStartedTime() {
-        return mPreferences.getLong(START_TIME, 0);
+        return preferences.getLong(START_TIME, 0);
     }
 
     void setStartedTime(long startedTime) {
-        SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(START_TIME, startedTime);
         editor.apply();
     }

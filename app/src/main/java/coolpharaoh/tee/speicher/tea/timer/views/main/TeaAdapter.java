@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.main;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ class TeaAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -52,8 +54,9 @@ class TeaAdapter extends BaseAdapter {
 
         View vi=convertView;
 
-        if(convertView==null)
-            vi = inflater.inflate(R.layout.tealist_single_layout, parent, false);
+        if (convertView == null)
+            // Pass null because (parent, false) destroys the layout
+            vi = inflater.inflate(R.layout.tealist_single_layout, null);
 
         TextView txtName = vi.findViewById(R.id.textViewListTeaName);
         TextView txtVariety = vi.findViewById(R.id.textViewListVarietyOfTea);

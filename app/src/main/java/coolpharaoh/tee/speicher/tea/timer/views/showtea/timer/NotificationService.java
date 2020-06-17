@@ -8,7 +8,7 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-class NotificationService extends Service {
+public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 7684;
     AudioPlayer audioPlayer = null;
 

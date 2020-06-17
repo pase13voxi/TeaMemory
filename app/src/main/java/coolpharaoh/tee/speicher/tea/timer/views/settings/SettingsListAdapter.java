@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ class SettingsListAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -53,6 +55,7 @@ class SettingsListAdapter extends BaseAdapter {
         View vi=convertView;
 
         if(convertView==null)
+            // Pass null because (parent, false) destroys the layout
             vi = inflater.inflate(R.layout.settinglist_single_layout, parent, false);
 
         TextView txtName = vi.findViewById(R.id.textViewListSettingHeading);
