@@ -8,5 +8,5 @@
         <item>This week</item>
         <item>Today</item>
     </string-array>
-    <string name="statistics_tool_bar_period">Select period</string>
+    <string name="statistics_action_period">Select period</string>
 </resources>

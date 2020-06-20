@@ -10,7 +10,7 @@
 
         <include
             android:id="@+id/tool_bar"
-            layout="@layout/tool_bar_statistics" />
+            layout="@layout/tool_bar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

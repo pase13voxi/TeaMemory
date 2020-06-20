@@ -2,15 +2,13 @@ package coolpharaoh.tee.speicher.tea.timer.views.statistics;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import com.tooltip.Tooltip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ColorConversation;
 
-public class Statistics extends AppCompatActivity implements View.OnLongClickListener {
+public class Statistics extends AppCompatActivity {
 
     private StatisticsViewModel statisticsViewModel;
 
@@ -41,8 +39,6 @@ public class Statistics extends AppCompatActivity implements View.OnLongClickLis
         statisticsViewModel = new StatisticsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
 
         initHorizontalBar();
-
-        configurePeriodButton();
     }
 
     private void defineToolbarAsActionbar() {
@@ -63,10 +59,22 @@ public class Statistics extends AppCompatActivity implements View.OnLongClickLis
         horizontalBar.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
     }
 
-    private void configurePeriodButton() {
-        Button buttonPeriod = findViewById(R.id.toolbar_statistics);
-        buttonPeriod.setOnClickListener(view -> dialogSortOption());
-        buttonPeriod.setOnLongClickListener(this);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_statistics, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_period) {
+            dialogSortOption();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void dialogSortOption() {
@@ -113,25 +121,5 @@ public class Statistics extends AppCompatActivity implements View.OnLongClickLis
         }
 
         return items;
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        if (view.getId() == R.id.toolbar_statistics) {
-            showTooltip(view, getResources().getString(R.string.statistics_tool_bar_period));
-        }
-        return true;
-    }
-
-
-    private void showTooltip(View v, String text) {
-        new Tooltip.Builder(v)
-                .setText(text)
-                .setTextColor(getResources().getColor(R.color.white))
-                .setGravity(Gravity.BOTTOM)
-                .setCornerRadius(8f)
-                .setCancelable(true)
-                .setDismissOnClick(true)
-                .show();
     }
 }
