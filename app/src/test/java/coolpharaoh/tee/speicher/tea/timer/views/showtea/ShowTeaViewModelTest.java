@@ -65,7 +65,7 @@ public class ShowTeaViewModelTest {
         showTeaViewModel = new ShowTeaViewModel(TEA_ID, db, context);
     }
 
-    private void mockDB(){
+    private void mockDB() {
         when(db.getTeaDAO()).thenReturn(teaDAO);
         when(db.getInfusionDAO()).thenReturn(infusionDAO);
         when(db.getNoteDAO()).thenReturn(noteDAO);
@@ -74,7 +74,20 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getTeaId(){
+    public void teaExist() {
+        Tea tea = new Tea();
+        when(teaDAO.getTeaById(TEA_ID)).thenReturn(tea);
+
+        assertThat(showTeaViewModel.teaExists()).isTrue();
+    }
+
+    @Test
+    public void teaDoesNotExist() {
+        assertThat(showTeaViewModel.teaExists()).isFalse();
+    }
+
+    @Test
+    public void getTeaId() {
         long teaIdBefore = 1L;
 
         Tea tea = new Tea();

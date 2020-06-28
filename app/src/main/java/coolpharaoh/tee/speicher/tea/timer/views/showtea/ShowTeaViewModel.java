@@ -43,6 +43,10 @@ class ShowTeaViewModel {
     }
 
     // Tea
+    boolean teaExists() {
+        return teaDAO.getTeaById(teaId) != null;
+    }
+
     long getTeaId() {
         return teaDAO.getTeaById(teaId).getId();
     }

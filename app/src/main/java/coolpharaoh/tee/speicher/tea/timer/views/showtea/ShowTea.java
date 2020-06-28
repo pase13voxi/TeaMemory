@@ -1,13 +1,13 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,8 +23,8 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -43,8 +43,15 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.timer.ForegroundTimer;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
+
+    private static final String LOG_TAG = ShowTea.class.getSimpleName();
+
+    @Getter(AccessLevel.PACKAGE)
+    private AlertDialog lastDialog;
 
     private TextView textViewInfusionIndex;
     private Button buttonNextInfusion;
@@ -176,33 +183,36 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void initializeInformationWindow() {
         long teaId = this.getIntent().getLongExtra("teaId", 0);
         if (teaId == 0) {
+            Log.e(LOG_TAG, "The tea id was not set before navigate to this Activity.");
             disableCompleteActivity();
         } else {
             showTeaInformation(teaId);
         }
     }
 
-    //TODO disable complete Activity
     private void disableCompleteActivity() {
-        Toast toast = Toast.makeText(getApplicationContext(), R.string.showtea_error_text, Toast.LENGTH_SHORT);
-        toast.show();
-        buttonInfusionIndex.setVisibility(View.INVISIBLE);
+        lastDialog = new NotExistingTeaDialog(this).show();
     }
 
     private void showTeaInformation(long teaId) {
         showTeaViewModel = new ShowTeaViewModel(teaId, TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
 
-        fillInformationFields();
+        if (showTeaViewModel.teaExists()) {
+            fillInformationFields();
 
-        decideToShowCooldownTimeButton();
+            decideToShowCooldownTimeButton();
 
-        decideToShowNoteButton();
+            decideToShowNoteButton();
 
-        decideToShowInfusionBar();
+            decideToShowInfusionBar();
 
-        decideToDisplayDescription();
+            decideToDisplayContinueNextInfusionDialog();
 
-        decideToDisplayContinueNextInfusionDialog();
+            decideToDisplayDescription();
+        } else {
+            Log.e(LOG_TAG, "The tea for the given tea id does not exist.");
+            disableCompleteActivity();
+        }
     }
 
     private void fillInformationFields() {
@@ -283,15 +293,15 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         View alertLayoutDialogNote = inflater.inflate(R.layout.dialogshowteadescription, parent, false);
         final CheckBox dontshowagain = alertLayoutDialogNote.findViewById(R.id.checkboxDialogShowTeaDescription);
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(alertLayoutDialogNote);
-        adb.setTitle(R.string.showtea_dialog_description_header);
-        adb.setPositiveButton(R.string.showtea_dialog_description_ok, (dialog, which) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(alertLayoutDialogNote);
+        builder.setTitle(R.string.showtea_dialog_description_header);
+        builder.setPositiveButton(R.string.showtea_dialog_description_ok, (dialog, which) -> {
             if (dontshowagain.isChecked()) {
                 showTeaViewModel.setShowteaalert(false);
             }
         });
-        adb.show();
+        builder.show();
     }
 
     private void decideToDisplayContinueNextInfusionDialog() {
@@ -559,7 +569,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void showDialogCoolingPeriod() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.showtea_cooldown_title);
-        builder.setMessage(R.string.showtea_cooldown_text).setPositiveButton("OK", null).show();
+        builder.setMessage(R.string.showtea_cooldown_text);
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 
     private void showDialogAmount() {
@@ -593,9 +605,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.setView(alertLayoutDialogNote);
         adb.setTitle(R.string.showtea_dialog_amount);
         adb.setIcon(R.drawable.spoon);
-        adb.setPositiveButton(R.string.showtea_dialog_amount_ok, (dialog, which) -> {
-
-        });
+        adb.setPositiveButton(R.string.showtea_dialog_amount_ok, null);
         adb.show();
     }
 
@@ -631,9 +641,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 buttonNote.setVisibility(View.INVISIBLE);
             }
         });
-        adb.setNegativeButton(R.string.showtea_dialog_note_cancle, (dialog, which) -> {
-
-        });
+        adb.setNegativeButton(R.string.showtea_dialog_note_cancle, null);
         adb.show();
     }
 
@@ -688,8 +696,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         adb.setView(listViewCounter);
         adb.setTitle(R.string.showtea_action_counter);
         adb.setIcon(R.drawable.statistics_black);
-        adb.setPositiveButton(R.string.showtea_dialog_counter_ok, (dialog, which) -> {
-        });
+        adb.setPositiveButton(R.string.showtea_dialog_counter_ok, null);
         adb.show();
     }
 

@@ -11,6 +11,9 @@
     <string name="showtea_dialog_counter_month">This month</string>
     <string name="showtea_dialog_counter_overall">Overall</string>
     <string name="showtea_dialog_counter_ok">OK</string>
+    <string name="showtea_dialog_tea_missing_header">Error displaying the tea</string>
+    <string name="showtea_dialog_tea_missing_description">The selected tea cannot be displayed. If this error occurs again, the tea is invalid and it should be deleted.</string>
+    <string name="showtea_dialog_tea_missing_to_main">Back to the start window</string>
     <string name="showtea_dialog_description_header">How to use.</string>
     <string name="showtea_dialog_description_temperature">Calculating the time the boiling water needs to cool to the desired temperature.</string>
     <string name="showtea_dialog_description_amount">Calculate the amount of tea required for the preparation.</string>
