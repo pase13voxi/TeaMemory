@@ -41,7 +41,7 @@ public class NoteRepositoryTest {
         initMocks(TeaMemoryDatabase.class);
         mockStatic(TeaMemoryDatabase.class);
         when(TeaMemoryDatabase.getDatabaseInstance(any())).thenReturn(teaMemoryDatabase);
-        when(teaMemoryDatabase.getNoteDAO()).thenReturn(noteDao);
+        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
     }
 
     @Test

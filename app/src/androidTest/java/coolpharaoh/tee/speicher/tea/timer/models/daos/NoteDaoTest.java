@@ -29,8 +29,8 @@ public class NoteDaoTest {
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mNoteDao = db.getNoteDAO();
-        mTeaDao = db.getTeaDAO();
+        mNoteDao = db.getNoteDao();
+        mTeaDao = db.getTeaDao();
     }
 
     @After

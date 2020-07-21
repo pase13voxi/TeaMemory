@@ -42,7 +42,7 @@ public class CounterRepositoryTest {
         initMocks(TeaMemoryDatabase.class);
         mockStatic(TeaMemoryDatabase.class);
         when(TeaMemoryDatabase.getDatabaseInstance(any())).thenReturn(teaMemoryDatabase);
-        when(teaMemoryDatabase.getCounterDAO()).thenReturn(counterDao);
+        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
     }
 
     @Test

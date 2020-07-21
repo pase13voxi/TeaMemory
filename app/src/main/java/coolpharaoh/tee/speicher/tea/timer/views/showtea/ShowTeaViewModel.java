@@ -7,7 +7,7 @@ import java.util.Date;
 
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -23,7 +23,7 @@ class ShowTeaViewModel {
     private final Context context;
 
     private final TeaDAO teaDAO;
-    private final InfusionDAO infusionDAO;
+    private final InfusionDao infusionDAO;
     private final NoteDao noteDAO;
     private final CounterDao counterDAO;
     private final ActualSettingsDao actualSettingsDAO;
@@ -35,11 +35,11 @@ class ShowTeaViewModel {
         this.teaId = teaId;
         this.context = context;
 
-        teaDAO = database.getTeaDAO();
-        infusionDAO = database.getInfusionDAO();
-        noteDAO = database.getNoteDAO();
-        counterDAO = database.getCounterDAO();
-        actualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDao();
+        infusionDAO = database.getInfusionDao();
+        noteDAO = database.getNoteDao();
+        counterDAO = database.getCounterDao();
+        actualSettingsDAO = database.getActualSettingsDao();
     }
 
     // Tea

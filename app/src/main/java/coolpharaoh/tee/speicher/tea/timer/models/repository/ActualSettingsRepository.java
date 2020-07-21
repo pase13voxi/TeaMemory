@@ -11,7 +11,7 @@ public class ActualSettingsRepository {
 
     public ActualSettingsRepository(Application application) {
         TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
-        actualSettingsDao = teaMemoryDatabase.getActualSettingsDAO();
+        actualSettingsDao = teaMemoryDatabase.getActualSettingsDao();
     }
 
     public void insertSettings(ActualSettings actualSettings) {

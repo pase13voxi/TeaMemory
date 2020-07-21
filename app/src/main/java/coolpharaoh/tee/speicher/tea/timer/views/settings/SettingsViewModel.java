@@ -14,10 +14,10 @@ class SettingsViewModel {
 
     public SettingsViewModel(TeaMemoryDatabase database) {
 
-        actualSettingsDAO = database.getActualSettingsDAO();
+        actualSettingsDAO = database.getActualSettingsDao();
         actualSettings = actualSettingsDAO.getSettings();
 
-        teaDAO = database.getTeaDAO();
+        teaDAO = database.getTeaDao();
     }
 
     //Settings

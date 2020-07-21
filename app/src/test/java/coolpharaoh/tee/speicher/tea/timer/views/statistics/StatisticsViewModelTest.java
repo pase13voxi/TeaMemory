@@ -35,7 +35,7 @@ public class StatisticsViewModelTest {
 
     @Before
     public void setUp() {
-        when(teaMemoryDatabase.getCounterDAO()).thenReturn(counterDAO);
+        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDAO);
 
         statisticsViewModel = new StatisticsViewModel(teaMemoryDatabase);
     }

@@ -14,7 +14,7 @@ public class NoteRepository {
 
     public NoteRepository(Application application) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
-        noteDao = database.getNoteDAO();
+        noteDao = database.getNoteDao();
     }
 
     public void insert(Note note) {

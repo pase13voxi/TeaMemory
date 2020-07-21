@@ -31,7 +31,7 @@ public class TeaDAOTest {
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        teaDAO = db.getTeaDAO();
+        teaDAO = db.getTeaDao();
     }
 
     @After

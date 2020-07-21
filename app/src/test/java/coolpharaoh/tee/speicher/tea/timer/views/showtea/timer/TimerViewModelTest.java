@@ -30,8 +30,8 @@ public class TimerViewModelTest {
 
     @Before
     public void setUp(){
-        when(teaMemoryDatabase.getActualSettingsDAO()).thenReturn(actualSettingsDAO);
-        when(teaMemoryDatabase.getTeaDAO()).thenReturn(teaDAO);
+        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDAO);
+        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDAO);
 
         timerViewModel = new TimerViewModel(teaMemoryDatabase);
     }

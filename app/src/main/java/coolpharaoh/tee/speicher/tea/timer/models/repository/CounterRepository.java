@@ -14,7 +14,7 @@ public class CounterRepository {
 
     public CounterRepository(Application application) {
         TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
-        counterDao = teaMemoryDatabase.getCounterDAO();
+        counterDao = teaMemoryDatabase.getCounterDao();
     }
 
     public void insert(Counter counter) {

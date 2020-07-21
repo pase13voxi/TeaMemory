@@ -30,9 +30,9 @@ public class SettingsViewModelTest {
 
     @Before
     public void setUp() {
-        when(teaMemoryDatabase.getActualSettingsDAO()).thenReturn(actualSettingsDAO);
+        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDAO);
         when(actualSettingsDAO.getSettings()).thenReturn(new ActualSettings());
-        when(teaMemoryDatabase.getTeaDAO()).thenReturn(teaDAO);
+        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDAO);
 
         settingsViewModel = new SettingsViewModel(teaMemoryDatabase);
     }

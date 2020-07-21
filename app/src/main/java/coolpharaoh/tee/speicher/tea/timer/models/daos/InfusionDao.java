@@ -10,7 +10,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 
 @Dao
-public interface InfusionDAO {
+public interface InfusionDao {
     @Insert
     void insert(Infusion items);
 
@@ -21,5 +21,5 @@ public interface InfusionDAO {
     List<Infusion> getInfusionsByTeaId(long id);
 
     @Query("DELETE FROM infusion WHERE tea_id = :id")
-    void deleteInfusionByTeaId(long id);
+    void deleteInfusionsByTeaId(long id);
 }

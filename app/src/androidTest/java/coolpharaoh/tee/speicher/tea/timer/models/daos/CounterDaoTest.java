@@ -32,8 +32,8 @@ public class CounterDaoTest {
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        counterDao = db.getCounterDAO();
-        teaDAO = db.getTeaDAO();
+        counterDao = db.getCounterDao();
+        teaDAO = db.getTeaDao();
     }
 
     @After

@@ -26,7 +26,7 @@ public class ActualSettingsDAOTest {
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mActualSettingsDAO = db.getActualSettingsDAO();
+        mActualSettingsDAO = db.getActualSettingsDao();
     }
 
     @After

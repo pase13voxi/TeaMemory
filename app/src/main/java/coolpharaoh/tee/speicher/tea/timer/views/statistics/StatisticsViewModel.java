@@ -13,7 +13,7 @@ public class StatisticsViewModel {
 
     public StatisticsViewModel(TeaMemoryDatabase database) {
 
-        counterDAO = database.getCounterDAO();
+        counterDAO = database.getCounterDao();
 
         refreshAllCounter();
     }

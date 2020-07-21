@@ -38,7 +38,7 @@ public class ActualSettingsRepositoryTest {
         initMocks(TeaMemoryDatabase.class);
         mockStatic(TeaMemoryDatabase.class);
         when(TeaMemoryDatabase.getDatabaseInstance(any())).thenReturn(teaMemoryDatabase);
-        when(teaMemoryDatabase.getActualSettingsDAO()).thenReturn(actualSettingsDao);
+        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
     @Test

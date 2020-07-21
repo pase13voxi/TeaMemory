@@ -23,7 +23,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class InfusionDAOTest {
-    private InfusionDAO mInfusionDAO;
+    private InfusionDao mInfusionDAO;
     private TeaDAO mTeaDAO;
     private TeaMemoryDatabase db;
 
@@ -31,8 +31,8 @@ public class InfusionDAOTest {
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mInfusionDAO = db.getInfusionDAO();
-        mTeaDAO = db.getTeaDAO();
+        mInfusionDAO = db.getInfusionDao();
+        mTeaDAO = db.getTeaDao();
     }
 
     @After
@@ -112,7 +112,7 @@ public class InfusionDAOTest {
 
         assertThat(mInfusionDAO.getInfusions()).hasSize(3);
 
-        mInfusionDAO.deleteInfusionByTeaId(teaId1);
+        mInfusionDAO.deleteInfusionsByTeaId(teaId1);
 
         assertThat(mInfusionDAO.getInfusions()).hasSize(1);
 

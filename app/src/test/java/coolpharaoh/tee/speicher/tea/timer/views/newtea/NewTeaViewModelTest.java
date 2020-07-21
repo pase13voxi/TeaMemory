@@ -18,7 +18,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -47,7 +47,7 @@ public class NewTeaViewModelTest {
     @Mock
     TeaDAO teaDAO;
     @Mock
-    InfusionDAO infusionDAO;
+    InfusionDao infusionDAO;
     @Mock
     NoteDao noteDAO;
     @Mock
@@ -70,11 +70,11 @@ public class NewTeaViewModelTest {
     }
 
     private void mockDB() {
-        when(db.getTeaDAO()).thenReturn(teaDAO);
-        when(db.getInfusionDAO()).thenReturn(infusionDAO);
-        when(db.getNoteDAO()).thenReturn(noteDAO);
-        when(db.getCounterDAO()).thenReturn(counterDAO);
-        when(db.getActualSettingsDAO()).thenReturn(actualSettingsDAO);
+        when(db.getTeaDao()).thenReturn(teaDAO);
+        when(db.getInfusionDao()).thenReturn(infusionDAO);
+        when(db.getNoteDao()).thenReturn(noteDAO);
+        when(db.getCounterDao()).thenReturn(counterDAO);
+        when(db.getActualSettingsDao()).thenReturn(actualSettingsDAO);
     }
 
     private void mockTea() {
@@ -211,7 +211,7 @@ public class NewTeaViewModelTest {
 
         assertThat(newTea.getName()).isEqualTo(newName);
 
-        verify(infusionDAO).deleteInfusionByTeaId(TEA_ID_FILLED);
+        verify(infusionDAO).deleteInfusionsByTeaId(TEA_ID_FILLED);
 
         verify(infusionDAO, times(infusions.size())).insert(any(Infusion.class));
     }
@@ -249,7 +249,7 @@ public class NewTeaViewModelTest {
 
         assertThat(newTea.getName()).isEqualTo(newName);
 
-        verify(infusionDAO).deleteInfusionByTeaId(anyLong());
+        verify(infusionDAO).deleteInfusionsByTeaId(anyLong());
         verify(infusionDAO).insert(any(Infusion.class));
         verify(counterDAO).insert(any(Counter.class));
         verify(noteDAO).insert(any(Note.class));

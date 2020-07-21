@@ -11,8 +11,8 @@ class TimerViewModel {
 
     TimerViewModel(TeaMemoryDatabase database) {
 
-        teaDAO = database.getTeaDAO();
-        actualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDao();
+        actualSettingsDAO = database.getActualSettingsDao();
     }
 
     //teaDAO

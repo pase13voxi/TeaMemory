@@ -8,7 +8,7 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -23,7 +23,7 @@ class NewTeaViewModel {
     private final Context context;
 
     private final TeaDAO teaDAO;
-    private final InfusionDAO infusionDAO;
+    private final InfusionDao infusionDAO;
     private final NoteDao noteDAO;
     private final CounterDao counterDAO;
     private final ActualSettingsDao actualSettingsDAO;
@@ -36,11 +36,11 @@ class NewTeaViewModel {
     NewTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
         this.context = context;
 
-        teaDAO = database.getTeaDAO();
-        infusionDAO = database.getInfusionDAO();
-        noteDAO = database.getNoteDAO();
-        counterDAO = database.getCounterDAO();
-        actualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDao();
+        infusionDAO = database.getInfusionDao();
+        noteDAO = database.getNoteDao();
+        counterDAO = database.getCounterDao();
+        actualSettingsDAO = database.getActualSettingsDao();
 
         tea = teaDAO.getTeaById(teaId);
         infusions = infusionDAO.getInfusionsByTeaId(teaId);
@@ -49,11 +49,11 @@ class NewTeaViewModel {
     NewTeaViewModel(TeaMemoryDatabase database, Context context) {
         this.context = context;
 
-        teaDAO = database.getTeaDAO();
-        infusionDAO = database.getInfusionDAO();
-        noteDAO = database.getNoteDAO();
-        counterDAO = database.getCounterDAO();
-        actualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDao();
+        infusionDAO = database.getInfusionDao();
+        noteDAO = database.getNoteDao();
+        counterDAO = database.getCounterDao();
+        actualSettingsDAO = database.getActualSettingsDao();
 
         tea = new Tea();
         infusions = new ArrayList<>();
@@ -206,7 +206,7 @@ class NewTeaViewModel {
     }
 
     void setInfusionInformation(long teaId) {
-        infusionDAO.deleteInfusionByTeaId(teaId);
+        infusionDAO.deleteInfusionsByTeaId(teaId);
         for (int i = 0; i < getInfusionSize(); i++) {
             infusions.get(i).setTeaId(teaId);
             infusions.get(i).setInfusionIndex(i);

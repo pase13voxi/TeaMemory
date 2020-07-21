@@ -13,7 +13,7 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -29,7 +29,7 @@ class MainViewModel extends ViewModel {
 
 
     private final TeaDAO teaDAO;
-    private final InfusionDAO infusionDAO;
+    private final InfusionDao infusionDAO;
     private final NoteDao noteDAO;
     private final CounterDao counterDAO;
     private final ActualSettingsDao actualSettingsDAO;
@@ -39,11 +39,11 @@ class MainViewModel extends ViewModel {
 
     MainViewModel(TeaMemoryDatabase database, Context context) {
 
-        teaDAO = database.getTeaDAO();
-        infusionDAO = database.getInfusionDAO();
-        noteDAO = database.getNoteDAO();
-        counterDAO = database.getCounterDAO();
-        actualSettingsDAO = database.getActualSettingsDAO();
+        teaDAO = database.getTeaDao();
+        infusionDAO = database.getInfusionDao();
+        noteDAO = database.getNoteDao();
+        counterDAO = database.getCounterDao();
+        actualSettingsDAO = database.getActualSettingsDao();
 
         if (actualSettingsDAO.getCountItems() == 0) {
             createDefaultTeas(context);

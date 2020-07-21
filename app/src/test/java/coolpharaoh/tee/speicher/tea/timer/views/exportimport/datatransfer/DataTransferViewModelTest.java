@@ -13,7 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
@@ -34,7 +34,7 @@ public class DataTransferViewModelTest {
     @Mock
     TeaDAO teaDAO;
     @Mock
-    InfusionDAO infusionDAO;
+    InfusionDao infusionDAO;
     @Mock
     CounterDao counterDAO;
     @Mock
@@ -44,10 +44,10 @@ public class DataTransferViewModelTest {
 
     @Before
     public void setUp() {
-        when(teaMemoryDatabase.getTeaDAO()).thenReturn(teaDAO);
-        when(teaMemoryDatabase.getInfusionDAO()).thenReturn(infusionDAO);
-        when(teaMemoryDatabase.getCounterDAO()).thenReturn(counterDAO);
-        when(teaMemoryDatabase.getNoteDAO()).thenReturn(noteDAO);
+        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDAO);
+        when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDAO);
+        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDAO);
+        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDAO);
 
         dataTransferViewModel = new DataTransferViewModel(teaMemoryDatabase);
     }
