@@ -9,7 +9,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
@@ -24,7 +24,7 @@ class NewTeaViewModel {
 
     private final TeaDAO teaDAO;
     private final InfusionDAO infusionDAO;
-    private final NoteDAO noteDAO;
+    private final NoteDao noteDAO;
     private final CounterDAO counterDAO;
     private final ActualSettingsDAO actualSettingsDAO;
 

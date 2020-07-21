@@ -12,7 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 
 
 @Dao
-public interface NoteDAO {
+public interface NoteDao {
     @Insert
     void insert(Note items);
 

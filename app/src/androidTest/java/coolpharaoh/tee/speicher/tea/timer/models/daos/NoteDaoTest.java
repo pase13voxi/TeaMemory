@@ -20,17 +20,17 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(AndroidJUnit4.class)
-public class NoteDAOTest {
-    private NoteDAO mNoteDAO;
-    private TeaDAO mTeaDAO;
+public class NoteDaoTest {
+    private NoteDao mNoteDao;
+    private TeaDAO mTeaDao;
     private TeaMemoryDatabase db;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mNoteDAO = db.getNoteDAO();
-        mTeaDAO = db.getTeaDAO();
+        mNoteDao = db.getNoteDAO();
+        mTeaDao = db.getTeaDAO();
     }
 
     @After
@@ -40,37 +40,37 @@ public class NoteDAOTest {
 
     @Test
     public void insertNote(){
-        assertThat(mNoteDAO.getNotes()).hasSize(0);
+        assertThat(mNoteDao.getNotes()).hasSize(0);
 
-        long teaId = mTeaDAO.insert(createTea());
+        long teaId = mTeaDao.insert(createTea());
 
         Note noteBefore = new Note(teaId, 1, "header", "description");
-        mNoteDAO.insert(noteBefore);
+        mNoteDao.insert(noteBefore);
 
-        assertThat(mNoteDAO.getNotes()).hasSize(1);
+        assertThat(mNoteDao.getNotes()).hasSize(1);
 
-        Note noteAfter = mNoteDAO.getNotes().get(0);
+        Note noteAfter = mNoteDao.getNotes().get(0);
         assertThat(noteAfter).isEqualToIgnoringGivenFields(noteBefore, "id");
     }
 
     @Test
     public void updateNote(){
-        assertThat(mNoteDAO.getNotes()).hasSize(0);
+        assertThat(mNoteDao.getNotes()).hasSize(0);
 
-        long teaId = mTeaDAO.insert(createTea());
+        long teaId = mTeaDao.insert(createTea());
 
         Note noteBefore = new Note(teaId, 1, "header", "description");
-        mNoteDAO.insert(noteBefore);
+        mNoteDao.insert(noteBefore);
 
-        assertThat(mNoteDAO.getNotes()).hasSize(1);
+        assertThat(mNoteDao.getNotes()).hasSize(1);
 
-        Note noteUpdate = mNoteDAO.getNoteByTeaId(teaId);
+        Note noteUpdate = mNoteDao.getNoteByTeaId(teaId);
         noteUpdate.setPosition(2);
         noteUpdate.setHeader("HeaderChanged");
         noteUpdate.setDescription("DesciptionChanged");
-        mNoteDAO.update(noteUpdate);
+        mNoteDao.update(noteUpdate);
 
-        Note noteAfter = mNoteDAO.getNoteByTeaId(teaId);
+        Note noteAfter = mNoteDao.getNoteByTeaId(teaId);
         assertThat(noteAfter).isEqualToComparingFieldByField(noteUpdate);
     }
 
