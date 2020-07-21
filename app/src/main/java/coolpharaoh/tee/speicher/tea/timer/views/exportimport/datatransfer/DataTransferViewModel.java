@@ -1,71 +1,72 @@
 package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
+import android.app.Application;
+
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 class DataTransferViewModel extends ViewModel {
 
-    private final TeaDao teaDAO;
-    private final InfusionDao infusionDAO;
-    private final CounterDao counterDAO;
-    private final NoteDao noteDAO;
+    private final TeaRepository teaRepository;
+    private final InfusionRepository infusionRepository;
+    private final CounterRepository counterRepository;
+    private final NoteRepository noteRepository;
 
-    DataTransferViewModel(TeaMemoryDatabase database) {
-        teaDAO = database.getTeaDao();
-        infusionDAO = database.getInfusionDao();
-        counterDAO = database.getCounterDao();
-        noteDAO = database.getNoteDao();
+    DataTransferViewModel(Application application) {
+        teaRepository = new TeaRepository(application);
+        infusionRepository = new InfusionRepository(application);
+        counterRepository = new CounterRepository(application);
+        noteRepository = new NoteRepository(application);
     }
 
     //Teas
     List<Tea> getTeaList() {
-        return teaDAO.getTeas();
+        return teaRepository.getTeas();
     }
 
     long insertTea(Tea tea) {
-        return teaDAO.insert(tea);
+        return teaRepository.insertTea(tea);
     }
 
     void deleteAllTeas() {
-        teaDAO.deleteAll();
+        teaRepository.deleteAllTeas();
     }
 
     //Infusions
     List<Infusion> getInfusionList() {
-        return infusionDAO.getInfusions();
+        return infusionRepository.getInfusions();
     }
 
     public void insertInfusion(Infusion infusion){
-        infusionDAO.insert(infusion);
+        infusionRepository.insertInfusion(infusion);
     }
 
     //Counters
     List<Counter> getCounterList() {
-        return counterDAO.getCounters();
+        return counterRepository.getCounters();
     }
 
     void insertCounter(Counter counter) {
-        counterDAO.insert(counter);
+        counterRepository.insertCounter(counter);
     }
 
     //Notes
     List<Note> getNoteList() {
-        return noteDAO.getNotes();
+        return noteRepository.getNotes();
     }
 
     void insertNote(Note note) {
-        noteDAO.insert(note);
+        noteRepository.insertNote(note);
 
     }
 

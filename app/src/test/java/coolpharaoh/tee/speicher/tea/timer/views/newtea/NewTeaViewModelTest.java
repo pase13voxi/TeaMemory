@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
-import android.content.Context;
+import android.app.Application;
 import android.content.res.Resources;
 
 import org.junit.Before;
@@ -8,7 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -16,17 +17,16 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,68 +34,68 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class NewTeaViewModelTest {
     private NewTeaViewModel newTeaViewModelEmpty;
     private NewTeaViewModel newTeaViewModelFilled;
 
     @Mock
-    Context context;
+    Application application;
     @Mock
     Resources resources;
     @Mock
-    TeaDao teaDAO;
+    TeaRepository teaRepository;
     @Mock
-    InfusionDao infusionDAO;
+    InfusionRepository infusionRepository;
     @Mock
-    NoteDao noteDAO;
+    NoteRepository noteRepository;
     @Mock
-    CounterDao counterDAO;
+    CounterRepository counterRepository;
     @Mock
-    ActualSettingsDao actualSettingsDAO;
-    @Mock
-    TeaMemoryDatabase db;
+    ActualSettingsRepository actualSettingsRepository;
 
     private static final long TEA_ID_FILLED = 1L;
     private Tea tea;
     private List<Infusion> infusions;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockDB();
         mockTea();
-        newTeaViewModelEmpty = new NewTeaViewModel(db, context);
-        newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, db, context);
+        newTeaViewModelEmpty = new NewTeaViewModel(application);
+        newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, application);
     }
 
-    private void mockDB() {
-        when(db.getTeaDao()).thenReturn(teaDAO);
-        when(db.getInfusionDao()).thenReturn(infusionDAO);
-        when(db.getNoteDao()).thenReturn(noteDAO);
-        when(db.getCounterDao()).thenReturn(counterDAO);
-        when(db.getActualSettingsDao()).thenReturn(actualSettingsDAO);
+    private void mockDB() throws Exception {
+        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
+        whenNew(InfusionRepository.class).withAnyArguments().thenReturn(infusionRepository);
+        whenNew(NoteRepository.class).withAnyArguments().thenReturn(noteRepository);
+        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
+        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
     }
 
     private void mockTea() {
         Date today = Date.from(Instant.now());
         tea = new Tea("TEA", "03_yellow", 3, "ts", 5, 0, today);
         tea.setId(TEA_ID_FILLED);
-        when(teaDAO.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
+        when(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
 
         infusions = new ArrayList<>();
         Infusion infusion1 = new Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5);
         infusions.add(infusion1);
         Infusion infusion2 = new Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100);
         infusions.add(infusion2);
-        when(infusionDAO.getInfusionsByTeaId(TEA_ID_FILLED)).thenReturn(infusions);
+        when(infusionRepository.getInfusionsByTeaId(TEA_ID_FILLED)).thenReturn(infusions);
     }
 
     @Test
     public void navigateBetweenInfusions() {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit("Celsius");
-        when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
+        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(2);
         assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(0);
@@ -127,7 +127,7 @@ public class NewTeaViewModelTest {
     public void takeInfusionInformation() {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit("Celsius");
-        when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
+        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
         assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCoolDownTime());
@@ -178,7 +178,7 @@ public class NewTeaViewModelTest {
         String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
-        when(context.getResources()).thenReturn(resources);
+        when(application.getResources()).thenReturn(resources);
         when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
         when(resources.getStringArray(R.array.variety_teas)).thenReturn(varietyTeas);
 
@@ -193,27 +193,27 @@ public class NewTeaViewModelTest {
         String newVariety = "Green tea";
         String newVariety_Code = "02_green";
         int newAmount = 14;
-        String newAmountkind = "NEW_AMOUNT_KIND";
+        String newAmountKind = "NEW_AMOUNT_KIND";
         int newColor = 15;
-        newTeaViewModelFilled.editTea(newName, newVariety, newAmount, newAmountkind, newColor);
+        newTeaViewModelFilled.editTea(newName, newVariety, newAmount, newAmountKind, newColor);
 
 
         assertThat(newTeaViewModelFilled.getTeaId()).isEqualTo(tea.getId().longValue());
         assertThat(newTeaViewModelFilled.getName()).isEqualTo(newName);
         assertThat(newTeaViewModelFilled.getVariety()).isEqualTo(newVariety_Code);
         assertThat(newTeaViewModelFilled.getAmount()).isEqualTo(newAmount);
-        assertThat(newTeaViewModelFilled.getAmountkind()).isEqualTo(newAmountkind);
+        assertThat(newTeaViewModelFilled.getAmountkind()).isEqualTo(newAmountKind);
         assertThat(newTeaViewModelFilled.getColor()).isEqualTo(newColor);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaDAO).update((captor.capture()));
+        verify(teaRepository).updateTea((captor.capture()));
         Tea newTea = captor.getValue();
 
         assertThat(newTea.getName()).isEqualTo(newName);
 
-        verify(infusionDAO).deleteInfusionsByTeaId(TEA_ID_FILLED);
+        verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED);
 
-        verify(infusionDAO, times(infusions.size())).insert(any(Infusion.class));
+        verify(infusionRepository, times(infusions.size())).insertInfusion(any(Infusion.class));
     }
 
     @Test
@@ -223,7 +223,7 @@ public class NewTeaViewModelTest {
         String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
-        when(context.getResources()).thenReturn(resources);
+        when(application.getResources()).thenReturn(resources);
         when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
         when(resources.getStringArray(R.array.variety_teas)).thenReturn(varietyTeas);
 
@@ -233,25 +233,25 @@ public class NewTeaViewModelTest {
         String newVariety = "Rooibus tea";
         String newVariety_Code = "09_rooibus";
         int newAmount = 14;
-        String newAmountkind = "NEW_AMOUNT_KIND";
+        String newAmountKind = "NEW_AMOUNT_KIND";
         int newColor = 15;
-        newTeaViewModelEmpty.createNewTea(newName, newVariety, newAmount, newAmountkind, newColor);
+        newTeaViewModelEmpty.createNewTea(newName, newVariety, newAmount, newAmountKind, newColor);
 
         assertThat(newTeaViewModelEmpty.getName()).isEqualTo(newName);
         assertThat(newTeaViewModelEmpty.getVariety()).isEqualTo(newVariety_Code);
         assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(newAmount);
-        assertThat(newTeaViewModelEmpty.getAmountkind()).isEqualTo(newAmountkind);
+        assertThat(newTeaViewModelEmpty.getAmountkind()).isEqualTo(newAmountKind);
         assertThat(newTeaViewModelEmpty.getColor()).isEqualTo(newColor);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaDAO).insert((captor.capture()));
+        verify(teaRepository).insertTea((captor.capture()));
         Tea newTea = captor.getValue();
 
         assertThat(newTea.getName()).isEqualTo(newName);
 
-        verify(infusionDAO).deleteInfusionsByTeaId(anyLong());
-        verify(infusionDAO).insert(any(Infusion.class));
-        verify(counterDAO).insert(any(Counter.class));
-        verify(noteDAO).insert(any(Note.class));
+        verify(infusionRepository).deleteInfusionsByTeaId(anyLong());
+        verify(infusionRepository).insertInfusion(any(Infusion.class));
+        verify(counterRepository).insertCounter(any(Counter.class));
+        verify(noteRepository).insertNote(any(Note.class));
     }
 }

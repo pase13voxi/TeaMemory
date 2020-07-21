@@ -1,42 +1,43 @@
 package coolpharaoh.tee.speicher.tea.timer.views.statistics;
 
+import android.app.Application;
+
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.RefreshCounter;
 
 public class StatisticsViewModel {
-    private final CounterDao counterDAO;
+    private final CounterRepository counterRepository;
 
-    public StatisticsViewModel(TeaMemoryDatabase database) {
+    public StatisticsViewModel(Application application) {
 
-        counterDAO = database.getCounterDao();
+        counterRepository = new CounterRepository(application);
 
         refreshAllCounter();
     }
 
     public List<StatisticsPOJO> getStatisticsOverall() {
-        return counterDAO.getTeaCounterOverall();
+        return counterRepository.getTeaCounterOverall();
     }
 
     public List<StatisticsPOJO> getStatisticsMonth() {
-        return counterDAO.getTeaCounterMonth();
+        return counterRepository.getTeaCounterMonth();
     }
 
     public List<StatisticsPOJO> getStatisticsWeek() {
-        return counterDAO.getTeaCounterWeek();
+        return counterRepository.getTeaCounterWeek();
     }
 
     public List<StatisticsPOJO> getStatisticsDay() {
-        return counterDAO.getTeaCounterDay();
+        return counterRepository.getTeaCounterDay();
     }
 
     void refreshAllCounter() {
-        for (Counter counter : RefreshCounter.refreshCounters(counterDAO.getCounters())) {
-            counterDAO.update(counter);
+        for (Counter counter : RefreshCounter.refreshCounters(counterRepository.getCounters())) {
+            counterRepository.updateCounter(counter);
         }
     }
 }

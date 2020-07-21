@@ -17,11 +17,11 @@ public class NoteRepository {
         noteDao = database.getNoteDao();
     }
 
-    public void insert(Note note) {
+    public void insertNote(Note note) {
         noteDao.insert(note);
     }
 
-    public void update(Note note) {
+    public void updateNote(Note note) {
         noteDao.update(note);
     }
 

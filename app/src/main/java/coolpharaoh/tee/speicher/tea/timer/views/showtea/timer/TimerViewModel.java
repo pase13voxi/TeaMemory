@@ -1,18 +1,19 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.timer;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import android.app.Application;
+
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 class TimerViewModel {
 
-    private final TeaDao teaDAO;
-    private final ActualSettingsDao actualSettingsDAO;
+    private final TeaRepository teaRepository;
+    private final ActualSettingsRepository actualSettingsRepository;
 
-    TimerViewModel(TeaMemoryDatabase database) {
+    TimerViewModel(Application application) {
 
-        teaDAO = database.getTeaDao();
-        actualSettingsDAO = database.getActualSettingsDao();
+        teaRepository = new TeaRepository(application);
+        actualSettingsRepository = new ActualSettingsRepository(application);
     }
 
     //teaDAO
@@ -20,15 +21,15 @@ class TimerViewModel {
         if (teaId == 0) {
             return "Default Tea";
         }
-        return teaDAO.getTeaById(teaId).getName();
+        return teaRepository.getTeaById(teaId).getName();
     }
 
     //actualSettingsDAO
     boolean isVibration() {
-        return actualSettingsDAO.getSettings().isVibration();
+        return actualSettingsRepository.getSettings().isVibration();
     }
 
     String getMusicchoice() {
-        return actualSettingsDAO.getSettings().getMusicChoice();
+        return actualSettingsRepository.getSettings().getMusicChoice();
     }
 }

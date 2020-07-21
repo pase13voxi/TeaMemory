@@ -1,119 +1,118 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
-import android.content.Context;
+import android.app.Application;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.RefreshCounter;
 
 class ShowTeaViewModel {
 
-    private final Context context;
+    private final Application application;
 
-    private final TeaDao teaDAO;
-    private final InfusionDao infusionDAO;
-    private final NoteDao noteDAO;
-    private final CounterDao counterDAO;
-    private final ActualSettingsDao actualSettingsDAO;
+    private final TeaRepository teaRepository;
+    private final InfusionRepository infusionRepository;
+    private final NoteRepository noteRepository;
+    private final CounterRepository counterRepository;
+    private final ActualSettingsRepository actualSettingsRepository;
 
     private final long teaId;
     private int infusionIndex = 0;
 
-    ShowTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
+    ShowTeaViewModel(long teaId, Application application) {
         this.teaId = teaId;
-        this.context = context;
+        this.application = application;
 
-        teaDAO = database.getTeaDao();
-        infusionDAO = database.getInfusionDao();
-        noteDAO = database.getNoteDao();
-        counterDAO = database.getCounterDao();
-        actualSettingsDAO = database.getActualSettingsDao();
+        teaRepository = new TeaRepository(application);
+        infusionRepository = new InfusionRepository(application);
+        noteRepository = new NoteRepository(application);
+        counterRepository = new CounterRepository(application);
+        actualSettingsRepository = new ActualSettingsRepository(application);
     }
 
     // Tea
     boolean teaExists() {
-        return teaDAO.getTeaById(teaId) != null;
+        return teaRepository.getTeaById(teaId) != null;
     }
 
     long getTeaId() {
-        return teaDAO.getTeaById(teaId).getId();
+        return teaRepository.getTeaById(teaId).getId();
     }
 
     String getName() {
-        return teaDAO.getTeaById(teaId).getName();
+        return teaRepository.getTeaById(teaId).getName();
     }
 
     String getVariety() {
-        if (teaDAO.getTeaById(teaId).getVariety().equals("")) {
+        if (teaRepository.getTeaById(teaId).getVariety().equals("")) {
             return "-";
         } else {
-            return LanguageConversation.convertCodeToVariety(teaDAO.getTeaById(teaId).getVariety(), context);
+            return LanguageConversation.convertCodeToVariety(teaRepository.getTeaById(teaId).getVariety(), application);
         }
     }
 
     int getAmount() {
-        return teaDAO.getTeaById(teaId).getAmount();
+        return teaRepository.getTeaById(teaId).getAmount();
     }
 
     String getAmountKind() {
-        return teaDAO.getTeaById(teaId).getAmountKind();
+        return teaRepository.getTeaById(teaId).getAmountKind();
     }
 
     int getColor() {
-        return teaDAO.getTeaById(teaId).getColor();
+        return teaRepository.getTeaById(teaId).getColor();
     }
 
     void setCurrentDate() {
-        Tea tea = teaDAO.getTeaById(teaId);
+        Tea tea = teaRepository.getTeaById(teaId);
         tea.setDate(Calendar.getInstance().getTime());
-        teaDAO.update(tea);
+        teaRepository.updateTea(tea);
     }
 
     int getNextInfusion() {
-        return teaDAO.getTeaById(teaId).getNextInfusion();
+        return teaRepository.getTeaById(teaId).getNextInfusion();
     }
 
     void updateNextInfusion() {
-        Tea tea = teaDAO.getTeaById(teaId);
+        Tea tea = teaRepository.getTeaById(teaId);
         if ((infusionIndex + 1) >= getInfusionSize()) {
             tea.setNextInfusion(0);
         } else {
             tea.setNextInfusion(infusionIndex + 1);
         }
-        teaDAO.update(tea);
+        teaRepository.updateTea(tea);
     }
 
     // Infusion
     TimeHelper getTime() {
-        return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
+        return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
     }
 
     TimeHelper getCooldowntime() {
-        return TimeHelper.getMinutesAndSeconds(infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
+        return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
     }
 
     int getTemperature() {
         if (getTemperatureunit().equals("Celsius")) {
-            return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
+            return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
         } else {
-            return infusionDAO.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureFahrenheit();
+            return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureFahrenheit();
         }
     }
 
     int getInfusionSize() {
-        return infusionDAO.getInfusionsByTeaId(teaId).size();
+        return infusionRepository.getInfusionsByTeaId(teaId).size();
     }
 
     int getInfusionIndex() {
@@ -130,18 +129,18 @@ class ShowTeaViewModel {
 
     // Notes
     Note getNote() {
-        return noteDAO.getNoteByTeaId(teaId);
+        return noteRepository.getNoteByTeaId(teaId);
     }
 
     void setNote(String noteText) {
-        Note note = noteDAO.getNoteByTeaId(teaId);
+        Note note = noteRepository.getNoteByTeaId(teaId);
         note.setDescription(noteText);
-        noteDAO.update(note);
+        noteRepository.updateNote(note);
     }
 
     //Counter
     void countCounter() {
-        Counter counter = counterDAO.getCounterByTeaId(teaId);
+        Counter counter = counterRepository.getCounterByTeaId(teaId);
         RefreshCounter.refreshCounter(counter);
         Date currentDate = Calendar.getInstance().getTime();
         counter.setMonthDate(currentDate);
@@ -151,32 +150,32 @@ class ShowTeaViewModel {
         counter.setMonth(counter.getMonth() + 1);
         counter.setWeek(counter.getWeek() + 1);
         counter.setDay(counter.getDay() + 1);
-        counterDAO.update(counter);
+        counterRepository.updateCounter(counter);
     }
 
     public Counter getCounter() {
-        Counter counter = counterDAO.getCounterByTeaId(teaId);
+        Counter counter = counterRepository.getCounterByTeaId(teaId);
         RefreshCounter.refreshCounter(counter);
-        counterDAO.update(counter);
+        counterRepository.updateCounter(counter);
         return counter;
     }
 
     // Settings
     boolean isAnimation() {
-        return actualSettingsDAO.getSettings().isAnimation();
+        return actualSettingsRepository.getSettings().isAnimation();
     }
 
     boolean isShowteaalert() {
-        return actualSettingsDAO.getSettings().isShowTeaAlert();
+        return actualSettingsRepository.getSettings().isShowTeaAlert();
     }
 
     void setShowteaalert(boolean showteaalert) {
-        ActualSettings actualSettings = actualSettingsDAO.getSettings();
+        ActualSettings actualSettings = actualSettingsRepository.getSettings();
         actualSettings.setShowTeaAlert(showteaalert);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     String getTemperatureunit() {
-        return actualSettingsDAO.getSettings().getTemperatureUnit();
+        return actualSettingsRepository.getSettings().getTemperatureUnit();
     }
 }

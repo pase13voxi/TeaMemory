@@ -25,7 +25,6 @@ import com.tooltip.Tooltip;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
@@ -44,7 +43,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         setContentView(R.layout.activity_main);
         defineToolbarAsActionbar();
 
-        mainActivityViewModel = new MainViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
+        mainActivityViewModel = new MainViewModel(getApplication());
 
         initializeTeaList();
         initializeNewTeaButton();

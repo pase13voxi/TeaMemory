@@ -5,51 +5,51 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class DataTransferViewModelTest {
 
     private DataTransferViewModel dataTransferViewModel;
 
     @Mock
-    TeaDao teaDAO;
+    TeaRepository teaRepository;
     @Mock
-    InfusionDao infusionDAO;
+    InfusionRepository infusionRepository;
     @Mock
-    CounterDao counterDAO;
+    CounterRepository counterRepository;
     @Mock
-    NoteDao noteDAO;
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
+    NoteRepository noteRepository;
 
     @Before
-    public void setUp() {
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDAO);
-        when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDAO);
-        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDAO);
-        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDAO);
+    public void setUp() throws Exception {
+        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
+        whenNew(InfusionRepository.class).withAnyArguments().thenReturn(infusionRepository);
+        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
+        whenNew(NoteRepository.class).withAnyArguments().thenReturn(noteRepository);
 
-        dataTransferViewModel = new DataTransferViewModel(teaMemoryDatabase);
+        dataTransferViewModel = new DataTransferViewModel(null);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class DataTransferViewModelTest {
         teasBefore.add(tea1);
         Tea tea2 = new Tea("Tea2", "Variety2", 2, "Kind2", 2, 2, date);
         teasBefore.add(tea2);
-        when(teaDAO.getTeas()).thenReturn(teasBefore);
+        when(teaRepository.getTeas()).thenReturn(teasBefore);
 
         List<Tea> teasAfter = dataTransferViewModel.getTeaList();
 
@@ -77,7 +77,7 @@ public class DataTransferViewModelTest {
         dataTransferViewModel.insertTea(teaBefore);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaDAO).insert(captor.capture());
+        verify(teaRepository).insertTea(captor.capture());
         Tea teaAfter = captor.getValue();
 
         assertThat(teaAfter).isEqualTo(teaBefore);
@@ -86,7 +86,7 @@ public class DataTransferViewModelTest {
     @Test
     public void deleteAll() {
         dataTransferViewModel.deleteAllTeas();
-        verify(teaDAO).deleteAll();
+        verify(teaRepository).deleteAllTeas();
     }
 
     @Test
@@ -97,7 +97,7 @@ public class DataTransferViewModelTest {
         Infusion infusion2 = new Infusion(2L, 2, "2", "2", 2, 2);
         infusionsBefore.add(infusion2);
 
-        when(infusionDAO.getInfusions()).thenReturn(infusionsBefore);
+        when(infusionRepository.getInfusions()).thenReturn(infusionsBefore);
 
         List<Infusion> infusionsAfter = dataTransferViewModel.getInfusionList();
 
@@ -111,7 +111,7 @@ public class DataTransferViewModelTest {
         dataTransferViewModel.insertInfusion(infusionBefore);
 
         ArgumentCaptor<Infusion> captor = ArgumentCaptor.forClass(Infusion.class);
-        verify(infusionDAO).insert(captor.capture());
+        verify(infusionRepository).insertInfusion(captor.capture());
         Infusion infusionAfter = captor.getValue();
 
         assertThat(infusionAfter).isEqualTo(infusionBefore);
@@ -127,7 +127,7 @@ public class DataTransferViewModelTest {
         Counter counter2 = new Counter(2L, 2, 2, 2, 2L, date, date, date);
         countersBefore.add(counter2);
 
-        when(counterDAO.getCounters()).thenReturn(countersBefore);
+        when(counterRepository.getCounters()).thenReturn(countersBefore);
 
         List<Counter> countersAfter = dataTransferViewModel.getCounterList();
 
@@ -142,7 +142,7 @@ public class DataTransferViewModelTest {
         dataTransferViewModel.insertCounter(counterBefore);
 
         ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
-        verify(counterDAO).insert(captor.capture());
+        verify(counterRepository).insertCounter(captor.capture());
         Counter counterAfter = captor.getValue();
 
         assertThat(counterAfter).isEqualTo(counterBefore);
@@ -156,7 +156,7 @@ public class DataTransferViewModelTest {
         Note note2 = new Note(2L,2,"Header2","Description2");
         notesBefore.add(note2);
 
-        when(noteDAO.getNotes()).thenReturn(notesBefore);
+        when(noteRepository.getNotes()).thenReturn(notesBefore);
 
         List<Note> notesAfter = dataTransferViewModel.getNoteList();
 
@@ -170,7 +170,7 @@ public class DataTransferViewModelTest {
         dataTransferViewModel.insertNote(noteBefore);
 
         ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
-        verify(noteDAO).insert(captor.capture());
+        verify(noteRepository).insertNote(captor.capture());
         Note noteAfter = captor.getValue();
 
         assertThat(noteAfter).isEqualTo(noteBefore);

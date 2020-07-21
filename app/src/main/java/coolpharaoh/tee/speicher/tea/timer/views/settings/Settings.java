@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions;
 
@@ -52,7 +51,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        settingsViewModel = new SettingsViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()));
+        settingsViewModel = new SettingsViewModel(getApplication());
 
         initializeSettingsListView();
     }

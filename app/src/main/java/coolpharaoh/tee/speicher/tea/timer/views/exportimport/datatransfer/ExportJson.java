@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
-import android.content.Context;
+import android.app.Application;
 import android.os.Environment;
 import android.widget.Toast;
 
@@ -15,18 +15,17 @@ import java.io.Writer;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.TeaPOJO;
 
 public class ExportJson {
 
-    private final Context context;
+    private final Application application;
     private final List<TeaPOJO> teaList;
     private final String json;
 
-    public ExportJson(Context context) {
-        this.context = context;
-        DataTransferViewModel dataTransferViewModel = new DataTransferViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
+    public ExportJson(Application application) {
+        this.application = application;
+        DataTransferViewModel dataTransferViewModel = new DataTransferViewModel(application);
 
         DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(dataTransferViewModel.getTeaList(),
                 dataTransferViewModel.getInfusionList(), dataTransferViewModel.getCounterList(),
@@ -38,10 +37,10 @@ public class ExportJson {
 
     public boolean write() {
         //Create Folder
-        File folder = new File(Environment.getExternalStorageDirectory().toString() + context.getString(R.string.exportimport_export_folder_name));
+        File folder = new File(Environment.getExternalStorageDirectory().toString() + application.getString(R.string.exportimport_export_folder_name));
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
-                Toast.makeText(context, context.getString(R.string.exportimport_export_create_folder_failed), Toast.LENGTH_LONG).show();
+                Toast.makeText(application, application.getString(R.string.exportimport_export_create_folder_failed), Toast.LENGTH_LONG).show();
                 return false;
             }
         }
@@ -50,14 +49,14 @@ public class ExportJson {
         String storageDirectory = folder.toString();
 
 
-        File file = new File(storageDirectory, context.getString(R.string.exportimport_export_file_name));
+        File file = new File(storageDirectory, application.getString(R.string.exportimport_export_file_name));
         try (Writer output = new BufferedWriter(new FileWriter(file))) {
             output.write(json);
         } catch (IOException e) {
-            Toast.makeText(context, R.string.exportimport_save_failed, Toast.LENGTH_LONG).show();
+            Toast.makeText(application, R.string.exportimport_save_failed, Toast.LENGTH_LONG).show();
             return false;
         }
-        Toast.makeText(context, context.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
+        Toast.makeText(application, application.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
 
 
         return true;

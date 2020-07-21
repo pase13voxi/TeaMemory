@@ -48,7 +48,7 @@ public class NoteRepositoryTest {
     public void insertNote() {
         Note note = new Note();
 
-        noteRepository.insert(note);
+        noteRepository.insertNote(note);
 
         verify(noteDao).insert(note);
     }
@@ -57,7 +57,7 @@ public class NoteRepositoryTest {
     public void updateNote() {
         Note note = new Note();
 
-        noteRepository.update(note);
+        noteRepository.updateNote(note);
 
         verify(noteDao).update(note);
     }

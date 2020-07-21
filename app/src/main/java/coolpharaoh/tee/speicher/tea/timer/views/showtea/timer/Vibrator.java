@@ -1,12 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.timer;
 
+import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.util.Log;
-
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 
 class Vibrator {
     private static final String LOG_TAG = Vibrator.class.getSimpleName();
@@ -14,12 +13,12 @@ class Vibrator {
     private Vibrator() {
     }
 
-    static void vibrate(Context context) {
+    static void vibrate(Application application) {
 
-        TimerViewModel timerViewModel = new TimerViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
+        TimerViewModel timerViewModel = new TimerViewModel(application);
 
-        if (!isSilent(context) && timerViewModel.isVibration()) {
-            android.os.Vibrator vibrator = (android.os.Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (!isSilent(application) && timerViewModel.isVibration()) {
+            android.os.Vibrator vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
             if (vibrator == null) {
                 throw new AssertionError("Vibrator is null.");
             } else {

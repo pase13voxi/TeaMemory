@@ -49,7 +49,7 @@ public class CounterRepositoryTest {
     public void insertCounter() {
         Counter counter = new Counter();
 
-        counterRepository.insert(counter);
+        counterRepository.insertCounter(counter);
 
         verify(counterDao).insert(counter);
     }
@@ -58,7 +58,7 @@ public class CounterRepositoryTest {
     public void updateCounter() {
         Counter counter = new Counter();
 
-        counterRepository.update(counter);
+        counterRepository.updateCounter(counter);
 
         verify(counterDao).update(counter);
     }

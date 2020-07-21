@@ -5,36 +5,37 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class SettingsViewModelTest {
     private SettingsViewModel settingsViewModel;
 
     @Mock
-    ActualSettingsDao actualSettingsDAO;
+    ActualSettingsRepository actualSettingsRepository;
     @Mock
-    TeaDao teaDAO;
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
+    TeaRepository teaRepository;
 
     @Before
-    public void setUp() {
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDAO);
-        when(actualSettingsDAO.getSettings()).thenReturn(new ActualSettings());
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDAO);
+    public void setUp() throws Exception {
+        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
+        when(actualSettingsRepository.getSettings()).thenReturn(new ActualSettings());
 
-        settingsViewModel = new SettingsViewModel(teaMemoryDatabase);
+        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
+
+        settingsViewModel = new SettingsViewModel(null);
     }
 
     @Test
@@ -43,7 +44,7 @@ public class SettingsViewModelTest {
         settingsViewModel.setMusicchoice(musicChoice);
 
         ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
-        verify(actualSettingsDAO).update((captor.capture()));
+        verify(actualSettingsRepository).updateSettings((captor.capture()));
         ActualSettings actualSettings = captor.getValue();
 
         assertThat(actualSettings.getMusicChoice()).isEqualTo(musicChoice);
@@ -54,7 +55,7 @@ public class SettingsViewModelTest {
         String musicName = "MUSIC_NAME";
         settingsViewModel.setMusicname(musicName);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.getMusicname()).isEqualTo(musicName);
     }
@@ -64,7 +65,7 @@ public class SettingsViewModelTest {
         boolean vibration = true;
         settingsViewModel.setVibration(vibration);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.isVibration()).isEqualTo(vibration);
     }
@@ -74,7 +75,7 @@ public class SettingsViewModelTest {
         boolean animation = true;
         settingsViewModel.setAnimation(animation);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.isAnimation()).isEqualTo(animation);
     }
@@ -84,7 +85,7 @@ public class SettingsViewModelTest {
         String temperatureUnit = "TEMPERATURE_UNIT";
         settingsViewModel.setTemperatureunit(temperatureUnit);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.getTemperatureunit()).isEqualTo(temperatureUnit);
     }
@@ -94,7 +95,7 @@ public class SettingsViewModelTest {
         boolean showTeaAlert = true;
         settingsViewModel.setShowteaalert(showTeaAlert);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.isShowteaalert()).isEqualTo(showTeaAlert);
     }
@@ -104,7 +105,7 @@ public class SettingsViewModelTest {
         boolean mainRateAlert = true;
         settingsViewModel.setMainratealert(mainRateAlert);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.isMainratealert()).isEqualTo(mainRateAlert);
     }
@@ -114,7 +115,7 @@ public class SettingsViewModelTest {
         boolean settingsPermissionAlert = true;
         settingsViewModel.setSettingsPermissionAlert(settingsPermissionAlert);
 
-        verify(actualSettingsDAO).update(any());
+        verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.isSettingspermissionalert()).isEqualTo(settingsPermissionAlert);
     }
@@ -124,7 +125,7 @@ public class SettingsViewModelTest {
         settingsViewModel.setDefaultSettings();
 
         ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
-        verify(actualSettingsDAO).update(captor.capture());
+        verify(actualSettingsRepository).updateSettings(captor.capture());
         ActualSettings actualSettings = captor.getValue();
 
         assertThat(actualSettings.getMusicChoice()).isEqualTo("content://settings/system/ringtone");
@@ -141,6 +142,6 @@ public class SettingsViewModelTest {
     @Test
     public void deleteAllTeas(){
         settingsViewModel.deleteAllTeas();
-        verify(teaDAO).deleteAll();
+        verify(teaRepository).deleteAllTeas();
     }
 }

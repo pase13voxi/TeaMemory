@@ -4,36 +4,36 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class TimerViewModelTest {
 
     private TimerViewModel timerViewModel;
 
     @Mock
-    ActualSettingsDao actualSettingsDAO;
+    ActualSettingsRepository actualSettingsRepository;
     @Mock
-    TeaDao teaDAO;
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
+    TeaRepository teaRepository;
 
 
     @Before
-    public void setUp(){
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDAO);
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDAO);
+    public void setUp() throws Exception {
+        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
+        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
 
-        timerViewModel = new TimerViewModel(teaMemoryDatabase);
+        timerViewModel = new TimerViewModel(null);
     }
 
 
@@ -44,7 +44,7 @@ public class TimerViewModelTest {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setVibration(true);
 
-        when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
+        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(timerViewModel.isVibration()).isTrue();
 
@@ -61,7 +61,7 @@ public class TimerViewModelTest {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setMusicChoice(musicChoice);
 
-        when(actualSettingsDAO.getSettings()).thenReturn(actualSettings);
+        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(timerViewModel.getMusicchoice()).isEqualTo(musicChoice);
     }
@@ -73,7 +73,7 @@ public class TimerViewModelTest {
         Tea tea = new Tea();
         tea.setName(teaName);
 
-        when(teaDAO.getTeaById(1L)).thenReturn(tea);
+        when(teaRepository.getTeaById(1L)).thenReturn(tea);
 
         assertThat(timerViewModel.getName(0L)).isEqualTo("Default Tea");
         assertThat(timerViewModel.getName(1L)).isEqualTo(teaName);

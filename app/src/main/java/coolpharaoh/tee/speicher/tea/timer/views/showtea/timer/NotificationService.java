@@ -24,18 +24,18 @@ public class NotificationService extends Service {
 
         startForeground(NOTIFICATION_ID, getNotification(intent.getLongExtra("teaId", 0)));
         startAudioPlayer();
-        Vibrator.vibrate(getApplicationContext());
+        Vibrator.vibrate(getApplication());
 
         return START_REDELIVER_INTENT;
     }
 
     private Notification getNotification(final long teaId){
-        Notifier notifier = new Notifier(getApplicationContext(), teaId);
+        Notifier notifier = new Notifier(getApplication(), teaId);
         return notifier.getNotification();
     }
 
     private void startAudioPlayer(){
-        audioPlayer = new AudioPlayer(getApplicationContext());
+        audioPlayer = new AudioPlayer(getApplication());
         audioPlayer.start();
     }
 

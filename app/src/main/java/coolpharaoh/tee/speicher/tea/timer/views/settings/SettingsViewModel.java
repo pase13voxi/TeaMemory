@@ -1,29 +1,30 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
+import android.app.Application;
+
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 
 class SettingsViewModel {
 
-    private final ActualSettingsDao actualSettingsDAO;
-    private final TeaDao teaDAO;
+    private final ActualSettingsRepository actualSettingsRepository;
+    private final TeaRepository teaRepository;
 
     private final ActualSettings actualSettings;
 
-    public SettingsViewModel(TeaMemoryDatabase database) {
+    public SettingsViewModel(Application application) {
 
-        actualSettingsDAO = database.getActualSettingsDao();
-        actualSettings = actualSettingsDAO.getSettings();
+        actualSettingsRepository = new ActualSettingsRepository(application);
+        actualSettings = actualSettingsRepository.getSettings();
 
-        teaDAO = database.getTeaDao();
+        teaRepository = new TeaRepository(application);
     }
 
     //Settings
     void setMusicchoice(String musicchoice) {
         actualSettings.setMusicChoice(musicchoice);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     String getMusicname() {
@@ -32,7 +33,7 @@ class SettingsViewModel {
 
     void setMusicname(String musicname) {
         actualSettings.setMusicName(musicname);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     boolean isVibration() {
@@ -41,7 +42,7 @@ class SettingsViewModel {
 
     void setVibration(boolean vibration) {
         actualSettings.setVibration(vibration);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     boolean isAnimation() {
@@ -50,7 +51,7 @@ class SettingsViewModel {
 
     void setAnimation(boolean animation) {
         actualSettings.setAnimation(animation);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     String getTemperatureunit() {
@@ -59,7 +60,7 @@ class SettingsViewModel {
 
     void setTemperatureunit(String temperatureunit) {
         actualSettings.setTemperatureUnit(temperatureunit);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     boolean isShowteaalert() {
@@ -68,7 +69,7 @@ class SettingsViewModel {
 
     void setShowteaalert(boolean showteaalert) {
         actualSettings.setShowTeaAlert(showteaalert);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     boolean isMainratealert() {
@@ -77,7 +78,7 @@ class SettingsViewModel {
 
     void setMainratealert(boolean mainratealert) {
         actualSettings.setMainRateAlert(mainratealert);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     boolean isSettingspermissionalert() {
@@ -86,7 +87,7 @@ class SettingsViewModel {
 
     void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
         actualSettings.setSettingsPermissionAlert(settingsPermissionAlert);
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     void setDefaultSettings() {
@@ -100,11 +101,11 @@ class SettingsViewModel {
         actualSettings.setMainRateCounter(0);
         actualSettings.setSort(0);
 
-        actualSettingsDAO.update(actualSettings);
+        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     //Tea
     void deleteAllTeas() {
-        teaDAO.deleteAll();
+        teaRepository.deleteAllTeas();
     }
 }

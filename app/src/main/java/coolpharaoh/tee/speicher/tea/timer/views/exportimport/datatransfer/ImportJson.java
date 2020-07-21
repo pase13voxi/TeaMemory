@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
+import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -20,34 +21,33 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.TeaPOJO;
 
 public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
     private static final String LOG_TAG = ImportJson.class.getSimpleName();
 
-    private final Context context;
+    private final Application application;
     private final DataTransferViewModel dataTransferViewModel;
     private final Uri fileUri;
 
     private String json;
 
-    public ImportJson(Uri fileUri, Context context) {
-        this.context = context;
-        dataTransferViewModel = new DataTransferViewModel(TeaMemoryDatabase.getDatabaseInstance(context));
+    public ImportJson(Uri fileUri, Application application) {
+        this.application = application;
+        dataTransferViewModel = new DataTransferViewModel(application);
         this.fileUri = fileUri;
     }
 
     public boolean read(boolean keepStoredTeas) {
-        json = readJsonFile(context);
-        List<TeaPOJO> teaList = createTeaListFromJson(context);
+        json = readJsonFile(application);
+        List<TeaPOJO> teaList = createTeaListFromJson(application);
         if (teaList == null) {
             return false;
         }
         POJOToDatabase pojoToDatabase = new POJOToDatabase(dataTransferViewModel);
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
-        Toast.makeText(context, R.string.exportimport_teas_imported, Toast.LENGTH_LONG).show();
+        Toast.makeText(application, R.string.exportimport_teas_imported, Toast.LENGTH_LONG).show();
         return true;
     }
 

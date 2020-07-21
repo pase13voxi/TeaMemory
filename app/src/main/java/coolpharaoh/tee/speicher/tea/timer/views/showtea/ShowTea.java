@@ -37,7 +37,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
@@ -195,7 +194,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void showTeaInformation(long teaId) {
-        showTeaViewModel = new ShowTeaViewModel(teaId, TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
+        showTeaViewModel = new ShowTeaViewModel(teaId, getApplication());
 
         if (showTeaViewModel.teaExists()) {
             fillInformationFields();

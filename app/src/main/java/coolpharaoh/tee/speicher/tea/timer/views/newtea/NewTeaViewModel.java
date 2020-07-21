@@ -1,59 +1,58 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
-import android.content.Context;
+import android.app.Application;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
 
 class NewTeaViewModel {
-    private final Context context;
+    private final Application application;
 
-    private final TeaDao teaDAO;
-    private final InfusionDao infusionDAO;
-    private final NoteDao noteDAO;
-    private final CounterDao counterDAO;
-    private final ActualSettingsDao actualSettingsDAO;
+    private final TeaRepository teaRepository;
+    private final InfusionRepository infusionRepository;
+    private final NoteRepository noteRepository;
+    private final CounterRepository counterRepository;
+    private final ActualSettingsRepository actualSettingsRepository;
 
     private final Tea tea;
     private final List<Infusion> infusions;
 
     private int infusionIndex = 0;
 
-    NewTeaViewModel(long teaId, TeaMemoryDatabase database, Context context) {
-        this.context = context;
+    NewTeaViewModel(long teaId, Application application) {
+        this.application = application;
 
-        teaDAO = database.getTeaDao();
-        infusionDAO = database.getInfusionDao();
-        noteDAO = database.getNoteDao();
-        counterDAO = database.getCounterDao();
-        actualSettingsDAO = database.getActualSettingsDao();
+        teaRepository = new TeaRepository(application);
+        infusionRepository = new InfusionRepository(application);
+        noteRepository = new NoteRepository(application);
+        counterRepository = new CounterRepository(application);
+        actualSettingsRepository = new ActualSettingsRepository(application);
 
-        tea = teaDAO.getTeaById(teaId);
-        infusions = infusionDAO.getInfusionsByTeaId(teaId);
+        tea = teaRepository.getTeaById(teaId);
+        infusions = infusionRepository.getInfusionsByTeaId(teaId);
     }
 
-    NewTeaViewModel(TeaMemoryDatabase database, Context context) {
-        this.context = context;
+    NewTeaViewModel(Application application) {
+        this.application = application;
 
-        teaDAO = database.getTeaDao();
-        infusionDAO = database.getInfusionDao();
-        noteDAO = database.getNoteDao();
-        counterDAO = database.getCounterDao();
-        actualSettingsDAO = database.getActualSettingsDao();
+        teaRepository = new TeaRepository(application);
+        infusionRepository = new InfusionRepository(application);
+        noteRepository = new NoteRepository(application);
+        counterRepository = new CounterRepository(application);
+        actualSettingsRepository = new ActualSettingsRepository(application);
 
         tea = new Tea();
         infusions = new ArrayList<>();
@@ -99,7 +98,7 @@ class NewTeaViewModel {
     void takeInfusionInformation(String time, String cooldowntime, int temperature) {
         infusions.get(infusionIndex).setTime(time);
         infusions.get(infusionIndex).setCoolDownTime(cooldowntime);
-        if (actualSettingsDAO.getSettings().getTemperatureUnit().equals("Celsius")) {
+        if (actualSettingsRepository.getSettings().getTemperatureUnit().equals("Celsius")) {
             infusions.get(infusionIndex).setTemperatureCelsius(temperature);
             infusions.get(infusionIndex).setTemperatureFahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
         } else {
@@ -155,14 +154,14 @@ class NewTeaViewModel {
 
     // Settings
     String getTemperatureunit() {
-        return actualSettingsDAO.getSettings().getTemperatureUnit();
+        return actualSettingsRepository.getSettings().getTemperatureUnit();
     }
 
     // Overall
     void editTea(String name, String variety, int amount, String amountkind, int color) {
         setTeaInformation(name, variety, amount, amountkind, color);
 
-        teaDAO.update(tea);
+        teaRepository.updateTea(tea);
 
         setInfusionInformation(tea.getId());
     }
@@ -171,7 +170,7 @@ class NewTeaViewModel {
         setTeaInformation(name, variety, amount, amountkind, color);
         tea.setNextInfusion(0);
 
-        long teaId = teaDAO.insert(tea);
+        long teaId = teaRepository.insertTea(tea);
 
         setInfusionInformation(teaId);
 
@@ -186,19 +185,19 @@ class NewTeaViewModel {
         counter.setWeekDate(Calendar.getInstance().getTime());
         counter.setMonthDate(Calendar.getInstance().getTime());
 
-        counterDAO.insert(counter);
+        counterRepository.insertCounter(counter);
 
         // create standard note
         Note note = new Note();
         note.setTeaId(teaId);
         note.setPosition(1);
         note.setDescription("");
-        noteDAO.insert(note);
+        noteRepository.insertNote(note);
     }
 
     void setTeaInformation(String name, String variety, int amount, String amountkind, int color) {
         tea.setName(name);
-        tea.setVariety(LanguageConversation.convertVarietyToCode(variety, context));
+        tea.setVariety(LanguageConversation.convertVarietyToCode(variety, application));
         tea.setAmount(amount);
         tea.setAmountKind(amountkind);
         tea.setColor(color);
@@ -206,11 +205,11 @@ class NewTeaViewModel {
     }
 
     void setInfusionInformation(long teaId) {
-        infusionDAO.deleteInfusionsByTeaId(teaId);
+        infusionRepository.deleteInfusionsByTeaId(teaId);
         for (int i = 0; i < getInfusionSize(); i++) {
             infusions.get(i).setTeaId(teaId);
             infusions.get(i).setInfusionIndex(i);
-            infusionDAO.insert(infusions.get(i));
+            infusionRepository.insertInfusion(infusions.get(i));
         }
     }
 }

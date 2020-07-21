@@ -5,7 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,31 +14,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
+import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class StatisticsViewModelTest {
+    @Mock
+    CounterRepository counterRepository;
 
     private StatisticsViewModel statisticsViewModel;
 
-    @Mock
-    CounterDao counterDAO;
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
-
     @Before
-    public void setUp() {
-        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDAO);
+    public void setUp() throws Exception {
+        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
 
-        statisticsViewModel = new StatisticsViewModel(teaMemoryDatabase);
+        statisticsViewModel = new StatisticsViewModel(null);
     }
 
     @Test
@@ -56,7 +55,7 @@ public class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18;
         counterOverallBefore.add(statisticsPOJO2);
 
-        when(counterDAO.getTeaCounterOverall()).thenReturn(counterOverallBefore);
+        when(counterRepository.getTeaCounterOverall()).thenReturn(counterOverallBefore);
 
         List<StatisticsPOJO> counterOverallAfter = statisticsViewModel.getStatisticsOverall();
 
@@ -79,7 +78,7 @@ public class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18;
         counterMonthBefore.add(statisticsPOJO2);
 
-        when(counterDAO.getTeaCounterMonth()).thenReturn(counterMonthBefore);
+        when(counterRepository.getTeaCounterMonth()).thenReturn(counterMonthBefore);
 
         List<StatisticsPOJO> counterMonthAfter = statisticsViewModel.getStatisticsMonth();
 
@@ -102,7 +101,7 @@ public class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18;
         counterWeekBefore.add(statisticsPOJO2);
 
-        when(counterDAO.getTeaCounterWeek()).thenReturn(counterWeekBefore);
+        when(counterRepository.getTeaCounterWeek()).thenReturn(counterWeekBefore);
 
         List<StatisticsPOJO> counterWeekAfter = statisticsViewModel.getStatisticsWeek();
 
@@ -125,7 +124,7 @@ public class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18;
         counterDayBefore.add(statisticsPOJO2);
 
-        when(counterDAO.getTeaCounterDay()).thenReturn(counterDayBefore);
+        when(counterRepository.getTeaCounterDay()).thenReturn(counterDayBefore);
 
         List<StatisticsPOJO> counterDayAfter = statisticsViewModel.getStatisticsDay();
 
@@ -153,12 +152,12 @@ public class StatisticsViewModelTest {
         Counter refreshAll = new Counter(1L, 4, 7, 9, 15L, monthBefore, monthBefore, monthBefore);
         countersBefore.add(refreshAll);
 
-        when(counterDAO.getCounters()).thenReturn(countersBefore);
+        when(counterRepository.getCounters()).thenReturn(countersBefore);
 
         statisticsViewModel.refreshAllCounter();
 
         ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
-        verify(counterDAO, times(5)).update(captor.capture());
+        verify(counterRepository, times(5)).updateCounter(captor.capture());
 
         List<Counter> counterAfter = captor.getAllValues();
 

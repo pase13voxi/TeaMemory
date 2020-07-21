@@ -29,7 +29,6 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
 
@@ -196,11 +195,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void initializeNewTea() {
-        newTeaViewModel = new NewTeaViewModel(TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
+        newTeaViewModel = new NewTeaViewModel(getApplication());
     }
 
     private void initializeEditTea() {
-        newTeaViewModel = new NewTeaViewModel(teaId, TeaMemoryDatabase.getDatabaseInstance(getApplicationContext()), getApplicationContext());
+        newTeaViewModel = new NewTeaViewModel(teaId, getApplication());
 
         fillVarietyInputFields();
 

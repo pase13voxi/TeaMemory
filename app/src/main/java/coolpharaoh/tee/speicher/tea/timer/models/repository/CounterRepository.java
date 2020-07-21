@@ -17,11 +17,11 @@ public class CounterRepository {
         counterDao = teaMemoryDatabase.getCounterDao();
     }
 
-    public void insert(Counter counter) {
+    public void insertCounter(Counter counter) {
         counterDao.insert(counter);
     }
 
-    public void update(Counter counter) {
+    public void updateCounter(Counter counter) {
         counterDao.update(counter);
     }
 

@@ -122,7 +122,7 @@ public class ExportImport extends AppCompatActivity {
     }
 
     private void exportJson() {
-        ExportJson exportJson = new ExportJson(getApplicationContext());
+        ExportJson exportJson = new ExportJson(getApplication());
         if (exportJson.write()) {
             dialogExportLocation();
         } else {
@@ -187,7 +187,7 @@ public class ExportImport extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
-            ImportJson importJson = new ImportJson(resultData.getData(), getApplicationContext());
+            ImportJson importJson = new ImportJson(resultData.getData(), getApplication());
             if (importJson.read(keepStoredTeas)) {
                 dialogImportComplete();
             } else {
