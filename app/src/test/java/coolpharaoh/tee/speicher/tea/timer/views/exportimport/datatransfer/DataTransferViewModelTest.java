@@ -15,7 +15,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
@@ -32,7 +32,7 @@ public class DataTransferViewModelTest {
     private DataTransferViewModel dataTransferViewModel;
 
     @Mock
-    TeaDAO teaDAO;
+    TeaDao teaDAO;
     @Mock
     InfusionDao infusionDAO;
     @Mock

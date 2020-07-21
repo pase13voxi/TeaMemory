@@ -12,7 +12,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
 
 @Dao
-public interface TeaDAO {
+public interface TeaDao {
     @Insert
     long insert(Tea items);
 

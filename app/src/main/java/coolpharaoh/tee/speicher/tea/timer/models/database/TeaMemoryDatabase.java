@@ -10,7 +10,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
@@ -27,7 +27,7 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "teamemory";
     private static TeaMemoryDatabase sInstance;
 
-    public abstract TeaDAO getTeaDao();
+    public abstract TeaDao getTeaDao();
 
     public abstract InfusionDao getInfusionDao();
 

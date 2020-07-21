@@ -9,7 +9,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
@@ -22,7 +22,7 @@ class ShowTeaViewModel {
 
     private final Context context;
 
-    private final TeaDAO teaDAO;
+    private final TeaDao teaDAO;
     private final InfusionDao infusionDAO;
     private final NoteDao noteDAO;
     private final CounterDao counterDAO;

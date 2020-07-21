@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
@@ -23,7 +23,7 @@ public class TimerViewModelTest {
     @Mock
     ActualSettingsDao actualSettingsDAO;
     @Mock
-    TeaDAO teaDAO;
+    TeaDao teaDAO;
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
 

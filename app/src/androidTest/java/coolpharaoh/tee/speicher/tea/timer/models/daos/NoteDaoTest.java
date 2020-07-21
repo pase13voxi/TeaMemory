@@ -22,7 +22,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(AndroidJUnit4.class)
 public class NoteDaoTest {
     private NoteDao mNoteDao;
-    private TeaDAO mTeaDao;
+    private TeaDao mTeaDao;
     private TeaMemoryDatabase db;
 
     @Before

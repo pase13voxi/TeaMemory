@@ -1,14 +1,14 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
 class SettingsViewModel {
 
     private final ActualSettingsDao actualSettingsDAO;
-    private final TeaDAO teaDAO;
+    private final TeaDao teaDAO;
 
     private final ActualSettings actualSettings;
 

@@ -24,7 +24,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class TeaDAOTest {
-    private TeaDAO teaDAO;
+    private TeaDao teaDAO;
     private TeaMemoryDatabase db;
 
     @Before

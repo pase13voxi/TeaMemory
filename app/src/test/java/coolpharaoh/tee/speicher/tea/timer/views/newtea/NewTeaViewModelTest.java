@@ -20,7 +20,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
@@ -45,7 +45,7 @@ public class NewTeaViewModelTest {
     @Mock
     Resources resources;
     @Mock
-    TeaDAO teaDAO;
+    TeaDao teaDAO;
     @Mock
     InfusionDao infusionDAO;
     @Mock
