@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
@@ -31,7 +31,7 @@ class MainViewModel extends ViewModel {
     private final TeaDAO teaDAO;
     private final InfusionDAO infusionDAO;
     private final NoteDao noteDAO;
-    private final CounterDAO counterDAO;
+    private final CounterDao counterDAO;
     private final ActualSettingsDAO actualSettingsDAO;
 
     private final MutableLiveData<List<Tea>> teas;

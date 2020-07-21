@@ -23,17 +23,17 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
 @RunWith(AndroidJUnit4.class)
-public class CounterDAOTest {
-    private CounterDAO mCounterDAO;
-    private TeaDAO mTeaDAO;
+public class CounterDaoTest {
+    private CounterDao counterDao;
+    private TeaDAO teaDAO;
     private TeaMemoryDatabase db;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mCounterDAO = db.getCounterDAO();
-        mTeaDAO = db.getTeaDAO();
+        counterDao = db.getCounterDAO();
+        teaDAO = db.getTeaDAO();
     }
 
     @After
@@ -43,61 +43,61 @@ public class CounterDAOTest {
 
     @Test
     public void insertCounter(){
-        long teaId = mTeaDAO.insert(createTea("name"));
+        long teaId = teaDAO.insert(createTea("name"));
 
-        assertThat(mCounterDAO.getCounters()).hasSize(0);
+        assertThat(counterDao.getCounters()).hasSize(0);
 
         Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterBefore);
+        counterDao.insert(counterBefore);
 
-        assertThat(mCounterDAO.getCounters()).hasSize(1);
+        assertThat(counterDao.getCounters()).hasSize(1);
 
-        Counter counterAfter = mCounterDAO.getCounterByTeaId(teaId);
+        Counter counterAfter = counterDao.getCounterByTeaId(teaId);
         assertThat(counterAfter).isEqualToIgnoringGivenFields(counterBefore, "id");
     }
 
     @Test
     public void updateCounter(){
-        long teaId = mTeaDAO.insert(createTea("name"));
+        long teaId = teaDAO.insert(createTea("name"));
 
         Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterBefore);
+        counterDao.insert(counterBefore);
 
-        assertThat(mCounterDAO.getCounters()).hasSize(1);
+        assertThat(counterDao.getCounters()).hasSize(1);
 
-        Counter counterUpdate = mCounterDAO.getCounterByTeaId(teaId);
+        Counter counterUpdate = counterDao.getCounterByTeaId(teaId);
         counterUpdate.setDay(5);
         counterUpdate.setWeek(4);
         counterUpdate.setMonth(3);
-        mCounterDAO.update(counterUpdate);
+        counterDao.update(counterUpdate);
 
-        Counter counterAfter = mCounterDAO.getCounterByTeaId(teaId);
+        Counter counterAfter = counterDao.getCounterByTeaId(teaId);
         assertThat(counterAfter).isEqualToComparingFieldByField(counterUpdate);
     }
 
     @Test
-    public void getTeaCounterOverall(){
-        mTeaDAO.insert(createTea("A"));
-        mTeaDAO.insert(createTea("B"));
-        mTeaDAO.insert(createTea("C"));
-        mTeaDAO.insert(createTea("D"));
+    public void getTeaCounterOverall() {
+        teaDAO.insert(createTea("A"));
+        teaDAO.insert(createTea("B"));
+        teaDAO.insert(createTea("C"));
+        teaDAO.insert(createTea("D"));
 
-        List<Tea> teas = mTeaDAO.getTeas();
+        List<Tea> teas = teaDAO.getTeas();
         Tea teaA = teas.get(0);
         Tea teaB = teas.get(1);
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
         Counter counterA = new Counter(teaA.getId(), 4, 4, 4, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterA);
+        counterDao.insert(counterA);
         Counter counterB = new Counter(teaB.getId(), 3, 3, 3, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterB);
+        counterDao.insert(counterB);
         Counter counterC = new Counter(teaC.getId(), 2, 2, 2, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterC);
+        counterDao.insert(counterC);
         Counter counterD = new Counter(teaD.getId(), 1, 1, 1, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterD);
+        counterDao.insert(counterD);
 
-        List<StatisticsPOJO> counterDay = mCounterDAO.getTeaCounterOverall();
+        List<StatisticsPOJO> counterDay = counterDao.getTeaCounterOverall();
         assertThat(counterDay.get(0).counter).isEqualTo(counterD.getOverall());
         assertThat(counterDay.get(0).teaname).isEqualTo(teaD.getName());
         assertThat(counterDay.get(0).teacolor).isEqualTo(teaD.getColor());
@@ -113,29 +113,29 @@ public class CounterDAOTest {
     }
 
     @Test
-    public void getTeaCounterMonth(){
+    public void getTeaCounterMonth() {
 
-        mTeaDAO.insert(createTea("A"));
-        mTeaDAO.insert(createTea("B"));
-        mTeaDAO.insert(createTea("C"));
-        mTeaDAO.insert(createTea("D"));
+        teaDAO.insert(createTea("A"));
+        teaDAO.insert(createTea("B"));
+        teaDAO.insert(createTea("C"));
+        teaDAO.insert(createTea("D"));
 
-        List<Tea> teas = mTeaDAO.getTeas();
+        List<Tea> teas = teaDAO.getTeas();
         Tea teaA = teas.get(0);
         Tea teaB = teas.get(1);
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
         Counter counterA = new Counter(teaA.getId(), 4, 4, 1, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterA);
+        counterDao.insert(counterA);
         Counter counterB = new Counter(teaB.getId(), 3, 3, 3, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterB);
+        counterDao.insert(counterB);
         Counter counterC = new Counter(teaC.getId(), 2, 2, 2, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterC);
+        counterDao.insert(counterC);
         Counter counterD = new Counter(teaD.getId(), 1, 1, 4, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterD);
+        counterDao.insert(counterD);
 
-        List<StatisticsPOJO> counterDay = mCounterDAO.getTeaCounterMonth();
+        List<StatisticsPOJO> counterDay = counterDao.getTeaCounterMonth();
         assertThat(counterDay.get(0).counter).isEqualTo(counterD.getMonth());
         assertThat(counterDay.get(0).teaname).isEqualTo(teaD.getName());
         assertThat(counterDay.get(0).teacolor).isEqualTo(teaD.getColor());
@@ -151,29 +151,29 @@ public class CounterDAOTest {
     }
 
     @Test
-    public void getTeaCounterWeek(){
+    public void getTeaCounterWeek() {
 
-        mTeaDAO.insert(createTea("A"));
-        mTeaDAO.insert(createTea("B"));
-        mTeaDAO.insert(createTea("C"));
-        mTeaDAO.insert(createTea("D"));
+        teaDAO.insert(createTea("A"));
+        teaDAO.insert(createTea("B"));
+        teaDAO.insert(createTea("C"));
+        teaDAO.insert(createTea("D"));
 
-        List<Tea> teas = mTeaDAO.getTeas();
+        List<Tea> teas = teaDAO.getTeas();
         Tea teaA = teas.get(0);
         Tea teaB = teas.get(1);
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
         Counter counterA = new Counter(teaA.getId(), 4, 3, 4, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterA);
+        counterDao.insert(counterA);
         Counter counterB = new Counter(teaB.getId(), 3, 2, 3, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterB);
+        counterDao.insert(counterB);
         Counter counterC = new Counter(teaC.getId(), 2, 1, 2, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterC);
+        counterDao.insert(counterC);
         Counter counterD = new Counter(teaD.getId(), 1, 4, 1, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterD);
+        counterDao.insert(counterD);
 
-        List<StatisticsPOJO> counterDay = mCounterDAO.getTeaCounterWeek();
+        List<StatisticsPOJO> counterDay = counterDao.getTeaCounterWeek();
         assertThat(counterDay.get(0).counter).isEqualTo(counterD.getWeek());
         assertThat(counterDay.get(0).teaname).isEqualTo(teaD.getName());
         assertThat(counterDay.get(0).teacolor).isEqualTo(teaD.getColor());
@@ -189,29 +189,29 @@ public class CounterDAOTest {
     }
 
     @Test
-    public void getTeaCounterDay(){
+    public void getTeaCounterDay() {
 
-        mTeaDAO.insert(createTea("A"));
-        mTeaDAO.insert(createTea("B"));
-        mTeaDAO.insert(createTea("C"));
-        mTeaDAO.insert(createTea("D"));
+        teaDAO.insert(createTea("A"));
+        teaDAO.insert(createTea("B"));
+        teaDAO.insert(createTea("C"));
+        teaDAO.insert(createTea("D"));
 
-        List<Tea> teas = mTeaDAO.getTeas();
+        List<Tea> teas = teaDAO.getTeas();
         Tea teaA = teas.get(0);
         Tea teaB = teas.get(1);
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
         Counter counterA = new Counter(teaA.getId(), 2, 4, 4, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterA);
+        counterDao.insert(counterA);
         Counter counterB = new Counter(teaB.getId(), 4, 3, 3, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterB);
+        counterDao.insert(counterB);
         Counter counterC = new Counter(teaC.getId(), 3, 2, 2, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterC);
+        counterDao.insert(counterC);
         Counter counterD = new Counter(teaD.getId(), 1, 1, 1, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
-        mCounterDAO.insert(counterD);
+        counterDao.insert(counterD);
 
-        List<StatisticsPOJO> counterDay = mCounterDAO.getTeaCounterDay();
+        List<StatisticsPOJO> counterDay = counterDao.getTeaCounterDay();
         assertThat(counterDay.get(0).counter).isEqualTo(counterB.getDay());
         assertThat(counterDay.get(0).teaname).isEqualTo(teaB.getName());
         assertThat(counterDay.get(0).teacolor).isEqualTo(teaB.getColor());

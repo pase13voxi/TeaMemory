@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
@@ -36,7 +36,7 @@ public class DataTransferViewModelTest {
     @Mock
     InfusionDAO infusionDAO;
     @Mock
-    CounterDAO counterDAO;
+    CounterDao counterDAO;
     @Mock
     NoteDao noteDAO;
     @Mock

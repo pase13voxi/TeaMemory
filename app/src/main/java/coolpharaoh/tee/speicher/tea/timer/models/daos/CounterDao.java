@@ -12,7 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 @Dao
-public interface CounterDAO {
+public interface CounterDao {
     @Insert
     void insert(Counter items);
 

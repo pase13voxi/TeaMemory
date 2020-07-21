@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
@@ -29,7 +29,7 @@ public class StatisticsViewModelTest {
     private StatisticsViewModel statisticsViewModel;
 
     @Mock
-    CounterDAO counterDAO;
+    CounterDao counterDAO;
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
 

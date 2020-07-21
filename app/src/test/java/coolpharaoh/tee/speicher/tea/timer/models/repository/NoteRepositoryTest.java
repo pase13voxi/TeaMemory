@@ -26,7 +26,6 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 public class NoteRepositoryTest {
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
-
     @Mock
     NoteDao noteDao;
 
@@ -35,7 +34,6 @@ public class NoteRepositoryTest {
     @Before
     public void setUp() {
         mockNoteDao();
-
         noteRepository = new NoteRepository(null);
     }
 
@@ -75,7 +73,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void getNoteById() {
+    public void getNoteByTeaId() {
         int teaId = 2;
         Note note = new Note();
         when(noteDao.getNoteByTeaId(teaId)).thenReturn(note);

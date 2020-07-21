@@ -20,7 +20,7 @@ import java.util.TimeZone;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.TeaDAO;
@@ -51,7 +51,7 @@ public class ShowTeaViewModelTest {
     @Mock
     NoteDao noteDAO;
     @Mock
-    CounterDAO counterDAO;
+    CounterDao counterDAO;
     @Mock
     ActualSettingsDAO actualSettingsDAO;
     @Mock
