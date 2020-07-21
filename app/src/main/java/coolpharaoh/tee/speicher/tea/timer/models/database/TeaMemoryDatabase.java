@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
@@ -35,7 +35,7 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
 
     public abstract NoteDao getNoteDAO();
 
-    public abstract ActualSettingsDAO getActualSettingsDAO();
+    public abstract ActualSettingsDao getActualSettingsDAO();
 
     // Get a database instance
     public static synchronized TeaMemoryDatabase getDatabaseInstance(Context context) {

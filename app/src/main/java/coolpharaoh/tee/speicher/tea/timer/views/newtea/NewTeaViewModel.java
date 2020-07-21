@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
@@ -26,7 +26,7 @@ class NewTeaViewModel {
     private final InfusionDAO infusionDAO;
     private final NoteDao noteDAO;
     private final CounterDao counterDAO;
-    private final ActualSettingsDAO actualSettingsDAO;
+    private final ActualSettingsDao actualSettingsDAO;
 
     private final Tea tea;
     private final List<Infusion> infusions;

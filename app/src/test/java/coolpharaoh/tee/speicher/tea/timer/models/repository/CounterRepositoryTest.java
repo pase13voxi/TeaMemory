@@ -45,7 +45,6 @@ public class CounterRepositoryTest {
         when(teaMemoryDatabase.getCounterDAO()).thenReturn(counterDao);
     }
 
-
     @Test
     public void insertCounter() {
         Counter counter = new Counter();
@@ -56,7 +55,7 @@ public class CounterRepositoryTest {
     }
 
     @Test
-    public void updateNote() {
+    public void updateCounter() {
         Counter counter = new Counter();
 
         counterRepository.update(counter);

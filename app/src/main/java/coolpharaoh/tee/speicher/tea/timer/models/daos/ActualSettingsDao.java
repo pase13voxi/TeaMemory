@@ -10,7 +10,7 @@ import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
 
 
 @Dao
-public interface ActualSettingsDAO {
+public interface ActualSettingsDao {
     @Insert
     void insert(ActualSettings... items);
 

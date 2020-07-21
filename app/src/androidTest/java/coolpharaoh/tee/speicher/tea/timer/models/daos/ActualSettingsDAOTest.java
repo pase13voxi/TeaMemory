@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class ActualSettingsDAOTest {
-    private ActualSettingsDAO mActualSettingsDAO;
+    private ActualSettingsDao mActualSettingsDAO;
     private TeaMemoryDatabase db;
 
     @Before

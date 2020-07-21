@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.Calendar;
 import java.util.Date;
 
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
@@ -26,7 +26,7 @@ class ShowTeaViewModel {
     private final InfusionDAO infusionDAO;
     private final NoteDao noteDAO;
     private final CounterDao counterDAO;
-    private final ActualSettingsDAO actualSettingsDAO;
+    private final ActualSettingsDao actualSettingsDAO;
 
     private final long teaId;
     private int infusionIndex = 0;

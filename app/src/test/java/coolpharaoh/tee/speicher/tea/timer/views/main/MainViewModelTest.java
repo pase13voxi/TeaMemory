@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDAO;
+import coolpharaoh.tee.speicher.tea.timer.models.daos.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.InfusionDAO;
 import coolpharaoh.tee.speicher.tea.timer.models.daos.NoteDao;
@@ -52,7 +52,7 @@ public class MainViewModelTest {
     @Mock
     CounterDao counterDAO;
     @Mock
-    ActualSettingsDAO actualSettingsDAO;
+    ActualSettingsDao actualSettingsDAO;
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
 
