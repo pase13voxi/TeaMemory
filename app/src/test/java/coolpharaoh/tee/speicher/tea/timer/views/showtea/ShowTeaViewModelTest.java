@@ -296,7 +296,7 @@ public class ShowTeaViewModelTest {
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(0);
 
         TimeHelper time1 = showTeaViewModel.getTime();
-        TimeHelper cooldownTime1 = showTeaViewModel.getCooldowntime();
+        TimeHelper cooldownTime1 = showTeaViewModel.getCoolDownTime();
         int temperature1 = showTeaViewModel.getTemperature();
 
         assertThat(time1.time).isEqualTo(infusions.get(0).getTime());
@@ -311,7 +311,7 @@ public class ShowTeaViewModelTest {
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
 
         TimeHelper time2 = showTeaViewModel.getTime();
-        TimeHelper cooldownTime2 = showTeaViewModel.getCooldowntime();
+        TimeHelper cooldownTime2 = showTeaViewModel.getCoolDownTime();
         int temperature2 = showTeaViewModel.getTemperature();
 
         assertThat(time2.time).isEqualTo(infusions.get(1).getTime());

@@ -55,7 +55,7 @@ class ShowTeaViewModel {
     }
 
     String getVariety() {
-        if (teaRepository.getTeaById(teaId).getVariety().equals("")) {
+        if ("".equals(teaRepository.getTeaById(teaId).getVariety())) {
             return "-";
         } else {
             return LanguageConversation.convertCodeToVariety(teaRepository.getTeaById(teaId).getVariety(), application);
@@ -99,15 +99,15 @@ class ShowTeaViewModel {
         return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
     }
 
-    TimeHelper getCooldowntime() {
+    TimeHelper getCoolDownTime() {
         return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
     }
 
     int getTemperature() {
-        if (getTemperatureunit().equals("Celsius")) {
-            return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
-        } else {
+        if ("Fahrenheit".equals(getTemperatureunit())) {
             return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureFahrenheit();
+        } else {
+            return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
         }
     }
 

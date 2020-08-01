@@ -98,12 +98,12 @@ class NewTeaViewModel {
     void takeInfusionInformation(String time, String cooldowntime, int temperature) {
         infusions.get(infusionIndex).setTime(time);
         infusions.get(infusionIndex).setCoolDownTime(cooldowntime);
-        if (actualSettingsRepository.getSettings().getTemperatureUnit().equals("Celsius")) {
-            infusions.get(infusionIndex).setTemperatureCelsius(temperature);
-            infusions.get(infusionIndex).setTemperatureFahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
-        } else {
+        if ("Fahrenheit".equals(actualSettingsRepository.getSettings().getTemperatureUnit())) {
             infusions.get(infusionIndex).setTemperatureFahrenheit(temperature);
             infusions.get(infusionIndex).setTemperatureCelsius(TemperatureConversation.fahrenheitToCelsius(temperature));
+        } else {
+            infusions.get(infusionIndex).setTemperatureCelsius(temperature);
+            infusions.get(infusionIndex).setTemperatureFahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
         }
     }
 
@@ -125,10 +125,10 @@ class NewTeaViewModel {
     }
 
     int getInfusionTemperature() {
-        if (getTemperatureunit().equals("Celsius")) {
-            return infusions.get(infusionIndex).getTemperatureCelsius();
-        } else {
+        if ("Fahrenheit".equals(getTemperatureunit())) {
             return infusions.get(infusionIndex).getTemperatureFahrenheit();
+        } else {
+            return infusions.get(infusionIndex).getTemperatureCelsius();
         }
     }
 
@@ -195,11 +195,11 @@ class NewTeaViewModel {
         noteRepository.insertNote(note);
     }
 
-    void setTeaInformation(String name, String variety, int amount, String amountkind, int color) {
+    void setTeaInformation(String name, String variety, int amount, String amountKind, int color) {
         tea.setName(name);
         tea.setVariety(LanguageConversation.convertVarietyToCode(variety, application));
         tea.setAmount(amount);
-        tea.setAmountKind(amountkind);
+        tea.setAmountKind(amountKind);
         tea.setColor(color);
         tea.setDate(Calendar.getInstance().getTime());
     }

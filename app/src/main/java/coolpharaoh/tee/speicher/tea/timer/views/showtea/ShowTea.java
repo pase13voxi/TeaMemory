@@ -260,7 +260,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void decideToShowCooldownTimeButton() {
-        TimeHelper cooldowntime = showTeaViewModel.getCooldowntime();
+        TimeHelper cooldowntime = showTeaViewModel.getCoolDownTime();
         if (cooldowntime != null && cooldowntime.time != null) {
             buttonExchange.setEnabled(true);
         }
@@ -342,7 +342,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
             }
         }
-        if (showTeaViewModel.getCooldowntime().time != null) {
+        if (showTeaViewModel.getCoolDownTime().time != null) {
             buttonExchange.setEnabled(true);
         } else {
             buttonExchange.setEnabled(false);
@@ -557,8 +557,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         if (!infoShown) {
             buttonInfo.setVisibility(View.VISIBLE);
             infoShown = true;
-            spinnerMinutes.setSelection(showTeaViewModel.getCooldowntime().minutes);
-            spinnerSeconds.setSelection(showTeaViewModel.getCooldowntime().seconds);
+            spinnerMinutes.setSelection(showTeaViewModel.getCoolDownTime().minutes);
+            spinnerSeconds.setSelection(showTeaViewModel.getCoolDownTime().seconds);
         } else {
             buttonInfo.setVisibility(View.INVISIBLE);
             infoShown = false;

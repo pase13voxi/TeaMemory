@@ -11,7 +11,6 @@ class TimerViewModel {
     private final ActualSettingsRepository actualSettingsRepository;
 
     TimerViewModel(Application application) {
-
         teaRepository = new TeaRepository(application);
         actualSettingsRepository = new ActualSettingsRepository(application);
     }

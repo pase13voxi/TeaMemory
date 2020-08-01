@@ -35,40 +35,40 @@ class HintConversation {
     }
 
     private static String getTemperatureHint(String temperatureunit, int hintCelsius, int hintFahrenheit, Context context) {
-        return temperatureunit.equals("Celsius") ?
-                context.getResources().getString(hintCelsius) :
-                context.getResources().getString(hintFahrenheit);
+        return "Fahrenheit".equals(temperatureunit) ?
+                context.getResources().getString(hintFahrenheit) :
+                context.getResources().getString(hintCelsius);
     }
 
-    static String getHintAmount(int variety, String amountkind, Context context) {
+    static String getHintAmount(int variety, String amountKind, Context context) {
         switch (variety) {
             case 0:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_blacktea, R.string.newtea_hint_gr_blacktea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_blacktea, R.string.newtea_hint_gr_blacktea, context);
             case 1:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_greentea, R.string.newtea_hint_gr_greentea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_greentea, R.string.newtea_hint_gr_greentea, context);
             case 2:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_yellowtea, R.string.newtea_hint_gr_yellowtea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_yellowtea, R.string.newtea_hint_gr_yellowtea, context);
             case 3:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_whitetea, R.string.newtea_hint_gr_whitetea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_whitetea, R.string.newtea_hint_gr_whitetea, context);
             case 4:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_oolongtea, R.string.newtea_hint_gr_oolongtea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_oolongtea, R.string.newtea_hint_gr_oolongtea, context);
             case 5:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_puerhtea, R.string.newtea_hint_gr_puerhtea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_puerhtea, R.string.newtea_hint_gr_puerhtea, context);
             case 6:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_herbaltea, R.string.newtea_hint_gr_herbaltea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_herbaltea, R.string.newtea_hint_gr_herbaltea, context);
             case 7:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_fruittea, R.string.newtea_hint_gr_fruittea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_fruittea, R.string.newtea_hint_gr_fruittea, context);
             case 8:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_rooibustea, R.string.newtea_hint_gr_rooibustea, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_rooibustea, R.string.newtea_hint_gr_rooibustea, context);
             default:
-                return getAmountHint(amountkind, R.string.newtea_hint_ts_other, R.string.newtea_hint_gr_other, context);
+                return getAmountHint(amountKind, R.string.newtea_hint_ts_other, R.string.newtea_hint_gr_other, context);
         }
     }
 
-    private static String getAmountHint(String amountkind, int hintTs, int hintGr, Context context) {
-        return amountkind.equals("Ts") ?
-                context.getResources().getString(hintTs) :
-                context.getResources().getString(hintGr);
+    private static String getAmountHint(String amountKind, int hintTs, int hintGr, Context context) {
+        return "Gr".equals(amountKind) ?
+                context.getResources().getString(hintGr) :
+                context.getResources().getString(hintTs);
     }
 
     static String getHintTime(int variety, Context context) {
