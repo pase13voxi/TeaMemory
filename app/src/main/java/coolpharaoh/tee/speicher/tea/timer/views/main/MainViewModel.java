@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
+import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
 

@@ -4,8 +4,8 @@ import android.app.Application;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.RefreshCounter;
 

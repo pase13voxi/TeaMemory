@@ -7,10 +7,10 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import coolpharaoh.tee.speicher.tea.timer.models.entities.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

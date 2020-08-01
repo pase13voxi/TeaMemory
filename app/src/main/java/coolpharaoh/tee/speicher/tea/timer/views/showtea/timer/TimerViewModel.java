@@ -2,8 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.showtea.timer;
 
 import android.app.Application;
 
-import coolpharaoh.tee.speicher.tea.timer.models.repository.ActualSettingsRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class TimerViewModel {
 

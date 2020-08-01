@@ -37,8 +37,8 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.timer.ForegroundTimer;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;

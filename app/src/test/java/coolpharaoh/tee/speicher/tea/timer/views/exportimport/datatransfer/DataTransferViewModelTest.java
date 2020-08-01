@@ -13,14 +13,14 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Counter;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Note;
-import coolpharaoh.tee.speicher.tea.timer.models.entities.Tea;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.CounterRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.NoteRepository;
-import coolpharaoh.tee.speicher.tea.timer.models.repository.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
+import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
