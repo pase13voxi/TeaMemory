@@ -228,32 +228,34 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void fillTemperatureWithUnit() {
         if (showTeaViewModel.getTemperature() != -500) {
-            if (getResources().getString(R.string.celsius).equals(showTeaViewModel.getTemperatureunit())) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
-            } else if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
+            if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
+            } else {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
-            if (getResources().getString(R.string.celsius).equals(showTeaViewModel.getTemperatureunit())) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-            } else if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
+            if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
+            } else {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
             }
         }
     }
 
     private void fillAmountWithUnit() {
         if (showTeaViewModel.getAmount() != -500) {
-            if ("Ts".equals(showTeaViewModel.getAmountKind()))
-                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
-            else if ("Gr".equals(showTeaViewModel.getAmountKind()))
+            if ("Gr".equals(showTeaViewModel.getAmountKind())) {
                 textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
+            } else {
+                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
+            }
         } else {
             buttonCalcAmount.setEnabled(false);
-            if ("Ts".equals(showTeaViewModel.getAmountKind()))
-                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, "-"));
-            else if ("Gr".equals(showTeaViewModel.getAmountKind()))
+            if ("Gr".equals(showTeaViewModel.getAmountKind())) {
                 textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, "-"));
+            } else {
+                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, "-"));
+            }
         }
     }
 
@@ -328,16 +330,16 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void infusionIndexChanged() {
         if (showTeaViewModel.getTemperature() != -500) {
-            if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
-            } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
+            } else {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
-            if (showTeaViewModel.getTemperatureunit().equals("Celsius")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
-            } else if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
+            } else {
+                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
             }
         }
         if (showTeaViewModel.getCooldowntime().time != null) {
@@ -611,10 +613,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
-        if (showTeaViewModel.getAmountKind().equals("Ts")) {
-            textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_ts, amountPerLiter, liter));
-        } else if (showTeaViewModel.getAmountKind().equals("Gr")) {
+        if ("Gr".equals(showTeaViewModel.getAmountKind())) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_gr, amountPerLiter, liter));
+        } else {
+            textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_ts, amountPerLiter, liter));
         }
 
     }

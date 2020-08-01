@@ -335,7 +335,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         buttonColorShape.setColorByVariety(variety.ordinal());
 
-        if (variety.equals(Variety.OTHER)) {
+        if (Variety.OTHER.equals(variety)) {
             checkboxTeaSort.setVisibility(View.VISIBLE);
         } else {
             checkboxTeaSort.setVisibility(View.INVISIBLE);
@@ -413,11 +413,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         //Ist die Temperatur nicht gesetzt, so ist sie -500
         int temperatureCelsius = -500;
         boolean temperatureValid = temperatureInputIsValid(editTextTemperature.getText().toString());
-        if (temperatureValid && !editTextTemperature.getText().toString().equals("")) {
+        if (temperatureValid && !"".equals(editTextTemperature.getText().toString())) {
             temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
         }
         //Falls nötig in Celsius umwandeln
-        if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+        if ("Fahrenheit".equals(newTeaViewModel.getTemperatureunit())) {
             temperatureCelsius = TemperatureConversation.fahrenheitToCelsius(temperatureCelsius);
         }
         if (temperatureCelsius != -500 && temperatureCelsius != 100) {
@@ -478,7 +478,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private boolean nameIsNotEmpty(String nameInput) {
-        if (nameInput.equals("")) {
+        if ("".equals(nameInput)) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_no_name, Toast.LENGTH_SHORT);
             toast.show();
             return false;
@@ -505,7 +505,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private boolean amountIsValid(String amountInput) {
-        if (amountInput.equals("")) {
+        if ("".equals(amountInput)) {
             return true;
         } else if (amountInput.contains(".") || amountInput.length() > 3) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_amount, Toast.LENGTH_SHORT);
@@ -516,7 +516,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private int parseInteger(String amountInput) {
-        if (amountInput.equals("")) {
+        if ("".equals(amountInput)) {
             return -500;
         } else {
             return Integer.parseInt(amountInput);
@@ -573,10 +573,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private boolean temperatureIsValid(String temperatureInput) {
         if (!temperatureInputIsValid(temperatureInput)) {
-            if (newTeaViewModel.getTemperatureunit().equals("Celsius")) {
+            if ("Celsius".equals(newTeaViewModel.getTemperatureunit())) {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_celsius, Toast.LENGTH_SHORT);
                 toast.show();
-            } else if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            } else if ("Fahrenheit".equals(newTeaViewModel.getTemperatureunit())) {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_fahrenheit, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -587,14 +587,14 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private boolean temperatureInputIsValid(String temperature) {
         boolean temperatureValid = true;
-        if (!temperature.equals("")) {
+        if (!"".equals(temperature)) {
             if (temperature.contains(".") || temperature.length() > 3) {
                 temperatureValid = false;
             } else {
                 int checktemperature = 0;
-                if (newTeaViewModel.getTemperatureunit().equals("Celsius"))
+                if ("Celsius".equals(newTeaViewModel.getTemperatureunit()))
                     checktemperature = Integer.parseInt(temperature);
-                else if (newTeaViewModel.getTemperatureunit().equals("Fahrenheit"))
+                else if ("Fahrenheit".equals(newTeaViewModel.getTemperatureunit()))
                     checktemperature = TemperatureConversation.fahrenheitToCelsius(Integer.parseInt(temperature));
 
                 if (checktemperature > 100 || checktemperature < 0) {
@@ -618,7 +618,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         boolean timeValid;
 
         timeValid = time.length() < 6;
-        if (timeValid && !time.equals("")) {
+        if (timeValid && !"".equals(time)) {
             boolean formatMinutes = Pattern.matches("\\d\\d", time) || Pattern.matches("\\d", time);
             boolean formatSeconds = Pattern.matches("\\d\\d:\\d\\d", time) || Pattern.matches("\\d:\\d\\d", time);
             if (formatMinutes) {
@@ -643,7 +643,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private String parseTextInput(String textInput) {
-        if (textInput.equals("")) {
+        if ("".equals(textInput)) {
             return null;
         }
         return textInput;
