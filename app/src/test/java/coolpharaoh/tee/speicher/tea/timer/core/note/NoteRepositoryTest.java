@@ -4,26 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.core.*")
+@RunWith(MockitoJUnitRunner.class)
 public class NoteRepositoryTest {
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     NoteDao noteDao;
 
@@ -31,15 +22,7 @@ public class NoteRepositoryTest {
 
     @Before
     public void setUp() {
-        mockNoteDao();
-        noteRepository = new NoteRepository(null);
-    }
-
-    private void mockNoteDao() {
-        initMocks(TeaMemoryDatabase.class);
-        mockStatic(TeaMemoryDatabase.class);
-        when(TeaMemoryDatabase.getDatabaseInstance(any())).thenReturn(teaMemoryDatabase);
-        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
+        noteRepository = new NoteRepository(noteDao);
     }
 
     @Test

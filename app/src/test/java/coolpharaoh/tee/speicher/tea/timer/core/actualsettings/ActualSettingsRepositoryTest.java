@@ -4,23 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.core.*")
+@RunWith(MockitoJUnitRunner.class)
 public class ActualSettingsRepositoryTest {
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
+
     @Mock
     ActualSettingsDao actualSettingsDao;
 
@@ -28,15 +20,7 @@ public class ActualSettingsRepositoryTest {
 
     @Before
     public void setUp() {
-        mockCounterDao();
-        actualSettingsRepository = new ActualSettingsRepository(null);
-    }
-
-    private void mockCounterDao() {
-        initMocks(TeaMemoryDatabase.class);
-        mockStatic(TeaMemoryDatabase.class);
-        when(TeaMemoryDatabase.getDatabaseInstance(any())).thenReturn(teaMemoryDatabase);
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
+        actualSettingsRepository = new ActualSettingsRepository(actualSettingsDao);
     }
 
     @Test

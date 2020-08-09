@@ -53,4 +53,9 @@ public class TeaRepository {
     public List<Tea> getTeasBySearchString(String searchString) {
         return teaDao.getTeasBySearchString(searchString);
     }
+
+    // Only for testing
+    TeaRepository(TeaDao teaDao) {
+        this.teaDao = teaDao;
+    }
 }

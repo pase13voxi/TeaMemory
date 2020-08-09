@@ -46,4 +46,9 @@ public class CounterRepository {
     public List<StatisticsPOJO> getTeaCounterDay() {
         return counterDao.getTeaCounterDay();
     }
+
+    // Only for testing
+    CounterRepository(CounterDao counterDao) {
+        this.counterDao = counterDao;
+    }
 }
