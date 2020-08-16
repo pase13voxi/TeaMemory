@@ -26,9 +26,12 @@ public class ColorConversation {
                 return context.getResources().getColor(R.color.puerhtea);
             case 6:
                 return context.getResources().getColor(R.color.herbaltea);
-            case 7: return context.getResources().getColor(R.color.fruittea);
-            case 8: return context.getResources().getColor(R.color.rooibustea);
-            default: return context.getResources().getColor(R.color.other);
+            case 7:
+                return context.getResources().getColor(R.color.fruittea);
+            case 8:
+                return context.getResources().getColor(R.color.rooibustea);
+            default:
+                return context.getResources().getColor(R.color.other);
         }
     }
 
