@@ -14,18 +14,9 @@ import org.robolectric.annotation.Config;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(maxSdk = Build.VERSION_CODES.P)
+@Config(sdk = Build.VERSION_CODES.O_MR1)
+//could be removed when Robolectric supports Java 8 for API 29
 public class ColorConversationTest {
-    public static final int BLACK_TEA = 1;
-    public static final int GREEN_TEA = 2;
-    public static final int YELLOW_TEA = 3;
-    public static final int WHITE_TEA = 4;
-    public static final int OOLONG_TEA = 5;
-    public static final int PUERH_TEA = 6;
-    public static final int HERBAL_TEA = 7;
-    public static final int FRUIT_TEA = 8;
-    public static final int ROOIBUS_TEA = 9;
-    public static final int OTHER = -1;
 
     @Test
     public void getVarietyColorBlackTea() {
