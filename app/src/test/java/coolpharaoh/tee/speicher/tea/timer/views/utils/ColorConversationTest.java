@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.O_MR1)
+@Config(maxSdk = Build.VERSION_CODES.P)
 public class ColorConversationTest {
     public static final int BLACK_TEA = 1;
     public static final int GREEN_TEA = 2;
