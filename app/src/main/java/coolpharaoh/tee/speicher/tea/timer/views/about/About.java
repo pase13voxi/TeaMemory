@@ -1,8 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.about;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import coolpharaoh.tee.speicher.tea.timer.BuildConfig;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
 import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
@@ -66,7 +65,7 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
     private List<ListRowItem> generateListItems() {
         //write into listView
         List<ListRowItem> aboutList = new ArrayList<>();
-        ListRowItem itemContact = new ListRowItem(getResources().getString(R.string.about_contact_heading),getResources().getString(R.string.about_contact_description));
+        ListRowItem itemContact = new ListRowItem(getResources().getString(R.string.about_contact_heading), getResources().getString(R.string.about_contact_description));
         aboutList.add(itemContact);
         ListRowItem itemRating = new ListRowItem(getResources().getString(R.string.about_rating_heading), getResources().getString(R.string.about_rating_description));
         aboutList.add(itemRating);
@@ -79,14 +78,8 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
 
     private void displayVersion() {
         TextView textViewVersion = findViewById(R.id.textViewVersion);
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String version = packageInfo.versionName;
-
-            textViewVersion.setText(getResources().getString(R.string.about_version, version));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        String version = BuildConfig.VERSION_NAME;
+        textViewVersion.setText(getResources().getString(R.string.about_version, version));
     }
 
     @Override
