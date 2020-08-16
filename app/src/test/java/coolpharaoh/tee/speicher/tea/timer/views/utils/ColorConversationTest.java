@@ -11,113 +11,96 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import coolpharaoh.tee.speicher.tea.timer.R;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 //could be removed when Robolectric supports Java 8 for API 29
+@Config(sdk = Build.VERSION_CODES.O_MR1)
+@RunWith(RobolectricTestRunner.class)
 public class ColorConversationTest {
+    public static final Context CONTEXT = ApplicationProvider.getApplicationContext();
 
     @Test
     public void getVarietyColorBlackTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(0, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(0, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#141450"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.blacktea));
     }
 
 
     @Test
     public void getVarietyColorGreenTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(1, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(1, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#9ACD32"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.greentea));
     }
 
     @Test
     public void getVarietyColorYellowTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(2, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(2, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#FFC24B"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.yellowtea));
     }
 
     @Test
     public void getVarietyColorWhiteTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(3, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(3, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#FFF996"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.whitetea));
     }
 
     @Test
     public void getVarietyColorOolongTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(4, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(4, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#FFA500"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.oolongtea));
     }
 
     @Test
     public void getVarietyColorPuerhTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(5, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(5, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#8B2500"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.puerhtea));
     }
 
     @Test
     public void getVarietyColorHerbalTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(6, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(6, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#439936"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.herbaltea));
     }
 
     @Test
     public void getVarietyColorFruitTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(7, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(7, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#FF2A16"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.fruittea));
     }
 
     @Test
     public void getVarietyColorRooibusTea() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(8, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(8, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#FA5A00"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.rooibustea));
     }
 
     @Test
     public void getVarietyColorOther() {
-        Context context = ApplicationProvider.getApplicationContext();
+        int color = ColorConversation.getVarietyColor(-1, CONTEXT);
 
-        int color = ColorConversation.getVarietyColor(-1, context);
-
-        assertThat(color).isEqualTo(Color.parseColor("#7F7FBA"));
-    }
-
-    @Test
-    public void discoverForgroundColorDark() {
-        int colorForeground = ColorConversation.discoverForegroundColor(Color.parseColor("#FFF996"));
-        assertThat(colorForeground).isEqualTo(Color.parseColor("#FF000000"));
+        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.other));
     }
 
     @Test
     public void discoverForgroundColorLight() {
-        int colorForeground = ColorConversation.discoverForegroundColor(Color.parseColor("#141450"));
+        int colorForeground = ColorConversation.discoverForegroundColor(CONTEXT.getResources().getColor(R.color.blacktea));
         assertThat(colorForeground).isEqualTo(Color.parseColor("#FFFFFFFF"));
+    }
+
+    @Test
+    public void discoverForgroundColorDark() {
+        int colorForeground = ColorConversation.discoverForegroundColor(CONTEXT.getResources().getColor(R.color.whitetea));
+        assertThat(colorForeground).isEqualTo(Color.parseColor("#FF000000"));
     }
 }
