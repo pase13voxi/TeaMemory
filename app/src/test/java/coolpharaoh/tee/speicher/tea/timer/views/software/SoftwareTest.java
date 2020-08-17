@@ -29,23 +29,23 @@ public class SoftwareTest {
     }
 
     @Test
-    public void launchActivity() {
-        softwareActivityScenario.onActivity(about -> {
-            ListView aboutList = about.findViewById(R.id.listview_software);
+    public void expectSoftwareList() {
+        softwareActivityScenario.onActivity(software -> {
+            ListView aboutList = software.findViewById(R.id.listview_software);
 
             assertThat(aboutList.getAdapter().getCount()).isEqualTo(3);
 
             ListRowItem itemPicker = (ListRowItem) aboutList.getAdapter().getItem(0);
-            assertThat(itemPicker.getHeading()).isEqualTo(about.getString(R.string.software_colorpicker_heading));
-            assertThat(itemPicker.getDescription()).isEqualTo(about.getString(R.string.software_colorpicker_description));
+            assertThat(itemPicker.getHeading()).isEqualTo(software.getString(R.string.software_colorpicker_heading));
+            assertThat(itemPicker.getDescription()).isEqualTo(software.getString(R.string.software_colorpicker_description));
 
             ListRowItem itemTooltips = (ListRowItem) aboutList.getAdapter().getItem(1);
-            assertThat(itemTooltips.getHeading()).isEqualTo(about.getString(R.string.software_tooltip_heading));
-            assertThat(itemTooltips.getDescription()).isEqualTo(about.getString(R.string.software_tooltip_description));
+            assertThat(itemTooltips.getHeading()).isEqualTo(software.getString(R.string.software_tooltip_heading));
+            assertThat(itemTooltips.getDescription()).isEqualTo(software.getString(R.string.software_tooltip_description));
 
             ListRowItem itemStatistic = (ListRowItem) aboutList.getAdapter().getItem(2);
-            assertThat(itemStatistic.getHeading()).isEqualTo(about.getString(R.string.software_statistic_heading));
-            assertThat(itemStatistic.getDescription()).isEqualTo(about.getString(R.string.software_statistic_description));
+            assertThat(itemStatistic.getHeading()).isEqualTo(software.getString(R.string.software_statistic_heading));
+            assertThat(itemStatistic.getDescription()).isEqualTo(software.getString(R.string.software_statistic_description));
         });
     }
 }

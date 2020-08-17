@@ -39,7 +39,7 @@ public class AboutTest {
     }
 
     @Test
-    public void launchActivity() {
+    public void expectAboutListAndVersion() {
         aboutActivityScenario.onActivity(about -> {
             ListView aboutList = about.findViewById(R.id.listview_about);
 
@@ -76,10 +76,10 @@ public class AboutTest {
 
             aboutList.performItemClick(aboutList, positionContact, aboutList.getItemIdAtPosition(positionContact));
 
-            Intent expectedIntent = new Intent(about, Contact.class);
+            Intent expected = new Intent(about, Contact.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
-            assertThat(actual.getComponent()).isEqualTo(expectedIntent.getComponent());
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
     }
 
@@ -92,10 +92,10 @@ public class AboutTest {
 
             aboutList.performItemClick(aboutList, positionRating, aboutList.getItemIdAtPosition(positionRating));
 
-            Intent expectedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + about.getPackageName()));
+            Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + about.getPackageName()));
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
-            assertThat(actual.getData()).isEqualTo(expectedIntent.getData());
+            assertThat(actual.getData()).isEqualTo(expected.getData());
         });
     }
 
@@ -108,10 +108,10 @@ public class AboutTest {
 
             aboutList.performItemClick(aboutList, positionStatistics, aboutList.getItemIdAtPosition(positionStatistics));
 
-            Intent expectedIntent = new Intent(about, Statistics.class);
+            Intent expected = new Intent(about, Statistics.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
-            assertThat(actual.getComponent()).isEqualTo(expectedIntent.getComponent());
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
     }
 
@@ -124,10 +124,10 @@ public class AboutTest {
 
             aboutList.performItemClick(aboutList, positionSoftware, aboutList.getItemIdAtPosition(positionSoftware));
 
-            Intent expectedIntent = new Intent(about, Software.class);
+            Intent expected = new Intent(about, Software.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
-            assertThat(actual.getComponent()).isEqualTo(expectedIntent.getComponent());
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
     }
 

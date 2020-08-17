@@ -52,6 +52,7 @@ public class RefreshCounterTest {
                 );
     }
 
+    //TODO Wackeltest abändern!
     @Test
     public void refreshCounterDayRefreshed() {
         Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, dayBefore, dayBefore, dayBefore);
