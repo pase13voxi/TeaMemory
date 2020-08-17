@@ -24,6 +24,9 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class ContactTest {
 
+    public static final String EXTRA_INTENT = "android.intent.extra.INTENT";
+    public static final String INTENT_ACTION_CHOOSER = "android.intent.action.CHOOSER";
+    public static final String INTENT_ACTION_SENDTO = "android.intent.action.SENDTO";
     private ActivityScenario<Contact> contactActivityScenario;
 
     @Before
@@ -40,12 +43,13 @@ public class ContactTest {
 
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
-            assertThat(actual.getAction()).isEqualTo("android.intent.action.CHOOSER");
+            assertThat(actual.getAction()).isEqualTo(INTENT_ACTION_CHOOSER);
 
-            Intent emailIntent = (Intent) actual.getExtras().get("android.intent.extra.INTENT");
+            Intent emailIntent = (Intent) actual.getExtras().get(EXTRA_INTENT);
+            assertThat(emailIntent.getAction()).isEqualTo(INTENT_ACTION_SENDTO);
 
-            assertThat(emailIntent.getAction()).isEqualTo("android.intent.action.SENDTO");
-            assertThat(emailIntent.getData().toString()).isEqualTo("mailto:pase.b%40outlook.com");
+            String mailTo = "mailto:" + contact.getString(R.string.contact_email_address).replace("@", "%40");
+            assertThat(emailIntent.getData().toString()).isEqualTo(mailTo);
         });
     }
 }
