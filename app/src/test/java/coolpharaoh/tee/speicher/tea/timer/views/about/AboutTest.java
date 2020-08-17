@@ -1,10 +1,14 @@
 package coolpharaoh.tee.speicher.tea.timer.views.about;
 
+import android.app.Application;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +17,13 @@ import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.BuildConfig;
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
+import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
+import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -50,6 +58,74 @@ public class AboutTest {
 
             TextView textViewVersion = about.findViewById(R.id.textViewVersion);
             assertThat(textViewVersion.getText()).isEqualTo(about.getString(R.string.about_version, BuildConfig.VERSION_NAME));
+        });
+    }
+
+    @Test
+    public void navigateToContact() {
+        int positionContact = 0;
+        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
+
+        aboutActivityScenario.onActivity(about -> {
+            ListView aboutList = about.findViewById(R.id.listview_about);
+
+            aboutList.performItemClick(aboutList, positionContact, aboutList.getItemIdAtPosition(positionContact));
+
+            Intent expectedIntent = new Intent(about, Contact.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expectedIntent.getComponent());
+        });
+    }
+
+    @Test
+    public void navigateToRating() {
+        int positionRating = 1;
+        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
+
+        aboutActivityScenario.onActivity(about -> {
+            ListView aboutList = about.findViewById(R.id.listview_about);
+
+            aboutList.performItemClick(aboutList, positionRating, aboutList.getItemIdAtPosition(positionRating));
+
+            Intent expectedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + about.getPackageName()));
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getData()).isEqualTo(expectedIntent.getData());
+        });
+    }
+
+    @Test
+    public void navigateToStatistics() {
+        int positionStatistics = 2;
+        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
+
+        aboutActivityScenario.onActivity(about -> {
+            ListView aboutList = about.findViewById(R.id.listview_about);
+
+            aboutList.performItemClick(aboutList, positionStatistics, aboutList.getItemIdAtPosition(positionStatistics));
+
+            Intent expectedIntent = new Intent(about, Statistics.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expectedIntent.getComponent());
+        });
+    }
+
+    @Test
+    public void navigateToSoftware() {
+        int positionSoftware = 3;
+        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
+
+        aboutActivityScenario.onActivity(about -> {
+            ListView aboutList = about.findViewById(R.id.listview_about);
+
+            aboutList.performItemClick(aboutList, positionSoftware, aboutList.getItemIdAtPosition(positionSoftware));
+
+            Intent expectedIntent = new Intent(about, Software.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expectedIntent.getComponent());
         });
     }
 
