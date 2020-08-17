@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -30,10 +31,15 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class AboutTest {
 
+    private ActivityScenario<About> aboutActivityScenario;
+
+    @Before
+    public void setUp() {
+        aboutActivityScenario = ActivityScenario.launch(About.class);
+    }
+
     @Test
     public void launchActivity() {
-        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
-
         aboutActivityScenario.onActivity(about -> {
             ListView aboutList = about.findViewById(R.id.listview_about);
 
@@ -64,7 +70,6 @@ public class AboutTest {
     @Test
     public void navigateToContact() {
         int positionContact = 0;
-        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
 
         aboutActivityScenario.onActivity(about -> {
             ListView aboutList = about.findViewById(R.id.listview_about);
@@ -81,7 +86,6 @@ public class AboutTest {
     @Test
     public void navigateToRating() {
         int positionRating = 1;
-        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
 
         aboutActivityScenario.onActivity(about -> {
             ListView aboutList = about.findViewById(R.id.listview_about);
@@ -98,7 +102,6 @@ public class AboutTest {
     @Test
     public void navigateToStatistics() {
         int positionStatistics = 2;
-        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
 
         aboutActivityScenario.onActivity(about -> {
             ListView aboutList = about.findViewById(R.id.listview_about);
@@ -115,7 +118,6 @@ public class AboutTest {
     @Test
     public void navigateToSoftware() {
         int positionSoftware = 3;
-        ActivityScenario<About> aboutActivityScenario = ActivityScenario.launch(About.class);
 
         aboutActivityScenario.onActivity(about -> {
             ListView aboutList = about.findViewById(R.id.listview_about);
