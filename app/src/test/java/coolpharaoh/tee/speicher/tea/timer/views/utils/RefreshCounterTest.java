@@ -3,8 +3,10 @@ package coolpharaoh.tee.speicher.tea.timer.views.utils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +27,16 @@ public class RefreshCounterTest {
 
     @Before
     public void setUp() {
-        Instant now = Instant.now();
+        String instantExpected = "2020-08-19T10:15:30Z";
+        Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
+        Instant now = Instant.now(clock);
+
         today = Date.from(now);
         dayBefore = Date.from(now.minus(Duration.ofDays(1)));
         weekBefore = Date.from(now.minus(Duration.ofDays(7)));
         monthBefore = Date.from(now.minus(Duration.ofDays(31)));
+
+        RefreshCounter.setTime(today);
     }
 
     @Test
@@ -52,7 +59,6 @@ public class RefreshCounterTest {
                 );
     }
 
-    //TODO Wackeltest abändern!
     @Test
     public void refreshCounterDayRefreshed() {
         Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, dayBefore, dayBefore, dayBefore);

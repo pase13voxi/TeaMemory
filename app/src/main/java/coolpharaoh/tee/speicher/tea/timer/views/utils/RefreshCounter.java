@@ -18,8 +18,8 @@ public class RefreshCounter {
         return counters;
     }
 
-    public static void refreshCounter(Counter counter){
-        Date currentDate = Calendar.getInstance().getTime();
+    public static void refreshCounter(Counter counter) {
+        Date currentDate = getTime();
         refreshDay(counter, currentDate);
         refreshWeek(counter, currentDate);
         refreshMonth(counter, currentDate);
@@ -67,5 +67,21 @@ public class RefreshCounter {
             counter.setMonth(0);
             counter.setMonthDate(currentDate);
         }
+    }
+
+    private static Date getTime() {
+        //only for testing
+        if (testDate != null) {
+            return testDate;
+        }
+        return Calendar.getInstance().getTime();
+    }
+
+    //only for testing
+    //TODO find a better solution
+    private static Date testDate;
+
+    static void setTime(Date date) {
+        testDate = date;
     }
 }
