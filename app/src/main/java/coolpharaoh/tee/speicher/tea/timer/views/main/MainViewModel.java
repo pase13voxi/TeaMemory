@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +23,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 class MainViewModel extends ViewModel {
 
@@ -58,29 +58,29 @@ class MainViewModel extends ViewModel {
 
     // Defaults
     private void createDefaultTeas(Context context){
-        Tea ntea1 = new Tea("Earl Grey", context.getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, context), 0, Calendar.getInstance().getTime());
+        Tea ntea1 = new Tea("Earl Grey", context.getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, context), 0, CurrentDate.getDate());
         long teaId1 = teaRepository.insertTea(ntea1);
         Infusion ninfusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
         infusionRepository.insertInfusion(ninfusion1);
-        Counter ncounter1 = new Counter(teaId1, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter ncounter1 = new Counter(teaId1, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterRepository.insertCounter(ncounter1);
         Note nnote1 = new Note(teaId1, 1, null, "");
         noteRepository.insertNote(nnote1);
 
-        Tea ntea2 = new Tea("Pai Mu Tan", context.getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, context), 0, Calendar.getInstance().getTime());
+        Tea ntea2 = new Tea("Pai Mu Tan", context.getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, context), 0, CurrentDate.getDate());
         long teaId2 = teaRepository.insertTea(ntea2);
         Infusion ninfusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
         infusionRepository.insertInfusion(ninfusion2);
-        Counter ncounter2 = new Counter(teaId2, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter ncounter2 = new Counter(teaId2, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterRepository.insertCounter(ncounter2);
         Note nnote2 = new Note(teaId2, 1, null, "");
         noteRepository.insertNote(nnote2);
 
-        Tea ntea3 = new Tea("Sencha", context.getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, context), 0, Calendar.getInstance().getTime());
+        Tea ntea3 = new Tea("Sencha", context.getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, context), 0, CurrentDate.getDate());
         long teaId3 = teaRepository.insertTea(ntea3);
         Infusion ninfusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
         infusionRepository.insertInfusion(ninfusion3);
-        Counter ncounter3 = new Counter(teaId3, 0, 0, 0, 0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter ncounter3 = new Counter(teaId3, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterRepository.insertCounter(ncounter3);
         Note nnote3 = new Note(teaId3, 1, null, "");
         noteRepository.insertNote(nnote3);

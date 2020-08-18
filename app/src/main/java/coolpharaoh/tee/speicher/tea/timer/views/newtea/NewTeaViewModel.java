@@ -3,7 +3,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 import android.app.Application;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
@@ -17,6 +16,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 class NewTeaViewModel {
     private final Application application;
@@ -181,9 +181,9 @@ class NewTeaViewModel {
         counter.setWeek(0);
         counter.setMonth(0);
         counter.setOverall(0);
-        counter.setDayDate(Calendar.getInstance().getTime());
-        counter.setWeekDate(Calendar.getInstance().getTime());
-        counter.setMonthDate(Calendar.getInstance().getTime());
+        counter.setDayDate(CurrentDate.getDate());
+        counter.setWeekDate(CurrentDate.getDate());
+        counter.setMonthDate(CurrentDate.getDate());
 
         counterRepository.insertCounter(counter);
 
@@ -201,7 +201,7 @@ class NewTeaViewModel {
         tea.setAmount(amount);
         tea.setAmountKind(amountKind);
         tea.setColor(color);
-        tea.setDate(Calendar.getInstance().getTime());
+        tea.setDate(CurrentDate.getDate());
     }
 
     void setInfusionInformation(long teaId) {

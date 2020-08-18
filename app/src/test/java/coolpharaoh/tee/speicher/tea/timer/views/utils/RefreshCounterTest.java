@@ -2,6 +2,9 @@ package coolpharaoh.tee.speicher.tea.timer.views.utils;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -12,31 +15,44 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.DateUtility;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RefreshCounterTest {
+    public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
     public static final int DAY = 1;
     public static final int WEEK = 2;
     public static final int MONTH = 3;
     public static final long OVERALL = 4L;
+
     Date today;
     Date dayBefore;
     Date weekBefore;
     Date monthBefore;
 
+    @Mock
+    DateUtility fixedDate;
+
     @Before
     public void setUp() {
-        String instantExpected = "2020-08-19T10:15:30Z";
-        Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
-        Instant now = Instant.now(clock);
+        Instant now = getFixedDate();
 
         today = Date.from(now);
         dayBefore = Date.from(now.minus(Duration.ofDays(1)));
         weekBefore = Date.from(now.minus(Duration.ofDays(7)));
         monthBefore = Date.from(now.minus(Duration.ofDays(31)));
 
-        RefreshCounter.setTime(today);
+        when(fixedDate.getDate()).thenReturn(today);
+        CurrentDate.setFixedCalendar(fixedDate);
+    }
+
+    private Instant getFixedDate() {
+        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        return Instant.now(clock);
     }
 
     @Test

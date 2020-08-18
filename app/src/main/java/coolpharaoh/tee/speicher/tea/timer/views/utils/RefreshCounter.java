@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 public class RefreshCounter {
 
@@ -19,7 +20,7 @@ public class RefreshCounter {
     }
 
     public static void refreshCounter(Counter counter) {
-        Date currentDate = getTime();
+        Date currentDate = CurrentDate.getDate();
         refreshDay(counter, currentDate);
         refreshWeek(counter, currentDate);
         refreshMonth(counter, currentDate);
@@ -67,21 +68,5 @@ public class RefreshCounter {
             counter.setMonth(0);
             counter.setMonthDate(currentDate);
         }
-    }
-
-    private static Date getTime() {
-        //only for testing
-        if (testDate != null) {
-            return testDate;
-        }
-        return Calendar.getInstance().getTime();
-    }
-
-    //only for testing
-    //TODO find a better solution
-    private static Date testDate;
-
-    static void setTime(Date date) {
-        testDate = date;
     }
 }
