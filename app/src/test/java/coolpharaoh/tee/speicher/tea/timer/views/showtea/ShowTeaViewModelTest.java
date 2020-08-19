@@ -11,13 +11,14 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
@@ -30,6 +31,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.DateUtility;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -40,6 +43,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class ShowTeaViewModelTest {
+    public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
     private ShowTeaViewModel showTeaViewModel;
 
     @Mock
@@ -56,6 +60,8 @@ public class ShowTeaViewModelTest {
     CounterRepository counterRepository;
     @Mock
     ActualSettingsRepository actualSettingsRepository;
+    @Mock
+    DateUtility dateUtility;
 
     private static final long TEA_ID = 1L;
 
@@ -212,6 +218,7 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void setCurrentDate(){
+        Date fixedDate = mockFixedDate();
         Tea teaBefore = new Tea();
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(teaBefore);
 
@@ -220,14 +227,8 @@ public class ShowTeaViewModelTest {
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea((captor.capture()));
         Tea teaAfter = captor.getValue();
-        Calendar teaDateAfter = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-        teaDateAfter.setTime(teaAfter.getDate());
 
-        Calendar currentDate = Calendar.getInstance();
-
-        assertThat(teaDateAfter.get(Calendar.DAY_OF_MONTH)).isEqualTo(currentDate.get(Calendar.DAY_OF_MONTH));
-        assertThat(teaDateAfter.get(Calendar.MONTH)).isEqualTo(currentDate.get(Calendar.MONTH));
-        assertThat(teaDateAfter.get(Calendar.YEAR)).isEqualTo(currentDate.get(Calendar.YEAR));
+        assertThat(teaAfter.getDate()).isEqualTo(fixedDate);
     }
 
     @Test
@@ -373,7 +374,7 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void countCounter(){
-        Date currentDate = Calendar.getInstance().getTime();
+        Date currentDate = mockFixedDate();
         Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
         when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
 
@@ -391,7 +392,7 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void getCounter(){
-        Date currentDate = Calendar.getInstance().getTime();
+        Date currentDate = CurrentDate.getDate();
         Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
         when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
 
@@ -440,5 +441,15 @@ public class ShowTeaViewModelTest {
         ActualSettings actualSettingsAfter = captor.getValue();
 
         assertThat(actualSettingsAfter.isShowTeaAlert()).isEqualTo(showTeaAlertBefore);
+    }
+
+    private Date mockFixedDate() {
+        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        Instant now = Instant.now(clock);
+        Date fixedDate = Date.from(now);
+
+        CurrentDate.setFixedDate(dateUtility);
+        when(dateUtility.getDate()).thenReturn(fixedDate);
+        return fixedDate;
     }
 }

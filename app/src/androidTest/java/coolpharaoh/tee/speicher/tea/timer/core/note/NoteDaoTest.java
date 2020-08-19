@@ -11,11 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
-
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -75,6 +74,6 @@ public class NoteDaoTest {
     }
 
     private Tea createTea(){
-        return new Tea("name", "variety", 3, "ts", 15, 0, Calendar.getInstance().getTime());
+        return new Tea("name", "variety", 3, "ts", 15, 0, CurrentDate.getDate());
     }
 }

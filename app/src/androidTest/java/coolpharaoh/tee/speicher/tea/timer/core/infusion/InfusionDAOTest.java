@@ -12,12 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -122,6 +122,6 @@ public class InfusionDAOTest {
     }
 
     private Tea createTea(){
-        return new Tea("name", "variety", 3, "ts", 15, 0, Calendar.getInstance().getTime());
+        return new Tea("name", "variety", 3, "ts", 15, 0, CurrentDate.getDate());
     }
 }

@@ -9,7 +9,7 @@ public class CurrentDate {
 
     private static DateUtility dateUtility = new DateUtility();
 
-    public static void setFixedCalendar(DateUtility fixedDate) {
+    public static void setFixedDate(DateUtility fixedDate) {
         dateUtility = fixedDate;
     }
 

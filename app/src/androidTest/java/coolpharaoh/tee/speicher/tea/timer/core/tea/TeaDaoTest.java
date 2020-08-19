@@ -18,6 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -42,7 +43,7 @@ public class TeaDaoTest {
     public void insertTea(){
         assertThat(teaDao.getTeas()).hasSize(0);
 
-        Tea teaBefore = createTea("name", "variety", Calendar.getInstance().getTime());
+        Tea teaBefore = createTea("name", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore);
 
         assertThat(teaDao.getTeas()).hasSize(1);
@@ -55,7 +56,7 @@ public class TeaDaoTest {
     public void updateTea(){
         assertThat(teaDao.getTeas()).hasSize(0);
 
-        Tea teaBefore = createTea("name", "variety", Calendar.getInstance().getTime());
+        Tea teaBefore = createTea("name", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore);
 
         assertThat(teaDao.getTeas()).hasSize(1);
@@ -73,10 +74,10 @@ public class TeaDaoTest {
     public void deleteTea(){
         assertThat(teaDao.getTeas()).hasSize(0);
 
-        Tea teaBefore1 = createTea("name1", "variety1", Calendar.getInstance().getTime());
+        Tea teaBefore1 = createTea("name1", "variety1", CurrentDate.getDate());
         teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("name2", "variety2", Calendar.getInstance().getTime());
+        Tea teaBefore2 = createTea("name2", "variety2", CurrentDate.getDate());
         teaDao.insert(teaBefore2);
 
         assertThat(teaDao.getTeas()).hasSize(2);
@@ -93,10 +94,10 @@ public class TeaDaoTest {
     public void deleteAllTeas(){
         assertThat(teaDao.getTeas()).hasSize(0);
 
-        Tea teaBefore1 = createTea("name1", "variety1", Calendar.getInstance().getTime());
+        Tea teaBefore1 = createTea("name1", "variety1", CurrentDate.getDate());
         teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("name2", "variety2", Calendar.getInstance().getTime());
+        Tea teaBefore2 = createTea("name2", "variety2", CurrentDate.getDate());
         teaDao.insert(teaBefore2);
 
         assertThat(teaDao.getTeas()).hasSize(2);
@@ -158,11 +159,11 @@ public class TeaDaoTest {
 
     @Test
     public void getTeasOrderByAlphabetic() {
-        Tea teaC = createTea("nameC", "variety", Calendar.getInstance().getTime());
+        Tea teaC = createTea("nameC", "variety", CurrentDate.getDate());
         teaDao.insert(teaC);
-        Tea teaA = createTea("nameA", "variety", Calendar.getInstance().getTime());
+        Tea teaA = createTea("nameA", "variety", CurrentDate.getDate());
         teaDao.insert(teaA);
-        Tea teaB = createTea("nameB", "variety", Calendar.getInstance().getTime());
+        Tea teaB = createTea("nameB", "variety", CurrentDate.getDate());
         teaDao.insert(teaB);
 
         List<Tea> teaList = teaDao.getTeasOrderByAlphabetic();
@@ -193,11 +194,11 @@ public class TeaDaoTest {
 
     @Test
     public void getTeasOrderByVariety() {
-        Tea teaC = createTea("name", "varietyC", Calendar.getInstance().getTime());
+        Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
         teaDao.insert(teaC);
-        Tea teaA = createTea("name", "varietyA", Calendar.getInstance().getTime());
+        Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
         teaDao.insert(teaA);
-        Tea teaB = createTea("name", "varietyB", Calendar.getInstance().getTime());
+        Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
         teaDao.insert(teaB);
 
         List<Tea> teaList = teaDao.getTeasOrderByVariety();
@@ -228,11 +229,11 @@ public class TeaDaoTest {
 
     @Test
     public void getTeasBySearchString() {
-        Tea teaA = createTea("A", "variety", Calendar.getInstance().getTime());
+        Tea teaA = createTea("A", "variety", CurrentDate.getDate());
         teaDao.insert(teaA);
-        Tea teaC = createTea("nameC", "variety", Calendar.getInstance().getTime());
+        Tea teaC = createTea("nameC", "variety", CurrentDate.getDate());
         teaDao.insert(teaC);
-        Tea teaB = createTea("nameB", "variety", Calendar.getInstance().getTime());
+        Tea teaB = createTea("nameB", "variety", CurrentDate.getDate());
         teaDao.insert(teaB);
 
         List<Tea> teaList = teaDao.getTeasBySearchString("name");

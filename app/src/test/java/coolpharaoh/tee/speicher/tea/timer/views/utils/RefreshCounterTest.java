@@ -47,7 +47,7 @@ public class RefreshCounterTest {
         monthBefore = Date.from(now.minus(Duration.ofDays(31)));
 
         when(fixedDate.getDate()).thenReturn(today);
-        CurrentDate.setFixedCalendar(fixedDate);
+        CurrentDate.setFixedDate(fixedDate);
     }
 
     private Instant getFixedDate() {

@@ -11,13 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -47,7 +47,7 @@ public class CounterDaoTest {
 
         assertThat(counterDao.getCounters()).hasSize(0);
 
-        Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterBefore);
 
         assertThat(counterDao.getCounters()).hasSize(1);
@@ -60,7 +60,7 @@ public class CounterDaoTest {
     public void updateCounter(){
         long teaId = teaDAO.insert(createTea("name"));
 
-        Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterBefore);
 
         assertThat(counterDao.getCounters()).hasSize(1);
@@ -88,13 +88,13 @@ public class CounterDaoTest {
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
-        Counter counterA = new Counter(teaA.getId(), 4, 4, 4, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterA = new Counter(teaA.getId(), 4, 4, 4, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teaB.getId(), 3, 3, 3, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterB = new Counter(teaB.getId(), 3, 3, 3, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teaC.getId(), 2, 2, 2, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterC = new Counter(teaC.getId(), 2, 2, 2, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teaD.getId(), 1, 1, 1, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterD = new Counter(teaD.getId(), 1, 1, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
 
         List<StatisticsPOJO> counterDay = counterDao.getTeaCounterOverall();
@@ -126,13 +126,13 @@ public class CounterDaoTest {
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
-        Counter counterA = new Counter(teaA.getId(), 4, 4, 1, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterA = new Counter(teaA.getId(), 4, 4, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teaB.getId(), 3, 3, 3, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterB = new Counter(teaB.getId(), 3, 3, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teaC.getId(), 2, 2, 2, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterC = new Counter(teaC.getId(), 2, 2, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teaD.getId(), 1, 1, 4, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterD = new Counter(teaD.getId(), 1, 1, 4, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
 
         List<StatisticsPOJO> counterDay = counterDao.getTeaCounterMonth();
@@ -164,13 +164,13 @@ public class CounterDaoTest {
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
-        Counter counterA = new Counter(teaA.getId(), 4, 3, 4, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterA = new Counter(teaA.getId(), 4, 3, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teaB.getId(), 3, 2, 3, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterB = new Counter(teaB.getId(), 3, 2, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teaC.getId(), 2, 1, 2, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterC = new Counter(teaC.getId(), 2, 1, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teaD.getId(), 1, 4, 1, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterD = new Counter(teaD.getId(), 1, 4, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
 
         List<StatisticsPOJO> counterDay = counterDao.getTeaCounterWeek();
@@ -202,13 +202,13 @@ public class CounterDaoTest {
         Tea teaC = teas.get(2);
         Tea teaD = teas.get(3);
 
-        Counter counterA = new Counter(teaA.getId(), 2, 4, 4, 4, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterA = new Counter(teaA.getId(), 2, 4, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teaB.getId(), 4, 3, 3, 3, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterB = new Counter(teaB.getId(), 4, 3, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teaC.getId(), 3, 2, 2, 2, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterC = new Counter(teaC.getId(), 3, 2, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teaD.getId(), 1, 1, 1, 1, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Counter counterD = new Counter(teaD.getId(), 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
 
         List<StatisticsPOJO> counterDay = counterDao.getTeaCounterDay();
@@ -227,7 +227,7 @@ public class CounterDaoTest {
     }
 
     private Tea createTea(String name){
-        return new Tea(name, "variety", 3, "ts", 15, 0, Calendar.getInstance().getTime());
+        return new Tea(name, "variety", 3, "ts", 15, 0, CurrentDate.getDate());
     }
 
 }

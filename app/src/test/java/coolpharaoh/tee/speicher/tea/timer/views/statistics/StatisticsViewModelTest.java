@@ -27,10 +27,10 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class StatisticsViewModelTest {
+    private StatisticsViewModel statisticsViewModel;
+
     @Mock
     CounterRepository counterRepository;
-
-    private StatisticsViewModel statisticsViewModel;
 
     @Before
     public void setUp() throws Exception {
