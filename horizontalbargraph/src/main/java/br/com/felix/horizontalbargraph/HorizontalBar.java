@@ -137,4 +137,8 @@ public class HorizontalBar extends LinearLayout {
             this.recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
+
+    public List<BarItem> getItems() {
+        return items;
+    }
 }
