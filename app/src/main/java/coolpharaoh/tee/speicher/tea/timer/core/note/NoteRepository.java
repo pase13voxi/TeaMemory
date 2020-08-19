@@ -30,8 +30,4 @@ public class NoteRepository {
     public Note getNoteByTeaId(long teaId) {
         return noteDao.getNoteByTeaId(teaId);
     }
-
-    NoteRepository(NoteDao noteDao) {
-        this.noteDao = noteDao;
-    }
 }

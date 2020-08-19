@@ -9,12 +9,17 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NoteRepositoryTest {
+
+    @Mock
+    TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     NoteDao noteDao;
 
@@ -22,7 +27,10 @@ public class NoteRepositoryTest {
 
     @Before
     public void setUp() {
-        noteRepository = new NoteRepository(noteDao);
+        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
+        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
+
+        noteRepository = new NoteRepository(null);
     }
 
     @Test

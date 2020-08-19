@@ -27,9 +27,4 @@ public class ActualSettingsRepository {
     public int getCountItems() {
         return actualSettingsDao.getCountItems();
     }
-
-    // Only for testing
-    ActualSettingsRepository(ActualSettingsDao actualSettingsDao) {
-        this.actualSettingsDao = actualSettingsDao;
-    }
 }

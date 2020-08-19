@@ -30,8 +30,4 @@ public class InfusionRepository {
     public void deleteInfusionsByTeaId(long id) {
         infusionDao.deleteInfusionsByTeaId(id);
     }
-
-    InfusionRepository(InfusionDao infusionDao) {
-        this.infusionDao = infusionDao;
-    }
 }

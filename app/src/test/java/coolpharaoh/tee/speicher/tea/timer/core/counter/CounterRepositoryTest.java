@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,13 +19,18 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CounterRepositoryTest {
     @Mock
+    TeaMemoryDatabase teaMemoryDatabase;
+    @Mock
     CounterDao counterDao;
 
     private CounterRepository counterRepository;
 
     @Before
     public void setUp() {
-        counterRepository = new CounterRepository(counterDao);
+        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
+        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
+
+        counterRepository = new CounterRepository(null);
     }
 
     @Test

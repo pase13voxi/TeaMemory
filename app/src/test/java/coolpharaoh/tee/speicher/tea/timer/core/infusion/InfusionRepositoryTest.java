@@ -9,6 +9,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,13 +18,18 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class InfusionRepositoryTest {
     @Mock
+    TeaMemoryDatabase teaMemoryDatabase;
+    @Mock
     InfusionDao infusionDao;
 
     private InfusionRepository infusionRepository;
 
     @Before
     public void setUp() {
-        infusionRepository = new InfusionRepository(infusionDao);
+        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
+        when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
+
+        infusionRepository = new InfusionRepository(null);
     }
 
     @Test

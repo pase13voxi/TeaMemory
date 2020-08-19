@@ -6,13 +6,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ActualSettingsRepositoryTest {
-
+    @Mock
+    TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     ActualSettingsDao actualSettingsDao;
 
@@ -20,7 +23,10 @@ public class ActualSettingsRepositoryTest {
 
     @Before
     public void setUp() {
-        actualSettingsRepository = new ActualSettingsRepository(actualSettingsDao);
+        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
+        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
+
+        actualSettingsRepository = new ActualSettingsRepository(null);
     }
 
     @Test

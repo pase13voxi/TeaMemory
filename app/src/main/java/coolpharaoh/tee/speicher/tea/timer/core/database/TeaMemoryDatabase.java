@@ -59,4 +59,9 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
         return builder.build();
     }
 
+    // Only for Testing
+    public static void setMockedDatabase(TeaMemoryDatabase mockedDatabase) {
+        sInstance = mockedDatabase;
+    }
+
 }
