@@ -36,10 +36,11 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class StatisticsTest {
-    public static final int OVERALL_ITEM = 0;
-    public static final int MONTH_ITEM = 1;
-    public static final int WEEK_ITEM = 2;
-    public static final int DAY_ITEM = 3;
+    private static final int OVERALL_ITEM = 0;
+    private static final int MONTH_ITEM = 1;
+    private static final int WEEK_ITEM = 2;
+    private static final int DAY_ITEM = 3;
+    
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Mock
