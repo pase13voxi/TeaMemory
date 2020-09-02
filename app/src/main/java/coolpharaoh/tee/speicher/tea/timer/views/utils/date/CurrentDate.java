@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.utils.date;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.Date;
 
 public class CurrentDate {
@@ -9,6 +11,7 @@ public class CurrentDate {
 
     private static DateUtility dateUtility = new DateUtility();
 
+    @VisibleForTesting
     public static void setFixedDate(DateUtility fixedDate) {
         dateUtility = fixedDate;
     }
