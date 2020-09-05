@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -133,6 +134,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         mToolbarCustomTitle.setText(R.string.showtea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+
+        toolbar.setOnClickListener(v -> Toast.makeText(getApplication(), "Toolbar title clicked", Toast.LENGTH_SHORT).show());
     }
 
     private void enableAndShowBackButton() {

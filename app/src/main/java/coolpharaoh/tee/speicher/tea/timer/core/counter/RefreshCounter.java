@@ -1,11 +1,10 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils;
+package coolpharaoh.tee.speicher.tea.timer.core.counter;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 
 public class RefreshCounter {
 

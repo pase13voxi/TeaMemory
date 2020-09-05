@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils;
+package coolpharaoh.tee.speicher.tea.timer.core.language;
 
 import android.content.Context;
 

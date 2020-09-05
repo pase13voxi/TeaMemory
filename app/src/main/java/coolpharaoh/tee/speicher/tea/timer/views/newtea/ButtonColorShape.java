@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ColorConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 
 class ButtonColorShape {
 

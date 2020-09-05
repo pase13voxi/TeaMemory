@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils;
+package coolpharaoh.tee.speicher.tea.timer.core.counter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +14,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.date.DateUtility;
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

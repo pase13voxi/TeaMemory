@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils.date;
+package coolpharaoh.tee.speicher.tea.timer.core.date;
 
 import java.util.Calendar;
 import java.util.Date;

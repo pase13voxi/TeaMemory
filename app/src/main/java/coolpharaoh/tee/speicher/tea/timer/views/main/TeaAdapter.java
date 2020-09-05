@@ -12,8 +12,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.LanguageConversation;
 
 class TeaAdapter extends BaseAdapter {
 

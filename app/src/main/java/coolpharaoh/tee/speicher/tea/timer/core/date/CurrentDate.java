@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils.date;
+package coolpharaoh.tee.speicher.tea.timer.core.date;
 
 import androidx.annotation.VisibleForTesting;
 
