@@ -26,7 +26,6 @@ import com.tooltip.Tooltip;
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
@@ -65,6 +64,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private Button addInfusion;
 
     private NewTeaViewModel newTeaViewModel;
+    private InputValidator inputValidator;
     private long teaId;
     private boolean showTea;
 
@@ -130,6 +130,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         //showTea wird übergeben, falls die Navigation von showTea erfolgt
         showTea = this.getIntent().getBooleanExtra("showTea", false);
+        inputValidator = new InputValidator(getApplication());
     }
 
     private void hideKeyboardAtFirst() {
@@ -410,14 +411,17 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void autofillCoolDownTime() {
+        String temperatureInput = editTextTemperature.getText().toString();
+        String temperatureUnit = newTeaViewModel.getTemperatureunit();
+
         //Ist die Temperatur nicht gesetzt, so ist sie -500
         int temperatureCelsius = -500;
-        boolean temperatureValid = temperatureInputIsValid(editTextTemperature.getText().toString());
-        if (temperatureValid && !"".equals(editTextTemperature.getText().toString())) {
-            temperatureCelsius = Integer.parseInt(editTextTemperature.getText().toString());
+        boolean temperatureValid = inputValidator.temperatureInputIsValid(temperatureInput, temperatureUnit);
+        if (temperatureValid && !"".equals(temperatureInput)) {
+            temperatureCelsius = Integer.parseInt(temperatureInput);
         }
         //Falls nötig in Celsius umwandeln
-        if ("Fahrenheit".equals(newTeaViewModel.getTemperatureunit())) {
+        if ("Fahrenheit".equals(temperatureUnit)) {
             temperatureCelsius = TemperatureConversation.fahrenheitToCelsius(temperatureCelsius);
         }
         if (temperatureCelsius != -500 && temperatureCelsius != 100) {
@@ -470,49 +474,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private boolean inputIsValid(String nameInput, String varietyInput, String amountInput) {
-        return nameIsNotEmpty(nameInput)
-                && nameIsValid(nameInput)
-                && varietyIsValid(varietyInput)
-                && amountIsValid(amountInput)
+        return inputValidator.nameIsNotEmpty(nameInput)
+                && inputValidator.nameIsValid(nameInput)
+                && inputValidator.varietyIsValid(varietyInput)
+                && inputValidator.amountIsValid(amountInput)
                 && changeInfusions();
-    }
-
-    private boolean nameIsNotEmpty(String nameInput) {
-        if ("".equals(nameInput)) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_no_name, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean nameIsValid(String nameInput) {
-        if (nameInput.length() > 300) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_name, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean varietyIsValid(String varietyInput) {
-        if (varietyInput.length() > 30) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_30Char, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean amountIsValid(String amountInput) {
-        if ("".equals(amountInput)) {
-            return true;
-        } else if (amountInput.contains(".") || amountInput.length() > 3) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_amount, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-        return true;
     }
 
     private int parseInteger(String amountInput) {
@@ -555,91 +521,15 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private boolean changeInfusions() {
         String temperatureInput = editTextTemperature.getText().toString();
+        String temperatureUnit = newTeaViewModel.getTemperatureunit();
         String coolDownTimeInput = editTextCoolDownTime.getText().toString();
         String timeInput = editTextSteepingTime.getText().toString();
 
-        if (infusionIsValid(temperatureInput, coolDownTimeInput, timeInput)) {
+        if (inputValidator.infusionIsValid(temperatureInput, temperatureUnit, coolDownTimeInput, timeInput)) {
             newTeaViewModel.takeInfusionInformation(parseTextInput(timeInput), parseTextInput(coolDownTimeInput), parseInteger(temperatureInput));
             return true;
         }
         return false;
-    }
-
-    private boolean infusionIsValid(String temperatureInput, String coolDownTimeInput, String timeInput) {
-        return temperatureIsValid(temperatureInput)
-                && coolDownTimeIsValid(coolDownTimeInput)
-                && steepingTimeIsValid(timeInput);
-    }
-
-    private boolean temperatureIsValid(String temperatureInput) {
-        if (!temperatureInputIsValid(temperatureInput)) {
-            if ("Celsius".equals(newTeaViewModel.getTemperatureunit())) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_celsius, Toast.LENGTH_SHORT);
-                toast.show();
-            } else if ("Fahrenheit".equals(newTeaViewModel.getTemperatureunit())) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_wrong_fahrenheit, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private boolean temperatureInputIsValid(String temperature) {
-        boolean temperatureValid = true;
-        if (!"".equals(temperature)) {
-            if (temperature.contains(".") || temperature.length() > 3) {
-                temperatureValid = false;
-            } else {
-                int checktemperature = 0;
-                if ("Celsius".equals(newTeaViewModel.getTemperatureunit()))
-                    checktemperature = Integer.parseInt(temperature);
-                else if ("Fahrenheit".equals(newTeaViewModel.getTemperatureunit()))
-                    checktemperature = TemperatureConversation.fahrenheitToCelsius(Integer.parseInt(temperature));
-
-                if (checktemperature > 100 || checktemperature < 0) {
-                    temperatureValid = false;
-                }
-            }
-        }
-        return temperatureValid;
-    }
-
-    private boolean coolDownTimeIsValid(String coolDownTimeInput) {
-        if (!timeIsValid(coolDownTimeInput)) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_cooldown_time, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean timeIsValid(String time) {
-        boolean timeValid;
-
-        timeValid = time.length() < 6;
-        if (timeValid && !"".equals(time)) {
-            boolean formatMinutes = Pattern.matches("\\d\\d", time) || Pattern.matches("\\d", time);
-            boolean formatSeconds = Pattern.matches("\\d\\d:\\d\\d", time) || Pattern.matches("\\d:\\d\\d", time);
-            if (formatMinutes) {
-                timeValid = Integer.parseInt(time) < 60;
-            } else if (formatSeconds) {
-                String[] split = time.split(":");
-                timeValid = Integer.parseInt(split[0]) < 60 && Integer.parseInt(split[1]) < 60;
-            } else {
-                timeValid = false;
-            }
-        }
-        return timeValid;
-    }
-
-    private boolean steepingTimeIsValid(String timeInput) {
-        if (!timeIsValid(timeInput)) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.newtea_error_time_format, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-        return true;
     }
 
     private String parseTextInput(String textInput) {
