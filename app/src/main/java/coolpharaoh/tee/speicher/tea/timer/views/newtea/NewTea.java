@@ -257,7 +257,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void refreshInfusionBar() {
-        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, newTeaViewModel.getInfusionIndex() + 1, ". "));
+        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, newTeaViewModel.getInfusionIndex() + 1));
 
         refreshInfusionBarInputFields();
 

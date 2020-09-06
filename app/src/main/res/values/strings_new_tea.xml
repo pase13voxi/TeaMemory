@@ -67,7 +67,7 @@
     <string name="newtea_error_cant_change">Change could not be performed.</string>
     <string name="newtea_error_cant_save">Store could not be performed.</string>
     <string name="newtea_error_no_name">Please enter the name.</string>
-    <string name="newtea_count_infusion">%1$d%2$s Infusion</string>
+    <string name="newtea_count_infusion">%1$d. Infusion</string>
     <string name="newtea_count_infusion_first">1. Infusion</string>
     <string name="newtea_tooltip_choosecolor">Choose color</string>
     <string name="newtea_tooltip_arrowleft">Previous infusion</string>
