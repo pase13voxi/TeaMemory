@@ -22,7 +22,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
@@ -271,8 +270,35 @@ public class NewTeaTest {
     }
 
     @Test
-    public void showCoolDownTimeAndCalculateCoolDownTime() {
+    public void setWrongTemperatureAndAddInfusionAndAutofillCoolDownTimeExpectNothing() {
         mockSettings("Celsius");
+        ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
+        newTeaActivityScenario.onActivity(newTea -> {
+            EditText editTextName = newTea.findViewById(R.id.editTextName);
+            Button buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
+            TextView textViewCountInfusion = newTea.findViewById(R.id.textViewCountInfusion);
+            Button buttonAutofillCoolDownTime = newTea.findViewById(R.id.buttonAutofillCoolDownTime);
+            EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
+            EditText editTextTime = newTea.findViewById(R.id.editTextTime);
+            EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
+
+            editTextName.setText("Name");
+
+            inputInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "120", "2:00", "");
+
+            buttonAutofillCoolDownTime.performClick();
+
+            assertThat(editTextCoolDownTime.getText().toString()).isEqualTo("");
+
+            buttonAddInfusion.performClick();
+
+            assertThat(textViewCountInfusion.getText()).isEqualTo("1. Infusion");
+        });
+    }
+
+    @Test
+    public void showCoolDownTimeAndCalculateCoolDownTime() {
+        mockSettings("Fahrenheit");
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             Button buttonShowCoolDownTime = newTea.findViewById(R.id.buttonShowCoolDownTime);
@@ -281,7 +307,7 @@ public class NewTeaTest {
             EditText editTextTime = newTea.findViewById(R.id.editTextTime);
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
 
-            inputInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "90", "2", "");
+            inputInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "194", "2", "");
 
             buttonShowCoolDownTime.performClick();
             assertThat(buttonAutofillCoolDownTime.getVisibility()).isEqualTo(View.VISIBLE);
@@ -314,47 +340,108 @@ public class NewTeaTest {
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
         intent.putExtra("teaId", 1l);
         intent.putExtra("showTea", true);
-        NewTea newTea = Robolectric.buildActivity(NewTea.class, intent).create().get();
 
-        Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
-        EditText editTextName = newTea.findViewById(R.id.editTextName);
-        Spinner spinnerAmountKind = newTea.findViewById(R.id.spinnerAmountUnit);
-        EditText editTextAmount = newTea.findViewById(R.id.editTextAmount);
-        Button buttonRight = newTea.findViewById(R.id.buttonArrowRight);
-        EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
-        EditText editTextTime = newTea.findViewById(R.id.editTextTime);
-        EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
+        ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
+        newTeaActivityScenario.onActivity(newTea -> {
 
-        assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(1);
-        assertThat(editTextName.getText().toString()).isEqualTo(tea.getName());
-        assertThat(spinnerAmountKind.getSelectedItemPosition()).isEqualTo(0);
-        assertThat(editTextAmount.getText().toString()).isEqualTo(String.valueOf(tea.getAmount()));
-        assertThat(editTextTemperature.getText().toString()).isEqualTo(String.valueOf(infusions.get(0).getTemperatureFahrenheit()));
-        assertThat(editTextTime.getText().toString()).isEqualTo(infusions.get(0).getTime());
-        assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(infusions.get(0).getCoolDownTime());
+            Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
+            EditText editTextName = newTea.findViewById(R.id.editTextName);
+            Spinner spinnerAmountKind = newTea.findViewById(R.id.spinnerAmountUnit);
+            EditText editTextAmount = newTea.findViewById(R.id.editTextAmount);
+            Button buttonRight = newTea.findViewById(R.id.buttonArrowRight);
+            EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
+            EditText editTextTime = newTea.findViewById(R.id.editTextTime);
+            EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
 
-        buttonRight.performClick();
+            assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(1);
+            assertThat(editTextName.getText().toString()).isEqualTo(tea.getName());
+            assertThat(spinnerAmountKind.getSelectedItemPosition()).isEqualTo(0);
+            assertThat(editTextAmount.getText().toString()).isEqualTo(String.valueOf(tea.getAmount()));
+            assertThat(editTextTemperature.getText().toString()).isEqualTo(String.valueOf(infusions.get(0).getTemperatureFahrenheit()));
+            assertThat(editTextTime.getText().toString()).isEqualTo(infusions.get(0).getTime());
+            assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(infusions.get(0).getCoolDownTime());
 
-        assertThat(editTextTemperature.getText().toString()).isEqualTo(String.valueOf(infusions.get(1).getTemperatureFahrenheit()));
-        assertThat(editTextTime.getText().toString()).isEqualTo(infusions.get(1).getTime());
-        assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(infusions.get(1).getCoolDownTime());
+            buttonRight.performClick();
 
-        newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
+            assertThat(editTextTemperature.getText().toString()).isEqualTo(String.valueOf(infusions.get(1).getTemperatureFahrenheit()));
+            assertThat(editTextTime.getText().toString()).isEqualTo(infusions.get(1).getTime());
+            assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(infusions.get(1).getCoolDownTime());
 
-        ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
-        verify(teaDao).update(captorTea.capture());
-        Tea insertedTea = captorTea.getValue();
-        assertThat(insertedTea).isEqualTo(tea);
+            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
 
-        ArgumentCaptor<Infusion> captorInfusions = ArgumentCaptor.forClass(Infusion.class);
-        verify(infusionDao, times(2)).insert(captorInfusions.capture());
-        List<Infusion> insertedInfusions = captorInfusions.getAllValues();
-        assertThat(insertedInfusions).isEqualTo(infusions);
+            ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
+            verify(teaDao).update(captorTea.capture());
+            Tea insertedTea = captorTea.getValue();
+            assertThat(insertedTea).isEqualTo(tea);
 
-        Intent expected = new Intent(newTea, ShowTea.class);
-        Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            ArgumentCaptor<Infusion> captorInfusions = ArgumentCaptor.forClass(Infusion.class);
+            verify(infusionDao, times(2)).insert(captorInfusions.capture());
+            List<Infusion> insertedInfusions = captorInfusions.getAllValues();
+            assertThat(insertedInfusions).isEqualTo(infusions);
 
-        assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
+            Intent expected = new Intent(newTea, ShowTea.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
+        });
+    }
+
+    @Test
+    public void editTeaAndExpectFilledOtherVarietyAndGr() {
+        mockSettings("Fahrenheit");
+        Tea tea = new Tea("Tea", "OtherTea", 1, "Gr", 234, 0, Date.from(getFixedDate()));
+        tea.setId(1l);
+        when(teaDao.getTeaById(1)).thenReturn(tea);
+
+        List<Infusion> infusions = new ArrayList<>();
+        Infusion infusion1 = new Infusion(1, 0, "2:00", "5:00", 100, 212);
+        infusions.add(infusion1);
+        when(infusionDao.getInfusionsByTeaId(1)).thenReturn(infusions);
+
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
+        intent.putExtra("teaId", 1l);
+
+        ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
+        newTeaActivityScenario.onActivity(newTea -> {
+
+            Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
+            CheckBox checkBoxSelfInput = newTea.findViewById(R.id.checkBoxSelfInput);
+            EditText editTextSelfInput = newTea.findViewById(R.id.editTextSelfInput);
+
+            assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(9);
+            assertThat(checkBoxSelfInput.isChecked()).isEqualTo(true);
+            assertThat(editTextSelfInput.getText().toString()).isEqualTo("OtherTea");
+        });
+    }
+
+
+    @Test
+    public void exitActivityAndExpectMainActivity() {
+        mockSettings("Celsius");
+        Tea tea = new Tea("Tea", "01_black", 1, "Gr", 1, 0, Date.from(getFixedDate()));
+        tea.setId(1l);
+        when(teaDao.getTeaById(1)).thenReturn(tea);
+
+        List<Infusion> infusions = new ArrayList<>();
+        Infusion infusion = new Infusion(1, 0, "", "", 100, 212);
+        infusions.add(infusion);
+        when(infusionDao.getInfusionsByTeaId(1)).thenReturn(infusions);
+
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
+        intent.putExtra("teaId", 1l);
+        intent.putExtra("showTea", true);
+
+        ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
+        newTeaActivityScenario.onActivity(newTea -> {
+            newTea.onOptionsItemSelected(new RoboMenuItem(android.R.id.home));
+
+            Intent expected = new Intent(newTea, ShowTea.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
+        });
     }
 
     private void mockSettings(String temperatureUnit) {
