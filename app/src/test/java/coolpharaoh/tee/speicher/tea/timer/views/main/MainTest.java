@@ -58,9 +58,9 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class MainTest {
-    private static final int ACTIVITY = 0;
-    private static final int ALPHABETICALLY = 1;
-    private static final int VARIETY = 2;
+    private enum SortItems {
+        ACTIVITY, ALPHABETICALLY, VARIETY
+    }
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -186,7 +186,7 @@ public class MainTest {
             main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(ACTIVITY);
+            shadowAlertDialog.clickOnItem(SortItems.ACTIVITY.ordinal());
 
             checkExpectedTeas(teaName, main);
         });
@@ -203,7 +203,7 @@ public class MainTest {
             main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(ALPHABETICALLY);
+            shadowAlertDialog.clickOnItem(SortItems.ALPHABETICALLY.ordinal());
 
             checkExpectedTeas(teaName, main);
         });
@@ -220,7 +220,7 @@ public class MainTest {
             main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(VARIETY);
+            shadowAlertDialog.clickOnItem(SortItems.VARIETY.ordinal());
 
             checkExpectedTeas(teaName, main);
         });
