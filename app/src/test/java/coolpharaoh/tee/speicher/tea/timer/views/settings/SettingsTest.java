@@ -1,9 +1,13 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import androidx.test.core.app.ActivityScenario;
@@ -22,6 +26,8 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 
+import java.util.List;
+
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
@@ -30,6 +36,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -78,6 +85,9 @@ public class SettingsTest {
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureUnit("Ts");
+        actualSettings.setMainRateAlert(false);
+        actualSettings.setShowTeaAlert(false);
+        actualSettings.setSettingsPermissionAlert(false);
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
     }
 
@@ -255,5 +265,60 @@ public class SettingsTest {
         });
     }
 
+    @Test
+    public void setAllHintsAndExpectAllHints() {
+        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            ListView settingsList = settings.findViewById(R.id.listView_settings);
 
+            settingsList.performItemClick(settingsList, ListItems.HINTS.ordinal(), settingsList.getItemIdAtPosition(ListItems.HINTS.ordinal()));
+
+            AlertDialog alertDialog = getLatestAlertDialog();
+
+            CheckBox checkBoxRating = (CheckBox) alertDialog.findViewById(R.id.checkboxDialogSettingsRating);
+            CheckBox checkBoxDescription = (CheckBox) alertDialog.findViewById(R.id.checkboxDialogSettingsDescription);
+            CheckBox checkBoxPermission = (CheckBox) alertDialog.findViewById(R.id.checkboxDialogSettingsPermission);
+
+            assertThat(checkBoxRating.isChecked()).isFalse();
+            assertThat(checkBoxDescription.isChecked()).isFalse();
+            assertThat(checkBoxPermission.isChecked()).isFalse();
+
+            checkBoxRating.setChecked(true);
+            checkBoxDescription.setChecked(true);
+            checkBoxPermission.setChecked(true);
+
+            Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            accept.performClick();
+
+            ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
+            verify(actualSettingsDao, times(3)).update(captor.capture());
+            List<ActualSettings> updatedSettings = captor.getAllValues();
+
+            assertThat(updatedSettings.get(2).isMainRateAlert()).isTrue();
+            assertThat(updatedSettings.get(2).isShowTeaAlert()).isTrue();
+            assertThat(updatedSettings.get(2).isSettingsPermissionAlert()).isTrue();
+        });
+    }
+
+    @Test
+    public void setFactorySettingsAndExpectFactorySettings() {
+        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            ListView settingsList = settings.findViewById(R.id.listView_settings);
+
+            settingsList.performItemClick(settingsList, ListItems.FACTORY_SETTINGS.ordinal(), settingsList.getItemIdAtPosition(ListItems.FACTORY_SETTINGS.ordinal()));
+
+            AlertDialog alertDialog = getLatestAlertDialog();
+
+            Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            accept.performClick();
+
+            ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
+            verify(actualSettingsDao).update(captor.capture());
+            ActualSettings updatedSettings = captor.getValue();
+            assertThat(updatedSettings.getMusicName()).isEqualTo("Default");
+
+            verify(teaDao).deleteAll();
+        });
+    }
 }

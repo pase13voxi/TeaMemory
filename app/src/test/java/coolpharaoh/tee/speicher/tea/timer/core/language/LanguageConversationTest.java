@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.Language;
+package coolpharaoh.tee.speicher.tea.timer.core.language;
 
 import android.content.Context;
 import android.os.Build;
@@ -12,7 +12,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
