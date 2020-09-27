@@ -7,6 +7,7 @@ import android.os.Environment;
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,11 +47,12 @@ import static org.mockito.Mockito.when;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 //ToDo maybe without robolectricTestRunner
+@Ignore
 public class ExportJsonTest {
 
     private static final Application APPLICATION = ApplicationProvider.getApplicationContext();
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
-    private static final String dbJsonDump = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
+    private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
             "\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":\"5:00\",\"temperatur" +
             "ecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"5:00\",\"cooldow" +
@@ -164,6 +166,6 @@ public class ExportJsonTest {
         assertThat(listOfFiles[0].getName()).isEqualTo(APPLICATION.getString(R.string.exportimport_export_file_name));
 
         String content = new String(Files.readAllBytes(listOfFiles[0].toPath()));
-        assertThat(content).isEqualTo(dbJsonDump);
+        assertThat(content).isEqualTo(DB_JSON_DUMP);
     }
 }
