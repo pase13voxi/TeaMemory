@@ -166,6 +166,7 @@ public class ExportJsonTest {
         assertThat(listOfFiles[0].getName()).isEqualTo("tealist.json");
 
         String content = new String(Files.readAllBytes(listOfFiles[0].toPath()));
+        System.out.println(content);
         assertThat(content).isEqualTo(DB_JSON_DUMP);
     }
 
