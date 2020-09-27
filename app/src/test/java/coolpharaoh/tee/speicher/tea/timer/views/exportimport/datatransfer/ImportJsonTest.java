@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImportJsonTest {
-    /*private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
+    private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
             "\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":\"5:00\",\"temperatur" +
             "ecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"5:00\",\"cooldow" +
@@ -47,8 +47,8 @@ public class ImportJsonTest {
             "ime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}],\"counters\":[{\"day\":5," +
             "\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"2020-09-15T10:09:01.789Z\",\"weekdate\":\"2020" +
             "-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":0,\"h" +
-            "eader\":\"Header\",\"description\":\"Description\"}]}]";*/
-    private static final String DB_JSON_DUMP = "[\n" +
+            "eader\":\"Header\",\"description\":\"Description\"}]}]";
+    /*private static final String DB_JSON_DUMP = "[\n" +
             "  {\n" +
             "    \"name\": \"name1\",\n" +
             "    \"variety\": \"variety1\",\n" +
@@ -85,7 +85,7 @@ public class ImportJsonTest {
             "      }\n" +
             "    ]\n" +
             "  }\n" +
-            "]";
+            "]";*/
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
 
     @Mock
@@ -145,7 +145,7 @@ public class ImportJsonTest {
 
     private void verifyImportedTeas() {
         ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
-        verify(teaDao, times(1)).insert(captorTea.capture());
+        verify(teaDao, times(2)).insert(captorTea.capture());
         List<Tea> teas = captorTea.getAllValues();
         /*assertThat(teas).usingFieldByFieldElementComparator().containsExactly(
                 new Tea("name1", "variety1", 1, "Gr", 1, 1, getFixedDate()),
