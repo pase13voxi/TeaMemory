@@ -120,9 +120,9 @@ public class ImportJsonTest {
                     "; Color: " + tea.getColor() + "; Next Infusion: " + tea.getNextInfusion() +
                     "; Date: " + tea.getDate().toString());
         }
-        assertThat(teas).extracting(Tea::getName, Tea::getVariety, Tea::getAmount, Tea::getAmountKind, Tea::getColor, Tea::getNextInfusion, Tea::getDate).contains(
-                Tuple.tuple("name1", "variety1", 1, "Gr", 1, 1, getFixedDate()),
-                Tuple.tuple("name2", "variety2", 2, "Ts", 2, 2, getFixedDate())
+        assertThat(teas).extracting(Tea::getName, Tea::getVariety, Tea::getAmount, Tea::getAmountKind, Tea::getColor, Tea::getNextInfusion).contains(
+                Tuple.tuple("name1", "variety1", 1, "Gr", 1, 1),
+                Tuple.tuple("name2", "variety2", 2, "Ts", 2, 2)
         );
         /*assertThat(teas).usingFieldByFieldElementComparator().containsExactly(
                 new Tea("name1", "variety1", 1, "Gr", 1, 1, getFixedDate()),
