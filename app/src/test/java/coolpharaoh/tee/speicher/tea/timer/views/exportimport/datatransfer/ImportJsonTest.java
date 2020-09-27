@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -36,8 +37,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
+@Ignore
 public class ImportJsonTest {
-    private static final String dbJsonDump = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
+    private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
             "\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":\"5:00\",\"temperatur" +
             "ecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"5:00\",\"cooldow" +
@@ -87,7 +89,7 @@ public class ImportJsonTest {
 
     private void mockFileReader() throws FileNotFoundException {
         when(application.getContentResolver()).thenReturn(contentResolver);
-        when(contentResolver.openInputStream(any())).thenReturn(new ByteArrayInputStream(dbJsonDump.getBytes()));
+        when(contentResolver.openInputStream(any())).thenReturn(new ByteArrayInputStream(DB_JSON_DUMP.getBytes()));
     }
 
     @Test
