@@ -114,7 +114,7 @@ public class ImportJsonTest {
         ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
         verify(teaDao, times(2)).insert(captorTea.capture());
         List<Tea> teas = captorTea.getAllValues();
-        assertThat(teas).extracting(Tea::getName, Tea::getVariety, Tea::getAmount, Tea::getAmountKind, Tea::getColor, Tea::getNextInfusion, Tea::getDate).containsExactly(
+        assertThat(teas).extracting(Tea::getName, Tea::getVariety, Tea::getAmount, Tea::getAmountKind, Tea::getColor, Tea::getNextInfusion, Tea::getDate).contains(
                 Tuple.tuple("name1", "variety1", 1, "Gr", 1, 1, getFixedDate()),
                 Tuple.tuple("name2", "variety2", 2, "Ts", 2, 2, getFixedDate())
         );
