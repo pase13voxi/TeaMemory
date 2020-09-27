@@ -65,7 +65,7 @@ public class ExportJson {
     }
 
     private String createJsonFromTeaList() {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 
         return gson.toJson(teaList);
     }

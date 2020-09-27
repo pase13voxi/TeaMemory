@@ -69,7 +69,7 @@ public class ImportJson {
     }
 
     private List<TeaPOJO> createTeaListFromJson() {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 
         Type listType = new TypeToken<ArrayList<TeaPOJO>>() {
         }.getType();

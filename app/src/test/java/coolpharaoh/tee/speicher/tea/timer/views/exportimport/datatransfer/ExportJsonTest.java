@@ -16,6 +16,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -44,24 +45,22 @@ import static org.mockito.Mockito.when;
 public class ExportJsonTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
-            "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
-            "\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":\"5:00\",\"temperatur" +
-            "ecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"5:00\",\"cooldow" +
-            "ntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}],\"counters\":[{\"day\"" +
-            ":1,\"week\":2,\"month\":3,\"overall\":4,\"daydate\":\"2020-09-15T10:09:01.789Z\",\"weekdate\":\"" +
-            "2020-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":" +
-            "0,\"header\":\"Header\",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"varie" +
-            "ty2\",\"amount\":2,\"amountKind\":\"Ts\",\"color\":2,\"nextInfusion\":2,\"date\":\"2020-09-15T10:09:" +
-            "01.789Z\",\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":\"5:00\",\"temperatu" +
-            "recelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"7:00\",\"cooldownt" +
-            "ime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}],\"counters\":[{\"day\":5," +
-            "\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"2020-09-15T10:09:01.789Z\",\"weekdate\":\"2020" +
-            "-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":0,\"h" +
-            "eader\":\"Header\",\"description\":\"Description\"}]}]";
+            "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"DATE\",\"infusions\":[{\"infusionindex\":0," +
+            "\"time\":\"2:00\",\"cooldowntime\":\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212}," +
+            "{\"infusionindex\":1,\"time\":\"5:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90," +
+            "\"temperaturefahrenheit\":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4," +
+            "\"daydate\":\"DATE\",\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0," +
+            "\"header\":\"Header\",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\"," +
+            "\"amount\":2,\"amountKind\":\"Ts\",\"color\":2,\"nextInfusion\":2,\"date\":\"DATE\",\"infusions\":[{\"infusionindex\":0," +
+            "\"time\":\"6:00\",\"cooldowntime\":\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212}," +
+            "{\"infusionindex\":1,\"time\":\"7:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}]," +
+            "\"counters\":[{\"day\":5,\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"DATE\",\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}]," +
+            "\"notes\":[{\"position\":0,\"header\":\"Header\",\"description\":\"Description\"}]}]";
+
+    private String exportedDate;
 
     @Rule
     TemporaryFolder tempFolder = new TemporaryFolder();
-
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
@@ -77,18 +76,34 @@ public class ExportJsonTest {
     @Mock
     DateUtility fixedDate;
 
-
     @Before
     public void setUp() throws IOException {
         mockTemporaryFolder();
-        mockDB();
+        mockUsedStrings();
         mockFixedDate();
+        mockDB();
         mockExistingTeas();
     }
 
     private void mockTemporaryFolder() throws IOException {
         PowerMockito.mockStatic(Environment.class);
         when(Environment.getExternalStorageDirectory()).thenReturn(tempFolder.newFolder());
+    }
+
+    private void mockUsedStrings() {
+        when(application.getString(R.string.exportimport_export_folder_name)).thenReturn("/TeaMemory");
+        when(application.getString(R.string.exportimport_export_file_name)).thenReturn("tealist.json");
+        when(application.getString(R.string.exportimport_saved)).thenReturn("tealist.json saved");
+    }
+
+    private void mockFixedDate() {
+        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        Instant instant = Instant.now(clock);
+        Date date = Date.from(instant);
+        when(this.fixedDate.getDate()).thenReturn(date);
+        CurrentDate.setFixedDate(this.fixedDate);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        exportedDate = formatter.format(date);
     }
 
     private void mockDB() {
@@ -143,18 +158,8 @@ public class ExportJsonTest {
         when(counterDao.getCounters()).thenReturn(counters);
     }
 
-    private void mockFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
-        Instant instant = Instant.now(clock);
-        Date date = Date.from(instant);
-        when(this.fixedDate.getDate()).thenReturn(date);
-        CurrentDate.setFixedDate(this.fixedDate);
-    }
-
     @Test
     public void exportTeas() throws IOException {
-        mockUsedStrings();
-
         ExportJson exportJson = new ExportJson(application, System.out::println);
         exportJson.write();
 
@@ -167,12 +172,6 @@ public class ExportJsonTest {
 
         String content = new String(Files.readAllBytes(listOfFiles[0].toPath()));
         System.out.println(content);
-        assertThat(content).isEqualTo(DB_JSON_DUMP);
-    }
-
-    private void mockUsedStrings() {
-        when(application.getString(R.string.exportimport_export_folder_name)).thenReturn("/TeaMemory");
-        when(application.getString(R.string.exportimport_export_file_name)).thenReturn("tealist.json");
-        when(application.getString(R.string.exportimport_saved)).thenReturn("tealist.json saved");
+        assertThat(content).isEqualTo(DB_JSON_DUMP.replace("DATE", exportedDate));
     }
 }

@@ -42,7 +42,7 @@ public class ImportJsonTest {
             "    \"amountKind\": \"Gr\",\n" +
             "    \"color\": 1,\n" +
             "    \"nextInfusion\": 1,\n" +
-            "    \"date\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
             "      {\n" +
             "        \"infusionindex\": 0,\n" +
@@ -65,9 +65,9 @@ public class ImportJsonTest {
             "        \"week\": 2,\n" +
             "        \"month\": 3,\n" +
             "        \"overall\": 4,\n" +
-            "        \"daydate\": \"2020-09-15T10:09:01.789Z\",\n" +
-            "        \"weekdate\": \"2020-09-15T10:09:01.789Z\",\n" +
-            "        \"monthdate\": \"2020-09-15T10:09:01.789Z\"\n" +
+            "        \"daydate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"weekdate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"monthdate\": \"2020-09-15T10:09:01.789\"\n" +
             "      }\n" +
             "    ],\n" +
             "    \"notes\": [\n" +
@@ -85,7 +85,7 @@ public class ImportJsonTest {
             "    \"amountKind\": \"Ts\",\n" +
             "    \"color\": 2,\n" +
             "    \"nextInfusion\": 2,\n" +
-            "    \"date\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
             "      {\n" +
             "        \"infusionindex\": 0,\n" +
@@ -108,9 +108,9 @@ public class ImportJsonTest {
             "        \"week\": 6,\n" +
             "        \"month\": 7,\n" +
             "        \"overall\": 8,\n" +
-            "        \"daydate\": \"2020-09-15T10:09:01.789Z\",\n" +
-            "        \"weekdate\": \"2020-09-15T10:09:01.789Z\",\n" +
-            "        \"monthdate\": \"2020-09-15T10:09:01.789Z\"\n" +
+            "        \"daydate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"weekdate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"monthdate\": \"2020-09-15T10:09:01.789\"\n" +
             "      }\n" +
             "    ],\n" +
             "    \"notes\": [\n" +
