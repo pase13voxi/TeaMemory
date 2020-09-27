@@ -14,10 +14,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
@@ -53,7 +49,6 @@ public class ImportJsonTest {
             "\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"2020-09-15T10:09:01.789Z\",\"weekdate\":\"2020" +
             "-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":0,\"h" +
             "eader\":\"Header\",\"description\":\"Description\"}]}]";
-    public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
 
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
@@ -114,52 +109,60 @@ public class ImportJsonTest {
         ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
         verify(teaDao, times(2)).insert(captorTea.capture());
         List<Tea> teas = captorTea.getAllValues();
-        for (Tea tea : teas){
-            System.out.println("Name : " + tea.getName() + "; Variety: " + tea.getVariety() +
-                    "; Amount: " + tea.getAmount() + "; Amountkind: " + tea.getAmountKind() +
-                    "; Color: " + tea.getColor() + "; Next Infusion: " + tea.getNextInfusion() +
-                    "; Date: " + tea.getDate().toString());
-        }
-        assertThat(teas).extracting(Tea::getName, Tea::getVariety, Tea::getAmount, Tea::getAmountKind, Tea::getColor, Tea::getNextInfusion).contains(
+        assertThat(teas).extracting(
+                Tea::getName,
+                Tea::getVariety,
+                Tea::getAmount,
+                Tea::getAmountKind,
+                Tea::getColor,
+                Tea::getNextInfusion
+        ).containsExactly(
                 Tuple.tuple("name1", "variety1", 1, "Gr", 1, 1),
                 Tuple.tuple("name2", "variety2", 2, "Ts", 2, 2)
         );
-        /*assertThat(teas).usingFieldByFieldElementComparator().containsExactly(
-                new Tea("name1", "variety1", 1, "Gr", 1, 1, getFixedDate()),
-                new Tea("name2", "variety2", 2, "Ts", 2, 2, getFixedDate())
-        );*/
 
         ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
         verify(infusionDao, times(4)).insert(captorInfusion.capture());
         List<Infusion> infusions = captorInfusion.getAllValues();
-        /*assertThat(infusions).usingFieldByFieldElementComparator().containsExactly(
-                new Infusion(0L, 0, "2:00", "5:00", 100, 212),
-                new Infusion(0L, 1, "5:00", "3:00", 90, 195),
-                new Infusion(1L, 0, "6:00", "5:00", 100, 212),
-                new Infusion(1L, 1, "7:00", "3:00", 90, 195)
-        );*/
+        assertThat(infusions).extracting(
+                Infusion::getTeaId,
+                Infusion::getInfusionIndex,
+                Infusion::getTime,
+                Infusion::getCoolDownTime,
+                Infusion::getTemperatureCelsius,
+                Infusion::getTemperatureFahrenheit
+        ).containsExactly(
+                Tuple.tuple(0L, 0, "2:00", "5:00", 100, 212),
+                Tuple.tuple(0L, 1, "5:00", "3:00", 90, 195),
+                Tuple.tuple(1L, 0, "6:00", "5:00", 100, 212),
+                Tuple.tuple(1L, 1, "7:00", "3:00", 90, 195)
+        );
 
         ArgumentCaptor<Counter> captorCounter = ArgumentCaptor.forClass(Counter.class);
         verify(counterDao, times(2)).insert(captorCounter.capture());
         List<Counter> counters = captorCounter.getAllValues();
-        /*assertThat(counters).usingFieldByFieldElementComparator().containsExactly(
-                new Counter(0L, 1, 2, 3, 4, getFixedDate(), getFixedDate(), getFixedDate()),
-                new Counter(1L, 5, 6, 7, 8, getFixedDate(), getFixedDate(), getFixedDate())
-        );*/
+        assertThat(counters).extracting(
+                Counter::getTeaId,
+                Counter::getDay,
+                Counter::getWeek,
+                Counter::getMonth,
+                Counter::getOverall
+        ).containsExactly(
+                Tuple.tuple(0L, 1, 2, 3, 4L),
+                Tuple.tuple(1L, 5, 6, 7, 8L)
+        );
 
         ArgumentCaptor<Note> captorNote = ArgumentCaptor.forClass(Note.class);
         verify(noteDao, times(2)).insert(captorNote.capture());
         List<Note> notes = captorNote.getAllValues();
-        /*assertThat(notes).usingFieldByFieldElementComparator().containsExactly(
-                new Note(0L, 0, "Header", "Description"),
-                new Note(1L, 0, "Header", "Description")
-        );*/
-
-    }
-
-    private Date getFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
-        Instant instant = Instant.now(clock);
-        return Date.from(instant);
+        assertThat(notes).extracting(
+                Note::getTeaId,
+                Note::getPosition,
+                Note::getHeader,
+                Note::getDescription
+        ).containsExactly(
+                Tuple.tuple(0L, 0, "Header", "Description"),
+                Tuple.tuple(1L, 0, "Header", "Description")
+        );
     }
 }
