@@ -34,21 +34,94 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImportJsonTest {
-    private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
-            "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
-            "\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":\"5:00\",\"temperatur" +
-            "ecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"5:00\",\"cooldow" +
-            "ntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}],\"counters\":[{\"day\"" +
-            ":1,\"week\":2,\"month\":3,\"overall\":4,\"daydate\":\"2020-09-15T10:09:01.789Z\",\"weekdate\":\"" +
-            "2020-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":" +
-            "0,\"header\":\"Header\",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"varie" +
-            "ty2\",\"amount\":2,\"amountKind\":\"Ts\",\"color\":2,\"nextInfusion\":2,\"date\":\"2020-09-15T10:09:" +
-            "01.789Z\",\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":\"5:00\",\"temperatu" +
-            "recelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"7:00\",\"cooldownt" +
-            "ime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}],\"counters\":[{\"day\":5," +
-            "\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"2020-09-15T10:09:01.789Z\",\"weekdate\":\"2020" +
-            "-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":0,\"h" +
-            "eader\":\"Header\",\"description\":\"Description\"}]}]";
+    private static final String DB_JSON_DUMP = "[\n" +
+            "  {\n" +
+            "    \"name\": \"name1\",\n" +
+            "    \"variety\": \"variety1\",\n" +
+            "    \"amount\": 1,\n" +
+            "    \"amountKind\": \"Gr\",\n" +
+            "    \"color\": 1,\n" +
+            "    \"nextInfusion\": 1,\n" +
+            "    \"date\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "    \"infusions\": [\n" +
+            "      {\n" +
+            "        \"infusionindex\": 0,\n" +
+            "        \"time\": \"2:00\",\n" +
+            "        \"cooldowntime\": \"5:00\",\n" +
+            "        \"temperaturecelsius\": 100,\n" +
+            "        \"temperaturefahrenheit\": 212\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"infusionindex\": 1,\n" +
+            "        \"time\": \"5:00\",\n" +
+            "        \"cooldowntime\": \"3:00\",\n" +
+            "        \"temperaturecelsius\": 90,\n" +
+            "        \"temperaturefahrenheit\": 195\n" +
+            "      }\n" +
+            "    ],\n" +
+            "    \"counters\": [\n" +
+            "      {\n" +
+            "        \"day\": 1,\n" +
+            "        \"week\": 2,\n" +
+            "        \"month\": 3,\n" +
+            "        \"overall\": 4,\n" +
+            "        \"daydate\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "        \"weekdate\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "        \"monthdate\": \"2020-09-15T10:09:01.789Z\"\n" +
+            "      }\n" +
+            "    ],\n" +
+            "    \"notes\": [\n" +
+            "      {\n" +
+            "        \"position\": 0,\n" +
+            "        \"header\": \"Header\",\n" +
+            "        \"description\": \"Description\"\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"name\": \"name2\",\n" +
+            "    \"variety\": \"variety2\",\n" +
+            "    \"amount\": 2,\n" +
+            "    \"amountKind\": \"Ts\",\n" +
+            "    \"color\": 2,\n" +
+            "    \"nextInfusion\": 2,\n" +
+            "    \"date\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "    \"infusions\": [\n" +
+            "      {\n" +
+            "        \"infusionindex\": 0,\n" +
+            "        \"time\": \"6:00\",\n" +
+            "        \"cooldowntime\": \"5:00\",\n" +
+            "        \"temperaturecelsius\": 100,\n" +
+            "        \"temperaturefahrenheit\": 212\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"infusionindex\": 1,\n" +
+            "        \"time\": \"7:00\",\n" +
+            "        \"cooldowntime\": \"3:00\",\n" +
+            "        \"temperaturecelsius\": 90,\n" +
+            "        \"temperaturefahrenheit\": 195\n" +
+            "      }\n" +
+            "    ],\n" +
+            "    \"counters\": [\n" +
+            "      {\n" +
+            "        \"day\": 5,\n" +
+            "        \"week\": 6,\n" +
+            "        \"month\": 7,\n" +
+            "        \"overall\": 8,\n" +
+            "        \"daydate\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "        \"weekdate\": \"2020-09-15T10:09:01.789Z\",\n" +
+            "        \"monthdate\": \"2020-09-15T10:09:01.789Z\"\n" +
+            "      }\n" +
+            "    ],\n" +
+            "    \"notes\": [\n" +
+            "      {\n" +
+            "        \"position\": 0,\n" +
+            "        \"header\": \"Header\",\n" +
+            "        \"description\": \"Description\"\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "]";
 
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
