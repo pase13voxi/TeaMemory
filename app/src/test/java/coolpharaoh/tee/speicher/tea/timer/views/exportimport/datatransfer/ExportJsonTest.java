@@ -1,21 +1,17 @@
 package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
 import android.app.Application;
-import android.os.Build;
 import android.os.Environment;
 
-import androidx.test.core.app.ApplicationProvider;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,14 +39,9 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
-@RunWith(RobolectricTestRunner.class)
-//ToDo maybe without robolectricTestRunner
-@Ignore
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Environment.class)
 public class ExportJsonTest {
-
-    private static final Application APPLICATION = ApplicationProvider.getApplicationContext();
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
@@ -68,9 +59,9 @@ public class ExportJsonTest {
             "-09-15T10:09:01.789Z\",\"monthdate\":\"2020-09-15T10:09:01.789Z\"}],\"notes\":[{\"position\":0,\"h" +
             "eader\":\"Header\",\"description\":\"Description\"}]}]";
 
-
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+    TemporaryFolder tempFolder = new TemporaryFolder();
+
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
@@ -82,14 +73,22 @@ public class ExportJsonTest {
     @Mock
     CounterDao counterDao;
     @Mock
+    Application application;
+    @Mock
     DateUtility fixedDate;
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+        mockTemporaryFolder();
         mockDB();
         mockFixedDate();
         mockExistingTeas();
+    }
+
+    private void mockTemporaryFolder() throws IOException {
+        PowerMockito.mockStatic(Environment.class);
+        when(Environment.getExternalStorageDirectory()).thenReturn(tempFolder.newFolder());
     }
 
     private void mockDB() {
@@ -154,18 +153,25 @@ public class ExportJsonTest {
 
     @Test
     public void exportTeas() throws IOException {
-        ExportJson exportJson = new ExportJson(APPLICATION, System.out::println);
+        mockUsedStrings();
 
+        ExportJson exportJson = new ExportJson(application, System.out::println);
         exportJson.write();
 
-        File folder = new File(Environment.getExternalStorageDirectory().toString() + APPLICATION.getString(R.string.exportimport_export_folder_name));
+        File folder = new File(Environment.getExternalStorageDirectory().toString() + "/TeaMemory");
         assertThat(folder.exists()).isTrue();
 
         File[] listOfFiles = folder.listFiles();
         assertThat(listOfFiles).hasSize(1);
-        assertThat(listOfFiles[0].getName()).isEqualTo(APPLICATION.getString(R.string.exportimport_export_file_name));
+        assertThat(listOfFiles[0].getName()).isEqualTo("tealist.json");
 
         String content = new String(Files.readAllBytes(listOfFiles[0].toPath()));
         assertThat(content).isEqualTo(DB_JSON_DUMP);
+    }
+
+    private void mockUsedStrings() {
+        when(application.getString(R.string.exportimport_export_folder_name)).thenReturn("/TeaMemory");
+        when(application.getString(R.string.exportimport_export_file_name)).thenReturn("tealist.json");
+        when(application.getString(R.string.exportimport_saved)).thenReturn("tealist.json saved");
     }
 }
