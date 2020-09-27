@@ -1,24 +1,26 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
-import android.content.Context;
+import android.app.Application;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 
 public class InputValidator {
-    private Context applicationContext;
+    private final Application application;
+    private final Printer printer;
 
-    InputValidator(Context applicationContext) {
-        this.applicationContext = applicationContext;
+    InputValidator(Application application, Printer printer) {
+        this.application = application;
+        this.printer = printer;
     }
 
     boolean nameIsNotEmpty(String nameInput) {
         if ("".equals(nameInput)) {
-            Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_no_name, Toast.LENGTH_SHORT);
-            toast.show();
+            printer.print(application.getString(R.string.newtea_error_no_name));
             return false;
         }
         return true;
@@ -26,8 +28,7 @@ public class InputValidator {
 
     boolean nameIsValid(String nameInput) {
         if (nameInput.length() > 300) {
-            Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_name, Toast.LENGTH_SHORT);
-            toast.show();
+            printer.print(application.getString(R.string.newtea_error_name));
             return false;
         }
         return true;
@@ -35,8 +36,7 @@ public class InputValidator {
 
     boolean varietyIsValid(String varietyInput) {
         if (varietyInput.length() > 30) {
-            Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_30Char, Toast.LENGTH_SHORT);
-            toast.show();
+            printer.print(application.getString(R.string.newtea_error_30Char));
             return false;
         }
         return true;
@@ -46,8 +46,7 @@ public class InputValidator {
         if ("".equals(amountInput)) {
             return true;
         } else if (amountInput.contains(".") || amountInput.length() > 3) {
-            Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_amount, Toast.LENGTH_SHORT);
-            toast.show();
+            printer.print(application.getString(R.string.newtea_error_amount));
             return false;
         }
         return true;
@@ -61,8 +60,7 @@ public class InputValidator {
 
     private boolean coolDownTimeIsValid(String coolDownTimeInput) {
         if (!timeIsValid(coolDownTimeInput)) {
-            Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_cooldown_time, Toast.LENGTH_SHORT);
-            toast.show();
+            printer.print(application.getString(R.string.newtea_error_cooldown_time));
             return false;
         }
         return true;
@@ -70,8 +68,7 @@ public class InputValidator {
 
     private boolean steepingTimeIsValid(String timeInput) {
         if (!timeIsValid(timeInput)) {
-            Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_time_format, Toast.LENGTH_SHORT);
-            toast.show();
+            printer.print(application.getString(R.string.newtea_error_time_format));
             return false;
         }
         return true;
@@ -99,11 +96,9 @@ public class InputValidator {
     private boolean temperatureIsValid(String temperatureInput, String temperatureUnit) {
         if (!temperatureInputIsValid(temperatureInput, temperatureUnit)) {
             if ("Celsius".equals(temperatureUnit)) {
-                Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_wrong_celsius, Toast.LENGTH_SHORT);
-                toast.show();
+                printer.print(application.getString(R.string.newtea_error_wrong_celsius));
             } else if ("Fahrenheit".equals(temperatureUnit)) {
-                Toast toast = Toast.makeText(applicationContext, R.string.newtea_error_wrong_fahrenheit, Toast.LENGTH_SHORT);
-                toast.show();
+                printer.print(application.getString(R.string.newtea_error_wrong_fahrenheit));
             }
             return false;
         }

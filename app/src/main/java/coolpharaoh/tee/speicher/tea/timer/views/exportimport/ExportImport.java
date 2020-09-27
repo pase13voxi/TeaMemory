@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions;
@@ -27,7 +28,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions;
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST_CODE_READ;
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST_CODE_WRITE;
 
-public class ExportImport extends AppCompatActivity {
+public class ExportImport extends AppCompatActivity implements Printer {
     private boolean keepStoredTeas = true;
 
     @Override
@@ -122,7 +123,7 @@ public class ExportImport extends AppCompatActivity {
     }
 
     private void exportJson() {
-        ExportJson exportJson = new ExportJson(getApplication());
+        ExportJson exportJson = new ExportJson(getApplication(), this);
         if (exportJson.write()) {
             dialogExportLocation();
         } else {
@@ -187,7 +188,7 @@ public class ExportImport extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
-            ImportJson importJson = new ImportJson(resultData.getData(), getApplication());
+            ImportJson importJson = new ImportJson(resultData.getData(), getApplication(), this);
             if (importJson.read(keepStoredTeas)) {
                 dialogImportComplete();
             } else {
@@ -218,5 +219,10 @@ public class ExportImport extends AppCompatActivity {
             TextView warning = findViewById(R.id.textViewWarning);
             warning.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void print(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

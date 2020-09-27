@@ -29,10 +29,11 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 
-public class NewTea extends AppCompatActivity implements View.OnLongClickListener {
+public class NewTea extends AppCompatActivity implements View.OnLongClickListener, Printer {
 
     private enum Variety {
         BLACK_TEA, GREEN_TEA, YELLOW_TEA, WHITE_TEA, OOLONG_TEA, PU_ERH_TEA,
@@ -130,7 +131,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         //showTea wird übergeben, falls die Navigation von showTea erfolgt
         showTea = this.getIntent().getBooleanExtra("showTea", false);
-        inputValidator = new InputValidator(getApplication());
+        inputValidator = new InputValidator(getApplication(), this);
     }
 
     private void hideKeyboardAtFirst() {
@@ -156,7 +157,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         checkboxTeaSort = findViewById(R.id.checkBoxSelfInput);
         editTextTeaSort = findViewById(R.id.editTextSelfInput);
         buttonColor = findViewById(R.id.buttonColor);
-        buttonColorShape = new ButtonColorShape(buttonColor.getBackground(), getApplicationContext());
+        buttonColorShape = new ButtonColorShape(buttonColor.getBackground(), getApplication());
         editTextName = findViewById(R.id.editTextName);
         editTextTemperature = findViewById(R.id.editTextTemperature);
         buttonShowCoolDowntime = findViewById(R.id.buttonShowCoolDownTime);
@@ -568,5 +569,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 .setCancelable(true)
                 .setDismissOnClick(true)
                 .show();
+    }
+
+    @Override
+    public void print(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

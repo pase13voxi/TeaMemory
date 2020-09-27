@@ -45,6 +45,7 @@ import static org.mockito.Mockito.when;
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
+//ToDo maybe without robolectricTestRunner
 public class ExportJsonTest {
 
     private static final Application APPLICATION = ApplicationProvider.getApplicationContext();
@@ -150,8 +151,8 @@ public class ExportJsonTest {
     }
 
     @Test
-    public void exportTest() throws IOException {
-        ExportJson exportJson = new ExportJson(APPLICATION);
+    public void exportTeas() throws IOException {
+        ExportJson exportJson = new ExportJson(APPLICATION, System.out::println);
 
         exportJson.write();
 

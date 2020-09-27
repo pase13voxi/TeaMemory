@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -10,28 +11,28 @@ class ButtonColorShape {
 
     private static final int VARIETY_BLACK_TEA = 0;
 
-    private final Context context;
+    private final Application application;
     private final GradientDrawable gradientDrawable;
     private int color;
 
     private boolean changeColor = false;
 
-    ButtonColorShape(Drawable drawable, Context context) {
+    ButtonColorShape(Drawable drawable, Application application) {
         gradientDrawable = (GradientDrawable) drawable;
-        this.context = context;
+        this.application = application;
 
         setDefaultColor();
     }
 
     private void setDefaultColor() {
-        int varietyColor = ColorConversation.getVarietyColor(VARIETY_BLACK_TEA, context);
+        int varietyColor = ColorConversation.getVarietyColor(VARIETY_BLACK_TEA, application);
         setColor(varietyColor);
     }
 
     void setColorByVariety(int variety) {
         //Bad Style! Color should only be adjusted on the second call
         if (changeColor) {
-            int varietyColor = ColorConversation.getVarietyColor(variety, context);
+            int varietyColor = ColorConversation.getVarietyColor(variety, application);
             setColor(varietyColor);
         } else {
             changeColor = true;

@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer;
 
 import android.app.Application;
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,16 +14,19 @@ import java.io.Writer;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.TeaPOJO;
 
 public class ExportJson {
 
     private final Application application;
+    private final Printer printer;
     private final List<TeaPOJO> teaList;
     private final String json;
 
-    public ExportJson(Application application) {
+    public ExportJson(Application application, Printer printer) {
         this.application = application;
+        this.printer = printer;
         DataTransferViewModel dataTransferViewModel = new DataTransferViewModel(application);
 
         DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(dataTransferViewModel.getTeaList(),
@@ -40,7 +42,7 @@ public class ExportJson {
         File folder = new File(Environment.getExternalStorageDirectory().toString() + application.getString(R.string.exportimport_export_folder_name));
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
-                Toast.makeText(application, application.getString(R.string.exportimport_export_create_folder_failed), Toast.LENGTH_LONG).show();
+                printer.print(application.getString(R.string.exportimport_export_create_folder_failed));
                 return false;
             }
         }
@@ -53,10 +55,10 @@ public class ExportJson {
         try (Writer output = new BufferedWriter(new FileWriter(file))) {
             output.write(json);
         } catch (IOException e) {
-            Toast.makeText(application, R.string.exportimport_save_failed, Toast.LENGTH_LONG).show();
+            printer.print(application.getString(R.string.exportimport_save_failed));
             return false;
         }
-        Toast.makeText(application, application.getString(R.string.exportimport_saved), Toast.LENGTH_LONG).show();
+        printer.print(application.getString(R.string.exportimport_saved));
 
 
         return true;

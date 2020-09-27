@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.core.language;
 
+import android.app.Application;
 import android.content.Context;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -9,9 +10,9 @@ public class LanguageConversation {
     private LanguageConversation() {
     }
 
-    public static String convertVarietyToCode(String variety, Context context) {
-        String[] varieties = context.getResources().getStringArray(R.array.variety_teas);
-        String[] codes = context.getResources().getStringArray(R.array.variety_codes);
+    public static String convertVarietyToCode(String variety, Application application) {
+        String[] varieties = application.getResources().getStringArray(R.array.variety_teas);
+        String[] codes = application.getResources().getStringArray(R.array.variety_codes);
 
         for (int i = 0; i < varieties.length; i++) {
             if (varieties[i].equals(variety)) {
@@ -21,9 +22,9 @@ public class LanguageConversation {
         return variety;
     }
 
-    public static String convertCodeToVariety(String code, Context context){
-        String[] codes = context.getResources().getStringArray(R.array.variety_codes);
-        String[] varieties = context.getResources().getStringArray(R.array.variety_teas);
+    public static String convertCodeToVariety(String code, Application application){
+        String[] codes = application.getResources().getStringArray(R.array.variety_codes);
+        String[] varieties = application.getResources().getStringArray(R.array.variety_teas);
 
         for(int i=0; i<codes.length; i++){
             if(codes[i].equals(code)){

@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.main;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +21,15 @@ class TeaAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private final List<Tea> items;
 
-    private final Context context;
+    private final Application application;
 
-    TeaAdapter(Activity context, List<Tea> items) {
+    TeaAdapter(Activity activity, List<Tea> items) {
         super();
 
         this.items = items;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        this.context = context.getApplicationContext();
+        this.application = activity.getApplication();
     }
 
     @Override
@@ -63,9 +64,9 @@ class TeaAdapter extends BaseAdapter {
 
         txtName.setText(item.getName());
         if(item.getVariety().equals("")){
-            txtVariety.setText(LanguageConversation.convertCodeToVariety("-", context));
+            txtVariety.setText(LanguageConversation.convertCodeToVariety("-", application));
         }else{
-            txtVariety.setText(LanguageConversation.convertCodeToVariety(item.getVariety(), context));
+            txtVariety.setText(LanguageConversation.convertCodeToVariety(item.getVariety(), application));
         }
 
         return vi;

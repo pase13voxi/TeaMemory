@@ -1,29 +1,35 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
-
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
-@RunWith(RobolectricTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
+
+    @Mock
+    private Application application;
 
     private InputValidator inputValidator;
 
     @Before
     public void setUp() {
-        Context context = getInstrumentation().getTargetContext().getApplicationContext();
-        inputValidator = new InputValidator(context);
+        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+        inputValidator = new InputValidator(application, System.out::println);
     }
 
     @Test

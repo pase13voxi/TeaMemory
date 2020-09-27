@@ -1,106 +1,140 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
-import android.content.Context;
+import android.app.Application;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.powermock.api.mockito.PowerMockito.when;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
-@RunWith(RobolectricTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ColorConversationTest {
-    public static final Context CONTEXT = ApplicationProvider.getApplicationContext();
+
+    @Mock
+    private Application application;
+    @Mock
+    private Resources resources;
+
+    @Before
+    public void setUp(){
+        when(application.getResources()).thenReturn(resources);
+    }
 
     @Test
     public void getVarietyColorBlackTea() {
-        int color = ColorConversation.getVarietyColor(0, CONTEXT);
+        when(resources.getColor(R.color.blacktea)).thenReturn(0);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.blacktea));
+        int color = ColorConversation.getVarietyColor(0, application);
+
+        assertThat(color).isEqualTo(0);
     }
 
 
     @Test
     public void getVarietyColorGreenTea() {
-        int color = ColorConversation.getVarietyColor(1, CONTEXT);
+        when(resources.getColor(R.color.greentea)).thenReturn(1);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.greentea));
+        int color = ColorConversation.getVarietyColor(1, application);
+
+        assertThat(color).isEqualTo(1);
     }
 
     @Test
     public void getVarietyColorYellowTea() {
-        int color = ColorConversation.getVarietyColor(2, CONTEXT);
+        when(resources.getColor(R.color.yellowtea)).thenReturn(2);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.yellowtea));
+        int color = ColorConversation.getVarietyColor(2, application);
+
+        assertThat(color).isEqualTo(2);
     }
 
     @Test
     public void getVarietyColorWhiteTea() {
-        int color = ColorConversation.getVarietyColor(3, CONTEXT);
+        when(resources.getColor(R.color.whitetea)).thenReturn(3);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.whitetea));
+        int color = ColorConversation.getVarietyColor(3, application);
+
+        assertThat(color).isEqualTo(3);
     }
 
     @Test
     public void getVarietyColorOolongTea() {
-        int color = ColorConversation.getVarietyColor(4, CONTEXT);
+        when(resources.getColor(R.color.oolongtea)).thenReturn(4);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.oolongtea));
+        int color = ColorConversation.getVarietyColor(4, application);
+
+        assertThat(color).isEqualTo(4);
     }
 
     @Test
     public void getVarietyColorPuerhTea() {
-        int color = ColorConversation.getVarietyColor(5, CONTEXT);
+        when(resources.getColor(R.color.puerhtea)).thenReturn(5);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.puerhtea));
+        int color = ColorConversation.getVarietyColor(5, application);
+
+        assertThat(color).isEqualTo(5);
     }
 
     @Test
     public void getVarietyColorHerbalTea() {
-        int color = ColorConversation.getVarietyColor(6, CONTEXT);
+        when(resources.getColor(R.color.herbaltea)).thenReturn(6);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.herbaltea));
+        int color = ColorConversation.getVarietyColor(6, application);
+
+        assertThat(color).isEqualTo(6);
     }
 
     @Test
     public void getVarietyColorFruitTea() {
-        int color = ColorConversation.getVarietyColor(7, CONTEXT);
+        when(resources.getColor(R.color.fruittea)).thenReturn(7);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.fruittea));
+        int color = ColorConversation.getVarietyColor(7, application);
+
+        assertThat(color).isEqualTo(7);
     }
 
     @Test
     public void getVarietyColorRooibusTea() {
-        int color = ColorConversation.getVarietyColor(8, CONTEXT);
+        when(resources.getColor(R.color.rooibustea)).thenReturn(8);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.rooibustea));
+        int color = ColorConversation.getVarietyColor(8, application);
+
+        assertThat(color).isEqualTo(8);
     }
 
     @Test
     public void getVarietyColorOther() {
-        int color = ColorConversation.getVarietyColor(-1, CONTEXT);
+        when(resources.getColor(R.color.other)).thenReturn(-1);
 
-        assertThat(color).isEqualTo(CONTEXT.getResources().getColor(R.color.other));
+        int color = ColorConversation.getVarietyColor(-1, application);
+
+        assertThat(color).isEqualTo(-1);
     }
 
     @Test
     public void discoverForgroundColorLight() {
-        int colorForeground = ColorConversation.discoverForegroundColor(CONTEXT.getResources().getColor(R.color.blacktea));
-        assertThat(colorForeground).isEqualTo(Color.parseColor("#FFFFFFFF"));
+        int colorBlackTea = -15461296;
+        int colorForeground = ColorConversation.discoverForegroundColor(colorBlackTea);
+        assertThat(colorForeground).isEqualTo(-1);
     }
 
     @Test
     public void discoverForgroundColorDark() {
-        int colorForeground = ColorConversation.discoverForegroundColor(CONTEXT.getResources().getColor(R.color.whitetea));
-        assertThat(colorForeground).isEqualTo(Color.parseColor("#FF000000"));
+        int colorWhiteTea = -1642;
+        int colorForeground = ColorConversation.discoverForegroundColor(colorWhiteTea);
+        assertThat(colorForeground).isEqualTo(-16777216);
     }
 }
