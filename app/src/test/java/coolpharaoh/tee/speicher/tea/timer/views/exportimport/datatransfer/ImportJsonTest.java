@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -37,7 +36,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@Ignore
 public class ImportJsonTest {
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"nextInfusion\":1,\"date\":\"2020-09-15T10:09:01.789Z\"," +
