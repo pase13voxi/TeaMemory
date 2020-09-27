@@ -19,9 +19,12 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
@@ -150,30 +153,30 @@ public class ImportJsonTest {
         /*assertThat(teas).usingFieldByFieldElementComparator().containsExactly(
                 new Tea("name1", "variety1", 1, "Gr", 1, 1, getFixedDate()),
                 new Tea("name2", "variety2", 2, "Ts", 2, 2, getFixedDate())
-        );
+        );*/
 
         ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
         verify(infusionDao, times(4)).insert(captorInfusion.capture());
         List<Infusion> infusions = captorInfusion.getAllValues();
-        assertThat(infusions).usingFieldByFieldElementComparator().containsExactly(
+        /*assertThat(infusions).usingFieldByFieldElementComparator().containsExactly(
                 new Infusion(0L, 0, "2:00", "5:00", 100, 212),
                 new Infusion(0L, 1, "5:00", "3:00", 90, 195),
                 new Infusion(1L, 0, "6:00", "5:00", 100, 212),
                 new Infusion(1L, 1, "7:00", "3:00", 90, 195)
-        );
+        );*/
 
         ArgumentCaptor<Counter> captorCounter = ArgumentCaptor.forClass(Counter.class);
         verify(counterDao, times(2)).insert(captorCounter.capture());
         List<Counter> counters = captorCounter.getAllValues();
-        assertThat(counters).usingFieldByFieldElementComparator().containsExactly(
+        /*assertThat(counters).usingFieldByFieldElementComparator().containsExactly(
                 new Counter(0L, 1, 2, 3, 4, getFixedDate(), getFixedDate(), getFixedDate()),
                 new Counter(1L, 5, 6, 7, 8, getFixedDate(), getFixedDate(), getFixedDate())
-        );
+        );*/
 
         ArgumentCaptor<Note> captorNote = ArgumentCaptor.forClass(Note.class);
         verify(noteDao, times(2)).insert(captorNote.capture());
         List<Note> notes = captorNote.getAllValues();
-        assertThat(notes).usingFieldByFieldElementComparator().containsExactly(
+        /*assertThat(notes).usingFieldByFieldElementComparator().containsExactly(
                 new Note(0L, 0, "Header", "Description"),
                 new Note(1L, 0, "Header", "Description")
         );*/
