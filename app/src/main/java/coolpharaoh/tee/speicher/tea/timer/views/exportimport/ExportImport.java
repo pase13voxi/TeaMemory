@@ -216,8 +216,8 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void showWarning() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            TextView warning = findViewById(R.id.textViewWarning);
-            warning.setVisibility(View.VISIBLE);
+            TextView textViewWarning = findViewById(R.id.textViewWarning);
+            textViewWarning.setVisibility(View.VISIBLE);
         }
     }
 
