@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Config(sdk = Build.VERSION_CODES.N_MR1)
 @RunWith(RobolectricTestRunner.class)
+@Ignore
 public class ExportImportSDK25Test {
     @Test
     public void launchActivityAndExpectWarning(){
