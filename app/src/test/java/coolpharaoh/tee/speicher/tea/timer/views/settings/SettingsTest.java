@@ -310,8 +310,7 @@ public class SettingsTest {
 
             AlertDialog alertDialog = getLatestAlertDialog();
 
-            Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-            accept.performClick();
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());

@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.showtea;
+/*package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -79,4 +79,4 @@ public class ShowTeaTest {
         });
     }
 }
-
+*/
