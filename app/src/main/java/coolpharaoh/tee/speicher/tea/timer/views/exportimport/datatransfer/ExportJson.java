@@ -19,25 +19,31 @@ import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.T
 
 public class ExportJson {
 
-    private final Application application;
-    private final Printer printer;
-    private final List<TeaPOJO> teaList;
-    private final String json;
+    private Application application;
+    private Printer printer;
 
     public ExportJson(Application application, Printer printer) {
         this.application = application;
         this.printer = printer;
+    }
+
+    public boolean write() {
+        String json = generateJson();
+        return writeFile(json);
+    }
+
+    private String generateJson() {
         DataTransferViewModel dataTransferViewModel = new DataTransferViewModel(application);
 
         DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(dataTransferViewModel.getTeaList(),
                 dataTransferViewModel.getInfusionList(), dataTransferViewModel.getCounterList(),
                 dataTransferViewModel.getNoteList());
 
-        teaList = databaseToPojo.createTeaList();
-        json = createJsonFromTeaList();
+        List<TeaPOJO> teaList = databaseToPojo.createTeaList();
+        return createJsonFromTeaList(teaList);
     }
 
-    public boolean write() {
+    private boolean writeFile(String json) {
         //Create Folder
         File folder = new File(Environment.getExternalStorageDirectory().toString() + application.getString(R.string.exportimport_export_folder_name));
         if (!folder.exists()) {
@@ -64,7 +70,7 @@ public class ExportJson {
         return true;
     }
 
-    private String createJsonFromTeaList() {
+    private String createJsonFromTeaList(List<TeaPOJO> teaList) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 
         return gson.toJson(teaList);

@@ -26,33 +26,29 @@ public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
     private static final String LOG_TAG = ImportJson.class.getSimpleName();
 
-    private final Application application;
-    private final Printer printer;
-    private final DataTransferViewModel dataTransferViewModel;
-    private final Uri fileUri;
+    private Application application;
+    private Printer printer;
 
     private String json;
 
-    public ImportJson(Uri fileUri, Application application, Printer printer) {
-        this.fileUri = fileUri;
+    public ImportJson(Application application, Printer printer) {
         this.application = application;
         this.printer = printer;
-        dataTransferViewModel = new DataTransferViewModel(application);
     }
 
-    public boolean read(boolean keepStoredTeas) {
-        json = readJsonFile();
+    public boolean read(Uri fileUri, boolean keepStoredTeas) {
+        json = readJsonFile(fileUri);
         List<TeaPOJO> teaList = createTeaListFromJson();
         if (teaList == null) {
             return false;
         }
-        POJOToDatabase pojoToDatabase = new POJOToDatabase(dataTransferViewModel);
+        POJOToDatabase pojoToDatabase = new POJOToDatabase(new DataTransferViewModel(application));
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
         printer.print(application.getString(R.string.exportimport_teas_imported));
         return true;
     }
 
-    private String readJsonFile() {
+    private String readJsonFile(Uri fileUri) {
         StringBuilder stringBuilder = new StringBuilder();
         try (InputStream inputStream =
                      application.getContentResolver().openInputStream(fileUri);

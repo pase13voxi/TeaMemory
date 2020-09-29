@@ -10,11 +10,6 @@ public class PermissionRequester {
 
     private static Permissions permissions = new Permissions();
 
-    @VisibleForTesting
-    public static void setMockedPermissions(Permissions mockedPermissions) {
-        permissions = mockedPermissions;
-    }
-
     public static boolean checkReadPermission(Activity activity) {
         return permissions.checkReadPermission(activity);
     }
@@ -39,5 +34,10 @@ public class PermissionRequester {
     public static void getWritePermission(Activity activity) {
         permissions.getWritePermission(activity);
 
+    }
+
+    @VisibleForTesting
+    public static void setMockedPermissions(Permissions mockedPermissions) {
+        permissions = mockedPermissions;
     }
 }

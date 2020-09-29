@@ -162,8 +162,8 @@ public class ImportJsonTest {
     @Test
     public void importTeasAndKeepStoredTeas() {
         Uri uri = Uri.EMPTY;
-        ImportJson importJson = new ImportJson(uri, application, System.out::println);
-        importJson.read(true);
+        ImportJson importJson = new ImportJson(application, System.out::println);
+        importJson.read(uri,true);
 
         verifyImportedTeas();
     }
@@ -171,8 +171,8 @@ public class ImportJsonTest {
     @Test
     public void importTeasAndDeleteStoredTeas() {
         Uri uri = Uri.EMPTY;
-        ImportJson importJson = new ImportJson(uri, application, System.out::println);
-        importJson.read(false);
+        ImportJson importJson = new ImportJson(application, System.out::println);
+        importJson.read(uri,false);
 
         verify(teaDao).deleteAll();
         verifyImportedTeas();

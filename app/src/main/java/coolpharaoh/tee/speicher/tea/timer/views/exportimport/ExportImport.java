@@ -21,8 +21,8 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ImportJson;
+import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.JsonIOAdapter;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
 
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
@@ -123,8 +123,8 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void exportJson() {
-        ExportJson exportJson = new ExportJson(getApplication(), this);
-        if (exportJson.write()) {
+        JsonIOAdapter.init(getApplication(), this);
+        if (JsonIOAdapter.write()) {
             dialogExportLocation();
         } else {
             dialogExportFailed();
@@ -188,8 +188,8 @@ public class ExportImport extends AppCompatActivity implements Printer {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
-            ImportJson importJson = new ImportJson(resultData.getData(), getApplication(), this);
-            if (importJson.read(keepStoredTeas)) {
+            JsonIOAdapter.init(getApplication(), this);
+            if (JsonIOAdapter.read(resultData.getData(), keepStoredTeas)) {
                 dialogImportComplete();
             } else {
                 dialogImportFailed();
