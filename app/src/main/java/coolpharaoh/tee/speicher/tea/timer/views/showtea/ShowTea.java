@@ -43,15 +43,9 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.timer.ForegroundTimer;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
-import lombok.AccessLevel;
-import lombok.Getter;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
-
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
-
-    @Getter(AccessLevel.PACKAGE)
-    private AlertDialog lastDialog;
 
     private TextView textViewInfusionIndex;
     private Button buttonNextInfusion;
@@ -193,7 +187,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void disableCompleteActivity() {
-        lastDialog = new NotExistingTeaDialog(this).show();
+        new NotExistingTeaDialog(this).show();
     }
 
     private void showTeaInformation(long teaId) {
