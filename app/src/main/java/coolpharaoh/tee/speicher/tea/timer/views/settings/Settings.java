@@ -27,9 +27,9 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST_CODE_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
 
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -152,7 +152,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void settingAlarm() {
-        if (!Permissions.checkReadPermission(this) && settingsViewModel.isSettingspermissionalert()) {
+        if (!PermissionRequester.checkReadPermission(this) && settingsViewModel.isSettingspermissionalert()) {
             readPermissionDialog();
         } else {
             createAlarmRequest();
@@ -178,7 +178,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         if (dontShowAgain.isChecked()) {
             settingsViewModel.setSettingsPermissionAlert(false);
         }
-        Permissions.getReadPermission(this);
+        PermissionRequester.getReadPermission(this);
     }
 
     @Override

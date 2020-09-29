@@ -6,8 +6,7 @@ import java.util.Date;
 
 public class CurrentDate {
 
-    private CurrentDate() {
-    }
+    private CurrentDate() { }
 
     private static DateUtility dateUtility = new DateUtility();
 

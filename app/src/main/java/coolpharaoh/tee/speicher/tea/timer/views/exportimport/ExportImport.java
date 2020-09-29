@@ -23,10 +23,10 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ImportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST_CODE_READ;
-import static coolpharaoh.tee.speicher.tea.timer.views.utils.Permissions.REQUEST_CODE_WRITE;
+import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
+import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_WRITE;
 
 public class ExportImport extends AppCompatActivity implements Printer {
     private boolean keepStoredTeas = true;
@@ -62,11 +62,11 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
 
     private void checkPermissionsBeforeExport() {
-        if (!Permissions.checkWritePermission(this)) {
-            if (Permissions.checkWritePermissionDeniedBefore(this)) {
+        if (!PermissionRequester.checkWritePermission(this)) {
+            if (PermissionRequester.checkWritePermissionDeniedBefore(this)) {
                 dialogAfterWritePermissionDenied();
             } else {
-                Permissions.getWritePermission(this);
+                PermissionRequester.getWritePermission(this);
             }
         } else {
             exportJson();
@@ -77,16 +77,16 @@ public class ExportImport extends AppCompatActivity implements Printer {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.exportimport_write_permission_dialog_header);
         builder.setMessage(R.string.exportimport_write_permission_dialog_description);
-        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getWritePermission(this));
+        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> PermissionRequester.getWritePermission(this));
         builder.show();
     }
 
     private void checkPermissionsBeforeImport() {
-        if (!Permissions.checkReadPermission(this)) {
-            if (Permissions.checkReadPermissionDeniedBefore(this)) {
+        if (!PermissionRequester.checkReadPermission(this)) {
+            if (PermissionRequester.checkReadPermissionDeniedBefore(this)) {
                 dialogAfterReadPermissionDenied();
             } else {
-                Permissions.getReadPermission(this);
+                PermissionRequester.getReadPermission(this);
             }
         } else {
             dialogImport();
@@ -97,7 +97,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.exportimport_read_permission_dialog_header);
         builder.setMessage(R.string.exportimport_read_permission_dialog_description);
-        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> Permissions.getReadPermission(this));
+        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> PermissionRequester.getReadPermission(this));
         builder.show();
     }
 
