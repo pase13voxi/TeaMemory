@@ -1,15 +1,14 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +16,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowDialog;
+import org.robolectric.shadows.ShadowAlertDialog;
 
+import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
@@ -31,6 +32,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
 //could be removed when Robolectric supports Java 8 for API 29
@@ -53,11 +55,6 @@ public class ShowTeaTest {
     @Mock
     ActualSettingsDao actualSettingsDao;
 
-    @Before
-    public void setUp() {
-        mockDB();
-    }
-
     private void mockDB() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
@@ -71,9 +68,11 @@ public class ShowTeaTest {
     public void launchActivityWithNoTeaIdAndExpectFailingDialog() {
         ActivityScenario<ShowTea> newTeaActivityScenario = ActivityScenario.launch(ShowTea.class);
         newTeaActivityScenario.onActivity(showTea -> {
-            AlertDialog dialogFail = showTea.getLastDialog();
-            ShadowDialog shadowDialogFail = shadowOf(dialogFail);
+            AlertDialog dialogFail = getLatestAlertDialog();
+            ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowDialogFail).isNotNull();
+            assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_header));
+            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_description));
 
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
@@ -86,14 +85,17 @@ public class ShowTeaTest {
 
     @Test
     public void launchActivityWithNotExistingTeaIdExpectFailingDialog() {
+        mockDB();
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra("teaId", 1l);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            AlertDialog dialogFail = showTea.getLastDialog();
-            ShadowDialog shadowDialogFail = shadowOf(dialogFail);
+            AlertDialog dialogFail = getLatestAlertDialog();
+            ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowDialogFail).isNotNull();
+            assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_header));
+            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_description));
 
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 

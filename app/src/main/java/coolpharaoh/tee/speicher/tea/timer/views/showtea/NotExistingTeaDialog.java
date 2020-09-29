@@ -1,9 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
-
-import androidx.appcompat.app.AlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
