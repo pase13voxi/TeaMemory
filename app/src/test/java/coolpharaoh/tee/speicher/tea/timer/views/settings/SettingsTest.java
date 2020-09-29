@@ -275,9 +275,9 @@ public class SettingsTest {
 
             AlertDialog alertDialog = getLatestAlertDialog();
 
-            CheckBox checkBoxRating = (CheckBox) alertDialog.findViewById(R.id.checkboxDialogSettingsRating);
-            CheckBox checkBoxDescription = (CheckBox) alertDialog.findViewById(R.id.checkboxDialogSettingsDescription);
-            CheckBox checkBoxPermission = (CheckBox) alertDialog.findViewById(R.id.checkboxDialogSettingsPermission);
+            CheckBox checkBoxRating = alertDialog.findViewById(R.id.checkboxDialogSettingsRating);
+            CheckBox checkBoxDescription = alertDialog.findViewById(R.id.checkboxDialogSettingsDescription);
+            CheckBox checkBoxPermission = alertDialog.findViewById(R.id.checkboxDialogSettingsPermission);
 
             assertThat(checkBoxRating.isChecked()).isFalse();
             assertThat(checkBoxDescription.isChecked()).isFalse();
