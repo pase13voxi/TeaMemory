@@ -18,7 +18,7 @@
         android:text="Large Text"
         android:textSize="35sp"
         android:maxLines="2"
-        android:id="@+id/textViewShowName"
+        android:id="@+id/textViewName"
         android:layout_below="@id/tool_bar"
         android:layout_marginTop="30dip"
         android:layout_centerHorizontal="true"
@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/textViewShowTeesorte"
-        android:layout_below="@+id/textViewShowName"
+        android:id="@+id/textViewVariety"
+        android:layout_below="@+id/textViewName"
         android:layout_marginTop="10dip"
         android:layout_centerHorizontal="true"
         android:background="#ffffff" />
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerMinutes"
-        android:layout_toStartOf="@+id/textViewDoppelPunkt"
+        android:layout_toStartOf="@+id/textViewDoublePoint"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="90dip"
         style="@style/spinner_style"/>
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerSeconds"
-        android:layout_toEndOf="@+id/textViewDoppelPunkt"
+        android:layout_toEndOf="@+id/textViewDoublePoint"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="90dip"
         style="@style/spinner_style"/>
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/showtea_double_point"
-        android:id="@+id/textViewDoppelPunkt"
+        android:id="@+id/textViewDoublePoint"
         android:layout_centerHorizontal="true"
         android:textSize="30sp"
         android:background="#ffffff"
@@ -84,14 +84,14 @@
         android:background="@drawable/button_temperatureexchange"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="55dip"
-        android:layout_toStartOf="@+id/textViewShowTemperatur"
+        android:layout_toStartOf="@+id/textViewTemperature"
         android:enabled="false"/>
 
     <TextView
         android:layout_width="70dip"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewShowTemperatur"
+        android:id="@+id/textViewTemperature"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="65dip"
         android:layout_alignParentEnd="true"
@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewShowTeelamass"
+        android:id="@+id/textViewAmount"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="15dip"
         android:layout_toEndOf="@+id/buttonCalculateAmount" />
@@ -146,10 +146,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
          android:textColor="@color/textAppearanceGrey"
         android:text="@string/showtea_display_min"
-        android:id="@+id/textViewMin"
+        android:id="@+id/textViewMinutes"
         android:layout_above="@id/buttonStartTimer"
         android:layout_marginBottom="40dip"
-        android:layout_toStartOf="@+id/textViewDoppelPunkt"
+        android:layout_toStartOf="@+id/textViewDoublePoint"
         android:layout_alignStart="@id/spinnerMinutes"/>
 
      <TextView
@@ -158,10 +158,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
          android:textColor="@color/textAppearanceGrey"
         android:text="@string/showtea_display_sec"
-        android:id="@+id/textViewSec"
+        android:id="@+id/textViewSeconds"
         android:layout_above="@+id/buttonStartTimer"
         android:layout_marginBottom="40dip"
-        android:layout_toEndOf="@+id/textViewDoppelPunkt" />
+        android:layout_toEndOf="@+id/textViewDoublePoint" />
 
     <TextView
         android:layout_width="wrap_content"

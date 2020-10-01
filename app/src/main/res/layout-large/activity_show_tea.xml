@@ -18,7 +18,7 @@
         android:text="Large Text"
         android:textSize="45sp"
         android:maxLines="2"
-        android:id="@+id/textViewShowName"
+        android:id="@+id/textViewName"
         android:layout_below="@id/tool_bar"
         android:layout_marginTop="30dip"
         android:layout_centerHorizontal="true"
@@ -31,8 +31,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:textSize="30sp"
-        android:id="@+id/textViewShowTeesorte"
-        android:layout_below="@+id/textViewShowName"
+        android:id="@+id/textViewVariety"
+        android:layout_below="@+id/textViewName"
         android:layout_marginTop="10dip"
         android:layout_centerHorizontal="true"
         android:background="#ffffff" />
@@ -43,7 +43,7 @@
         android:id="@+id/spinnerMinutes"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="115dip"
-        android:layout_toStartOf="@+id/textViewDoppelPunkt"
+        android:layout_toStartOf="@+id/textViewDoublePoint"
         style="@style/spinner_style"/>
 
     <Spinner
@@ -52,7 +52,7 @@
         android:id="@+id/spinnerSeconds"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="115dip"
-        android:layout_toEndOf="@+id/textViewDoppelPunkt"
+        android:layout_toEndOf="@+id/textViewDoublePoint"
         style="@style/spinner_style"/>
 
     <TextView
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/showtea_double_point"
-        android:id="@+id/textViewDoppelPunkt"
+        android:id="@+id/textViewDoublePoint"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="120dip"
         android:layout_centerHorizontal="true"
@@ -85,7 +85,7 @@
         android:background="@drawable/button_temperatureexchange"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="85dip"
-        android:layout_toStartOf="@+id/textViewShowTemperatur"
+        android:layout_toStartOf="@+id/textViewTemperature"
         android:enabled="false"/>
 
     <TextView
@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"
-        android:id="@+id/textViewShowTemperatur"
+        android:id="@+id/textViewTemperature"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="90dip"
         android:layout_alignParentEnd="true"
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"
-        android:id="@+id/textViewShowTeelamass"
+        android:id="@+id/textViewAmount"
         android:layout_above="@id/spinnerSeconds"
         android:layout_marginBottom="30dp"
         android:layout_toEndOf="@+id/buttonCalculateAmount" />
@@ -147,10 +147,10 @@
       android:layout_height="wrap_content"
       android:textAppearance="?android:attr/textAppearanceMedium"
       android:text="@string/showtea_display_min"
-      android:id="@+id/textViewMin"
+      android:id="@+id/textViewMinutes"
       android:layout_above="@id/buttonStartTimer"
       android:layout_marginBottom="50dip"
-      android:layout_toStartOf="@+id/textViewDoppelPunkt"
+      android:layout_toStartOf="@+id/textViewDoublePoint"
       android:layout_alignStart="@id/spinnerMinutes"/>
 
     <TextView
@@ -158,10 +158,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/showtea_display_sec"
-        android:id="@+id/textViewSec"
+        android:id="@+id/textViewSeconds"
         android:layout_above="@id/buttonStartTimer"
         android:layout_marginBottom="50dip"
-        android:layout_toEndOf="@+id/textViewDoppelPunkt" />
+        android:layout_toEndOf="@+id/textViewDoublePoint" />
 
     <TextView
         android:layout_width="wrap_content"

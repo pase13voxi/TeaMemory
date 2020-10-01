@@ -60,14 +60,14 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private ImageView imageViewSteam;
     private Button buttonStartTimer;
     private ImageView imageViewCup;
-    private TextView textViewDoppelPunkt;
-    private TextView textViewSec;
-    private TextView textViewMin;
+    private TextView textViewDoublePoint;
+    private TextView textViewSeconds;
+    private TextView textViewMinutes;
     private Button buttonInfusionIndex;
     private TextView textViewName;
-    private TextView textViewSortOfTea;
-    private TextView textViewTeelamass;
-    private Button buttonCalcAmount;
+    private TextView textViewVariety;
+    private TextView textViewAmount;
+    private Button buttonCalculateAmount;
 
     private ShowTeaViewModel showTeaViewModel;
     private boolean infoShown = false;
@@ -115,8 +115,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         buttonInfo.setOnClickListener(v -> showDialogCoolingPeriod());
 
-        buttonCalcAmount.setOnClickListener(view -> showDialogAmount());
-        buttonCalcAmount.setOnLongClickListener(this);
+        buttonCalculateAmount.setOnClickListener(view -> showDialogAmount());
+        buttonCalculateAmount.setOnLongClickListener(this);
 
         buttonNote.setOnClickListener(view -> showDialogNote());
         buttonNote.setOnLongClickListener(this);
@@ -141,19 +141,19 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonInfusionIndex = findViewById(R.id.toolbar_infusionindex);
         textViewInfusionIndex = findViewById(R.id.toolbar_text_infusionindex);
         buttonNextInfusion = findViewById(R.id.toolbar_nextinfusion);
-        textViewName = findViewById(R.id.textViewShowName);
-        textViewSortOfTea = findViewById(R.id.textViewShowTeesorte);
+        textViewName = findViewById(R.id.textViewName);
+        textViewVariety = findViewById(R.id.textViewVariety);
         buttonNote = findViewById(R.id.buttonNote);
-        textViewTemperature = findViewById(R.id.textViewShowTemperatur);
+        textViewTemperature = findViewById(R.id.textViewTemperature);
         buttonInfo = findViewById(R.id.buttonInfo);
         buttonExchange = findViewById(R.id.buttonExchange);
-        textViewTeelamass = findViewById(R.id.textViewShowTeelamass);
-        buttonCalcAmount = findViewById(R.id.buttonCalculateAmount);
+        textViewAmount = findViewById(R.id.textViewAmount);
+        buttonCalculateAmount = findViewById(R.id.buttonCalculateAmount);
         spinnerMinutes = findViewById(R.id.spinnerMinutes);
         spinnerSeconds = findViewById(R.id.spinnerSeconds);
-        textViewMin = findViewById(R.id.textViewMin);
-        textViewSec = findViewById(R.id.textViewSec);
-        textViewDoppelPunkt = findViewById(R.id.textViewDoppelPunkt);
+        textViewMinutes = findViewById(R.id.textViewMinutes);
+        textViewSeconds = findViewById(R.id.textViewSeconds);
+        textViewDoublePoint = findViewById(R.id.textViewDoublePoint);
         textViewTimer = findViewById(R.id.textViewTimer);
         imageViewCup = findViewById(R.id.imageViewCup);
         imageViewFill = findViewById(R.id.imageViewFill);
@@ -163,8 +163,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void setFieldsTransparent() {
         int alpha = 130;
         textViewName.getBackground().setAlpha(alpha);
-        textViewSortOfTea.getBackground().setAlpha(alpha);
-        textViewDoppelPunkt.getBackground().setAlpha(alpha);
+        textViewVariety.getBackground().setAlpha(alpha);
+        textViewDoublePoint.getBackground().setAlpha(alpha);
         textViewTimer.getBackground().setAlpha(alpha);
     }
 
@@ -213,7 +213,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void fillInformationFields() {
         textViewName.setText(showTeaViewModel.getName());
-        textViewSortOfTea.setText(showTeaViewModel.getVariety());
+        textViewVariety.setText(showTeaViewModel.getVariety());
 
         fillTemperatureWithUnit();
 
@@ -242,16 +242,16 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void fillAmountWithUnit() {
         if (showTeaViewModel.getAmount() != -500) {
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
+                textViewAmount.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
             } else {
-                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
+                textViewAmount.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
             }
         } else {
-            buttonCalcAmount.setEnabled(false);
+            buttonCalculateAmount.setEnabled(false);
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_gr, "-"));
+                textViewAmount.setText(getResources().getString(R.string.showtea_display_gr, "-"));
             } else {
-                textViewTeelamass.setText(getResources().getString(R.string.showtea_display_ts, "-"));
+                textViewAmount.setText(getResources().getString(R.string.showtea_display_ts, "-"));
             }
         }
     }
@@ -404,9 +404,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void setVisibilityTimeInput(int visibility) {
         spinnerMinutes.setVisibility(visibility);
         spinnerSeconds.setVisibility(visibility);
-        textViewMin.setVisibility(visibility);
-        textViewSec.setVisibility(visibility);
-        textViewDoppelPunkt.setVisibility(visibility);
+        textViewMinutes.setVisibility(visibility);
+        textViewSeconds.setVisibility(visibility);
+        textViewDoublePoint.setVisibility(visibility);
     }
 
     private void visualizeTeaCup() {
