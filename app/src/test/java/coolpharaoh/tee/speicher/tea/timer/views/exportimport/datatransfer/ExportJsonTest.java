@@ -164,14 +164,13 @@ public class ExportJsonTest {
         exportJson.write();
 
         File folder = new File(Environment.getExternalStorageDirectory().toString() + "/TeaMemory");
-        assertThat(folder.exists()).isTrue();
+        assertThat(folder).exists();
 
         File[] listOfFiles = folder.listFiles();
         assertThat(listOfFiles).hasSize(1);
-        assertThat(listOfFiles[0].getName()).isEqualTo("tealist.json");
+        assertThat(listOfFiles[0]).hasName("tealist.json");
 
         String content = new String(Files.readAllBytes(listOfFiles[0].toPath()));
-        System.out.println(content);
         assertThat(content).isEqualTo(DB_JSON_DUMP.replace("DATE", exportedDate));
     }
 }
