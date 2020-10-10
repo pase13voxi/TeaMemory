@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.sonarqube'
-apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 29
@@ -23,7 +22,7 @@ android {
         }
         debug {
             debuggable true
-            testCoverageEnabled false
+            testCoverageEnabled true
         }
     }
     compileOptions {
