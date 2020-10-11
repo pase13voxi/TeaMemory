@@ -1,0 +1,45 @@
+apply plugin: 'jacoco'
+
+ext {
+    coverageSourceDirs = 'src/test/java'
+}
+
+jacoco {
+    toolVersion = '0.8.3'
+    reportsDir = file("$buildDir/reports")
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest"){
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports for Debug build"
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def excludes = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/build/generated/**',
+            '**/*$ViewBinder*.*',
+            '**/*InjectAdapter*.*',
+            '**/*Injector*.*',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            '**/CiMattersApplication*.*',
+            'android/**/*.*'
+    ]
+
+    def debugTre = fileTree(
+            dir: "$buildDir/intermediates/javac/debug/classes",
+            excludes: excludes
+    )
+
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    classDirectories.from = files([debugTre])
+    executionData.from = files("$buildDir/jacoco/testDebugUnitTest.exec")
+    sourceDirectories.from = files([mainSrc])
+}
