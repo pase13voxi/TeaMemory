@@ -39,9 +39,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest"){
 
     def mainSrc = "${project.projectDir}/src/main/java"
 
-    println "classDir $debugTre"
-    println "sourceDir $mainSrc"
-
     classDirectories.from = files([debugTre])
     executionData.from = files("$buildDir/jacoco/testDebugUnitTest.exec")
     sourceDirectories.from = files([mainSrc])
