@@ -39,7 +39,7 @@ android {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }
         }
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        //execution 'ANDROIDX_TEST_ORCHESTRATOR' only need if the database needs to be cleaned
     }
 }
 
