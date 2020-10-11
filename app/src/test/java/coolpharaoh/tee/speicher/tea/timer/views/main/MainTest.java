@@ -265,7 +265,6 @@ public class MainTest {
     @Ignore
     @Test
     public void editTeaExpectNewTeaActivity() {
-        int positionTea = 1;
         mockActualSettings(0, false, 0);
         String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
@@ -282,7 +281,6 @@ public class MainTest {
     @Ignore
     @Test
     public void deleteTeaExpectDeletion() {
-        int positionTea = 1;
         mockActualSettings(0, false, 0);
         String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));

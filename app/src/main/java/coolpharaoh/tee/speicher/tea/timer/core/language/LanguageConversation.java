@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.core.language;
 
 import android.app.Application;
-import android.content.Context;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 

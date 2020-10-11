@@ -2,18 +2,12 @@ package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
 import android.app.Application;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Build;
-
-import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 

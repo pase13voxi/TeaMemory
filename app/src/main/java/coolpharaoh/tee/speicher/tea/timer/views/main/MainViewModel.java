@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.main;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 class BackgroundTimer {
-    private final int REQUEST_CODE = 4356;
+    private static final int REQUEST_CODE = 4356;
 
     private final Context context;
     private final SharedTimerPreferences sharedPreferences;

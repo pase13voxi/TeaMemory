@@ -109,7 +109,7 @@ public class TeaDaoTest {
 
     @Test
     public void getTeasOrderByActivity() {
-        Tea teaOld = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
+        Tea teaOld = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
         teaDao.insert(teaOld);
         Tea teaMiddle = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
         teaDao.insert(teaMiddle);
@@ -144,7 +144,7 @@ public class TeaDaoTest {
 
     @Test
     public void getTeaById(){
-        Tea teaBefore1 = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 36).getTime());
+        Tea teaBefore1 = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
         long teaId1 = teaDao.insert(teaBefore1);
 
         Tea teaBefore2 = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());

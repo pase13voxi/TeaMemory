@@ -1,8 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
 import android.app.Application;
-import android.content.Context;
-import android.graphics.Color;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 

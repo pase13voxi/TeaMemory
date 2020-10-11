@@ -1,22 +1,16 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.app.Application;
-import android.content.Context;
-import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
