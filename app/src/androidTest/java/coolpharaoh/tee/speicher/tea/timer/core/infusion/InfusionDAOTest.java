@@ -23,6 +23,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class InfusionDAOTest {
+    public static final String TIME = "03:00";
+    public static final String COOLDOWN_TIME = "10:00";
     private InfusionDao mInfusionDAO;
     private TeaDao mTeaDAO;
     private TeaMemoryDatabase db;
@@ -42,11 +44,11 @@ public class InfusionDAOTest {
 
     @Test
     public void insertInfusion(){
-        assertThat(mInfusionDAO.getInfusions()).hasSize(0);
+        assertThat(mInfusionDAO.getInfusions()).isEmpty();
 
         long teaId = mTeaDAO.insert(createTea());
 
-        Infusion infusionBefore = new Infusion(teaId, 1, "03:00", "10:00", 70, 158);
+        Infusion infusionBefore = new Infusion(teaId, 1, TIME, COOLDOWN_TIME, 70, 158);
         mInfusionDAO.insert(infusionBefore);
 
         assertThat(mInfusionDAO.getInfusions()).hasSize(1);
@@ -57,13 +59,13 @@ public class InfusionDAOTest {
 
     @Test
     public void getInfusionsByTeaId(){
-        assertThat(mInfusionDAO.getInfusions()).hasSize(0);
+        assertThat(mInfusionDAO.getInfusions()).isEmpty();
 
         long teaId1 = mTeaDAO.insert(createTea());
 
         List<Infusion> infusionBefore1 = new ArrayList<>();
-        infusionBefore1.add(new Infusion(teaId1, 1, "03:00", "10:00", 70, 158));
-        infusionBefore1.add(new Infusion(teaId1, 2, "02:00", "8:00", 80, 176));
+        infusionBefore1.add(new Infusion(teaId1, 1, TIME, COOLDOWN_TIME, 70, 158));
+        infusionBefore1.add(new Infusion(teaId1, 2, TIME, COOLDOWN_TIME, 80, 176));
 
         mInfusionDAO.insert(infusionBefore1.get(0));
         mInfusionDAO.insert(infusionBefore1.get(1));
@@ -72,7 +74,7 @@ public class InfusionDAOTest {
 
         long teaId2 = mTeaDAO.insert(createTea());
 
-        Infusion infusionBefore2 = new Infusion(teaId2, 4, "07:00", "5:00", 100, 212);
+        Infusion infusionBefore2 = new Infusion(teaId2, 4, TIME, COOLDOWN_TIME, 100, 212);
         mInfusionDAO.insert(infusionBefore2);
 
         assertThat(mInfusionDAO.getInfusions()).hasSize(3);
@@ -92,13 +94,13 @@ public class InfusionDAOTest {
 
     @Test
     public void deleteInfusionsByTeaId(){
-        assertThat(mInfusionDAO.getInfusions()).hasSize(0);
+        assertThat(mInfusionDAO.getInfusions()).isEmpty();
 
         long teaId1 = mTeaDAO.insert(createTea());
 
         List<Infusion> infusionBefore1 = new ArrayList<>();
-        infusionBefore1.add(new Infusion(teaId1, 1, "03:00", "10:00", 70, 158));
-        infusionBefore1.add(new Infusion(teaId1, 2, "02:00", "8:00", 80, 176));
+        infusionBefore1.add(new Infusion(teaId1, 1, TIME, COOLDOWN_TIME, 70, 158));
+        infusionBefore1.add(new Infusion(teaId1, 2, TIME, COOLDOWN_TIME, 80, 176));
 
         mInfusionDAO.insert(infusionBefore1.get(0));
         mInfusionDAO.insert(infusionBefore1.get(1));
@@ -107,7 +109,7 @@ public class InfusionDAOTest {
 
         long teaId2 = mTeaDAO.insert(createTea());
 
-        Infusion infusionBefore2 = new Infusion(teaId2, 4, "07:00", "5:00", 100, 212);
+        Infusion infusionBefore2 = new Infusion(teaId2, 4, TIME, COOLDOWN_TIME, 100, 212);
         mInfusionDAO.insert(infusionBefore2);
 
         assertThat(mInfusionDAO.getInfusions()).hasSize(3);
