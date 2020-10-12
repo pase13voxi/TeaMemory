@@ -90,7 +90,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //the method needs to be overwritten but shouldn't do anything
             }
         });
 
@@ -107,7 +107,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                //the method needs to be overwritten but shouldn't do anything
             }
         });
 
@@ -433,12 +433,14 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_tea, menu);
 
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
