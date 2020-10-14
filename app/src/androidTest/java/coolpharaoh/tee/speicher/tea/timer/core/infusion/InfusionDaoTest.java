@@ -83,15 +83,6 @@ public class InfusionDaoTest {
         assertThat(infusionAfter2.get(0)).isEqualToIgnoringGivenFields(infusionBefore2.get(0), "id");
     }
 
-    private List<Infusion> insertInfusions(long teaId1, int count) {
-        List<Infusion> infusionBefore1 = new ArrayList<>();
-        for(int i=0; i<count; i++){
-            infusionBefore1.add(new Infusion(teaId1, i+1, "03:00", "10:00", 70, 158));
-            mInfusionDAO.insert(infusionBefore1.get(i));
-        }
-        return infusionBefore1;
-    }
-
     @Test
     public void deleteInfusionsByTeaId(){
         assertThat(mInfusionDAO.getInfusions()).isEmpty();
@@ -119,5 +110,14 @@ public class InfusionDaoTest {
 
     private long insertTea() {
         return mTeaDAO.insert(new Tea("name", "variety", 3, "ts", 15, 0, CurrentDate.getDate()));
+    }
+
+    private List<Infusion> insertInfusions(long teaId1, int count) {
+        List<Infusion> infusionBefore1 = new ArrayList<>();
+        for(int i=0; i<count; i++){
+            infusionBefore1.add(new Infusion(teaId1, i+1, "03:00", "10:00", 70, 158));
+            mInfusionDAO.insert(infusionBefore1.get(i));
+        }
+        return infusionBefore1;
     }
 }
