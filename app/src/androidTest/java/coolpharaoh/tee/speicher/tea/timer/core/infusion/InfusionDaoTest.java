@@ -23,11 +23,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class InfusionDaoTest {
-    public static final String TIME = "03:00";
-    public static final String COOLDOWN_TIME = "10:00";
-    public static final int TEMPERATURE_CELSIUS = 70;
-    public static final int TEMPERATURE_FAHRENHEIT = 158;
-
     private InfusionDao mInfusionDAO;
     private TeaDao mTeaDAO;
     private TeaMemoryDatabase db;
@@ -91,7 +86,7 @@ public class InfusionDaoTest {
     private List<Infusion> insertInfusions(long teaId1, int count) {
         List<Infusion> infusionBefore1 = new ArrayList<>();
         for(int i=0; i<count; i++){
-            infusionBefore1.add(new Infusion(teaId1, i+1, TIME, COOLDOWN_TIME, TEMPERATURE_CELSIUS, TEMPERATURE_FAHRENHEIT));
+            infusionBefore1.add(new Infusion(teaId1, i+1, "03:00", "10:00", 70, 158));
             mInfusionDAO.insert(infusionBefore1.get(i));
         }
         return infusionBefore1;
