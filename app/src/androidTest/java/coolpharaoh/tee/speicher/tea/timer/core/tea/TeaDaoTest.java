@@ -24,6 +24,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class TeaDaoTest {
+    private static final String VARIETY = "variety";
+
     private TeaDao teaDao;
     private TeaMemoryDatabase db;
 
@@ -41,7 +43,7 @@ public class TeaDaoTest {
 
     @Test
     public void insertTea(){
-        assertThat(teaDao.getTeas()).hasSize(0);
+        assertThat(teaDao.getTeas()).isEmpty();
 
         Tea teaBefore = createTea("name", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore);
@@ -54,7 +56,7 @@ public class TeaDaoTest {
 
     @Test
     public void updateTea(){
-        assertThat(teaDao.getTeas()).hasSize(0);
+        assertThat(teaDao.getTeas()).isEmpty();
 
         Tea teaBefore = createTea("name", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore);
@@ -72,12 +74,12 @@ public class TeaDaoTest {
 
     @Test
     public void deleteTea(){
-        assertThat(teaDao.getTeas()).hasSize(0);
+        assertThat(teaDao.getTeas()).isEmpty();
 
-        Tea teaBefore1 = createTea("name1", "variety1", CurrentDate.getDate());
+        Tea teaBefore1 = createTea("name1", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("name2", "variety2", CurrentDate.getDate());
+        Tea teaBefore2 = createTea("name2", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore2);
 
         assertThat(teaDao.getTeas()).hasSize(2);
@@ -92,28 +94,28 @@ public class TeaDaoTest {
 
     @Test
     public void deleteAllTeas(){
-        assertThat(teaDao.getTeas()).hasSize(0);
+        assertThat(teaDao.getTeas()).isEmpty();
 
-        Tea teaBefore1 = createTea("name1", "variety1", CurrentDate.getDate());
+        Tea teaBefore1 = createTea("name1", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("name2", "variety2", CurrentDate.getDate());
+        Tea teaBefore2 = createTea("name2", "variety", CurrentDate.getDate());
         teaDao.insert(teaBefore2);
 
         assertThat(teaDao.getTeas()).hasSize(2);
 
         teaDao.deleteAll();
 
-        assertThat(teaDao.getTeas()).hasSize(0);
+        assertThat(teaDao.getTeas()).isEmpty();
     }
 
     @Test
     public void getTeasOrderByActivity() {
-        Tea teaOld = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
+        Tea teaOld = createTea("nameOld", "variety", new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
         teaDao.insert(teaOld);
-        Tea teaMiddle = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
+        Tea teaMiddle = createTea("nameMiddle", "variety", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
         teaDao.insert(teaMiddle);
-        Tea teaNew = createTea("nameNew", "varietyNew", new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
+        Tea teaNew = createTea("nameNew", "variety", new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
         teaDao.insert(teaNew);
 
         List<Tea> teaList = teaDao.getTeasOrderByActivity();
@@ -144,10 +146,10 @@ public class TeaDaoTest {
 
     @Test
     public void getTeaById(){
-        Tea teaBefore1 = createTea("nameOld", "varietyOld", new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
+        Tea teaBefore1 = createTea("nameOld", "variety", new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
         long teaId1 = teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("nameMiddle", "varietyMiddle", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
+        Tea teaBefore2 = createTea("nameMiddle", "variety", new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
         long teaId2 = teaDao.insert(teaBefore2);
 
         Tea teaAfter1 = teaDao.getTeaById(teaId1);
@@ -229,7 +231,7 @@ public class TeaDaoTest {
 
     @Test
     public void getTeasBySearchString() {
-        Tea teaA = createTea("A", "variety", CurrentDate.getDate());
+        Tea teaA = createTea("A", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaA);
         Tea teaC = createTea("nameC", "variety", CurrentDate.getDate());
         teaDao.insert(teaC);
