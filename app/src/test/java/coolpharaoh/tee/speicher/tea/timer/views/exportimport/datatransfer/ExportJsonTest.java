@@ -40,6 +40,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+// ignore this rule because it is a unit test
+@SuppressWarnings("java:S5803")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Environment.class)
 public class ExportJsonTest {

@@ -32,6 +32,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+// ignore this rule because it is a unit test
+@SuppressWarnings("java:S5803")
 @RunWith(MockitoJUnitRunner.class)
 public class ImportJsonTest {
     private static final String DB_JSON_DUMP = "[\n" +

@@ -53,6 +53,8 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
+// ignore this rule because it is a unit test
+@SuppressWarnings("java:S5803")
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -288,7 +290,7 @@ public class NewTeaTest {
 
             buttonAutofillCoolDownTime.performClick();
 
-            assertThat(editTextCoolDownTime.getText().toString()).isEqualTo("");
+            assertThat(editTextCoolDownTime.getText().toString()).isEmpty();
 
             buttonAddInfusion.performClick();
 
@@ -354,18 +356,18 @@ public class NewTeaTest {
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
 
             assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(1);
-            assertThat(editTextName.getText().toString()).isEqualTo(tea.getName());
-            assertThat(spinnerAmountKind.getSelectedItemPosition()).isEqualTo(0);
-            assertThat(editTextAmount.getText().toString()).isEqualTo(String.valueOf(tea.getAmount()));
-            assertThat(editTextTemperature.getText().toString()).isEqualTo(String.valueOf(infusions.get(0).getTemperatureFahrenheit()));
-            assertThat(editTextTime.getText().toString()).isEqualTo(infusions.get(0).getTime());
-            assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(infusions.get(0).getCoolDownTime());
+            assertThat(editTextName.getText()).hasToString(tea.getName());
+            assertThat(spinnerAmountKind.getSelectedItemPosition()).isZero();
+            assertThat(editTextAmount.getText()).hasToString(String.valueOf(tea.getAmount()));
+            assertThat(editTextTemperature.getText()).hasToString(String.valueOf(infusions.get(0).getTemperatureFahrenheit()));
+            assertThat(editTextTime.getText()).hasToString(infusions.get(0).getTime());
+            assertThat(editTextCoolDownTime.getText()).hasToString(infusions.get(0).getCoolDownTime());
 
             buttonRight.performClick();
 
-            assertThat(editTextTemperature.getText().toString()).isEqualTo(String.valueOf(infusions.get(1).getTemperatureFahrenheit()));
-            assertThat(editTextTime.getText().toString()).isEqualTo(infusions.get(1).getTime());
-            assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(infusions.get(1).getCoolDownTime());
+            assertThat(editTextTemperature.getText()).hasToString(String.valueOf(infusions.get(1).getTemperatureFahrenheit()));
+            assertThat(editTextTime.getText()).hasToString(infusions.get(1).getTime());
+            assertThat(editTextCoolDownTime.getText()).hasToString(infusions.get(1).getCoolDownTime());
 
             newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
 
@@ -410,8 +412,8 @@ public class NewTeaTest {
             EditText editTextSelfInput = newTea.findViewById(R.id.editTextSelfInput);
 
             assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(9);
-            assertThat(checkBoxSelfInput.isChecked()).isEqualTo(true);
-            assertThat(editTextSelfInput.getText().toString()).isEqualTo("OtherTea");
+            assertThat(checkBoxSelfInput.isChecked()).isTrue();
+            assertThat(editTextSelfInput.getText()).hasToString("OtherTea");
         });
     }
 
@@ -466,8 +468,8 @@ public class NewTeaTest {
     private void checkInfusion(EditText editTextTemperature, EditText editTextTime,
                                EditText editTextCoolDownTime, String temperature,
                                String time, String coolDowntime) {
-        assertThat(editTextTemperature.getText().toString()).isEqualTo(temperature);
-        assertThat(editTextTime.getText().toString()).isEqualTo(time);
-        assertThat(editTextCoolDownTime.getText().toString()).isEqualTo(coolDowntime);
+        assertThat(editTextTemperature.getText()).hasToString(temperature);
+        assertThat(editTextTime.getText()).hasToString(time);
+        assertThat(editTextCoolDownTime.getText()).hasToString(coolDowntime);
     }
 }

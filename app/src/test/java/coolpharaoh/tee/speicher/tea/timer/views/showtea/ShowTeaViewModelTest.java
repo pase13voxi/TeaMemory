@@ -39,7 +39,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-
+// ignore this rule because it is a unit test
+@SuppressWarnings("java:S5803")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class ShowTeaViewModelTest {
@@ -275,7 +276,7 @@ public class ShowTeaViewModelTest {
         verify(teaRepository).updateTea((captor.capture()));
         Tea lastInfusionAfter = captor.getValue();
 
-        assertThat(lastInfusionAfter.getNextInfusion()).isEqualTo(0);
+        assertThat(lastInfusionAfter.getNextInfusion()).isZero();
     }
 
     @Test
@@ -294,7 +295,7 @@ public class ShowTeaViewModelTest {
         when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
 
         assertThat(showTeaViewModel.getInfusionSize()).isEqualTo(infusions.size());
-        assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(0);
+        assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 
         TimeHelper time1 = showTeaViewModel.getTime();
         TimeHelper cooldownTime1 = showTeaViewModel.getCoolDownTime();
@@ -302,10 +303,10 @@ public class ShowTeaViewModelTest {
 
         assertThat(time1.time).isEqualTo(infusions.get(0).getTime());
         assertThat(time1.minutes).isEqualTo(1);
-        assertThat(time1.seconds).isEqualTo(0);
+        assertThat(time1.seconds).isZero();
         assertThat(cooldownTime1.time).isEqualTo(infusions.get(0).getCoolDownTime());
         assertThat(cooldownTime1.minutes).isEqualTo(2);
-        assertThat(cooldownTime1.seconds).isEqualTo(0);
+        assertThat(cooldownTime1.seconds).isZero();
         assertThat(temperature1).isEqualTo(infusions.get(0).getTemperatureCelsius());
 
         showTeaViewModel.incrementInfusionIndex();
@@ -325,7 +326,7 @@ public class ShowTeaViewModelTest {
 
         actualSettings.setTemperatureUnit("Fahrenheit");
         showTeaViewModel.setInfusionIndex(0);
-        assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(0);
+        assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 
         int temperature3 = showTeaViewModel.getTemperature();
         assertThat(temperature3).isEqualTo(infusions.get(0).getTemperatureFahrenheit());
@@ -342,8 +343,8 @@ public class ShowTeaViewModelTest {
         TimeHelper timeAfter = showTeaViewModel.getTime();
 
         assertThat( timeAfter.time).isNull();
-        assertThat(timeAfter.minutes).isEqualTo(0);
-        assertThat(timeAfter.seconds).isEqualTo(0);
+        assertThat(timeAfter.minutes).isZero();
+        assertThat(timeAfter.seconds).isZero();
     }
 
     @Test
