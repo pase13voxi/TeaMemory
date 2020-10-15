@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class ImportJson {
     public boolean read(Uri fileUri, boolean keepStoredTeas) {
         json = readJsonFile(fileUri);
         List<TeaPOJO> teaList = createTeaListFromJson();
-        if (teaList == null) {
+        if (teaList.isEmpty()) {
             return false;
         }
         POJOToDatabase pojoToDatabase = new POJOToDatabase(new DataTransferViewModel(application));
@@ -74,7 +75,7 @@ public class ImportJson {
             return gson.fromJson(json, listType);
         }catch(JsonSyntaxException e){
             printer.print(application.getString(R.string.exportimport_import_parse_teas_failed));
-            return null;
+            return Collections.emptyList();
         }
     }
 }

@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.app.Application;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 

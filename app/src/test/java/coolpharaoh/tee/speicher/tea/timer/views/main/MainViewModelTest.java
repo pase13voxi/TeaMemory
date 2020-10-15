@@ -109,8 +109,8 @@ public class MainViewModelTest {
 
     @Test
     public void getTeas() {
-        List<Tea> teas = mainActivityViewModel.getTeas().getValue();
-        assertThat(teas).isEqualTo(this.teas);
+        List<Tea> teasAfter = mainActivityViewModel.getTeas().getValue();
+        assertThat(teasAfter).isEqualTo(teas);
     }
 
     @Test

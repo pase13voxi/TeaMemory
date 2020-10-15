@@ -217,7 +217,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void fillVarietyInputFields() {
-        //richtige SpinnerId bekommen
+        // get the right spinner id
         int spinnerId = -1;
         String[] spinnerElements = getResources().getStringArray(R.array.variety_codes);
 
@@ -227,8 +227,8 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
                 break;
             }
         }
-        //Werte werden für Änderungen gefüllt
-        //wenn Spinner manuell gefüllt wurde
+
+        // if it is not a standard variety
         if (spinnerId == -1) {
             spinnerTeaVariety.setVisibility(View.INVISIBLE);
             spinnerTeaVariety.setSelection(spinnerElements.length - 1);
@@ -317,19 +317,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void showPreviousInfusion() {
-        if (newTeaViewModel.getInfusionIndex() == 0) {
-            leftArrow.setEnabled(false);
-        } else {
-            leftArrow.setEnabled(true);
-        }
+        leftArrow.setEnabled(newTeaViewModel.getInfusionIndex() != 0);
     }
 
     private void showNextInfusion() {
-        if ((newTeaViewModel.getInfusionIndex() + 1) == newTeaViewModel.getInfusionSize()) {
-            rightArrow.setEnabled(false);
-        } else {
-            rightArrow.setEnabled(true);
-        }
+        rightArrow.setEnabled((newTeaViewModel.getInfusionIndex() + 1) != newTeaViewModel.getInfusionSize());
     }
 
     private void varietyChanged(int position) {

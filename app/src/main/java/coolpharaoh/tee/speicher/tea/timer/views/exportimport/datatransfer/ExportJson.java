@@ -46,11 +46,9 @@ public class ExportJson {
     private boolean writeFile(String json) {
         //Create Folder
         File folder = new File(Environment.getExternalStorageDirectory().toString() + application.getString(R.string.exportimport_export_folder_name));
-        if (!folder.exists()) {
-            if (!folder.mkdirs()) {
-                printer.print(application.getString(R.string.exportimport_export_create_folder_failed));
-                return false;
-            }
+        if (!folder.exists() && !folder.mkdirs()) {
+            printer.print(application.getString(R.string.exportimport_export_create_folder_failed));
+            return false;
         }
 
         //Save the path as a string value

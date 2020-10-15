@@ -590,12 +590,12 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                // this functionality is not needed, but needs to be override
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                // this functionality is not needed, but needs to be override
             }
         });
 
