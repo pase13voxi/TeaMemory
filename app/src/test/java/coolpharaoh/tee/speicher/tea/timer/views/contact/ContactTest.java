@@ -34,6 +34,8 @@ public class ContactTest {
         contactActivityScenario = ActivityScenario.launch(Contact.class);
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void launchActivity() {
         contactActivityScenario.onActivity(contact -> {

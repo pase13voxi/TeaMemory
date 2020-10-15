@@ -339,11 +339,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
             }
         }
-        if (showTeaViewModel.getCoolDownTime().time != null) {
-            buttonExchange.setEnabled(true);
-        } else {
-            buttonExchange.setEnabled(false);
-        }
+
+        buttonExchange.setEnabled(showTeaViewModel.getCoolDownTime().time != null);
+
         spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
         spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
         textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (showTeaViewModel.getInfusionIndex() + 1)));
@@ -355,11 +353,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void nextInfusionEnable() {
-        if (showTeaViewModel.getInfusionIndex() == showTeaViewModel.getInfusionSize() - 1) {
-            buttonNextInfusion.setEnabled(false);
-        } else {
-            buttonNextInfusion.setEnabled(true);
-        }
+        buttonNextInfusion.setEnabled(showTeaViewModel.getInfusionIndex() != showTeaViewModel.getInfusionSize() - 1);
     }
 
     private void startOrResetTimer() {

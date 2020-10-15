@@ -98,7 +98,7 @@ public class NewTeaViewModelTest {
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(2);
-        assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(0);
+        assertThat(newTeaViewModelFilled.getInfusionIndex()).isZero();
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
         assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCoolDownTime());
@@ -116,7 +116,7 @@ public class NewTeaViewModelTest {
 
         newTeaViewModelFilled.previousInfusion();
 
-        assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(0);
+        assertThat(newTeaViewModelFilled.getInfusionIndex()).isZero();
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
         assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(0).getCoolDownTime());
@@ -191,7 +191,7 @@ public class NewTeaViewModelTest {
 
         String newName = "NEW_TEA";
         String newVariety = "Green tea";
-        String newVariety_Code = "02_green";
+        String newVarietyCode = "02_green";
         int newAmount = 14;
         String newAmountKind = "NEW_AMOUNT_KIND";
         int newColor = 15;
@@ -200,7 +200,7 @@ public class NewTeaViewModelTest {
 
         assertThat(newTeaViewModelFilled.getTeaId()).isEqualTo(tea.getId().longValue());
         assertThat(newTeaViewModelFilled.getName()).isEqualTo(newName);
-        assertThat(newTeaViewModelFilled.getVariety()).isEqualTo(newVariety_Code);
+        assertThat(newTeaViewModelFilled.getVariety()).isEqualTo(newVarietyCode);
         assertThat(newTeaViewModelFilled.getAmount()).isEqualTo(newAmount);
         assertThat(newTeaViewModelFilled.getAmountkind()).isEqualTo(newAmountKind);
         assertThat(newTeaViewModelFilled.getColor()).isEqualTo(newColor);
@@ -231,14 +231,14 @@ public class NewTeaViewModelTest {
 
         String newName = "NEW_TEA";
         String newVariety = "Rooibus tea";
-        String newVariety_Code = "09_rooibus";
+        String newVarietyCode = "09_rooibus";
         int newAmount = 14;
         String newAmountKind = "NEW_AMOUNT_KIND";
         int newColor = 15;
         newTeaViewModelEmpty.createNewTea(newName, newVariety, newAmount, newAmountKind, newColor);
 
         assertThat(newTeaViewModelEmpty.getName()).isEqualTo(newName);
-        assertThat(newTeaViewModelEmpty.getVariety()).isEqualTo(newVariety_Code);
+        assertThat(newTeaViewModelEmpty.getVariety()).isEqualTo(newVarietyCode);
         assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(newAmount);
         assertThat(newTeaViewModelEmpty.getAmountkind()).isEqualTo(newAmountKind);
         assertThat(newTeaViewModelEmpty.getColor()).isEqualTo(newColor);

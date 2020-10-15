@@ -91,6 +91,8 @@ public class SettingsTest {
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void launchActivityAndExpectFilledListView() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -137,6 +139,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setVibrationFalseAndExpectVibrationFalse() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -159,6 +163,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setVibrationTrueAndExpectVibrationTrue() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -181,6 +187,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setAnimationFalseAndExpectAnimationFalse() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -202,6 +210,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setAnimationTrueAndExpectAnimationTrue() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -223,6 +233,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setTemperatureUnitCelsiusAndExpectCelsius() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -244,6 +256,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setTemperatureUnitFahrenheitAndExpectFahrenheit() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
@@ -265,6 +279,8 @@ public class SettingsTest {
         });
     }
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void setAllHintsAndExpectAllHints() {
         ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
