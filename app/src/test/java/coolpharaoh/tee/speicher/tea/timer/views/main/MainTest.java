@@ -158,7 +158,7 @@ public class MainTest {
     }
 
     // the cast is needed
-    //@SuppressWarnings("java:S1905")
+    @SuppressWarnings("java:S1905")
     @Test
     public void searchStringExpectSearchList() {
         mockActualSettings(0, false, 0);
