@@ -3,6 +3,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo;
 import java.util.Date;
 import java.util.List;
 
+// duplicates between entities and Json Object are tolerated
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class TeaPOJO {
     private String name;
     private String variety;

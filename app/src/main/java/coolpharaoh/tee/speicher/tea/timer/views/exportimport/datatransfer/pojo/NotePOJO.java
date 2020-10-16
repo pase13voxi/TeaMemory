@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo;
 
+// duplicates between entities and Json Object are tolerated
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class NotePOJO {
     private int position;
     private String header;

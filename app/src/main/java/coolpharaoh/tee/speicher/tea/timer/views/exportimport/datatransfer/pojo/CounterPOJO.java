@@ -2,6 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo;
 
 import java.util.Date;
 
+// duplicates between entities and Json Object are tolerated
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class CounterPOJO {
 
     private int day;
