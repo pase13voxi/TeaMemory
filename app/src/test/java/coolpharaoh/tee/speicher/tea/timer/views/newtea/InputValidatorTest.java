@@ -15,6 +15,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
 
+    public static final String CELSIUS = "Celsius";
+    public static final String FAHRENHEIT = "Fahrenheit";
+    public static final String COOL_DOWN_TIME = "02:00";
+    public static final String TIME = "05:00";
     @Mock
     private Application application;
 
@@ -92,90 +96,66 @@ public class InputValidatorTest {
     @Test
     public void infusionIsValidWithTemperatureContainsPointReturnsTrue() {
         String temperature = "1.2";
-        String temperatureUnit = "Celsius";
-        String coolDownTime = "02:00";
-        String time = "05:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, COOL_DOWN_TIME, TIME)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTemperatureStringTooLongReturnsTrue() {
         String temperature = "1000";
-        String temperatureUnit = "Fahrenheit";
-        String coolDownTime = "02:00";
-        String time = "05:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, FAHRENHEIT, COOL_DOWN_TIME, TIME)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTemperatureCelsiusTooLargeReturnsTrue() {
         String temperature = "150";
-        String temperatureUnit = "Celsius";
-        String coolDownTime = "02:00";
-        String time = "05:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, COOL_DOWN_TIME, TIME)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTemperatureFahrenheitTooLargeReturnsTrue() {
         String temperature = "250";
-        String temperatureUnit = "Fahrenheit";
-        String coolDownTime = "02:00";
-        String time = "05:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, FAHRENHEIT, COOL_DOWN_TIME, TIME)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTimeWrongFormatMinutesReturnsFalse() {
         String temperature = "70";
-        String temperatureUnit = "Celsius";
         String coolDownTime = "020";
         String time = "005:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, coolDownTime, time)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTimeWrongFormatSecondsReturnsFalse() {
         String temperature = "70";
-        String temperatureUnit = "Celsius";
-        String coolDownTime = "02:00";
         String time = "005:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, COOL_DOWN_TIME, time)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTime69MinutesReturnsFalse() {
         String temperature = "70";
-        String temperatureUnit = "Celsius";
-        String coolDownTime = "02:00";
         String time = "69";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, COOL_DOWN_TIME, time)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithTime69MinutesWithSecondsReturnsFalse() {
         String temperature = "70";
-        String temperatureUnit = "Celsius";
-        String coolDownTime = "02:00";
         String time = "69:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, COOL_DOWN_TIME, time)).isFalse();
     }
 
     @Test
     public void infusionIsValidWithCoolDownTimeWrongFormatWithSecondsReturnsFalse() {
         String temperature = "70";
-        String temperatureUnit = "Celsius";
         String coolDownTime = "444";
-        String time = "6";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isFalse();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, coolDownTime, TIME)).isFalse();
     }
 
     @Test
     public void infusionIsValidReturnsTrue() {
         String temperature = "70";
-        String temperatureUnit = "Celsius";
-        String coolDownTime = "02:00";
-        String time = "05:00";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isTrue();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, COOL_DOWN_TIME, TIME)).isTrue();
     }
 }
