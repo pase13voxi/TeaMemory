@@ -48,8 +48,6 @@ import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
-// ignore this rule because it is a unit test
-@SuppressWarnings("java:S5803")
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -124,7 +122,7 @@ public class ShowTeaTest {
         mockTea(1, false, false);
         mockActualSettings("Celsius", true);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra("teaId", tea.getId());
+        intent.putExtra(TEA_ID, tea.getId());
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
@@ -140,7 +138,7 @@ public class ShowTeaTest {
         mockActualSettings("Celsius", false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra("teaId", tea.getId());
+        intent.putExtra(TEA_ID, tea.getId());
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
