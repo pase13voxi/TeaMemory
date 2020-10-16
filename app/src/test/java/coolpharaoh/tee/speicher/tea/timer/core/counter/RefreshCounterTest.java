@@ -20,8 +20,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-// ignore this rule because it is a unit test
-@SuppressWarnings("java:S5803")
+
 @RunWith(MockitoJUnitRunner.class)
 public class RefreshCounterTest {
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";

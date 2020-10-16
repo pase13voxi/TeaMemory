@@ -16,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-// ignore this rule because it is a unit test
-@SuppressWarnings("java:S5803")
+
 @RunWith(MockitoJUnitRunner.class)
 public class CounterRepositoryTest {
     @Mock

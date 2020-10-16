@@ -39,8 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-// ignore this rule because it is a unit test
-@SuppressWarnings("java:S5803")
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class ShowTeaViewModelTest {
