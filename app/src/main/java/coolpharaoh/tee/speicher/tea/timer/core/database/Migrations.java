@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+// no constants for the string because it's harder to read
+@SuppressWarnings("java:S1192")
 class Migrations {
 
     private Migrations() {
