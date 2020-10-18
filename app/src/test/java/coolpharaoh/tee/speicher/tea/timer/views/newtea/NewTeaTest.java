@@ -60,6 +60,11 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 public class NewTeaTest {
 
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
+    public static final String CELSIUS = "Celsius";
+    public static final String FIRST_INFUSION = "1. Infusion";
+    public static final String SECOND_INFUSION = "2. Infusion";
+    public static final String FAHRENHEIT = "Fahrenheit";
+    public static final String TEA_ID = "teaId";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -92,7 +97,7 @@ public class NewTeaTest {
 
     @Test
     public void addNewTeaAndExpectSavedTea() {
-        mockSettings("Celsius");
+        mockSettings(CELSIUS);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
@@ -159,7 +164,7 @@ public class NewTeaTest {
 
     @Test
     public void setVarietyByHandAndExpectThisVariety() {
-        mockSettings("Celsius");
+        mockSettings(CELSIUS);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
@@ -186,7 +191,7 @@ public class NewTeaTest {
 
     @Test
     public void switchBetweenSettingVarietyByHandOrBySpinner() {
-        mockSettings("Celsius");
+        mockSettings(CELSIUS);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
@@ -211,7 +216,7 @@ public class NewTeaTest {
 
     @Test
     public void addInfusionsNavigateBetweenThemAndDeleteInfusion() {
-        mockSettings("Celsius");
+        mockSettings(CELSIUS);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             Button buttonLeft = newTea.findViewById(R.id.buttonArrowLeft);
@@ -224,7 +229,7 @@ public class NewTeaTest {
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
 
             inputInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "1", "1", "1");
-            assertThat(textViewInfunsionBar.getText()).isEqualTo("1. Infusion");
+            assertThat(textViewInfunsionBar.getText()).isEqualTo(FIRST_INFUSION);
             assertThat(buttonLeft.isEnabled()).isFalse();
             assertThat(buttonRight.isEnabled()).isFalse();
             assertThat(buttonDelete.getVisibility()).isEqualTo(View.GONE);
@@ -233,7 +238,7 @@ public class NewTeaTest {
             buttonAddInfusion.performClick();
             checkInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "", "", "");
             inputInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "2", "2", "2");
-            assertThat(textViewInfunsionBar.getText()).isEqualTo("2. Infusion");
+            assertThat(textViewInfunsionBar.getText()).isEqualTo(SECOND_INFUSION);
             assertThat(buttonLeft.isEnabled()).isTrue();
             assertThat(buttonDelete.getVisibility()).isEqualTo(View.VISIBLE);
 
@@ -244,26 +249,26 @@ public class NewTeaTest {
 
             buttonLeft.performClick();
             checkInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "2", "2", "2");
-            assertThat(textViewInfunsionBar.getText()).isEqualTo("2. Infusion");
+            assertThat(textViewInfunsionBar.getText()).isEqualTo(SECOND_INFUSION);
             assertThat(buttonRight.isEnabled()).isTrue();
             assertThat(buttonAddInfusion.getVisibility()).isEqualTo(View.GONE);
 
             buttonDelete.performClick();
             checkInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "3", "3", "3");
-            assertThat(textViewInfunsionBar.getText()).isEqualTo("2. Infusion");
+            assertThat(textViewInfunsionBar.getText()).isEqualTo(SECOND_INFUSION);
             assertThat(buttonRight.isEnabled()).isFalse();
             assertThat(buttonAddInfusion.getVisibility()).isEqualTo(View.VISIBLE);
 
             buttonLeft.performClick();
             checkInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "1", "1", "1");
-            assertThat(textViewInfunsionBar.getText()).isEqualTo("1. Infusion");
+            assertThat(textViewInfunsionBar.getText()).isEqualTo(FIRST_INFUSION);
             assertThat(buttonLeft.isEnabled()).isFalse();
             assertThat(buttonRight.isEnabled()).isTrue();
             assertThat(buttonAddInfusion.getVisibility()).isEqualTo(View.GONE);
 
             buttonRight.performClick();
             checkInfusion(editTextTemperature, editTextTime, editTextCoolDownTime, "3", "3", "3");
-            assertThat(textViewInfunsionBar.getText()).isEqualTo("2. Infusion");
+            assertThat(textViewInfunsionBar.getText()).isEqualTo(SECOND_INFUSION);
             assertThat(buttonLeft.isEnabled()).isTrue();
             assertThat(buttonRight.isEnabled()).isFalse();
             assertThat(buttonAddInfusion.getVisibility()).isEqualTo(View.VISIBLE);
@@ -272,7 +277,7 @@ public class NewTeaTest {
 
     @Test
     public void setWrongTemperatureAndAddInfusionAndAutofillCoolDownTimeExpectNothing() {
-        mockSettings("Celsius");
+        mockSettings(CELSIUS);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             EditText editTextName = newTea.findViewById(R.id.editTextName);
@@ -293,13 +298,13 @@ public class NewTeaTest {
 
             buttonAddInfusion.performClick();
 
-            assertThat(textViewCountInfusion.getText()).isEqualTo("1. Infusion");
+            assertThat(textViewCountInfusion.getText()).isEqualTo(FIRST_INFUSION);
         });
     }
 
     @Test
     public void showCoolDownTimeAndCalculateCoolDownTime() {
-        mockSettings("Fahrenheit");
+        mockSettings(FAHRENHEIT);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             Button buttonShowCoolDownTime = newTea.findViewById(R.id.buttonShowCoolDownTime);
@@ -325,7 +330,7 @@ public class NewTeaTest {
 
     @Test
     public void editTeaAndExpectEditedTeaAndShowTeaActivity() {
-        mockSettings("Fahrenheit");
+        mockSettings(FAHRENHEIT);
         Tea tea = new Tea("Tea", "02_green", 1, "Ts", 234, 0, Date.from(getFixedDate()));
         tea.setId(1l);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -339,7 +344,7 @@ public class NewTeaTest {
 
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
-        intent.putExtra("teaId", 1l);
+        intent.putExtra(TEA_ID, 1l);
         intent.putExtra("showTea", true);
 
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
@@ -389,7 +394,7 @@ public class NewTeaTest {
 
     @Test
     public void editTeaAndExpectFilledOtherVarietyAndGr() {
-        mockSettings("Fahrenheit");
+        mockSettings(FAHRENHEIT);
         Tea tea = new Tea("Tea", "OtherTea", 1, "Gr", 234, 0, Date.from(getFixedDate()));
         tea.setId(1l);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -401,7 +406,7 @@ public class NewTeaTest {
 
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
-        intent.putExtra("teaId", 1l);
+        intent.putExtra(TEA_ID, 1l);
 
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -419,7 +424,7 @@ public class NewTeaTest {
 
     @Test
     public void exitActivityAndExpectMainActivity() {
-        mockSettings("Celsius");
+        mockSettings(CELSIUS);
         Tea tea = new Tea("Tea", "01_black", 1, "Gr", 1, 0, Date.from(getFixedDate()));
         tea.setId(1l);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -431,7 +436,7 @@ public class NewTeaTest {
 
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
-        intent.putExtra("teaId", 1l);
+        intent.putExtra(TEA_ID, 1l);
         intent.putExtra("showTea", true);
 
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);

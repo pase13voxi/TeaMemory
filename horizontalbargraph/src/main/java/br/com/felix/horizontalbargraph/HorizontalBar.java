@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import br.com.felix.horizontalbargraph.adapter.BarItemRecycleViewAdapter;
 import br.com.felix.horizontalbargraph.interfaces.OnItemClickListener;
@@ -31,7 +30,6 @@ public class HorizontalBar extends LinearLayout {
     private List<BarItem> items;
     private boolean hasAnimation = false;
     private RecyclerView recyclerView;
-    private Locale localeDefault;
 
     public HorizontalBar(Context context) {
         super(context);
@@ -81,14 +79,14 @@ public class HorizontalBar extends LinearLayout {
     }
 
     public void removeAll() {
-        if (this.items != null && this.items.size() > 0) {
+        if (this.items != null && !this.items.isEmpty()) {
             this.items.clear();
         }
         notifyRemove();
     }
 
     public void removeOne(int position) {
-        if (this.items != null && this.items.size() > 0) {
+        if (this.items != null && !this.items.isEmpty()) {
             this.items.remove(position);
         }
         notifyRemove();
@@ -104,11 +102,10 @@ public class HorizontalBar extends LinearLayout {
         return this;
     }
 
-    public HorizontalBar build(Locale locale) {
+    public HorizontalBar build() {
         this.recyclerView = new RecyclerView(context);
         this.recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         this.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        this.localeDefault = locale;
 
         if (this.hasAnimation) {
             LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
@@ -117,18 +114,14 @@ public class HorizontalBar extends LinearLayout {
             this.recyclerView.setItemAnimator(new DefaultItemAnimator());
         }
 
-        this.recyclerView.setAdapter(new BarItemRecycleViewAdapter(items, listener, localeDefault));
+        this.recyclerView.setAdapter(new BarItemRecycleViewAdapter(items, listener));
         this.addView(this.recyclerView);
         return this;
     }
 
-    public HorizontalBar build() {
-        return build(null);
-    }
-
     private void notifyList() {
         if (this.recyclerView != null && this.recyclerView.getAdapter() != null) {
-            this.recyclerView.setAdapter(new BarItemRecycleViewAdapter(items, listener, localeDefault));
+            this.recyclerView.setAdapter(new BarItemRecycleViewAdapter(items, listener));
         }
     }
 

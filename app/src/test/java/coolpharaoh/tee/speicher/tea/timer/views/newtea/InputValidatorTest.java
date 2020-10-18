@@ -12,6 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+// allow system.out.println
+@SuppressWarnings("java:S106")
 @RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
 
@@ -87,10 +89,9 @@ public class InputValidatorTest {
     @Test
     public void infusionIsValidWithAllInputStringEmptyReturnsTrue() {
         String temperature = "";
-        String temperatureUnit = "Celsius";
         String coolDownTime = "";
         String time = "";
-        assertThat(inputValidator.infusionIsValid(temperature, temperatureUnit, coolDownTime, time)).isTrue();
+        assertThat(inputValidator.infusionIsValid(temperature, CELSIUS, coolDownTime, time)).isTrue();
     }
 
     @Test

@@ -47,9 +47,12 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class SettingsTest {
-    private enum ListItems {
-        ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, HINTS, FACTORY_SETTINGS
-    }
+    private static final int ALARM = 0;
+    private static final int VIBRATION = 1;
+    private static final int ANIMATION = 2;
+    private static final int TEMPERATURE_UNIT = 3;
+    private static final int HINTS = 4;
+    private static final int FACTORY_SETTINGS = 5;
 
     private enum Options {
         On, Off
@@ -100,27 +103,27 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            ListRowItem itemAlarm = (ListRowItem) settingsList.getAdapter().getItem(ListItems.ALARM.ordinal());
+            ListRowItem itemAlarm = (ListRowItem) settingsList.getAdapter().getItem(ALARM);
             assertThat(itemAlarm.getHeading()).isEqualTo(settings.getString(R.string.settings_alarm));
             assertThat(itemAlarm.getDescription()).isEqualTo(actualSettings.getMusicName());
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.VIBRATION.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
             assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
             assertThat(itemVibration.getDescription()).isEqualTo(actualSettings.isVibration() ? Options.On.toString() : Options.Off.toString());
 
-            ListRowItem itemAnimation = (ListRowItem) settingsList.getAdapter().getItem(ListItems.ANIMATION.ordinal());
+            ListRowItem itemAnimation = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
             assertThat(itemAnimation.getHeading()).isEqualTo(settings.getString(R.string.settings_animation));
             assertThat(itemAnimation.getDescription()).isEqualTo(actualSettings.isAnimation() ? Options.On.toString() : Options.Off.toString());
 
-            ListRowItem itemTemperatureUnit = (ListRowItem) settingsList.getAdapter().getItem(ListItems.TEMPERATURE_UNIT.ordinal());
+            ListRowItem itemTemperatureUnit = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
             assertThat(itemTemperatureUnit.getHeading()).isEqualTo(settings.getString(R.string.settings_temperature_unit));
             assertThat(itemTemperatureUnit.getDescription()).isEqualTo(actualSettings.getTemperatureUnit());
 
-            ListRowItem itemHints = (ListRowItem) settingsList.getAdapter().getItem(ListItems.HINTS.ordinal());
+            ListRowItem itemHints = (ListRowItem) settingsList.getAdapter().getItem(HINTS);
             assertThat(itemHints.getHeading()).isEqualTo(settings.getString(R.string.settings_show_hints));
             assertThat(itemHints.getDescription()).isEqualTo(settings.getString(R.string.settings_show_hints_description));
 
-            ListRowItem itemFactorySettings = (ListRowItem) settingsList.getAdapter().getItem(ListItems.FACTORY_SETTINGS.ordinal());
+            ListRowItem itemFactorySettings = (ListRowItem) settingsList.getAdapter().getItem(FACTORY_SETTINGS);
             assertThat(itemFactorySettings.getHeading()).isEqualTo(settings.getString(R.string.settings_factory_settings));
             assertThat(itemFactorySettings.getDescription()).isEqualTo(settings.getString(R.string.settings_factory_settings_description));
         });
@@ -132,7 +135,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.ALARM.ordinal(), settingsList.getItemIdAtPosition(ListItems.ALARM.ordinal()));
+            settingsList.performItemClick(settingsList, ALARM, settingsList.getItemIdAtPosition(ALARM));
 
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
@@ -148,7 +151,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.VIBRATION.ordinal(), settingsList.getItemIdAtPosition(ListItems.VIBRATION.ordinal()));
+            settingsList.performItemClick(settingsList, VIBRATION, settingsList.getItemIdAtPosition(VIBRATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(Options.Off.ordinal());
@@ -158,7 +161,7 @@ public class SettingsTest {
             ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isVibration()).isFalse();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.VIBRATION.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
             assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
             assertThat(itemVibration.getDescription()).isEqualTo(Options.Off.toString());
         });
@@ -172,7 +175,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.VIBRATION.ordinal(), settingsList.getItemIdAtPosition(ListItems.VIBRATION.ordinal()));
+            settingsList.performItemClick(settingsList, VIBRATION, settingsList.getItemIdAtPosition(VIBRATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(Options.On.ordinal());
@@ -182,7 +185,7 @@ public class SettingsTest {
             ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isVibration()).isTrue();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.VIBRATION.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
             assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
             assertThat(itemVibration.getDescription()).isEqualTo(Options.On.toString());
         });
@@ -196,7 +199,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.ANIMATION.ordinal(), settingsList.getItemIdAtPosition(ListItems.ANIMATION.ordinal()));
+            settingsList.performItemClick(settingsList, ANIMATION, settingsList.getItemIdAtPosition(ANIMATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(Options.Off.ordinal());
@@ -206,7 +209,7 @@ public class SettingsTest {
             ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isAnimation()).isFalse();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.ANIMATION.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
             assertThat(itemVibration.getDescription()).isEqualTo(Options.Off.toString());
         });
     }
@@ -219,7 +222,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.ANIMATION.ordinal(), settingsList.getItemIdAtPosition(ListItems.ANIMATION.ordinal()));
+            settingsList.performItemClick(settingsList, ANIMATION, settingsList.getItemIdAtPosition(ANIMATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(Options.On.ordinal());
@@ -229,7 +232,7 @@ public class SettingsTest {
             ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isAnimation()).isTrue();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.ANIMATION.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
             assertThat(itemVibration.getDescription()).isEqualTo(Options.On.toString());
         });
     }
@@ -242,7 +245,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.TEMPERATURE_UNIT.ordinal(), settingsList.getItemIdAtPosition(ListItems.TEMPERATURE_UNIT.ordinal()));
+            settingsList.performItemClick(settingsList, TEMPERATURE_UNIT, settingsList.getItemIdAtPosition(TEMPERATURE_UNIT));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(TempartureUnit.Celsius.ordinal());
@@ -252,7 +255,7 @@ public class SettingsTest {
             ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(TempartureUnit.Celsius.toString());
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.TEMPERATURE_UNIT.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
             assertThat(itemVibration.getDescription()).isEqualTo(TempartureUnit.Celsius.toString());
         });
     }
@@ -265,7 +268,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.TEMPERATURE_UNIT.ordinal(), settingsList.getItemIdAtPosition(ListItems.TEMPERATURE_UNIT.ordinal()));
+            settingsList.performItemClick(settingsList, TEMPERATURE_UNIT, settingsList.getItemIdAtPosition(TEMPERATURE_UNIT));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(TempartureUnit.Fahrenheit.ordinal());
@@ -275,7 +278,7 @@ public class SettingsTest {
             ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(TempartureUnit.Fahrenheit.toString());
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ListItems.TEMPERATURE_UNIT.ordinal());
+            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
             assertThat(itemVibration.getDescription()).isEqualTo(TempartureUnit.Fahrenheit.toString());
         });
     }
@@ -288,7 +291,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.HINTS.ordinal(), settingsList.getItemIdAtPosition(ListItems.HINTS.ordinal()));
+            settingsList.performItemClick(settingsList, HINTS, settingsList.getItemIdAtPosition(HINTS));
 
             AlertDialog alertDialog = getLatestAlertDialog();
 
@@ -323,7 +326,7 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
-            settingsList.performItemClick(settingsList, ListItems.FACTORY_SETTINGS.ordinal(), settingsList.getItemIdAtPosition(ListItems.FACTORY_SETTINGS.ordinal()));
+            settingsList.performItemClick(settingsList, FACTORY_SETTINGS, settingsList.getItemIdAtPosition(FACTORY_SETTINGS));
 
             AlertDialog alertDialog = getLatestAlertDialog();
 

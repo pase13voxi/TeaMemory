@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Locale;
 
 import br.com.felix.horizontalbargraph.R;
 import br.com.felix.horizontalbargraph.interfaces.OnItemClickListener;
@@ -27,7 +26,7 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
     private final List<BarItem> items;
     private final OnItemClickListener listener;
 
-    public BarItemRecycleViewAdapter(List<BarItem> items, OnItemClickListener listener, Locale locale) {
+    public BarItemRecycleViewAdapter(List<BarItem> items, OnItemClickListener listener) {
         this.items = items;
         this.listener = listener;
         getBiggerValue(items);
@@ -86,7 +85,8 @@ public class BarItemRecycleViewAdapter extends RecyclerView.Adapter<BarItemRecyc
     }
 
     private void changWidthBar(int percent, LinearLayout layout1, LinearLayout layout2) {
-        LinearLayout.LayoutParams params1, params2;
+        LinearLayout.LayoutParams params1;
+        LinearLayout.LayoutParams params2;
 
         if (percent == 0) {
             params1 = new LinearLayout.LayoutParams(

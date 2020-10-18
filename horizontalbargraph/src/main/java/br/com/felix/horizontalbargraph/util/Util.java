@@ -5,7 +5,9 @@ package br.com.felix.horizontalbargraph.util;
  */
 
 public class Util {
+    private Util() { }
+
     public static String formatAmount(Double value) {
-        return Integer.toString((int)((double)value));
+        return Integer.toString((int) ((double) value));
     }
 }
