@@ -2,7 +2,7 @@ package br.com.felix.horizontalbargraph.model;
 
 import android.graphics.Color;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * Created by user on 16/01/2018.
@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class BarItem {
 
-    private Random rnd = new Random();
+    private SecureRandom rnd = new SecureRandom();
 
     private String description;
 
