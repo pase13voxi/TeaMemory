@@ -11,8 +11,7 @@ import java.util.Date;
 
 import coolpharaoh.tee.speicher.tea.timer.core.converter.DateConverter;
 
-// duplicates between entities and Json Object are tolerated
-@SuppressWarnings("common-java:DuplicatedBlocks")
+
 @Entity(tableName = "tea")
 public class Tea {
     @PrimaryKey(autoGenerate = true)

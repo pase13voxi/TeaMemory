@@ -32,7 +32,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
+// show complete json dump for better readability and allow system.out.println
+@SuppressWarnings({"java:S1192", "java:S106"})
 @RunWith(MockitoJUnitRunner.class)
 public class ImportJsonTest {
     private static final String DB_JSON_DUMP = "[\n" +

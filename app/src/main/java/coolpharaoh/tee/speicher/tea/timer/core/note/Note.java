@@ -10,8 +10,7 @@ import androidx.room.PrimaryKey;
 
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 
-// duplicates between entities and Json Object are tolerated
-@SuppressWarnings("common-java:DuplicatedBlocks")
+
 @Entity(tableName = "note", foreignKeys =
 @ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
 public class Note {

@@ -14,8 +14,7 @@ import java.util.Date;
 import coolpharaoh.tee.speicher.tea.timer.core.converter.DateConverter;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 
-// duplicates between entities and Json Object are tolerated
-@SuppressWarnings("common-java:DuplicatedBlocks")
+
 @Entity(tableName = "counter", foreignKeys = @ForeignKey(entity = Tea.class, parentColumns = "tea_id", childColumns = "tea_id", onDelete = ForeignKey.CASCADE), indices = {@Index("tea_id")})
 public class Counter {
     @PrimaryKey(autoGenerate = true)
