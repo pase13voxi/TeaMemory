@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class BarItem {
 
+    private Random rnd = new Random();
+
     private String description;
 
     private Double value1;
@@ -106,7 +108,6 @@ public class BarItem {
     }
 
     private int getRandomColor() {
-        Random rnd = new Random();
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 }
