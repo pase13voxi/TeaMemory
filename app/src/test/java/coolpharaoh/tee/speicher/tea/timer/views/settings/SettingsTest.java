@@ -53,14 +53,14 @@ public class SettingsTest {
     private static final int TEMPERATURE_UNIT = 3;
     private static final int HINTS = 4;
     private static final int FACTORY_SETTINGS = 5;
-
-    private enum Options {
-        On, Off
-    }
-
-    private enum TempartureUnit {
-        Celsius, Fahrenheit
-    }
+    private static final int OPTION_ON = 0;
+    private static final int OPTION_OFF = 1;
+    private static final String ON = "On";
+    private static final String OFF = "Off";
+    private static final int TEMPERATURE_UNIT_CELSIUS = 0;
+    private static final int TEMPERATURE_UNIT_FAHRENHEIT = 1;
+    private static final String CELSIUS = "Celsius";
+    private static final String FAHRENHEIT = "Fahrenheit";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -109,11 +109,11 @@ public class SettingsTest {
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
             assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
-            assertThat(itemVibration.getDescription()).isEqualTo(actualSettings.isVibration() ? Options.On.toString() : Options.Off.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(actualSettings.isVibration() ? ON : OFF);
 
             ListRowItem itemAnimation = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
             assertThat(itemAnimation.getHeading()).isEqualTo(settings.getString(R.string.settings_animation));
-            assertThat(itemAnimation.getDescription()).isEqualTo(actualSettings.isAnimation() ? Options.On.toString() : Options.Off.toString());
+            assertThat(itemAnimation.getDescription()).isEqualTo(actualSettings.isAnimation() ? ON : OFF);
 
             ListRowItem itemTemperatureUnit = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
             assertThat(itemTemperatureUnit.getHeading()).isEqualTo(settings.getString(R.string.settings_temperature_unit));
@@ -154,7 +154,7 @@ public class SettingsTest {
             settingsList.performItemClick(settingsList, VIBRATION, settingsList.getItemIdAtPosition(VIBRATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(Options.Off.ordinal());
+            shadowAlertDialog.clickOnItem(OPTION_OFF);
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());
@@ -163,7 +163,7 @@ public class SettingsTest {
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
             assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
-            assertThat(itemVibration.getDescription()).isEqualTo(Options.Off.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(OFF);
         });
     }
 
@@ -178,7 +178,7 @@ public class SettingsTest {
             settingsList.performItemClick(settingsList, VIBRATION, settingsList.getItemIdAtPosition(VIBRATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(Options.On.ordinal());
+            shadowAlertDialog.clickOnItem(OPTION_ON);
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());
@@ -187,7 +187,7 @@ public class SettingsTest {
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
             assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
-            assertThat(itemVibration.getDescription()).isEqualTo(Options.On.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(ON);
         });
     }
 
@@ -202,7 +202,7 @@ public class SettingsTest {
             settingsList.performItemClick(settingsList, ANIMATION, settingsList.getItemIdAtPosition(ANIMATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(Options.Off.ordinal());
+            shadowAlertDialog.clickOnItem(OPTION_OFF);
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());
@@ -210,7 +210,7 @@ public class SettingsTest {
             assertThat(updatedSettings.isAnimation()).isFalse();
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
-            assertThat(itemVibration.getDescription()).isEqualTo(Options.Off.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(OFF);
         });
     }
 
@@ -225,7 +225,7 @@ public class SettingsTest {
             settingsList.performItemClick(settingsList, ANIMATION, settingsList.getItemIdAtPosition(ANIMATION));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(Options.On.ordinal());
+            shadowAlertDialog.clickOnItem(OPTION_ON);
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());
@@ -233,7 +233,7 @@ public class SettingsTest {
             assertThat(updatedSettings.isAnimation()).isTrue();
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
-            assertThat(itemVibration.getDescription()).isEqualTo(Options.On.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(ON);
         });
     }
 
@@ -248,15 +248,15 @@ public class SettingsTest {
             settingsList.performItemClick(settingsList, TEMPERATURE_UNIT, settingsList.getItemIdAtPosition(TEMPERATURE_UNIT));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(TempartureUnit.Celsius.ordinal());
+            shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_CELSIUS);
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());
             ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(TempartureUnit.Celsius.toString());
+            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(CELSIUS);
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
-            assertThat(itemVibration.getDescription()).isEqualTo(TempartureUnit.Celsius.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(CELSIUS);
         });
     }
 
@@ -271,15 +271,15 @@ public class SettingsTest {
             settingsList.performItemClick(settingsList, TEMPERATURE_UNIT, settingsList.getItemIdAtPosition(TEMPERATURE_UNIT));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(TempartureUnit.Fahrenheit.ordinal());
+            shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_FAHRENHEIT);
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
             verify(actualSettingsDao).update(captor.capture());
             ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(TempartureUnit.Fahrenheit.toString());
+            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
 
             ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
-            assertThat(itemVibration.getDescription()).isEqualTo(TempartureUnit.Fahrenheit.toString());
+            assertThat(itemVibration.getDescription()).isEqualTo(FAHRENHEIT);
         });
     }
 
