@@ -1,6 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -10,8 +9,13 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import coolpharaoh.tee.speicher.tea.timer.core.converter.DateConverter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity(tableName = "tea")
 public class Tea {
     @PrimaryKey(autoGenerate = true)
@@ -40,8 +44,6 @@ public class Tea {
     @ColumnInfo(name = "date")
     private Date date;
 
-    public Tea(){}
-
     @Ignore
     public Tea(String name, String variety, int amount, String amountKind, int color, int nextInfusion, Date date) {
         this.name = name;
@@ -52,70 +54,4 @@ public class Tea {
         this.nextInfusion = nextInfusion;
         this.date = date;
     }
-
-    @NonNull
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(@NonNull Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getVariety() {
-        return variety;
-    }
-
-    public void setVariety(String variety) {
-        this.variety = variety;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getAmountKind() {
-        return amountKind;
-    }
-
-    public void setAmountKind(String amountKind) {
-        this.amountKind = amountKind;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    public int getNextInfusion() {
-        return nextInfusion;
-    }
-
-    public void setNextInfusion(int nextInfusion) {
-        this.nextInfusion = nextInfusion;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
 }
