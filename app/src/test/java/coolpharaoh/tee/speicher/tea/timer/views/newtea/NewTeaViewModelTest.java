@@ -39,6 +39,12 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
 public class NewTeaViewModelTest {
+    private static final String CELSIUS = "Celsius";
+    private static final String FAHRENHEIT = "Fahrenheit";
+    private static final String[] VARIETY_CODES = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
+            "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
+    private static final String[] VARIETY_TEAS = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
+            "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
     private NewTeaViewModel newTeaViewModelEmpty;
     private NewTeaViewModel newTeaViewModelFilled;
 
@@ -79,7 +85,7 @@ public class NewTeaViewModelTest {
 
     private void mockTea() {
         Date today = Date.from(Instant.now());
-        tea = new Tea("TEA", "03_yellow", 3, "ts", 5, 0, today);
+        tea = new Tea("TEA", VARIETY_CODES[2], 3, "ts", 5, 0, today);
         tea.setId(TEA_ID_FILLED);
         when(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
 
@@ -94,7 +100,7 @@ public class NewTeaViewModelTest {
     @Test
     public void navigateBetweenInfusions() {
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureUnit("Celsius");
+        actualSettings.setTemperatureUnit(CELSIUS);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(2);
@@ -108,7 +114,7 @@ public class NewTeaViewModelTest {
 
         assertThat(newTeaViewModelFilled.getInfusionIndex()).isEqualTo(1);
 
-        actualSettings.setTemperatureUnit("Fahrenheit");
+        actualSettings.setTemperatureUnit(FAHRENHEIT);
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(1).getTime());
         assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(infusions.get(1).getCoolDownTime());
@@ -126,7 +132,7 @@ public class NewTeaViewModelTest {
     @Test
     public void takeInfusionInformation() {
         ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureUnit("Celsius");
+        actualSettings.setTemperatureUnit(CELSIUS);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         assertThat(newTeaViewModelFilled.getInfusionTime()).isEqualTo(infusions.get(0).getTime());
@@ -143,7 +149,7 @@ public class NewTeaViewModelTest {
         assertThat(newTeaViewModelFilled.getInfusionCooldowntime()).isEqualTo(newCooldowntime1);
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newCelsiusTemperature1);
 
-        actualSettings.setTemperatureUnit("Fahrenheit");
+        actualSettings.setTemperatureUnit(FAHRENHEIT);
 
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newFahrenheitTemperature1);
 
@@ -153,7 +159,7 @@ public class NewTeaViewModelTest {
 
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newFahrenheitTemperature2);
 
-        actualSettings.setTemperatureUnit("Celsius");
+        actualSettings.setTemperatureUnit(CELSIUS);
 
         assertThat(newTeaViewModelFilled.getInfusionTemperature()).isEqualTo(newCelsiusTemperature2);
     }
@@ -173,14 +179,7 @@ public class NewTeaViewModelTest {
 
     @Test
     public void editTea() {
-        String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-                "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
-        String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
-                "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-
-        when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
-        when(resources.getStringArray(R.array.variety_teas)).thenReturn(varietyTeas);
+        mockStringResource();
 
         assertThat(newTeaViewModelFilled.getTeaId()).isEqualTo(tea.getId().longValue());
         assertThat(newTeaViewModelFilled.getName()).isEqualTo(tea.getName());
@@ -190,8 +189,8 @@ public class NewTeaViewModelTest {
         assertThat(newTeaViewModelFilled.getColor()).isEqualTo(tea.getColor());
 
         String newName = "NEW_TEA";
-        String newVariety = "Green tea";
-        String newVarietyCode = "02_green";
+        String newVariety = VARIETY_TEAS[1];
+        String newVarietyCode = VARIETY_CODES[1];
         int newAmount = 14;
         String newAmountKind = "NEW_AMOUNT_KIND";
         int newColor = 15;
@@ -218,20 +217,13 @@ public class NewTeaViewModelTest {
 
     @Test
     public void createNewTea() {
-        String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-                "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
-        String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
-                "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-
-        when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
-        when(resources.getStringArray(R.array.variety_teas)).thenReturn(varietyTeas);
+        mockStringResource();
 
         assertThat(newTeaViewModelEmpty.getName()).isNull();
 
         String newName = "NEW_TEA";
-        String newVariety = "Rooibus tea";
-        String newVarietyCode = "09_rooibus";
+        String newVariety = VARIETY_TEAS[8];
+        String newVarietyCode = VARIETY_CODES[8];
         int newAmount = 14;
         String newAmountKind = "NEW_AMOUNT_KIND";
         int newColor = 15;
@@ -253,5 +245,11 @@ public class NewTeaViewModelTest {
         verify(infusionRepository).insertInfusion(any(Infusion.class));
         verify(counterRepository).insertCounter(any(Counter.class));
         verify(noteRepository).insertNote(any(Note.class));
+    }
+
+    private void mockStringResource() {
+        when(application.getResources()).thenReturn(resources);
+        when(resources.getStringArray(R.array.variety_codes)).thenReturn(VARIETY_CODES);
+        when(resources.getStringArray(R.array.variety_teas)).thenReturn(VARIETY_TEAS);
     }
 }
