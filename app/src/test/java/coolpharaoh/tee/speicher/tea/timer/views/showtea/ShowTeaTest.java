@@ -41,6 +41,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -97,7 +98,7 @@ public class ShowTeaTest {
     public void launchActivityWithNotExistingTeaIdExpectFailingDialog() {
         mockDB();
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, 5l);
+        intent.putExtra(TEA_ID, 5L);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
@@ -118,11 +119,13 @@ public class ShowTeaTest {
 
     @Test
     public void launchActivityAndExpectDescriptionDialog() {
+        long teaId = 1L;
         mockDB();
-        mockTea(1, false, false);
+        mockTea(teaId);
+        mockInfusions(teaId, Collections.singletonList("1:00"), Collections.singletonList(null));
         mockActualSettings("Celsius", true);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, tea.getId());
+        intent.putExtra(TEA_ID, teaId);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
@@ -133,12 +136,14 @@ public class ShowTeaTest {
 
     @Test
     public void launchActivityWithStandardValuesAndExpectFilledActivity() {
+        long teaId = 1L;
         mockDB();
-        mockTea(1, false, false);
+        mockTea(teaId);
+        mockInfusions(teaId, Collections.singletonList("1:00"), Collections.singletonList(null));
         mockActualSettings("Celsius", false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, tea.getId());
+        intent.putExtra(TEA_ID, teaId);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
@@ -161,8 +166,50 @@ public class ShowTeaTest {
             assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
             assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(buttonExchange.isEnabled()).isFalse();
-            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius()+" °C");
+            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
             assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " g/L");
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void switchBetweenTimerAndCoolDownTimer() {
+        long teaId = 1L;
+        mockDB();
+        mockTea(teaId);
+        mockInfusions(teaId, Collections.singletonList("1:00"), Collections.singletonList("4:00"));
+        mockActualSettings("Celsius", false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID, teaId);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            Button buttonInfo = showTea.findViewById(R.id.buttonInfo);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+
+            assertThat(buttonExchange.isEnabled()).isTrue();
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+
+            buttonExchange.performClick();
+            assertThat(buttonInfo.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("04");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+
+            buttonInfo.performClick();
+            AlertDialog dialogFail = getLatestAlertDialog();
+            ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(dialogFail);
+            assertThat(shadowDialogFail).isNotNull();
+            assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(R.string.showtea_cooldown_header));
+            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(R.string.showtea_cooldown_description));
+            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            buttonExchange.performClick();
+            assertThat(buttonInfo.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
@@ -177,30 +224,32 @@ public class ShowTeaTest {
         when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
-    private void mockTea(int infusionCount, boolean withCounter, boolean withNote){
+    private void mockTea(long teaId) {
         tea = new Tea("name", "variety", 1, "Gr", 1, 1, CurrentDate.getDate());
-        tea.setId(1L);
-        when(teaDao.getTeaById(tea.getId())).thenReturn(tea);
+        tea.setId(teaId);
+        when(teaDao.getTeaById(teaId)).thenReturn(tea);
+    }
 
+    private void mockInfusions(long teaId, List<String> time, List<String> coolDownTime) {
         infusions = new ArrayList<>();
-        for(long id = 1L; id < (infusionCount + 1); id++) {
-            Infusion infusion = new Infusion(1L, (int)(id - 1), "1:00", null, 100, 212);
-            infusion.setId(id);
+        for (int i = 0; i < time.size(); i++) {
+            Infusion infusion = new Infusion(teaId, i, time.get(i), coolDownTime.get(i), 100, 212);
+            infusion.setId((long) (i + 1));
             infusions.add(infusion);
         }
-        when(infusionDao.getInfusionsByTeaId(1L)).thenReturn(infusions);
+        when(infusionDao.getInfusionsByTeaId(teaId)).thenReturn(infusions);
+    }
 
-        if(withCounter) {
-            counter = new Counter(1L, 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
-            counter.setId(1L);
-            when(counterDao.getCounterByTeaId(1L)).thenReturn(counter);
-        }
+    private void mockCounter(long teaId) {
+        counter = new Counter(teaId, 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        counter.setId(1L);
+        when(counterDao.getCounterByTeaId(teaId)).thenReturn(counter);
+    }
 
-        if(withNote) {
-            note = new Note(1L, 1, "header", "description");
-            note.setId(1L);
-            when(noteDao.getNoteByTeaId(1L)).thenReturn(note);
-        }
+    private void mockNote(long teaId, String description) {
+        note = new Note(teaId, 1, "header", description);
+        note.setId(1L);
+        when(noteDao.getNoteByTeaId(teaId)).thenReturn(note);
     }
 
     private void mockActualSettings(String temperatureUnit, boolean dialog) {

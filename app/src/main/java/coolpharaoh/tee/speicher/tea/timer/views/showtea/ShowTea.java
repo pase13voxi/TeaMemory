@@ -560,8 +560,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void showDialogCoolingPeriod() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.showtea_cooldown_title);
-        builder.setMessage(R.string.showtea_cooldown_text);
+        builder.setTitle(R.string.showtea_cooldown_header);
+        builder.setMessage(R.string.showtea_cooldown_description);
         builder.setPositiveButton("OK", null);
         builder.show();
     }
