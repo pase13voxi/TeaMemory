@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import java.util.ArrayList;
@@ -53,7 +55,9 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class ShowTeaTest {
-    public static final String TEA_ID = "teaId";
+    public static final String TEA_ID_EXTRA = "teaId";
+    public static final long TEA_ID = 1L;
+    public static final String CELSIUS = "Celsius";
 
     Tea tea;
     List<Infusion> infusions;
@@ -80,11 +84,7 @@ public class ShowTeaTest {
         ActivityScenario<ShowTea> newTeaActivityScenario = ActivityScenario.launch(ShowTea.class);
         newTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogFail = getLatestAlertDialog();
-            ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(dialogFail);
-            assertThat(shadowDialogFail).isNotNull();
-            assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_header));
-            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_description));
-
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_dialog_tea_missing_header, R.string.showtea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             Intent expected = new Intent(showTea, Main.class);
@@ -98,16 +98,12 @@ public class ShowTeaTest {
     public void launchActivityWithNotExistingTeaIdExpectFailingDialog() {
         mockDB();
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, 5L);
+        intent.putExtra(TEA_ID_EXTRA, 5L);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogFail = getLatestAlertDialog();
-            ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(dialogFail);
-            assertThat(shadowDialogFail).isNotNull();
-            assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_header));
-            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(R.string.showtea_dialog_tea_missing_description));
-
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_dialog_tea_missing_header, R.string.showtea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             Intent expected = new Intent(showTea, Main.class);
@@ -119,31 +115,28 @@ public class ShowTeaTest {
 
     @Test
     public void launchActivityAndExpectDescriptionDialog() {
-        long teaId = 1L;
         mockDB();
-        mockTea(teaId);
-        mockInfusions(teaId, Collections.singletonList("1:00"), Collections.singletonList(null));
-        mockActualSettings("Celsius", true);
+        mockTea(TEA_ID);
+        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
+        mockActualSettings(CELSIUS, true);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, teaId);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            ShadowAlertDialog shadowDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowDialog.getTitle()).isEqualTo(showTea.getString(R.string.showtea_dialog_description_header));
+            checkTitleAndMessageOfLatestDialog(showTea, getLatestAlertDialog(), R.string.showtea_dialog_description_header, null);
         });
     }
 
     @Test
     public void launchActivityWithStandardValuesAndExpectFilledActivity() {
-        long teaId = 1L;
         mockDB();
-        mockTea(teaId);
-        mockInfusions(teaId, Collections.singletonList("1:00"), Collections.singletonList(null));
-        mockActualSettings("Celsius", false);
+        mockTea(TEA_ID);
+        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
+        mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, teaId);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
@@ -175,14 +168,13 @@ public class ShowTeaTest {
 
     @Test
     public void switchBetweenTimerAndCoolDownTimer() {
-        long teaId = 1L;
         mockDB();
-        mockTea(teaId);
-        mockInfusions(teaId, Collections.singletonList("1:00"), Collections.singletonList("4:00"));
-        mockActualSettings("Celsius", false);
+        mockTea(TEA_ID);
+        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList("4:00"));
+        mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID, teaId);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
@@ -201,17 +193,74 @@ public class ShowTeaTest {
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
 
             buttonInfo.performClick();
-            AlertDialog dialogFail = getLatestAlertDialog();
-            ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(dialogFail);
-            assertThat(shadowDialogFail).isNotNull();
-            assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(R.string.showtea_cooldown_header));
-            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(R.string.showtea_cooldown_description));
-            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            AlertDialog dialogInfo = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogInfo, R.string.showtea_cooldown_header, R.string.showtea_cooldown_description);
+            dialogInfo.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             buttonExchange.performClick();
             assertThat(buttonInfo.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void openAndChangeNotesViaButton() {
+        mockDB();
+        mockTea(TEA_ID);
+        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
+        mockNote(TEA_ID, "Any note.");
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonNote = showTea.findViewById(R.id.buttonNote);
+
+            assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
+
+            buttonNote.performClick();
+            AlertDialog dialogFail = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_action_note, null);
+
+            EditText editTextNote = dialogFail.findViewById(R.id.editTextNote);
+            assertThat(editTextNote.getText()).hasToString("Any note.");
+            editTextNote.setText("");
+            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
+        });
+    }
+
+    @Test
+    public void openAndChangeNotesViaMenu() {
+        mockDB();
+        mockTea(TEA_ID);
+        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
+        mockNote(TEA_ID, "");
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonNote = showTea.findViewById(R.id.buttonNote);
+
+            assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
+
+            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_note));
+            AlertDialog dialogFail = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_action_note, null);
+
+            EditText editTextNote = dialogFail.findViewById(R.id.editTextNote);
+            assertThat(editTextNote.getText()).hasToString("");
+            editTextNote.setText("Any note.");
+            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }
 
@@ -257,6 +306,15 @@ public class ShowTeaTest {
         actualSettings.setTemperatureUnit(temperatureUnit);
         actualSettings.setShowTeaAlert(dialog);
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
+    }
+
+    private void checkTitleAndMessageOfLatestDialog(ShowTea showTea, AlertDialog dialogFail, int title, Integer message) {
+        ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(dialogFail);
+        assertThat(shadowDialogFail).isNotNull();
+        assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(title));
+        if (message != null) {
+            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(message));
+        }
     }
 
 }
