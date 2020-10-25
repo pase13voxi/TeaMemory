@@ -59,7 +59,7 @@ public class ShowTeaTest {
     private static final String TEA_ID_EXTRA = "teaId";
     private static final long TEA_ID = 1L;
     private static final String CELSIUS = "Celsius";
-    private static final String NOTE = "Any note.";
+    private static final String INSERTED_NOTE = "Any note.";
 
     Tea tea;
     List<Infusion> infusions;
@@ -209,7 +209,7 @@ public class ShowTeaTest {
         mockDB();
         mockTea(TEA_ID);
         mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
-        mockNote(TEA_ID, NOTE);
+        mockNote(TEA_ID, INSERTED_NOTE);
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -226,7 +226,7 @@ public class ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogNote, R.string.showtea_action_note, null);
 
             EditText editTextNote = dialogNote.findViewById(R.id.editTextNote);
-            assertThat(editTextNote.getText()).hasToString(NOTE);
+            assertThat(editTextNote.getText()).hasToString(INSERTED_NOTE);
             editTextNote.setText("");
             dialogNote.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
@@ -257,7 +257,7 @@ public class ShowTeaTest {
 
             EditText editTextNote = dialogNote.findViewById(R.id.editTextNote);
             assertThat(editTextNote.getText()).hasToString("");
-            editTextNote.setText(NOTE);
+            editTextNote.setText(INSERTED_NOTE);
             dialogNote.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
