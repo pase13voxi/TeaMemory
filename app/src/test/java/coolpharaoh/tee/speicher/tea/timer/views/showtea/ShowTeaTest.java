@@ -55,9 +55,10 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class ShowTeaTest {
-    public static final String TEA_ID_EXTRA = "teaId";
-    public static final long TEA_ID = 1L;
-    public static final String CELSIUS = "Celsius";
+    private static final String TEA_ID_EXTRA = "teaId";
+    private static final long TEA_ID = 1L;
+    private static final String CELSIUS = "Celsius";
+    private static final String NOTE = "Any note.";
 
     Tea tea;
     List<Infusion> infusions;
@@ -123,9 +124,7 @@ public class ShowTeaTest {
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            checkTitleAndMessageOfLatestDialog(showTea, getLatestAlertDialog(), R.string.showtea_dialog_description_header, null);
-        });
+        showTeaActivityScenario.onActivity(showTea -> checkTitleAndMessageOfLatestDialog(showTea, getLatestAlertDialog(), R.string.showtea_dialog_description_header, null));
     }
 
     @Test
@@ -209,7 +208,7 @@ public class ShowTeaTest {
         mockDB();
         mockTea(TEA_ID);
         mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
-        mockNote(TEA_ID, "Any note.");
+        mockNote(TEA_ID, NOTE);
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -226,7 +225,7 @@ public class ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_action_note, null);
 
             EditText editTextNote = dialogFail.findViewById(R.id.editTextNote);
-            assertThat(editTextNote.getText()).hasToString("Any note.");
+            assertThat(editTextNote.getText()).hasToString(NOTE);
             editTextNote.setText("");
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
@@ -257,7 +256,7 @@ public class ShowTeaTest {
 
             EditText editTextNote = dialogFail.findViewById(R.id.editTextNote);
             assertThat(editTextNote.getText()).hasToString("");
-            editTextNote.setText("Any note.");
+            editTextNote.setText(NOTE);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
