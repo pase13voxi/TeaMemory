@@ -43,6 +43,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import edu.emory.mathcs.backport.java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -221,13 +222,13 @@ public class ShowTeaTest {
             assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
 
             buttonNote.performClick();
-            AlertDialog dialogFail = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_action_note, null);
+            AlertDialog dialogNote = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNote, R.string.showtea_action_note, null);
 
-            EditText editTextNote = dialogFail.findViewById(R.id.editTextNote);
+            EditText editTextNote = dialogNote.findViewById(R.id.editTextNote);
             assertThat(editTextNote.getText()).hasToString(NOTE);
             editTextNote.setText("");
-            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            dialogNote.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
         });
@@ -251,15 +252,58 @@ public class ShowTeaTest {
             assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
 
             showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_note));
-            AlertDialog dialogFail = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_action_note, null);
+            AlertDialog dialogNote = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNote, R.string.showtea_action_note, null);
 
-            EditText editTextNote = dialogFail.findViewById(R.id.editTextNote);
+            EditText editTextNote = dialogNote.findViewById(R.id.editTextNote);
             assertThat(editTextNote.getText()).hasToString("");
             editTextNote.setText(NOTE);
-            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            dialogNote.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
+        });
+    }
+
+    @Test
+    public void switchBetweenInfusions() {
+        mockDB();
+        mockTea(TEA_ID);
+        mockInfusions(TEA_ID, Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, "5:00", null}));
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
+            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+
+            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(buttonExchange.isEnabled()).isFalse();
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+
+            buttonNextInfusion.performClick();
+            assertThat(buttonExchange.isEnabled()).isTrue();
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+
+            buttonInfusionIndex.performClick();
+            AlertDialog dialogInfusionIndex = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogInfusionIndex, R.string.showtea_dialog_infusion_count_title, null);
+
+            ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialogInfusionIndex);
+            shadowDialog.clickOnItem(2);
+            assertThat(buttonExchange.isEnabled()).isFalse();
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
     }
 
@@ -307,12 +351,12 @@ public class ShowTeaTest {
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
     }
 
-    private void checkTitleAndMessageOfLatestDialog(ShowTea showTea, AlertDialog dialogFail, int title, Integer message) {
-        ShadowAlertDialog shadowDialogFail = Shadows.shadowOf(dialogFail);
-        assertThat(shadowDialogFail).isNotNull();
-        assertThat(shadowDialogFail.getTitle()).isEqualTo(showTea.getString(title));
+    private void checkTitleAndMessageOfLatestDialog(ShowTea showTea, AlertDialog dialog, int title, Integer message) {
+        ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
+        assertThat(shadowDialog).isNotNull();
+        assertThat(shadowDialog.getTitle()).isEqualTo(showTea.getString(title));
         if (message != null) {
-            assertThat(shadowDialogFail.getMessage()).isEqualTo(showTea.getString(message));
+            assertThat(shadowDialog.getMessage()).isEqualTo(showTea.getString(message));
         }
     }
 
