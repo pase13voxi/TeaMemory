@@ -134,13 +134,13 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            AlertDialog descriptionDialog = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, descriptionDialog, R.string.showtea_dialog_description_header);
+            AlertDialog dialogDescription = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogDescription, R.string.showtea_dialog_description_header);
 
-            CheckBox checkBox = descriptionDialog.findViewById(R.id.checkboxDialogShowTeaDescription);
+            CheckBox checkBox = dialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
             checkBox.setChecked(true);
 
-            descriptionDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             verify(actualSettingsDao).update(any(ActualSettings.class));
         });
@@ -159,10 +159,10 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            AlertDialog descriptionDialog = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, descriptionDialog, R.string.showtea_dialog_following_infusion_header, showTea.getString(R.string.showtea_dialog_following_infusion_description, 2, 3));
+            AlertDialog dialogNextInfusion = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.showtea_dialog_following_infusion_header, showTea.getString(R.string.showtea_dialog_following_infusion_description, 2, 3));
 
-            descriptionDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            dialogNextInfusion.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
@@ -395,6 +395,28 @@ public class ShowTeaTest {
     }
 
     @Test
+    public void openTeaCounter() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockCounter();
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_counter));
+
+            checkTitleAndMessageOfLatestDialog(showTea, getLatestAlertDialog(), R.string.showtea_action_counter);
+
+            // instead of a listview use a normal layout to make it more testable
+        });
+    }
+
+    @Test
     public void switchBetweenInfusions() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
@@ -465,7 +487,7 @@ public class ShowTeaTest {
     }
 
     private void mockCounter() {
-        counter = new Counter(TEA_ID, 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        counter = new Counter(TEA_ID, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counter.setId(1L);
         when(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter);
     }
