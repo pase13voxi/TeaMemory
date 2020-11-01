@@ -422,7 +422,7 @@ public class ShowTeaViewModelTest {
         actualSettings.setShowTeaAlert(showTeaAlertBefore);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
-        boolean showTeaAlertAfter = showTeaViewModel.isShowteaalert();
+        boolean showTeaAlertAfter = showTeaViewModel.isShowteaAlert();
 
         assertThat(showTeaAlertAfter).isEqualTo(showTeaAlertBefore);
     }
@@ -434,7 +434,7 @@ public class ShowTeaViewModelTest {
         ActualSettings actualSettings = new ActualSettings();
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
-        showTeaViewModel.setShowteaalert(showTeaAlertBefore);
+        showTeaViewModel.setShowteaAlert(showTeaAlertBefore);
 
         ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
         verify(actualSettingsRepository).updateSettings((captor.capture()));

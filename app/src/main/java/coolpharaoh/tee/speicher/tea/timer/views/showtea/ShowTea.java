@@ -313,7 +313,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void decideToDisplayDescription() {
-        if (showTeaViewModel.isShowteaalert()) {
+        if (showTeaViewModel.isShowteaAlert()) {
             dialogShowTeaDescription();
         }
     }
@@ -330,7 +330,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         builder.setTitle(R.string.showtea_dialog_description_header);
         builder.setPositiveButton(R.string.showtea_dialog_description_ok, (dialog, which) -> {
             if (dontshowagain.isChecked()) {
-                showTeaViewModel.setShowteaalert(false);
+                showTeaViewModel.setShowteaAlert(false);
             }
         });
         builder.show();

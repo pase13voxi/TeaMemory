@@ -165,11 +165,11 @@ class ShowTeaViewModel {
         return actualSettingsRepository.getSettings().isAnimation();
     }
 
-    boolean isShowteaalert() {
+    boolean isShowteaAlert() {
         return actualSettingsRepository.getSettings().isShowTeaAlert();
     }
 
-    void setShowteaalert(boolean showteaalert) {
+    void setShowteaAlert(boolean showteaalert) {
         ActualSettings actualSettings = actualSettingsRepository.getSettings();
         actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsRepository.updateSettings(actualSettings);
