@@ -58,7 +58,11 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 public class ShowTeaTest {
     private static final String TEA_ID_EXTRA = "teaId";
     private static final long TEA_ID = 1L;
+    public static final String VARIETY = "variety";
     private static final String CELSIUS = "Celsius";
+    private static final String FAHRENHEIT = "Fahrenheit";
+    public static final String TEA_SPOON = "Ts";
+    public static final String GRAM = "Gr";
     private static final String INSERTED_NOTE = "Any note.";
 
     Tea tea;
@@ -118,8 +122,9 @@ public class ShowTeaTest {
     @Test
     public void launchActivityAndExpectDescriptionDialog() {
         mockDB();
-        mockTea(TEA_ID);
-        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
+        mockTea(VARIETY, 1, TEA_SPOON);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, true);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -129,10 +134,11 @@ public class ShowTeaTest {
     }
 
     @Test
-    public void launchActivityWithStandardValuesAndExpectFilledActivity() {
+    public void launchActivityWithCelsiusAndTeaSpoonStandardValuesAndExpectFilledActivity() {
         mockDB();
-        mockTea(TEA_ID);
-        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
+        mockTea(VARIETY, 1, TEA_SPOON);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -160,17 +166,96 @@ public class ShowTeaTest {
             assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(buttonExchange.isEnabled()).isFalse();
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
-            assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " g/L");
+            assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " ts/L");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
     }
 
     @Test
+    public void launchActivityWithFahrenheitAndGramValuesAndExpectFilledActivity() {
+        mockDB();
+        mockTea(VARIETY, 1, GRAM);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockActualSettings(FAHRENHEIT, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
+            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
+
+            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
+            assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " g/L");
+        });
+    }
+
+    @Test
+    public void launchActivityWithEmptyValuesCelsiusAndTeaSpoonAndExpectFilledActivity() {
+        mockDB();
+        mockTea(null, -500, TEA_SPOON);
+        mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
+                Collections.singletonList(-500), Collections.singletonList(-500));
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
+            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
+            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+
+            assertThat(textViewVariety.getText()).isEmpty();
+            assertThat(textViewTemperature.getText()).isEqualTo("- °C");
+            assertThat(textViewAmount.getText()).isEqualTo("- ts/L");
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("00");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void launchActivityWithEmptyValuesFahrenheitAndGramAndExpectFilledActivity() {
+        mockDB();
+        mockTea(null, -500, GRAM);
+        mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
+                Collections.singletonList(-500), Collections.singletonList(-500));
+        mockActualSettings(FAHRENHEIT, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
+            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            TextView textViewName = showTea.findViewById(R.id.textViewName);
+            TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
+            Button buttonNote = showTea.findViewById(R.id.buttonNote);
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
+            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+
+            assertThat(textViewTemperature.getText()).isEqualTo("- °F");
+            assertThat(textViewAmount.getText()).isEqualTo("- g/L");
+        });
+    }
+
+    @Test
     public void switchBetweenTimerAndCoolDownTimer() {
         mockDB();
-        mockTea(TEA_ID);
-        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList("4:00"));
+        mockTea(VARIETY, 1, TEA_SPOON);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
+                Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -207,9 +292,10 @@ public class ShowTeaTest {
     @Test
     public void openAndChangeNotesViaButton() {
         mockDB();
-        mockTea(TEA_ID);
-        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
-        mockNote(TEA_ID, INSERTED_NOTE);
+        mockTea(VARIETY, 1, TEA_SPOON);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockNote(INSERTED_NOTE);
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -237,9 +323,10 @@ public class ShowTeaTest {
     @Test
     public void openAndChangeNotesViaMenu() {
         mockDB();
-        mockTea(TEA_ID);
-        mockInfusions(TEA_ID, Collections.singletonList("1:00"), Collections.singletonList(null));
-        mockNote(TEA_ID, "");
+        mockTea(VARIETY, 1, TEA_SPOON);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockNote("");
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -267,8 +354,10 @@ public class ShowTeaTest {
     @Test
     public void switchBetweenInfusions() {
         mockDB();
-        mockTea(TEA_ID);
-        mockInfusions(TEA_ID, Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, "5:00", null}));
+        mockTea(VARIETY, 1, TEA_SPOON);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, "5:00", null}),
+                Arrays.asList(new Integer[]{100, 100, 100}), Arrays.asList(new Integer[]{212, 212, 212}));
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -316,32 +405,32 @@ public class ShowTeaTest {
         when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
-    private void mockTea(long teaId) {
-        tea = new Tea("name", "variety", 1, "Gr", 1, 1, CurrentDate.getDate());
-        tea.setId(teaId);
-        when(teaDao.getTeaById(teaId)).thenReturn(tea);
+    private void mockTea(String variety, int amount, String amountKind) {
+        tea = new Tea("name", variety, amount, amountKind, 1, 1, CurrentDate.getDate());
+        tea.setId(TEA_ID);
+        when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
     }
 
-    private void mockInfusions(long teaId, List<String> time, List<String> coolDownTime) {
+    private void mockInfusions(List<String> time, List<String> coolDownTime, List<Integer> temperatureCelsius, List<Integer> temperatureFahrenheit) {
         infusions = new ArrayList<>();
         for (int i = 0; i < time.size(); i++) {
-            Infusion infusion = new Infusion(teaId, i, time.get(i), coolDownTime.get(i), 100, 212);
+            Infusion infusion = new Infusion(TEA_ID, i, time.get(i), coolDownTime.get(i), temperatureCelsius.get(i), temperatureFahrenheit.get(i));
             infusion.setId((long) (i + 1));
             infusions.add(infusion);
         }
-        when(infusionDao.getInfusionsByTeaId(teaId)).thenReturn(infusions);
+        when(infusionDao.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
     }
 
-    private void mockCounter(long teaId) {
-        counter = new Counter(teaId, 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+    private void mockCounter() {
+        counter = new Counter(TEA_ID, 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counter.setId(1L);
-        when(counterDao.getCounterByTeaId(teaId)).thenReturn(counter);
+        when(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter);
     }
 
-    private void mockNote(long teaId, String description) {
-        note = new Note(teaId, 1, "header", description);
+    private void mockNote(String description) {
+        note = new Note(TEA_ID, 1, "header", description);
         note.setId(1L);
-        when(noteDao.getNoteByTeaId(teaId)).thenReturn(note);
+        when(noteDao.getNoteByTeaId(TEA_ID)).thenReturn(note);
     }
 
     private void mockActualSettings(String temperatureUnit, boolean dialog) {
