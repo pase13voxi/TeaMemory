@@ -82,6 +82,40 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         public void onReceive(Context context, Intent intent) {
             updateClock(intent);
         }
+
+        private void updateClock(Intent intent) {
+            if (intent.getExtras() != null) {
+                long millis = intent.getLongExtra("countdown", 0);
+                boolean ready = intent.getBooleanExtra("ready", false);
+                if (!infoShown && showTeaViewModel.isAnimation()) {
+                    updateImage(millis);
+                }
+                if (ready) {
+                    textViewTimer.setText(R.string.showtea_tea_ready);
+                    if (!infoShown && showTeaViewModel.isAnimation()) {
+                        imageViewFill.setImageResource(R.drawable.fill100pr);
+                        imageViewSteam.setVisibility((View.VISIBLE));
+                    }
+                } else {
+                    String ms = String.format(Locale.getDefault(), "%02d : %02d",
+                            TimeUnit.MILLISECONDS.toMinutes(millis),
+                            TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                    textViewTimer.setText(ms);
+                }
+            }
+        }
+
+        private void updateImage(long millisec) {
+            int percentTmp = 100 - ((int) (((float) millisec / (float) maxMilliSec) * 100));
+            if (percentTmp > percent) {
+                percent = percentTmp;
+
+                Context context = getApplicationContext();
+                String pictureName = String.format("fill%spr", percent);
+                int pictureId = context.getResources().getIdentifier(pictureName, "drawable", context.getPackageName());
+                imageViewFill.setImageResource(pictureId);
+            }
+        }
     };
 
     @Override
@@ -444,40 +478,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         unregisterReceiver(broadcastReceiver);
 
         super.onDestroy();
-    }
-
-    private void updateClock(Intent intent) {
-        if (intent.getExtras() != null) {
-            long millis = intent.getLongExtra("countdown", 0);
-            boolean ready = intent.getBooleanExtra("ready", false);
-            if (!infoShown && showTeaViewModel.isAnimation()) {
-                updateImage(millis);
-            }
-            if (ready) {
-                textViewTimer.setText(R.string.showtea_tea_ready);
-                if (!infoShown && showTeaViewModel.isAnimation()) {
-                    imageViewFill.setImageResource(R.drawable.fill100pr);
-                    imageViewSteam.setVisibility((View.VISIBLE));
-                }
-            } else {
-                String ms = String.format(Locale.getDefault(), "%02d : %02d",
-                        TimeUnit.MILLISECONDS.toMinutes(millis),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-                textViewTimer.setText(ms);
-            }
-        }
-    }
-
-    private void updateImage(long millisec) {
-        int percentTmp = 100 - ((int) (((float) millisec / (float) maxMilliSec) * 100));
-        if (percentTmp > percent) {
-            percent = percentTmp;
-
-            Context context = getApplicationContext();
-            String pictureName = String.format("fill%spr", percent);
-            int pictureId = context.getResources().getIdentifier(pictureName, "drawable", context.getPackageName());
-            imageViewFill.setImageResource(pictureId);
-        }
     }
 
     private void resetTimer() {
