@@ -44,6 +44,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
+import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -276,17 +277,8 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
-            TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
-            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
-            TextView textViewName = showTea.findViewById(R.id.textViewName);
-            TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
-            Button buttonNote = showTea.findViewById(R.id.buttonNote);
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
             TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
 
             assertThat(textViewTemperature.getText()).isEqualTo("- °F");
             assertThat(textViewAmount.getText()).isEqualTo("- g/L");
@@ -413,6 +405,28 @@ public class ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, getLatestAlertDialog(), R.string.showtea_action_counter);
 
             // instead of a listview use a normal layout to make it more testable
+        });
+    }
+
+    @Test
+    public void editTea() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_edit));
+
+            Intent expected = new Intent(showTea, NewTea.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
     }
 

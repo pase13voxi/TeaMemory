@@ -648,7 +648,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         int id = item.getItemId();
         if (id == R.id.action_note) {
             showDialogNote();
-        } else if (id == R.id.action_settings) {
+        } else if (id == R.id.action_edit) {
             return navigateToEditTea();
         } else if (id == R.id.action_counter) {
             dialogCounter();

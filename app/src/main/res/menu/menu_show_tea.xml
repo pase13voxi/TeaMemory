@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.showtea.ShowTea">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_edit"
         android:orderInCategory="100"
         android:title="@string/showtea_action_edit"
         app:showAsAction="never" />
