@@ -11,8 +11,7 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +32,8 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
+@RunWith(MockitoJUnitRunner.class)
 public class MainViewModelTest {
     private MainViewModel mainActivityViewModel;
     @Mock
@@ -60,12 +57,12 @@ public class MainViewModelTest {
     private ActualSettings actualSettings;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockResources();
-        mockRepositories();
         mockSettings();
         mockTeas();
-        mainActivityViewModel = new MainViewModel(application);
+        mainActivityViewModel = new MainViewModel(application, teaRepository, infusionRepository,
+                noteRepository, counterRepository, actualSettingsRepository);
     }
 
     private void mockResources() {
@@ -73,14 +70,6 @@ public class MainViewModelTest {
                 "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
         when(application.getResources()).thenReturn(resources);
         when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
-    }
-
-    private void mockRepositories() throws Exception {
-        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
-        whenNew(InfusionRepository.class).withAnyArguments().thenReturn(infusionRepository);
-        whenNew(NoteRepository.class).withAnyArguments().thenReturn(noteRepository);
-        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
-        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
     }
 
     private void mockSettings() {

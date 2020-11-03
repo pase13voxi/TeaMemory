@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.main;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -37,12 +38,20 @@ class MainViewModel extends ViewModel {
     private final ActualSettings actualSettings;
 
     MainViewModel(Application application) {
+        this(application, new TeaRepository(application), new InfusionRepository(application),
+                new NoteRepository(application), new CounterRepository(application),
+                new ActualSettingsRepository(application));
+    }
 
-        teaRepository = new TeaRepository(application);
-        infusionRepository = new InfusionRepository(application);
-        noteRepository = new NoteRepository(application);
-        counterRepository = new CounterRepository(application);
-        actualSettingsRepository = new ActualSettingsRepository(application);
+    @VisibleForTesting
+    MainViewModel(Application application, TeaRepository teaRepository, InfusionRepository infusionRepository,
+                  NoteRepository noteRepository, CounterRepository counterRepository,
+                  ActualSettingsRepository actualSettingsRepository) {
+        this.teaRepository = teaRepository;
+        this.infusionRepository = infusionRepository;
+        this.noteRepository = noteRepository;
+        this.counterRepository = counterRepository;
+        this.actualSettingsRepository = actualSettingsRepository;
 
         if (actualSettingsRepository.getCountItems() == 0) {
             createDefaultTeas(application);
