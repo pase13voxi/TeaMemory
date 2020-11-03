@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -321,6 +322,66 @@ public class ShowTeaTest {
             assertThat(buttonInfo.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void showDialogAmountAndCalcuateAmountTeaSpoon() {
+        mockDB();
+        mockTea(VARIETY, 4, TEA_SPOON, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
+
+            buttonCalculateAmount.performClick();
+            AlertDialog dialogCalculateAmount = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.showtea_dialog_amount);
+
+            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
+            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
+
+            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 ts / 1.0 L");
+
+            seekBarAmountPerAmount.setProgress(5);
+
+            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 ts / 0.5 L");
+        });
+    }
+
+    @Test
+    public void showDialogAmountAndCalcuateAmountGram() {
+        mockDB();
+        mockTea(VARIETY, 4, GRAM, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockActualSettings(CELSIUS, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
+
+            buttonCalculateAmount.performClick();
+            AlertDialog dialogCalculateAmount = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.showtea_dialog_amount);
+
+            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
+            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
+
+            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 g / 1.0 L");
+
+            seekBarAmountPerAmount.setProgress(5);
+
+            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 g / 0.5 L");
         });
     }
 
