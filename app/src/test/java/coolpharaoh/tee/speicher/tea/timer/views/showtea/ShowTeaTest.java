@@ -492,12 +492,12 @@ public class ShowTeaTest {
     }
 
     @Test
-    public void switchBetweenInfusions() {
+    public void switchBetweenInfusionsCelsius() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, "5:00", null}),
-                Arrays.asList(new Integer[]{100, 100, 100}), Arrays.asList(new Integer[]{212, 212, 212}));
+                Arrays.asList(new Integer[]{100, -500, 100}), Arrays.asList(new Integer[]{212, -500, 212}));
         mockActualSettings(CELSIUS, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -511,16 +511,19 @@ public class ShowTeaTest {
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
             Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
             Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
 
             assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(buttonExchange.isEnabled()).isFalse();
+            assertThat(textViewTemperature.getText()).hasToString("100 °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
 
             buttonNextInfusion.performClick();
             assertThat(buttonExchange.isEnabled()).isTrue();
+            assertThat(textViewTemperature.getText()).hasToString("- °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
 
@@ -531,7 +534,46 @@ public class ShowTeaTest {
             ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialogInfusionIndex);
             shadowDialog.clickOnItem(2);
             assertThat(buttonExchange.isEnabled()).isFalse();
+            assertThat(textViewTemperature.getText()).hasToString("100 °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void switchBetweenInfusionsFahrenheit() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{null, "5:00"}),
+                Arrays.asList(new Integer[]{100, -500}), Arrays.asList(new Integer[]{212, -500}));
+        mockActualSettings(FAHRENHEIT, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
+            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
+
+            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(buttonExchange.isEnabled()).isFalse();
+            assertThat(textViewTemperature.getText()).hasToString("212 °F");
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
+            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+
+            buttonNextInfusion.performClick();
+            assertThat(buttonExchange.isEnabled()).isTrue();
+            assertThat(textViewTemperature.getText()).hasToString("- °F");
+            assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
     }
