@@ -27,8 +27,6 @@ public class ForegroundTimerTest {
     SharedTimerPreferences sharedTimerPreferences;
     @Mock
     BackgroundTimer backgroundTimer;
-    @Mock
-    CountDownTimer countDownTimer;
 
     @Before
     public void setUp() throws Exception {
