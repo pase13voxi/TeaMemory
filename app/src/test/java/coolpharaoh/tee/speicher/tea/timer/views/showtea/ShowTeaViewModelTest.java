@@ -8,8 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -37,11 +36,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
+@RunWith(MockitoJUnitRunner.class)
 public class ShowTeaViewModelTest {
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
     private ShowTeaViewModel showTeaViewModel;
@@ -66,17 +62,9 @@ public class ShowTeaViewModelTest {
     private static final long TEA_ID = 1L;
 
     @Before
-    public void setUp() throws Exception {
-        mockRepositories();
-        showTeaViewModel = new ShowTeaViewModel(TEA_ID, application);
-    }
-
-    private void mockRepositories() throws Exception {
-        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
-        whenNew(InfusionRepository.class).withAnyArguments().thenReturn(infusionRepository);
-        whenNew(NoteRepository.class).withAnyArguments().thenReturn(noteRepository);
-        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
-        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
+    public void setUp() {
+        showTeaViewModel = new ShowTeaViewModel(TEA_ID, application, teaRepository, infusionRepository,
+                noteRepository, counterRepository, actualSettingsRepository);
     }
 
     @Test

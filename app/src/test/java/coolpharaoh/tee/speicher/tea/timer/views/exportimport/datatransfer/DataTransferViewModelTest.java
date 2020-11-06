@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,10 +24,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
+@RunWith(MockitoJUnitRunner.class)
 public class DataTransferViewModelTest {
 
     private DataTransferViewModel dataTransferViewModel;
@@ -43,13 +40,9 @@ public class DataTransferViewModelTest {
     NoteRepository noteRepository;
 
     @Before
-    public void setUp() throws Exception {
-        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
-        whenNew(InfusionRepository.class).withAnyArguments().thenReturn(infusionRepository);
-        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
-        whenNew(NoteRepository.class).withAnyArguments().thenReturn(noteRepository);
-
-        dataTransferViewModel = new DataTransferViewModel(null);
+    public void setUp() {
+        dataTransferViewModel = new DataTransferViewModel(teaRepository, infusionRepository,
+                counterRepository, noteRepository);
     }
 
     @Test

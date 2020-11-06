@@ -2,6 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
+
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
@@ -14,11 +16,15 @@ class SettingsViewModel {
     private final ActualSettings actualSettings;
 
     public SettingsViewModel(Application application) {
+        this(new TeaRepository(application), new ActualSettingsRepository(application));
+    }
 
-        actualSettingsRepository = new ActualSettingsRepository(application);
+    @VisibleForTesting
+    public SettingsViewModel(TeaRepository teaRepository,
+                             ActualSettingsRepository actualSettingsRepository) {
+        this.teaRepository = teaRepository;
+        this.actualSettingsRepository = actualSettingsRepository;
         actualSettings = actualSettingsRepository.getSettings();
-
-        teaRepository = new TeaRepository(application);
     }
 
     //Settings

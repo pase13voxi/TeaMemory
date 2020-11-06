@@ -13,9 +13,11 @@ public class StatisticsViewModel {
     private final CounterRepository counterRepository;
 
     public StatisticsViewModel(Application application) {
+        this(new CounterRepository(application));
+    }
 
-        counterRepository = new CounterRepository(application);
-
+    public StatisticsViewModel(CounterRepository counterRepository) {
+        this.counterRepository = counterRepository;
         refreshAllCounter();
     }
 

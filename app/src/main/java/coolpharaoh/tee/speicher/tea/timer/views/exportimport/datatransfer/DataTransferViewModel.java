@@ -23,10 +23,16 @@ class DataTransferViewModel extends ViewModel {
     private final NoteRepository noteRepository;
 
     DataTransferViewModel(Application application) {
-        teaRepository = new TeaRepository(application);
-        infusionRepository = new InfusionRepository(application);
-        counterRepository = new CounterRepository(application);
-        noteRepository = new NoteRepository(application);
+        this(new TeaRepository(application), new InfusionRepository(application),
+                new CounterRepository(application), new NoteRepository(application));
+    }
+
+    DataTransferViewModel(TeaRepository teaRepository, InfusionRepository infusionRepository,
+                          CounterRepository counterRepository, NoteRepository noteRepository) {
+        this.teaRepository = teaRepository;
+        this.infusionRepository = infusionRepository;
+        this.counterRepository = counterRepository;
+        this.noteRepository = noteRepository;
     }
 
     //Teas

@@ -2,6 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.showtea;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.Date;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
@@ -31,14 +33,22 @@ class ShowTeaViewModel {
     private int infusionIndex = 0;
 
     ShowTeaViewModel(long teaId, Application application) {
+        this(teaId, application, new TeaRepository(application), new InfusionRepository(application),
+                new NoteRepository(application), new CounterRepository(application),
+                new ActualSettingsRepository(application));
+    }
+
+    @VisibleForTesting
+    ShowTeaViewModel(long teaId, Application application, TeaRepository teaRepository,
+                     InfusionRepository infusionRepository, NoteRepository noteRepository,
+                     CounterRepository counterRepository, ActualSettingsRepository actualSettingsRepository) {
         this.teaId = teaId;
         this.application = application;
-
-        teaRepository = new TeaRepository(application);
-        infusionRepository = new InfusionRepository(application);
-        noteRepository = new NoteRepository(application);
-        counterRepository = new CounterRepository(application);
-        actualSettingsRepository = new ActualSettingsRepository(application);
+        this.teaRepository = teaRepository;
+        this.infusionRepository = infusionRepository;
+        this.noteRepository = noteRepository;
+        this.counterRepository = counterRepository;
+        this.actualSettingsRepository = actualSettingsRepository;
     }
 
     // Tea

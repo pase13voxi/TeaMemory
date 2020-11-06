@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
@@ -16,26 +15,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
+@RunWith(MockitoJUnitRunner.class)
 public class SettingsViewModelTest {
     private SettingsViewModel settingsViewModel;
 
     @Mock
-    ActualSettingsRepository actualSettingsRepository;
-    @Mock
     TeaRepository teaRepository;
+    @Mock
+    ActualSettingsRepository actualSettingsRepository;
 
     @Before
-    public void setUp() throws Exception {
-        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
+    public void setUp() {
         when(actualSettingsRepository.getSettings()).thenReturn(new ActualSettings());
 
-        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
-
-        settingsViewModel = new SettingsViewModel(null);
+        settingsViewModel = new SettingsViewModel(teaRepository, actualSettingsRepository);
     }
 
     @Test
