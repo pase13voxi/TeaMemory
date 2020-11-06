@@ -156,6 +156,10 @@ public class StatisticsViewModelTest {
 
         List<Counter> counterAfter = captor.getAllValues();
 
+        for (Counter counter : counterAfter) {
+            System.out.println("Day: " + counter.getDay() + " ; Week: " + counter.getWeek() + " ; Month: " + counter.getMonth() + " ; Overall: " + counter.getOverall());
+        }
+
         assertThat(counterAfter.get(0)).isEqualTo(noRefresh);
 
         assertThat(counterAfter.get(1).getDay()).isEqualTo(0);
