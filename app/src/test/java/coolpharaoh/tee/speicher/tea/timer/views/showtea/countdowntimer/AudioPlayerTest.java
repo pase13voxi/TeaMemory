@@ -16,7 +16,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(value = Uri.class, fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.views.showtea.timer.*")
+@PrepareForTest(value = Uri.class, fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.*")
 public class AudioPlayerTest {
 
     @Mock
