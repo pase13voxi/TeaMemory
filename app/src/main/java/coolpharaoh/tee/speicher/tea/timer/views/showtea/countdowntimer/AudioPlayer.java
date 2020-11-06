@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.showtea.timer;
+package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 import android.app.Application;
 import android.media.AudioManager;

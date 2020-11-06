@@ -99,8 +99,8 @@
                 android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
         </activity>
 
-        <receiver android:name=".views.showtea.timer.TeaCompleteReceiver" />
-        <service android:name=".views.showtea.timer.NotificationService" />
+        <receiver android:name=".views.showtea.countdowntimer.TeaCompleteReceiver" />
+        <service android:name=".views.showtea.countdowntimer.NotificationService" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.showtea.timer;
+package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 import org.junit.Before;
 import org.junit.Test;
