@@ -33,7 +33,7 @@ android {
     testOptions {
         unitTests.includeAndroidResources = true
         // Return default values for CountDownTimer
-        unitTests.returnDefaultValues = true
+        //unitTests.returnDefaultValues = true
         unitTests.all {
             jacoco {
                 includeNoLocationClasses = true
