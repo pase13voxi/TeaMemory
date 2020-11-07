@@ -1,17 +1,17 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 
-import android.content.Context;
+import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-class SharedTimerPreferences {
+public class SharedTimerPreferences {
 
     private static final String START_TIME = "countdown_timer";
     private final SharedPreferences preferences;
 
-    SharedTimerPreferences(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    public SharedTimerPreferences(Application application) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(application);
         setStartedTime(0);
     }
 

@@ -41,7 +41,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
-import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.ForegroundTimer;
+import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
+import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
@@ -75,7 +76,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private long maxMilliSec;
     private int percent;
 
-    private ForegroundTimer foregroundTimer;
+    private TimerController foregroundTimer;
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -133,7 +134,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         initializeInformationWindow();
 
-        foregroundTimer = new ForegroundTimer(this);
+        foregroundTimer = new TimerController(getApplication(), new SharedTimerPreferences(getApplication()));
 
         buttonStartTimer = findViewById(R.id.buttonStartTimer);
         buttonStartTimer.setOnClickListener(v -> startOrResetTimer());
@@ -460,7 +461,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     protected void onResume() {
         super.onResume();
 
-        registerReceiver(broadcastReceiver, new IntentFilter(ForegroundTimer.COUNTDOWN_BR));
+        registerReceiver(broadcastReceiver, new IntentFilter(TimerController.COUNTDOWN_BR));
 
         foregroundTimer.resumeForegroundTimer();
     }
