@@ -1,47 +1,45 @@
 package coolpharaoh.tee.speicher.tea.timer.views.statistics;
 
-import android.app.Application;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
+@RunWith(MockitoJUnitRunner.class)
 public class StatisticsViewModelTest {
+    public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
+
     private StatisticsViewModel statisticsViewModel;
 
     @Mock
     CounterRepository counterRepository;
-
     @Mock
-    Application application;
+    DateUtility fixedDate;
 
     @Before
-    public void setUp() throws Exception {
-        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
-
-        statisticsViewModel = new StatisticsViewModel(application);
+    public void setUp() {
+        statisticsViewModel = new StatisticsViewModel(counterRepository);
     }
 
     @Test
@@ -138,11 +136,15 @@ public class StatisticsViewModelTest {
 
     @Test
     public void refreshAllCounter() {
-        Instant now = Instant.now();
+
+        Instant now = getFixedDate();
         Date today = Date.from(now);
         Date dayBefore = Date.from(now.minus(Duration.ofDays(1)));
         Date weekBefore = Date.from(now.minus(Duration.ofDays(7)));
         Date monthBefore = Date.from(now.minus(Duration.ofDays(31)));
+
+        when(fixedDate.getDate()).thenReturn(today);
+        CurrentDate.setFixedDate(fixedDate);
 
         List<Counter> countersBefore = new ArrayList<>();
 
@@ -152,7 +154,7 @@ public class StatisticsViewModelTest {
         countersBefore.add(refreshDay);
         Counter refreshWeek = new Counter(1L, 4, 7, 9, 15L, today, weekBefore, today);
         countersBefore.add(refreshWeek);
-        Counter refreshMonth = new Counter(1L, 4, 7, 9, 15L, today, today,monthBefore);
+        Counter refreshMonth = new Counter(1L, 4, 7, 9, 15L, today, today, monthBefore);
         countersBefore.add(refreshMonth);
         Counter refreshAll = new Counter(1L, 4, 7, 9, 15L, monthBefore, monthBefore, monthBefore);
         countersBefore.add(refreshAll);
@@ -172,24 +174,29 @@ public class StatisticsViewModelTest {
 
         assertThat(counterAfter.get(0)).isEqualTo(noRefresh);
 
-        assertThat(counterAfter.get(1).getDay()).isEqualTo(0);
+        assertThat(counterAfter.get(1).getDay()).isZero();
         assertThat(counterAfter.get(1).getWeek()).isEqualTo(7);
         assertThat(counterAfter.get(1).getMonth()).isEqualTo(9);
         assertThat(counterAfter.get(1).getOverall()).isEqualTo(15L);
 
         assertThat(counterAfter.get(2).getDay()).isEqualTo(4);
-        assertThat(counterAfter.get(2).getWeek()).isEqualTo(0);
+        assertThat(counterAfter.get(2).getWeek()).isZero();
         assertThat(counterAfter.get(2).getMonth()).isEqualTo(9);
         assertThat(counterAfter.get(2).getOverall()).isEqualTo(15L);
 
         assertThat(counterAfter.get(3).getDay()).isEqualTo(4);
         assertThat(counterAfter.get(3).getWeek()).isEqualTo(7);
-        assertThat(counterAfter.get(3).getMonth()).isEqualTo(0);
+        assertThat(counterAfter.get(3).getMonth()).isZero();
         assertThat(counterAfter.get(3).getOverall()).isEqualTo(15L);
 
-        assertThat(counterAfter.get(4).getDay()).isEqualTo(0);
-        assertThat(counterAfter.get(4).getWeek()).isEqualTo(0);
-        assertThat(counterAfter.get(4).getMonth()).isEqualTo(0);
+        assertThat(counterAfter.get(4).getDay()).isZero();
+        assertThat(counterAfter.get(4).getWeek()).isZero();
+        assertThat(counterAfter.get(4).getMonth()).isZero();
         assertThat(counterAfter.get(4).getOverall()).isEqualTo(15L);
+    }
+
+    private Instant getFixedDate() {
+        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        return Instant.now(clock);
     }
 }
