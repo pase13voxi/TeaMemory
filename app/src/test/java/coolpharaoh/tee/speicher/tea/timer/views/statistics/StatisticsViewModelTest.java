@@ -136,7 +136,6 @@ public class StatisticsViewModelTest {
 
     @Test
     public void refreshAllCounter() {
-
         Instant now = getFixedDate();
         Date today = Date.from(now);
         Date dayBefore = Date.from(now.minus(Duration.ofDays(1)));
@@ -167,10 +166,6 @@ public class StatisticsViewModelTest {
         verify(counterRepository, times(5)).updateCounter(captor.capture());
 
         List<Counter> counterAfter = captor.getAllValues();
-
-        for (Counter counter : counterAfter) {
-            System.out.println("Day: " + counter.getDay() + " ; Week: " + counter.getWeek() + " ; Month: " + counter.getMonth() + " ; Overall: " + counter.getOverall());
-        }
 
         assertThat(counterAfter.get(0)).isEqualTo(noRefresh);
 

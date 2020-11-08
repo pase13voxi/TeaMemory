@@ -2,6 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.statistics;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
@@ -16,6 +18,7 @@ public class StatisticsViewModel {
         this(new CounterRepository(application));
     }
 
+    @VisibleForTesting
     public StatisticsViewModel(CounterRepository counterRepository) {
         this.counterRepository = counterRepository;
         refreshAllCounter();

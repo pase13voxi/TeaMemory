@@ -2,6 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
+
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -14,6 +16,7 @@ class TimerViewModel {
         this(new TeaRepository(application), new ActualSettingsRepository(application));
     }
 
+    @VisibleForTesting
     TimerViewModel(TeaRepository teaRepository, ActualSettingsRepository actualSettingsRepository) {
         this.teaRepository = teaRepository;
         this.actualSettingsRepository = actualSettingsRepository;
