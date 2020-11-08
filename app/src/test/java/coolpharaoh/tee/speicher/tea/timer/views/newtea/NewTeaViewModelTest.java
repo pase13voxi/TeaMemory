@@ -8,8 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -34,10 +33,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "coolpharaoh.tee.speicher.tea.timer.*")
+@RunWith(MockitoJUnitRunner.class)
 public class NewTeaViewModelTest {
     private static final String CELSIUS = "Celsius";
     private static final String FAHRENHEIT = "Fahrenheit";
@@ -68,19 +65,12 @@ public class NewTeaViewModelTest {
     private List<Infusion> infusions;
 
     @Before
-    public void setUp() throws Exception {
-        mockDB();
+    public void setUp() {
         mockTea();
-        newTeaViewModelEmpty = new NewTeaViewModel(application);
-        newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, application);
-    }
-
-    private void mockDB() throws Exception {
-        whenNew(TeaRepository.class).withAnyArguments().thenReturn(teaRepository);
-        whenNew(InfusionRepository.class).withAnyArguments().thenReturn(infusionRepository);
-        whenNew(NoteRepository.class).withAnyArguments().thenReturn(noteRepository);
-        whenNew(CounterRepository.class).withAnyArguments().thenReturn(counterRepository);
-        whenNew(ActualSettingsRepository.class).withAnyArguments().thenReturn(actualSettingsRepository);
+        newTeaViewModelEmpty = new NewTeaViewModel(null, application, teaRepository,
+                infusionRepository, noteRepository, counterRepository, actualSettingsRepository);
+        newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, application, teaRepository,
+                infusionRepository, noteRepository, counterRepository, actualSettingsRepository);
     }
 
     private void mockTea() {

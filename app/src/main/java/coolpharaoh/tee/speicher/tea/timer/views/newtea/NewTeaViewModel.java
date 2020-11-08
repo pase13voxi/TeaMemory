@@ -2,6 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,36 +29,47 @@ class NewTeaViewModel {
     private final CounterRepository counterRepository;
     private final ActualSettingsRepository actualSettingsRepository;
 
-    private final Tea tea;
-    private final List<Infusion> infusions;
+    private Tea tea;
+    private List<Infusion> infusions;
 
     private int infusionIndex = 0;
 
-    NewTeaViewModel(long teaId, Application application) {
-        this.application = application;
-
-        teaRepository = new TeaRepository(application);
-        infusionRepository = new InfusionRepository(application);
-        noteRepository = new NoteRepository(application);
-        counterRepository = new CounterRepository(application);
-        actualSettingsRepository = new ActualSettingsRepository(application);
-
-        tea = teaRepository.getTeaById(teaId);
-        infusions = infusionRepository.getInfusionsByTeaId(teaId);
+    NewTeaViewModel(Application application) {
+        this(null, application, new TeaRepository(application),
+                new InfusionRepository(application), new NoteRepository(application),
+                new CounterRepository(application), new ActualSettingsRepository(application));
     }
 
-    NewTeaViewModel(Application application) {
+    NewTeaViewModel(long teaId, Application application) {
+        this(teaId, application, new TeaRepository(application),
+                new InfusionRepository(application), new NoteRepository(application),
+                new CounterRepository(application), new ActualSettingsRepository(application));
+    }
+
+    @VisibleForTesting
+    NewTeaViewModel(Long teaId, Application application, TeaRepository teaRepository,
+                    InfusionRepository infusionRepository, NoteRepository noteRepository,
+                    CounterRepository counterRepository,
+                    ActualSettingsRepository actualSettingsRepository) {
         this.application = application;
+        this.teaRepository = teaRepository;
+        this.infusionRepository = infusionRepository;
+        this.noteRepository = noteRepository;
+        this.counterRepository = counterRepository;
+        this.actualSettingsRepository = actualSettingsRepository;
 
-        teaRepository = new TeaRepository(application);
-        infusionRepository = new InfusionRepository(application);
-        noteRepository = new NoteRepository(application);
-        counterRepository = new CounterRepository(application);
-        actualSettingsRepository = new ActualSettingsRepository(application);
+        initializeTeaAndInfusions(teaId);
+    }
 
-        tea = new Tea();
-        infusions = new ArrayList<>();
-        addInfusion();
+    private void initializeTeaAndInfusions(Long teaId) {
+        if (teaId == null) {
+            tea = new Tea();
+            infusions = new ArrayList<>();
+            addInfusion();
+        } else {
+            tea = teaRepository.getTeaById(teaId);
+            infusions = infusionRepository.getInfusionsByTeaId(teaId);
+        }
     }
 
     // Tea
