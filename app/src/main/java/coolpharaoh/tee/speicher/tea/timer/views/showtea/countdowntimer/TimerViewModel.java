@@ -11,8 +11,12 @@ class TimerViewModel {
     private final ActualSettingsRepository actualSettingsRepository;
 
     TimerViewModel(Application application) {
-        teaRepository = new TeaRepository(application);
-        actualSettingsRepository = new ActualSettingsRepository(application);
+        this(new TeaRepository(application), new ActualSettingsRepository(application));
+    }
+
+    TimerViewModel(TeaRepository teaRepository, ActualSettingsRepository actualSettingsRepository) {
+        this.teaRepository = teaRepository;
+        this.actualSettingsRepository = actualSettingsRepository;
     }
 
     //teaDAO
