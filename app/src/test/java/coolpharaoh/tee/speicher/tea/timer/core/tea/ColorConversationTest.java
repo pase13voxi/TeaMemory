@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ColorConversationTest {
@@ -33,7 +33,7 @@ public class ColorConversationTest {
 
         int color = ColorConversation.getVarietyColor(0, application);
 
-        assertThat(color).isEqualTo(0);
+        assertThat(color).isZero();
     }
 
 
