@@ -12,17 +12,22 @@ class AudioPlayer {
     private static final String LOG_TAG = AudioPlayer.class.getSimpleName();
 
     private final Application application;
-    private MediaPlayer mediaPlayer;
+    private final TimerViewModel timerViewModel;
+    private final MediaPlayer mediaPlayer;
 
     AudioPlayer(Application application) {
+        this(application, new TimerViewModel(application), new MediaPlayer());
+    }
+
+    AudioPlayer(Application application, TimerViewModel timerViewModel, MediaPlayer mediaPlayer) {
         this.application = application;
+        this.timerViewModel = timerViewModel;
+        this.mediaPlayer = mediaPlayer;
     }
 
     void start() {
-        TimerViewModel timerViewModel = new TimerViewModel(application);
         //initial music track
         if (timerViewModel.getMusicchoice() != null) {
-            mediaPlayer = new MediaPlayer();
             Uri uri = Uri.parse(timerViewModel.getMusicchoice());
             try {
                 //synchronize musicstreams
@@ -37,7 +42,6 @@ class AudioPlayer {
     }
 
     void reset() {
-        if (mediaPlayer != null)
-            mediaPlayer.release();
+        mediaPlayer.release();
     }
 }
