@@ -23,9 +23,13 @@ class Notifier {
     private final long teaId;
 
     Notifier(final Application application, final long teaId) {
+        this(application, teaId, new TimerViewModel(application));
+    }
+
+    Notifier(final Application application, final long teaId, final TimerViewModel timerViewModel) {
         this.application = application;
         this.teaId = teaId;
-        timerViewModel = new TimerViewModel(application);
+        this.timerViewModel = timerViewModel;
     }
 
     android.app.Notification getNotification() {
