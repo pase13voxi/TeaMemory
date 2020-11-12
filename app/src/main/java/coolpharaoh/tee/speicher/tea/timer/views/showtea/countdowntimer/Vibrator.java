@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
@@ -15,6 +16,8 @@ class Vibrator {
     private Vibrator() {
     }
 
+    // The SDK is checked but android studio doesn't recognize it.
+    @SuppressLint("NewApi")
     static void vibrate(Application application) {
 
         TimerViewModel timerViewModel = new TimerViewModel(application);
@@ -27,7 +30,6 @@ class Vibrator {
                 // Vibrate for 1000 milliseconds
                 long[] twice = {0, 500, 400, 500};
                 if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
-                    // The SDK is checked but android studio doesn't recognize it.
                     vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
                 } else {
                     vibrator.vibrate(twice, -1);

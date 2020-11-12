@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -33,9 +34,10 @@ class Notifier {
         this.timerViewModel = timerViewModel;
     }
 
+    // The SDK is checked but android studio doesn't recognize it.
+    @SuppressLint("NewApi")
     android.app.Notification getNotification() {
         if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
-            // The SDK is checked but android studio doesn't recognize it.
             createChannel();
             return getNotificationAfterAndroidO();
         } else {
