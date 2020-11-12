@@ -10,6 +10,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -33,7 +34,8 @@ class Notifier {
     }
 
     android.app.Notification getNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
+            // The SDK is checked but android studio doesn't recognize it.
             createChannel();
             return getNotificationAfterAndroidO();
         } else {

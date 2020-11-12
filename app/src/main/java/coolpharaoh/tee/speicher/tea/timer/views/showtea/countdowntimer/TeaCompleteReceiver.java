@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+
 public class TeaCompleteReceiver extends BroadcastReceiver {
 
     @Override
@@ -12,7 +14,8 @@ public class TeaCompleteReceiver extends BroadcastReceiver {
         final long teaId = intent.getLongExtra("teaId", 0);
         Intent notificationService = new Intent(context, NotificationService.class);
         notificationService.putExtra("teaId", teaId);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
+            // The SDK is checked but android studio doesn't recognize it.
             context.startForegroundService(notificationService);
         } else {
             context.startService(notificationService);

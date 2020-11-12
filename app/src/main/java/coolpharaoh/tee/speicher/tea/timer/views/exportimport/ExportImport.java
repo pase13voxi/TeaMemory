@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.JsonIOAdapter;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
@@ -152,7 +153,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogImport() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
             ViewGroup parent = findViewById(R.id.exportimport_parent);
 
             LayoutInflater inflater = getLayoutInflater();
@@ -215,7 +216,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void showWarning() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+        if (CurrentSdk.getSdkVersion() < Build.VERSION_CODES.O) {
             TextView textViewWarning = findViewById(R.id.textViewWarning);
             textViewWarning.setVisibility(View.VISIBLE);
         }

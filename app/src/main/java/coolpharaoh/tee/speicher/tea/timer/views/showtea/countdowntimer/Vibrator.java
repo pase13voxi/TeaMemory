@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.util.Log;
 
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+
 class Vibrator {
     private static final String LOG_TAG = Vibrator.class.getSimpleName();
 
@@ -24,7 +26,8 @@ class Vibrator {
             } else {
                 // Vibrate for 1000 milliseconds
                 long[] twice = {0, 500, 400, 500};
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
+                    // The SDK is checked but android studio doesn't recognize it.
                     vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
                 } else {
                     vibrator.vibrate(twice, -1);

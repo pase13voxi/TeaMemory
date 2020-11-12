@@ -17,6 +17,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -32,19 +34,38 @@ public class NotifierTest {
     public MockitoRule rule = MockitoJUnit.rule();
     @Mock
     TimerViewModel timerViewModel;
+    @Mock
+    SystemUtility systemUtility;
 
     @Before
     public void setUp() {
+        CurrentSdk.setFixedSystem(systemUtility);
         when(timerViewModel.getName(1L)).thenReturn(TEA_NAME);
     }
 
     @Test
-    public void getNotification() {
+    public void getNotificationAfterAndroidO() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
+
         Application application = ApplicationProvider.getApplicationContext();
         Notifier notifier = new Notifier(application, 1L, timerViewModel);
         Notification notification = notifier.getNotification();
 
         assertThat(notification.getChannelId()).isEqualTo(CHANNEL_ID_NOTIFY);
+        assertThat(notification.tickerText).isEqualTo(application.getString(R.string.notification_ticker));
+        assertThat(notification.extras.get("android.title")).isEqualTo(application.getString(R.string.notification_title));
+        assertThat(notification.extras.get("android.text")).isEqualTo(TEA_NAME);
+    }
+
+    @Test
+    public void getNotificationBeforeAndroidO() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
+
+        Application application = ApplicationProvider.getApplicationContext();
+        Notifier notifier = new Notifier(application, 1L, timerViewModel);
+        Notification notification = notifier.getNotification();
+
+        assertThat(notification.getChannelId()).isNull();
         assertThat(notification.tickerText).isEqualTo(application.getString(R.string.notification_ticker));
         assertThat(notification.extras.get("android.title")).isEqualTo(application.getString(R.string.notification_title));
         assertThat(notification.extras.get("android.text")).isEqualTo(TEA_NAME);

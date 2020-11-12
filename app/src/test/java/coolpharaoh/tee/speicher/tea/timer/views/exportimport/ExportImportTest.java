@@ -6,7 +6,9 @@ import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -25,6 +27,8 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ExportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.JsonIOAdapter;
@@ -55,12 +59,16 @@ public class ExportImportTest {
     ExportJson exportJson;
     @Mock
     ImportJson importJson;
+    @Mock
+    SystemUtility systemUtility;
 
 
     @Before
-    public void setUp(){
+    public void setUp() {
         PermissionRequester.setMockedPermissions(permissions);
         JsonIOAdapter.setMockedExportImport(exportJson, importJson);
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
+        CurrentSdk.setFixedSystem(systemUtility);
     }
 
     @Test
@@ -239,6 +247,17 @@ public class ExportImportTest {
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_failed_dialog_header));
             assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_import_failed_dialog_description));
+        });
+    }
+
+    @Test
+    public void launchActivityWithSdk25AndExpectWarning() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
+
+        ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
+        exportImportActivityScenario.onActivity(exportImport -> {
+            TextView textViewWarning = exportImport.findViewById(R.id.textViewWarning);
+            assertThat(textViewWarning.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }
 
