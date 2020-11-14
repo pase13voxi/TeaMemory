@@ -47,6 +47,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
+import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -629,6 +630,65 @@ public class ShowTeaTest {
             // visualizeTeaCup
             assertThat(imageViewCup.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(imageViewFill.getVisibility()).isEqualTo(View.VISIBLE);
+        });
+    }
+
+    @Test
+    public void timerUpdate() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
+                Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
+        mockActualSettings(CELSIUS, false, true);
+        mockCounter();
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
+
+            startButton.performClick();
+
+            Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
+            broadcastIntent.putExtra("countdown", 30000L);
+            broadcastIntent.putExtra("ready", false);
+            showTea.sendBroadcast(broadcastIntent);
+
+            assertThat(textViewTimer.getText()).hasToString("00 : 30");
+        });
+    }
+
+    @Test
+    public void timerFinish() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
+                Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
+        mockActualSettings(CELSIUS, false, true);
+        mockCounter();
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
+            ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
+
+            startButton.performClick();
+
+            Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
+            broadcastIntent.putExtra("ready", true);
+            showTea.sendBroadcast(broadcastIntent);
+
+            assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.showtea_tea_ready));
+            assertThat(imageViewSteam.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }
 
