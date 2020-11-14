@@ -66,12 +66,14 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 public class ShowTeaTest {
     private static final String TEA_ID_EXTRA = "teaId";
     private static final long TEA_ID = 1L;
-    public static final String VARIETY = "variety";
+    private static final String VARIETY = "variety";
     private static final String CELSIUS = "Celsius";
     private static final String FAHRENHEIT = "Fahrenheit";
-    public static final String TEA_SPOON = "Ts";
-    public static final String GRAM = "Gr";
+    private static final String TEA_SPOON = "Ts";
+    private static final String GRAM = "Gr";
     private static final String INSERTED_NOTE = "Any note.";
+    private static final String BROADCAST_EXTRA_READY = "ready";
+    private static final String BROADCAST_EXTRA_COUNTDOWN = "countdown";
 
     Tea tea;
     List<Infusion> infusions;
@@ -653,8 +655,8 @@ public class ShowTeaTest {
             startButton.performClick();
 
             Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastIntent.putExtra("countdown", 30000L);
-            broadcastIntent.putExtra("ready", false);
+            broadcastIntent.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
+            broadcastIntent.putExtra(BROADCAST_EXTRA_READY, false);
             showTea.sendBroadcast(broadcastIntent);
 
             assertThat(textViewTimer.getText()).hasToString("00 : 30");
@@ -682,7 +684,7 @@ public class ShowTeaTest {
             startButton.performClick();
 
             Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastIntent.putExtra("ready", true);
+            broadcastIntent.putExtra(BROADCAST_EXTRA_READY, true);
             showTea.sendBroadcast(broadcastIntent);
 
             assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.showtea_tea_ready));
@@ -714,12 +716,12 @@ public class ShowTeaTest {
             startButton.performClick();
 
             Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastUpdate.putExtra("countdown", 30000L);
-            broadcastUpdate.putExtra("ready", false);
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_READY, false);
             showTea.sendBroadcast(broadcastUpdate);
 
             Intent broadcastFinish = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastFinish.putExtra("ready", true);
+            broadcastFinish.putExtra(BROADCAST_EXTRA_READY, true);
             showTea.sendBroadcast(broadcastFinish);
 
             verify(counterDao, times(0)).update(any(Counter.class));
@@ -751,12 +753,12 @@ public class ShowTeaTest {
             startButton.performClick();
 
             Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastUpdate.putExtra("countdown", 30000L);
-            broadcastUpdate.putExtra("ready", false);
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_READY, false);
             showTea.sendBroadcast(broadcastUpdate);
 
             Intent broadcastFinish = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastFinish.putExtra("ready", true);
+            broadcastFinish.putExtra(BROADCAST_EXTRA_READY, true);
             showTea.sendBroadcast(broadcastFinish);
 
             assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
