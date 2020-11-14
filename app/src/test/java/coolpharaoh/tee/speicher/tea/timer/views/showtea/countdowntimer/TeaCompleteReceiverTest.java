@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class TeaCompleteReceiverTest {
+    public static final String TEA_ID = "teaId";
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Mock
@@ -40,14 +41,14 @@ public class TeaCompleteReceiverTest {
         TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
 
         Intent intent = new Intent();
-        intent.putExtra("teaId", 1L);
+        intent.putExtra(TEA_ID, 1L);
         teaCompleteReceiver.onReceive(application, intent);
 
         ArgumentCaptor<Intent> serviceCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(application).startForegroundService(serviceCaptor.capture());
         Intent service = serviceCaptor.getValue();
 
-        assertThat(service.getLongExtra("teaId", 0L)).isEqualTo(1L);
+        assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L);
     }
 
     @Test
@@ -57,7 +58,7 @@ public class TeaCompleteReceiverTest {
         TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
 
         Intent intent = new Intent();
-        intent.putExtra("teaId", 1L);
+        intent.putExtra(TEA_ID, 1L);
         teaCompleteReceiver.onReceive(application, intent);
 
 
@@ -65,6 +66,6 @@ public class TeaCompleteReceiverTest {
         verify(application).startService(serviceCaptor.capture());
         Intent service = serviceCaptor.getValue();
 
-        assertThat(service.getLongExtra("teaId", 0L)).isEqualTo(1L);
+        assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L);
     }
 }
