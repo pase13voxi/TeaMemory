@@ -637,9 +637,8 @@ public class ShowTeaTest {
     public void timerUpdate() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
-        mockInfusions(
-                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
-                Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, false, true);
         mockCounter();
 
@@ -666,9 +665,8 @@ public class ShowTeaTest {
     public void timerFinish() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
-        mockInfusions(
-                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
-                Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, false, true);
         mockCounter();
 
@@ -689,6 +687,81 @@ public class ShowTeaTest {
 
             assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.showtea_tea_ready));
             assertThat(imageViewSteam.getVisibility()).isEqualTo(View.VISIBLE);
+        });
+    }
+
+    @Test
+    public void startCoolDownTimerAndExpectNoAnimation() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("1:00"),
+                Collections.singletonList(95), Collections.singletonList(203));
+        mockActualSettings(CELSIUS, false, true);
+        mockCounter();
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
+            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+            ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
+
+            buttonExchange.performClick();
+            startButton.performClick();
+
+            Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
+            broadcastUpdate.putExtra("countdown", 30000L);
+            broadcastUpdate.putExtra("ready", false);
+            showTea.sendBroadcast(broadcastUpdate);
+
+            Intent broadcastFinish = new Intent(TimerController.COUNTDOWN_BR);
+            broadcastFinish.putExtra("ready", true);
+            showTea.sendBroadcast(broadcastFinish);
+
+            verify(counterDao, times(0)).update(any(Counter.class));
+            assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(imageViewFill.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(imageViewSteam.getVisibility()).isEqualTo(View.INVISIBLE);
+        });
+    }
+
+    @Test
+    public void startTimerWithSettingAnimationFalseAndExpectNoAnimation() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockActualSettings(CELSIUS, false, false);
+        mockCounter();
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
+            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+            ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
+
+            startButton.performClick();
+
+            Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
+            broadcastUpdate.putExtra("countdown", 30000L);
+            broadcastUpdate.putExtra("ready", false);
+            showTea.sendBroadcast(broadcastUpdate);
+
+            Intent broadcastFinish = new Intent(TimerController.COUNTDOWN_BR);
+            broadcastFinish.putExtra("ready", true);
+            showTea.sendBroadcast(broadcastFinish);
+
+            assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(imageViewFill.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(imageViewSteam.getVisibility()).isEqualTo(View.INVISIBLE);
         });
     }
 
