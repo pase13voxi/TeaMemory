@@ -651,6 +651,7 @@ public class ShowTeaTest {
         showTeaActivityScenario.onActivity(showTea -> {
             Button startButton = showTea.findViewById(R.id.buttonStartTimer);
             TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
+            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
 
             startButton.performClick();
 
@@ -660,6 +661,8 @@ public class ShowTeaTest {
             showTea.sendBroadcast(broadcastIntent);
 
             assertThat(textViewTimer.getText()).hasToString("00 : 30");
+            int imageId = showTea.getResources().getIdentifier("fill50pr", "drawable", showTea.getPackageName());
+            assertThat(imageViewFill.getTag()).isEqualTo(imageId);
         });
     }
 

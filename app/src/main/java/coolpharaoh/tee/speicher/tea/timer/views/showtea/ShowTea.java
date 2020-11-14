@@ -112,9 +112,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 percent = percentTmp;
 
                 Context context = getApplicationContext();
-                String pictureName = String.format("fill%spr", percent);
-                int pictureId = context.getResources().getIdentifier(pictureName, "drawable", context.getPackageName());
-                imageViewFill.setImageResource(pictureId);
+                String imageName = String.format("fill%spr", percent);
+                int imageId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
+                imageViewFill.setImageResource(imageId);
+                imageViewFill.setTag(imageId);
             }
         }
     };
