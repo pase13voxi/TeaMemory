@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -130,7 +132,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, true);
+        mockActualSettings(CELSIUS, true, false);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
@@ -155,7 +157,7 @@ public class ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, null, null}),
                 Arrays.asList(new Integer[]{100, 100, 90}), Arrays.asList(new Integer[]{212, 212, 176}));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
@@ -184,7 +186,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -223,7 +225,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 1, GRAM, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(FAHRENHEIT, false);
+        mockActualSettings(FAHRENHEIT, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -244,7 +246,7 @@ public class ShowTeaTest {
         mockTea(null, -500, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
                 Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -271,7 +273,7 @@ public class ShowTeaTest {
         mockTea(null, -500, GRAM, 0);
         mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
                 Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(FAHRENHEIT, false);
+        mockActualSettings(FAHRENHEIT, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -292,7 +294,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -331,7 +333,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 4, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -361,7 +363,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 4, GRAM, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -392,7 +394,7 @@ public class ShowTeaTest {
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
         mockNote(INSERTED_NOTE);
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -423,7 +425,7 @@ public class ShowTeaTest {
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
         mockNote("");
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -454,7 +456,7 @@ public class ShowTeaTest {
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
         mockCounter();
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -475,7 +477,7 @@ public class ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -498,7 +500,7 @@ public class ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, "5:00", null}),
                 Arrays.asList(new Integer[]{100, -500, 100}), Arrays.asList(new Integer[]{212, -500, 212}));
-        mockActualSettings(CELSIUS, false);
+        mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -547,7 +549,7 @@ public class ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{null, "5:00"}),
                 Arrays.asList(new Integer[]{100, -500}), Arrays.asList(new Integer[]{212, -500}));
-        mockActualSettings(FAHRENHEIT, false);
+        mockActualSettings(FAHRENHEIT, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -575,6 +577,109 @@ public class ShowTeaTest {
             assertThat(textViewTemperature.getText()).hasToString("- °F");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void startTimer() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
+                Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
+        mockActualSettings(CELSIUS, false, true);
+        mockCounter();
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
+            TextView textViewSeconds = showTea.findViewById(R.id.textViewSeconds);
+            TextView textViewDoublePoint = showTea.findViewById(R.id.textViewDoublePoint);
+            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
+            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
+            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+
+
+            startButton.performClick();
+
+            assertThat(startButton.getText()).hasToString(showTea.getString(R.string.showtea_timer_reset));
+            // collectDrinkingBehaviorInformation
+            verify(counterDao).update(any(Counter.class));
+            verify(teaDao, times(2)).update(any(Tea.class));
+            // disableInfusionBarAndCooldownSwitch
+            assertThat(buttonExchange.isEnabled()).isFalse();
+            assertThat(buttonInfusionIndex.isEnabled()).isFalse();
+            assertThat(buttonNextInfusion.isEnabled()).isFalse();
+            // hideTimeInputAndVisualizeTimerDisplay
+            assertThat(spinnerMinutes.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(spinnerSeconds.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(textViewMinutes.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(textViewSeconds.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(textViewDoublePoint.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(textViewTimer.getVisibility()).isEqualTo(View.VISIBLE);
+            // visualizeTeaCup
+            assertThat(imageViewCup.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(imageViewFill.getVisibility()).isEqualTo(View.VISIBLE);
+        });
+    }
+
+    @Test
+    public void resetTimer() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
+                Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
+        mockActualSettings(CELSIUS, false, true);
+        mockCounter();
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
+            TextView textViewSeconds = showTea.findViewById(R.id.textViewSeconds);
+            TextView textViewDoublePoint = showTea.findViewById(R.id.textViewDoublePoint);
+            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
+            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
+            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+
+
+            startButton.performClick();
+            // reset
+            startButton.performClick();
+
+            assertThat(startButton.getText()).hasToString(showTea.getString(R.string.showtea_timer_start));
+            // disableInfusionBarAndCooldownSwitch
+            assertThat(buttonExchange.isEnabled()).isTrue();
+            assertThat(buttonInfusionIndex.isEnabled()).isTrue();
+            assertThat(buttonNextInfusion.isEnabled()).isTrue();
+            // hideTimeInputAndVisualizeTimerDisplay
+            assertThat(spinnerMinutes.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(spinnerSeconds.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(textViewMinutes.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(textViewSeconds.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(textViewDoublePoint.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(textViewTimer.getVisibility()).isEqualTo(View.INVISIBLE);
+            // visualizeTeaCup
+            assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(imageViewFill.getVisibility()).isEqualTo(View.INVISIBLE);
         });
     }
 
@@ -615,10 +720,11 @@ public class ShowTeaTest {
         when(noteDao.getNoteByTeaId(TEA_ID)).thenReturn(note);
     }
 
-    private void mockActualSettings(String temperatureUnit, boolean dialog) {
+    private void mockActualSettings(String temperatureUnit, boolean dialog, boolean animation) {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit(temperatureUnit);
         actualSettings.setShowTeaAlert(dialog);
+        actualSettings.setAnimation(animation);
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
     }
 
