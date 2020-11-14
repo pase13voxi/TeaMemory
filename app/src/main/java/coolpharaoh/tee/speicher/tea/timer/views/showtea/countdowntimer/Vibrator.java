@@ -13,17 +13,23 @@ import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 class Vibrator {
     private static final String LOG_TAG = Vibrator.class.getSimpleName();
 
-    private Vibrator() {
+    private final Application application;
+    private final TimerViewModel timerViewModel;
+
+    Vibrator(final Application application) {
+        this(application, new TimerViewModel(application));
+    }
+
+    Vibrator(final Application application, final TimerViewModel timerViewModel) {
+        this.application = application;
+        this.timerViewModel = timerViewModel;
     }
 
     // The SDK is checked but android studio doesn't recognize it.
     @SuppressLint("NewApi")
-    static void vibrate(Application application) {
-
-        TimerViewModel timerViewModel = new TimerViewModel(application);
-
-        if (!isSilent(application) && timerViewModel.isVibration()) {
-            android.os.Vibrator vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
+    void vibrate() {
+        if (timerViewModel.isVibration() && !isSilent(application)) {
+            final android.os.Vibrator vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
             if (vibrator == null) {
                 throw new AssertionError("Vibrator is null.");
             } else {
@@ -38,8 +44,8 @@ class Vibrator {
         }
     }
 
-    private static boolean isSilent(Context context) {
-        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    private boolean isSilent(final Application application) {
+        AudioManager audio = (AudioManager) application.getSystemService(Context.AUDIO_SERVICE);
         if (audio == null) {
             Log.w(LOG_TAG, "Cannot discover ringer mode because audio manager is not available");
             return false;

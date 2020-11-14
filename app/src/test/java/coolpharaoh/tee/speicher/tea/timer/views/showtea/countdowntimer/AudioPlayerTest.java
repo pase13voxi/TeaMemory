@@ -2,11 +2,17 @@ package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 
@@ -16,9 +22,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+//could be removed when Robolectric supports Java 8 for API 29
+@Config(sdk = Build.VERSION_CODES.O_MR1)
+@RunWith(RobolectricTestRunner.class)
 public class AudioPlayerTest {
 
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
     @Mock
     TimerViewModel timerViewModel;
     @Mock
@@ -27,13 +37,14 @@ public class AudioPlayerTest {
     @Test
     public void startAudioPlayer() throws IOException {
         String musicChoice = "/music/choice";
+        Uri uri = Uri.parse(musicChoice);
         when(timerViewModel.getMusicchoice()).thenReturn(musicChoice);
 
         AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer).setAudioStreamType(AudioManager.STREAM_RING);
-        verify(mediaPlayer).setDataSource(null, null);
+        verify(mediaPlayer).setDataSource(null, uri);
         verify(mediaPlayer).prepare();
         verify(mediaPlayer).start();
     }

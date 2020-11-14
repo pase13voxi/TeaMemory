@@ -47,14 +47,14 @@ class Notifier {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createChannel() {
-        String name = application.getString(R.string.showtea_channel_name);
-        String description = application.getString(R.string.showtea_channel_description);
-        int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID_NOTIFY, name, importance);
+        final String name = application.getString(R.string.showtea_channel_name);
+        final String description = application.getString(R.string.showtea_channel_description);
+        final int importance = NotificationManager.IMPORTANCE_HIGH;
+        final NotificationChannel channel = new NotificationChannel(CHANNEL_ID_NOTIFY, name, importance);
         channel.setDescription(description);
         channel.setSound(null, null);
 
-        NotificationManager notificationManager = (NotificationManager) application.getSystemService(NOTIFICATION_SERVICE);
+        final NotificationManager notificationManager = (NotificationManager) application.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {
             throw new AssertionError("NotificationManager is null.");
         } else {
@@ -64,7 +64,7 @@ class Notifier {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private android.app.Notification getNotificationAfterAndroidO() {
-        android.app.Notification.Builder notification = new android.app.Notification.Builder(application, CHANNEL_ID_NOTIFY)
+        final android.app.Notification.Builder notification = new android.app.Notification.Builder(application, CHANNEL_ID_NOTIFY)
                 .setTicker(application.getString(R.string.notification_ticker))
                 .setContentTitle(application.getString(R.string.notification_title))
                 .setContentText(timerViewModel.getName(teaId))
@@ -75,7 +75,7 @@ class Notifier {
     }
 
     private android.app.Notification getNotificationBeforeAndroidO() {
-        android.app.Notification.Builder notification = new android.app.Notification.Builder(application)
+        final android.app.Notification.Builder notification = new android.app.Notification.Builder(application)
                 .setTicker(application.getString(R.string.notification_ticker))
                 .setContentTitle(application.getString(R.string.notification_title))
                 .setContentText(timerViewModel.getName(teaId))
@@ -87,7 +87,7 @@ class Notifier {
 
     private PendingIntent createPendingIntent() {
         //Back to the Showtea Intent
-        Intent intentShowtea = new Intent(application, ShowTea.class);
+        final Intent intentShowtea = new Intent(application, ShowTea.class);
         intentShowtea.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         return PendingIntent.getActivity(application, 0, intentShowtea, 0);
