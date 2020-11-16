@@ -21,8 +21,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 //could be removed when Robolectric supports Java 8 for API 29
@@ -54,12 +52,14 @@ public class NotificationServiceTest {
         ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class, intent);
 
         controller.startCommand(0, 0);
-        // Bad style but verifies that Notifier, AudioPlayer and Vibrator get called
-        verify(teaDao).getTeaById(1L);
-        verify(actualSettingsDao, times(2)).getSettings();
+
+        NotificationService notificationService = controller.get();
+        assertThat(notificationService.audioPlayer).isNotNull();
+        assertThat(notificationService.notifier).isNotNull();
+        assertThat(notificationService.vibrator).isNotNull();
 
         controller.destroy();
-        // Bad style cannot verify this command
+        // Bad style cannot verify this comman
     }
 
     private void mockDB() {

@@ -1,6 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
@@ -11,6 +10,8 @@ import androidx.annotation.Nullable;
 public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 7684;
     AudioPlayer audioPlayer = null;
+    Vibrator vibrator = null;
+    Notifier notifier = null;
 
     @Nullable
     @Override
@@ -30,12 +31,8 @@ public class NotificationService extends Service {
     }
 
     private void showNotification(Intent intent) {
-        startForeground(NOTIFICATION_ID, getNotification(intent.getLongExtra("teaId", 0)));
-    }
-
-    private Notification getNotification(final long teaId) {
-        Notifier notifier = new Notifier(getApplication(), teaId);
-        return notifier.getNotification();
+        notifier = new Notifier(getApplication(), intent.getLongExtra("teaId", 0));
+        startForeground(NOTIFICATION_ID, notifier.getNotification());
     }
 
     private void startAlarm() {
@@ -44,7 +41,7 @@ public class NotificationService extends Service {
     }
 
     private void vibrate() {
-        Vibrator vibrator = new Vibrator(getApplication());
+        vibrator = new Vibrator(getApplication());
         vibrator.vibrate();
     }
 
