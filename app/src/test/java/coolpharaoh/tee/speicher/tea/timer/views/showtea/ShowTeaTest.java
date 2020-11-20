@@ -363,7 +363,7 @@ public class ShowTeaTest {
     @Test
     public void showDialogAmountAndCalcuateAmountGram() {
         mockDB();
-        mockTea(VARIETY, 4, GRAM, 0);
+        mockTea(VARIETY, 9, GRAM, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, false, false);
@@ -377,16 +377,15 @@ public class ShowTeaTest {
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.showtea_dialog_amount);
 
             final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
             final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 g / 1.0 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 g / 1.0 L");
 
-            seekBarAmountPerAmount.setProgress(5);
+            seekBarAmountPerAmount.setProgress(15);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 g / 0.5 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("13.5 g / 1.5 L");
         });
     }
 
