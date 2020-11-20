@@ -27,7 +27,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest"){
             '**/*Injector*.*',
             '**/BuildConfig.*',
             '**/Manifest*.*',
-            '**/*Test*.*',
             '**/CiMattersApplication*.*',
             'android/**/*.*'
     ]
