@@ -389,7 +389,7 @@ public class ShowTeaTest {
     @Test
     public void showDialogAmountAndCalcuateAmountGram() {
         mockDB();
-        mockTea(VARIETY, 4, GRAM, 0);
+        mockTea(VARIETY, 9, GRAM, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
         mockActualSettings(CELSIUS, false, false);
@@ -403,16 +403,15 @@ public class ShowTeaTest {
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.showtea_dialog_amount);
 
             final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
             final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 g / 1.0 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 g / 1.0 L");
 
-            seekBarAmountPerAmount.setProgress(5);
+            seekBarAmountPerAmount.setProgress(15);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 g / 0.5 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("13.5 g / 1.5 L");
         });
     }
 
@@ -585,27 +584,15 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
-            TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
             Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
             Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
 
-            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(buttonExchange.isEnabled()).isFalse();
             assertThat(textViewTemperature.getText()).hasToString("212 °F");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
 
             buttonNextInfusion.performClick();
             assertThat(buttonExchange.isEnabled()).isTrue();
             assertThat(textViewTemperature.getText()).hasToString("- °F");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
     }
 
@@ -623,42 +610,7 @@ public class ShowTeaTest {
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
-            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
-            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
-            TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
-            TextView textViewSeconds = showTea.findViewById(R.id.textViewSeconds);
-            TextView textViewDoublePoint = showTea.findViewById(R.id.textViewDoublePoint);
-            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
-            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
-            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
-
-
-            startButton.performClick();
-
-            assertThat(startButton.getText()).hasToString(showTea.getString(R.string.showtea_timer_reset));
-            // collectDrinkingBehaviorInformation
-            verify(counterDao).update(any(Counter.class));
-            verify(teaDao, times(2)).update(any(Tea.class));
-            // disableInfusionBarAndCooldownSwitch
-            assertThat(buttonExchange.isEnabled()).isFalse();
-            assertThat(buttonInfusionIndex.isEnabled()).isFalse();
-            assertThat(buttonNextInfusion.isEnabled()).isFalse();
-            // hideTimeInputAndVisualizeTimerDisplay
-            assertThat(spinnerMinutes.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(spinnerSeconds.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(textViewMinutes.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(textViewSeconds.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(textViewDoublePoint.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(textViewTimer.getVisibility()).isEqualTo(View.VISIBLE);
-            // visualizeTeaCup
-            assertThat(imageViewCup.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(imageViewFill.getVisibility()).isEqualTo(View.VISIBLE);
-        });
+        showTeaActivityScenario.onActivity(showTea -> checkStartOrReset(showTea, true));
     }
 
     @Test
@@ -810,41 +762,46 @@ public class ShowTeaTest {
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
-            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
-            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
-            TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
-            TextView textViewSeconds = showTea.findViewById(R.id.textViewSeconds);
-            TextView textViewDoublePoint = showTea.findViewById(R.id.textViewDoublePoint);
-            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
-            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
-            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+        showTeaActivityScenario.onActivity(showTea -> checkStartOrReset(showTea, false));
+    }
 
+    private void checkStartOrReset(ShowTea showTea, boolean start) {
+        Button startButton = showTea.findViewById(R.id.buttonStartTimer);
+        Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+        Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+        Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+        Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
+        Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+        TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
+        TextView textViewSeconds = showTea.findViewById(R.id.textViewSeconds);
+        TextView textViewDoublePoint = showTea.findViewById(R.id.textViewDoublePoint);
+        TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
+        ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
+        ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
 
+        if (!start) {
+            // start before reset
             startButton.performClick();
-            // reset
-            startButton.performClick();
+        }
+        startButton.performClick();
 
-            assertThat(startButton.getText()).hasToString(showTea.getString(R.string.showtea_timer_start));
-            // disableInfusionBarAndCooldownSwitch
-            assertThat(buttonExchange.isEnabled()).isTrue();
-            assertThat(buttonInfusionIndex.isEnabled()).isTrue();
-            assertThat(buttonNextInfusion.isEnabled()).isTrue();
-            // hideTimeInputAndVisualizeTimerDisplay
-            assertThat(spinnerMinutes.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(spinnerSeconds.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewMinutes.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewSeconds.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewDoublePoint.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewTimer.getVisibility()).isEqualTo(View.INVISIBLE);
-            // visualizeTeaCup
-            assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(imageViewFill.getVisibility()).isEqualTo(View.INVISIBLE);
-        });
+        assertThat(startButton.getText())
+                .hasToString(showTea.getString(start ? R.string.showtea_timer_reset :
+                        R.string.showtea_timer_start));
+        // disableInfusionBarAndCooldownSwitch
+        assertThat(buttonExchange.isEnabled()).isEqualTo(!start);
+        assertThat(buttonInfusionIndex.isEnabled()).isEqualTo(!start);
+        assertThat(buttonNextInfusion.isEnabled()).isEqualTo(!start);
+        // hideTimeInputAndVisualizeTimerDisplay
+        assertThat(spinnerMinutes.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
+        assertThat(spinnerSeconds.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
+        assertThat(textViewMinutes.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
+        assertThat(textViewSeconds.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
+        assertThat(textViewDoublePoint.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
+        assertThat(textViewTimer.getVisibility()).isEqualTo(start ? View.VISIBLE : View.INVISIBLE);
+        // visualizeTeaCup
+        assertThat(imageViewCup.getVisibility()).isEqualTo(start ? View.VISIBLE : View.INVISIBLE);
+        assertThat(imageViewFill.getVisibility()).isEqualTo(start ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void mockDB() {
