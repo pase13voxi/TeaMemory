@@ -234,9 +234,9 @@ public class ShowTeaTest {
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
             Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
 
-            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.GONE);
+            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.GONE);
+            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.GONE);
             assertThat(textViewName.getText()).isEqualTo(tea.getName());
             assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
             assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);

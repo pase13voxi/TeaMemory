@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:elevation="4dip">
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/colorPrimary">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="28sp"
-        android:id="@+id/toolbar_title"
-        android:textColor="@color/white" />
+    <RelativeLayout
+        android:id="@+id/layout_infusion_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="end">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:id="@+id/toolbar_text_infusionindex"
-            android:text="@string/showtea_first_infusion_index"
-            android:textSize="25sp"
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/toolbar_text_infusionindex"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
             android:textColor="@color/white"
-            android:gravity="center_vertical" />
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/toolbar_text_infusionindex"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/toolbar_infusionindex"
+            android:text="@string/showtea_first_infusion_index"
+            android:textColor="@color/white"
+            android:textSize="28sp" />
 
         <Button
-            android:layout_width="40dip"
-            android:layout_height="40dip"
             android:id="@+id/toolbar_infusionindex"
-            android:background="@drawable/button_infusionindex"
-            android:layout_gravity="end"
-            android:layout_marginEnd="5dip"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@id/toolbar_nextinfusion"
+            android:background="@drawable/button_infusionindex" />
 
         <Button
-            android:layout_width="40dip"
-            android:layout_height="40dip"
             android:id="@+id/toolbar_nextinfusion"
-            android:background="@drawable/button_nextinfusion"
-            android:layout_gravity="end"
-            android:layout_marginEnd="5dip"/>
-    </LinearLayout>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/button_nextinfusion" />
+    </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>

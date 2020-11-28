@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -159,10 +160,12 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText(R.string.showtea_heading);
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(R.string.showtea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+
+        toolbarTitle.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "Hello Javatpoint", Toast.LENGTH_SHORT).show());
     }
 
     private void enableAndShowBackButton() {
@@ -305,9 +308,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void decideToShowInfusionBar() {
         if (showTeaViewModel.getInfusionSize() == 1) {
-            textViewInfusionIndex.setVisibility(View.INVISIBLE);
-            buttonInfusionIndex.setVisibility(View.INVISIBLE);
-            buttonNextInfusion.setVisibility(View.INVISIBLE);
+            textViewInfusionIndex.setVisibility(View.GONE);
+            buttonInfusionIndex.setVisibility(View.GONE);
+            buttonNextInfusion.setVisibility(View.GONE);
         }
     }
 
