@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -164,8 +163,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         mToolbarCustomTitle.setText(R.string.showtea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
-
-        toolbar.setOnClickListener(v -> Toast.makeText(getApplication(), "Toolbar title clicked", Toast.LENGTH_SHORT).show());
     }
 
     private void enableAndShowBackButton() {
@@ -352,7 +349,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         builder.setTitle(R.string.showtea_dialog_following_infusion_header);
         builder.setMessage(getResources().getString(R.string.showtea_dialog_following_infusion_description, lastInfusion, nextInfusion));
         builder.setPositiveButton(R.string.showtea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
-        builder.setNegativeButton(R.string.showtea_dialog_following_infusion_no, null);
+        builder.setNegativeButton(R.string.showtea_dialog_following_infusion_no, (dialog, which) -> showTeaViewModel.resetNextInfusion());
         builder.show();
     }
 

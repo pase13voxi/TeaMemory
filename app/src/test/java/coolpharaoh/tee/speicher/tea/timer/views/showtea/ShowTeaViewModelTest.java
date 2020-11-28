@@ -220,20 +220,20 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getLastInfusion() {
-        int lastInfusionBefore = 0;
+    public void getNextInfusion() {
+        int nextInfusionBefore = 0;
 
         Tea tea = new Tea();
-        tea.setNextInfusion(lastInfusionBefore);
+        tea.setNextInfusion(nextInfusionBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        int lastInfusionAfter = showTeaViewModel.getNextInfusion();
+        int nextInfusionAfter = showTeaViewModel.getNextInfusion();
 
-        assertThat(lastInfusionAfter).isEqualTo(lastInfusionBefore);
+        assertThat(nextInfusionAfter).isEqualTo(nextInfusionBefore);
     }
 
     @Test
-    public void updateLastInfusion() {
+    public void updateNextInfusion() {
         Tea tea = new Tea();
         tea.setNextInfusion(0);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
@@ -242,11 +242,26 @@ public class ShowTeaViewModelTest {
 
         showTeaViewModel.updateNextInfusion();
 
-        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea((captor.capture()));
-        Tea lastInfusionAfter = captor.getValue();
+        ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
+        verify(teaRepository).updateTea((teaCaptor.capture()));
+        Tea updatedTea = teaCaptor.getValue();
 
-        assertThat(lastInfusionAfter.getNextInfusion()).isEqualTo(1);
+        assertThat(updatedTea.getNextInfusion()).isEqualTo(1);
+    }
+
+    @Test
+    public void resetNextInfusion() {
+        Tea tea = new Tea();
+        tea.setNextInfusion(2);
+        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+
+        showTeaViewModel.resetNextInfusion();
+
+        ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
+        verify(teaRepository).updateTea((teaCaptor.capture()));
+        Tea updatedTea = teaCaptor.getValue();
+
+        assertThat(updatedTea.getNextInfusion()).isZero();
     }
 
     @Test

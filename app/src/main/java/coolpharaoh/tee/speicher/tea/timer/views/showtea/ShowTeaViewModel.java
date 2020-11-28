@@ -104,6 +104,12 @@ class ShowTeaViewModel {
         teaRepository.updateTea(tea);
     }
 
+    void resetNextInfusion() {
+        Tea tea = teaRepository.getTeaById(teaId);
+        tea.setNextInfusion(0);
+        teaRepository.updateTea(tea);
+    }
+
     // Infusion
     TimeHelper getTime() {
         return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());

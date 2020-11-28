@@ -20,6 +20,7 @@ import androidx.test.core.app.ApplicationProvider;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -180,6 +181,31 @@ public class ShowTeaTest {
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(2).getTemperatureCelsius() + " °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+        });
+    }
+
+    @Test
+    public void displayNextInfusionDialogClickCancelAndExpectNextInfusionZero() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 2);
+        mockInfusions(
+                Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, null, null}),
+                Arrays.asList(new Integer[]{100, 100, 90}), Arrays.asList(new Integer[]{212, 212, 176}));
+        mockActualSettings(CELSIUS, false, false);
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            AlertDialog dialogNextInfusion = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.showtea_dialog_following_infusion_header, showTea.getString(R.string.showtea_dialog_following_infusion_description, 2, 3));
+
+            dialogNextInfusion.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+
+            ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
+            verify(teaDao).update(teaCaptor.capture());
+
+            assertThat(teaCaptor.getValue().getNextInfusion()).isZero();
         });
     }
 
