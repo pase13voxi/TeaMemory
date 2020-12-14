@@ -8,7 +8,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 
 public class NoteRepository {
 
-    private NoteDao noteDao;
+    private final NoteDao noteDao;
 
     public NoteRepository(Application application) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
@@ -28,6 +28,18 @@ public class NoteRepository {
     }
 
     public Note getNoteByTeaId(long teaId) {
-        return noteDao.getNoteByTeaId(teaId);
+        return noteDao.getNotesByTeaId(teaId);
+    }
+
+    public Note getNoteByTeaIdAndPosition(long teaId, int position) {
+        return noteDao.getNoteByTeaIdAndPosition(teaId, position);
+    }
+
+    public List<Note> getNotesByTeaIdAndPositionBiggerZero(long teaId) {
+        return noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId);
+    }
+
+    public void deleteNoteByTeaIdAndPosition(long teaId, int position) {
+        noteDao.deleteNoteByTeaIdAndPosition(teaId, position);
     }
 }

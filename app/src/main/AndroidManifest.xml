@@ -9,20 +9,17 @@
         android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".views.main.Main"
             android:screenOrientation="portrait">
@@ -39,7 +36,7 @@
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
+                android:value=".views.main.Main" />
         </activity>
         <activity
             android:name=".views.showtea.ShowTea"
@@ -48,7 +45,15 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
+                android:value=".views.main.Main" />
+        </activity>
+        <activity
+            android:name=".views.information.Information"
+            android:label="More Information"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.showtea.ShowTea" />
         </activity>
         <activity
             android:name=".views.settings.Settings"
@@ -56,7 +61,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
+                android:value=".views.main.Main" />
         </activity>
         <activity
             android:name=".views.exportimport.ExportImport"
@@ -64,7 +69,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
+                android:value=".views.main.Main" />
         </activity>
         <activity
             android:name=".views.about.About"
@@ -72,7 +77,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.main.Main" />
+                android:value=".views.main.Main" />
         </activity>
         <activity
             android:name=".views.contact.Contact"
@@ -80,7 +85,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
+                android:value=".views.about.About" />
         </activity>
         <activity
             android:name=".views.statistics.Statistics"
@@ -88,7 +93,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
+                android:value=".views.about.About" />
         </activity>
         <activity
             android:name=".views.software.Software"
@@ -96,10 +101,11 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="coolpharaoh.tee.speicher.tea.timer.views.about.About" />
+                android:value=".views.about.About" />
         </activity>
 
         <receiver android:name=".views.showtea.countdowntimer.TeaCompleteReceiver" />
+
         <service android:name=".views.showtea.countdowntimer.NotificationService" />
     </application>
 

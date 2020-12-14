@@ -157,7 +157,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
             ViewGroup parent = findViewById(R.id.exportimport_parent);
 
             LayoutInflater inflater = getLayoutInflater();
-            View layoutDialogImport = inflater.inflate(R.layout.dialogimport, parent, false);
+            View layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false);
 
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setView(layoutDialogImport);

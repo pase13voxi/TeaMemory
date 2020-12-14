@@ -163,7 +163,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         ViewGroup parent = findViewById(R.id.main_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogalarmpermission, parent, false);
+        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(alertLayoutDialogProblem);
@@ -233,7 +233,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_vibration);
         builder.setSingleChoiceItems(items, checkedItem, this::vibrationChanged);
-        builder.setNegativeButton(R.string.settings_cancle, null);
+        builder.setNegativeButton(R.string.settings_cancel, null);
         builder.create().show();
     }
 
@@ -259,7 +259,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_animation);
         builder.setSingleChoiceItems(items, checkedItem, this::animationChanged);
-        builder.setNegativeButton(R.string.settings_cancle, null);
+        builder.setNegativeButton(R.string.settings_cancel, null);
         builder.create().show();
     }
 
@@ -285,7 +285,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 R.style.MaterialThemeDialog);
         builder.setTitle(R.string.settings_temperature_unit);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog));
-        builder.setNegativeButton(R.string.settings_cancle, null);
+        builder.setNegativeButton(R.string.settings_cancel, null);
         builder.create().show();
     }
 
@@ -300,7 +300,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         ViewGroup parent = findViewById(R.id.settings_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialogsettingshints, parent, false);
+        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_settings_hints, parent, false);
         final CheckBox checkBoxRating = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsRating);
         checkBoxRating.setChecked(settingsViewModel.isMainratealert());
 
@@ -315,7 +315,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         builder.setView(alertLayoutDialogProblem);
         builder.setTitle(R.string.settings_show_hints_header);
         builder.setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxRating, checkBoxDescription, checkBoxPermission));
-        builder.setNegativeButton(R.string.settings_show_hints_cancle, null);
+        builder.setNegativeButton(R.string.settings_show_hints_cancel, null);
         builder.show();
 
     }

@@ -15,8 +15,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -25,7 +23,6 @@ class NewTeaViewModel {
 
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
-    private final NoteRepository noteRepository;
     private final CounterRepository counterRepository;
     private final ActualSettingsRepository actualSettingsRepository;
 
@@ -36,25 +33,23 @@ class NewTeaViewModel {
 
     NewTeaViewModel(Application application) {
         this(null, application, new TeaRepository(application),
-                new InfusionRepository(application), new NoteRepository(application),
-                new CounterRepository(application), new ActualSettingsRepository(application));
+                new InfusionRepository(application), new CounterRepository(application),
+                new ActualSettingsRepository(application));
     }
 
     NewTeaViewModel(long teaId, Application application) {
         this(teaId, application, new TeaRepository(application),
-                new InfusionRepository(application), new NoteRepository(application),
-                new CounterRepository(application), new ActualSettingsRepository(application));
+                new InfusionRepository(application), new CounterRepository(application),
+                new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
     NewTeaViewModel(Long teaId, Application application, TeaRepository teaRepository,
-                    InfusionRepository infusionRepository, NoteRepository noteRepository,
-                    CounterRepository counterRepository,
+                    InfusionRepository infusionRepository, CounterRepository counterRepository,
                     ActualSettingsRepository actualSettingsRepository) {
         this.application = application;
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
-        this.noteRepository = noteRepository;
         this.counterRepository = counterRepository;
         this.actualSettingsRepository = actualSettingsRepository;
 
@@ -199,13 +194,6 @@ class NewTeaViewModel {
         counter.setMonthDate(CurrentDate.getDate());
 
         counterRepository.insertCounter(counter);
-
-        // create standard note
-        Note note = new Note();
-        note.setTeaId(teaId);
-        note.setPosition(1);
-        note.setDescription("");
-        noteRepository.insertNote(note);
     }
 
     void setTeaInformation(String name, String variety, int amount, String amountKind, int color) {

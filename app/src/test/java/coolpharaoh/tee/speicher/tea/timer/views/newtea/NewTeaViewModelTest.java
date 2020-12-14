@@ -22,8 +22,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -54,8 +52,6 @@ public class NewTeaViewModelTest {
     @Mock
     InfusionRepository infusionRepository;
     @Mock
-    NoteRepository noteRepository;
-    @Mock
     CounterRepository counterRepository;
     @Mock
     ActualSettingsRepository actualSettingsRepository;
@@ -68,9 +64,9 @@ public class NewTeaViewModelTest {
     public void setUp() {
         mockTea();
         newTeaViewModelEmpty = new NewTeaViewModel(null, application, teaRepository,
-                infusionRepository, noteRepository, counterRepository, actualSettingsRepository);
+                infusionRepository, counterRepository, actualSettingsRepository);
         newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, application, teaRepository,
-                infusionRepository, noteRepository, counterRepository, actualSettingsRepository);
+                infusionRepository, counterRepository, actualSettingsRepository);
     }
 
     private void mockTea() {
@@ -234,7 +230,6 @@ public class NewTeaViewModelTest {
         verify(infusionRepository).deleteInfusionsByTeaId(anyLong());
         verify(infusionRepository).insertInfusion(any(Infusion.class));
         verify(counterRepository).insertCounter(any(Counter.class));
-        verify(noteRepository).insertNote(any(Note.class));
     }
 
     private void mockStringResource() {

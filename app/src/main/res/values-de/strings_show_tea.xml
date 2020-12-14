@@ -1,9 +1,9 @@
 <resources>
-    <string name="showtea_heading">Information</string>
+    <string name="showtea_heading">Weitere Informationen</string>
     <string name="showtea_action_note">Notiz</string>
     <string name="showtea_dialog_note_hint">Notiere dir etwas.</string>
     <string name="showtea_dialog_note_ok">Ok</string>
-    <string name="showtea_dialog_note_cancle">Abbrechen</string>
+    <string name="showtea_dialog_note_cancel">Abbrechen</string>
     <string name="showtea_action_edit">Bearbeiten</string>
     <string name="showtea_action_counter">Trinkverhalten</string>
     <string name="showtea_dialog_counter_day">Heute</string>

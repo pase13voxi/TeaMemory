@@ -39,7 +39,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
@@ -72,8 +71,6 @@ public class MainTest {
     @Mock
     InfusionDao infusionDao;
     @Mock
-    NoteDao noteDao;
-    @Mock
     CounterDao counterDao;
     @Mock
     ActualSettingsDao actualSettingsDao;
@@ -87,7 +84,6 @@ public class MainTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
         when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }

@@ -11,6 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -63,17 +66,74 @@ public class NoteDaoTest {
 
         assertThat(mNoteDao.getNotes()).hasSize(1);
 
-        Note noteUpdate = mNoteDao.getNoteByTeaId(teaId);
+        Note noteUpdate = mNoteDao.getNotesByTeaId(teaId);
         noteUpdate.setPosition(2);
         noteUpdate.setHeader("HeaderChanged");
         noteUpdate.setDescription("DesciptionChanged");
         mNoteDao.update(noteUpdate);
 
-        Note noteAfter = mNoteDao.getNoteByTeaId(teaId);
+        Note noteAfter = mNoteDao.getNotesByTeaId(teaId);
         assertThat(noteAfter).isEqualToComparingFieldByField(noteUpdate);
     }
 
-    private Tea createTea(){
+    @Test
+    public void getNoteByTeaIdAndPosition() {
+        assertThat(mNoteDao.getNotes()).hasSize(0);
+
+        long teaId = mTeaDao.insert(createTea());
+
+        List<Note> notesBefore = new ArrayList<>();
+        notesBefore.add(new Note(teaId, 1, "header", "description"));
+        mNoteDao.insert(notesBefore.get(0));
+        notesBefore.add(new Note(teaId, 2, "header", "description"));
+        mNoteDao.insert(notesBefore.get(1));
+
+        Note noteAfter = mNoteDao.getNoteByTeaIdAndPosition(teaId, 2);
+        assertThat(noteAfter).isEqualToIgnoringGivenFields(notesBefore.get(1), "id");
+    }
+
+    @Test
+    public void getNotesByTeaIdAndPositionBiggerZero() {
+        assertThat(mNoteDao.getNotes()).hasSize(0);
+
+        long teaId = mTeaDao.insert(createTea());
+
+        List<Note> notesBefore = new ArrayList<>();
+        notesBefore.add(new Note(teaId, -1, "header", "description"));
+        mNoteDao.insert(notesBefore.get(0));
+        notesBefore.add(new Note(teaId, 1, "header", "description"));
+        mNoteDao.insert(notesBefore.get(1));
+        notesBefore.add(new Note(teaId, 2, "header", "description"));
+        mNoteDao.insert(notesBefore.get(2));
+
+        List<Note> notesAfter = mNoteDao.getNotesByTeaIdAndPositionBiggerZero(teaId);
+        assertThat(notesAfter).hasSize(2);
+        assertThat(notesAfter.get(0)).isEqualToIgnoringGivenFields(notesBefore.get(1), "id");
+        assertThat(notesAfter.get(1)).isEqualToIgnoringGivenFields(notesBefore.get(2), "id");
+    }
+
+    @Test
+    public void deleteNoteByPosition() {
+        long teaId = mTeaDao.insert(createTea());
+
+        List<Note> notesBefore = new ArrayList<>();
+        notesBefore.add(new Note(teaId, 0, "header", "description"));
+        mNoteDao.insert(notesBefore.get(0));
+        notesBefore.add(new Note(teaId, 1, "header", "description"));
+        mNoteDao.insert(notesBefore.get(1));
+        notesBefore.add(new Note(teaId, 2, "header", "description"));
+        mNoteDao.insert(notesBefore.get(2));
+
+        mNoteDao.deleteNoteByTeaIdAndPosition(teaId, 1);
+
+        List<Note> notesAfter = mNoteDao.getNotes();
+        assertThat(notesAfter).hasSize(2);
+        assertThat(notesAfter.get(0)).isEqualToIgnoringGivenFields(notesBefore.get(0), "id");
+        assertThat(notesAfter.get(1)).isEqualToIgnoringGivenFields(notesBefore.get(2), "id");
+
+    }
+
+    private Tea createTea() {
         return new Tea("name", "variety", 3, "ts", 15, 0, CurrentDate.getDate());
     }
 }

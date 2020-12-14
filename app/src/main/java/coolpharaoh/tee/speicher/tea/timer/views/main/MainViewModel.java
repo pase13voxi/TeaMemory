@@ -19,18 +19,14 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class MainViewModel extends ViewModel {
 
-
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
-    private final NoteRepository noteRepository;
     private final CounterRepository counterRepository;
     private final ActualSettingsRepository actualSettingsRepository;
 
@@ -39,17 +35,14 @@ class MainViewModel extends ViewModel {
 
     MainViewModel(Application application) {
         this(application, new TeaRepository(application), new InfusionRepository(application),
-                new NoteRepository(application), new CounterRepository(application),
-                new ActualSettingsRepository(application));
+                new CounterRepository(application), new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
     MainViewModel(Application application, TeaRepository teaRepository, InfusionRepository infusionRepository,
-                  NoteRepository noteRepository, CounterRepository counterRepository,
-                  ActualSettingsRepository actualSettingsRepository) {
+                  CounterRepository counterRepository, ActualSettingsRepository actualSettingsRepository) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
-        this.noteRepository = noteRepository;
         this.counterRepository = counterRepository;
         this.actualSettingsRepository = actualSettingsRepository;
 
@@ -65,33 +58,27 @@ class MainViewModel extends ViewModel {
     }
 
     // Defaults
-    private void createDefaultTeas(Application application){
-        Tea ntea1 = new Tea("Earl Grey", application.getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, application), 0, CurrentDate.getDate());
-        long teaId1 = teaRepository.insertTea(ntea1);
-        Infusion ninfusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
-        infusionRepository.insertInfusion(ninfusion1);
-        Counter ncounter1 = new Counter(teaId1, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
-        counterRepository.insertCounter(ncounter1);
-        Note nnote1 = new Note(teaId1, 1, null, "");
-        noteRepository.insertNote(nnote1);
+    private void createDefaultTeas(Application application) {
+        Tea tea1 = new Tea("Earl Grey", application.getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, application), 0, CurrentDate.getDate());
+        long teaId1 = teaRepository.insertTea(tea1);
+        Infusion infusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
+        infusionRepository.insertInfusion(infusion1);
+        Counter counter1 = new Counter(teaId1, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        counterRepository.insertCounter(counter1);
 
-        Tea ntea2 = new Tea("Pai Mu Tan", application.getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, application), 0, CurrentDate.getDate());
-        long teaId2 = teaRepository.insertTea(ntea2);
-        Infusion ninfusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
-        infusionRepository.insertInfusion(ninfusion2);
-        Counter ncounter2 = new Counter(teaId2, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
-        counterRepository.insertCounter(ncounter2);
-        Note nnote2 = new Note(teaId2, 1, null, "");
-        noteRepository.insertNote(nnote2);
+        Tea tea2 = new Tea("Pai Mu Tan", application.getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, application), 0, CurrentDate.getDate());
+        long teaId2 = teaRepository.insertTea(tea2);
+        Infusion infusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
+        infusionRepository.insertInfusion(infusion2);
+        Counter counter2 = new Counter(teaId2, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        counterRepository.insertCounter(counter2);
 
-        Tea ntea3 = new Tea("Sencha", application.getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, application), 0, CurrentDate.getDate());
-        long teaId3 = teaRepository.insertTea(ntea3);
-        Infusion ninfusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
-        infusionRepository.insertInfusion(ninfusion3);
-        Counter ncounter3 = new Counter(teaId3, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
-        counterRepository.insertCounter(ncounter3);
-        Note nnote3 = new Note(teaId3, 1, null, "");
-        noteRepository.insertNote(nnote3);
+        Tea tea3 = new Tea("Sencha", application.getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, application), 0, CurrentDate.getDate());
+        long teaId3 = teaRepository.insertTea(tea3);
+        Infusion infusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
+        infusionRepository.insertInfusion(infusion3);
+        Counter counter3 = new Counter(teaId3, 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        counterRepository.insertCounter(counter3);
     }
 
     private void createDefaultSettings(){

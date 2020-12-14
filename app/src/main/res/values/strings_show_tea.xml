@@ -1,9 +1,9 @@
 <resources>
-    <string name="showtea_heading">Information</string>
+    <string name="showtea_heading">More Information</string>
     <string name="showtea_action_note">Note</string>
     <string name="showtea_dialog_note_hint">Write down something.</string>
     <string name="showtea_dialog_note_ok">OK</string>
-    <string name="showtea_dialog_note_cancle">Cancle</string>
+    <string name="showtea_dialog_note_cancel">Cancel</string>
     <string name="showtea_action_edit">Edit</string>
     <string name="showtea_action_counter">Drinking behavior</string>
     <string name="showtea_dialog_counter_day">Today</string>
@@ -41,7 +41,7 @@
     <string name="showtea_break_count_point">%1$d.</string>
     <string name="showtea_dialog_infusion_count_title">Choose your infusion</string>
     <string name="showtea_dialog_infusion_count_desciption">Infusion %1$d</string>
-    <string name="showtea_dialog_infusion_count_negative">Cancle</string>
+    <string name="showtea_dialog_infusion_count_negative">Cancel</string>
     <string name="showtea_cooldown_header">Cooling period</string>
     <string name="showtea_cooldown_description">For green or white tea the boiling water should be cool down before infuse the tea.</string>
     <string name="showtea_cooldown_ok">OK</string>

@@ -21,7 +21,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -45,8 +44,6 @@ public class MainViewModelTest {
     @Mock
     InfusionRepository infusionRepository;
     @Mock
-    NoteRepository noteRepository;
-    @Mock
     CounterRepository counterRepository;
     @Mock
     ActualSettingsRepository actualSettingsRepository;
@@ -62,7 +59,7 @@ public class MainViewModelTest {
         mockSettings();
         mockTeas();
         mainActivityViewModel = new MainViewModel(application, teaRepository, infusionRepository,
-                noteRepository, counterRepository, actualSettingsRepository);
+                counterRepository, actualSettingsRepository);
     }
 
     private void mockResources() {

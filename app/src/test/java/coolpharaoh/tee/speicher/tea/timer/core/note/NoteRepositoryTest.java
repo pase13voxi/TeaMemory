@@ -64,12 +64,44 @@ public class NoteRepositoryTest {
 
     @Test
     public void getNoteByTeaId() {
-        int teaId = 2;
+        final long teaId = 2;
         Note note = new Note();
-        when(noteDao.getNoteByTeaId(teaId)).thenReturn(note);
+        when(noteDao.getNotesByTeaId(teaId)).thenReturn(note);
 
         Note noteByTeaId = noteRepository.getNoteByTeaId(teaId);
 
         assertThat(noteByTeaId).isEqualTo(note);
+    }
+
+    @Test
+    public void getNoteByTeaIdAndPosition() {
+        final long teaId = 2;
+        Note note = new Note();
+        when(noteDao.getNoteByTeaIdAndPosition(teaId, 1)).thenReturn(note);
+
+        Note noteByTeaId = noteRepository.getNoteByTeaIdAndPosition(teaId, 1);
+
+        assertThat(noteByTeaId).isEqualTo(note);
+    }
+
+    @Test
+    public void getNotesByTeaIdAndPositionBiggerZero() {
+        final long teaId = 2;
+        List<Note> notes = Arrays.asList(new Note(), new Note());
+        when(noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId)).thenReturn(notes);
+
+        List<Note> notesByTeaId = noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId);
+
+        assertThat(notesByTeaId).isEqualTo(notes);
+    }
+
+    @Test
+    public void deleteNoteByTeaIdAndPosition() {
+        final long teaId = 2;
+        final int position = 1;
+
+        noteRepository.deleteNoteByTeaIdAndPosition(teaId, position);
+
+        verify(noteDao).deleteNoteByTeaIdAndPosition(teaId, position);
     }
 }

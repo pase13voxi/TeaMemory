@@ -52,8 +52,8 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText(R.string.app_name);
+        TextView toolbarCustomTitle = findViewById(R.id.toolbar_title);
+        toolbarCustomTitle.setText(R.string.app_name);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
     }
@@ -86,8 +86,8 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     }
 
     private void bindTeaListWithTeaAdapterAndObserve(ListView tealist) {
-        mainActivityViewModel.getTeas().observe(this, mTeas -> {
-            adapter = new TeaAdapter(Main.this, mTeas);
+        mainActivityViewModel.getTeas().observe(this, teas -> {
+            adapter = new TeaAdapter(Main.this, teas);
             //add adapter to listview
             tealist.setAdapter(adapter);
         });
@@ -199,6 +199,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 

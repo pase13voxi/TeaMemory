@@ -99,4 +99,13 @@ class Migrations {
             database.execSQL("ALTER TABLE backup_settings RENAME TO settings");
         }
     };
+
+    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // update old notes to notes with position -1 and heading "01_notes"
+            database.execSQL(
+                    "UPDATE note SET position = -1, header = '01_notes' WHERE position = 1");
+        }
+    };
 }

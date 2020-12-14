@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editTextDialogAddEditHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"
+        android:hint="@string/information_detail_dialog_hint_header"
+        android:importantForAutofill="no"
+        android:inputType="textCapWords"
+        android:theme="@style/EditTextStyle" />
+
+    <EditText
+        android:id="@+id/editTextDialogAddEditDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"
+        android:hint="@string/information_detail_dialog_hint_description"
+        android:importantForAutofill="no"
+        android:inputType="textCapWords"
+        android:theme="@style/EditTextStyle" />
+
+</LinearLayout>

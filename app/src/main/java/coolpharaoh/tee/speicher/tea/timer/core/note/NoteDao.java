@@ -20,6 +20,15 @@ public interface NoteDao {
     @Query("SELECT * FROM note")
     List<Note> getNotes();
 
-    @Query("SELECT * FROM note WHERE tea_id = :id LIMIT 1")
-    Note getNoteByTeaId(long id);
+    @Query("SELECT * FROM note WHERE tea_id = :teaId")
+    Note getNotesByTeaId(long teaId);
+
+    @Query("SELECT * FROM note WHERE tea_id = :teaId AND position = :position")
+    Note getNoteByTeaIdAndPosition(long teaId, int position);
+
+    @Query("SELECT * FROM note WHERE tea_id = :teaId AND position >= 0 ORDER BY position")
+    List<Note> getNotesByTeaIdAndPositionBiggerZero(long teaId);
+
+    @Query("DELETE FROM note WHERE tea_id = :teaId AND position = :position")
+    void deleteNoteByTeaIdAndPosition(long teaId, int position);
 }

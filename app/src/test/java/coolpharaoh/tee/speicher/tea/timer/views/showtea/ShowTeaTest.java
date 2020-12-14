@@ -46,6 +46,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
+import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
@@ -478,6 +479,30 @@ public class ShowTeaTest {
     }
 
     @Test
+    public void navigationToDetailedInformationView() {
+        mockDB();
+        mockTea(VARIETY, 1, TEA_SPOON, 0);
+        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
+                Collections.singletonList(100), Collections.singletonList(212));
+        mockNote("");
+        mockActualSettings(CELSIUS, false, false);
+
+        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
+        showTeaActivityScenario.onActivity(showTea -> {
+            TextView toolbarTitle = showTea.findViewById(R.id.toolbar_title);
+            toolbarTitle.performClick();
+
+            Intent expected = new Intent(showTea, Information.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
+        });
+    }
+
+    @Test
     public void openTeaCounter() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
@@ -838,7 +863,7 @@ public class ShowTeaTest {
     private void mockNote(String description) {
         note = new Note(TEA_ID, 1, "header", description);
         note.setId(1L);
-        when(noteDao.getNoteByTeaId(TEA_ID)).thenReturn(note);
+        when(noteDao.getNotesByTeaId(TEA_ID)).thenReturn(note);
     }
 
     private void mockActualSettings(String temperatureUnit, boolean dialog, boolean animation) {
