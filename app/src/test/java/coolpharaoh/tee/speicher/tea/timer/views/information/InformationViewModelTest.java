@@ -48,8 +48,8 @@ public class InformationViewModelTest {
 
     @Test
     public void getDetails() {
-        List<Note> notes = Arrays.asList(new Note[]{new Note(TEA_ID, 0, "heading", DESCRIPTION),
-                new Note(TEA_ID, 1, "heading", DESCRIPTION)});
+        List<Note> notes = Arrays.asList(new Note[]{new Note(TEA_ID, 0, HEADER, DESCRIPTION),
+                new Note(TEA_ID, 1, HEADER, DESCRIPTION)});
 
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(notes);
 
@@ -62,8 +62,8 @@ public class InformationViewModelTest {
     public void getDetail() {
         final int position = 0;
 
-        List<Note> notes = Arrays.asList(new Note[]{new Note(TEA_ID, 0, "heading", DESCRIPTION),
-                new Note(TEA_ID, 1, "heading", DESCRIPTION)});
+        List<Note> notes = Arrays.asList(new Note[]{new Note(TEA_ID, 0, HEADER, DESCRIPTION),
+                new Note(TEA_ID, 1, HEADER, DESCRIPTION)});
 
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(notes);
 

@@ -20,9 +20,6 @@ public interface NoteDao {
     @Query("SELECT * FROM note")
     List<Note> getNotes();
 
-    @Query("SELECT * FROM note WHERE tea_id = :teaId")
-    Note getNotesByTeaId(long teaId);
-
     @Query("SELECT * FROM note WHERE tea_id = :teaId AND position = :position")
     Note getNoteByTeaIdAndPosition(long teaId, int position);
 

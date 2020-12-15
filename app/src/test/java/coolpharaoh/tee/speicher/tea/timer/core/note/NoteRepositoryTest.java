@@ -63,17 +63,6 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void getNoteByTeaId() {
-        final long teaId = 2;
-        Note note = new Note();
-        when(noteDao.getNotesByTeaId(teaId)).thenReturn(note);
-
-        Note noteByTeaId = noteRepository.getNoteByTeaId(teaId);
-
-        assertThat(noteByTeaId).isEqualTo(note);
-    }
-
-    @Test
     public void getNoteByTeaIdAndPosition() {
         final long teaId = 2;
         Note note = new Note();

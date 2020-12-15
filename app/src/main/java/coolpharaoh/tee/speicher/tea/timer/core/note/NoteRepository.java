@@ -27,10 +27,6 @@ public class NoteRepository {
         return noteDao.getNotes();
     }
 
-    public Note getNoteByTeaId(long teaId) {
-        return noteDao.getNotesByTeaId(teaId);
-    }
-
     public Note getNoteByTeaIdAndPosition(long teaId, int position) {
         return noteDao.getNoteByTeaIdAndPosition(teaId, position);
     }

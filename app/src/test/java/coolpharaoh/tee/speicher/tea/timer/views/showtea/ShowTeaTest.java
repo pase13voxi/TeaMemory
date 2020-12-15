@@ -71,7 +71,6 @@ public class ShowTeaTest {
     private static final String FAHRENHEIT = "Fahrenheit";
     private static final String TEA_SPOON = "Ts";
     private static final String GRAM = "Gr";
-    private static final String INSERTED_NOTE = "Any note.";
     private static final String BROADCAST_EXTRA_READY = "ready";
     private static final String BROADCAST_EXTRA_COUNTDOWN = "countdown";
 

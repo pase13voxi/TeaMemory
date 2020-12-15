@@ -45,6 +45,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
+    public static final String EXTRA_TEA_ID = "teaId";
 
     private TextView textViewInfusionIndex;
     private Button buttonNextInfusion;
@@ -164,7 +165,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void navigateToDetailInformation() {
         Intent informationScreen = new Intent(ShowTea.this, Information.class);
-        informationScreen.putExtra("teaId", showTeaViewModel.getTeaId());
+        informationScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel.getTeaId());
         // Intent starten und zur zweiten Activity wechseln
         startActivity(informationScreen);
     }
@@ -213,7 +214,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void initializeInformationWindow() {
-        long teaId = this.getIntent().getLongExtra("teaId", 0);
+        long teaId = this.getIntent().getLongExtra(EXTRA_TEA_ID, 0);
         if (teaId == 0) {
             Log.e(LOG_TAG, "The tea id was not set before navigate to this Activity.");
             disableCompleteActivity();
@@ -625,7 +626,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private boolean navigateToEditTea() {
         Intent newTeaScreen = new Intent(ShowTea.this, NewTea.class);
-        newTeaScreen.putExtra("teaId", showTeaViewModel.getTeaId());
+        newTeaScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel.getTeaId());
         newTeaScreen.putExtra("showTea", true);
         // Intent starten und zur zweiten Activity wechseln
         startActivity(newTeaScreen);

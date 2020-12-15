@@ -69,9 +69,8 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
 
         informationViewModel.getDetails().observe(this, details -> {
             final List<ListRowItem> detailsList = new ArrayList<>();
-            for (Note note : details) {
-                final ListRowItem item = new ListRowItem(note.getHeader(), note.getDescription());
-                detailsList.add(item);
+            for (final Note note : details) {
+                detailsList.add(new ListRowItem(note.getHeader(), note.getDescription()));
             }
             final RecyclerViewAdapter adapter = new RecyclerViewAdapter(detailsList, this);
             recyclerViewDetails.setAdapter(adapter);
