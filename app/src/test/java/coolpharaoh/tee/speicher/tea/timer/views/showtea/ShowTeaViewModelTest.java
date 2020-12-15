@@ -28,8 +28,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -51,8 +49,6 @@ public class ShowTeaViewModelTest {
     @Mock
     InfusionRepository infusionRepository;
     @Mock
-    NoteRepository noteRepository;
-    @Mock
     CounterRepository counterRepository;
     @Mock
     ActualSettingsRepository actualSettingsRepository;
@@ -64,7 +60,7 @@ public class ShowTeaViewModelTest {
     @Before
     public void setUp() {
         showTeaViewModel = new ShowTeaViewModel(TEA_ID, application, teaRepository, infusionRepository,
-                noteRepository, counterRepository, actualSettingsRepository);
+                counterRepository, actualSettingsRepository);
     }
 
     @Test
@@ -347,32 +343,6 @@ public class ShowTeaViewModelTest {
         assertThat( timeAfter.time).isNull();
         assertThat(timeAfter.minutes).isZero();
         assertThat(timeAfter.seconds).isZero();
-    }
-
-    @Test
-    public void getNote(){
-        Note noteBefore = new Note(1L, 1, "HEADER", "DESCRIPTION");
-        when(noteRepository.getNoteByTeaId(TEA_ID)).thenReturn(noteBefore);
-
-        Note noteAfter = showTeaViewModel.getNote();
-
-        assertThat(noteAfter).isEqualTo(noteBefore);
-    }
-
-    @Test
-    public void setNote(){
-        String differentNote = "DIFFERENT_NOTE";
-
-        Note noteBefore = new Note(1L, 1, "HEADER", "DESCRIPTION");
-        when(noteRepository.getNoteByTeaId(TEA_ID)).thenReturn(noteBefore);
-
-        showTeaViewModel.setNote(differentNote);
-
-        ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
-        verify(noteRepository).updateNote((captor.capture()));
-        Note noteAfter = captor.getValue();
-
-        assertThat(noteAfter.getDescription()).isEqualTo(differentNote);
     }
 
     @Test

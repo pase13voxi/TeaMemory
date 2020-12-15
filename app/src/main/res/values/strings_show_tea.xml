@@ -1,9 +1,5 @@
 <resources>
     <string name="showtea_heading">More Information</string>
-    <string name="showtea_action_note">Note</string>
-    <string name="showtea_dialog_note_hint">Write down something.</string>
-    <string name="showtea_dialog_note_ok">OK</string>
-    <string name="showtea_dialog_note_cancel">Cancel</string>
     <string name="showtea_action_edit">Edit</string>
     <string name="showtea_action_counter">Drinking behavior</string>
     <string name="showtea_dialog_counter_day">Today</string>
@@ -50,7 +46,6 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Ready</string>
-    <string name="showtea_tooltip_note">Note</string>
     <string name="showtea_tooltip_exchange">Cooldown time</string>
     <string name="showtea_tooltip_calculateamount">Calculate amount</string>
     <string name="showtea_tooltip_infusion">Choose infusion</string>

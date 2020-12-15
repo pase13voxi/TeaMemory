@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -38,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
@@ -50,7 +48,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private TextView textViewInfusionIndex;
     private Button buttonNextInfusion;
-    private Button buttonNote;
     private TextView textViewTemperature;
     private Spinner spinnerMinutes;
     private Spinner spinnerSeconds;
@@ -153,9 +150,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         buttonCalculateAmount.setOnClickListener(view -> showDialogAmount());
         buttonCalculateAmount.setOnLongClickListener(this);
-
-        buttonNote.setOnClickListener(view -> showDialogNote());
-        buttonNote.setOnLongClickListener(this);
     }
 
     private void defineToolbarAsActionbar() {
@@ -186,7 +180,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonNextInfusion = findViewById(R.id.toolbar_nextinfusion);
         textViewName = findViewById(R.id.textViewName);
         textViewVariety = findViewById(R.id.textViewVariety);
-        buttonNote = findViewById(R.id.buttonNote);
         textViewTemperature = findViewById(R.id.textViewTemperature);
         buttonInfo = findViewById(R.id.buttonInfo);
         buttonExchange = findViewById(R.id.buttonExchange);
@@ -240,8 +233,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             fillInformationFields();
 
             decideToShowCooldownTimeButton();
-
-            decideToShowNoteButton();
 
             decideToShowInfusionBar();
 
@@ -306,13 +297,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         }
     }
 
-    private void decideToShowNoteButton() {
-        Note note = showTeaViewModel.getNote();
-        if (note != null && !("".equals(note.getDescription()))) {
-            buttonNote.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void decideToShowInfusionBar() {
         if (showTeaViewModel.getInfusionSize() == 1) {
             textViewInfusionIndex.setVisibility(View.GONE);
@@ -331,11 +315,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         ViewGroup parent = findViewById(R.id.showtea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogNote = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
-        final CheckBox dontshowagain = alertLayoutDialogNote.findViewById(R.id.checkboxDialogShowTeaDescription);
+        View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
+        final CheckBox dontshowagain = alertLayoutDialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(alertLayoutDialogNote);
+        builder.setView(alertLayoutDialogDescription);
         builder.setTitle(R.string.showtea_dialog_description_header);
         builder.setPositiveButton(R.string.showtea_dialog_description_ok, (dialog, which) -> {
             if (dontshowagain.isChecked()) {
@@ -579,9 +563,9 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         ViewGroup parent = findViewById(R.id.showtea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogNote = inflater.inflate(R.layout.dialog_amount, parent, false);
-        final SeekBar seekBarAmountPerAmount = alertLayoutDialogNote.findViewById(R.id.seekBarAmountPerAmount);
-        final TextView textViewAmountPerAmount = alertLayoutDialogNote.findViewById(R.id.textViewShowAmountPerAmount);
+        View alertLayoutDialogAmount = inflater.inflate(R.layout.dialog_amount, parent, false);
+        final SeekBar seekBarAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.seekBarAmountPerAmount);
+        final TextView textViewAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.textViewShowAmountPerAmount);
         // 10 for 1 liter
         fillAmountPerAmount(10, textViewAmountPerAmount);
 
@@ -603,7 +587,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         });
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(alertLayoutDialogNote);
+        adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.showtea_dialog_amount);
         adb.setIcon(R.drawable.spoon);
         adb.setPositiveButton(R.string.showtea_dialog_amount_ok, null);
@@ -621,31 +605,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     }
 
-    private void showDialogNote() {
-        ViewGroup parent = findViewById(R.id.showtea_parent);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogNote = inflater.inflate(R.layout.dialog_note, parent, false);
-        final EditText editTextNote = alertLayoutDialogNote.findViewById(R.id.editTextNote);
-
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(alertLayoutDialogNote);
-        adb.setTitle(R.string.showtea_action_note);
-        adb.setIcon(R.drawable.note);
-        editTextNote.setText(showTeaViewModel.getNote().getDescription());
-        editTextNote.setSelected(false);
-        adb.setPositiveButton(R.string.showtea_dialog_note_ok, (dialog, which) -> {
-            showTeaViewModel.setNote(editTextNote.getText().toString());
-            if (!showTeaViewModel.getNote().getDescription().equals("")) {
-                buttonNote.setVisibility(View.VISIBLE);
-            } else {
-                buttonNote.setVisibility(View.INVISIBLE);
-            }
-        });
-        adb.setNegativeButton(R.string.showtea_dialog_note_cancel, null);
-        adb.show();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_show_tea, menu);
@@ -655,9 +614,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_note) {
-            showDialogNote();
-        } else if (id == R.id.action_edit) {
+        if (id == R.id.action_edit) {
             return navigateToEditTea();
         } else if (id == R.id.action_counter) {
             dialogCounter();
@@ -705,9 +662,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     @Override
     public boolean onLongClick(View view) {
-        if (view.getId() == R.id.buttonNote) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_note));
-        } else if (view.getId() == R.id.buttonExchange) {
+        if (view.getId() == R.id.buttonExchange) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_exchange));
         } else if (view.getId() == R.id.buttonCalculateAmount) {
             showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_calculateamount));

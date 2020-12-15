@@ -8,7 +8,6 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -43,7 +42,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
@@ -90,8 +88,6 @@ public class ShowTeaTest {
     TeaDao teaDao;
     @Mock
     InfusionDao infusionDao;
-    @Mock
-    NoteDao noteDao;
     @Mock
     CounterDao counterDao;
     @Mock
@@ -228,7 +224,6 @@ public class ShowTeaTest {
             Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
             TextView textViewName = showTea.findViewById(R.id.textViewName);
             TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
-            Button buttonNote = showTea.findViewById(R.id.buttonNote);
             Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
             TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
@@ -240,7 +235,6 @@ public class ShowTeaTest {
             assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.GONE);
             assertThat(textViewName.getText()).isEqualTo(tea.getName());
             assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
-            assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(buttonExchange.isEnabled()).isFalse();
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
             assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " ts/L");
@@ -417,74 +411,11 @@ public class ShowTeaTest {
     }
 
     @Test
-    public void openAndChangeNotesViaButton() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON, 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockNote(INSERTED_NOTE);
-        mockActualSettings(CELSIUS, false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonNote = showTea.findViewById(R.id.buttonNote);
-
-            assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
-
-            buttonNote.performClick();
-            AlertDialog dialogNote = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogNote, R.string.showtea_action_note);
-
-            EditText editTextNote = dialogNote.findViewById(R.id.editTextNote);
-            assertThat(editTextNote.getText()).hasToString(INSERTED_NOTE);
-            editTextNote.setText("");
-            dialogNote.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-
-            assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
-        });
-    }
-
-    @Test
-    public void openAndChangeNotesViaMenu() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON, 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockNote("");
-        mockActualSettings(CELSIUS, false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonNote = showTea.findViewById(R.id.buttonNote);
-
-            assertThat(buttonNote.getVisibility()).isEqualTo(View.INVISIBLE);
-
-            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_note));
-            AlertDialog dialogNote = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogNote, R.string.showtea_action_note);
-
-            EditText editTextNote = dialogNote.findViewById(R.id.editTextNote);
-            assertThat(editTextNote.getText()).hasToString("");
-            editTextNote.setText(INSERTED_NOTE);
-            dialogNote.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-
-            assertThat(buttonNote.getVisibility()).isEqualTo(View.VISIBLE);
-        });
-    }
-
-    @Test
     public void navigationToDetailedInformationView() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockNote("");
         mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -833,7 +764,6 @@ public class ShowTeaTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
         when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
@@ -858,12 +788,6 @@ public class ShowTeaTest {
         counter = new Counter(TEA_ID, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counter.setId(1L);
         when(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter);
-    }
-
-    private void mockNote(String description) {
-        note = new Note(TEA_ID, 1, "header", description);
-        note.setId(1L);
-        when(noteDao.getNotesByTeaId(TEA_ID)).thenReturn(note);
     }
 
     private void mockActualSettings(String temperatureUnit, boolean dialog, boolean animation) {

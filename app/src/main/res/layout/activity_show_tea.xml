@@ -67,17 +67,6 @@
         android:layout_marginBottom="95dip"/>
 
     <Button
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:id="@+id/buttonNote"
-        android:background="@drawable/button_note"
-        android:layout_above="@id/spinnerSeconds"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="110dip"
-        android:layout_marginEnd="10dip"
-        android:visibility="invisible"/>
-
-    <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/buttonExchange"
