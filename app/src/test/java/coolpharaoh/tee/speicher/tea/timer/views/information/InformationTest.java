@@ -42,6 +42,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
@@ -163,6 +164,26 @@ public class InformationTest {
 
             assertThat(note).extracting(Note::getHeader, Note::getDescription)
                     .containsExactly(HEADER, DESCRIPTION);
+        });
+    }
+
+    @Test
+    public void addBlankDetail() {
+        createNotes();
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            final ImageButton buttonAddDetail = information.findViewById(R.id.buttonAddDetail);
+            buttonAddDetail.performClick();
+
+            final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_add_detail_dialog_heading);
+
+            dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+
+            verify(noteDao, times(0)).insert(any());
         });
     }
 
