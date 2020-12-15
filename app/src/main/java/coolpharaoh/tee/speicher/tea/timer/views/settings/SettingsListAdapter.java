@@ -56,7 +56,7 @@ class SettingsListAdapter extends BaseAdapter {
 
         if(convertView==null)
             // Pass null because (parent, false) destroys the layout
-            vi = inflater.inflate(R.layout.settinglist_single_layout, parent, false);
+            vi = inflater.inflate(R.layout.list_single_layout_setting, parent, false);
 
         TextView txtName = vi.findViewById(R.id.textViewListSettingHeading);
         TextView txtSort = vi.findViewById(R.id.textViewListSettingDescription);

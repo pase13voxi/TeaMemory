@@ -55,7 +55,7 @@ class CounterListAdapter extends BaseAdapter {
 
         if (convertView == null)
             // Pass null because (parent, false) destroys the layout
-            vi = inflater.inflate(R.layout.counterlist_single_layout, null);
+            vi = inflater.inflate(R.layout.list_single_layout_counter, null);
 
         TextView txtName = vi.findViewById(R.id.textViewListCounterHeading);
         TextView txtSort = vi.findViewById(R.id.textViewListCounterDescription);

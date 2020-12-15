@@ -35,7 +35,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View detailsView = inflater.inflate(R.layout.detailslist_single_layout, parent, false);
+        View detailsView = inflater.inflate(R.layout.list_single_layout_details, parent, false);
 
         return new ViewHolder(detailsView, onClickListener);
     }

@@ -57,7 +57,7 @@ class TeaAdapter extends BaseAdapter {
 
         if (convertView == null)
             // Pass null because (parent, false) destroys the layout
-            vi = inflater.inflate(R.layout.tealist_single_layout, null);
+            vi = inflater.inflate(R.layout.list_single_layout_tea, null);
 
         TextView txtName = vi.findViewById(R.id.textViewListTeaName);
         TextView txtVariety = vi.findViewById(R.id.textViewListVarietyOfTea);
