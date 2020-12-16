@@ -277,7 +277,7 @@ public class InformationTest {
 
     private void createTea(final int rating) {
         final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, null);
-        tea.setRating((int) rating);
+        tea.setRating(rating);
         when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
 
     }
