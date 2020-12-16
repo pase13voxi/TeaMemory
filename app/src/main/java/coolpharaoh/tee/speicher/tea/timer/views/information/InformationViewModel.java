@@ -44,6 +44,18 @@ class InformationViewModel extends ViewModel {
         }
     }
 
+    public int getTeaRating() {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        return tea.getRating();
+
+    }
+
+    public void updateTeaRating(final int rating) {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        tea.setRating(rating);
+        teaRepository.updateTea(tea);
+    }
+
     LiveData<List<Note>> getDetails() {
         return details;
     }

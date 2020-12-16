@@ -37,6 +37,12 @@ public class Tea {
     @ColumnInfo(name = "color")
     private int color;
 
+    @ColumnInfo(name = "rating")
+    private int rating;
+
+    @ColumnInfo(name = "favorite")
+    private boolean favorite;
+
     @ColumnInfo(name = "nextinfusion")
     private int nextInfusion;
 
@@ -53,5 +59,7 @@ public class Tea {
         this.color = color;
         this.nextInfusion = nextInfusion;
         this.date = date;
+        rating = 0;
+        favorite = false;
     }
 }

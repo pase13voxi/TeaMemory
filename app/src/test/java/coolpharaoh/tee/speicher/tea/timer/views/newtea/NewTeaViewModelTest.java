@@ -215,17 +215,33 @@ public class NewTeaViewModelTest {
         int newColor = 15;
         newTeaViewModelEmpty.createNewTea(newName, newVariety, newAmount, newAmountKind, newColor);
 
-        assertThat(newTeaViewModelEmpty.getName()).isEqualTo(newName);
-        assertThat(newTeaViewModelEmpty.getVariety()).isEqualTo(newVarietyCode);
-        assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(newAmount);
-        assertThat(newTeaViewModelEmpty.getAmountkind()).isEqualTo(newAmountKind);
-        assertThat(newTeaViewModelEmpty.getColor()).isEqualTo(newColor);
+        assertThat(newTeaViewModelEmpty)
+                .extracting(
+                        NewTeaViewModel::getName,
+                        NewTeaViewModel::getVariety,
+                        NewTeaViewModel::getAmount,
+                        NewTeaViewModel::getAmountkind,
+                        NewTeaViewModel::getColor)
+                .containsExactly(
+                        newName,
+                        newVarietyCode,
+                        newAmount,
+                        newAmountKind,
+                        newColor);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).insertTea((captor.capture()));
         Tea newTea = captor.getValue();
 
-        assertThat(newTea.getName()).isEqualTo(newName);
+        assertThat(newTea)
+                .extracting(
+                        Tea::getName,
+                        Tea::getRating,
+                        Tea::isFavorite)
+                .containsExactly(
+                        newName,
+                        0,
+                        false);
 
         verify(infusionRepository).deleteInfusionsByTeaId(anyLong());
         verify(infusionRepository).insertInfusion(any(Infusion.class));

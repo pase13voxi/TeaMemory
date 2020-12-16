@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="informationRatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="android:transformPivotX">20dp</item>
+        <item name="android:transformPivotY">20dp</item>
+        <item name="android:scaleX">.7</item>
+        <item name="android:scaleY">.7</item>
+    </style>
+</resources>

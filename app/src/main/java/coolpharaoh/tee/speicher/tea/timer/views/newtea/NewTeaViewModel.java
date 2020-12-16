@@ -59,6 +59,8 @@ class NewTeaViewModel {
     private void initializeTeaAndInfusions(Long teaId) {
         if (teaId == null) {
             tea = new Tea();
+            tea.setRating(0);
+            tea.setFavorite(false);
             infusions = new ArrayList<>();
             addInfusion();
         } else {

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +72,6 @@ public class InformationTest {
     @Before
     public void setUp() {
         mockDB();
-        when(teaDao.getTeaById(TEA_ID)).thenReturn(new Tea(TEA_NAME, null, 0, null, 0, 0, null));
     }
 
     private void mockDB() {
@@ -82,11 +82,15 @@ public class InformationTest {
 
     @Test
     public void launchActivityAndExpectEmptyInformation() {
+        createTea(0);
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
+            final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
+            assertThat(ratingBar.getRating()).isZero();
+
             final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isZero();
 
@@ -97,8 +101,34 @@ public class InformationTest {
     }
 
     @Test
+    public void launchActivityAndExpectFilledInformation() {
+        final int rating = 4;
+        createTea(rating);
+        final Note notes = createNotes();
+        createDetails();
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            final TextView toolbarTitle = information.findViewById(R.id.toolbar_title);
+            assertThat(toolbarTitle.getText()).hasToString(TEA_NAME);
+
+            final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
+            assertThat(ratingBar.getRating()).isEqualTo(4);
+
+            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
+            assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
+
+            final EditText editTextNotes = information.findViewById(R.id.editTextNotes);
+            assertThat(editTextNotes.getText()).hasToString(notes.getDescription());
+        });
+    }
+
+    @Test
     public void leaveActivityAndExpectStoredNotes() {
         final String notes = "New Notes";
+        createTea(0);
         createNotes();
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -119,27 +149,26 @@ public class InformationTest {
     }
 
     @Test
-    public void launchActivityAndExpectFilledInformation() {
-        final Note notes = createNotes();
-        createDetails();
+    public void updateRating() {
+        final int newRating = 4;
+        createTea(0);
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final TextView toolbarTitle = information.findViewById(R.id.toolbar_title);
-            assertThat(toolbarTitle.getText()).hasToString(TEA_NAME);
+            final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
+            ratingBar.setRating(newRating);
 
-            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
-            assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
-
-            final EditText editTextNotes = information.findViewById(R.id.editTextNotes);
-            assertThat(editTextNotes.getText()).hasToString(notes.getDescription());
+            ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+            verify(teaDao).update(captor.capture());
+            assertThat(captor.getValue().getRating()).isEqualTo(4);
         });
     }
 
     @Test
     public void addDetail() {
+        createTea(0);
         createNotes();
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -169,6 +198,7 @@ public class InformationTest {
 
     @Test
     public void addBlankDetail() {
+        createTea(0);
         createNotes();
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -190,6 +220,7 @@ public class InformationTest {
     @Test
     public void deleteDetail() {
         final int position = 1;
+        createTea(0);
         createDetails();
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -211,6 +242,7 @@ public class InformationTest {
     @Test
     public void editDetail() {
         final int position = 0;
+        createTea(0);
         final List<Note> details = createDetails();
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -241,6 +273,13 @@ public class InformationTest {
             assertThat(note).extracting(Note::getHeader, Note::getDescription)
                     .containsExactly(HEADER, DESCRIPTION);
         });
+    }
+
+    private void createTea(final int rating) {
+        final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, null);
+        tea.setRating((int) rating);
+        when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
+
     }
 
     private List<Note> createDetails() {

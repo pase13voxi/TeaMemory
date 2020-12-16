@@ -19,8 +19,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.T
 
 public class ExportJson {
 
-    private Application application;
-    private Printer printer;
+    private final Application application;
+    private final Printer printer;
 
     public ExportJson(Application application, Printer printer) {
         this.application = application;

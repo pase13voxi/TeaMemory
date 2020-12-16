@@ -106,6 +106,26 @@ class Migrations {
             // update old notes to notes with position -1 and heading "01_notes"
             database.execSQL(
                     "UPDATE note SET position = -1, header = '01_notes' WHERE position = 1");
+
+            // Create the new table
+            database.execSQL(
+                    "CREATE TABLE backup_tea (tea_id INTEGER PRIMARY KEY, name TEXT, " +
+                            "variety TEXT, amount INTEGER NOT NULL, " +
+                            "amountkind Text, color INTEGER NOT NULL, " +
+                            "rating INTEGER NOT NULL, favorite INTEGER NOT NULL," +
+                            "nextinfusion INTEGER NOT NULL, date INTEGER)"
+            );
+            // Copy the data
+            database.execSQL(
+                    "INSERT INTO backup_tea (tea_id, name, variety, amount, " +
+                            "amountkind, color, rating, favorite, nextinfusion, date) " +
+                            "SELECT tea_id, name, variety, amount, " +
+                            "amountkind, color, rating, favorite, lastInfusion, date " +
+                            "FROM tea");
+            // Remove the old table
+            database.execSQL("DROP TABLE tea");
+            // Change the table name to the correct one
+            database.execSQL("ALTER TABLE backup_tea RENAME TO tea");
         }
     };
 }

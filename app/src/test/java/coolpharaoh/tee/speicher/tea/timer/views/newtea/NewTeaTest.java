@@ -124,13 +124,17 @@ public class NewTeaTest {
                     Tea::getVariety,
                     Tea::getColor,
                     Tea::getAmount,
-                    Tea::getAmountKind
+                    Tea::getAmountKind,
+                    Tea::getRating,
+                    Tea::isFavorite
             ).containsExactly(
                     "Name",
                     "03_yellow",
                     -15797,
                     15,
-                    "Gr"
+                    "Gr",
+                    0,
+                    false
             );
 
             ArgumentCaptor<Infusion> captorInfusions = ArgumentCaptor.forClass(Infusion.class);

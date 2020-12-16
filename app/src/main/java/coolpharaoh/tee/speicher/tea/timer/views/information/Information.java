@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,8 +41,12 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
         fillToolbarTitle();
+        fillRatingBar();
         showDetailsList();
         fillNotes();
+
+        final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
 
         final ImageButton buttonAddDetail = findViewById(R.id.buttonAddDetail);
         buttonAddDetail.setOnClickListener(v -> addDetail());
@@ -61,6 +66,11 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
     private void fillToolbarTitle() {
         final TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(informationViewModel.getTeaName());
+    }
+
+    private void fillRatingBar() {
+        final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
+        ratingBar.setRating(informationViewModel.getTeaRating());
     }
 
     private void showDetailsList() {
@@ -100,6 +110,10 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
                         (dialogInterface, i) ->
                                 storeDetail(editTextHeading, editTextDescription))
                 .show();
+    }
+
+    private void updateTeaRating(final float rating) {
+        informationViewModel.updateTeaRating((int) rating);
     }
 
     private void storeDetail(final EditText editTextHeading, final EditText editTextDescription) {

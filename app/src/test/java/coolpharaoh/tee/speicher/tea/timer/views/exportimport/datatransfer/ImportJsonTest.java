@@ -43,6 +43,8 @@ public class ImportJsonTest {
             "    \"amount\": 1,\n" +
             "    \"amountKind\": \"Gr\",\n" +
             "    \"color\": 1,\n" +
+            "    \"rating\": 3,\n" +
+            "    \"favorite\": true,\n" +
             "    \"nextInfusion\": 1,\n" +
             "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
@@ -86,6 +88,8 @@ public class ImportJsonTest {
             "    \"amount\": 2,\n" +
             "    \"amountKind\": \"Ts\",\n" +
             "    \"color\": 2,\n" +
+            "    \"rating\": 0,\n" +
+            "    \"favorite\": false,\n" +
             "    \"nextInfusion\": 2,\n" +
             "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
@@ -190,10 +194,12 @@ public class ImportJsonTest {
                 Tea::getAmount,
                 Tea::getAmountKind,
                 Tea::getColor,
+                Tea::getRating,
+                Tea::isFavorite,
                 Tea::getNextInfusion
         ).containsExactly(
-                Tuple.tuple("name1", "variety1", 1, "Gr", 1, 1),
-                Tuple.tuple("name2", "variety2", 2, "Ts", 2, 2)
+                Tuple.tuple("name1", "variety1", 1, "Gr", 1, 3, true, 1),
+                Tuple.tuple("name2", "variety2", 2, "Ts", 2, 0, false, 2)
         );
 
         ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);

@@ -47,6 +47,33 @@ public class InformationViewModelTest {
     }
 
     @Test
+    public void getTeaRating() {
+        final int rating = 3;
+        final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
+        tea.setRating(rating);
+        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+
+        assertThat(informationViewModel.getTeaRating()).isEqualTo(tea.getRating());
+    }
+
+    @Test
+    public void updateTeaRating() {
+        final int rating = 3;
+        final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
+        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        informationViewModel.updateTeaRating(rating);
+
+        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+        verify(teaRepository).updateTea(captor.capture());
+
+        assertThat(captor.getValue().getRating()).isEqualTo(rating);
+    }
+
+    @Test
     public void getDetails() {
         List<Note> notes = Arrays.asList(new Note[]{new Note(TEA_ID, 0, HEADER, DESCRIPTION),
                 new Note(TEA_ID, 1, HEADER, DESCRIPTION)});

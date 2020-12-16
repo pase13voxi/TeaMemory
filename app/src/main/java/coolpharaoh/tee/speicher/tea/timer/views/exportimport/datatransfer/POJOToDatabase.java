@@ -24,17 +24,25 @@ class POJOToDatabase {
         }
         for (TeaPOJO teaPOJO : teaList) {
             // insert Tea first
-            long teaId = dataTransferViewModel.insertTea(new Tea(teaPOJO.getName(), teaPOJO.getVariety(),
-                    teaPOJO.getAmount(), teaPOJO.getAmountKind(), teaPOJO.getColor(),
-                    teaPOJO.getNextInfusion(), teaPOJO.getDate()));
+            long teaId = insertTea(teaPOJO);
             insertInfusions(teaId, teaPOJO.getInfusions());
             insertCounters(teaId, teaPOJO.getCounters());
             insertNotes(teaId, teaPOJO.getNotes());
         }
     }
 
-    private void deleteStoredTeas(){
+    private void deleteStoredTeas() {
         dataTransferViewModel.deleteAllTeas();
+    }
+
+    private long insertTea(TeaPOJO teaPOJO) {
+        final Tea tea = new Tea(teaPOJO.getName(), teaPOJO.getVariety(),
+                teaPOJO.getAmount(), teaPOJO.getAmountKind(), teaPOJO.getColor(),
+                teaPOJO.getNextInfusion(), teaPOJO.getDate());
+        tea.setRating(teaPOJO.getRating());
+        tea.setFavorite(teaPOJO.isFavorite());
+
+        return dataTransferViewModel.insertTea(tea);
     }
 
     private void insertInfusions(long teaId, List<InfusionPOJO> infusionList) {

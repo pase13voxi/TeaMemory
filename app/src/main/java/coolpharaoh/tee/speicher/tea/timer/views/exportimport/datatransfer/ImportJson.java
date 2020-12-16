@@ -27,8 +27,8 @@ public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
     private static final String LOG_TAG = ImportJson.class.getSimpleName();
 
-    private Application application;
-    private Printer printer;
+    private final Application application;
+    private final Printer printer;
 
     private String json;
 
