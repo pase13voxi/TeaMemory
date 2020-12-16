@@ -48,19 +48,19 @@ public class ExportJsonTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"favorite\":true,\"nextInfusion\":1," +
-            "\"date\":\"2020-09-15T10:09:01.789\",\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"" +
-            "cooldowntime\":\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"" +
-            "infusionindex\":1,\"time\":\"5:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90," +
-            "\"temperaturefahrenheit\":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4," +
-            "\"daydate\":\"2020-09-15T10:09:01.789\",\"weekdate\":\"2020-09-15T10:09:01.789\",\"monthdate\":" +
-            "\"2020-09-15T10:09:01.789\"}],\"notes\":[{\"position\":0,\"header\":\"Header\",\"description\":" +
-            "\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\":2,\"amountKind\":\"Ts\"," +
-            "\"color\":2,\"rating\":0,\"favorite\":false,\"nextInfusion\":2,\"date\":\"2020-09-15T10:09:01.789\"," +
-            "\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":\"5:00\",\"temperaturecelsius\":100," +
-            "\"temperaturefahrenheit\":212},{\"infusionindex\":1,\"time\":\"7:00\",\"cooldowntime\":\"3:00\"," +
-            "\"temperaturecelsius\":90,\"temperaturefahrenheit\":195}],\"counters\":[{\"day\":5,\"week\":6," +
-            "\"month\":7,\"overall\":8,\"daydate\":\"2020-09-15T10:09:01.789\",\"weekdate\":\"2020-09-15T10:09:01.789\"," +
-            "\"monthdate\":\"2020-09-15T10:09:01.789\"}],\"notes\":[{\"position\":0,\"header\":\"Header\",\"description\":\"Description\"}]}]";
+            "\"date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":" +
+            "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\"" +
+            ":1,\"time\":\"5:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
+            ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"daydate\":\"DATE\"," +
+            "\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
+            ",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\"" +
+            ":2,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"favorite\":false,\"nextInfusion\":2,\"" +
+            "date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":" +
+            "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1," +
+            "\"time\":\"7:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
+            ":195}],\"counters\":[{\"day\":5,\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"DATE\"," +
+            "\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"," +
+            "\"description\":\"Description\"}]}]";
 
     private String exportedDate;
 
