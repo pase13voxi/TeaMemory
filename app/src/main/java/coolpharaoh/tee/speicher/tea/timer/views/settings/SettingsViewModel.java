@@ -102,9 +102,12 @@ class SettingsViewModel {
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureUnit("Celsius");
-        actualSettings.setShowTeaAlert(true);
         actualSettings.setMainRateAlert(true);
         actualSettings.setMainRateCounter(0);
+        actualSettings.setMainUpdateAlert(false);
+        actualSettings.setShowTeaAlert(true);
+        actualSettings.setInformationAlert(true);
+        actualSettings.setSettingsPermissionAlert(true);
         actualSettings.setSort(0);
 
         actualSettingsRepository.updateSettings(actualSettings);

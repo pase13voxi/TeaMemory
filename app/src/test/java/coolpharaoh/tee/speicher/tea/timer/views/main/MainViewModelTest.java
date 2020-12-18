@@ -76,9 +76,9 @@ public class MainViewModelTest {
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureUnit("Celsius");
-        actualSettings.setShowTeaAlert(true);
         actualSettings.setMainRateAlert(true);
         actualSettings.setMainRateCounter(0);
+        actualSettings.setShowTeaAlert(true);
         actualSettings.setSettingsPermissionAlert(true);
         actualSettings.setSort(0);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);

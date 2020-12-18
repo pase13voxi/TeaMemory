@@ -32,14 +32,20 @@ public class ActualSettings {
     @ColumnInfo(name = "temperatureunit")
     private String temperatureUnit;
 
-    @ColumnInfo(name = "showteaalert")
-    private boolean showTeaAlert;
-
     @ColumnInfo(name = "mainratealert")
     private boolean mainRateAlert;
 
     @ColumnInfo(name = "mainratecounter")
     private int mainRateCounter;
+
+    @ColumnInfo(name = "mainupdatealert")
+    private boolean mainUpdateAlert;
+
+    @ColumnInfo(name = "showteaalert")
+    private boolean showTeaAlert;
+
+    @ColumnInfo(name = "informationalert")
+    private boolean informationAlert;
 
     @ColumnInfo(name = "settingspermissionalert")
     private boolean settingsPermissionAlert;

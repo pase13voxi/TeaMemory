@@ -109,6 +109,10 @@ class Migrations {
             // add new columns rating and favorite
             database.execSQL("ALTER TABLE tea ADD COLUMN rating INTEGER NOT NULL DEFAULT 0");
             database.execSQL("ALTER TABLE tea ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0");
+
+            // add new columns informationalert and mainupdatealert
+            database.execSQL("ALTER TABLE settings ADD COLUMN mainupdatealert INTEGER NOT NULL DEFAULT 1");
+            database.execSQL("ALTER TABLE settings ADD COLUMN informationalert INTEGER NOT NULL DEFAULT 1");
         }
     };
 }
