@@ -5,7 +5,8 @@
     <string name="information_detail_options">&#8942;</string>
     <string name="information_notes_heading">Notizen</string>
     <string name="information_notes_hint">Gib deine Notizen hier ein.</string>
-    <string name="information_add_detail_dialog_heading">Neue Information hinzufügen</string>
+    <string name="information_add_detail_button_description">Detail hinzufügen</string>
+    <string name="information_add_detail_dialog_heading">Information hinzufügen</string>
     <string name="information_edit_detail_dialog_heading">Information ändern</string>
     <string name="information_detail_dialog_hint_header">Kategorie (bsp. Duft)</string>
     <string name="information_detail_dialog_hint_description">Information (bsp. Blumig)</string>
