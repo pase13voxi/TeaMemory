@@ -21,26 +21,24 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                style="@style/informationCardview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
+                    style="@style/informationLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
+                        style="@style/informationHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Rating"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp" />
+                        android:text="@string/information_details_rating" />
 
                     <RatingBar
-                        style="?android:attr/ratingBarStyleIndicator"
                         android:id="@+id/information_rating_bar"
+                        style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:isIndicator="false"
@@ -51,29 +49,27 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                style="@style/informationCardview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
+                    style="@style/informationLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:nestedScrollingEnabled="true">
 
                     <TextView
+                        style="@style/informationHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:text="@string/information_details_heading"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp" />
+                        android:text="@string/information_details_heading" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_details"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp" />
 
                     <ImageButton
                         android:id="@+id/buttonAddDetail"
@@ -87,30 +83,30 @@
 
 
             <androidx.cardview.widget.CardView
+                style="@style/informationCardview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
+                    style="@style/informationLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
+                        style="@style/informationHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_notes_heading"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp" />
+                        android:text="@string/information_notes_heading" />
 
                     <EditText
                         android:id="@+id/editTextNotes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/information_notes_hint"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
                         android:textColor="@color/black"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:theme="@style/EditTextStyle" />
                 </LinearLayout>
 

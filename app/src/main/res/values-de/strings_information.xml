@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="information_details_heading">Informationen</string>
+    <string name="information_details_rating">Bewertung</string>
     <string name="information_detail_options">&#8942;</string>
     <string name="information_notes_heading">Notizen</string>
     <string name="information_notes_hint">Gib deine Notizen hier ein.</string>

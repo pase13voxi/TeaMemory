@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetStartWithNavigation="0dp">
 
     <RelativeLayout
         android:id="@+id/layout_infusion_bar"
@@ -16,10 +20,12 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@id/toolbar_text_infusionindex"
             android:background="?attr/selectableItemBackground"
+            android:ellipsize="end"
             android:gravity="center_vertical"
+            android:maxLines="1"
             android:paddingHorizontal="10dp"
             android:textColor="@color/white"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/toolbar_text_infusionindex"
@@ -29,12 +35,12 @@
             android:layout_toStartOf="@id/toolbar_infusionindex"
             android:text="@string/showtea_first_infusion_index"
             android:textColor="@color/white"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/toolbar_infusionindex"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerInParent="true"
             android:layout_marginEnd="5dp"
             android:layout_toStartOf="@id/toolbar_nextinfusion"
@@ -42,8 +48,8 @@
 
         <Button
             android:id="@+id/toolbar_nextinfusion"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"

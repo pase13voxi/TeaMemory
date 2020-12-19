@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="information_details_heading">Information</string>
+    <string name="information_details_rating">Rating</string>
     <string name="information_detail_options">&#8942;</string>
     <string name="information_add_detail_dialog_heading">Add new information</string>
     <string name="information_edit_detail_dialog_heading">Edit information</string>
