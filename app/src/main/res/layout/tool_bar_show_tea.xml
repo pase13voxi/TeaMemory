@@ -35,25 +35,25 @@
             android:layout_toStartOf="@id/toolbar_infusionindex"
             android:text="@string/showtea_first_infusion_index"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
 
         <Button
             android:id="@+id/toolbar_infusionindex"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
             android:layout_centerInParent="true"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
             android:layout_toStartOf="@id/toolbar_nextinfusion"
             android:background="@drawable/button_infusionindex" />
 
         <Button
             android:id="@+id/toolbar_nextinfusion"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/button_nextinfusion" />
     </RelativeLayout>
 
