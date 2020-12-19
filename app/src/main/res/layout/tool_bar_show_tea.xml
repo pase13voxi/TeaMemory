@@ -25,7 +25,7 @@
             android:maxLines="1"
             android:paddingHorizontal="10dp"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/toolbar_text_infusionindex"

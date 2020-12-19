@@ -1,5 +1,5 @@
 <resources>
-    <string name="showtea_heading">Mehr Informationen</string>
+    <string name="showtea_heading">Informationen</string>
     <string name="showtea_action_edit">Bearbeiten</string>
     <string name="showtea_action_counter">Trinkverhalten</string>
     <string name="showtea_dialog_counter_day">Heute</string>
