@@ -53,6 +53,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView toolbarCustomTitle = findViewById(R.id.toolbar_title);
+        toolbarCustomTitle.setPadding(40, 0, 0, 0);
         toolbarCustomTitle.setText(R.string.app_name);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
