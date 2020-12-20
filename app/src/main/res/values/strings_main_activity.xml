@@ -17,6 +17,7 @@
         <item>Last used</item>
         <item>Alphabetical</item>
         <item>By tea variety</item>
+        <item>Rating</item>
     </string-array>
     <string-array name="itemMenu">
         <item>Edit</item>

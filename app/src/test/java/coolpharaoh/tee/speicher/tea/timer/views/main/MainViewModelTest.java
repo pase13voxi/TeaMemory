@@ -91,6 +91,7 @@ public class MainViewModelTest {
         when(teaRepository.getTeasOrderByActivity()).thenReturn(teas);
         when(teaRepository.getTeasOrderByVariety()).thenReturn(teas);
         when(teaRepository.getTeasOrderByAlphabetic()).thenReturn(teas);
+        when(teaRepository.getTeasOrderByRating()).thenReturn(teas);
     }
 
     @Test
@@ -193,6 +194,13 @@ public class MainViewModelTest {
         actualSettings.setSort(2);
         mainActivityViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByVariety();
+    }
+
+    @Test
+    public void refreshTeasWithSort3() {
+        actualSettings.setSort(3);
+        mainActivityViewModel.refreshTeas();
+        verify(teaRepository, atLeastOnce()).getTeasOrderByRating();
     }
 
 }

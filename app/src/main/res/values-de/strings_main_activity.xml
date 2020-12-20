@@ -17,6 +17,7 @@
         <item>Letzte Verwendung</item>
         <item>Alphabetisch</item>
         <item>Nach Sorte</item>
+        <item>Bewertung</item>
     </string-array>
     <string-array name="itemMenu">
         <item>Bearbeiten</item>

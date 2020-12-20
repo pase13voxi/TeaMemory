@@ -96,12 +96,20 @@ public class TeaRepositoryTest {
         assertThat(teas).hasSize(2);
     }
 
-
     @Test
     public void getTeasOrderByVariety() {
         when(teaDao.getTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         List<Tea> teas = teaRepository.getTeasOrderByVariety();
+
+        assertThat(teas).hasSize(2);
+    }
+
+    @Test
+    public void getTeasOrderByRating() {
+        when(teaDao.getTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+
+        List<Tea> teas = teaRepository.getTeasOrderByRating();
 
         assertThat(teas).hasSize(2);
     }

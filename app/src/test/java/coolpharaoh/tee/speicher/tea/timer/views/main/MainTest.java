@@ -61,6 +61,7 @@ public class MainTest {
     private static final int SORT_ACTIVITY = 0;
     private static final int SORT_ALPHABETICALLY = 1;
     private static final int SORT_VARIETY = 2;
+    private static final int SORT_RATING = 3;
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -220,6 +221,23 @@ public class MainTest {
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_VARIETY);
+
+            checkExpectedTeas(teaName, main);
+        });
+    }
+
+    @Test
+    public void changeSortModeToRatingExpectTeaList() {
+        mockActualSettings(0, false, 0);
+        String teaName = "RATING_";
+        when(teaDao.getTeasOrderByRating()).thenReturn(generateTeaList(teaName));
+
+        ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
+        mainActivityScenario.onActivity(main -> {
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
+
+            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SORT_RATING);
 
             checkExpectedTeas(teaName, main);
         });

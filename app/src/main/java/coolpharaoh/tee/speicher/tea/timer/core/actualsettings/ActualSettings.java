@@ -50,7 +50,7 @@ public class ActualSettings {
     @ColumnInfo(name = "settingspermissionalert")
     private boolean settingsPermissionAlert;
 
-    //0 = sort by Date, 1 = sort alphabethically, 2 = sort by variety
+    //0 = sort by Date, 1 = alphabethically, 2 = by variety, 3 = rating
     @ColumnInfo(name = "sort")
     private int sort;
 }

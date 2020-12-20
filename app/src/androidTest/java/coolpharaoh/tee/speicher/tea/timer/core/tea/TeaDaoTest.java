@@ -229,6 +229,38 @@ public class TeaDaoTest {
                 );
     }
 
+
+    @Test
+    public void getTeasOrderByRating() {
+        Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
+        teaDao.insert(tea3);
+        Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
+        teaDao.insert(tea5);
+        Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
+        teaDao.insert(tea1);
+
+        List<Tea> teaList = teaDao.getTeasOrderByRating();
+
+        assertThat(teaList)
+                .extracting(
+                        Tea::getName,
+                        Tea::getRating)
+                .containsSequence(
+                        Tuple.tuple(
+                                tea5.getName(),
+                                tea5.getRating()
+                        ),
+                        Tuple.tuple(
+                                tea3.getName(),
+                                tea3.getRating()
+                        ),
+                        Tuple.tuple(
+                                tea1.getName(),
+                                tea1.getRating()
+                        )
+                );
+    }
+
     @Test
     public void getTeasBySearchString() {
         Tea teaA = createTea("A", VARIETY, CurrentDate.getDate());
@@ -259,7 +291,13 @@ public class TeaDaoTest {
                 );
     }
 
-    private Tea createTea(String name, String variety, Date date) {
-        return new Tea(name, variety, 3, "ts", 15, 0, date);
+    private Tea createTea(final String name, final String variety, final Date date) {
+        return createTea(name, variety, date, 0);
+    }
+
+    private Tea createTea(final String name, final String variety, final Date date, final int rating) {
+        final Tea tea = new Tea(name, variety, 3, "ts", 15, 0, date);
+        tea.setRating(rating);
+        return tea;
     }
 }

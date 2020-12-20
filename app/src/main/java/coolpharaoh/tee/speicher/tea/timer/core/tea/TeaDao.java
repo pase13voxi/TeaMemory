@@ -35,6 +35,9 @@ public interface TeaDao {
     @Query("SELECT * FROM tea ORDER BY variety ASC")
     List<Tea> getTeasOrderByVariety();
 
+    @Query("SELECT * FROM tea ORDER BY rating DESC")
+    List<Tea> getTeasOrderByRating();
+
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getTeaById(long id);
 

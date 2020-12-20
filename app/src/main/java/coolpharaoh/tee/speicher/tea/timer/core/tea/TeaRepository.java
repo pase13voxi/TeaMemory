@@ -46,6 +46,10 @@ public class TeaRepository {
         return teaDao.getTeasOrderByVariety();
     }
 
+    public List<Tea> getTeasOrderByRating() {
+        return teaDao.getTeasOrderByRating();
+    }
+
     public Tea getTeaById(long id) {
         return teaDao.getTeaById(id);
     }

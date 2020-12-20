@@ -171,6 +171,10 @@ class MainViewModel extends ViewModel {
             case 2:
                 teas.setValue(teaRepository.getTeasOrderByVariety());
                 break;
+            //rating
+            case 3:
+                teas.setValue(teaRepository.getTeasOrderByRating());
+                break;
             default:
         }
     }
