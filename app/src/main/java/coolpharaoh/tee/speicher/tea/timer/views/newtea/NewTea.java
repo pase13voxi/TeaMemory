@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,17 +53,17 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private ButtonColorShape buttonColorShape;
     private EditText editTextName;
     private EditText editTextTemperature;
-    private Button buttonShowCoolDowntime;
+    private ImageButton buttonShowCoolDowntime;
     private EditText editTextCoolDownTime;
-    private Button buttonAutofillCoolDownTime;
+    private ImageButton buttonAutofillCoolDownTime;
     private EditText editTextSteepingTime;
     private EditText editTextAmount;
     private Spinner spinnerAmount;
     private TextView textViewInfusion;
-    private Button leftArrow;
-    private Button rightArrow;
-    private Button deleteInfusion;
-    private Button addInfusion;
+    private ImageButton leftArrow;
+    private ImageButton rightArrow;
+    private ImageButton deleteInfusion;
+    private ImageButton addInfusion;
 
     private NewTeaViewModel newTeaViewModel;
     private InputValidator inputValidator;
@@ -168,7 +169,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         spinnerAmount = findViewById(R.id.spinnerAmountUnit);
         textViewInfusion = findViewById(R.id.textViewCountInfusion);
         leftArrow = findViewById(R.id.buttonArrowLeft);
+        //workaround enable=false didn't work for imageButton in xml
+        leftArrow.setEnabled(false);
         rightArrow = findViewById(R.id.buttonArrowRight);
+        //workaround enable=false didn't work for imageButton in xml
+        rightArrow.setEnabled(false);
         deleteInfusion = findViewById(R.id.buttonDeleteInfusion);
         addInfusion = findViewById(R.id.buttonAddInfusion);
     }
@@ -393,11 +398,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private void visualizeCoolDownTimeInput() {
         if (editTextCoolDownTime.getVisibility() == View.VISIBLE) {
-            buttonShowCoolDowntime.setBackground(getResources().getDrawable(R.drawable.button_arrowdown));
+            buttonShowCoolDowntime.setImageResource(R.drawable.arrowdown);
             editTextCoolDownTime.setVisibility(View.GONE);
             buttonAutofillCoolDownTime.setVisibility(View.GONE);
         } else {
-            buttonShowCoolDowntime.setBackground(getResources().getDrawable(R.drawable.button_arrowup));
+            buttonShowCoolDowntime.setImageResource(R.drawable.arrowup);
             editTextCoolDownTime.setVisibility(View.VISIBLE);
             buttonAutofillCoolDownTime.setVisibility(View.VISIBLE);
         }
