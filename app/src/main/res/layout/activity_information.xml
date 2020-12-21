@@ -101,14 +101,12 @@
 
                     <EditText
                         android:id="@+id/editTextNotes"
+                        style="@style/informationEditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/information_notes_hint"
                         android:importantForAutofill="no"
-                        android:inputType="text"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:theme="@style/EditTextStyle" />
+                        android:theme="@style/informationEditTextTheme" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

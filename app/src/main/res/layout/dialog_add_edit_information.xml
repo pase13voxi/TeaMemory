@@ -6,24 +6,24 @@
 
     <EditText
         android:id="@+id/editTextDialogAddEditHeader"
+        style="@style/informationEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="5dp"
         android:hint="@string/information_detail_dialog_hint_header"
         android:importantForAutofill="no"
-        android:inputType="textCapWords"
-        android:theme="@style/EditTextStyle" />
+        android:theme="@style/informationEditTextTheme" />
 
     <EditText
         android:id="@+id/editTextDialogAddEditDescription"
+        style="@style/informationEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="5dp"
         android:hint="@string/information_detail_dialog_hint_description"
         android:importantForAutofill="no"
-        android:inputType="textCapWords"
-        android:theme="@style/EditTextStyle" />
+        android:theme="@style/informationEditTextTheme" />
 
 </LinearLayout>

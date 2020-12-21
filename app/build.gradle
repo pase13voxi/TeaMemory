@@ -9,7 +9,7 @@ android {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 103
+        versionCode 105
         versionName "2.8"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -22,7 +22,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            debuggable false
+            debuggable true
             testCoverageEnabled true
         }
     }

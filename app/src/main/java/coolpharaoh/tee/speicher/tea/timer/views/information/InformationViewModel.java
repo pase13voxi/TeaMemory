@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
@@ -38,7 +39,7 @@ class InformationViewModel extends ViewModel {
     public String getTeaName() {
         final Tea tea = teaRepository.getTeaById(teaId);
         if (tea == null) {
-            return null;
+            throw new NoSuchElementException("No tea found for tea id " + teaId);
         } else {
             return tea.getName();
         }
@@ -47,7 +48,6 @@ class InformationViewModel extends ViewModel {
     public int getTeaRating() {
         final Tea tea = teaRepository.getTeaById(teaId);
         return tea.getRating();
-
     }
 
     public void updateTeaRating(final int rating) {
