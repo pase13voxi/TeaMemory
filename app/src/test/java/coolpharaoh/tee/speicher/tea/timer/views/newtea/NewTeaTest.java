@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -100,7 +100,7 @@ public class NewTeaTest {
             EditText editTextName = newTea.findViewById(R.id.editTextName);
             Spinner spinnerAmountKind = newTea.findViewById(R.id.spinnerAmountUnit);
             EditText editTextAmount = newTea.findViewById(R.id.editTextAmount);
-            Button buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
+            ImageButton buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
             EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
             EditText editTextTime = newTea.findViewById(R.id.editTextTime);
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
@@ -218,10 +218,10 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            Button buttonLeft = newTea.findViewById(R.id.buttonArrowLeft);
-            Button buttonRight = newTea.findViewById(R.id.buttonArrowRight);
-            Button buttonDelete = newTea.findViewById(R.id.buttonDeleteInfusion);
-            Button buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
+            ImageButton buttonLeft = newTea.findViewById(R.id.buttonArrowLeft);
+            ImageButton buttonRight = newTea.findViewById(R.id.buttonArrowRight);
+            ImageButton buttonDelete = newTea.findViewById(R.id.buttonDeleteInfusion);
+            ImageButton buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
             TextView textViewInfunsionBar = newTea.findViewById(R.id.textViewCountInfusion);
             EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
             EditText editTextTime = newTea.findViewById(R.id.editTextTime);
@@ -280,9 +280,9 @@ public class NewTeaTest {
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             EditText editTextName = newTea.findViewById(R.id.editTextName);
-            Button buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
+            ImageButton buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
             TextView textViewCountInfusion = newTea.findViewById(R.id.textViewCountInfusion);
-            Button buttonAutofillCoolDownTime = newTea.findViewById(R.id.buttonAutofillCoolDownTime);
+            ImageButton buttonAutofillCoolDownTime = newTea.findViewById(R.id.buttonAutofillCoolDownTime);
             EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
             EditText editTextTime = newTea.findViewById(R.id.editTextTime);
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
@@ -306,8 +306,8 @@ public class NewTeaTest {
         mockSettings(FAHRENHEIT);
         ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            Button buttonShowCoolDownTime = newTea.findViewById(R.id.buttonShowCoolDownTime);
-            Button buttonAutofillCoolDownTime = newTea.findViewById(R.id.buttonAutofillCoolDownTime);
+            ImageButton buttonShowCoolDownTime = newTea.findViewById(R.id.buttonShowCoolDownTime);
+            ImageButton buttonAutofillCoolDownTime = newTea.findViewById(R.id.buttonAutofillCoolDownTime);
             EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
             EditText editTextTime = newTea.findViewById(R.id.editTextTime);
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
@@ -353,7 +353,7 @@ public class NewTeaTest {
             EditText editTextName = newTea.findViewById(R.id.editTextName);
             Spinner spinnerAmountKind = newTea.findViewById(R.id.spinnerAmountUnit);
             EditText editTextAmount = newTea.findViewById(R.id.editTextAmount);
-            Button buttonRight = newTea.findViewById(R.id.buttonArrowRight);
+            ImageButton buttonRight = newTea.findViewById(R.id.buttonArrowRight);
             EditText editTextTemperature = newTea.findViewById(R.id.editTextTemperature);
             EditText editTextTime = newTea.findViewById(R.id.editTextTime);
             EditText editTextCoolDownTime = newTea.findViewById(R.id.editTextCoolDownTime);
