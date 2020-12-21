@@ -18,11 +18,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -48,12 +50,12 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     public static final String EXTRA_TEA_ID = "teaId";
 
     private TextView textViewInfusionIndex;
-    private Button buttonNextInfusion;
+    private ImageButton buttonNextInfusion;
     private TextView textViewTemperature;
     private Spinner spinnerMinutes;
     private Spinner spinnerSeconds;
     private TextView textViewTimer;
-    private Button buttonExchange;
+    private ImageButton buttonTemperature;
     private Button buttonInfo;
     private ImageView imageViewFill;
     private ImageView imageViewSteam;
@@ -62,11 +64,11 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private TextView textViewDoublePoint;
     private TextView textViewSeconds;
     private TextView textViewMinutes;
-    private Button buttonInfusionIndex;
+    private ImageButton buttonInfusionIndex;
     private TextView textViewName;
     private TextView textViewVariety;
     private TextView textViewAmount;
-    private Button buttonCalculateAmount;
+    private ImageButton buttonCalculateAmount;
 
     private ShowTeaViewModel showTeaViewModel;
     private boolean infoShown = false;
@@ -144,8 +146,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonNextInfusion.setOnClickListener(v -> displayNextInfusion());
         buttonNextInfusion.setOnLongClickListener(this);
 
-        buttonExchange.setOnClickListener(v -> switchToCoolingPeriod());
-        buttonExchange.setOnLongClickListener(this);
+        buttonTemperature.setOnClickListener(v -> switchToCoolingPeriod());
+        buttonTemperature.setOnLongClickListener(this);
 
         buttonInfo.setOnClickListener(v -> showDialogCoolingPeriod());
 
@@ -183,7 +185,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         textViewVariety = findViewById(R.id.textViewVariety);
         textViewTemperature = findViewById(R.id.textViewTemperature);
         buttonInfo = findViewById(R.id.buttonInfo);
-        buttonExchange = findViewById(R.id.buttonExchange);
+        buttonTemperature = findViewById(R.id.buttonTemperature);
         textViewAmount = findViewById(R.id.textViewAmount);
         buttonCalculateAmount = findViewById(R.id.buttonCalculateAmount);
         spinnerMinutes = findViewById(R.id.spinnerMinutes);
@@ -232,8 +234,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         if (showTeaViewModel.teaExists()) {
             fillInformationFields();
-
-            decideToShowCooldownTimeButton();
 
             decideToShowInfusionBar();
 
@@ -288,13 +288,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             } else {
                 textViewAmount.setText(getResources().getString(R.string.showtea_display_ts, "-"));
             }
-        }
-    }
-
-    private void decideToShowCooldownTimeButton() {
-        TimeHelper cooldowntime = showTeaViewModel.getCoolDownTime();
-        if (cooldowntime != null && cooldowntime.time != null) {
-            buttonExchange.setEnabled(true);
         }
     }
 
@@ -368,8 +361,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             }
         }
 
-        buttonExchange.setEnabled(showTeaViewModel.getCoolDownTime().time != null);
-
         spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
         spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
         textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (showTeaViewModel.getInfusionIndex() + 1)));
@@ -413,7 +404,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void disableInfusionBarAndCooldownSwitch() {
-        buttonExchange.setEnabled(false);
+        buttonTemperature.setEnabled(false);
         buttonInfusionIndex.setEnabled(false);
         buttonNextInfusion.setEnabled(false);
     }
@@ -487,7 +478,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void enableInfusionBarAndCooldownSwitch() {
-        decideToShowCooldownTimeButton();
+        buttonTemperature.setEnabled(true);
         buttonInfusionIndex.setEnabled(true);
         nextInfusionEnable();
     }
@@ -513,7 +504,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         int tmpSize = showTeaViewModel.getInfusionSize();
         String[] items = new String[tmpSize];
         for (int i = 0; i < tmpSize; i++) {
-            items[i] = getResources().getString(R.string.showtea_dialog_infusion_count_desciption, i + 1);
+            items[i] = getResources().getString(R.string.showtea_dialog_infusion_count_description, i + 1);
         }
 
         //Get CheckedItem
@@ -540,10 +531,17 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void switchToCoolingPeriod() {
         if (!infoShown) {
-            buttonInfo.setVisibility(View.VISIBLE);
-            infoShown = true;
-            spinnerMinutes.setSelection(showTeaViewModel.getCoolDownTime().minutes);
-            spinnerSeconds.setSelection(showTeaViewModel.getCoolDownTime().seconds);
+
+            final TimeHelper cooldowntime = showTeaViewModel.getCoolDownTime();
+            if (cooldowntime != null && cooldowntime.time != null) {
+                buttonInfo.setVisibility(View.VISIBLE);
+                infoShown = true;
+
+                spinnerMinutes.setSelection(cooldowntime.minutes);
+                spinnerSeconds.setSelection(cooldowntime.seconds);
+            } else {
+                Toast.makeText(getApplication(), R.string.showtea_cooldown_not_found, Toast.LENGTH_LONG).show();
+            }
         } else {
             buttonInfo.setVisibility(View.INVISIBLE);
             infoShown = false;
@@ -663,8 +661,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     @Override
     public boolean onLongClick(View view) {
-        if (view.getId() == R.id.buttonExchange) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_exchange));
+        if (view.getId() == R.id.buttonTemperature) {
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_temperature));
         } else if (view.getId() == R.id.buttonCalculateAmount) {
             showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_calculateamount));
         } else if (view.getId() == R.id.toolbar_infusionindex) {

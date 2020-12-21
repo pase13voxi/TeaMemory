@@ -8,6 +8,7 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -218,12 +219,11 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            ImageButton buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
             TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
-            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            ImageButton buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
             TextView textViewName = showTea.findViewById(R.id.textViewName);
             TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
             TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
@@ -234,7 +234,6 @@ public class ShowTeaTest {
             assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.GONE);
             assertThat(textViewName.getText()).isEqualTo(tea.getName());
             assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
-            assertThat(buttonExchange.isEnabled()).isFalse();
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
             assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " ts/L");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
@@ -324,16 +323,16 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
             Button buttonInfo = showTea.findViewById(R.id.buttonInfo);
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
             Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
 
-            assertThat(buttonExchange.isEnabled()).isTrue();
+            assertThat(buttonTemperature.isEnabled()).isTrue();
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
 
-            buttonExchange.performClick();
+            buttonTemperature.performClick();
             assertThat(buttonInfo.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("04");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
@@ -343,7 +342,7 @@ public class ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogInfo, R.string.showtea_cooldown_header, R.string.showtea_cooldown_description);
             dialogInfo.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            buttonExchange.performClick();
+            buttonTemperature.performClick();
             assertThat(buttonInfo.getVisibility()).isEqualTo(View.INVISIBLE);
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
@@ -363,7 +362,7 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
+            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
@@ -393,7 +392,7 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
+            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
@@ -490,24 +489,21 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+            ImageButton buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
             TextView textViewInfusionIndex = showTea.findViewById(R.id.toolbar_text_infusionindex);
-            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            ImageButton buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
             Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
 
             assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(buttonExchange.isEnabled()).isFalse();
             assertThat(textViewTemperature.getText()).hasToString("100 °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
 
             buttonNextInfusion.performClick();
-            assertThat(buttonExchange.isEnabled()).isTrue();
             assertThat(textViewTemperature.getText()).hasToString("- °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
@@ -518,7 +514,6 @@ public class ShowTeaTest {
 
             ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialogInfusionIndex);
             shadowDialog.clickOnItem(2);
-            assertThat(buttonExchange.isEnabled()).isFalse();
             assertThat(textViewTemperature.getText()).hasToString("100 °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
@@ -539,8 +534,8 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            ImageButton buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+            ImageButton buttonExchange = showTea.findViewById(R.id.buttonTemperature);
             TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
 
             assertThat(textViewTemperature.getText()).hasToString("212 °F");
@@ -642,13 +637,13 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
+            ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
             Button startButton = showTea.findViewById(R.id.buttonStartTimer);
             ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
             ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
             ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
 
-            buttonExchange.performClick();
+            buttonTemperature.performClick();
             startButton.performClick();
 
             Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
@@ -722,9 +717,9 @@ public class ShowTeaTest {
 
     private void checkStartOrReset(ShowTea showTea, boolean start) {
         Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-        Button buttonExchange = showTea.findViewById(R.id.buttonExchange);
-        Button buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
-        Button buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
+        ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
+        ImageButton buttonInfusionIndex = showTea.findViewById(R.id.toolbar_infusionindex);
+        ImageButton buttonNextInfusion = showTea.findViewById(R.id.toolbar_nextinfusion);
         Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
         Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
         TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
@@ -744,7 +739,7 @@ public class ShowTeaTest {
                 .hasToString(showTea.getString(start ? R.string.showtea_timer_reset :
                         R.string.showtea_timer_start));
         // disableInfusionBarAndCooldownSwitch
-        assertThat(buttonExchange.isEnabled()).isEqualTo(!start);
+        assertThat(buttonTemperature.isEnabled()).isEqualTo(!start);
         assertThat(buttonInfusionIndex.isEnabled()).isEqualTo(!start);
         assertThat(buttonNextInfusion.isEnabled()).isEqualTo(!start);
         // hideTimeInputAndVisualizeTimerDisplay

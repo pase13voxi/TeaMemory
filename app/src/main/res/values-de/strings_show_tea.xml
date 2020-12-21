@@ -36,8 +36,9 @@
     <string name="showtea_first_infusion_index">1.</string>
     <string name="showtea_break_count_point">%1$d.</string>
     <string name="showtea_dialog_infusion_count_title">Wähle deinen Aufguss</string>
-    <string name="showtea_dialog_infusion_count_desciption">Aufguss %1$d</string>
+    <string name="showtea_dialog_infusion_count_description">Aufguss %1$d</string>
     <string name="showtea_dialog_infusion_count_negative">Abbrechen</string>
+    <string name="showtea_cooldown_not_found">Für diesen Aufguss / Tee ist keine Abkühlzeit festgelegt.</string>
     <string name="showtea_cooldown_header">Abkühlzeiten</string>
     <string name="showtea_cooldown_description">Bei Grünem oder Weißem Tee sollte man vor dem Aufguss das kochende Wasser abkühlen lassen.</string>
     <string name="showtea_cooldown_ok">Ok</string>
@@ -46,7 +47,7 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Fertig</string>
-    <string name="showtea_tooltip_exchange">Abkühlzeit</string>
+    <string name="showtea_tooltip_temperature">Abkühlzeit</string>
     <string name="showtea_tooltip_calculateamount">Menge berechnen</string>
     <string name="showtea_tooltip_infusion">Aufguss auswählen</string>
     <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
