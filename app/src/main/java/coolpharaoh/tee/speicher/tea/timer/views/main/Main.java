@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
+import coolpharaoh.tee.speicher.tea.timer.views.description.Description;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
@@ -47,6 +48,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
         initializeTeaList();
         initializeNewTeaButton();
+        showUpdateInformationOnStart();
         showRatingDialogOnStart();
     }
 
@@ -151,6 +153,23 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         startActivity(newteaScreen);
     }
 
+    private void showUpdateInformationOnStart() {
+        if (mainActivityViewModel.isMainUpdateAlert()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.main_dialog_update_header)
+                    .setMessage(R.string.main_dialog_update_description)
+                    .setPositiveButton(R.string.main_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
+                    .setNeutralButton(R.string.main_dialog_update_neutral, null)
+                    .setNegativeButton(R.string.main_dialog_update_negative, (dialog, which) -> mainActivityViewModel.setMainUpdateAlert(false))
+                    .show();
+        }
+    }
+
+    private void navigateToUpdateWindow() {
+        Intent intent = new Intent(Main.this, Description.class);
+        startActivity(intent);
+    }
+
     private void showRatingDialogOnStart() {
         if (startApplication) {
             //TODO Make the enclosing method "static and remove this set"
@@ -172,7 +191,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.main_dialog_rating_header);
-        builder.setMessage(R.string.main_dialog_rating);
+        builder.setMessage(R.string.main_dialog_rating_description);
         builder.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
         builder.setNeutralButton(R.string.main_dialog_rating_neutral, null);
         builder.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));

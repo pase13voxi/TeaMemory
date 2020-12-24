@@ -176,6 +176,18 @@ public class MainViewModelTest {
     }
 
     @Test
+    public void isMainUpdateAlert() {
+        assertThat(mainActivityViewModel.isMainUpdateAlert()).isEqualTo(actualSettings.isMainUpdateAlert());
+    }
+
+    @Test
+    public void setMainUpdateAlert() {
+        boolean alert = true;
+        mainActivityViewModel.setMainUpdateAlert(alert);
+        verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
+    }
+
+    @Test
     public void refreshTeasWithSort0() {
         actualSettings.setSort(0);
         mainActivityViewModel.refreshTeas();

@@ -1,7 +1,10 @@
 package coolpharaoh.tee.speicher.tea.timer.views.main;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +45,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
+import coolpharaoh.tee.speicher.tea.timer.views.description.Description;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
@@ -49,6 +53,9 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 import static android.view.HapticFeedbackConstants.LONG_PRESS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
@@ -91,7 +98,7 @@ public class MainTest {
 
     @Test
     public void launchActivityExpectTeaList() {
-        mockActualSettings(0, true, 10);
+        mockActualSettings(true, 10);
         String teaName = "ACTIVITY_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -100,19 +107,76 @@ public class MainTest {
     }
 
     @Test
-    public void launchActivityExpectRatingDialog() {
-        mockActualSettings(0, true, 20);
+    public void launchActivityExpectUpdateDescription() {
+        mockActualSettings(true);
+        String teaName = "ACTIVITY_";
+        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog).isNotNull();
+            final AlertDialog dialogUpdate = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(main, dialogUpdate,
+                    R.string.main_dialog_update_header, R.string.main_dialog_update_description);
+            dialogUpdate.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            Intent expected = new Intent(main, Description.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getData()).isEqualTo(expected.getData());
+        });
+    }
+
+    @Test
+    public void launchActivityExpectUpdateDescriptionClickNegative() {
+        mockActualSettings(true);
+        String teaName = "ACTIVITY_";
+        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+
+        ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
+        mainActivityScenario.onActivity(main -> {
+            getLatestAlertDialog().getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+
+            verify(actualSettingsDao).update(any());
+        });
+    }
+
+    @Test
+    public void launchActivityExpectRatingDialog() {
+        mockActualSettings(true, 20);
+
+        ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
+        mainActivityScenario.onActivity(main -> {
+            final AlertDialog dialogRating = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(main, dialogRating,
+                    R.string.main_dialog_rating_header, R.string.main_dialog_rating_description);
+            dialogRating.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + main.getPackageName()));
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getData()).isEqualTo(expected.getData());
+        });
+    }
+
+    @Ignore("Test will work when static field startApplication is fixed")
+    @Test
+    public void launchActivityExpectRatingDialogClickNegative() {
+        mockActualSettings(true, 20);
+
+        ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
+        mainActivityScenario.onActivity(main -> {
+            final AlertDialog dialogRating = getLatestAlertDialog();
+            checkTitleAndMessageOfLatestDialog(main, dialogRating,
+                    R.string.main_dialog_rating_header, R.string.main_dialog_rating_description);
+            dialogRating.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+
+            verify(actualSettingsDao, times(2)).update(any());
         });
     }
 
     @Test
     public void navigateToSettingsExpectSettingsActivity() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -127,7 +191,7 @@ public class MainTest {
 
     @Test
     public void navigateToExportImportExpectExportImportActivity() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -142,7 +206,7 @@ public class MainTest {
 
     @Test
     public void navigateToAboutExpectAboutActivity() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -159,7 +223,7 @@ public class MainTest {
     @SuppressWarnings("java:S1905")
     @Test
     public void searchStringExpectSearchList() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "SEARCH_";
         when(teaDao.getTeasBySearchString(teaName)).thenReturn(generateTeaList(teaName));
 
@@ -177,7 +241,7 @@ public class MainTest {
 
     @Test
     public void changeSortModeToActivityExpectTeaList() {
-        mockActualSettings(1, false, 0);
+        mockActualSettings(1);
         String teaName = "ACTIVITY_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -194,7 +258,7 @@ public class MainTest {
 
     @Test
     public void changeSortModeToAlphabeticallyExpectTeaList() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "ALPHABETICALLY_";
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(generateTeaList(teaName));
 
@@ -211,7 +275,7 @@ public class MainTest {
 
     @Test
     public void changeSortModeToVarietyExpectTeaList() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "VARIETY_";
         when(teaDao.getTeasOrderByVariety()).thenReturn(generateTeaList(teaName));
 
@@ -228,7 +292,7 @@ public class MainTest {
 
     @Test
     public void changeSortModeToRatingExpectTeaList() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "RATING_";
         when(teaDao.getTeasOrderByRating()).thenReturn(generateTeaList(teaName));
 
@@ -245,7 +309,7 @@ public class MainTest {
 
     @Test
     public void clickAddTeaExpectNewTeaActivity() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -262,7 +326,7 @@ public class MainTest {
     @Test
     public void clickTeaExpectShowTeaActivity() {
         int positionTea = 1;
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -279,10 +343,10 @@ public class MainTest {
         });
     }
 
-    @Ignore
+    @Ignore("how to click contextMenu?")
     @Test
     public void editTeaExpectNewTeaActivity() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -291,14 +355,14 @@ public class MainTest {
             ListView teaList = main.findViewById(R.id.listViewTealist);
             longClickItem(teaList, 1);
 
-            //TODO how to clock contextMenu
+            //TODO how to click contextMenu?
         });
     }
 
-    @Ignore
+    @Ignore("how to click contextMenu?")
     @Test
     public void deleteTeaExpectDeletion() {
-        mockActualSettings(0, false, 0);
+        mockActualSettings();
         String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -307,16 +371,35 @@ public class MainTest {
             ListView teaList = main.findViewById(R.id.listViewTealist);
             longClickItem(teaList, 1);
 
-            //TODO how to clock contextMenu
+            //TODO how to click contextMenu?
         });
     }
 
-    private void mockActualSettings(int sort, boolean mainRateAlert, int mainRateCounter) {
+    private void mockActualSettings() {
+        mockActualSettings(0, false, 0, false);
+    }
+
+    private void mockActualSettings(final boolean mainUpdateAlert) {
+        mockActualSettings(0, false, 0, mainUpdateAlert);
+    }
+
+    private void mockActualSettings(final int sort) {
+        mockActualSettings(sort, false, 0, false);
+    }
+
+    private void mockActualSettings(final boolean mainRateAlert, final int mainRateCounter) {
+        mockActualSettings(0, mainRateAlert, mainRateCounter, false);
+    }
+
+    private void mockActualSettings(final int sort, final boolean mainRateAlert,
+                                    final int mainRateCounter, final boolean mainUpdateAlert) {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setSort(sort);
         actualSettings.setMainRateAlert(mainRateAlert);
         actualSettings.setMainRateCounter(mainRateCounter);
+        actualSettings.setMainUpdateAlert(mainUpdateAlert);
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
+        when(actualSettingsDao.getCountItems()).thenReturn(1);
     }
 
     private List<Tea> generateTeaList(String name) {
@@ -348,5 +431,13 @@ public class MainTest {
         View itemView = adapter.getView(position, null, listView);
         listener.onItemLongClick(listView, itemView, position, adapter.getItemId(position));
         listView.performHapticFeedback(LONG_PRESS);
+    }
+
+    private void checkTitleAndMessageOfLatestDialog(final Main main, final AlertDialog dialog,
+                                                    final int title, final int message) {
+        ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
+        assertThat(shadowDialog).isNotNull();
+        assertThat(shadowDialog.getTitle()).isEqualTo(main.getString(title));
+        assertThat(shadowDialog.getMessage()).isEqualTo(main.getString(message));
     }
 }

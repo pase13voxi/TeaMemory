@@ -87,31 +87,41 @@ public class SettingsViewModelTest {
     @Test
     public void setShowTeaAlert(){
         boolean showTeaAlert = true;
-        settingsViewModel.setShowteaalert(showTeaAlert);
+        settingsViewModel.setShowTeaAlert(showTeaAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
 
-        assertThat(settingsViewModel.isShowteaalert()).isEqualTo(showTeaAlert);
+        assertThat(settingsViewModel.isShowTeaAlert()).isEqualTo(showTeaAlert);
     }
 
     @Test
-    public void setMainRateAlert(){
+    public void setMainRateAlert() {
         boolean mainRateAlert = true;
-        settingsViewModel.setMainratealert(mainRateAlert);
+        settingsViewModel.setMainRateAlert(mainRateAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
 
-        assertThat(settingsViewModel.isMainratealert()).isEqualTo(mainRateAlert);
+        assertThat(settingsViewModel.isMainRateAlert()).isEqualTo(mainRateAlert);
     }
 
     @Test
-    public void setSettingsPermissionAlert(){
+    public void setMainUpdateAlert() {
+        boolean mainUpdateAlert = true;
+        settingsViewModel.setMainUpdateAlert(mainUpdateAlert);
+
+        verify(actualSettingsRepository).updateSettings(any());
+
+        assertThat(settingsViewModel.isMainUpdateAlert()).isEqualTo(mainUpdateAlert);
+    }
+
+    @Test
+    public void setSettingsPermissionAlert() {
         boolean settingsPermissionAlert = true;
         settingsViewModel.setSettingsPermissionAlert(settingsPermissionAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
 
-        assertThat(settingsViewModel.isSettingspermissionalert()).isEqualTo(settingsPermissionAlert);
+        assertThat(settingsViewModel.isSettingsPermissionAlert()).isEqualTo(settingsPermissionAlert);
     }
 
     @Test
@@ -129,8 +139,8 @@ public class SettingsViewModelTest {
         assertThat(actualSettings.getTemperatureUnit()).isEqualTo("Celsius");
         assertThat(actualSettings.isShowTeaAlert()).isTrue();
         assertThat(actualSettings.isMainRateAlert()).isTrue();
-        assertThat(actualSettings.getMainRateCounter()).isEqualTo(0);
-        assertThat(actualSettings.getSort()).isEqualTo(0);
+        assertThat(actualSettings.getMainRateCounter()).isZero();
+        assertThat(actualSettings.getSort()).isZero();
     }
 
     @Test

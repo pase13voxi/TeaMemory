@@ -8,8 +8,13 @@
     <string name="main_dialog_sort_negative">Abbrechen</string>
     <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
     <string name="main_tooltip_newtea">Tee hinzufügen</string>
+    <string name="main_dialog_update_header">Neue Funktionen</string>
+    <string name="main_dialog_update_description">Mit dem Update sind neue Funktionalitäten dazu gekommen.</string>
+    <string name="main_dialog_update_positive">Anzeigen</string>
+    <string name="main_dialog_update_neutral">Später</string>
+    <string name="main_dialog_update_negative">Nein, danke</string>
     <string name="main_dialog_rating_header">Bewerte die App</string>
-    <string name="main_dialog_rating">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
+    <string name="main_dialog_rating_description">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
     <string name="main_dialog_rating_positive">Bewerten</string>
     <string name="main_dialog_rating_neutral">Später</string>
     <string name="main_dialog_rating_negative">Nein, danke</string>

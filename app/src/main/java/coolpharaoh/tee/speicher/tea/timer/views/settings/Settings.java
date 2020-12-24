@@ -152,7 +152,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void settingAlarm() {
-        if (!PermissionRequester.checkReadPermission(this) && settingsViewModel.isSettingspermissionalert()) {
+        if (!PermissionRequester.checkReadPermission(this) && settingsViewModel.isSettingsPermissionAlert()) {
             readPermissionDialog();
         } else {
             createAlarmRequest();
@@ -300,29 +300,36 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         ViewGroup parent = findViewById(R.id.settings_parent);
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_settings_hints, parent, false);
-        final CheckBox checkBoxRating = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsRating);
-        checkBoxRating.setChecked(settingsViewModel.isMainratealert());
+        View alertLayoutDialog = inflater.inflate(R.layout.dialog_settings_hints, parent, false);
 
-        final CheckBox checkBoxDescription = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsDescription);
-        checkBoxDescription.setChecked(settingsViewModel.isShowteaalert());
+        final CheckBox checkBoxUpdate = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsUpdate);
+        checkBoxUpdate.setChecked(settingsViewModel.isMainUpdateAlert());
 
-        final CheckBox checkBoxPermission = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsPermission);
-        checkBoxPermission.setChecked(settingsViewModel.isSettingspermissionalert());
+        final CheckBox checkBoxRating = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsRating);
+        checkBoxRating.setChecked(settingsViewModel.isMainRateAlert());
+
+        final CheckBox checkBoxDescription = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsDescription);
+        checkBoxDescription.setChecked(settingsViewModel.isShowTeaAlert());
+
+        final CheckBox checkBoxPermission = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsPermission);
+        checkBoxPermission.setChecked(settingsViewModel.isSettingsPermissionAlert());
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(alertLayoutDialogProblem);
-        builder.setTitle(R.string.settings_show_hints_header);
-        builder.setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxRating, checkBoxDescription, checkBoxPermission));
-        builder.setNegativeButton(R.string.settings_show_hints_cancel, null);
-        builder.show();
+        new AlertDialog.Builder(this)
+                .setView(alertLayoutDialog)
+                .setTitle(R.string.settings_show_hints_header)
+                .setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxUpdate,
+                        checkBoxRating, checkBoxDescription, checkBoxPermission))
+                .setNegativeButton(R.string.settings_show_hints_cancel, null)
+                .show();
 
     }
 
-    private void displayedHintsChanged(CheckBox checkBoxRating, CheckBox checkBoxDescription, CheckBox checkBoxPermission) {
-        settingsViewModel.setMainratealert(checkBoxRating.isChecked());
-        settingsViewModel.setShowteaalert(checkBoxDescription.isChecked());
+    private void displayedHintsChanged(final CheckBox checkBoxUpdate, final CheckBox checkBoxRating,
+                                       final CheckBox checkBoxDescription, final CheckBox checkBoxPermission) {
+        settingsViewModel.setMainUpdateAlert(checkBoxUpdate.isChecked());
+        settingsViewModel.setMainRateAlert(checkBoxRating.isChecked());
+        settingsViewModel.setShowTeaAlert(checkBoxDescription.isChecked());
         settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
     }
 

@@ -295,14 +295,17 @@ public class SettingsTest {
 
             AlertDialog alertDialog = getLatestAlertDialog();
 
+            CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.checkboxDialogSettingsUpdate);
             CheckBox checkBoxRating = alertDialog.findViewById(R.id.checkboxDialogSettingsRating);
             CheckBox checkBoxDescription = alertDialog.findViewById(R.id.checkboxDialogSettingsDescription);
             CheckBox checkBoxPermission = alertDialog.findViewById(R.id.checkboxDialogSettingsPermission);
 
+            assertThat(checkBoxUpdate.isChecked()).isFalse();
             assertThat(checkBoxRating.isChecked()).isFalse();
             assertThat(checkBoxDescription.isChecked()).isFalse();
             assertThat(checkBoxPermission.isChecked()).isFalse();
 
+            checkBoxUpdate.setChecked(true);
             checkBoxRating.setChecked(true);
             checkBoxDescription.setChecked(true);
             checkBoxPermission.setChecked(true);
@@ -311,12 +314,13 @@ public class SettingsTest {
             accept.performClick();
 
             ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
-            verify(actualSettingsDao, times(3)).update(captor.capture());
+            verify(actualSettingsDao, times(4)).update(captor.capture());
             List<ActualSettings> updatedSettings = captor.getAllValues();
 
-            assertThat(updatedSettings.get(2).isMainRateAlert()).isTrue();
-            assertThat(updatedSettings.get(2).isShowTeaAlert()).isTrue();
-            assertThat(updatedSettings.get(2).isSettingsPermissionAlert()).isTrue();
+            assertThat(updatedSettings.get(3).isMainUpdateAlert()).isTrue();
+            assertThat(updatedSettings.get(3).isMainRateAlert()).isTrue();
+            assertThat(updatedSettings.get(3).isShowTeaAlert()).isTrue();
+            assertThat(updatedSettings.get(3).isSettingsPermissionAlert()).isTrue();
         });
     }
 

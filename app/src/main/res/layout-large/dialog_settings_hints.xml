@@ -5,6 +5,15 @@
     android:orientation="vertical">
 
     <CheckBox
+        android:id="@+id/checkboxDialogSettingsUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/settings_show_hints_update_checkbox"
+        android:textSize="17sp"
+        android:theme="@style/CheckBoxStyle" />
+
+    <CheckBox
         android:id="@+id/checkboxDialogSettingsRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

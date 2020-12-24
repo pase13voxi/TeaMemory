@@ -69,25 +69,34 @@ class SettingsViewModel {
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
-    boolean isShowteaalert() {
+    boolean isShowTeaAlert() {
         return actualSettings.isShowTeaAlert();
     }
 
-    void setShowteaalert(boolean showteaalert) {
+    void setShowTeaAlert(boolean showteaalert) {
         actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
-    boolean isMainratealert() {
+    boolean isMainRateAlert() {
         return actualSettings.isMainRateAlert();
     }
 
-    void setMainratealert(boolean mainratealert) {
+    void setMainRateAlert(boolean mainratealert) {
         actualSettings.setMainRateAlert(mainratealert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
-    boolean isSettingspermissionalert() {
+    boolean isMainUpdateAlert() {
+        return actualSettings.isMainUpdateAlert();
+    }
+
+    void setMainUpdateAlert(boolean mainUpdateAlert) {
+        actualSettings.setMainUpdateAlert(mainUpdateAlert);
+        actualSettingsRepository.updateSettings(actualSettings);
+    }
+
+    boolean isSettingsPermissionAlert() {
         return actualSettings.isSettingsPermissionAlert();
     }
 

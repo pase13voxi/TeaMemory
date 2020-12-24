@@ -147,13 +147,21 @@ class MainViewModel extends ViewModel {
     }
 
     void resetMainRatecounter() {
-
         actualSettings.setMainRateCounter(0);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
     void incrementMainRatecounter() {
         actualSettings.setMainRateCounter(actualSettings.getMainRateCounter() + 1);
+        actualSettingsRepository.updateSettings(actualSettings);
+    }
+
+    boolean isMainUpdateAlert() {
+        return actualSettings.isMainUpdateAlert();
+    }
+
+    void setMainUpdateAlert(final boolean updateAlert) {
+        actualSettings.setMainUpdateAlert(updateAlert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
