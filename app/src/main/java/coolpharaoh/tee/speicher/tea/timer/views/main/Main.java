@@ -181,7 +181,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     }
 
     private void showRatingDialogOrIncrementRateCounter() {
-        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() == 20) {
+        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
             showRatingDialog();
         } else if (mainActivityViewModel.getMainRatecounter() < 20) {
             mainActivityViewModel.incrementMainRatecounter();
