@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(RobolectricTestRunner.class)
 public class ShowTeaDescriptionTest {
 
+    // the cast is needed
+    @SuppressWarnings("java:S1905")
     @Test
     public void launchActivityExpectThreeImages() {
         ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);

@@ -39,20 +39,18 @@ public class UpdateDescription extends AppCompatActivity {
     }
 
     private void addDotsIndicator(final int position, final int size) {
-        final TextView[] mDots = new TextView[size];
+        final TextView[] dots = new TextView[size];
         dotLayout.removeAllViews();
-        for (int i = 0; i < mDots.length; i++) {
-            mDots[i] = new TextView(this);
-            mDots[i].setText(R.string.description_dots);
-            mDots[i].setTextSize(35);
-            mDots[i].setTextColor(getResources().getColor(R.color.colorPrimary));
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new TextView(this);
+            dots[i].setText(R.string.description_dots);
+            dots[i].setTextSize(35);
+            dots[i].setTextColor(getResources().getColor(R.color.colorPrimary));
 
-            dotLayout.addView(mDots[i]);
+            dotLayout.addView(dots[i]);
         }
 
-        if (mDots.length > 0) {
-            mDots[position].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
+        dots[position].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
 

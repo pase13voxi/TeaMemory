@@ -69,6 +69,7 @@ public class MainTest {
     private static final int SORT_ALPHABETICALLY = 1;
     private static final int SORT_VARIETY = 2;
     private static final int SORT_RATING = 3;
+    public static final String TEA_NAME_ACTIVITY = "ACTIVITY_";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -99,12 +100,11 @@ public class MainTest {
     @Test
     public void launchActivityExpectTeaList() {
         mockActualSettings(false, true, 10);
-        String teaName = "ACTIVITY_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            checkExpectedTeas(teaName, main);
+            checkExpectedTeas(TEA_NAME_ACTIVITY, main);
             verify(actualSettingsDao).update(any());
         });
     }
@@ -112,8 +112,7 @@ public class MainTest {
     @Test
     public void launchActivityExpectUpdateDescription() {
         mockActualSettings(true, false, 20);
-        String teaName = "ACTIVITY_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -134,8 +133,7 @@ public class MainTest {
     @Test
     public void launchActivityExpectUpdateDescriptionClickNegative() {
         mockActualSettings(true, false, 20);
-        String teaName = "ACTIVITY_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -246,8 +244,7 @@ public class MainTest {
     @Test
     public void changeSortModeToActivityExpectTeaList() {
         mockActualSettings(1);
-        String teaName = "ACTIVITY_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -256,7 +253,7 @@ public class MainTest {
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
 
-            checkExpectedTeas(teaName, main);
+            checkExpectedTeas(TEA_NAME_ACTIVITY, main);
         });
     }
 
