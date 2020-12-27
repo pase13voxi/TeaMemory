@@ -59,6 +59,7 @@ public class UpdateDescription extends AppCompatActivity {
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int i, float v, int i1) {
+            // this functionality is not needed, but needs to be override
         }
 
         @Override
@@ -68,6 +69,7 @@ public class UpdateDescription extends AppCompatActivity {
 
         @Override
         public void onPageScrollStateChanged(int i) {
+            // this functionality is not needed, but needs to be override
         }
     };
 }

@@ -115,7 +115,6 @@ class SettingsViewModel {
         actualSettings.setMainRateCounter(0);
         actualSettings.setMainUpdateAlert(false);
         actualSettings.setShowTeaAlert(true);
-        actualSettings.setInformationAlert(true);
         actualSettings.setSettingsPermissionAlert(true);
         actualSettings.setSort(0);
 

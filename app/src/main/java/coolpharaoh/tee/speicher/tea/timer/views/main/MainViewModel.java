@@ -92,7 +92,6 @@ class MainViewModel extends ViewModel {
         defaultSettings.setMainRateCounter(0);
         defaultSettings.setMainUpdateAlert(false);
         defaultSettings.setShowTeaAlert(true);
-        defaultSettings.setInformationAlert(true);
         defaultSettings.setSettingsPermissionAlert(true);
         defaultSettings.setSort(0);
         actualSettingsRepository.insertSettings(defaultSettings);

@@ -44,9 +44,6 @@ public class ActualSettings {
     @ColumnInfo(name = "showteaalert")
     private boolean showTeaAlert;
 
-    @ColumnInfo(name = "informationalert")
-    private boolean informationAlert;
-
     @ColumnInfo(name = "settingspermissionalert")
     private boolean settingsPermissionAlert;
 

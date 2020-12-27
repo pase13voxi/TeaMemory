@@ -23,11 +23,12 @@ import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRAT
 import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_3_4;
 import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_4_5;
 import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_5_6;
+import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_6_7;
 
-@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 6, exportSchema = false)
+@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 7, exportSchema = false)
 public abstract class TeaMemoryDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "teamemory";
-    private static TeaMemoryDatabase sInstance;
+    private static TeaMemoryDatabase instance;
 
     public abstract TeaDao getTeaDao();
 
@@ -41,10 +42,10 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
 
     // Get a database instance
     public static synchronized TeaMemoryDatabase getDatabaseInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = create(context);
+        if (instance == null) {
+            instance = create(context);
         }
-        return sInstance;
+        return instance;
     }
 
     // Create the database
@@ -58,13 +59,14 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
         builder.addMigrations(MIGRATION_3_4);
         builder.addMigrations(MIGRATION_4_5);
         builder.addMigrations(MIGRATION_5_6);
+        builder.addMigrations(MIGRATION_6_7);
 
         return builder.build();
     }
 
     @VisibleForTesting
     public static void setMockedDatabase(TeaMemoryDatabase mockedDatabase) {
-        sInstance = mockedDatabase;
+        instance = mockedDatabase;
     }
 
 }

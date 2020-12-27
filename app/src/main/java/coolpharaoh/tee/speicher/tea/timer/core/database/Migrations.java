@@ -115,4 +115,31 @@ class Migrations {
             database.execSQL("ALTER TABLE settings ADD COLUMN informationalert INTEGER NOT NULL DEFAULT 1");
         }
     };
+
+    static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // Create the new table
+            database.execSQL(
+                    "CREATE TABLE backup_settings (settings_id INTEGER PRIMARY KEY, " +
+                            "musicchoice TEXT, musicname TEXT, vibration INTEGER NOT NULL," +
+                            " animation INTEGER NOT NULL, temperatureunit TEXT, " +
+                            "showteaalert INTEGER NOT NULL, mainratealert INTEGER NOT NULL, " +
+                            "mainratecounter INTEGER NOT NULL, mainupdatealert INTEGER NOT NULL," +
+                            "settingspermissionalert INTEGER NOT NULL, sort INTEGER NOT NULL)"
+            );
+            // Copy the data
+            database.execSQL(
+                    "INSERT INTO backup_settings (settings_id, musicchoice, musicname, " +
+                            "vibration, animation, temperatureunit, showteaalert, " +
+                            "mainratealert, mainratecounter, mainupdatealert, settingspermissionalert, " +
+                            "sort) SELECT settings_id, musicchoice, musicname, vibration, animation, " +
+                            "temperatureunit, showteaalert, mainratealert, mainratecounter, mainupdatealert," +
+                            "settingspermissionalert, sort FROM settings");
+            // Remove the old table
+            database.execSQL("DROP TABLE settings");
+            // Change the table name to the correct one
+            database.execSQL("ALTER TABLE backup_settings RENAME TO settings");
+        }
+    };
 }
