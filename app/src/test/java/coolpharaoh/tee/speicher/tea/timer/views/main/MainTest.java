@@ -98,17 +98,20 @@ public class MainTest {
 
     @Test
     public void launchActivityExpectTeaList() {
-        mockActualSettings(true, 10);
+        mockActualSettings(false, true, 10);
         String teaName = "ACTIVITY_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> checkExpectedTeas(teaName, main));
+        mainActivityScenario.onActivity(main -> {
+            checkExpectedTeas(teaName, main);
+            verify(actualSettingsDao).update(any());
+        });
     }
 
     @Test
     public void launchActivityExpectUpdateDescription() {
-        mockActualSettings(true);
+        mockActualSettings(true, false, 20);
         String teaName = "ACTIVITY_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -130,7 +133,7 @@ public class MainTest {
 
     @Test
     public void launchActivityExpectUpdateDescriptionClickNegative() {
-        mockActualSettings(true);
+        mockActualSettings(true, false, 20);
         String teaName = "ACTIVITY_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
@@ -144,7 +147,7 @@ public class MainTest {
 
     @Test
     public void launchActivityExpectRatingDialog() {
-        mockActualSettings(true, 20);
+        mockActualSettings(false, true, 20);
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -160,10 +163,9 @@ public class MainTest {
         });
     }
 
-    @Ignore("Test will work when static field startApplication is fixed")
     @Test
     public void launchActivityExpectRatingDialogClickNegative() {
-        mockActualSettings(true, 20);
+        mockActualSettings(false, true, 20);
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
@@ -381,16 +383,12 @@ public class MainTest {
         mockActualSettings(0, false, 0, false);
     }
 
-    private void mockActualSettings(final boolean mainUpdateAlert) {
-        mockActualSettings(0, false, 0, mainUpdateAlert);
-    }
-
     private void mockActualSettings(final int sort) {
         mockActualSettings(sort, false, 0, false);
     }
 
-    private void mockActualSettings(final boolean mainRateAlert, final int mainRateCounter) {
-        mockActualSettings(0, mainRateAlert, mainRateCounter, false);
+    private void mockActualSettings(final boolean mainUpdateAlert, final boolean mainRateAlert, final int mainRateCounter) {
+        mockActualSettings(0, mainRateAlert, mainRateCounter, mainUpdateAlert);
     }
 
     private void mockActualSettings(final int sort, final boolean mainRateAlert,

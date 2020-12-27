@@ -25,6 +25,7 @@ import com.tooltip.Tooltip;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.application.TeaMemory;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
@@ -34,7 +35,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 public class Main extends AppCompatActivity implements View.OnLongClickListener {
     private MainViewModel mainActivityViewModel;
-    private static boolean startApplication = true;
 
     private TeaAdapter adapter;
 
@@ -48,8 +48,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
         initializeTeaList();
         initializeNewTeaButton();
-        showUpdateInformationOnStart();
-        showRatingDialogOnStart();
+        showDialogsOnStart();
     }
 
     private void defineToolbarAsActionbar() {
@@ -153,7 +152,17 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         startActivity(newteaScreen);
     }
 
-    private void showUpdateInformationOnStart() {
+    private void showDialogsOnStart() {
+        TeaMemory application = (TeaMemory) getApplication();
+        if (application != null && !application.isMainDialogsShown()) {
+            application.setMainDialogsShown(true);
+
+            showUpdateDialog();
+            showRatingDialogOrIncrementRateCounter();
+        }
+    }
+
+    private void showUpdateDialog() {
         if (mainActivityViewModel.isMainUpdateAlert()) {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.main_dialog_update_header)
@@ -171,18 +180,10 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         startActivity(intent);
     }
 
-    private void showRatingDialogOnStart() {
-        if (startApplication) {
-            //TODO Make the enclosing method "static and remove this set"
-            startApplication = false;
-            showRatingDialogOrIncrementRateCounter();
-        }
-    }
-
     private void showRatingDialogOrIncrementRateCounter() {
-        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
+        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() == 20) {
             showRatingDialog();
-        } else {
+        } else if (mainActivityViewModel.getMainRatecounter() < 20) {
             mainActivityViewModel.incrementMainRatecounter();
         }
     }
