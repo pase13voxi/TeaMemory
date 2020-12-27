@@ -24,13 +24,13 @@ public class UpdateDescription extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
 
-        final ViewPager slideViewPager = findViewById(R.id.slideViewPager);
-        dotLayout = findViewById(R.id.dotsLayout);
 
         final String[] slideDescription = getResources().getStringArray(R.array.description_update_slide_description);
         final SlideAdapter slideAdapter = new SlideAdapter(getApplication(), slideImages, slideDescription);
+        final ViewPager slideViewPager = findViewById(R.id.slideViewPager);
         slideViewPager.setAdapter(slideAdapter);
 
+        dotLayout = findViewById(R.id.dotsLayout);
         addDotsIndicator(0, slideImages.length);
         slideViewPager.addOnPageChangeListener(viewListener);
 
@@ -38,7 +38,7 @@ public class UpdateDescription extends AppCompatActivity {
         buttonClose.setOnClickListener(view -> finish());
     }
 
-    public void addDotsIndicator(final int position, final int size) {
+    private void addDotsIndicator(final int position, final int size) {
         final TextView[] mDots = new TextView[size];
         dotLayout.removeAllViews();
         for (int i = 0; i < mDots.length; i++) {

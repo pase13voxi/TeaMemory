@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="description_slide_image">Slide Image</string>
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
@@ -7,5 +8,10 @@
         <item>Navigate to the new window</item>
         <item>Sort tea list by rating</item>
     </string-array>
-    <string name="description_showtea_slide_description">How to use.</string>
+    <string-array name="description_showtea_slide_description">
+        <item>Show the cooling time</item>
+        <item>Calculate the amount</item>
+        <item>Select / next infusion</item>
+        <item>Save more information</item>
+    </string-array>
 </resources>

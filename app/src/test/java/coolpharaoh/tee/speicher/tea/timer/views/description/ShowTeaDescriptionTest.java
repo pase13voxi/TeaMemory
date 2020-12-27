@@ -26,7 +26,7 @@ public class ShowTeaDescriptionTest {
         showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
             final ViewPager viewPager = showTeaDescription.findViewById(R.id.slideViewPager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
-            assertThat(slideAdapter.getCount()).isEqualTo(1);
+            assertThat(slideAdapter.getCount()).isEqualTo(4);
         });
     }
 

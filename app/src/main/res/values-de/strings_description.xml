@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="description_slide_image">Slide Image</string>
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
@@ -7,5 +8,10 @@
         <item>Navigiere zum neuen Fenster</item>
         <item>Sortiere nach Bewertung</item>
     </string-array>
-    <string name="description_showtea_slide_description">Benutzung</string>
+    <string-array name="description_showtea_slide_description">
+        <item>Zeige Abkühlzeit an</item>
+        <item>Berechne Menge</item>
+        <item>Wähle / nächster Aufguss</item>
+        <item>Speichere weitere Informationen</item>
+    </string-array>
 </resources>
