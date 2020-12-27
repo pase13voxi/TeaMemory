@@ -11,11 +11,10 @@
     <string name="showtea_dialog_tea_missing_description">The selected tea cannot be displayed. If this error occurs again, the tea is invalid and it should be deleted.</string>
     <string name="showtea_dialog_tea_missing_to_main">Back to the start window</string>
     <string name="showtea_dialog_description_header">How to use.</string>
-    <string name="showtea_dialog_description_temperature">Calculating the time the boiling water needs to cool to the desired temperature.</string>
-    <string name="showtea_dialog_description_amount">Calculate the amount of tea required for the preparation.</string>
-    <string name="showtea_dialog_description_infusion">Select the desired infusion.</string>
+    <string name="showtea_dialog_description_description">Would you like to see a description for this window?</string>
     <string name="showtea_dialog_description_checkbox">Do not show me again!</string>
-    <string name="showtea_dialog_description_ok">OK</string>
+    <string name="showtea_dialog_description_show">Show</string>
+    <string name="showtea_dialog_description_cancel">Cancel</string>
     <string name="showtea_dialog_following_infusion_header">Next infusion</string>
     <string name="showtea_dialog_following_infusion_description">You last poured the tea %1$d time(s). Do you want to continue with the %2$d. infusion?</string>
     <string name="showtea_dialog_following_infusion_yes">Yes</string>

@@ -11,11 +11,10 @@
     <string name="showtea_dialog_tea_missing_description">Der ausgewählte Tee kann nicht angezeigt werden. Sollte dieser Fehler noch einmal auftauchen, so ist der Tee invalide und er sollte gelöscht werden.</string>
     <string name="showtea_dialog_tea_missing_to_main">Zurück zum Startfenster</string>
     <string name="showtea_dialog_description_header">Benutzung</string>
-    <string name="showtea_dialog_description_temperature">Berechne die Zeit, die das kochende Wasser auf die gewünschte Temperatur abkühlen muss.</string>
-    <string name="showtea_dialog_description_amount">Berechne die benötigte Teemenge für die Zubereitung.</string>
-    <string name="showtea_dialog_description_infusion">Wähle den gewünschten Aufguss aus.</string>
+    <string name="showtea_dialog_description_description">Möchtest du eine Erklärung für dieses Fenster bekommen?</string>
     <string name="showtea_dialog_description_checkbox">Bitte nicht mehr zeigen!</string>
-    <string name="showtea_dialog_description_ok">Ok</string>
+    <string name="showtea_dialog_description_show">Anzeigen</string>
+    <string name="showtea_dialog_description_cancel">Abbrechen</string>
     <string name="showtea_dialog_following_infusion_header">Nächster Aufguss</string>
     <string name="showtea_dialog_following_infusion_description">Du hast diesen Tee zuletzt %1$d-mal aufgegossen. Möchtest du mit dem %2$d. Aufguss fortfahren?</string>
     <string name="showtea_dialog_following_infusion_yes">Ja</string>

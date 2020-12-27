@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.description.Description">
+    android:layout_height="match_parent">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/slideViewPager"
@@ -11,6 +9,17 @@
         android:layout_height="match_parent">
 
     </androidx.viewpager.widget.ViewPager>
+
+    <ImageButton
+        android:id="@+id/buttonDescriptionClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="content"
+        android:scaleType="fitXY"
+        android:src="@drawable/close" />
 
     <LinearLayout
         android:id="@+id/dotsLayout"

@@ -20,7 +20,6 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.description.Description" />
         <activity
             android:name=".views.main.Main"
             android:screenOrientation="portrait">
@@ -29,6 +28,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.description.UpdateDescription"
+            android:label="Update Information"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.main.Main" />
         </activity>
         <activity
             android:name=".views.newtea.NewTea"
@@ -47,6 +54,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.main.Main" />
+        </activity>
+        <activity
+            android:name=".views.description.ShowTeaDescription"
+            android:label="ShowTea Description"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.showtea.ShowTea" />
         </activity>
         <activity
             android:name=".views.information.Information"

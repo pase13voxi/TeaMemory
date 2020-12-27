@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="description_close_button">Exit Button</string>
+    <string name="description_dots">&#8226;</string>
+    <string-array name="description_update_slide_description">
+        <item>Neues Fenster: \nSpeichere mehr Informationen</item>
+        <item>Navigiere zum neuen Fenster</item>
+        <item>Sortiere nach Bewertung</item>
+    </string-array>
+    <string name="description_showtea_slide_description">Benutzung</string>
+</resources>

@@ -26,7 +26,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
-import coolpharaoh.tee.speicher.tea.timer.views.description.Description;
+import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
@@ -166,7 +166,8 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     }
 
     private void navigateToUpdateWindow() {
-        Intent intent = new Intent(Main.this, Description.class);
+        mainActivityViewModel.setMainUpdateAlert(false);
+        Intent intent = new Intent(Main.this, UpdateDescription.class);
         startActivity(intent);
     }
 

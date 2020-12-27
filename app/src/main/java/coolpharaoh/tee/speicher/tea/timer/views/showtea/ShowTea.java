@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
@@ -310,17 +311,26 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         LayoutInflater inflater = getLayoutInflater();
         View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
-        final CheckBox dontshowagain = alertLayoutDialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
+        final CheckBox donNotShowAgain = alertLayoutDialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(alertLayoutDialogDescription);
-        builder.setTitle(R.string.showtea_dialog_description_header);
-        builder.setPositiveButton(R.string.showtea_dialog_description_ok, (dialog, which) -> {
-            if (dontshowagain.isChecked()) {
-                showTeaViewModel.setShowteaAlert(false);
-            }
-        });
-        builder.show();
+        new AlertDialog.Builder(this)
+                .setView(alertLayoutDialogDescription)
+                .setTitle(R.string.showtea_dialog_description_header)
+                .setNegativeButton(R.string.showtea_dialog_description_cancel, (dialog, which) -> disableDescription(donNotShowAgain))
+                .setPositiveButton(R.string.showtea_dialog_description_show, (dialog, which) -> navigateToShowTeaDescription(donNotShowAgain))
+                .show();
+    }
+
+    private void disableDescription(CheckBox donNotShowAgain) {
+        if (donNotShowAgain.isChecked()) {
+            showTeaViewModel.setShowteaAlert(false);
+        }
+    }
+
+    private void navigateToShowTeaDescription(CheckBox donNotShowAgain) {
+        disableDescription(donNotShowAgain);
+        Intent intent = new Intent(ShowTea.this, ShowTeaDescription.class);
+        startActivity(intent);
     }
 
     private void decideToDisplayContinueNextInfusionDialog() {

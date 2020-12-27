@@ -45,7 +45,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
-import coolpharaoh.tee.speicher.tea.timer.views.description.Description;
+import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
@@ -119,7 +119,9 @@ public class MainTest {
                     R.string.main_dialog_update_header, R.string.main_dialog_update_description);
             dialogUpdate.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            Intent expected = new Intent(main, Description.class);
+            verify(actualSettingsDao).update(any());
+
+            Intent expected = new Intent(main, UpdateDescription.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getData()).isEqualTo(expected.getData());

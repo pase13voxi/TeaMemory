@@ -45,6 +45,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
+import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
@@ -148,6 +149,11 @@ public class ShowTeaTest {
             dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             verify(actualSettingsDao).update(any(ActualSettings.class));
+
+            Intent expected = new Intent(showTea, ShowTeaDescription.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getData()).isEqualTo(expected.getData());
         });
     }
 

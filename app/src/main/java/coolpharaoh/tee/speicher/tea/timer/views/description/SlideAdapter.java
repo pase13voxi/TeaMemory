@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -16,18 +17,15 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 public class SlideAdapter extends PagerAdapter {
-    Application application;
-    LayoutInflater layoutInflater;
+    final Application application;
+    final int[] slideImages;
+    final String[] slideDescription;
 
-    public SlideAdapter(Application application) {
+    public SlideAdapter(Application application, int[] slideImages, String[] slideDescription) {
         this.application = application;
+        this.slideImages = slideImages;
+        this.slideDescription = slideDescription;
     }
-
-    public static int[] slideImages = {
-            R.drawable.infusion_black,
-            R.drawable.background,
-            R.drawable.add
-    };
 
     @Override
     public int getCount() {
@@ -35,17 +33,20 @@ public class SlideAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-        return view == (RelativeLayout) o;
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return view == object;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        layoutInflater = (LayoutInflater) application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = Objects.requireNonNull(layoutInflater).inflate(R.layout.slide_layout, container, false);
-        ImageView slideImageView = (ImageView) view.findViewById(R.id.slide_image);
 
+        TextView slideTextViewDescription = view.findViewById(R.id.textViewDescription);
+        slideTextViewDescription.setText(slideDescription[position]);
+
+        ImageView slideImageView = view.findViewById(R.id.slide_image);
         slideImageView.setImageResource(slideImages[position]);
 
         container.addView(view);
