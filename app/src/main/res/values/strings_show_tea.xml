@@ -11,7 +11,7 @@
     <string name="showtea_dialog_tea_missing_description">The selected tea cannot be displayed. If this error occurs again, the tea is invalid and it should be deleted.</string>
     <string name="showtea_dialog_tea_missing_to_main">Back to the start window</string>
     <string name="showtea_dialog_description_header">How to use.</string>
-    <string name="showtea_dialog_description_description">Would you like to see a description for this window?</string>
+    <string name="showtea_dialog_description_description">There is an explanation for this window.</string>
     <string name="showtea_dialog_description_checkbox">Do not show me again!</string>
     <string name="showtea_dialog_description_show">Show</string>
     <string name="showtea_dialog_description_cancel">Cancel</string>

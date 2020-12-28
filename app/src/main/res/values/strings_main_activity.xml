@@ -9,7 +9,7 @@
     <string name="main_error_deletion">Deletion could not be performed.</string>
     <string name="main_tooltip_newtea">Add tea</string>
     <string name="main_dialog_update_header">New Features</string>
-    <string name="main_dialog_update_description">With the new update, new features have been added.</string>
+    <string name="main_dialog_update_description">With the update, new features have been added.</string>
     <string name="main_dialog_update_positive">Show</string>
     <string name="main_dialog_update_neutral">Later</string>
     <string name="main_dialog_update_negative">No, thanks</string>
