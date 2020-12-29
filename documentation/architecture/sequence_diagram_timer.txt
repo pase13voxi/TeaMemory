@@ -1,0 +1,66 @@
+@startuml
+
+actor User
+participant ShowTea
+participant ForegroundTimer
+participant SharedTimerPreferences
+participant CountDownTimer
+participant BackgroundTimer
+participant AlarmManager
+participant TeaCompleteReceiver
+box "Feedback For the User" #LightBlue
+participant NotificationService
+end box
+
+User -> ShowTea : start Timer
+ShowTea -> ForegroundTimer: startTimer(millis)
+
+ForegroundTimer -> SharedTimerPreferences : setStartedTime(currentTime)
+ForegroundTimer -> CountDownTimer : start(millis)
+
+== Switch To Background ==
+
+User -> ShowTea : switch to background
+
+ShowTea -> ForegroundTimer : startBackgroundTimer()
+
+ForegroundTimer -> BackgroundTimer : setAlarmManager(millis)
+
+BackgroundTimer -> SharedTimerPreferences : getStartedTime()
+SharedTimerPreferences --> BackgroundTimer : startedTime
+BackgroundTimer -> AlarmManager : setAlarmClock(startedTime + millis)
+
+alt Alarm Ready In The Background
+
+AlarmManager -> TeaCompleteReceiver : onReveice(teaId)
+
+TeaCompleteReceiver -> NotificationService : startService(teaId)
+
+NotificationService -> NotificationService : Notifier -> notify()
+NotificationService -> NotificationService : AudioPlayer -> play()
+NotificationService -> NotificationService : Vibrator -> vibrate()
+
+else Switch Back To Foreground
+
+User -> ShowTea : switch to foreground
+
+ShowTea -> ForegroundTimer : resumeForegroundTimer()
+
+ForegroundTimer -> SharedTimerPreferences : getStartedTime()
+SharedTimerPreferences --> ForegroundTimer : startedTime
+ForegroundTimer -> CountDownTimer : start(time - (currentTime - startedTime))
+ForegroundTimer -> AlarmManager : removeAlarmManager()
+
+== Alarm Ready In The Foreground ==
+
+ForegroundTimer -> TeaCompleteReceiver : onReveice(teaId)
+
+TeaCompleteReceiver -> NotificationService : startService(teaId)
+
+NotificationService -> NotificationService : Notifier -> notify()
+NotificationService -> NotificationService : AudioPlayer -> play()
+NotificationService -> NotificationService : Vibrator -> vibrate()
+
+end
+
+@enduml
