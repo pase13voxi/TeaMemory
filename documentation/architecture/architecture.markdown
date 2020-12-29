@@ -21,9 +21,6 @@ By using the Android alarm, there is no need to run the timer in the background.
 
 <div style="width:1000px;">
 
-![alt text](sequence_diagram_timer.png "Timer sequence")
+
+![uncached image](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/pase13voxi/TeaMemory/master/documentation/architecture/sequence_diagram_timer.txt "Timer sequence")
 </div>
-
-[sequence_diagram_timer](sequence_diagram_timer.txt)
-
-![uncached image](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/pase13voxi/TeaMemory/master/documentation/architecture/sequence_diagram_timer.txt)
