@@ -1,26 +1,26 @@
 # Definition of done
     
-- Funktionalität implementiert
-- Tests grün
-- Neue Unittests
-- Sonarissues prüfen
-- VersionCode / VersionName updaten
+- Functionality implemented
+- Tests green
+- New unit tests
+- Sonar issues checked
+- VersionCode / VersionName updated
 - Debug -> false / Build Variant -> release
-- toreeintrag updaten
-- Dokumentation wurde upgedatet
+- Store entry updated
+- Documentation updated
 
 
-*Zum kopieren*
+*Copy*
 
 ```
 ---
 Definition of Done:
-- Funktionalität implementiert ( )
-- Tests grün ( )
-- Neue Unittests ( )
-- Sonarissues prüfen ( )
-- VersionCode ( ) / VersionName ( ) updaten ( )
+- Functionality implemented ( )
+- Tests green ( )
+- New unit tests ( )
+- Sonar issues checked ( )
+- VersionCode ( ) / VersionName ( ) updated ( )
 - Debug -> false / Build Variant -> release ( )
-- Storeeintrag updaten ( )
-- Dokumentation wurde upgedatet ( )
+- Store entry updated ( )
+- Documentation updated ( )
 ```
