@@ -36,7 +36,6 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
@@ -45,7 +44,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -74,8 +72,6 @@ public class NewTeaTest {
     @Mock
     InfusionDao infusionDao;
     @Mock
-    CounterDao counterDao;
-    @Mock
     ActualSettingsDao actualSettingsDao;
 
     @Before
@@ -87,7 +83,6 @@ public class NewTeaTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
         when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
@@ -156,8 +151,6 @@ public class NewTeaTest {
                             "15:00"
                     )
             );
-
-            verify(counterDao).insert(any());
         });
     }
 

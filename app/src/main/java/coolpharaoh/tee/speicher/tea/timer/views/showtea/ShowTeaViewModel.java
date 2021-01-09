@@ -140,7 +140,7 @@ class ShowTeaViewModel {
 
     //Counter
     void countCounter() {
-        Counter counter = counterRepository.getCounterByTeaId(teaId);
+        Counter counter = getOrCreateCounter();
         RefreshCounter.refreshCounter(counter);
         Date currentDate = CurrentDate.getDate();
         counter.setMonthDate(currentDate);
@@ -154,9 +154,27 @@ class ShowTeaViewModel {
     }
 
     public Counter getCounter() {
-        Counter counter = counterRepository.getCounterByTeaId(teaId);
+        Counter counter = getOrCreateCounter();
         RefreshCounter.refreshCounter(counter);
         counterRepository.updateCounter(counter);
+        return counter;
+    }
+
+    private Counter getOrCreateCounter() {
+        Counter counter = counterRepository.getCounterByTeaId(teaId);
+        if (counter == null) {
+            counter = new Counter();
+            counter.setTeaId(teaId);
+            counter.setDay(0);
+            counter.setWeek(0);
+            counter.setMonth(0);
+            counter.setOverall(0);
+            counter.setDayDate(CurrentDate.getDate());
+            counter.setWeekDate(CurrentDate.getDate());
+            counter.setMonthDate(CurrentDate.getDate());
+            counter.setId(counterRepository.insertCounter(counter));
+        }
+
         return counter;
     }
 

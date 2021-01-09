@@ -90,7 +90,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getName(){
+    public void getName() {
         String teaNameBefore = "TEA";
 
         Tea tea = new Tea();
@@ -103,7 +103,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getVariety(){
+    public void getVariety() {
         String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
                 "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
         String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
@@ -127,7 +127,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getUnkownVariety(){
+    public void getUnkownVariety() {
         String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
                 "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
         String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
@@ -149,7 +149,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getEmptyVariety(){
+    public void getEmptyVariety() {
         String varietyBefore = "";
 
         Tea tea = new Tea();
@@ -162,7 +162,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getAmount(){
+    public void getAmount() {
         int amountBefore = 1;
 
         Tea tea = new Tea();
@@ -175,7 +175,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getAmountKind(){
+    public void getAmountKind() {
         String amountKindBefore = "AMOUNT_KIND";
 
         Tea tea = new Tea();
@@ -188,7 +188,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getColor(){
+    public void getColor() {
         int colorBefore = 1;
 
         Tea tea = new Tea();
@@ -201,7 +201,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void setCurrentDate(){
+    public void setCurrentDate() {
         Date fixedDate = mockFixedDate();
         Tea teaBefore = new Tea();
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(teaBefore);
@@ -278,7 +278,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void navigateBetweenInfusions(){
+    public void navigateBetweenInfusions() {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit("Celsius");
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
@@ -331,7 +331,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getEmptyTime(){
+    public void getEmptyTime() {
         List<Infusion> infusions = new ArrayList<>();
         Infusion infusion1 = new Infusion(1L, 1, null, null, 1, 1);
         infusions.add(infusion1);
@@ -340,13 +340,13 @@ public class ShowTeaViewModelTest {
 
         TimeHelper timeAfter = showTeaViewModel.getTime();
 
-        assertThat( timeAfter.time).isNull();
+        assertThat(timeAfter.time).isNull();
         assertThat(timeAfter.minutes).isZero();
         assertThat(timeAfter.seconds).isZero();
     }
 
     @Test
-    public void countCounter(){
+    public void countCounter() {
         Date currentDate = mockFixedDate();
         Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
         when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
@@ -357,14 +357,26 @@ public class ShowTeaViewModelTest {
         verify(counterRepository).updateCounter((captor.capture()));
         Counter counterAfter = captor.getValue();
 
-        assertThat(counterAfter.getDay()).isEqualTo(2);
-        assertThat(counterAfter.getWeek()).isEqualTo(2);
-        assertThat(counterAfter.getMonth()).isEqualTo(2);
-        assertThat(counterAfter.getOverall()).isEqualTo(2);
+        assertThat(counterAfter)
+                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .containsExactly(2, 2, 2, 2L);
     }
 
     @Test
-    public void getCounter(){
+    public void countCounterAndCounterIsNull() {
+        showTeaViewModel.countCounter();
+
+        ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
+        verify(counterRepository).updateCounter((captor.capture()));
+        Counter counterAfter = captor.getValue();
+
+        assertThat(counterAfter)
+                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .containsExactly(1, 1, 1, 1L);
+    }
+
+    @Test
+    public void getCounter() {
         Date currentDate = CurrentDate.getDate();
         Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
         when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
@@ -375,7 +387,20 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void isAnimation(){
+    public void getCounterAndCounterIsNull() {
+        showTeaViewModel.getCounter();
+
+        ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
+        verify(counterRepository).updateCounter((captor.capture()));
+        Counter counterAfter = captor.getValue();
+
+        assertThat(counterAfter)
+                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .containsExactly(0, 0, 0, 0L);
+    }
+
+    @Test
+    public void isAnimation() {
         boolean animationBefore = true;
 
         ActualSettings actualSettings = new ActualSettings();
@@ -388,7 +413,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void isShowTeaAlert(){
+    public void isShowTeaAlert() {
         boolean showTeaAlertBefore = true;
 
         ActualSettings actualSettings = new ActualSettings();
@@ -401,7 +426,7 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void setShowTeaAlert(){
+    public void setShowTeaAlert() {
         boolean showTeaAlertBefore = true;
 
         ActualSettings actualSettings = new ActualSettings();

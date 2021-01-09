@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -23,7 +21,6 @@ class NewTeaViewModel {
 
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
-    private final CounterRepository counterRepository;
     private final ActualSettingsRepository actualSettingsRepository;
 
     private Tea tea;
@@ -33,24 +30,21 @@ class NewTeaViewModel {
 
     NewTeaViewModel(Application application) {
         this(null, application, new TeaRepository(application),
-                new InfusionRepository(application), new CounterRepository(application),
-                new ActualSettingsRepository(application));
+                new InfusionRepository(application), new ActualSettingsRepository(application));
     }
 
     NewTeaViewModel(long teaId, Application application) {
         this(teaId, application, new TeaRepository(application),
-                new InfusionRepository(application), new CounterRepository(application),
-                new ActualSettingsRepository(application));
+                new InfusionRepository(application), new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
     NewTeaViewModel(Long teaId, Application application, TeaRepository teaRepository,
-                    InfusionRepository infusionRepository, CounterRepository counterRepository,
+                    InfusionRepository infusionRepository,
                     ActualSettingsRepository actualSettingsRepository) {
         this.application = application;
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
-        this.counterRepository = counterRepository;
         this.actualSettingsRepository = actualSettingsRepository;
 
         initializeTeaAndInfusions(teaId);
@@ -183,19 +177,6 @@ class NewTeaViewModel {
         long teaId = teaRepository.insertTea(tea);
 
         setInfusionInformation(teaId);
-
-        // create new counter
-        Counter counter = new Counter();
-        counter.setTeaId(teaId);
-        counter.setDay(0);
-        counter.setWeek(0);
-        counter.setMonth(0);
-        counter.setOverall(0);
-        counter.setDayDate(CurrentDate.getDate());
-        counter.setWeekDate(CurrentDate.getDate());
-        counter.setMonthDate(CurrentDate.getDate());
-
-        counterRepository.insertCounter(counter);
     }
 
     void setTeaInformation(String name, String variety, int amount, String amountKind, int color) {

@@ -8,15 +8,15 @@ import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
 public class CounterRepository {
-    private CounterDao counterDao;
+    private final CounterDao counterDao;
 
     public CounterRepository(Application application) {
         TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
         counterDao = teaMemoryDatabase.getCounterDao();
     }
 
-    public void insertCounter(Counter counter) {
-        counterDao.insert(counter);
+    public Long insertCounter(Counter counter) {
+        return counterDao.insert(counter);
     }
 
     public void updateCounter(Counter counter) {
