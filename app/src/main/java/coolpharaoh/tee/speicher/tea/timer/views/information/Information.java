@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
@@ -44,6 +45,7 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         fillRatingBar();
         showDetailsList();
         fillNotes();
+        fillCounter();
 
         final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
@@ -92,6 +94,19 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         final EditText editTextNotes = findViewById(R.id.editTextNotes);
         final Note note = informationViewModel.getNotes();
         editTextNotes.setText(note.getDescription());
+    }
+
+    private void fillCounter() {
+        TextView textViewToday = findViewById(R.id.textViewInformationCounterToday);
+        TextView textViewWeek = findViewById(R.id.textViewInformationCounterWeek);
+        TextView textViewMonth = findViewById(R.id.textViewInformationCounterMonth);
+        TextView textViewOverall = findViewById(R.id.textViewInformationCounterOverall);
+
+        final Counter counter = informationViewModel.getCounter();
+        textViewToday.setText(String.valueOf(counter.getDay()));
+        textViewWeek.setText(String.valueOf(counter.getWeek()));
+        textViewMonth.setText(String.valueOf(counter.getMonth()));
+        textViewOverall.setText(String.valueOf(counter.getOverall()));
     }
 
     private void addDetail() {

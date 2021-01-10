@@ -14,4 +14,9 @@
     <string name="information_detail_option_delete">Delete</string>
     <string name="information_notes_heading">Notes</string>
     <string name="information_notes_hint">Insert your notes here.</string>
+    <string name="information_counter_heading">Usage</string>
+    <string name="information_counter_today">Today</string>
+    <string name="information_counter_week">This week</string>
+    <string name="information_counter_month">This month</string>
+    <string name="information_counter_overall">Overall</string>
 </resources>

@@ -82,7 +82,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
             <androidx.cardview.widget.CardView
                 style="@style/informationCardview"
                 android:layout_width="match_parent"
@@ -107,6 +106,125 @@
                         android:hint="@string/information_notes_hint"
                         android:importantForAutofill="no"
                         android:theme="@style/informationEditTextTheme" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/informationCardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    style="@style/informationLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/informationHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/information_counter_heading" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            style="@style/informationCounterLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/informationCounterTextViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/information_counter_today" />
+
+                            <TextView
+                                android:id="@+id/textViewInformationCounterToday"
+                                style="@style/informationCounterTextViewCouting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <View
+                            style="@style/informationCounterSeparation"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            style="@style/informationCounterLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/informationCounterTextViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/information_counter_week" />
+
+                            <TextView
+                                android:id="@+id/textViewInformationCounterWeek"
+                                style="@style/informationCounterTextViewCouting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        style="@style/informationCounterSeparation"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            style="@style/informationCounterLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/informationCounterTextViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/information_counter_month" />
+
+                            <TextView
+                                android:id="@+id/textViewInformationCounterMonth"
+                                style="@style/informationCounterTextViewCouting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <View
+                            style="@style/informationCounterSeparation"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            style="@style/informationCounterLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/informationCounterTextViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/information_counter_overall" />
+
+                            <TextView
+                                android:id="@+id/textViewInformationCounterOverall"
+                                style="@style/informationCounterTextViewCouting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

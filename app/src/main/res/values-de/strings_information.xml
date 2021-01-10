@@ -14,4 +14,9 @@
     <string name="information_edit_detail_dialog_negative">Abbrechen</string>
     <string name="information_detail_option_edit">Ändern</string>
     <string name="information_detail_option_delete">Löschen</string>
+    <string name="information_counter_heading">Benutzung</string>
+    <string name="information_counter_today">Heute</string>
+    <string name="information_counter_week">Diese Woche</string>
+    <string name="information_counter_month">Dieser Monat</string>
+    <string name="information_counter_overall">Insgesamt</string>
 </resources>

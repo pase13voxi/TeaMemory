@@ -11,8 +11,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -33,6 +37,8 @@ public class InformationViewModelTest {
     NoteRepository noteRepository;
     @Mock
     TeaRepository teaRepository;
+    @Mock
+    CounterRepository counterRepository;
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
 
@@ -41,7 +47,7 @@ public class InformationViewModelTest {
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
 
         assertThat(informationViewModel.getTeaName()).isEqualTo(tea.getName());
     }
@@ -53,7 +59,7 @@ public class InformationViewModelTest {
         tea.setRating(rating);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
 
         assertThat(informationViewModel.getTeaRating()).isEqualTo(tea.getRating());
     }
@@ -64,7 +70,7 @@ public class InformationViewModelTest {
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
         informationViewModel.updateTeaRating(rating);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
@@ -80,7 +86,7 @@ public class InformationViewModelTest {
 
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(notes);
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
 
         assertThat(informationViewModel.getDetails().getValue()).isEqualTo(notes);
     }
@@ -94,7 +100,7 @@ public class InformationViewModelTest {
 
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(notes);
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
 
         assertThat(informationViewModel.getDetail(position)).isEqualTo(notes.get(0));
     }
@@ -103,7 +109,7 @@ public class InformationViewModelTest {
     public void addDetail() {
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(Collections.emptyList());
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
         informationViewModel.addDetail(HEADER, DESCRIPTION);
 
         final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
@@ -120,7 +126,7 @@ public class InformationViewModelTest {
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID))
                 .thenReturn(Arrays.asList(new Note[]{new Note(TEA_ID, 0, HEADER, DESCRIPTION)}));
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
         informationViewModel.updateDetail(0, anotherHeader, anotherDescription);
 
         ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
@@ -137,7 +143,7 @@ public class InformationViewModelTest {
                 .thenReturn(Arrays.asList(new Note[]{new Note(TEA_ID, 0, HEADER, DESCRIPTION),
                         new Note(TEA_ID, 2, HEADER, DESCRIPTION)}));
 
-        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
         informationViewModel.deleteDetail(index);
 
         verify(noteRepository).deleteNoteByTeaIdAndPosition(TEA_ID, index);
@@ -148,27 +154,63 @@ public class InformationViewModelTest {
 
     @Test
     public void getNotes() {
-        long teaId = TEA_ID;
         Note note = new Note();
-        when(noteRepository.getNoteByTeaIdAndPosition(teaId, -1)).thenReturn(note);
+        when(noteRepository.getNoteByTeaIdAndPosition(TEA_ID, -1)).thenReturn(note);
 
-        InformationViewModel informationViewModel = new InformationViewModel(teaId, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
 
         assertThat(informationViewModel.getNotes()).isEqualTo(note);
+    }
+
+    @Test
+    public void getNotesAndNotesAreNull() {
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
+
+        assertThat(informationViewModel.getNotes())
+                .extracting(
+                        Note::getPosition,
+                        Note::getHeader,
+                        Note::getDescription)
+                .containsExactly(-1, "01_notes", "");
     }
 
     @Test
     public void updateNotes() {
         String newNotes = "changed Notes";
 
-        long teaId = TEA_ID;
-        when(noteRepository.getNoteByTeaIdAndPosition(teaId, -1)).thenReturn(new Note());
+        when(noteRepository.getNoteByTeaIdAndPosition(TEA_ID, -1)).thenReturn(new Note());
 
-        InformationViewModel informationViewModel = new InformationViewModel(teaId, teaRepository, noteRepository);
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
         informationViewModel.updateNotes(newNotes);
 
         ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
         verify(noteRepository).updateNote(captor.capture());
         assertThat(captor.getValue().getDescription()).isEqualTo(newNotes);
+    }
+
+    @Test
+    public void getCounter() {
+        Date currentDate = CurrentDate.getDate();
+        Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
+        when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
+
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
+        Counter counterAfter = informationViewModel.getCounter();
+
+        assertThat(counterAfter).isEqualTo(counterBefore);
+    }
+
+    @Test
+    public void getCounterAndCounterIsNull() {
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
+        informationViewModel.getCounter();
+
+        ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
+        verify(counterRepository).updateCounter((captor.capture()));
+        Counter counterAfter = captor.getValue();
+
+        assertThat(counterAfter)
+                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .containsExactly(0, 0, 0, 0L);
     }
 }

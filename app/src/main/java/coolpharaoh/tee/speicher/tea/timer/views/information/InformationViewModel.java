@@ -10,6 +10,10 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -19,23 +23,28 @@ class InformationViewModel extends ViewModel {
 
     private final TeaRepository teaRepository;
     private final NoteRepository noteRepository;
+    private final CounterRepository counterRepository;
     private final long teaId;
     private final MutableLiveData<List<Note>> details;
 
     InformationViewModel(final long teaId, final Application application) {
-        this(teaId, new TeaRepository(application), new NoteRepository(application));
+        this(teaId, new TeaRepository(application), new NoteRepository(application),
+                new CounterRepository(application));
     }
 
     @VisibleForTesting
-    InformationViewModel(final long teaId, final TeaRepository teaRepository, final NoteRepository noteRepository) {
+    InformationViewModel(final long teaId, final TeaRepository teaRepository, final NoteRepository noteRepository,
+                         CounterRepository counterRepository) {
         this.teaRepository = teaRepository;
         this.noteRepository = noteRepository;
+        this.counterRepository = counterRepository;
         this.teaId = teaId;
         details = new MutableLiveData<>();
         // Notes with position over 0 contains tea information
         updateDetails(teaId, noteRepository);
     }
 
+    // Teas
     public String getTeaName() {
         final Tea tea = teaRepository.getTeaById(teaId);
         if (tea == null) {
@@ -56,6 +65,7 @@ class InformationViewModel extends ViewModel {
         teaRepository.updateTea(tea);
     }
 
+    // Notes
     LiveData<List<Note>> getDetails() {
         return details;
     }
@@ -107,5 +117,31 @@ class InformationViewModel extends ViewModel {
 
     private void updateDetails(long teaId, NoteRepository noteRepository) {
         details.setValue(noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId));
+    }
+
+    // Counter
+    public Counter getCounter() {
+        Counter counter = getOrCreateCounter();
+        RefreshCounter.refreshCounter(counter);
+        counterRepository.updateCounter(counter);
+        return counter;
+    }
+
+    private Counter getOrCreateCounter() {
+        Counter counter = counterRepository.getCounterByTeaId(teaId);
+        if (counter == null) {
+            counter = new Counter();
+            counter.setTeaId(teaId);
+            counter.setDay(0);
+            counter.setWeek(0);
+            counter.setMonth(0);
+            counter.setOverall(0);
+            counter.setDayDate(CurrentDate.getDate());
+            counter.setWeekDate(CurrentDate.getDate());
+            counter.setMonthDate(CurrentDate.getDate());
+            counter.setId(counterRepository.insertCounter(counter));
+        }
+
+        return counter;
     }
 }

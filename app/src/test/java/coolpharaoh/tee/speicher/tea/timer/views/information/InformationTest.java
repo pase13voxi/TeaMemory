@@ -34,7 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -68,6 +71,8 @@ public class InformationTest {
     TeaDao teaDao;
     @Mock
     NoteDao noteDao;
+    @Mock
+    CounterDao counterDao;
 
     @Before
     public void setUp() {
@@ -78,6 +83,7 @@ public class InformationTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
+        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
     }
 
     @Test
@@ -275,6 +281,35 @@ public class InformationTest {
         });
     }
 
+    @Test
+    public void fillCounter() {
+        createTea(0);
+        final Counter counter = new Counter(TEA_ID, 1, 2, 3, 4,
+                CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        when(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter);
+
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            checkCounter(information, "1", "2", "3", "4");
+        });
+    }
+
+    @Test
+    public void fillCounterWhenCounterIsNotAvailable() {
+        createTea(0);
+
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            checkCounter(information, "0", "0", "0", "0");
+        });
+    }
+
     private void createTea(final int rating) {
         final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, null);
         tea.setRating(rating);
@@ -315,5 +350,17 @@ public class InformationTest {
         final EditText editTextAddHeader = dialog.findViewById(editTextId);
         assertThat(editTextAddHeader.getText()).hasToString(oldContent);
         editTextAddHeader.setText(newContent);
+    }
+
+    private void checkCounter(Information information, String today, String week, String month, String overall) {
+        TextView textViewToday = information.findViewById(R.id.textViewInformationCounterToday);
+        TextView textViewWeek = information.findViewById(R.id.textViewInformationCounterWeek);
+        TextView textViewMonth = information.findViewById(R.id.textViewInformationCounterMonth);
+        TextView textViewOverall = information.findViewById(R.id.textViewInformationCounterOverall);
+
+        assertThat(textViewToday.getText()).hasToString(today);
+        assertThat(textViewWeek.getText()).hasToString(week);
+        assertThat(textViewMonth.getText()).hasToString(month);
+        assertThat(textViewOverall.getText()).hasToString(overall);
     }
 }
