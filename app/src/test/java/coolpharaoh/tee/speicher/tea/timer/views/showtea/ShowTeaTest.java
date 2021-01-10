@@ -42,7 +42,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
@@ -79,7 +78,6 @@ public class ShowTeaTest {
     Tea tea;
     List<Infusion> infusions;
     Counter counter;
-    Note note;
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -438,12 +436,11 @@ public class ShowTeaTest {
     }
 
     @Test
-    public void openTeaCounter() {
+    public void navigationToDetailedInformationViewByMenu() {
         mockDB();
         mockTea(VARIETY, 1, TEA_SPOON, 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockCounter();
         mockActualSettings(CELSIUS, false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -451,11 +448,12 @@ public class ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_counter));
+            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_information));
 
-            checkTitleAndMessageOfLatestDialog(showTea, getLatestAlertDialog(), R.string.showtea_action_counter);
+            Intent expected = new Intent(showTea, Information.class);
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
-            // instead of a listview use a normal layout to make it more testable
+            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
     }
 

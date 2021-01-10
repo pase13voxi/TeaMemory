@@ -376,30 +376,6 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void getCounter() {
-        Date currentDate = CurrentDate.getDate();
-        Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
-        when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
-
-        Counter counterAfter = showTeaViewModel.getCounter();
-
-        assertThat(counterAfter).isEqualTo(counterBefore);
-    }
-
-    @Test
-    public void getCounterAndCounterIsNull() {
-        showTeaViewModel.getCounter();
-
-        ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
-        verify(counterRepository).updateCounter((captor.capture()));
-        Counter counterAfter = captor.getValue();
-
-        assertThat(counterAfter)
-                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
-                .containsExactly(0, 0, 0, 0L);
-    }
-
-    @Test
     public void isAnimation() {
         boolean animationBefore = true;
 

@@ -1,12 +1,7 @@
 <resources>
     <string name="showtea_heading">Informationen</string>
     <string name="showtea_action_edit">Bearbeiten</string>
-    <string name="showtea_action_counter">Trinkverhalten</string>
-    <string name="showtea_dialog_counter_day">Heute</string>
-    <string name="showtea_dialog_counter_week">Diese Woche</string>
-    <string name="showtea_dialog_counter_month">Dieser Monat</string>
-    <string name="showtea_dialog_counter_overall">Insgesamt</string>
-    <string name="showtea_dialog_counter_ok">Ok</string>
+    <string name="showtea_action_information">Weitere Informationen</string>
     <string name="showtea_dialog_tea_missing_header">Fehler beim Anzeigen des Tees</string>
     <string name="showtea_dialog_tea_missing_description">Der ausgewählte Tee kann nicht angezeigt werden. Sollte dieser Fehler noch einmal auftauchen, so ist der Tee invalide und er sollte gelöscht werden.</string>
     <string name="showtea_dialog_tea_missing_to_main">Zurück zum Startfenster</string>

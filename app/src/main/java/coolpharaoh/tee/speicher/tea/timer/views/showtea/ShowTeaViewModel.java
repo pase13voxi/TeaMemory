@@ -153,13 +153,6 @@ class ShowTeaViewModel {
         counterRepository.updateCounter(counter);
     }
 
-    public Counter getCounter() {
-        Counter counter = getOrCreateCounter();
-        RefreshCounter.refreshCounter(counter);
-        counterRepository.updateCounter(counter);
-        return counter;
-    }
-
     private Counter getOrCreateCounter() {
         Counter counter = counterRepository.getCounterByTeaId(teaId);
         if (counter == null) {

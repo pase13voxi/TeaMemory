@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,20 +30,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.tooltip.Tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
@@ -625,8 +620,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         int id = item.getItemId();
         if (id == R.id.action_edit) {
             return navigateToEditTea();
-        } else if (id == R.id.action_counter) {
-            dialogCounter();
+        } else if (id == R.id.action_information) {
+            navigateToDetailInformation();
         }
 
         return super.onOptionsItemSelected(item);
@@ -640,33 +635,6 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         startActivity(newTeaScreen);
         finish();
         return true;
-    }
-
-    private void dialogCounter() {
-        Counter counter = showTeaViewModel.getCounter();
-
-        List<ListRowItem> counterList = new ArrayList<>();
-        ListRowItem itemToday = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_day), String.valueOf(counter.getDay()));
-        counterList.add(itemToday);
-        ListRowItem itemWeek = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_week), String.valueOf(counter.getWeek()));
-        counterList.add(itemWeek);
-        ListRowItem itemMonth = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_month), String.valueOf(counter.getMonth()));
-        counterList.add(itemMonth);
-        ListRowItem itemAll = new ListRowItem(getResources().getString(R.string.showtea_dialog_counter_overall), String.valueOf(counter.getOverall()));
-        counterList.add(itemAll);
-
-        //Liste mit Adapter verknüpfen
-        CounterListAdapter adapter = new CounterListAdapter(this, counterList);
-        //Adapter dem Listview hinzufügen
-        ListView listViewCounter = new ListView(this);
-        listViewCounter.setAdapter(adapter);
-
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(listViewCounter);
-        adb.setTitle(R.string.showtea_action_counter);
-        adb.setIcon(R.drawable.statistics_black);
-        adb.setPositiveButton(R.string.showtea_dialog_counter_ok, null);
-        adb.show();
     }
 
     @Override
