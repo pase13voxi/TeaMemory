@@ -44,8 +44,8 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         fillToolbarTitle();
         fillRatingBar();
         showDetailsList();
-        fillNotes();
         fillCounter();
+        fillNotes();
 
         final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
@@ -90,12 +90,6 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         });
     }
 
-    private void fillNotes() {
-        final EditText editTextNotes = findViewById(R.id.editTextNotes);
-        final Note note = informationViewModel.getNotes();
-        editTextNotes.setText(note.getDescription());
-    }
-
     private void fillCounter() {
         TextView textViewToday = findViewById(R.id.textViewInformationCounterToday);
         TextView textViewWeek = findViewById(R.id.textViewInformationCounterWeek);
@@ -107,6 +101,12 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         textViewWeek.setText(String.valueOf(counter.getWeek()));
         textViewMonth.setText(String.valueOf(counter.getMonth()));
         textViewOverall.setText(String.valueOf(counter.getOverall()));
+    }
+
+    private void fillNotes() {
+        final EditText editTextNotes = findViewById(R.id.editTextNotes);
+        final Note note = informationViewModel.getNotes();
+        editTextNotes.setText(note.getDescription());
     }
 
     private void addDetail() {

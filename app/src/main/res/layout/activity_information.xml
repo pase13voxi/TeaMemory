@@ -96,40 +96,12 @@
                         style="@style/informationHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_notes_heading" />
-
-                    <EditText
-                        android:id="@+id/editTextNotes"
-                        style="@style/informationEditTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/information_notes_hint"
-                        android:importantForAutofill="no"
-                        android:theme="@style/informationEditTextTheme" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                style="@style/informationCardview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    style="@style/informationLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        style="@style/informationHeading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:text="@string/information_counter_heading" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -225,6 +197,34 @@
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/informationCardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    style="@style/informationLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/informationHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/information_notes_heading" />
+
+                    <EditText
+                        android:id="@+id/editTextNotes"
+                        style="@style/informationEditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/information_notes_hint"
+                        android:importantForAutofill="no"
+                        android:theme="@style/informationEditTextTheme" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

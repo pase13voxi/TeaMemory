@@ -45,11 +45,13 @@
     <style name="informationCounterTextViewHeader">
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="informationCounterTextViewCouting">
         <item name="android:textColor">@color/textAppearanceGrey</item>
         <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="informationCounterSeparation">
