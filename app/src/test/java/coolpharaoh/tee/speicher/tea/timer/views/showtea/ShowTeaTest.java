@@ -593,7 +593,7 @@ public class ShowTeaTest {
             showTea.sendBroadcast(broadcastIntent);
 
             assertThat(textViewTimer.getText()).hasToString("00 : 30");
-            int imageId = showTea.getResources().getIdentifier("fill50pr", "drawable", showTea.getPackageName());
+            int imageId = showTea.getResources().getIdentifier("cup_fill50pr", "drawable", showTea.getPackageName());
             assertThat(imageViewFill.getTag()).isEqualTo(imageId);
         });
     }
