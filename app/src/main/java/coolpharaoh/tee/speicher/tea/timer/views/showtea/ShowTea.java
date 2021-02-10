@@ -35,6 +35,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
 import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
@@ -90,7 +91,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 if (ready) {
                     textViewTimer.setText(R.string.showtea_tea_ready);
                     if (!infoShown && showTeaViewModel.isAnimation()) {
-                        imageViewFill.setImageResource(R.drawable.fill100pr);
+                        imageViewFill.setImageResource(R.drawable.cup_fill100pr);
                         imageViewSteam.setVisibility((View.VISIBLE));
                     }
                 } else {
@@ -108,7 +109,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
                 percent = percentTmp;
 
                 Context context = getApplicationContext();
-                String imageName = String.format("fill%spr", percent);
+                String imageName = String.format("cup_fill%spr", percent);
                 int imageId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
                 imageViewFill.setImageResource(imageId);
                 imageViewFill.setTag(imageId);
@@ -250,8 +251,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
         fillAmountWithUnit();
 
-        spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
-        spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
+        spinnerMinutes.setSelection(showTeaViewModel.getTime().getMinutes());
+        spinnerSeconds.setSelection(showTeaViewModel.getTime().getSeconds());
     }
 
     private void fillTemperatureWithUnit() {
@@ -366,8 +367,8 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             }
         }
 
-        spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
-        spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
+        spinnerMinutes.setSelection(showTeaViewModel.getTime().getMinutes());
+        spinnerSeconds.setSelection(showTeaViewModel.getTime().getSeconds());
         textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (showTeaViewModel.getInfusionIndex() + 1)));
 
         nextInfusionEnable();
@@ -497,10 +498,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         if (!infoShown && showTeaViewModel.isAnimation()) {
             imageViewCup.setVisibility((View.INVISIBLE));
             imageViewFill.setVisibility((View.INVISIBLE));
-            imageViewFill.setImageResource(R.drawable.fill0pr);
+            imageViewFill.setImageResource(R.drawable.cup_fill0pr);
             imageViewSteam.setVisibility((View.INVISIBLE));
             //für animation zurücksetzen
-            imageViewCup.setImageResource(R.drawable.cup_new);
+            imageViewCup.setImageResource(R.drawable.cup);
             percent = 0;
         }
     }
@@ -537,21 +538,21 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void switchToCoolingPeriod() {
         if (!infoShown) {
 
-            final TimeHelper cooldowntime = showTeaViewModel.getCoolDownTime();
-            if (cooldowntime != null && cooldowntime.time != null) {
+            final TimeConverter cooldowntime = showTeaViewModel.getCoolDownTime();
+            if (cooldowntime != null && cooldowntime.getTime() != null) {
                 buttonInfo.setVisibility(View.VISIBLE);
                 infoShown = true;
 
-                spinnerMinutes.setSelection(cooldowntime.minutes);
-                spinnerSeconds.setSelection(cooldowntime.seconds);
+                spinnerMinutes.setSelection(cooldowntime.getMinutes());
+                spinnerSeconds.setSelection(cooldowntime.getSeconds());
             } else {
                 Toast.makeText(getApplication(), R.string.showtea_cooldown_not_found, Toast.LENGTH_LONG).show();
             }
         } else {
             buttonInfo.setVisibility(View.INVISIBLE);
             infoShown = false;
-            spinnerMinutes.setSelection(showTeaViewModel.getTime().minutes);
-            spinnerSeconds.setSelection(showTeaViewModel.getTime().seconds);
+            spinnerMinutes.setSelection(showTeaViewModel.getTime().getMinutes());
+            spinnerSeconds.setSelection(showTeaViewModel.getTime().getSeconds());
         }
     }
 

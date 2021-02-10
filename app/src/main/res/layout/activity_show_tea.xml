@@ -118,7 +118,7 @@
         android:layout_alignEnd="@+id/spinnerSeconds"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="45dip"
-        android:background="@drawable/button_start"
+        android:background="@drawable/button_round_dark"
         android:text="@string/showtea_timer_start"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -177,7 +177,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="120dip"
         android:contentDescription="@string/showtea_content_description_steam"
-        android:src="@drawable/steam"
+        android:src="@drawable/cup_steam"
         android:visibility="invisible" />
 
     <ImageView
@@ -188,7 +188,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dip"
         android:contentDescription="@string/showtea_content_description_cup"
-        android:src="@drawable/cup_new"
+        android:src="@drawable/cup"
         android:visibility="invisible" />
 
     <ImageView
@@ -199,7 +199,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dip"
         android:contentDescription="@string/showtea_content_description_filling"
-        android:src="@drawable/fill0pr"
+        android:src="@drawable/cup_fill0pr"
         android:visibility="invisible" />
 
 </RelativeLayout>

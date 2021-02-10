@@ -13,6 +13,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
 import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
@@ -106,12 +107,12 @@ class ShowTeaViewModel {
     }
 
     // Infusion
-    TimeHelper getTime() {
-        return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
+    TimeConverter getTime() {
+        return new TimeConverter(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
     }
 
-    TimeHelper getCoolDownTime() {
-        return TimeHelper.getMinutesAndSeconds(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
+    TimeConverter getCoolDownTime() {
+        return new TimeConverter(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
     }
 
     int getTemperature() {

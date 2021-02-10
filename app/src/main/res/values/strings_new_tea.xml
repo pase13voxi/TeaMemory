@@ -69,6 +69,20 @@
     <string name="newtea_error_no_name">Please enter the name.</string>
     <string name="newtea_count_infusion">%1$d. Infusion</string>
     <string name="newtea_count_infusion_first">1. Infusion</string>
+    <string name="newtea_dialog_amount_header">Input amount</string>
+    <string-array name="newtea_dialog_amount_kind">
+        <item>ts/L</item>
+        <item>gr/L</item>
+    </string-array>
+    <string name="newtea_dialog_temperature_header">Input temperature</string>
+    <string name="newtea_dialog_temperature_celsius">°C</string>
+    <string name="newtea_dialog_temperature_fahrenheit">°F</string>
+    <string name="newtea_dialog_time_header">Input  brewing time</string>
+    <string name="newtea_dialog_time_double_point">:</string>
+    <string name="newtea_dialog_cool_down_time_header">Input cool down time</string>
+    <string name="newtea_dialog_picker_suggestion">Suggestions</string>
+    <string name="newtea_dialog_picker_negative">Cancel</string>
+    <string name="newtea_dialog_picker_positive">Add</string>
     <string name="newtea_tooltip_choosecolor">Choose color</string>
     <string name="newtea_tooltip_arrowleft">Previous infusion</string>
     <string name="newtea_tooltip_arrowright">Next infusion</string>

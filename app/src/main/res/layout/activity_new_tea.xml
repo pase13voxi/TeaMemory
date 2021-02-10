@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_tea_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.newtea.NewTea">
@@ -107,38 +108,20 @@
                 android:inputType="textCapWords"
                 android:theme="@style/EditTextStyle" />
 
-            <Spinner
-                android:id="@+id/spinnerAmountUnit"
-                style="@android:style/Widget.Holo.Light.Spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_below="@id/editTextName"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dip"
-                android:layout_marginEnd="4dp"
-                android:entries="@array/newtea_amount"
-                android:spinnerMode="dropdown" />
-
-            <EditText
-                android:id="@+id/editTextAmount"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/buttonAmountDialog"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/editTextName"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="10dip"
-                android:layout_toStartOf="@id/spinnerAmountUnit"
-                android:ems="10"
-                android:hint="@string/newtea_hint_ts_other"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                android:theme="@style/EditTextStyle" />
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/spoon" />
 
             <ImageButton
                 android:id="@+id/buttonAddInfusion"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_below="@id/editTextAmount"
+                android:layout_below="@id/buttonAmountDialog"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -153,7 +136,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/editTextAmount"
+                android:layout_below="@id/buttonAmountDialog"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
@@ -168,13 +151,13 @@
                 android:id="@+id/linearLayoutInfusions"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/editTextAmount"
+                android:layout_below="@id/buttonAmountDialog"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
                 android:layout_toStartOf="@id/buttonDeleteInfusion">
 
                 <ImageButton
-                    android:id="@+id/buttonArrowLeft"
+                    android:id="@+id/buttonPreviousInfusion"
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_alignParentStart="true"
@@ -194,7 +177,7 @@
                     android:textColor="@color/grey" />
 
                 <ImageButton
-                    android:id="@+id/buttonArrowRight"
+                    android:id="@+id/buttonNextInfusion"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
@@ -219,60 +202,33 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/arrowdown" />
 
-            <EditText
-                android:id="@+id/editTextTemperature"
+            <Button
+                android:id="@+id/buttonTemperatureDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linearLayoutInfusions"
+                android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="10dip"
                 android:layout_toStartOf="@+id/buttonShowCoolDownTime"
-                android:ems="10"
-                android:hint="@string/newtea_hint_celsius_other"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                android:theme="@style/EditTextStyle" />
+                android:drawableStart="@drawable/temperature" />
 
-            <ImageButton
-                android:id="@+id/buttonAutofillCoolDownTime"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_below="@+id/editTextTemperature"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="20dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/newtea_tooltip_autofillcooldowntime"
-                android:scaleType="fitXY"
-                android:src="@drawable/arrowright"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/editTextCoolDownTime"
+            <Button
+                android:id="@+id/buttonCoolDownTimeDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextTemperature"
-                android:layout_marginStart="10dp"
+                android:layout_below="@+id/buttonTemperatureDialog"
                 android:layout_marginTop="10dip"
-                android:layout_marginEnd="4dp"
-                android:layout_toEndOf="@+id/buttonAutofillCoolDownTime"
-                android:ems="10"
-                android:hint="@string/newtea_hint_cooldowntime"
-                android:importantForAutofill="no"
-                android:inputType="time"
-                android:theme="@style/EditTextStyle"
+                android:layout_marginHorizontal="4dp"
                 android:visibility="gone" />
 
-            <EditText
-                android:id="@+id/editTextTime"
+            <Button
+                android:id="@+id/buttonTimeDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextCoolDownTime"
+                android:layout_below="@+id/buttonCoolDownTimeDialog"
                 android:layout_marginTop="10dip"
-                android:ems="10"
-                android:hint="@string/newtea_hint_time_other"
-                android:importantForAutofill="no"
-                android:inputType="time"
-                android:theme="@style/EditTextStyle" />
+                android:layout_marginHorizontal="4dp"
+                android:drawableStart="@drawable/timer" />
 
         </RelativeLayout>
 

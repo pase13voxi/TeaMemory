@@ -69,6 +69,20 @@
     <string name="newtea_error_no_name">Geben Sie bitte den Namen an.</string>
     <string name="newtea_count_infusion">%1$d. Aufguss</string>
     <string name="newtea_count_infusion_first">1. Aufguss</string>
+    <string name="newtea_dialog_amount_header">Menge eingeben</string>
+    <string-array name="newtea_dialog_amount_kind">
+        <item>TL/L</item>
+        <item>g/L</item>
+    </string-array>
+    <string name="newtea_dialog_temperature_header">Temperatur eingeben</string>
+    <string name="newtea_dialog_temperature_celsius">°C</string>
+    <string name="newtea_dialog_temperature_fahrenheit">°F</string>
+    <string name="newtea_dialog_time_header">Ziehzeit eingeben</string>
+    <string name="newtea_dialog_time_double_point">:</string>
+    <string name="newtea_dialog_cool_down_time_header">Abkühlzeit eingeben</string>
+    <string name="newtea_dialog_picker_suggestion">Vorschläge</string>
+    <string name="newtea_dialog_picker_negative">Abbrechen</string>
+    <string name="newtea_dialog_picker_positive">Hinzufügen</string>
     <string name="newtea_tooltip_choosecolor">Farbe auswählen</string>
     <string name="newtea_tooltip_arrowleft">Vorheriger Aufguss</string>
     <string name="newtea_tooltip_arrowright">Nächster Aufguss</string>

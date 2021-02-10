@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="numberPickerThemeOverlay" parent="">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
+    <style name="numberPickerText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialogInputButtonSuggestions">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/button_round_light</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

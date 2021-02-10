@@ -3,6 +3,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepo
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
@@ -23,10 +24,9 @@ class NewTeaViewModel {
     private final InfusionRepository infusionRepository;
     private final ActualSettingsRepository actualSettingsRepository;
 
+    private MutableLiveData<Integer> infusionIndex;
     private Tea tea;
     private List<Infusion> infusions;
-
-    private int infusionIndex = 0;
 
     NewTeaViewModel(Application application) {
         this(null, application, new TeaRepository(application),
@@ -51,8 +51,11 @@ class NewTeaViewModel {
     }
 
     private void initializeTeaAndInfusions(Long teaId) {
+        infusionIndex = new MutableLiveData<>(0);
         if (teaId == null) {
             tea = new Tea();
+            tea.setAmount(-500);
+            tea.setAmountKind("Ts");
             tea.setRating(0);
             tea.setFavorite(false);
             infusions = new ArrayList<>();
@@ -76,11 +79,17 @@ class NewTeaViewModel {
         return tea.getVariety();
     }
 
+    void setAmount(final int amount, final String amountKind) {
+        tea.setAmount(amount);
+        tea.setAmountKind(amountKind);
+        signalDataChanged();
+    }
+
     int getAmount() {
         return tea.getAmount();
     }
 
-    String getAmountkind() {
+    String getAmountKind() {
         return tea.getAmountKind();
     }
 
@@ -89,111 +98,144 @@ class NewTeaViewModel {
     }
 
     // Infusion
+    LiveData<Integer> dataChanges() {
+        return infusionIndex;
+    }
+
+    int getInfusionIndex() {
+        if (infusionIndex != null) {
+            return infusionIndex.getValue();
+        } else {
+            infusionIndex = new MutableLiveData<>(0);
+            return infusionIndex.getValue();
+        }
+    }
+
     void addInfusion() {
-        Infusion infusion = new Infusion();
+        final Infusion infusion = new Infusion();
         infusion.setTemperatureCelsius(-500);
         infusion.setTemperatureFahrenheit(-500);
         infusions.add(infusion);
         if (getInfusionSize() > 1) {
-            infusionIndex++;
+            infusionIndex.setValue(getInfusionIndex() + 1);
         }
-    }
-
-    void takeInfusionInformation(String time, String cooldowntime, int temperature) {
-        infusions.get(infusionIndex).setTime(time);
-        infusions.get(infusionIndex).setCoolDownTime(cooldowntime);
-        if ("Fahrenheit".equals(actualSettingsRepository.getSettings().getTemperatureUnit())) {
-            infusions.get(infusionIndex).setTemperatureFahrenheit(temperature);
-            infusions.get(infusionIndex).setTemperatureCelsius(TemperatureConversation.fahrenheitToCelsius(temperature));
-        } else {
-            infusions.get(infusionIndex).setTemperatureCelsius(temperature);
-            infusions.get(infusionIndex).setTemperatureFahrenheit(TemperatureConversation.celsiusToFahrenheit(temperature));
-        }
+        signalDataChanged();
     }
 
     void deleteInfusion() {
         if (getInfusionSize() > 1) {
-            infusions.remove(infusionIndex);
-            if (infusionIndex == getInfusionSize()) {
-                infusionIndex--;
+            infusions.remove(getInfusionIndex());
+            if (getInfusionIndex() == getInfusionSize()) {
+                infusionIndex.setValue(getInfusionIndex() - 1);
             }
-        }
-    }
-
-    String getInfusionTime() {
-        return infusions.get(infusionIndex).getTime();
-    }
-
-    String getInfusionCooldowntime() {
-        return infusions.get(infusionIndex).getCoolDownTime();
-    }
-
-    int getInfusionTemperature() {
-        if ("Fahrenheit".equals(getTemperatureunit())) {
-            return infusions.get(infusionIndex).getTemperatureFahrenheit();
-        } else {
-            return infusions.get(infusionIndex).getTemperatureCelsius();
+            signalDataChanged();
         }
     }
 
     void previousInfusion() {
-        if (infusionIndex - 1 >= 0) {
-            infusionIndex--;
+        if (getInfusionIndex() - 1 >= 0) {
+            infusionIndex.setValue(getInfusionIndex() - 1);
         }
     }
 
     void nextInfusion() {
-        if (infusionIndex + 1 < getInfusionSize()) {
-            infusionIndex++;
+        if (getInfusionIndex() + 1 < getInfusionSize()) {
+            infusionIndex.setValue(getInfusionIndex() + 1);
         }
-    }
-
-    int getInfusionIndex() {
-        return infusionIndex;
     }
 
     int getInfusionSize() {
         return infusions.size();
     }
 
+    void setInfusionTemperature(final int temperature) {
+        if (isFahrenheit()) {
+            infusions.get(getInfusionIndex()).setTemperatureFahrenheit(temperature);
+        } else {
+            infusions.get(getInfusionIndex()).setTemperatureCelsius(temperature);
+        }
+        signalDataChanged();
+    }
+
+    int getInfusionTemperature() {
+        if (isFahrenheit()) {
+            return infusions.get(getInfusionIndex()).getTemperatureFahrenheit();
+        } else {
+            return infusions.get(getInfusionIndex()).getTemperatureCelsius();
+        }
+    }
+
+    void setInfusionTime(final String time) {
+        infusions.get(getInfusionIndex()).setTime(time);
+        signalDataChanged();
+    }
+
+    String getInfusionTime() {
+        return infusions.get(getInfusionIndex()).getTime();
+    }
+
+    void setInfusionCoolDownTime(final String time) {
+        infusions.get(getInfusionIndex()).setCoolDownTime(time);
+        signalDataChanged();
+    }
+
+    String getInfusionCoolDownTime() {
+        return infusions.get(getInfusionIndex()).getCoolDownTime();
+    }
+
     // Settings
-    String getTemperatureunit() {
+    String getTemperatureUnit() {
         return actualSettingsRepository.getSettings().getTemperatureUnit();
     }
 
     // Overall
-    void editTea(String name, String variety, int amount, String amountkind, int color) {
-        setTeaInformation(name, variety, amount, amountkind, color);
+    void saveTea(final String name, final String variety, final int color) {
+        // if id is null a new Tea will be created
+        if (tea.getId() == null) {
+            insertTea(name, variety, color);
+        } else {
+            updateTea(name, variety, color);
+        }
+    }
+
+    private void updateTea(final String name, final String variety, final int color) {
+        setTeaInformation(name, variety, color);
 
         teaRepository.updateTea(tea);
 
-        setInfusionInformation(tea.getId());
+        saveInfusions(tea.getId());
     }
 
-    void createNewTea(String name, String variety, int amount, String amountkind, int color) {
-        setTeaInformation(name, variety, amount, amountkind, color);
+    private void insertTea(final String name, final String variety, final int color) {
+        setTeaInformation(name, variety, color);
         tea.setNextInfusion(0);
 
-        long teaId = teaRepository.insertTea(tea);
+        final long teaId = teaRepository.insertTea(tea);
 
-        setInfusionInformation(teaId);
+        saveInfusions(teaId);
     }
 
-    void setTeaInformation(String name, String variety, int amount, String amountKind, int color) {
+    private void setTeaInformation(final String name, final String variety, final int color) {
         tea.setName(name);
         tea.setVariety(LanguageConversation.convertVarietyToCode(variety, application));
-        tea.setAmount(amount);
-        tea.setAmountKind(amountKind);
         tea.setColor(color);
         tea.setDate(CurrentDate.getDate());
     }
 
-    void setInfusionInformation(long teaId) {
+    private void saveInfusions(final long teaId) {
         infusionRepository.deleteInfusionsByTeaId(teaId);
         for (int i = 0; i < getInfusionSize(); i++) {
             infusions.get(i).setTeaId(teaId);
             infusions.get(i).setInfusionIndex(i);
             infusionRepository.insertInfusion(infusions.get(i));
         }
+    }
+
+    private boolean isFahrenheit() {
+        return "Fahrenheit".equals(getTemperatureUnit());
+    }
+
+    private void signalDataChanged() {
+        infusionIndex.setValue(getInfusionIndex());
     }
 }

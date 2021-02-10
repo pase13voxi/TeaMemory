@@ -28,6 +28,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -295,31 +296,31 @@ public class ShowTeaViewModelTest {
         assertThat(showTeaViewModel.getInfusionSize()).isEqualTo(infusions.size());
         assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 
-        TimeHelper time1 = showTeaViewModel.getTime();
-        TimeHelper cooldownTime1 = showTeaViewModel.getCoolDownTime();
+        TimeConverter time1 = showTeaViewModel.getTime();
+        TimeConverter cooldownTime1 = showTeaViewModel.getCoolDownTime();
         int temperature1 = showTeaViewModel.getTemperature();
 
-        assertThat(time1.time).isEqualTo(infusions.get(0).getTime());
-        assertThat(time1.minutes).isEqualTo(1);
-        assertThat(time1.seconds).isZero();
-        assertThat(cooldownTime1.time).isEqualTo(infusions.get(0).getCoolDownTime());
-        assertThat(cooldownTime1.minutes).isEqualTo(2);
-        assertThat(cooldownTime1.seconds).isZero();
+        assertThat(time1.getTime()).isEqualTo(infusions.get(0).getTime());
+        assertThat(time1.getMinutes()).isEqualTo(1);
+        assertThat(time1.getSeconds()).isZero();
+        assertThat(cooldownTime1.getTime()).isEqualTo(infusions.get(0).getCoolDownTime());
+        assertThat(cooldownTime1.getMinutes()).isEqualTo(2);
+        assertThat(cooldownTime1.getSeconds()).isZero();
         assertThat(temperature1).isEqualTo(infusions.get(0).getTemperatureCelsius());
 
         showTeaViewModel.incrementInfusionIndex();
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
 
-        TimeHelper time2 = showTeaViewModel.getTime();
-        TimeHelper cooldownTime2 = showTeaViewModel.getCoolDownTime();
+        TimeConverter time2 = showTeaViewModel.getTime();
+        TimeConverter cooldownTime2 = showTeaViewModel.getCoolDownTime();
         int temperature2 = showTeaViewModel.getTemperature();
 
-        assertThat(time2.time).isEqualTo(infusions.get(1).getTime());
-        assertThat(time2.minutes).isEqualTo(2);
-        assertThat(time2.seconds).isEqualTo(30);
-        assertThat(cooldownTime2.time).isEqualTo(infusions.get(1).getCoolDownTime());
-        assertThat(cooldownTime2.minutes).isEqualTo(5);
-        assertThat(cooldownTime2.seconds).isEqualTo(30);
+        assertThat(time2.getTime()).isEqualTo(infusions.get(1).getTime());
+        assertThat(time2.getMinutes()).isEqualTo(2);
+        assertThat(time2.getSeconds()).isEqualTo(30);
+        assertThat(cooldownTime2.getTime()).isEqualTo(infusions.get(1).getCoolDownTime());
+        assertThat(cooldownTime2.getMinutes()).isEqualTo(5);
+        assertThat(cooldownTime2.getSeconds()).isEqualTo(30);
         assertThat(temperature2).isEqualTo(infusions.get(1).getTemperatureCelsius());
 
         actualSettings.setTemperatureUnit("Fahrenheit");
@@ -338,11 +339,11 @@ public class ShowTeaViewModelTest {
 
         when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
 
-        TimeHelper timeAfter = showTeaViewModel.getTime();
+        TimeConverter timeAfter = showTeaViewModel.getTime();
 
-        assertThat(timeAfter.time).isNull();
-        assertThat(timeAfter.minutes).isZero();
-        assertThat(timeAfter.seconds).isZero();
+        assertThat(timeAfter.getTime()).isNull();
+        assertThat(timeAfter.getMinutes()).isZero();
+        assertThat(timeAfter.getSeconds()).isZero();
     }
 
     @Test
