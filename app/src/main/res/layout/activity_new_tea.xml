@@ -115,7 +115,7 @@
                 android:layout_below="@+id/editTextName"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/spoon" />
+                android:background="@drawable/button_light" />
 
             <ImageButton
                 android:id="@+id/buttonAddInfusion"
@@ -188,20 +188,6 @@
 
             </RelativeLayout>
 
-            <ImageButton
-                android:id="@+id/buttonShowCoolDownTime"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_below="@id/linearLayoutInfusions"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dip"
-                android:layout_marginEnd="4dip"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/newtea_tooltip_showcooldowntime"
-                android:scaleType="fitXY"
-                android:src="@drawable/arrowdown" />
-
             <Button
                 android:id="@+id/buttonTemperatureDialog"
                 android:layout_width="match_parent"
@@ -209,16 +195,16 @@
                 android:layout_below="@+id/linearLayoutInfusions"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="10dip"
-                android:layout_toStartOf="@+id/buttonShowCoolDownTime"
-                android:drawableStart="@drawable/temperature" />
+                android:background="@drawable/button_light" />
 
             <Button
                 android:id="@+id/buttonCoolDownTimeDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/buttonTemperatureDialog"
-                android:layout_marginTop="10dip"
                 android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/button_light"
                 android:visibility="gone" />
 
             <Button
@@ -226,9 +212,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/buttonCoolDownTimeDialog"
-                android:layout_marginTop="10dip"
                 android:layout_marginHorizontal="4dp"
-                android:drawableStart="@drawable/timer" />
+                android:layout_marginTop="10dip"
+                android:background="@drawable/button_light" />
 
         </RelativeLayout>
 

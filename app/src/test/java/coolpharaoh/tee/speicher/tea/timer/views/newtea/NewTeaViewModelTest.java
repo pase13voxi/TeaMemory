@@ -120,6 +120,12 @@ public class NewTeaViewModelTest {
     }
 
     @Test
+    public void resetCoolDownTimeAndExpectNull() {
+        newTeaViewModelEmpty.resetInfusionCoolDownTime();
+        assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isNull();
+    }
+
+    @Test
     public void setTimeAndExpectTime() {
         newTeaViewModelEmpty.setInfusionTime("05:45");
         assertThat(newTeaViewModelEmpty.getInfusionTime()).isEqualTo("05:45");

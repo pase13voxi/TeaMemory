@@ -34,8 +34,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
-import static java.lang.String.valueOf;
-
 
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener, Printer {
 
@@ -181,23 +179,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         final ImageButton buttonAddInfusion = findViewById(R.id.buttonAddInfusion);
         buttonAddInfusion.setOnClickListener(v -> newTeaViewModel.addInfusion());
         buttonAddInfusion.setOnLongClickListener(this);
-
-        final ImageButton buttonShowCoolDowntime = findViewById(R.id.buttonShowCoolDownTime);
-        buttonShowCoolDowntime.setOnClickListener(v -> visualizeCoolDownTimeInput());
-        buttonShowCoolDowntime.setOnLongClickListener(this);
-    }
-
-    private void visualizeCoolDownTimeInput() {
-        final Button buttonCoolDownTime = findViewById(R.id.buttonCoolDownTimeDialog);
-        final ImageButton buttonShowCoolDowntime = findViewById(R.id.buttonShowCoolDownTime);
-
-        if (buttonCoolDownTime.getVisibility() == View.VISIBLE) {
-            buttonShowCoolDowntime.setImageResource(R.drawable.arrowdown);
-            buttonCoolDownTime.setVisibility(View.GONE);
-        } else {
-            buttonShowCoolDowntime.setImageResource(R.drawable.arrowup);
-            buttonCoolDownTime.setVisibility(View.VISIBLE);
-        }
     }
 
     private void defineInputPicker() {
@@ -294,33 +275,81 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void onDataChanged() {
         bindAmountToButton();
         bindTemperatureToButton();
-        bindCoolDownTimeToButtons();
+        bindCoolDownTimeToButton();
+        showCoolDownTimeButton();
         bindTimeToButton();
         refreshInfusionBar();
     }
 
     private void bindAmountToButton() {
+        final int amount = newTeaViewModel.getAmount();
+        final String amountKind = newTeaViewModel.getAmountKind();
         final Button buttonAmount = findViewById(R.id.buttonAmountDialog);
-        final String amount = String.format("%d%s", newTeaViewModel.getAmount(), newTeaViewModel.getAmountKind());
-        buttonAmount.setText(amount);
+
+        if (amount == -500) {
+            buttonAmount.setText(R.string.newtea_button_amount_empty_text_ts);
+        } else {
+            if ("Gr".equals(amountKind)) {
+                buttonAmount.setText(getString(R.string.newtea_button_amount_text_gr, amount));
+            } else {
+                buttonAmount.setText(getString(R.string.newtea_button_amount_text_ts, amount));
+            }
+        }
     }
 
     private void bindTemperatureToButton() {
-        final int temperatureCelsius = newTeaViewModel.getInfusionTemperature();
+        final int temperature = newTeaViewModel.getInfusionTemperature();
+        final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
         final Button buttonTemperature = findViewById(R.id.buttonTemperatureDialog);
-        buttonTemperature.setText(valueOf(temperatureCelsius));
+
+        if (temperature == -500) {
+            if ("Fahrenheit".equals(temperatureUnit)) {
+                buttonTemperature.setText(R.string.newtea_button_temperature_empty_text_fahrenheit);
+            } else {
+                buttonTemperature.setText(R.string.newtea_button_temperature_empty_text_celsius);
+            }
+        } else {
+            if ("Fahrenheit".equals(temperatureUnit)) {
+                buttonTemperature.setText(getString(R.string.newtea_button_temperature_text_fahrenheit, temperature));
+            } else {
+                buttonTemperature.setText(getString(R.string.newtea_button_temperature_text_celsius, temperature));
+            }
+        }
     }
 
-    private void bindCoolDownTimeToButtons() {
+    private void bindCoolDownTimeToButton() {
         final String coolDownTime = newTeaViewModel.getInfusionCoolDownTime();
         final Button buttonCoolDownTime = findViewById(R.id.buttonCoolDownTimeDialog);
-        buttonCoolDownTime.setText(valueOf(coolDownTime));
+        if (coolDownTime == null) {
+            buttonCoolDownTime.setText(R.string.newtea_button_cool_down_time_empty_text);
+        } else {
+            buttonCoolDownTime.setText(coolDownTime);
+        }
+    }
+
+    private void showCoolDownTimeButton() {
+        final int temperature = newTeaViewModel.getInfusionTemperature();
+        final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
+        final Button buttonCoolDownTime = findViewById(R.id.buttonCoolDownTimeDialog);
+
+        if (temperature == -500
+                || (temperature == 100 && "Celsius".equals(temperatureUnit))
+                || (temperature == 212 && "Fahrenheit".equals(temperatureUnit))) {
+            buttonCoolDownTime.setVisibility(View.GONE);
+            newTeaViewModel.resetInfusionCoolDownTime();
+        } else {
+            buttonCoolDownTime.setVisibility(View.VISIBLE);
+        }
     }
 
     private void bindTimeToButton() {
         final String time = newTeaViewModel.getInfusionTime();
         final Button buttonTime = findViewById(R.id.buttonTimeDialog);
-        buttonTime.setText(valueOf(time));
+        if (time == null) {
+            buttonTime.setText(R.string.newtea_button_time_empty_text);
+        } else {
+            buttonTime.setText(time);
+        }
     }
 
     private void refreshInfusionBar() {
@@ -433,7 +462,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     @Override
-    public boolean onLongClick(View view) {
+    public boolean onLongClick(final View view) {
         if (view.getId() == R.id.buttonColor) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_choosecolor));
         } else if (view.getId() == R.id.buttonPreviousInfusion) {
@@ -444,13 +473,11 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_addinfusion));
         } else if (view.getId() == R.id.buttonDeleteInfusion) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_deleteinfusion));
-        } else if (view.getId() == R.id.buttonShowCoolDownTime) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_showcooldowntime));
         }
         return true;
     }
 
-    private void showTooltip(View v, int gravity, String text) {
+    private void showTooltip(final View v, final int gravity, final String text) {
         new Tooltip.Builder(v)
                 .setText(text)
                 .setTextColor(getResources().getColor(R.color.white))
@@ -462,7 +489,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     @Override
-    public void print(String message) {
+    public void print(final String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

@@ -179,6 +179,10 @@ class NewTeaViewModel {
         signalDataChanged();
     }
 
+    void resetInfusionCoolDownTime() {
+        infusions.get(getInfusionIndex()).setCoolDownTime(null);
+    }
+
     String getInfusionCoolDownTime() {
         return infusions.get(getInfusionIndex()).getCoolDownTime();
     }

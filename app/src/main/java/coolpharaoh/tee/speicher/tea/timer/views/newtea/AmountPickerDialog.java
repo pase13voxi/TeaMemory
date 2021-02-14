@@ -56,10 +56,6 @@ public class AmountPickerDialog extends DialogFragment {
         amountPicker.setMinValue(0);
         amountPicker.setMaxValue(100);
 
-        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_dialog_amount_decimal);
-        amountPickerDecimal.setMinValue(0);
-        amountPickerDecimal.setMaxValue(9);
-
         final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_dialog_amount_kind);
         amountPickerKind.setMinValue(0);
         amountPickerKind.setMaxValue(1);
