@@ -343,7 +343,7 @@ public class NewTeaTest {
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
         final List<Infusion> infusions = new ArrayList<>();
-        infusions.add(new Infusion(1, 0, "2:00", "5:00", 100, 212));
+        infusions.add(new Infusion(1, 0, "2:00", "5:00", 90, 194));
         when(infusionDao.getInfusionsByTeaId(1)).thenReturn(infusions);
 
 
