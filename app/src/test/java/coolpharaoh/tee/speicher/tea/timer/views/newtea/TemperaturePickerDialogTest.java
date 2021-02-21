@@ -63,7 +63,7 @@ public class TemperaturePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.newtea_dialog_temperature_header));
+        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_temperature_header));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class TemperaturePickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final TextView textViewUnit = dialog.findViewById(R.id.textView_temperature_picker_unit);
 
-        assertThat(textViewUnit.getText()).hasToString(dialogFragment.getString(R.string.newtea_dialog_temperature_celsius));
+        assertThat(textViewUnit.getText()).hasToString(dialogFragment.getString(R.string.new_tea_dialog_temperature_celsius));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class TemperaturePickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final TextView textViewUnit = dialog.findViewById(R.id.textView_temperature_picker_unit);
 
-        assertThat(textViewUnit.getText()).hasToString(dialogFragment.getString(R.string.newtea_dialog_temperature_fahrenheit));
+        assertThat(textViewUnit.getText()).hasToString(dialogFragment.getString(R.string.new_tea_dialog_temperature_fahrenheit));
     }
 
     @Test
@@ -94,17 +94,17 @@ public class TemperaturePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
         assertThat(buttonSuggestion1)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "100");
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
         assertThat(buttonSuggestion2)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "90");
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_picker_suggestion_3);
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_3);
         assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -116,17 +116,17 @@ public class TemperaturePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
         assertThat(buttonSuggestion1)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "212");
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
         assertThat(buttonSuggestion2)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "194");
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_picker_suggestion_3);
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_3);
         assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -136,7 +136,7 @@ public class TemperaturePickerDialogTest {
         dialogFragment.show(fragmentManager, TAG);
 
         final AlertDialog dialog = getLatestAlertDialog();
-        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_picker_suggestions);
+        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.new_tea_layout_custom_variety);
         assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -147,10 +147,10 @@ public class TemperaturePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
         buttonSuggestion2.performClick();
 
-        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_dialog_temperature);
+        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
         assertThat(numberPickerTemperature.getValue()).isEqualTo(90);
     }
 
@@ -160,7 +160,7 @@ public class TemperaturePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_dialog_temperature);
+        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
         numberPickerTemperature.setValue(80);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();

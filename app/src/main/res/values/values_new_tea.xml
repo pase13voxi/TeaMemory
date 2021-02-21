@@ -2,216 +2,216 @@
 <resources>
     <!-- Hints Max 3 -->
     <!-- black tea -->
-    <integer-array name="suggestions_black_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_black_tea_amount_ts">
         <item>3</item>
         <item>4</item>
         <item>5</item>
     </integer-array>
-    <integer-array name="suggestions_black_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_black_tea_amount_gr">
         <item>8</item>
         <item>10</item>
         <item>13</item>
     </integer-array>
-    <integer-array name="suggestions_black_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_black_tea_temperature_celsius">
         <item>95</item>
         <item>100</item>
     </integer-array>
-    <integer-array name="suggestions_black_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_black_tea_temperature_fahrenheit">
         <item>203</item>
         <item>212</item>
     </integer-array>
-    <string-array name="suggestions_black_tea_time">
+    <string-array name="new_tea_suggestions_black_tea_time">
         <item>3:00</item>
         <item>4:00</item>
         <item>5:00</item>
     </string-array>
 
     <!-- green tea -->
-    <integer-array name="Suggestions_green_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_green_tea_amount_ts">
         <item>6</item>
         <item>7</item>
         <item>8</item>
     </integer-array>
-    <integer-array name="suggestions_green_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_green_tea_amount_gr">
         <item>10</item>
         <item>12</item>
         <item>14</item>
     </integer-array>
-    <integer-array name="suggestions_green_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_green_tea_temperature_celsius">
         <item>70</item>
         <item>80</item>
         <item>90</item>
     </integer-array>
-    <integer-array name="suggestions_green_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_green_tea_temperature_fahrenheit">
         <item>158</item>
         <item>176</item>
         <item>194</item>
     </integer-array>
-    <string-array name="suggestions_green_tea_time">
+    <string-array name="new_tea_suggestions_green_tea_time">
         <item>1:00</item>
         <item>2:00</item>
         <item>3:00</item>
     </string-array>
 
     <!-- yellow tea -->
-    <integer-array name="suggestions_yellow_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_yellow_tea_amount_ts">
         <item>4</item>
         <item>5</item>
     </integer-array>
-    <integer-array name="suggestions_yellow_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_yellow_tea_amount_gr">
         <item>10</item>
         <item>11</item>
         <item>12</item>
     </integer-array>
-    <integer-array name="suggestions_yellow_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_yellow_tea_temperature_celsius">
         <item>75</item>
     </integer-array>
-    <integer-array name="suggestions_yellow_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_yellow_tea_temperature_fahrenheit">
         <item>167</item>
     </integer-array>
-    <string-array name="suggestions_yellow_tea_time">
+    <string-array name="new_tea_suggestions_yellow_tea_time">
         <item>1:00</item>
         <item>2:00</item>
         <item>3:00</item>
     </string-array>
 
     <!-- white tea -->
-    <integer-array name="suggestions_white_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_white_tea_amount_ts">
         <item>3</item>
         <item>4</item>
     </integer-array>
-    <integer-array name="suggestions_white_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_white_tea_amount_gr">
         <item>8</item>
         <item>10</item>
         <item>12</item>
     </integer-array>
-    <integer-array name="suggestions_white_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_white_tea_temperature_celsius">
         <item>70</item>
         <item>80</item>
     </integer-array>
-    <integer-array name="suggestions_white_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_white_tea_temperature_fahrenheit">
         <item>158</item>
         <item>176</item>
     </integer-array>
-    <string-array name="suggestions_white_tea_time">
+    <string-array name="new_tea_suggestions_white_tea_time">
         <item>1:00</item>
         <item>2:00</item>
         <item>4:00</item>
     </string-array>
 
     <!-- oolong tea -->
-    <integer-array name="suggestions_oolong_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_oolong_tea_amount_ts">
         <item>4</item>
         <item>5</item>
         <item>6</item>
     </integer-array>
-    <integer-array name="suggestions_oolong_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_oolong_tea_amount_gr">
         <item>10</item>
         <item>11</item>
         <item>12</item>
     </integer-array>
-    <integer-array name="suggestions_oolong_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_oolong_tea_temperature_celsius">
         <item>75</item>
         <item>80</item>
         <item>90</item>
     </integer-array>
-    <integer-array name="suggestions_oolong_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_oolong_tea_temperature_fahrenheit">
         <item>167</item>
         <item>176</item>
         <item>194</item>
     </integer-array>
-    <string-array name="suggestions_oolong_tea_time">
+    <string-array name="new_tea_suggestions_oolong_tea_time">
         <item>0:30</item>
         <item>2:00</item>
         <item>4:00</item>
     </string-array>
 
     <!-- puerh tea -->
-    <integer-array name="suggestions_puerh_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_puerh_tea_amount_ts">
         <item>4</item>
         <item>5</item>
         <item>6</item>
     </integer-array>
-    <integer-array name="suggestions_puerh_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_puerh_tea_amount_gr">
         <item>8</item>
         <item>10</item>
         <item>12</item>
     </integer-array>
-    <integer-array name="suggestions_puerh_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_puerh_tea_temperature_celsius">
         <item>100</item>
     </integer-array>
     <integer-array name="suggestions_puerh_tea_temperature_fahrenheit">
         <item>212</item>
     </integer-array>
-    <string-array name="suggestions_puerh_tea_time">
+    <string-array name="new_tea_suggestions_puerh_tea_time">
         <item>0:5</item>
         <item>0:15</item>
     </string-array>
 
     <!-- herbal tea -->
-    <integer-array name="suggestions_herbal_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_herbal_tea_amount_ts">
         <item>4</item>
         <item>5</item>
         <item>6</item>
     </integer-array>
-    <integer-array name="suggestions_herbal_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_herbal_tea_amount_gr">
         <item>10</item>
         <item>13</item>
         <item>15</item>
     </integer-array>
-    <integer-array name="suggestions_herbal_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_herbal_tea_temperature_celsius">
         <item>100</item>
     </integer-array>
-    <integer-array name="suggestions_herbal_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_herbal_tea_temperature_fahrenheit">
         <item>212</item>
     </integer-array>
-    <string-array name="suggestions_herbal_tea_time">
+    <string-array name="new_tea_suggestions_herbal_tea_time">
         <item>5:00</item>
         <item>7:00</item>
         <item>10:00</item>
     </string-array>
 
     <!-- fruit tea -->
-    <integer-array name="suggestions_fruit_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_fruit_tea_amount_ts">
         <item>8</item>
         <item>9</item>
         <item>10</item>
     </integer-array>
-    <integer-array name="suggestions_fruit_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_fruit_tea_amount_gr">
         <item>15</item>
         <item>17</item>
         <item>20</item>
     </integer-array>
-    <integer-array name="suggestions_fruit_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_fruit_tea_temperature_celsius">
         <item>100</item>
     </integer-array>
-    <integer-array name="suggestions_fruit_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_fruit_tea_temperature_fahrenheit">
         <item>212</item>
     </integer-array>
-    <string-array name="suggestions_fruit_tea_time">
+    <string-array name="new_tea_suggestions_fruit_tea_time">
         <item>5:00</item>
         <item>7:00</item>
         <item>10:00</item>
     </string-array>
 
     <!-- rooibus tea -->
-    <integer-array name="suggestions_rooibus_tea_amount_ts">
+    <integer-array name="new_tea_suggestions_rooibus_tea_amount_ts">
         <item>4</item>
         <item>5</item>
         <item>6</item>
     </integer-array>
-    <integer-array name="suggestions_rooibus_tea_amount_gr">
+    <integer-array name="new_tea_suggestions_rooibus_tea_amount_gr">
         <item>12</item>
         <item>14</item>
         <item>15</item>
     </integer-array>
-    <integer-array name="suggestions_rooibus_tea_temperature_celsius">
+    <integer-array name="new_tea_suggestions_rooibus_tea_temperature_celsius">
         <item>100</item>
     </integer-array>
-    <integer-array name="suggestions_rooibus_tea_temperature_fahrenheit">
+    <integer-array name="new_tea_suggestions_rooibus_tea_temperature_fahrenheit">
         <item>212</item>
     </integer-array>
-    <string-array name="suggestions_rooibus_tea_time">
+    <string-array name="new_tea_suggestions_rooibus_tea_time">
         <item>5:00</item>
         <item>7:00</item>
         <item>10:00</item>

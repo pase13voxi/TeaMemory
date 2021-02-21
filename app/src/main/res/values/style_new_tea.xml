@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="numberPickerThemeOverlay" parent="">
+    <style name="new_tea_layout_input_field">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="new_tea_text_view_input_field">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="new_tea_edit_text_input_field">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:theme">@style/EditTextStyle</item>
+    </style>
+
+    <style name="number_picker_theme_overlay" parent="">
         <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
-    <style name="numberPickerText">
+    <style name="new_tea_number_picker_temperature_unit">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="dialogInputButtonSuggestions">
+    <style name="dialog_input_button_suggestions">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_margin">5dp</item>

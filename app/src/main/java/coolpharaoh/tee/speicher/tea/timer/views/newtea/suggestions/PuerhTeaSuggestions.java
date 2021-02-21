@@ -14,17 +14,17 @@ class PuerhTeaSuggestions implements Suggestions {
 
     @Override
     public int[] getAmountTsSuggestions() {
-        return application.getResources().getIntArray(R.array.suggestions_puerh_tea_amount_ts);
+        return application.getResources().getIntArray(R.array.new_tea_suggestions_puerh_tea_amount_ts);
     }
 
     @Override
     public int[] getAmountGrSuggestions() {
-        return application.getResources().getIntArray(R.array.suggestions_puerh_tea_amount_gr);
+        return application.getResources().getIntArray(R.array.new_tea_suggestions_puerh_tea_amount_gr);
     }
 
     @Override
     public int[] getTemperatureCelsiusSuggestions() {
-        return application.getResources().getIntArray(R.array.suggestions_puerh_tea_temperature_celsius);
+        return application.getResources().getIntArray(R.array.new_tea_suggestions_puerh_tea_temperature_celsius);
     }
 
     @Override
@@ -34,6 +34,6 @@ class PuerhTeaSuggestions implements Suggestions {
 
     @Override
     public String[] getTimeSuggestions() {
-        return application.getResources().getStringArray(R.array.suggestions_puerh_tea_time);
+        return application.getResources().getStringArray(R.array.new_tea_suggestions_puerh_tea_time);
     }
 }

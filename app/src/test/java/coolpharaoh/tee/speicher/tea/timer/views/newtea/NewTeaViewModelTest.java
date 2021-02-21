@@ -24,6 +24,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -82,7 +83,16 @@ public class NewTeaViewModelTest {
 
     @Test
     public void getVariety() {
-        assertThat(newTeaViewModelFilled.getVariety()).isEqualTo(tea.getVariety());
+        mockStringResource();
+        assertThat(newTeaViewModelFilled.getVariety())
+                .isEqualTo(LanguageConversation.convertCodeToVariety(tea.getVariety(), application));
+    }
+
+    @Test
+    public void setVariety() {
+        mockStringResource();
+        newTeaViewModelEmpty.setVariety("VARIETY");
+        assertThat(newTeaViewModelEmpty.getVariety()).isEqualTo("VARIETY");
     }
 
     @Test
@@ -188,28 +198,28 @@ public class NewTeaViewModelTest {
     @Test
     public void saveTeaAndExpectNewTea() {
         mockStringResource();
-        newTeaViewModelEmpty.saveTea("name", VARIETY_TEAS[0], 15);
+        newTeaViewModelEmpty.saveTea("name", 15);
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).insertTea(captor.capture());
         Tea tea = captor.getValue();
         assertThat(tea)
-                .extracting(Tea::getName, Tea::getVariety, Tea::getColor)
-                .containsExactly("name", VARIETY_CODES[0], 15);
+                .extracting(Tea::getName, Tea::getColor)
+                .containsExactly("name", 15);
         verify(infusionRepository).insertInfusion(any());
     }
 
     @Test
     public void saveTeaAndExpectEditedExistingTea() {
         mockStringResource();
-        newTeaViewModelFilled.saveTea("name", VARIETY_TEAS[0], 15);
+        newTeaViewModelFilled.saveTea("name", 15);
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea(captor.capture());
         Tea tea = captor.getValue();
         assertThat(tea)
-                .extracting(Tea::getName, Tea::getVariety, Tea::getColor)
-                .containsExactly("name", VARIETY_CODES[0], 15);
+                .extracting(Tea::getName, Tea::getColor)
+                .containsExactly("name", 15);
         verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED);
         verify(infusionRepository, times(2)).insertInfusion(any());
     }
@@ -236,7 +246,7 @@ public class NewTeaViewModelTest {
 
     private void mockStringResource() {
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(VARIETY_CODES);
-        when(resources.getStringArray(R.array.variety_teas)).thenReturn(VARIETY_TEAS);
+        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(VARIETY_CODES);
+        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETY_TEAS);
     }
 }

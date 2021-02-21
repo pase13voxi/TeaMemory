@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_done"
         android:icon="@drawable/edit_done"
-        android:title="@string/newtea_action_done_title"
+        android:title="@string/new_tea_action_done_title"
         app:showAsAction="always|collapseActionView" />
 </menu>

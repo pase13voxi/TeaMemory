@@ -54,6 +54,7 @@ class NewTeaViewModel {
         infusionIndex = new MutableLiveData<>(0);
         if (teaId == null) {
             tea = new Tea();
+            tea.setVariety("01_black");
             tea.setAmount(-500);
             tea.setAmountKind("Ts");
             tea.setRating(0);
@@ -76,7 +77,12 @@ class NewTeaViewModel {
     }
 
     String getVariety() {
-        return tea.getVariety();
+        return LanguageConversation.convertCodeToVariety(tea.getVariety(), application);
+    }
+
+    void setVariety(final String variety) {
+        tea.setVariety(LanguageConversation.convertVarietyToCode(variety, application));
+        signalDataChanged();
     }
 
     void setAmount(final int amount, final String amountKind) {
@@ -193,25 +199,25 @@ class NewTeaViewModel {
     }
 
     // Overall
-    void saveTea(final String name, final String variety, final int color) {
+    void saveTea(final String name, final int color) {
         // if id is null a new Tea will be created
         if (tea.getId() == null) {
-            insertTea(name, variety, color);
+            insertTea(name, color);
         } else {
-            updateTea(name, variety, color);
+            updateTea(name, color);
         }
     }
 
-    private void updateTea(final String name, final String variety, final int color) {
-        setTeaInformation(name, variety, color);
+    private void updateTea(final String name, final int color) {
+        setTeaInformation(name, color);
 
         teaRepository.updateTea(tea);
 
         saveInfusions(tea.getId());
     }
 
-    private void insertTea(final String name, final String variety, final int color) {
-        setTeaInformation(name, variety, color);
+    private void insertTea(final String name, final int color) {
+        setTeaInformation(name, color);
         tea.setNextInfusion(0);
 
         final long teaId = teaRepository.insertTea(tea);
@@ -219,9 +225,8 @@ class NewTeaViewModel {
         saveInfusions(teaId);
     }
 
-    private void setTeaInformation(final String name, final String variety, final int color) {
+    private void setTeaInformation(final String name, final int color) {
         tea.setName(name);
-        tea.setVariety(LanguageConversation.convertVarietyToCode(variety, application));
         tea.setColor(color);
         tea.setDate(CurrentDate.getDate());
     }

@@ -119,8 +119,8 @@ public class ShowTeaViewModelTest {
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
-        when(resources.getStringArray(R.array.variety_teas)).thenReturn(varietyTeas);
+        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(varietyCodes);
+        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
 
         String varietyAfter = showTeaViewModel.getVariety();
 
@@ -141,8 +141,8 @@ public class ShowTeaViewModelTest {
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
-        when(resources.getStringArray(R.array.variety_teas)).thenReturn(varietyTeas);
+        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(varietyCodes);
+        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
 
         String varietyAfter = showTeaViewModel.getVariety();
 

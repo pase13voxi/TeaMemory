@@ -33,7 +33,7 @@ public class FruitTeaSuggestionsTest {
     @Test
     public void getAmountTsHint() {
         final int[] arrayTs = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_fruit_tea_amount_ts)).thenReturn(arrayTs);
+        when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_ts)).thenReturn(arrayTs);
 
         assertThat(fruitTeaSuggestions.getAmountTsSuggestions()).isEqualTo(arrayTs);
     }
@@ -41,7 +41,7 @@ public class FruitTeaSuggestionsTest {
     @Test
     public void getAmountGrHint() {
         final int[] arrayGr = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_fruit_tea_amount_gr)).thenReturn(arrayGr);
+        when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_gr)).thenReturn(arrayGr);
 
         assertThat(fruitTeaSuggestions.getAmountGrSuggestions()).isEqualTo(arrayGr);
     }
@@ -49,7 +49,7 @@ public class FruitTeaSuggestionsTest {
     @Test
     public void getTemperatureCelsiusHint() {
         final int[] arrayCelsius = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_fruit_tea_temperature_celsius)).thenReturn(arrayCelsius);
+        when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_celsius)).thenReturn(arrayCelsius);
 
         assertThat(fruitTeaSuggestions.getTemperatureCelsiusSuggestions()).isEqualTo(arrayCelsius);
     }
@@ -57,7 +57,7 @@ public class FruitTeaSuggestionsTest {
     @Test
     public void getTemperatureFahrenheitHint() {
         final int[] arrayFahrenheit = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_fruit_tea_temperature_fahrenheit)).thenReturn(arrayFahrenheit);
+        when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_fahrenheit)).thenReturn(arrayFahrenheit);
 
         assertThat(fruitTeaSuggestions.getTemperatureFahrenheitSuggestions()).isEqualTo(arrayFahrenheit);
     }
@@ -65,7 +65,7 @@ public class FruitTeaSuggestionsTest {
     @Test
     public void getSteepingTimeHint() {
         final String[] arrayTime = new String[]{"1:00", "2:30"};
-        when(resources.getStringArray(R.array.suggestions_fruit_tea_time)).thenReturn(arrayTime);
+        when(resources.getStringArray(R.array.new_tea_suggestions_fruit_tea_time)).thenReturn(arrayTime);
 
         assertThat(fruitTeaSuggestions.getTimeSuggestions()).isEqualTo(arrayTime);
     }

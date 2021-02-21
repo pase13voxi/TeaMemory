@@ -48,14 +48,14 @@ public class TemperaturePickerDialog extends DialogFragment {
 
         return new AlertDialog.Builder(activity)
                 .setView(dialogView)
-                .setTitle(R.string.newtea_dialog_temperature_header)
-                .setNegativeButton(R.string.newtea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.newtea_dialog_picker_positive, (dialog, which) -> persistTemperature())
+                .setTitle(R.string.new_tea_dialog_temperature_header)
+                .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
+                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> persistTemperature())
                 .create();
     }
 
     private void setTemperaturePicker() {
-        final NumberPicker temperaturePicker = dialogView.findViewById(R.id.number_picker_dialog_temperature);
+        final NumberPicker temperaturePicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_temperature);
         if (isFahrenheit()) {
             temperaturePicker.setMinValue(122);
             temperaturePicker.setMaxValue(212);
@@ -72,15 +72,15 @@ public class TemperaturePickerDialog extends DialogFragment {
     private void setTemperatureUnit() {
         if (isFahrenheit()) {
             final TextView textViewTemperatureUnit = dialogView.findViewById(R.id.textView_temperature_picker_unit);
-            textViewTemperatureUnit.setText(R.string.newtea_dialog_temperature_fahrenheit);
+            textViewTemperatureUnit.setText(R.string.new_tea_dialog_temperature_fahrenheit);
         }
     }
 
     private void setSuggestions() {
         final List<Button> buttons = new ArrayList<>();
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_1));
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_2));
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_3));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_1));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_2));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_3));
 
         if (getSuggestions() != null && getSuggestions().length > 0) {
             fillSuggestions(buttons);
@@ -111,7 +111,7 @@ public class TemperaturePickerDialog extends DialogFragment {
     }
 
     private void setClickListener(final List<Button> buttons) {
-        final NumberPicker temperaturePicker = dialogView.findViewById(R.id.number_picker_dialog_temperature);
+        final NumberPicker temperaturePicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_temperature);
         final int[] temperatureSuggestions = getSuggestions();
 
         for (int i = 0; i < temperatureSuggestions.length; i++) {
@@ -121,12 +121,12 @@ public class TemperaturePickerDialog extends DialogFragment {
     }
 
     private void disableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_picker_suggestions);
+        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.new_tea_layout_custom_variety);
         layoutSuggestions.setVisibility(View.GONE);
     }
 
     private void persistTemperature() {
-        final NumberPicker temperaturePicker = dialogView.findViewById(R.id.number_picker_dialog_temperature);
+        final NumberPicker temperaturePicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_temperature);
         final int temperature = temperaturePicker.getValue();
         newTeaViewModel.setInfusionTemperature(temperature);
     }

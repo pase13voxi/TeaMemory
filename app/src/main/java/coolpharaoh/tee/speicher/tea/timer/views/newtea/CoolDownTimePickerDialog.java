@@ -45,15 +45,15 @@ public class CoolDownTimePickerDialog extends DialogFragment {
 
         return new AlertDialog.Builder(activity)
                 .setView(dialogView)
-                .setTitle(R.string.newtea_dialog_cool_down_time_header)
-                .setNegativeButton(R.string.newtea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.newtea_dialog_picker_positive, (dialog, which) -> persistCoolDownTime())
+                .setTitle(R.string.new_tea_dialog_cool_down_time_header)
+                .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
+                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> persistCoolDownTime())
                 .create();
     }
 
     private void setTimePicker() {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_dialog_time_seconds);
+        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
         timePickerMinutes.setMinValue(0);
         timePickerMinutes.setMaxValue(59);
         timePickerSeconds.setMinValue(0);
@@ -62,9 +62,9 @@ public class CoolDownTimePickerDialog extends DialogFragment {
 
     private void setCalculatedCoolDownTime() {
         final List<Button> buttons = new ArrayList<>();
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_1));
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_2));
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_3));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_1));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_2));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_3));
 
         final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
         int temperature = newTeaViewModel.getInfusionTemperature();
@@ -83,8 +83,8 @@ public class CoolDownTimePickerDialog extends DialogFragment {
     }
 
     private void setClickListener(final List<Button> buttons, final String coolDownTime) {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_dialog_time_seconds);
+        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
         final TimeConverter timeConverter = new TimeConverter(coolDownTime);
 
         buttons.get(0).setOnClickListener(view -> {
@@ -95,7 +95,7 @@ public class CoolDownTimePickerDialog extends DialogFragment {
 
     private void fillSuggestions(final List<Button> buttons, final String coolDownTime) {
         final TextView textViewSuggestions = dialogView.findViewById(R.id.textView_suggestions_description);
-        textViewSuggestions.setText(R.string.newtea_dialog_cool_down_time_calculated_suggestion);
+        textViewSuggestions.setText(R.string.new_tea_dialog_cool_down_time_calculated_suggestion);
 
         buttons.get(0).setText(coolDownTime);
         buttons.get(1).setVisibility(View.GONE);
@@ -103,13 +103,13 @@ public class CoolDownTimePickerDialog extends DialogFragment {
     }
 
     private void disableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_picker_suggestions);
+        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.new_tea_layout_custom_variety);
         layoutSuggestions.setVisibility(View.GONE);
     }
 
     private void persistCoolDownTime() {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_dialog_time_seconds);
+        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
         final int minutes = timePickerMinutes.getValue();
         final int seconds = timePickerSeconds.getValue();
 

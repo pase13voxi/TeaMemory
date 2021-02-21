@@ -55,17 +55,17 @@ class MainViewModel extends ViewModel {
 
     // Defaults
     private void createDefaultTeas(Application application) {
-        Tea tea1 = new Tea("Earl Grey", application.getResources().getStringArray(R.array.variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, application), 0, CurrentDate.getDate());
+        Tea tea1 = new Tea("Earl Grey", application.getResources().getStringArray(R.array.new_tea_variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, application), 0, CurrentDate.getDate());
         long teaId1 = teaRepository.insertTea(tea1);
         Infusion infusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
         infusionRepository.insertInfusion(infusion1);
 
-        Tea tea2 = new Tea("Pai Mu Tan", application.getResources().getStringArray(R.array.variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, application), 0, CurrentDate.getDate());
+        Tea tea2 = new Tea("Pai Mu Tan", application.getResources().getStringArray(R.array.new_tea_variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, application), 0, CurrentDate.getDate());
         long teaId2 = teaRepository.insertTea(tea2);
         Infusion infusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
         infusionRepository.insertInfusion(infusion2);
 
-        Tea tea3 = new Tea("Sencha", application.getResources().getStringArray(R.array.variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, application), 0, CurrentDate.getDate());
+        Tea tea3 = new Tea("Sencha", application.getResources().getStringArray(R.array.new_tea_variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, application), 0, CurrentDate.getDate());
         long teaId3 = teaRepository.insertTea(tea3);
         Infusion infusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
         infusionRepository.insertInfusion(infusion3);

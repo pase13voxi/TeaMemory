@@ -14,7 +14,7 @@
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="colorControlNormal">@color/lightgrey</item>
+        <item name="colorControlNormal">@color/grey</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 

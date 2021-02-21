@@ -20,201 +20,206 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true">
 
-            <TextView
-                android:id="@+id/textViewTeaVariety"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/spinnerTeaVariety"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="4dip"
-                android:layout_marginBottom="8dip"
-                android:gravity="center_vertical"
-                android:text="@string/newtea_tea_variety"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/grey" />
+            <LinearLayout
+                android:id="@+id/layout_new_tea_variety"
+                style="@style/new_tea_layout_input_field">
 
-            <Spinner
-                android:id="@+id/spinnerTeaVariety"
-                style="@android:style/Widget.Holo.Light.Spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dip"
-                android:layout_marginTop="10dip"
-                android:layout_toEndOf="@+id/textViewTeaVariety"
-                android:entries="@array/variety_teas"
-                android:prompt="@string/newtea_tea_variety"
-                android:spinnerMode="dialog"
-                android:transitionName="Teeart" />
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_variety" />
 
-            <CheckBox
-                android:id="@+id/checkBoxSelfInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/spinnerTeaVariety"
-                android:layout_marginBottom="4dip"
-                android:layout_toEndOf="@id/spinnerTeaVariety"
-                android:text="@string/newtea_by_hand"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:theme="@style/CheckBoxStyle"
-                android:visibility="invisible" />
+                <EditText
+                    android:id="@+id/edit_text_new_tea_variety"
+                    style="@style/new_tea_edit_text_input_field"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/editTextSelfInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/spinnerTeaVariety"
-                android:layout_alignBottom="@id/spinnerTeaVariety"
-                android:layout_alignParentStart="true"
-                android:ems="10"
-                android:hint="@string/newtea_tea_variety"
-                android:importantForAutofill="no"
-                android:inputType="textCapWords"
-                android:theme="@style/EditTextStyle"
-                android:visibility="invisible" />
+            <LinearLayout
+                android:id="@+id/layout_new_tea_color"
+                style="@style/new_tea_layout_input_field"
+                android:layout_below="@id/layout_new_tea_variety">
 
-            <TextView
-                android:id="@+id/textViewChooseColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/spinnerTeaVariety"
-                android:layout_marginLeft="4dip"
-                android:layout_marginTop="20dip"
-                android:layout_marginRight="4dip"
-                android:text="@string/newtea_color_label"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/grey" />
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_color" />
 
-            <Button
-                android:id="@+id/buttonColor"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="25dip"
-                android:layout_below="@id/spinnerTeaVariety"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="4dp"
-                android:layout_toEndOf="@id/textViewChooseColor"
-                android:background="@drawable/button_color" />
+                <Button
+                    android:id="@+id/new_tea_button_color"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dip"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_color" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/buttonColor"
-                android:layout_marginTop="14dip"
-                android:ems="10"
-                android:hint="@string/newtea_hint_name"
-                android:importantForAutofill="no"
-                android:inputType="textCapWords"
-                android:theme="@style/EditTextStyle" />
+            <LinearLayout
+                android:id="@+id/layout_new_tea_name"
+                style="@style/new_tea_layout_input_field"
+                android:layout_below="@id/layout_new_tea_color">
 
-            <Button
-                android:id="@+id/buttonAmountDialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextName"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_light" />
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_name" />
+
+                <EditText
+                    android:id="@+id/edit_text_new_tea_name"
+                    style="@style/new_tea_edit_text_input_field"
+                    android:hint="@string/new_tea_edit_text_hint_name"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapWords" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_new_tea_amount"
+                style="@style/new_tea_layout_input_field"
+                android:layout_below="@id/layout_new_tea_name">
+
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_amount" />
+
+                <EditText
+                    android:id="@+id/edit_text_new_tea_amount"
+                    style="@style/new_tea_edit_text_input_field"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
 
             <ImageButton
-                android:id="@+id/buttonAddInfusion"
+                android:id="@+id/new_tea_button_add_infusion"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_below="@id/buttonAmountDialog"
+                android:layout_below="@id/layout_new_tea_amount"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/newtea_tooltip_addinfusion"
+                android:contentDescription="@string/new_tea_tooltip_addinfusion"
                 android:scaleType="fitXY"
                 android:src="@drawable/add" />
 
             <ImageButton
-                android:id="@+id/buttonDeleteInfusion"
+                android:id="@+id/new_tea_button_delete_infusion"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/buttonAmountDialog"
+                android:layout_below="@id/layout_new_tea_amount"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_toStartOf="@id/buttonAddInfusion"
+                android:layout_toStartOf="@id/new_tea_button_add_infusion"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/newtea_tooltip_deleteinfusion"
+                android:contentDescription="@string/new_tea_tooltip_deleteinfusion"
                 android:scaleType="fitXY"
                 android:src="@drawable/delete"
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:id="@+id/linearLayoutInfusions"
+                android:id="@+id/new_tea_linear_layout_infusions"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/buttonAmountDialog"
+                android:layout_below="@id/layout_new_tea_amount"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_toStartOf="@id/buttonDeleteInfusion">
+                android:layout_toStartOf="@id/new_tea_button_delete_infusion">
 
                 <ImageButton
-                    android:id="@+id/buttonPreviousInfusion"
+                    android:id="@+id/new_tea_button_previous_infusion"
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="4dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/newtea_tooltip_arrowleft"
+                    android:contentDescription="@string/new_tea_tooltip_arrowleft"
                     android:scaleType="fitXY"
                     android:src="@drawable/button_arrowleft" />
 
                 <TextView
-                    android:id="@+id/textViewCountInfusion"
+                    android:id="@+id/new_tea_text_view_count_infusion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/newtea_count_infusion_first"
+                    android:text="@string/new_tea_count_infusion_first"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/grey" />
 
                 <ImageButton
-                    android:id="@+id/buttonNextInfusion"
+                    android:id="@+id/new_tea_button_next_infusion"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/newtea_tooltip_arrowright"
+                    android:contentDescription="@string/new_tea_tooltip_arrowright"
                     android:scaleType="fitXY"
                     android:src="@drawable/button_arrowright" />
 
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/buttonTemperatureDialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayoutInfusions"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="10dip"
-                android:background="@drawable/button_light" />
+            <LinearLayout
+                android:id="@+id/layout_new_tea_temperature"
+                style="@style/new_tea_layout_input_field"
+                android:layout_below="@+id/new_tea_linear_layout_infusions">
 
-            <Button
-                android:id="@+id/buttonCoolDownTimeDialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/buttonTemperatureDialog"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="10dip"
-                android:background="@drawable/button_light"
-                android:visibility="gone" />
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_temperature" />
 
-            <Button
-                android:id="@+id/buttonTimeDialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/buttonCoolDownTimeDialog"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="10dip"
-                android:background="@drawable/button_light" />
+                <EditText
+                    android:id="@+id/edit_text_new_tea_temperature"
+                    style="@style/new_tea_edit_text_input_field"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_new_tea_cool_down_time"
+                style="@style/new_tea_layout_input_field"
+                android:layout_below="@+id/layout_new_tea_temperature"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_cool_down_time" />
+
+                <EditText
+                    android:id="@+id/edit_text_new_tea_cool_down_time"
+                    style="@style/new_tea_edit_text_input_field"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_new_tea_time"
+                style="@style/new_tea_layout_input_field"
+                android:layout_below="@+id/layout_new_tea_cool_down_time">
+
+                <TextView
+                    style="@style/new_tea_text_view_input_field"
+                    android:text="@string/new_tea_text_view_heading_time" />
+
+                <EditText
+                    android:id="@+id/edit_text_new_tea_time"
+                    style="@style/new_tea_edit_text_input_field"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
 
         </RelativeLayout>
 

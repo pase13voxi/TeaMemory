@@ -33,10 +33,10 @@ public class LanguageConversationTest {
         when(application.getResources()).thenReturn(resources);
         codes = new String[]{"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
                 "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(codes);
+        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(codes);
         varieties = new String[]{"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-        when(resources.getStringArray(R.array.variety_teas)).thenReturn(varieties);
+        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varieties);
     }
 
     @Test

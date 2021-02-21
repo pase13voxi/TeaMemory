@@ -257,13 +257,13 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void fillTemperatureWithUnit() {
         if (showTeaViewModel.getTemperature() != -500) {
-            if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
+            if (getResources().getString(R.string.new_tea_fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
             } else {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
-            if (getResources().getString(R.string.fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
+            if (getResources().getString(R.string.new_tea_fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
             } else {
                 textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));

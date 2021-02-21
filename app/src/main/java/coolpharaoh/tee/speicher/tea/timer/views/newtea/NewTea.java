@@ -7,14 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +22,7 @@ import com.tooltip.Tooltip;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -58,10 +55,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        initializeSpinnerWithBigCharacters();
-
-        defineVarietyInput();
-
         defineColorPicker();
 
         defineInfusionBar();
@@ -84,7 +77,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText(R.string.newtea_heading);
+        mToolbarCustomTitle.setText(R.string.new_tea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
     }
@@ -94,63 +87,8 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void initializeSpinnerWithBigCharacters() {
-        Spinner spinnerTeaVariety = findViewById(R.id.spinnerTeaVariety);
-        initializeSpinnerWithBigCharacters(R.array.variety_teas, R.layout.spinner_item_varietyoftea, R.layout.spinner_dropdown_item_varietyoftea, spinnerTeaVariety);
-    }
-
-    private void initializeSpinnerWithBigCharacters(final int texts, final int spinnerItemLayout, final int dropdownItemLayout, final Spinner spinner) {
-        final ArrayAdapter<CharSequence> spinnerVarietyAdapter = ArrayAdapter.createFromResource(
-                this, texts, spinnerItemLayout);
-
-        spinnerVarietyAdapter.setDropDownViewResource(dropdownItemLayout);
-        spinner.setAdapter(spinnerVarietyAdapter);
-    }
-
-    private void defineVarietyInput() {
-        final Spinner spinnerTeaVariety = findViewById(R.id.spinnerTeaVariety);
-        spinnerTeaVariety.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                varietyChanged(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //the method needs to be overwritten but shouldn't do anything
-            }
-        });
-
-        final CheckBox checkboxTeaVariety = findViewById(R.id.checkBoxSelfInput);
-        checkboxTeaVariety.setOnCheckedChangeListener((buttonView, isChecked) -> changeVarietyByHand(isChecked));
-    }
-
-    private void varietyChanged(int position) {
-        variety = Variety.values()[position];
-
-        buttonColorShape.setColorByVariety(variety.ordinal());
-
-        if (Variety.OTHER.equals(variety)) {
-            findViewById(R.id.checkBoxSelfInput).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.checkBoxSelfInput).setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void changeVarietyByHand(final boolean isChecked) {
-        if (isChecked) {
-            findViewById(R.id.textViewTeaVariety).setVisibility(View.INVISIBLE);
-            findViewById(R.id.spinnerTeaVariety).setVisibility(View.INVISIBLE);
-            findViewById(R.id.editTextSelfInput).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.textViewTeaVariety).setVisibility(View.VISIBLE);
-            findViewById(R.id.spinnerTeaVariety).setVisibility(View.VISIBLE);
-            findViewById(R.id.editTextSelfInput).setVisibility(View.INVISIBLE);
-        }
-    }
-
     private void defineColorPicker() {
-        final Button buttonColor = findViewById(R.id.buttonColor);
+        final Button buttonColor = findViewById(R.id.new_tea_button_color);
         buttonColorShape = new ButtonColorShape(buttonColor.getBackground(), getApplication());
         buttonColor.setOnClickListener(view -> createColorPicker());
         buttonColor.setOnLongClickListener(this);
@@ -158,41 +96,49 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private void createColorPicker() {
         ColorPickerDialog colorPickerDialog = new ColorPickerDialog(NewTea.this, buttonColorShape.getColor());
-        colorPickerDialog.setTitle(getResources().getString(R.string.newtea_color_dialog_title));
+        colorPickerDialog.setTitle(getResources().getString(R.string.new_tea_color_dialog_title));
         colorPickerDialog.setOnColorChangedListener(color -> buttonColorShape.setColor(color));
         colorPickerDialog.show();
     }
 
     private void defineInfusionBar() {
-        final ImageButton buttonPreviousInfusion = findViewById(R.id.buttonPreviousInfusion);
+        final ImageButton buttonPreviousInfusion = findViewById(R.id.new_tea_button_previous_infusion);
         buttonPreviousInfusion.setOnClickListener(v -> newTeaViewModel.previousInfusion());
         buttonPreviousInfusion.setOnLongClickListener(this);
 
-        final ImageButton buttonNextInfusion = findViewById(R.id.buttonNextInfusion);
+        final ImageButton buttonNextInfusion = findViewById(R.id.new_tea_button_next_infusion);
         buttonNextInfusion.setOnClickListener(v -> newTeaViewModel.nextInfusion());
         buttonNextInfusion.setOnLongClickListener(this);
 
-        final ImageButton buttonDeleteInfusion = findViewById(R.id.buttonDeleteInfusion);
+        final ImageButton buttonDeleteInfusion = findViewById(R.id.new_tea_button_delete_infusion);
         buttonDeleteInfusion.setOnClickListener(v -> newTeaViewModel.deleteInfusion());
         buttonDeleteInfusion.setOnLongClickListener(this);
 
-        final ImageButton buttonAddInfusion = findViewById(R.id.buttonAddInfusion);
+        final ImageButton buttonAddInfusion = findViewById(R.id.new_tea_button_add_infusion);
         buttonAddInfusion.setOnClickListener(v -> newTeaViewModel.addInfusion());
         buttonAddInfusion.setOnLongClickListener(this);
     }
 
     private void defineInputPicker() {
-        Button buttonAmountDialog = findViewById(R.id.buttonAmountDialog);
-        buttonAmountDialog.setOnClickListener(view -> dialogAmountPicker());
+        final EditText editTextVarietyDialog = findViewById(R.id.edit_text_new_tea_variety);
+        editTextVarietyDialog.setOnClickListener(view -> dialogVarietyPicker());
 
-        Button buttonTemperatureDialog = findViewById(R.id.buttonTemperatureDialog);
-        buttonTemperatureDialog.setOnClickListener(view -> dialogTemperaturePicker());
+        final EditText editTextAmountDialog = findViewById(R.id.edit_text_new_tea_amount);
+        editTextAmountDialog.setOnClickListener(view -> dialogAmountPicker());
 
-        Button buttonCoolDownTimeDialog = findViewById(R.id.buttonCoolDownTimeDialog);
-        buttonCoolDownTimeDialog.setOnClickListener(view -> dialogCoolDownTimePicker());
+        final EditText editTextTemperatureDialog = findViewById(R.id.edit_text_new_tea_temperature);
+        editTextTemperatureDialog.setOnClickListener(view -> dialogTemperaturePicker());
 
-        Button buttonTimeDialog = findViewById(R.id.buttonTimeDialog);
-        buttonTimeDialog.setOnClickListener(view -> dialogTimePicker());
+        final EditText editTextCoolDownTimeDialog = findViewById(R.id.edit_text_new_tea_cool_down_time);
+        editTextCoolDownTimeDialog.setOnClickListener(view -> dialogCoolDownTimePicker());
+
+        final EditText editTextTimeDialog = findViewById(R.id.edit_text_new_tea_time);
+        editTextTimeDialog.setOnClickListener(view -> dialogTimePicker());
+    }
+
+    private void dialogVarietyPicker() {
+        new VarietyPickerDialog(newTeaViewModel)
+                .show(getSupportFragmentManager(), VarietyPickerDialog.TAG);
     }
 
     private void dialogAmountPicker() {
@@ -235,126 +181,113 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void initializeEditTea() {
         newTeaViewModel = new NewTeaViewModel(teaId, getApplication());
 
-        fillVarietyInputFields();
-
         buttonColorShape.setColor(newTeaViewModel.getColor());
 
-        final EditText editTextName = findViewById(R.id.editTextName);
+        final EditText editTextName = findViewById(R.id.edit_text_new_tea_name);
         editTextName.setText(newTeaViewModel.getName());
     }
 
-    private void fillVarietyInputFields() {
-        // get the right spinner id
-        int spinnerId = -1;
-        String[] spinnerElements = getResources().getStringArray(R.array.variety_codes);
-
-        for (int i = 0; i < spinnerElements.length; i++) {
-            if (spinnerElements[i].equals(newTeaViewModel.getVariety())) {
-                spinnerId = i;
-                break;
-            }
-        }
-
-        final Spinner spinnerTeaVariety = findViewById(R.id.spinnerTeaVariety);
-        final CheckBox checkboxTeaVariety = findViewById(R.id.checkBoxSelfInput);
-        final EditText editTextTeaVariety = findViewById(R.id.editTextSelfInput);
-        // if it is not a standard variety
-        if (spinnerId == -1) {
-            spinnerTeaVariety.setVisibility(View.INVISIBLE);
-            spinnerTeaVariety.setSelection(spinnerElements.length - 1);
-            findViewById(R.id.textViewTeaVariety).setVisibility(View.INVISIBLE);
-            checkboxTeaVariety.setVisibility(View.VISIBLE);
-            checkboxTeaVariety.setChecked(true);
-            editTextTeaVariety.setVisibility(View.VISIBLE);
-            editTextTeaVariety.setText(newTeaViewModel.getVariety());
-        } else {
-            spinnerTeaVariety.setSelection(spinnerId);
-        }
-    }
-
     private void onDataChanged() {
-        bindAmountToButton();
-        bindTemperatureToButton();
-        bindCoolDownTimeToButton();
-        showCoolDownTimeButton();
-        bindTimeToButton();
+        bindVarietyToInputField();
+        bindAmountToInputField();
+        bindTemperatureToInputField();
+        bindCoolDownTimeToInputField();
+        showCoolDownTimeInput();
+        bindTimeToInputField();
         refreshInfusionBar();
     }
 
-    private void bindAmountToButton() {
+    private void bindVarietyToInputField() {
+        final String varietyText = newTeaViewModel.getVariety();
+        final EditText editTextVariety = findViewById(R.id.edit_text_new_tea_variety);
+
+        editTextVariety.setText(varietyText);
+
+        final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
+        final int varietyIndex = Arrays.asList(varietyList).indexOf(varietyText);
+        if (varietyIndex == -1) {
+            variety = Variety.OTHER;
+        } else {
+            variety = Variety.values()[varietyIndex];
+        }
+
+        buttonColorShape.setColorByVariety(variety.ordinal());
+    }
+
+    private void bindAmountToInputField() {
         final int amount = newTeaViewModel.getAmount();
         final String amountKind = newTeaViewModel.getAmountKind();
-        final Button buttonAmount = findViewById(R.id.buttonAmountDialog);
+        final EditText editTextAmount = findViewById(R.id.edit_text_new_tea_amount);
 
         if (amount == -500) {
-            buttonAmount.setText(R.string.newtea_button_amount_empty_text_ts);
+            editTextAmount.setText(R.string.new_tea_edit_text_amount_empty_text_ts);
         } else {
             if ("Gr".equals(amountKind)) {
-                buttonAmount.setText(getString(R.string.newtea_button_amount_text_gr, amount));
+                editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_gr, amount));
             } else {
-                buttonAmount.setText(getString(R.string.newtea_button_amount_text_ts, amount));
+                editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_ts, amount));
             }
         }
     }
 
-    private void bindTemperatureToButton() {
+    private void bindTemperatureToInputField() {
         final int temperature = newTeaViewModel.getInfusionTemperature();
         final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
-        final Button buttonTemperature = findViewById(R.id.buttonTemperatureDialog);
+        final EditText editTextTemperature = findViewById(R.id.edit_text_new_tea_temperature);
 
         if (temperature == -500) {
             if ("Fahrenheit".equals(temperatureUnit)) {
-                buttonTemperature.setText(R.string.newtea_button_temperature_empty_text_fahrenheit);
+                editTextTemperature.setText(R.string.new_tea_edit_text_temperature_empty_text_fahrenheit);
             } else {
-                buttonTemperature.setText(R.string.newtea_button_temperature_empty_text_celsius);
+                editTextTemperature.setText(R.string.new_tea_edit_text_temperature_empty_text_celsius);
             }
         } else {
             if ("Fahrenheit".equals(temperatureUnit)) {
-                buttonTemperature.setText(getString(R.string.newtea_button_temperature_text_fahrenheit, temperature));
+                editTextTemperature.setText(getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, temperature));
             } else {
-                buttonTemperature.setText(getString(R.string.newtea_button_temperature_text_celsius, temperature));
+                editTextTemperature.setText(getString(R.string.new_tea_edit_text_temperature_text_celsius, temperature));
             }
         }
     }
 
-    private void bindCoolDownTimeToButton() {
+    private void bindCoolDownTimeToInputField() {
         final String coolDownTime = newTeaViewModel.getInfusionCoolDownTime();
-        final Button buttonCoolDownTime = findViewById(R.id.buttonCoolDownTimeDialog);
+        final EditText editTextCoolDownTime = findViewById(R.id.edit_text_new_tea_cool_down_time);
         if (coolDownTime == null) {
-            buttonCoolDownTime.setText(R.string.newtea_button_cool_down_time_empty_text);
+            editTextCoolDownTime.setText(R.string.new_tea_edit_text_cool_down_time_empty_text);
         } else {
-            buttonCoolDownTime.setText(coolDownTime);
+            editTextCoolDownTime.setText(coolDownTime);
         }
     }
 
-    private void showCoolDownTimeButton() {
+    private void showCoolDownTimeInput() {
         final int temperature = newTeaViewModel.getInfusionTemperature();
         final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
-        final Button buttonCoolDownTime = findViewById(R.id.buttonCoolDownTimeDialog);
+        final LinearLayout layoutCoolDownTime = findViewById(R.id.layout_new_tea_cool_down_time);
 
         if (temperature == -500
                 || (temperature == 100 && "Celsius".equals(temperatureUnit))
                 || (temperature == 212 && "Fahrenheit".equals(temperatureUnit))) {
-            buttonCoolDownTime.setVisibility(View.GONE);
+            layoutCoolDownTime.setVisibility(View.GONE);
             newTeaViewModel.resetInfusionCoolDownTime();
         } else {
-            buttonCoolDownTime.setVisibility(View.VISIBLE);
+            layoutCoolDownTime.setVisibility(View.VISIBLE);
         }
     }
 
-    private void bindTimeToButton() {
+    private void bindTimeToInputField() {
         final String time = newTeaViewModel.getInfusionTime();
-        final Button buttonTime = findViewById(R.id.buttonTimeDialog);
+        final EditText editTextTime = findViewById(R.id.edit_text_new_tea_time);
         if (time == null) {
-            buttonTime.setText(R.string.newtea_button_time_empty_text);
+            editTextTime.setText(R.string.new_tea_edit_text_time_empty_text);
         } else {
-            buttonTime.setText(time);
+            editTextTime.setText(time);
         }
     }
 
     private void refreshInfusionBar() {
-        final TextView textViewInfusion = findViewById(R.id.textViewCountInfusion);
-        textViewInfusion.setText(getResources().getString(R.string.newtea_count_infusion, newTeaViewModel.getInfusionIndex() + 1));
+        final TextView textViewInfusion = findViewById(R.id.new_tea_text_view_count_infusion);
+        textViewInfusion.setText(getResources().getString(R.string.new_tea_count_infusion, newTeaViewModel.getInfusionIndex() + 1));
 
         showDeleteInfusion();
         showAddInfusion();
@@ -364,28 +297,28 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     private void showDeleteInfusion() {
         if (newTeaViewModel.getInfusionSize() > 1) {
-            findViewById(R.id.buttonDeleteInfusion).setVisibility(View.VISIBLE);
+            findViewById(R.id.new_tea_button_delete_infusion).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.buttonDeleteInfusion).setVisibility(View.GONE);
+            findViewById(R.id.new_tea_button_delete_infusion).setVisibility(View.GONE);
         }
     }
 
     private void showAddInfusion() {
         if (((newTeaViewModel.getInfusionIndex() + 1) == newTeaViewModel.getInfusionSize()) && (newTeaViewModel.getInfusionSize() < 20)) {
-            findViewById(R.id.buttonAddInfusion).setVisibility(View.VISIBLE);
+            findViewById(R.id.new_tea_button_add_infusion).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.buttonAddInfusion).setVisibility(View.GONE);
+            findViewById(R.id.new_tea_button_add_infusion).setVisibility(View.GONE);
         }
     }
 
     private void showPreviousInfusion() {
         final boolean enabled = newTeaViewModel.getInfusionIndex() != 0;
-        findViewById(R.id.buttonPreviousInfusion).setEnabled(enabled);
+        findViewById(R.id.new_tea_button_previous_infusion).setEnabled(enabled);
     }
 
     private void showNextInfusion() {
         final boolean enabled = (newTeaViewModel.getInfusionIndex() + 1) != newTeaViewModel.getInfusionSize();
-        findViewById(R.id.buttonNextInfusion).setEnabled(enabled);
+        findViewById(R.id.new_tea_button_next_infusion).setEnabled(enabled);
     }
 
     @Override
@@ -413,37 +346,23 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void addTea() {
-        final EditText editTextName = findViewById(R.id.editTextName);
+        final EditText editTextName = findViewById(R.id.edit_text_new_tea_name);
 
         String nameInput = editTextName.getText().toString();
-        String varietyInput = getVarietyInput();
 
-        if (inputIsValid(nameInput, varietyInput)) {
-            createOrEditTea(varietyInput, nameInput);
+        if (inputIsValid(nameInput)) {
+            createOrEditTea(nameInput);
             navigateToMainOrShowTea();
         }
     }
 
-    private String getVarietyInput() {
-        final CheckBox checkBoxTeaVariety = findViewById(R.id.checkBoxSelfInput);
-        final EditText editTextTeaVariety = findViewById(R.id.editTextSelfInput);
-        final Spinner spinnerTeaVariety = findViewById(R.id.spinnerTeaVariety);
-
-        if (checkBoxTeaVariety.isChecked()) {
-            return editTextTeaVariety.getText().toString();
-        } else {
-            return (String) spinnerTeaVariety.getSelectedItem();
-        }
-    }
-
-    private boolean inputIsValid(final String nameInput, final String varietyInput) {
+    private boolean inputIsValid(final String nameInput) {
         return inputValidator.nameIsNotEmpty(nameInput)
-                && inputValidator.nameIsValid(nameInput)
-                && inputValidator.varietyIsValid(varietyInput);
+                && inputValidator.nameIsValid(nameInput);
     }
 
-    private void createOrEditTea(final String teaVariety, final String name) {
-        newTeaViewModel.saveTea(name, teaVariety, buttonColorShape.getColor());
+    private void createOrEditTea(final String name) {
+        newTeaViewModel.saveTea(name, buttonColorShape.getColor());
     }
 
     private void navigateToMainOrShowTea() {
@@ -463,16 +382,16 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
     @Override
     public boolean onLongClick(final View view) {
-        if (view.getId() == R.id.buttonColor) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_choosecolor));
-        } else if (view.getId() == R.id.buttonPreviousInfusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_arrowleft));
-        } else if (view.getId() == R.id.buttonNextInfusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_arrowright));
-        } else if (view.getId() == R.id.buttonAddInfusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_addinfusion));
-        } else if (view.getId() == R.id.buttonDeleteInfusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.newtea_tooltip_deleteinfusion));
+        if (view.getId() == R.id.new_tea_button_color) {
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_choosecolor));
+        } else if (view.getId() == R.id.new_tea_button_previous_infusion) {
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_arrowleft));
+        } else if (view.getId() == R.id.new_tea_button_next_infusion) {
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_arrowright));
+        } else if (view.getId() == R.id.new_tea_button_add_infusion) {
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_addinfusion));
+        } else if (view.getId() == R.id.new_tea_button_delete_infusion) {
+            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_deleteinfusion));
         }
         return true;
     }

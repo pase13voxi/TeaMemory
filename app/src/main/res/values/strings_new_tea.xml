@@ -1,56 +1,54 @@
 <resources>
-    <string name="newtea_heading">Create/Edit tea</string>
-    <string name="newtea_tea_variety">Tea variety</string>
-    <string name="newtea_by_hand">by hand</string>
-    <string name="newtea_hint_name">Name</string>
-    <string name="newtea_color_label">Color</string>
-    <string name="newtea_color_dialog_title">Choose Color: </string>
-    <string name="newtea_error_30Char">The type of tea exceeds the limit number of 30 characters.</string>
-    <string name="newtea_error_name">The name exceeds the limit number of 300 characters.</string>
-    <string name="newtea_error_wrong_celsius">The temperature should be between 0 °C and 100 °C.</string>
-    <string name="newtea_error_wrong_fahrenheit">The temperature should be between 32 °F and 212 °F.</string>
-    <string name="newtea_error_auto_cooldown_time">Cooldown time can not be determined.</string>
-    <string name="newtea_error_cooldown_time">Please follow the format of the cooldown time.</string>
-    <string name="newtea_error_time_format">Please follow the format of the steeping time.</string>
-    <string name="newtea_error_amount">The amount should not be more than three digits.</string>
-    <string name="newtea_error_cant_change">Change could not be performed.</string>
-    <string name="newtea_error_cant_save">Store could not be performed.</string>
-    <string name="newtea_error_no_name">Please enter the name.</string>
-    <string name="newtea_count_infusion">%1$d. Infusion</string>
-    <string name="newtea_count_infusion_first">1. Infusion</string>
-    <string name="newtea_button_amount_empty_text_ts">- ts/L</string>
-    <string name="newtea_button_amount_text_ts">%1$d ts/L</string>
-    <string name="newtea_button_amount_text_gr">%1$d gr/L</string>
-    <string name="newtea_dialog_amount_header">Input amount</string>
-    <string-array name="newtea_dialog_amount_kind">
+    <string name="new_tea_heading">Create/Edit tea</string>
+    <string name="new_tea_text_view_heading_variety">Tea variety</string>
+    <string name="new_tea_dialog_variety_header">"Input variety"</string>
+    <string name="new_tea_edit_text_custom_variety">Input custom variety</string>
+    <string name="new_tea_text_view_heading_name">Name</string>
+    <string name="new_tea_edit_text_hint_name">Input name</string>
+    <string name="new_tea_text_view_heading_color">Color</string>
+    <string name="new_tea_color_dialog_title">Choose Color: </string>
+    <string name="new_tea_error_30Char">The type of tea exceeds the limit number of 30 characters.</string>
+    <string name="new_tea_error_name">The name exceeds the limit number of 300 characters.</string>
+    <string name="new_tea_error_no_name">Please enter the name.</string>
+    <string name="new_tea_count_infusion">%1$d. Infusion</string>
+    <string name="new_tea_count_infusion_first">1. Infusion</string>
+    <string name="new_tea_text_view_heading_amount">Amount</string>
+    <string name="new_tea_edit_text_amount_empty_text_ts">- ts/L</string>
+    <string name="new_tea_edit_text_amount_text_ts">%1$d ts/L</string>
+    <string name="new_tea_edit_text_amount_text_gr">%1$d gr/L</string>
+    <string name="new_tea_dialog_amount_header">Input amount</string>
+    <string-array name="new_tea_dialog_amount_kind">
         <item>ts/L</item>
         <item>gr/L</item>
     </string-array>
-    <string name="newtea_button_temperature_empty_text_celsius">- °C</string>
-    <string name="newtea_button_temperature_empty_text_fahrenheit">- °F</string>
-    <string name="newtea_button_temperature_text_celsius">%1$d °C</string>
-    <string name="newtea_button_temperature_text_fahrenheit">%1$d °F</string>
-    <string name="newtea_dialog_temperature_header">Input temperature</string>
-    <string name="newtea_dialog_temperature_celsius">°C</string>
-    <string name="newtea_dialog_temperature_fahrenheit">°F</string>
-    <string name="newtea_button_time_empty_text">00:00</string>
-    <string name="newtea_dialog_time_header">Input  brewing time</string>
-    <string name="newtea_dialog_time_double_point">:</string>
-    <string name="newtea_button_cool_down_time_empty_text">00:00</string>
-    <string name="newtea_dialog_cool_down_time_header">Input cool down time</string>
-    <string name="newtea_dialog_cool_down_time_calculated_suggestion">Calculated by temperature</string>
-    <string name="newtea_dialog_picker_suggestion">Suggestions</string>
-    <string name="newtea_dialog_picker_negative">Cancel</string>
-    <string name="newtea_dialog_picker_positive">Add</string>
-    <string name="newtea_tooltip_choosecolor">Choose color</string>
-    <string name="newtea_tooltip_arrowleft">Previous infusion</string>
-    <string name="newtea_tooltip_arrowright">Next infusion</string>
-    <string name="newtea_tooltip_deleteinfusion">Delete infusion</string>
-    <string name="newtea_tooltip_addinfusion">Add infusion</string>
-    <string name="newtea_action_done_title">Save tea</string>
-    <string name="fahrenheit">Fahrenheit</string>
-    <string name="celsius">Celsius</string>
-    <string-array name="variety_teas">
+    <string name="new_tea_text_view_heading_temperature">Amount</string>
+    <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C</string>
+    <string name="new_tea_edit_text_temperature_empty_text_fahrenheit">- °F</string>
+    <string name="new_tea_edit_text_temperature_text_celsius">%1$d °C</string>
+    <string name="new_tea_edit_text_temperature_text_fahrenheit">%1$d °F</string>
+    <string name="new_tea_dialog_temperature_header">Input temperature</string>
+    <string name="new_tea_dialog_temperature_celsius">°C</string>
+    <string name="new_tea_dialog_temperature_fahrenheit">°F</string>
+    <string name="new_tea_text_view_heading_time">Time</string>
+    <string name="new_tea_edit_text_time_empty_text">00:00</string>
+    <string name="new_tea_dialog_time_header">Input  brewing time</string>
+    <string name="new_tea_dialog_time_double_point">:</string>
+    <string name="new_tea_text_view_heading_cool_down_time">Cool down time</string>
+    <string name="new_tea_edit_text_cool_down_time_empty_text">00:00</string>
+    <string name="new_tea_dialog_cool_down_time_header">Input cool down time</string>
+    <string name="new_tea_dialog_cool_down_time_calculated_suggestion">Calculated by temperature</string>
+    <string name="new_tea_dialog_picker_suggestion">Suggestions</string>
+    <string name="new_tea_dialog_picker_negative">Cancel</string>
+    <string name="new_tea_dialog_picker_positive">Add</string>
+    <string name="new_tea_tooltip_choosecolor">Choose color</string>
+    <string name="new_tea_tooltip_arrowleft">Previous infusion</string>
+    <string name="new_tea_tooltip_arrowright">Next infusion</string>
+    <string name="new_tea_tooltip_deleteinfusion">Delete infusion</string>
+    <string name="new_tea_tooltip_addinfusion">Add infusion</string>
+    <string name="new_tea_action_done_title">Save tea</string>
+    <string name="new_tea_fahrenheit">Fahrenheit</string>
+    <string name="new_tea_celsius">Celsius</string>
+    <string-array name="new_tea_variety_teas">
         <item>Black tea</item>
         <item>Green tea</item>
         <item>Yellow tea</item>
@@ -62,7 +60,7 @@
         <item>Rooibus tea</item>
         <item>Other</item>
     </string-array>
-    <string-array name="variety_codes">
+    <string-array name="new_tea_variety_codes">
         <item>01_black</item>
         <item>02_green</item>
         <item>03_yellow</item>
@@ -74,7 +72,7 @@
         <item>09_rooibus</item>
         <item>10_other</item>
     </string-array>
-    <array name="newtea_amount">
+    <array name="new_tea_amount">
         <item>ts/L</item>
         <item>g/L</item>
     </array>

@@ -33,7 +33,7 @@ public class PuerhTeaSuggestionsTest {
     @Test
     public void getAmountTsHint() {
         final int[] arrayTs = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_puerh_tea_amount_ts)).thenReturn(arrayTs);
+        when(resources.getIntArray(R.array.new_tea_suggestions_puerh_tea_amount_ts)).thenReturn(arrayTs);
 
         assertThat(puerhTeaSuggestions.getAmountTsSuggestions()).isEqualTo(arrayTs);
     }
@@ -41,7 +41,7 @@ public class PuerhTeaSuggestionsTest {
     @Test
     public void getAmountGrHint() {
         final int[] arrayGr = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_puerh_tea_amount_gr)).thenReturn(arrayGr);
+        when(resources.getIntArray(R.array.new_tea_suggestions_puerh_tea_amount_gr)).thenReturn(arrayGr);
 
         assertThat(puerhTeaSuggestions.getAmountGrSuggestions()).isEqualTo(arrayGr);
     }
@@ -49,7 +49,7 @@ public class PuerhTeaSuggestionsTest {
     @Test
     public void getTemperatureCelsiusHint() {
         final int[] arrayCelsius = new int[]{1, 2};
-        when(resources.getIntArray(R.array.suggestions_puerh_tea_temperature_celsius)).thenReturn(arrayCelsius);
+        when(resources.getIntArray(R.array.new_tea_suggestions_puerh_tea_temperature_celsius)).thenReturn(arrayCelsius);
 
         assertThat(puerhTeaSuggestions.getTemperatureCelsiusSuggestions()).isEqualTo(arrayCelsius);
     }
@@ -65,7 +65,7 @@ public class PuerhTeaSuggestionsTest {
     @Test
     public void getSteepingTimeHint() {
         final String[] arrayTime = new String[]{"1:00", "2:30"};
-        when(resources.getStringArray(R.array.suggestions_puerh_tea_time)).thenReturn(arrayTime);
+        when(resources.getStringArray(R.array.new_tea_suggestions_puerh_tea_time)).thenReturn(arrayTime);
 
         assertThat(puerhTeaSuggestions.getTimeSuggestions()).isEqualTo(arrayTime);
     }

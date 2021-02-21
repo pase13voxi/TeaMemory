@@ -45,29 +45,29 @@ public class AmountPickerDialog extends DialogFragment {
 
         return new AlertDialog.Builder(activity)
                 .setView(dialogView)
-                .setTitle(R.string.newtea_dialog_amount_header)
-                .setNegativeButton(R.string.newtea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.newtea_dialog_picker_positive, (dialog, which) -> persistAmount())
+                .setTitle(R.string.new_tea_dialog_amount_header)
+                .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
+                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> persistAmount())
                 .create();
     }
 
     private void setAmountPicker() {
-        final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_amount);
         amountPicker.setMinValue(0);
         amountPicker.setMaxValue(100);
 
-        final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_dialog_amount_kind);
+        final NumberPicker amountPickerKind = dialogView.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
         amountPickerKind.setMinValue(0);
         amountPickerKind.setMaxValue(1);
-        amountPickerKind.setDisplayedValues(getResources().getStringArray(R.array.newtea_dialog_amount_kind));
+        amountPickerKind.setDisplayedValues(getResources().getStringArray(R.array.new_tea_dialog_amount_kind));
         amountPickerKind.setOnValueChangedListener((numberPicker, oldValue, newValue) -> setSuggestions());
     }
 
     private void setSuggestions() {
         final List<Button> buttons = new ArrayList<>();
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_1));
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_2));
-        buttons.add(dialogView.findViewById(R.id.button_picker_suggestion_3));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_1));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_2));
+        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_3));
 
         if (getSuggestions() != null && getSuggestions().length > 0) {
             enableSuggestions();
@@ -79,7 +79,7 @@ public class AmountPickerDialog extends DialogFragment {
     }
 
     private int[] getSuggestions() {
-        final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_dialog_amount_kind);
+        final NumberPicker amountPickerKind = dialogView.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
         if (amountPickerKind.getValue() == 1) {
             return suggestions.getAmountGrSuggestions();
         } else {
@@ -101,7 +101,7 @@ public class AmountPickerDialog extends DialogFragment {
     }
 
     private void setClickListener(final List<Button> buttons) {
-        final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_amount);
         final int[] amountSuggestions = getSuggestions();
 
         for (int i = 0; i < amountSuggestions.length; i++) {
@@ -111,20 +111,20 @@ public class AmountPickerDialog extends DialogFragment {
     }
 
     private void enableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_picker_suggestions);
+        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.new_tea_layout_custom_variety);
         layoutSuggestions.setVisibility(View.VISIBLE);
     }
 
     private void disableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_picker_suggestions);
+        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.new_tea_layout_custom_variety);
         layoutSuggestions.setVisibility(View.GONE);
     }
 
     private void persistAmount() {
-        final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_amount);
         final int amount = amountPicker.getValue();
 
-        final NumberPicker amountKindPicker = dialogView.findViewById(R.id.number_picker_dialog_amount_kind);
+        final NumberPicker amountKindPicker = dialogView.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
         final int amountKindPosition = amountKindPicker.getValue();
         final String amountKind;
         if (amountKindPosition == 1) {

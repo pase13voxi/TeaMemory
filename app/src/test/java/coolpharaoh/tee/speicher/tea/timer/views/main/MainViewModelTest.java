@@ -63,7 +63,7 @@ public class MainViewModelTest {
         String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
                 "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.variety_codes)).thenReturn(varietyCodes);
+        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(varietyCodes);
     }
 
     private void mockSettings() {

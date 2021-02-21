@@ -6,12 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
@@ -42,6 +42,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
+import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
@@ -94,19 +95,20 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
-            final EditText editTextName = newTea.findViewById(R.id.editTextName);
-            final Button buttonAmountDialog = newTea.findViewById(R.id.buttonAmountDialog);
-            final Button buttonTemperatureDialog = newTea.findViewById(R.id.buttonTemperatureDialog);
-            final Button buttonCoolDownTimeDialog = newTea.findViewById(R.id.buttonCoolDownTimeDialog);
-            final Button buttonTimeDialog = newTea.findViewById(R.id.buttonTimeDialog);
+            final EditText editTextVariety = newTea.findViewById(R.id.edit_text_new_tea_variety);
+            final EditText editTextName = newTea.findViewById(R.id.edit_text_new_tea_name);
+            final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
+            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
+            final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
+            final EditText editTextTime = newTea.findViewById(R.id.edit_text_new_tea_time);
 
-            assertThat(spinnerVariety.getSelectedItemId()).isZero();
+            final String[] varieties = newTea.getResources().getStringArray(R.array.new_tea_variety_teas);
+            assertThat(editTextVariety.getText()).hasToString(varieties[0]);
             assertThat(editTextName.getText().toString()).isBlank();
-            assertThat(buttonAmountDialog.getText()).hasToString(newTea.getString(R.string.newtea_button_amount_empty_text_ts));
-            assertThat(buttonTemperatureDialog.getText()).hasToString(newTea.getString(R.string.newtea_button_temperature_empty_text_celsius));
-            assertThat(buttonCoolDownTimeDialog.getText()).hasToString(newTea.getString(R.string.newtea_button_cool_down_time_empty_text));
-            assertThat(buttonTimeDialog.getText()).hasToString(newTea.getString(R.string.newtea_button_time_empty_text));
+            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_empty_text_ts));
+            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_empty_text_celsius));
+            assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_empty_text));
+            assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_empty_text));
         });
     }
 
@@ -115,8 +117,8 @@ public class NewTeaTest {
         mockSettings(FAHRENHEIT);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonTemperatureDialog = newTea.findViewById(R.id.buttonTemperatureDialog);
-            assertThat(buttonTemperatureDialog.getText()).hasToString(newTea.getString(R.string.newtea_button_temperature_empty_text_fahrenheit));
+            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
+            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_empty_text_fahrenheit));
         });
     }
 
@@ -125,7 +127,7 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final EditText editTextName = newTea.findViewById(R.id.editTextName);
+            final EditText editTextName = newTea.findViewById(R.id.edit_text_new_tea_name);
             editTextName.setText("Name");
             newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
             final ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
@@ -158,24 +160,45 @@ public class NewTeaTest {
     }
 
     @Test
+    public void addVarietyAndExpectUpdatedVariety() {
+        mockSettings(CELSIUS);
+        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
+        newTeaActivityScenario.onActivity(newTea -> {
+            final EditText editTextVariety = newTea.findViewById(R.id.edit_text_new_tea_variety);
+            editTextVariety.performClick();
+
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final List<RadioButton> radioButtons = getRadioButtons(dialog);
+
+            radioButtons.get(3).performClick();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            final String[] varieties = newTea.getResources().getStringArray(R.array.new_tea_variety_teas);
+            assertThat(editTextVariety.getText()).hasToString(varieties[3]);
+        });
+    }
+
+    @Test
     public void addAmountAndExpectUpdatedAmount() {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonAmount = newTea.findViewById(R.id.buttonAmountDialog);
-            buttonAmount.performClick();
+            final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
+            editTextAmount.performClick();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_dialog_amount);
+            final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
             amountPicker.setValue(7);
 
-            final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_dialog_amount_kind);
+            final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
             amountKindPicker.setValue(0);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            assertThat(buttonAmount.getText()).hasToString("7 ts/L");
+            assertThat(editTextAmount.getText()).hasToString("7 ts/L");
         });
     }
 
@@ -184,17 +207,17 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonTemperature = newTea.findViewById(R.id.buttonTemperatureDialog);
-            buttonTemperature.performClick();
+            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
+            editTextTemperature.performClick();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_dialog_temperature);
+            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
             numberPickerTemperature.setValue(80);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            assertThat(buttonTemperature.getText()).hasToString("80 °C");
+            assertThat(editTextTemperature.getText()).hasToString("80 °C");
         });
     }
 
@@ -203,19 +226,19 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonTemperature = newTea.findViewById(R.id.buttonTemperatureDialog);
-            buttonTemperature.performClick();
+            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
+            editTextTemperature.performClick();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_dialog_temperature);
+            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
             numberPickerTemperature.setValue(80);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            final Button buttonCoolDownTime = newTea.findViewById(R.id.buttonCoolDownTimeDialog);
+            final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
 
-            assertThat(buttonCoolDownTime.getVisibility()).isEqualTo(View.VISIBLE);
+            assertThat(editTextCoolDownTime.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }
 
@@ -224,19 +247,19 @@ public class NewTeaTest {
         mockSettings(FAHRENHEIT);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonTemperature = newTea.findViewById(R.id.buttonTemperatureDialog);
-            buttonTemperature.performClick();
+            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
+            editTextTemperature.performClick();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_dialog_temperature);
+            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
             numberPickerTemperature.setValue(212);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            final Button buttonCoolDownTime = newTea.findViewById(R.id.buttonCoolDownTimeDialog);
+            final LinearLayout layoutCoolDownTime = newTea.findViewById(R.id.layout_new_tea_cool_down_time);
 
-            assertThat(buttonCoolDownTime.getVisibility()).isEqualTo(View.GONE);
+            assertThat(layoutCoolDownTime.getVisibility()).isEqualTo(View.GONE);
         });
     }
 
@@ -245,19 +268,19 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonCoolDownTime = newTea.findViewById(R.id.buttonCoolDownTimeDialog);
-            buttonCoolDownTime.performClick();
+            final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
+            editTextCoolDownTime.performClick();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_dialog_time_minutes);
+            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
             numberPickerTimeMinutes.setValue(5);
 
-            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_dialog_time_seconds);
+            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            assertThat(buttonCoolDownTime.getText()).hasToString("05:45");
+            assertThat(editTextCoolDownTime.getText()).hasToString("05:45");
         });
     }
 
@@ -266,72 +289,20 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Button buttonTime = newTea.findViewById(R.id.buttonTimeDialog);
-            buttonTime.performClick();
+            final EditText editTextTime = newTea.findViewById(R.id.edit_text_new_tea_time);
+            editTextTime.performClick();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_dialog_time_minutes);
+            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
             numberPickerTimeMinutes.setValue(5);
 
-            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_dialog_time_seconds);
+            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            assertThat(buttonTime.getText()).hasToString("05:45");
-        });
-    }
-
-    @Test
-    public void setVarietyByHandAndExpectThisVariety() {
-        mockSettings(CELSIUS);
-        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
-        newTeaActivityScenario.onActivity(newTea -> {
-            final Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
-            spinnerVariety.setSelection(9);
-
-            final CheckBox checkBoxVariety = newTea.findViewById(R.id.checkBoxSelfInput);
-            checkBoxVariety.setChecked(true);
-
-            final EditText editTextVariety = newTea.findViewById(R.id.editTextSelfInput);
-            editTextVariety.setText("OtherVariety");
-
-            final EditText editTextName = newTea.findViewById(R.id.editTextName);
-            editTextName.setText("Tea");
-
-            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
-
-            final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-            verify(teaDao).insert(captor.capture());
-            final Tea tea = captor.getValue();
-
-            assertThat(tea.getVariety()).isEqualTo("OtherVariety");
-        });
-    }
-
-    @Test
-    public void switchBetweenVarietyByHandAndBySpinner() {
-        mockSettings(CELSIUS);
-        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
-        newTeaActivityScenario.onActivity(newTea -> {
-            final Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
-            spinnerVariety.setSelection(9);
-
-            final CheckBox checkBoxVariety = newTea.findViewById(R.id.checkBoxSelfInput);
-            assertThat(checkBoxVariety.getVisibility()).isEqualTo(View.VISIBLE);
-            checkBoxVariety.setChecked(true);
-
-            assertThat(spinnerVariety.getVisibility()).isEqualTo(View.INVISIBLE);
-            final EditText editTextVariety = newTea.findViewById(R.id.editTextSelfInput);
-            assertThat(editTextVariety.getVisibility()).isEqualTo(View.VISIBLE);
-
-            checkBoxVariety.setChecked(false);
-            assertThat(spinnerVariety.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(editTextVariety.getVisibility()).isEqualTo(View.INVISIBLE);
-
-            spinnerVariety.setSelection(3);
-            assertThat(checkBoxVariety.getVisibility()).isEqualTo(View.INVISIBLE);
+            assertThat(editTextTime.getText()).hasToString("05:45");
         });
     }
 
@@ -352,48 +323,19 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            final Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
-            final EditText editTextName = newTea.findViewById(R.id.editTextName);
-            final Button buttonAmount = newTea.findViewById(R.id.buttonAmountDialog);
-            final Button buttonTemperature = newTea.findViewById(R.id.buttonTemperatureDialog);
-            final Button buttonTime = newTea.findViewById(R.id.buttonTimeDialog);
-            final Button buttonCoolDownTime = newTea.findViewById(R.id.buttonCoolDownTimeDialog);
+            final EditText editTextVariety = newTea.findViewById(R.id.edit_text_new_tea_variety);
+            final EditText editTextName = newTea.findViewById(R.id.edit_text_new_tea_name);
+            final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
+            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
+            final EditText editTextTime = newTea.findViewById(R.id.edit_text_new_tea_time);
+            final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
 
-            assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(1);
+            assertThat(editTextVariety.getText()).hasToString(LanguageConversation.convertCodeToVariety(tea.getVariety(), newTea.getApplication()));
             assertThat(editTextName.getText()).hasToString(tea.getName());
-            assertThat(buttonAmount.getText()).hasToString(tea.getAmount() + " ts/L");
-            assertThat(buttonTemperature.getText()).hasToString(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(buttonTime.getText()).hasToString(infusions.get(0).getTime());
-            assertThat(buttonCoolDownTime.getText()).hasToString(infusions.get(0).getCoolDownTime());
-        });
-    }
-
-    @Test
-    public void editTeaAndExpectFilledOtherVariety() {
-        mockSettings(FAHRENHEIT);
-        final Tea tea = new Tea("Tea", "OtherTea", 1, "Gr", 234, 0, Date.from(getFixedDate()));
-        tea.setId(1L);
-        when(teaDao.getTeaById(1)).thenReturn(tea);
-
-        final List<Infusion> infusions = new ArrayList<>();
-        final Infusion infusion1 = new Infusion(1, 0, "2:00", "5:00", 100, 212);
-        infusions.add(infusion1);
-        when(infusionDao.getInfusionsByTeaId(1)).thenReturn(infusions);
-
-
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
-        intent.putExtra(TEA_ID, 1L);
-
-        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
-        newTeaActivityScenario.onActivity(newTea -> {
-
-            final Spinner spinnerVariety = newTea.findViewById(R.id.spinnerTeaVariety);
-            final CheckBox checkBoxSelfInput = newTea.findViewById(R.id.checkBoxSelfInput);
-            final EditText editTextSelfInput = newTea.findViewById(R.id.editTextSelfInput);
-
-            assertThat(spinnerVariety.getSelectedItemPosition()).isEqualTo(9);
-            assertThat(checkBoxSelfInput.isChecked()).isTrue();
-            assertThat(editTextSelfInput.getText()).hasToString("OtherTea");
+            assertThat(editTextAmount.getText()).hasToString(tea.getAmount() + " ts/L");
+            assertThat(editTextTemperature.getText()).hasToString(infusions.get(0).getTemperatureFahrenheit() + " °F");
+            assertThat(editTextTime.getText()).hasToString(infusions.get(0).getTime());
+            assertThat(editTextCoolDownTime.getText()).hasToString(infusions.get(0).getCoolDownTime());
         });
     }
 
@@ -433,11 +375,11 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final ImageButton buttonLeft = newTea.findViewById(R.id.buttonPreviousInfusion);
-            final ImageButton buttonRight = newTea.findViewById(R.id.buttonNextInfusion);
-            final ImageButton buttonDelete = newTea.findViewById(R.id.buttonDeleteInfusion);
-            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
-            final TextView textViewInfunsionBar = newTea.findViewById(R.id.textViewCountInfusion);
+            final ImageButton buttonLeft = newTea.findViewById(R.id.new_tea_button_previous_infusion);
+            final ImageButton buttonRight = newTea.findViewById(R.id.new_tea_button_next_infusion);
+            final ImageButton buttonDelete = newTea.findViewById(R.id.new_tea_button_delete_infusion);
+            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.new_tea_button_add_infusion);
+            final TextView textViewInfunsionBar = newTea.findViewById(R.id.new_tea_text_view_count_infusion);
 
             assertThat(textViewInfunsionBar.getText()).isEqualTo(FIRST_INFUSION);
             assertThat(buttonLeft.isEnabled()).isFalse();
@@ -473,11 +415,11 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            final ImageButton buttonLeft = newTea.findViewById(R.id.buttonPreviousInfusion);
-            final ImageButton buttonRight = newTea.findViewById(R.id.buttonNextInfusion);
-            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.buttonDeleteInfusion);
-            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.buttonAddInfusion);
-            final TextView textViewInfusionBar = newTea.findViewById(R.id.textViewCountInfusion);
+            final ImageButton buttonLeft = newTea.findViewById(R.id.new_tea_button_previous_infusion);
+            final ImageButton buttonRight = newTea.findViewById(R.id.new_tea_button_next_infusion);
+            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.new_tea_button_delete_infusion);
+            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.new_tea_button_add_infusion);
+            final TextView textViewInfusionBar = newTea.findViewById(R.id.new_tea_text_view_count_infusion);
 
             assertThat(buttonLeft.isEnabled()).isFalse();
             assertThat(buttonRight.isEnabled()).isTrue();
@@ -522,9 +464,9 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            final ImageButton buttonNextInfusion = newTea.findViewById(R.id.buttonNextInfusion);
-            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.buttonDeleteInfusion);
-            final TextView textViewInfusionBar = newTea.findViewById(R.id.textViewCountInfusion);
+            final ImageButton buttonNextInfusion = newTea.findViewById(R.id.new_tea_button_next_infusion);
+            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.new_tea_button_delete_infusion);
+            final TextView textViewInfusionBar = newTea.findViewById(R.id.new_tea_text_view_count_infusion);
 
             buttonNextInfusion.performClick();
 
@@ -601,5 +543,17 @@ public class NewTeaTest {
     private Instant getFixedDate() {
         Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
         return Instant.now(clock);
+    }
+
+    private List<RadioButton> getRadioButtons(AlertDialog dialog) {
+        final RadioGroup radioGroup = dialog.findViewById(R.id.new_tea_radio_group_variety_input);
+        final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View o = radioGroup.getChildAt(i);
+            if (o instanceof RadioButton) {
+                listRadioButtons.add((RadioButton) o);
+            }
+        }
+        return listRadioButtons;
     }
 }
