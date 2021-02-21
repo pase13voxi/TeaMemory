@@ -58,6 +58,19 @@ public class CoolDownTimePickerDialog extends DialogFragment {
         timePickerMinutes.setMaxValue(59);
         timePickerSeconds.setMinValue(0);
         timePickerSeconds.setMaxValue(59);
+
+        setConfiguredValues(timePickerMinutes, timePickerSeconds);
+    }
+
+    private void setConfiguredValues(final NumberPicker timePickerMinutes, final NumberPicker timePickerSeconds) {
+        final String coolDownTime = newTeaViewModel.getInfusionCoolDownTime();
+
+        if (coolDownTime != null) {
+            final TimeConverter timeConverter = new TimeConverter(coolDownTime);
+
+            timePickerMinutes.setValue(timeConverter.getMinutes());
+            timePickerSeconds.setValue(timeConverter.getSeconds());
+        }
     }
 
     private void setCalculatedCoolDownTime() {

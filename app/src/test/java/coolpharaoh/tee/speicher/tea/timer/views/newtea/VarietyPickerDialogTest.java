@@ -32,6 +32,7 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import static coolpharaoh.tee.speicher.tea.timer.views.newtea.AmountPickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
 //could be removed when Robolectric supports Java 8 for API 29
@@ -83,6 +84,7 @@ public class VarietyPickerDialogTest {
 
     @Test
     public void showAndHideCustomVarityInputField() {
+        when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
         dialogFragment.show(fragmentManager, TAG);
 
         final AlertDialog dialog = getLatestAlertDialog();
@@ -112,6 +114,33 @@ public class VarietyPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
         verify(newTeaViewModel).setVariety(CUSTOM_VARIETY);
+    }
+
+    @Test
+    public void showExistingVarietyConfiguration() {
+        when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
+
+        dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final List<RadioButton> radioButtons = getRadioButtons(dialog);
+        assertThat(radioButtons.get(INDEX_WHITE_TEA).isChecked()).isTrue();
+    }
+
+    @Test
+    public void showExistingCustomVarietyConfiguration() {
+        when(newTeaViewModel.getVariety()).thenReturn(CUSTOM_VARIETY);
+
+        dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final List<RadioButton> radioButtons = getRadioButtons(dialog);
+        assertThat(radioButtons.get(INDEX_OTHER).isChecked()).isTrue();
+
+        final EditText editTextCustomVariety = dialog.findViewById(R.id.new_tea_edit_text_custom_variety);
+        assertThat(editTextCustomVariety.getText()).hasToString(CUSTOM_VARIETY);
     }
 
     private List<RadioButton> getRadioButtons(AlertDialog dialog) {

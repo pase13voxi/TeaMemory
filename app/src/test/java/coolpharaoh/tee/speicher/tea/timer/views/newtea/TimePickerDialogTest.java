@@ -126,4 +126,19 @@ public class TimePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         verify(newTeaViewModel).setInfusionTime("05:45");
     }
+
+    @Test
+    public void showExistingTimeConfiguration() {
+        when(newTeaViewModel.getInfusionTime()).thenReturn("05:15");
+
+        dialogFragment.show(fragmentManager, TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        assertThat(numberPickerTimeMinutes.getValue()).isEqualTo(5);
+
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        assertThat(numberPickerTimeSeconds.getValue()).isEqualTo(15);
+    }
 }

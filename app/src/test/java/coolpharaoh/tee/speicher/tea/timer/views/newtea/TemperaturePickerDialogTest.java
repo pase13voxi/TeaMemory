@@ -166,4 +166,16 @@ public class TemperaturePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         verify(newTeaViewModel).setInfusionTemperature(80);
     }
+
+    @Test
+    public void showExistingTemperatureConfiguration() {
+        when(newTeaViewModel.getInfusionTemperature()).thenReturn(85);
+
+        dialogFragment.show(fragmentManager, TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
+        assertThat(numberPickerTemperature.getValue()).isEqualTo(85);
+    }
 }

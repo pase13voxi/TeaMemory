@@ -63,6 +63,16 @@ public class TemperaturePickerDialog extends DialogFragment {
             temperaturePicker.setMinValue(50);
             temperaturePicker.setMaxValue(100);
         }
+
+        setConfiguredValues(temperaturePicker);
+    }
+
+    private void setConfiguredValues(final NumberPicker temperaturePicker) {
+        final int temperature = newTeaViewModel.getInfusionTemperature();
+
+        if (temperature != -500) {
+            temperaturePicker.setValue(temperature);
+        }
     }
 
     private boolean isFahrenheit() {

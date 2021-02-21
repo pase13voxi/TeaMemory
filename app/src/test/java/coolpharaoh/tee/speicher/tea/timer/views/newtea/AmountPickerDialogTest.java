@@ -172,4 +172,20 @@ public class AmountPickerDialogTest {
 
         verify(newTeaViewModel).setAmount(7, "Gr");
     }
+
+    @Test
+    public void showExistingAmountConfiguration() {
+        when(newTeaViewModel.getAmount()).thenReturn(7);
+        when(newTeaViewModel.getAmountKind()).thenReturn("Gr");
+
+        dialogFragment.show(fragmentManager, TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
+        assertThat(amountPicker.getValue()).isEqualTo(7);
+
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
+        assertThat(amountKindPicker.getValue()).isEqualTo(1);
+    }
 }

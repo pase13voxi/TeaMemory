@@ -59,6 +59,19 @@ public class TimePickerDialog extends DialogFragment {
         timePickerMinutes.setMaxValue(59);
         timePickerSeconds.setMinValue(0);
         timePickerSeconds.setMaxValue(59);
+
+        setConfiguredValues(timePickerMinutes, timePickerSeconds);
+    }
+
+    private void setConfiguredValues(final NumberPicker timePickerMinutes, final NumberPicker timePickerSeconds) {
+        final String time = newTeaViewModel.getInfusionTime();
+
+        if (time != null) {
+            final TimeConverter timeConverter = new TimeConverter(time);
+
+            timePickerMinutes.setValue(timeConverter.getMinutes());
+            timePickerSeconds.setValue(timeConverter.getSeconds());
+        }
     }
 
     private void setSuggestions() {

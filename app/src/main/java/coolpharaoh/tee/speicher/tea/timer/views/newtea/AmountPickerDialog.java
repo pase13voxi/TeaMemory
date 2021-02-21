@@ -22,6 +22,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.Suggestions;
 
 public class AmountPickerDialog extends DialogFragment {
     public static final String TAG = "AmountPickerDialog";
+    private static final String GRAM = "Gr";
+    private static final String TEA_SPOON = "Ts";
 
     private final Suggestions suggestions;
     private final NewTeaViewModel newTeaViewModel;
@@ -61,6 +63,23 @@ public class AmountPickerDialog extends DialogFragment {
         amountPickerKind.setMaxValue(1);
         amountPickerKind.setDisplayedValues(getResources().getStringArray(R.array.new_tea_dialog_amount_kind));
         amountPickerKind.setOnValueChangedListener((numberPicker, oldValue, newValue) -> setSuggestions());
+
+        setConfiguredValues(amountPicker, amountPickerKind);
+    }
+
+    private void setConfiguredValues(final NumberPicker amountPicker, final NumberPicker amountKindPicker) {
+        final int amount = newTeaViewModel.getAmount();
+        final String amountKind = newTeaViewModel.getAmountKind();
+
+        if (amount != -500) {
+            amountPicker.setValue(amount);
+        }
+
+        if (GRAM.equals(amountKind)) {
+            amountKindPicker.setValue(1);
+        } else {
+            amountKindPicker.setValue(0);
+        }
     }
 
     private void setSuggestions() {
@@ -128,9 +147,9 @@ public class AmountPickerDialog extends DialogFragment {
         final int amountKindPosition = amountKindPicker.getValue();
         final String amountKind;
         if (amountKindPosition == 1) {
-            amountKind = "Gr";
+            amountKind = GRAM;
         } else {
-            amountKind = "Ts";
+            amountKind = TEA_SPOON;
         }
 
         newTeaViewModel.setAmount(amount, amountKind);

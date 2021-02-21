@@ -15,6 +15,10 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 public class VarietyPickerDialog extends DialogFragment {
@@ -56,6 +60,33 @@ public class VarietyPickerDialog extends DialogFragment {
         }
 
         varietyRadioGroup.setOnCheckedChangeListener(this::showCustomVariety);
+
+        setConfiguredValues(varietyRadioGroup, varietyList);
+    }
+
+    private void setConfiguredValues(final RadioGroup varietyRadioGroup, final String[] varietyList) {
+        final String variety = newTeaViewModel.getVariety();
+        final int varietyIndex = Arrays.asList(varietyList).indexOf(variety);
+        final List<RadioButton> radioButtons = getRadioButtons(varietyRadioGroup);
+
+        if (varietyIndex == -1) {
+            radioButtons.get(VARIETY_OTHER).setChecked(true);
+            final EditText editTextCustomVariety = dialogView.findViewById(R.id.new_tea_edit_text_custom_variety);
+            editTextCustomVariety.setText(variety);
+        } else {
+            radioButtons.get(varietyIndex).setChecked(true);
+        }
+    }
+
+    private List<RadioButton> getRadioButtons(final RadioGroup radioGroup) {
+        final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View o = radioGroup.getChildAt(i);
+            if (o instanceof RadioButton) {
+                listRadioButtons.add((RadioButton) o);
+            }
+        }
+        return listRadioButtons;
     }
 
     private RadioButton createRadioButton(final String variety) {
