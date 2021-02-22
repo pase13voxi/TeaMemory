@@ -38,10 +38,8 @@
         android:paddingHorizontal="30dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_tea_dialog_picker_suggestion"
-            android:textColor="@color/black" />
+            style="@style/new_tea_dialog_text_view_suggestions"
+            android:text="@string/new_tea_dialog_picker_suggestion" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,15 +48,15 @@
             android:paddingVertical="10dp">
 
             <Button
-                style="@style/dialog_input_button_suggestions"
+                style="@style/new_tea_dialog_input_button_suggestions"
                 android:id="@+id/new_tea_button_picker_suggestion_1" />
 
             <Button
-                style="@style/dialog_input_button_suggestions"
+                style="@style/new_tea_dialog_input_button_suggestions"
                 android:id="@+id/new_tea_button_picker_suggestion_2" />
 
             <Button
-                style="@style/dialog_input_button_suggestions"
+                style="@style/new_tea_dialog_input_button_suggestions"
                 android:id="@+id/new_tea_button_picker_suggestion_3" />
         </LinearLayout>
     </LinearLayout>

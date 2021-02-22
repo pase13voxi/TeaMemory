@@ -83,6 +83,20 @@ public class VarietyPickerDialogTest {
     }
 
     @Test
+    public void selectYellowTeaAndExpectSavedColorForYellowTea() {
+        dialogFragment.show(fragmentManager, TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+        final List<RadioButton> radioButtons = getRadioButtons(dialog);
+
+        radioButtons.get(INDEX_WHITE_TEA).performClick();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+        verify(newTeaViewModel).setColor(-1642);
+    }
+
+    @Test
     public void showAndHideCustomVarityInputField() {
         when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
         dialogFragment.show(fragmentManager, TAG);

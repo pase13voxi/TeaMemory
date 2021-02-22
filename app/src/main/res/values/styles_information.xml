@@ -25,7 +25,7 @@
     </style>
 
     <style name="informationEditTextTheme">
-        <item name="colorControlNormal">@color/lightgrey</item>
+        <item name="colorControlNormal">@color/light_grey</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
@@ -56,6 +56,6 @@
     </style>
 
     <style name="informationCounterSeparation">
-        <item name="android:background">@color/lightgrey</item>
+        <item name="android:background">@color/light_grey</item>
     </style>
 </resources>

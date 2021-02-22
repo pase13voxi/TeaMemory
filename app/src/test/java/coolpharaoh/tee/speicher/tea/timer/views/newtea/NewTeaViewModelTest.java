@@ -103,8 +103,9 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void getColor() {
-        assertThat(newTeaViewModelFilled.getColor()).isEqualTo(tea.getColor());
+    public void setColorAndExpectColor() {
+        newTeaViewModelEmpty.setColor(1234);
+        assertThat(newTeaViewModelEmpty.getColor()).isEqualTo(1234);
     }
 
     @Test
@@ -198,28 +199,24 @@ public class NewTeaViewModelTest {
     @Test
     public void saveTeaAndExpectNewTea() {
         mockStringResource();
-        newTeaViewModelEmpty.saveTea("name", 15);
+        newTeaViewModelEmpty.saveTea("name");
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).insertTea(captor.capture());
         final Tea savedTea = captor.getValue();
-        assertThat(savedTea)
-                .extracting(Tea::getName, Tea::getColor)
-                .containsExactly("name", 15);
+        assertThat(savedTea.getName()).isEqualTo("name");
         verify(infusionRepository).insertInfusion(any());
     }
 
     @Test
     public void saveTeaAndExpectEditedExistingTea() {
         mockStringResource();
-        newTeaViewModelFilled.saveTea("name", 15);
+        newTeaViewModelFilled.saveTea("name");
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea(captor.capture());
         final Tea savedTea = captor.getValue();
-        assertThat(savedTea)
-                .extracting(Tea::getName, Tea::getColor)
-                .containsExactly("name", 15);
+        assertThat(savedTea.getName()).isEqualTo("name");
         verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED);
         verify(infusionRepository, times(2)).insertInfusion(any());
     }

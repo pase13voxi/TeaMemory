@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 
 public class VarietyPickerDialog extends DialogFragment {
     public static final String TAG = "VarietyPickerDialog";
@@ -46,7 +47,10 @@ public class VarietyPickerDialog extends DialogFragment {
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_variety_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> persistVariety())
+                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> {
+                    persistVariety();
+                    persistColor();
+                })
                 .create();
     }
 
@@ -98,17 +102,22 @@ public class VarietyPickerDialog extends DialogFragment {
                         new int[]{android.R.attr.state_checked}  // checked
                 },
                 new int[]{
-                        getResources().getColor(R.color.lightgrey),
+                        getResources().getColor(R.color.light_grey),
                         getResources().getColor(R.color.colorPrimary)
                 }
         );
         varietyRadioButton.setButtonTintList(colorStateList);
         RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(40, 30, 0, 0);
+        params.setMargins(dpToPixel(20), dpToPixel(10), 0, 0);
         varietyRadioButton.setLayoutParams(params);
-        varietyRadioButton.setPadding(40, 0, 0, 0);
+        varietyRadioButton.setPadding(dpToPixel(15), 0, 0, 0);
         varietyRadioButton.setTextSize(16);
         return varietyRadioButton;
+    }
+
+    private int dpToPixel(int dpValue) {
+        final float density = getActivity().getApplication().getResources().getDisplayMetrics().density;
+        return (int) (dpValue * density); // margin in pixels
     }
 
     private void showCustomVariety(final RadioGroup radioGroup, final int checkedId) {
@@ -137,4 +146,14 @@ public class VarietyPickerDialog extends DialogFragment {
         }
     }
 
+    private void persistColor() {
+        final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
+        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.new_tea_radio_group_variety_input);
+        final RadioButton radioButton = varietyRadioGroup.findViewById(varietyRadioGroup.getCheckedRadioButtonId());
+
+        final int varietyIndex = Arrays.asList(varietyList).indexOf(radioButton.getText().toString());
+        final int varietyColor = ColorConversation.getVarietyColor(varietyIndex, getActivity().getApplication());
+
+        newTeaViewModel.setColor(varietyColor);
+    }
 }

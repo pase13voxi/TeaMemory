@@ -99,7 +99,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void createColorPicker() {
         ColorPickerDialog colorPickerDialog = new ColorPickerDialog(NewTea.this, buttonColorShape.getColor());
         colorPickerDialog.setTitle(getResources().getString(R.string.new_tea_color_dialog_title));
-        colorPickerDialog.setOnColorChangedListener(color -> buttonColorShape.setColor(color));
+        colorPickerDialog.setOnColorChangedListener(color -> newTeaViewModel.setColor(color));
         colorPickerDialog.show();
     }
 
@@ -183,14 +183,13 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void initializeEditTea() {
         newTeaViewModel = new NewTeaViewModel(teaId, getApplication());
 
-        buttonColorShape.setColor(newTeaViewModel.getColor());
-
         final EditText editTextName = findViewById(R.id.edit_text_new_tea_name);
         editTextName.setText(newTeaViewModel.getName());
     }
 
     private void onDataChanged() {
         bindVarietyToInputField();
+        bindColorToInputField();
         bindAmountToInputField();
         bindTemperatureToInputField();
         bindCoolDownTimeToInputField();
@@ -212,8 +211,10 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         } else {
             variety = Variety.values()[varietyIndex];
         }
+    }
 
-        buttonColorShape.setColorByVariety(variety.ordinal());
+    private void bindColorToInputField() {
+        buttonColorShape.setColor(newTeaViewModel.getColor());
     }
 
     private void bindAmountToInputField() {
@@ -364,7 +365,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     }
 
     private void createOrEditTea(final String name) {
-        newTeaViewModel.saveTea(name, buttonColorShape.getColor());
+        newTeaViewModel.saveTea(name);
     }
 
     private void navigateToMainOrShowTea() {

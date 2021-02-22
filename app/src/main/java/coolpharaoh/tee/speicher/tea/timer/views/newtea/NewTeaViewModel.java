@@ -55,6 +55,7 @@ class NewTeaViewModel {
         if (teaId == null) {
             tea = new Tea();
             tea.setVariety("01_black");
+            tea.setColor(-15461296);
             tea.setAmount(-500);
             tea.setAmountKind("Ts");
             tea.setRating(0);
@@ -101,6 +102,11 @@ class NewTeaViewModel {
 
     int getColor() {
         return tea.getColor();
+    }
+
+    void setColor(final int color) {
+        tea.setColor(color);
+        signalDataChanged();
     }
 
     // Infusion
@@ -199,25 +205,25 @@ class NewTeaViewModel {
     }
 
     // Overall
-    void saveTea(final String name, final int color) {
+    void saveTea(final String name) {
         // if id is null a new Tea will be created
         if (tea.getId() == null) {
-            insertTea(name, color);
+            insertTea(name);
         } else {
-            updateTea(name, color);
+            updateTea(name);
         }
     }
 
-    private void updateTea(final String name, final int color) {
-        setTeaInformation(name, color);
+    private void updateTea(final String name) {
+        setTeaInformation(name);
 
         teaRepository.updateTea(tea);
 
         saveInfusions(tea.getId());
     }
 
-    private void insertTea(final String name, final int color) {
-        setTeaInformation(name, color);
+    private void insertTea(final String name) {
+        setTeaInformation(name);
         tea.setNextInfusion(0);
 
         final long teaId = teaRepository.insertTea(tea);
@@ -225,9 +231,8 @@ class NewTeaViewModel {
         saveInfusions(teaId);
     }
 
-    private void setTeaInformation(final String name, final int color) {
+    private void setTeaInformation(final String name) {
         tea.setName(name);
-        tea.setColor(color);
         tea.setDate(CurrentDate.getDate());
     }
 
