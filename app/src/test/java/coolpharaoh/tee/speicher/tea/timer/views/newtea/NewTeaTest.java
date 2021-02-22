@@ -60,12 +60,14 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 @RunWith(RobolectricTestRunner.class)
 public class NewTeaTest {
 
-    public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
-    public static final String CELSIUS = "Celsius";
-    public static final String FIRST_INFUSION = "1. Infusion";
-    public static final String SECOND_INFUSION = "2. Infusion";
-    public static final String FAHRENHEIT = "Fahrenheit";
-    public static final String TEA_ID = "teaId";
+    private static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
+    private static final String CELSIUS = "Celsius";
+    private static final String FIRST_INFUSION = "1. Infusion";
+    private static final String SECOND_INFUSION = "2. Infusion";
+    private static final String FAHRENHEIT = "Fahrenheit";
+    private static final String TEA_ID = "teaId";
+    private static final String SHOW_TEA_FLAG = "showTea";
+    private static final String CODE_GREEN_TEA = "02_green";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -309,7 +311,7 @@ public class NewTeaTest {
     @Test
     public void showActivityEditModeAndExpectFilledFields() {
         mockSettings(FAHRENHEIT);
-        final Tea tea = new Tea("Tea", "02_green", 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -342,7 +344,7 @@ public class NewTeaTest {
     @Test
     public void editTeaAndExpectEditedTea() {
         mockSettings(FAHRENHEIT);
-        final Tea tea = new Tea("Tea", "02_green", 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -397,7 +399,7 @@ public class NewTeaTest {
     @Test
     public void performNextAndPreviousInfusion() {
         mockSettings(FAHRENHEIT);
-        final Tea tea = new Tea("Tea", "02_green", 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -411,7 +413,7 @@ public class NewTeaTest {
 
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
         intent.putExtra(TEA_ID, 1L);
-        intent.putExtra("showTea", true);
+        intent.putExtra(SHOW_TEA_FLAG, true);
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -446,7 +448,7 @@ public class NewTeaTest {
     @Test
     public void performDeleteInfusion() {
         mockSettings(FAHRENHEIT);
-        final Tea tea = new Tea("Tea", "02_green", 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -460,7 +462,7 @@ public class NewTeaTest {
 
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
         intent.putExtra(TEA_ID, 1L);
-        intent.putExtra("showTea", true);
+        intent.putExtra(SHOW_TEA_FLAG, true);
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -493,7 +495,7 @@ public class NewTeaTest {
 
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
         intent.putExtra(TEA_ID, 1L);
-        intent.putExtra("showTea", true);
+        intent.putExtra(SHOW_TEA_FLAG, true);
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -509,7 +511,7 @@ public class NewTeaTest {
     @Test
     public void editTeaAndExpectShowTeaActivity() {
         mockSettings(FAHRENHEIT);
-        final Tea tea = new Tea("Tea", "02_green", 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -521,7 +523,7 @@ public class NewTeaTest {
 
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
         intent.putExtra(TEA_ID, 1L);
-        intent.putExtra("showTea", true);
+        intent.putExtra(SHOW_TEA_FLAG, true);
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {

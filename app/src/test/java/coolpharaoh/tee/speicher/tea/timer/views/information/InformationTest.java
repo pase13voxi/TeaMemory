@@ -292,9 +292,7 @@ public class InformationTest {
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
-        informationActivityScenario.onActivity(information -> {
-            checkCounter(information, "1", "2", "3", "4");
-        });
+        informationActivityScenario.onActivity(information -> checkCounter(information, "1", "2", "3", "4"));
     }
 
     @Test
@@ -305,9 +303,7 @@ public class InformationTest {
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
-        informationActivityScenario.onActivity(information -> {
-            checkCounter(information, "0", "0", "0", "0");
-        });
+        informationActivityScenario.onActivity(information -> checkCounter(information, "0", "0", "0", "0"));
     }
 
     private void createTea(final int rating) {

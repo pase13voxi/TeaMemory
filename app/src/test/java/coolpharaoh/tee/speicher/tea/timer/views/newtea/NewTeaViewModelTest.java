@@ -38,6 +38,7 @@ import static org.mockito.Mockito.when;
 public class NewTeaViewModelTest {
     private static final String CELSIUS = "Celsius";
     private static final String FAHRENHEIT = "Fahrenheit";
+    private static final String TIME_1 = "05:45";
     private static final String[] VARIETY_CODES = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
             "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
     private static final String[] VARIETY_TEAS = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
@@ -60,7 +61,6 @@ public class NewTeaViewModelTest {
 
     private static final long TEA_ID_FILLED = 1L;
     private Tea tea;
-    private List<Infusion> infusions;
 
     @Before
     public void setUp() {
@@ -125,8 +125,8 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setCoolDownTimeAndExpectCoolDownTime() {
-        newTeaViewModelEmpty.setInfusionCoolDownTime("05:45");
-        assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isEqualTo("05:45");
+        newTeaViewModelEmpty.setInfusionCoolDownTime(TIME_1);
+        assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isEqualTo(TIME_1);
     }
 
     @Test
@@ -137,8 +137,8 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setTimeAndExpectTime() {
-        newTeaViewModelEmpty.setInfusionTime("05:45");
-        assertThat(newTeaViewModelEmpty.getInfusionTime()).isEqualTo("05:45");
+        newTeaViewModelEmpty.setInfusionTime(TIME_1);
+        assertThat(newTeaViewModelEmpty.getInfusionTime()).isEqualTo(TIME_1);
     }
 
     @Test
@@ -202,8 +202,8 @@ public class NewTeaViewModelTest {
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).insertTea(captor.capture());
-        Tea tea = captor.getValue();
-        assertThat(tea)
+        final Tea savedTea = captor.getValue();
+        assertThat(savedTea)
                 .extracting(Tea::getName, Tea::getColor)
                 .containsExactly("name", 15);
         verify(infusionRepository).insertInfusion(any());
@@ -216,8 +216,8 @@ public class NewTeaViewModelTest {
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea(captor.capture());
-        Tea tea = captor.getValue();
-        assertThat(tea)
+        final Tea savedTea = captor.getValue();
+        assertThat(savedTea)
                 .extracting(Tea::getName, Tea::getColor)
                 .containsExactly("name", 15);
         verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED);
@@ -236,7 +236,7 @@ public class NewTeaViewModelTest {
         tea.setId(TEA_ID_FILLED);
         when(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
 
-        infusions = new ArrayList<>();
+        List<Infusion> infusions = new ArrayList<>();
         Infusion infusion1 = new Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5);
         infusions.add(infusion1);
         Infusion infusion2 = new Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100);

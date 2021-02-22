@@ -1,7 +1,7 @@
 <resources>
     <string name="new_tea_heading">Tee erstellen/bearbeiten</string>
     <string name="new_tea_text_view_heading_variety">Teesorte</string>
-    <string name="new_tea_edit_text_custom_variety">Benutzerdefinierte Sorte eingeben</string>
+    <string name="new_tea_edit_text_custom_variety">Teesorte eingeben</string>
     <string name="new_tea_dialog_variety_header">"Teesorte eingeben"</string>
     <string name="new_tea_text_view_heading_name">Name</string>
     <string name="new_tea_edit_text_hint_name">Name eingeben</string>

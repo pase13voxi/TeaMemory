@@ -34,6 +34,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener, Printer {
 
+    private static final String FAHRENHEIT = "Fahrenheit";
+
     private enum Variety {
         BLACK_TEA, GREEN_TEA, YELLOW_TEA, WHITE_TEA, OOLONG_TEA, PU_ERH_TEA,
         HERBAL_TEA, FRUIT_TEA, ROOIBUS_TEA, OTHER
@@ -236,13 +238,13 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         final EditText editTextTemperature = findViewById(R.id.edit_text_new_tea_temperature);
 
         if (temperature == -500) {
-            if ("Fahrenheit".equals(temperatureUnit)) {
+            if (FAHRENHEIT.equals(temperatureUnit)) {
                 editTextTemperature.setText(R.string.new_tea_edit_text_temperature_empty_text_fahrenheit);
             } else {
                 editTextTemperature.setText(R.string.new_tea_edit_text_temperature_empty_text_celsius);
             }
         } else {
-            if ("Fahrenheit".equals(temperatureUnit)) {
+            if (FAHRENHEIT.equals(temperatureUnit)) {
                 editTextTemperature.setText(getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, temperature));
             } else {
                 editTextTemperature.setText(getString(R.string.new_tea_edit_text_temperature_text_celsius, temperature));
@@ -267,7 +269,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
 
         if (temperature == -500
                 || (temperature == 100 && "Celsius".equals(temperatureUnit))
-                || (temperature == 212 && "Fahrenheit".equals(temperatureUnit))) {
+                || (temperature == 212 && FAHRENHEIT.equals(temperatureUnit))) {
             layoutCoolDownTime.setVisibility(View.GONE);
             newTeaViewModel.resetInfusionCoolDownTime();
         } else {

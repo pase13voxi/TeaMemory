@@ -2,7 +2,7 @@
     <string name="new_tea_heading">Create/Edit tea</string>
     <string name="new_tea_text_view_heading_variety">Tea variety</string>
     <string name="new_tea_dialog_variety_header">"Input variety"</string>
-    <string name="new_tea_edit_text_custom_variety">Input custom variety</string>
+    <string name="new_tea_edit_text_custom_variety">Input variety</string>
     <string name="new_tea_text_view_heading_name">Name</string>
     <string name="new_tea_edit_text_hint_name">Input name</string>
     <string name="new_tea_text_view_heading_color">Color</string>

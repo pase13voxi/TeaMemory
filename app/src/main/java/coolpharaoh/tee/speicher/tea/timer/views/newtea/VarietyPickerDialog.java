@@ -103,8 +103,11 @@ public class VarietyPickerDialog extends DialogFragment {
                 }
         );
         varietyRadioButton.setButtonTintList(colorStateList);
-        varietyRadioButton.setPadding(40, 35, 0, 0);
-        varietyRadioButton.setTextSize(17);
+        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(40, 30, 0, 0);
+        varietyRadioButton.setLayoutParams(params);
+        varietyRadioButton.setPadding(40, 0, 0, 0);
+        varietyRadioButton.setTextSize(16);
         return varietyRadioButton;
     }
 

@@ -23,7 +23,6 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="5dp"
         android:hint="@string/information_detail_dialog_hint_description"
-        android:importantForAutofill="no"
-        android:theme="@style/informationEditTextTheme" />
+        android:importantForAutofill="no" />
 
 </LinearLayout>
