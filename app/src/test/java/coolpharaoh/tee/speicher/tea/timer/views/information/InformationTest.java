@@ -30,7 +30,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowPopupMenu;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -97,10 +99,10 @@ public class InformationTest {
             final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
             assertThat(ratingBar.getRating()).isZero();
 
-            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isZero();
 
-            final EditText editTextNotes = information.findViewById(R.id.editTextNotes);
+            final EditText editTextNotes = information.findViewById(R.id.information_edit_text_notes);
             assertThat(editTextNotes.getText().toString()).isBlank();
             verify(noteDao).insert(any());
         });
@@ -123,10 +125,10 @@ public class InformationTest {
             final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
             assertThat(ratingBar.getRating()).isEqualTo(4);
 
-            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
 
-            final EditText editTextNotes = information.findViewById(R.id.editTextNotes);
+            final EditText editTextNotes = information.findViewById(R.id.information_edit_text_notes);
             assertThat(editTextNotes.getText()).hasToString(notes.getDescription());
         });
     }
@@ -141,7 +143,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final EditText editTextNotes = information.findViewById(R.id.editTextNotes);
+            final EditText editTextNotes = information.findViewById(R.id.information_edit_text_notes);
             editTextNotes.setText(notes);
         });
 
@@ -181,14 +183,14 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final ImageButton buttonAddDetail = information.findViewById(R.id.buttonAddDetail);
+            final ImageButton buttonAddDetail = information.findViewById(R.id.information_button_add_detail);
             buttonAddDetail.performClick();
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_add_detail_dialog_heading);
 
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.editTextDialogAddEditHeader,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_header,
                     "", HEADER);
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.editTextDialogAddEditDescription,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_description,
                     "", DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -211,7 +213,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final ImageButton buttonAddDetail = information.findViewById(R.id.buttonAddDetail);
+            final ImageButton buttonAddDetail = information.findViewById(R.id.information_button_add_detail);
             buttonAddDetail.performClick();
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_add_detail_dialog_heading);
@@ -233,7 +235,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(position).itemView;
             final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.buttonDetailOptions);
 
@@ -255,7 +257,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(position).itemView;
             final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.buttonDetailOptions);
 
@@ -265,9 +267,9 @@ public class InformationTest {
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_edit_detail_dialog_heading);
 
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.editTextDialogAddEditHeader,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_header,
                     details.get(position).getHeader(), HEADER);
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.editTextDialogAddEditDescription,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_description,
                     details.get(position).getDescription(), DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -278,6 +280,24 @@ public class InformationTest {
 
             assertThat(note).extracting(Note::getHeader, Note::getDescription)
                     .containsExactly(HEADER, DESCRIPTION);
+        });
+    }
+
+    @Test
+    public void showLastUsed() {
+        final Date date = CurrentDate.getDate();
+        createTea(0, date);
+
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            final TextView textViewLastUsed = information.findViewById(R.id.information_text_view_last_used);
+
+            final SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+            final String strDate = formatter.format(date);
+            assertThat(textViewLastUsed.getText()).hasToString(information.getString(R.string.information_counter_last_used, strDate));
         });
     }
 
@@ -306,11 +326,16 @@ public class InformationTest {
         informationActivityScenario.onActivity(information -> checkCounter(information, "0", "0", "0", "0"));
     }
 
-    private void createTea(final int rating) {
-        final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, null);
+    private void createTea(final int rating, final Date date) {
+        final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, date);
         tea.setRating(rating);
         when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
+    }
 
+    private void createTea(final int rating) {
+        final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, CurrentDate.getDate());
+        tea.setRating(rating);
+        when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
     }
 
     private List<Note> createDetails() {
@@ -349,10 +374,10 @@ public class InformationTest {
     }
 
     private void checkCounter(Information information, String today, String week, String month, String overall) {
-        TextView textViewToday = information.findViewById(R.id.textViewInformationCounterToday);
-        TextView textViewWeek = information.findViewById(R.id.textViewInformationCounterWeek);
-        TextView textViewMonth = information.findViewById(R.id.textViewInformationCounterMonth);
-        TextView textViewOverall = information.findViewById(R.id.textViewInformationCounterOverall);
+        TextView textViewToday = information.findViewById(R.id.information_text_view_counter_today);
+        TextView textViewWeek = information.findViewById(R.id.information_text_view_counter_week);
+        TextView textViewMonth = information.findViewById(R.id.information_text_view_counter_month);
+        TextView textViewOverall = information.findViewById(R.id.information_text_view_counter_overall);
 
         assertThat(textViewToday.getText()).hasToString(today);
         assertThat(textViewWeek.getText()).hasToString(week);

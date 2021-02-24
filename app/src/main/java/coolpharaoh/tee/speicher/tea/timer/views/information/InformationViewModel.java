@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -63,6 +64,11 @@ class InformationViewModel extends ViewModel {
         final Tea tea = teaRepository.getTeaById(teaId);
         tea.setRating(rating);
         teaRepository.updateTea(tea);
+    }
+
+    public Date getDate() {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        return tea.getDate();
     }
 
     // Notes

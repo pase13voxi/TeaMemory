@@ -80,6 +80,16 @@ public class InformationViewModelTest {
     }
 
     @Test
+    public void getDate() {
+        final Tea tea = new Tea("name", null, 0, null, 0, 0, CurrentDate.getDate());
+        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
+
+        assertThat(informationViewModel.getDate()).isEqualTo(tea.getDate());
+    }
+
+    @Test
     public void getDetails() {
         List<Note> notes = Arrays.asList(new Note[]{new Note(TEA_ID, 0, HEADER, DESCRIPTION),
                 new Note(TEA_ID, 1, HEADER, DESCRIPTION)});

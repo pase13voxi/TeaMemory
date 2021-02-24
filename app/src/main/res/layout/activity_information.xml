@@ -21,17 +21,17 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
-                style="@style/informationCardview"
+                style="@style/information_card_view_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    style="@style/informationLinearLayout"
+                    style="@style/information_linear_layout_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        style="@style/informationHeading"
+                        style="@style/information_text_view_heading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/information_details_rating" />
@@ -44,35 +44,35 @@
                         android:isIndicator="false"
                         android:max="5"
                         android:stepSize="1"
-                        android:theme="@style/informationRatingBarStyle" />
+                        android:theme="@style/information_rating_bar_style" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                style="@style/informationCardview"
+                style="@style/information_card_view_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    style="@style/informationLinearLayout"
+                    style="@style/information_linear_layout_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true">
 
                     <TextView
-                        style="@style/informationHeading"
+                        style="@style/information_text_view_heading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/information_details_heading" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_details"
+                        android:id="@+id/information_recycler_view_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp" />
 
                     <ImageButton
-                        android:id="@+id/buttonAddDetail"
+                        android:id="@+id/information_button_add_detail"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:background="?android:attr/selectableItemBackground"
@@ -83,71 +83,77 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                style="@style/informationCardview"
+                style="@style/information_card_view_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    style="@style/informationLinearLayout"
+                    style="@style/information_linear_layout_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        style="@style/informationHeading"
+                        style="@style/information_text_view_heading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/information_counter_heading" />
 
+                    <TextView
+                        android:id="@+id/information_text_view_last_used"
+                        style="@style/information_text_view_last_usage_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            style="@style/informationCounterLinearLayout"
+                            style="@style/information_linear_layout_counter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/informationCounterTextViewHeader"
+                                style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_today" />
 
                             <TextView
-                                android:id="@+id/textViewInformationCounterToday"
-                                style="@style/informationCounterTextViewCouting"
+                                android:id="@+id/information_text_view_counter_today"
+                                style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
                         <View
-                            style="@style/informationCounterSeparation"
+                            style="@style/information_counter_separation_style"
                             android:layout_width="1dp"
                             android:layout_height="match_parent" />
 
                         <LinearLayout
-                            style="@style/informationCounterLinearLayout"
+                            style="@style/information_linear_layout_counter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/informationCounterTextViewHeader"
+                                style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_week" />
 
                             <TextView
-                                android:id="@+id/textViewInformationCounterWeek"
-                                style="@style/informationCounterTextViewCouting"
+                                android:id="@+id/information_text_view_counter_week"
+                                style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <View
-                        style="@style/informationCounterSeparation"
+                        style="@style/information_counter_separation_style"
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
 
@@ -157,42 +163,42 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            style="@style/informationCounterLinearLayout"
+                            style="@style/information_linear_layout_counter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/informationCounterTextViewHeader"
+                                style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_month" />
 
                             <TextView
-                                android:id="@+id/textViewInformationCounterMonth"
-                                style="@style/informationCounterTextViewCouting"
+                                android:id="@+id/information_text_view_counter_month"
+                                style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
                         <View
-                            style="@style/informationCounterSeparation"
+                            style="@style/information_counter_separation_style"
                             android:layout_width="1dp"
                             android:layout_height="match_parent" />
 
                         <LinearLayout
-                            style="@style/informationCounterLinearLayout"
+                            style="@style/information_linear_layout_counter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/informationCounterTextViewHeader"
+                                style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_overall" />
 
                             <TextView
-                                android:id="@+id/textViewInformationCounterOverall"
-                                style="@style/informationCounterTextViewCouting"
+                                android:id="@+id/information_text_view_counter_overall"
+                                style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
@@ -202,29 +208,29 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                style="@style/informationCardview"
+                style="@style/information_card_view_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    style="@style/informationLinearLayout"
+                    style="@style/information_linear_layout_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        style="@style/informationHeading"
+                        style="@style/information_text_view_heading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/information_notes_heading" />
 
                     <EditText
-                        android:id="@+id/editTextNotes"
-                        style="@style/informationEditTextStyle"
+                        android:id="@+id/information_edit_text_notes"
+                        style="@style/information_edit_text_style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/information_notes_hint"
                         android:importantForAutofill="no"
-                        android:theme="@style/informationEditTextTheme" />
+                        android:theme="@style/information_edit_text_theme" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +30,9 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 public class Information extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
+    private static final String DATE_FORMAT = "dd MMMM yyyy";
+    private static final String TEA_ID_EXTRA = "teaId";
+
     private InformationViewModel informationViewModel;
 
     @Override
@@ -38,19 +42,20 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        long teaId = this.getIntent().getLongExtra("teaId", 0);
+        long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
         fillToolbarTitle();
         fillRatingBar();
         showDetailsList();
+        fillLastUsed();
         fillCounter();
         fillNotes();
 
         final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
 
-        final ImageButton buttonAddDetail = findViewById(R.id.buttonAddDetail);
+        final ImageButton buttonAddDetail = findViewById(R.id.information_button_add_detail);
         buttonAddDetail.setOnClickListener(v -> addDetail());
     }
 
@@ -76,7 +81,7 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
     }
 
     private void showDetailsList() {
-        final RecyclerView recyclerViewDetails = findViewById(R.id.recycler_view_details);
+        final RecyclerView recyclerViewDetails = findViewById(R.id.information_recycler_view_details);
         recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
 
         informationViewModel.getDetails().observe(this, details -> {
@@ -90,11 +95,18 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         });
     }
 
+    private void fillLastUsed() {
+        final TextView textViewLastUsed = findViewById(R.id.information_text_view_last_used);
+        final SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        final String date = formatter.format(informationViewModel.getDate());
+        textViewLastUsed.setText(getString(R.string.information_counter_last_used, date));
+    }
+
     private void fillCounter() {
-        TextView textViewToday = findViewById(R.id.textViewInformationCounterToday);
-        TextView textViewWeek = findViewById(R.id.textViewInformationCounterWeek);
-        TextView textViewMonth = findViewById(R.id.textViewInformationCounterMonth);
-        TextView textViewOverall = findViewById(R.id.textViewInformationCounterOverall);
+        final TextView textViewToday = findViewById(R.id.information_text_view_counter_today);
+        final TextView textViewWeek = findViewById(R.id.information_text_view_counter_week);
+        final TextView textViewMonth = findViewById(R.id.information_text_view_counter_month);
+        final TextView textViewOverall = findViewById(R.id.information_text_view_counter_overall);
 
         final Counter counter = informationViewModel.getCounter();
         textViewToday.setText(String.valueOf(counter.getDay()));
@@ -104,7 +116,7 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
     }
 
     private void fillNotes() {
-        final EditText editTextNotes = findViewById(R.id.editTextNotes);
+        final EditText editTextNotes = findViewById(R.id.information_edit_text_notes);
         final Note note = informationViewModel.getNotes();
         editTextNotes.setText(note.getDescription());
     }
@@ -115,8 +127,8 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         final LayoutInflater inflater = getLayoutInflater();
         final View dialogLayout = inflater.inflate(R.layout.dialog_add_edit_information, parent, false);
 
-        final EditText editTextHeading = dialogLayout.findViewById(R.id.editTextDialogAddEditHeader);
-        final EditText editTextDescription = dialogLayout.findViewById(R.id.editTextDialogAddEditDescription);
+        final EditText editTextHeading = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_header);
+        final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
 
         new AlertDialog.Builder(this).setTitle(R.string.information_add_detail_dialog_heading)
                 .setView(dialogLayout)
@@ -166,9 +178,9 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
 
         final Note detail = informationViewModel.getDetail(position);
 
-        final EditText editTextHeading = dialogLayout.findViewById(R.id.editTextDialogAddEditHeader);
+        final EditText editTextHeading = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_header);
         editTextHeading.setText(detail.getHeader());
-        final EditText editTextDescription = dialogLayout.findViewById(R.id.editTextDialogAddEditDescription);
+        final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
         editTextDescription.setText(detail.getDescription());
 
         new AlertDialog.Builder(this).setTitle(R.string.information_edit_detail_dialog_heading)
@@ -185,7 +197,7 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
     protected void onPause() {
         super.onPause();
 
-        final EditText editTextNotes = findViewById(R.id.editTextNotes);
+        final EditText editTextNotes = findViewById(R.id.information_edit_text_notes);
         informationViewModel.updateNotes(editTextNotes.getText().toString());
     }
 }
