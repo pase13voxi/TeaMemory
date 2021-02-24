@@ -15,7 +15,7 @@
     <string name="information_detail_option_edit">Ändern</string>
     <string name="information_detail_option_delete">Löschen</string>
     <string name="information_counter_heading">Benutzung</string>
-    <string name="information_counter_last_used">zuletzt %1$s</string>
+    <string name="information_counter_last_used">zuletzt verwendet: %1$s</string>
     <string name="information_counter_today">Heute</string>
     <string name="information_counter_week">Diese Woche</string>
     <string name="information_counter_month">Dieser Monat</string>
