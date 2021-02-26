@@ -200,7 +200,7 @@ public class NewTeaTest {
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            assertThat(editTextAmount.getText()).hasToString("7 ts/L");
+            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_ts, 7));
         });
     }
 
@@ -219,7 +219,7 @@ public class NewTeaTest {
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            assertThat(editTextTemperature.getText()).hasToString("80 °C");
+            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_celsius, 80));
         });
     }
 
@@ -282,7 +282,7 @@ public class NewTeaTest {
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            assertThat(editTextCoolDownTime.getText()).hasToString("05:45");
+            assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_text, "05:45"));
         });
     }
 
@@ -304,7 +304,7 @@ public class NewTeaTest {
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            assertThat(editTextTime.getText()).hasToString("05:45");
+            assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_text, "05:45"));
         });
     }
 
@@ -334,10 +334,10 @@ public class NewTeaTest {
 
             assertThat(editTextVariety.getText()).hasToString(LanguageConversation.convertCodeToVariety(tea.getVariety(), newTea.getApplication()));
             assertThat(editTextName.getText()).hasToString(tea.getName());
-            assertThat(editTextAmount.getText()).hasToString(tea.getAmount() + " ts/L");
-            assertThat(editTextTemperature.getText()).hasToString(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(editTextTime.getText()).hasToString(infusions.get(0).getTime());
-            assertThat(editTextCoolDownTime.getText()).hasToString(infusions.get(0).getCoolDownTime());
+            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_ts, tea.getAmount()));
+            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, infusions.get(0).getTemperatureFahrenheit()));
+            assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_text, infusions.get(0).getTime()));
+            assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_text, infusions.get(0).getCoolDownTime()));
         });
     }
 
