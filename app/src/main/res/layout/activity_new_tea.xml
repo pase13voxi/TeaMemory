@@ -51,7 +51,7 @@
                     android:id="@+id/new_tea_button_color"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="25dip"
+                    android:layout_height="30dip"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/button_color" />
             </LinearLayout>

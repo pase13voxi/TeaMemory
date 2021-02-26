@@ -259,7 +259,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         if (coolDownTime == null) {
             editTextCoolDownTime.setText(R.string.new_tea_edit_text_cool_down_time_empty_text);
         } else {
-            editTextCoolDownTime.setText(coolDownTime);
+            editTextCoolDownTime.setText(getString(R.string.new_tea_edit_text_cool_down_time_text, coolDownTime));
         }
     }
 
@@ -284,7 +284,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         if (time == null) {
             editTextTime.setText(R.string.new_tea_edit_text_time_empty_text);
         } else {
-            editTextTime.setText(time);
+            editTextTime.setText(getString(R.string.new_tea_edit_text_time_text, time));
         }
     }
 

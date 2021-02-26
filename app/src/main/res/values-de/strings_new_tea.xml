@@ -13,28 +13,30 @@
     <string name="new_tea_count_infusion">%1$d. Aufguss</string>
     <string name="new_tea_count_infusion_first">1. Aufguss</string>
     <string name="new_tea_text_view_heading_amount">Menge</string>
-    <string name="new_tea_edit_text_amount_empty_text_ts">- TL/L</string>
-    <string name="new_tea_edit_text_amount_text_ts">%1$d TL/L</string>
-    <string name="new_tea_edit_text_amount_text_gr">%1$d g/L</string>
+    <string name="new_tea_edit_text_amount_empty_text_ts">- TL/L (Teelöffel/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_ts">%1$d TL/L (Teelöffel/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_gr">%1$d g/L (Gramm/Liter)</string>
     <string name="new_tea_dialog_amount_header">Menge eingeben</string>
     <string-array name="new_tea_dialog_amount_kind">
         <item>TL/L</item>
         <item>g/L</item>
     </string-array>
     <string name="new_tea_text_view_heading_temperature">Temperatur</string>
-    <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C</string>
-    <string name="new_tea_edit_text_temperature_empty_text_fahrenheit">- °F</string>
-    <string name="new_tea_edit_text_temperature_text_celsius">%1$d °C</string>
-    <string name="new_tea_edit_text_temperature_text_fahrenheit">%1$d °F</string>
+    <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C (Celsius)</string>
+    <string name="new_tea_edit_text_temperature_empty_text_fahrenheit">- °F (Fahrenheit)</string>
+    <string name="new_tea_edit_text_temperature_text_celsius">%1$d °C (Celsius)</string>
+    <string name="new_tea_edit_text_temperature_text_fahrenheit">%1$d °F (Fahrenheit)</string>
     <string name="new_tea_dialog_temperature_header">Temperatur eingeben</string>
     <string name="new_tea_dialog_temperature_celsius">°C</string>
     <string name="new_tea_dialog_temperature_fahrenheit">°F</string>
     <string name="new_tea_text_view_heading_time">Ziehzeit</string>
-    <string name="new_tea_edit_text_time_empty_text">00:00</string>
+    <string name="new_tea_edit_text_time_empty_text">00:00 (mm:ss)</string>
+    <string name="new_tea_edit_text_time_text">%1$s (mm:ss)</string>
     <string name="new_tea_dialog_time_header">Ziehzeit eingeben</string>
     <string name="new_tea_dialog_time_double_point">:</string>
     <string name="new_tea_text_view_heading_cool_down_time">Abkühlzeit</string>
-    <string name="new_tea_edit_text_cool_down_time_empty_text">00:00</string>
+    <string name="new_tea_edit_text_cool_down_time_empty_text">00:00 (mm:ss)</string>
+    <string name="new_tea_edit_text_cool_down_time_text">%1$s (mm:ss)</string>
     <string name="new_tea_dialog_cool_down_time_header">Abkühlzeit eingeben</string>
     <string name="new_tea_dialog_cool_down_time_calculated_suggestion">Berechnet anhand der Temperatur</string>
     <string name="new_tea_dialog_picker_suggestion">Vorschläge</string>
