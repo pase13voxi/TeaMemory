@@ -53,11 +53,12 @@ public class CoolDownTimePickerDialog extends DialogFragment {
 
     private void setTimePicker() {
         final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
         timePickerMinutes.setMinValue(0);
         timePickerMinutes.setMaxValue(59);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
         timePickerSeconds.setMinValue(0);
         timePickerSeconds.setMaxValue(59);
+        timePickerSeconds.setFormatter(value -> String.format("%02d", value));
 
         setConfiguredValues(timePickerMinutes, timePickerSeconds);
     }

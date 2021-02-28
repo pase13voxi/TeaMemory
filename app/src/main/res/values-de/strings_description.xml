@@ -4,9 +4,8 @@
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
-        <item>Neues Fenster: \nSpeichere mehr Informationen</item>
-        <item>Navigiere zum neuen Fenster</item>
-        <item>Sortiere nach Bewertung</item>
+        <item>Neues Aussehen: Tee Eingabe</item>
+        <item>Benutzungsstatistik in \n Informations Fenster verschoben</item>
     </string-array>
     <string-array name="description_showtea_slide_description">
         <item>Zeige Abkühlzeit an</item>

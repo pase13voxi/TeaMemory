@@ -142,4 +142,12 @@ class Migrations {
             database.execSQL("ALTER TABLE backup_settings RENAME TO settings");
         }
     };
+
+    static final Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // new update description available!
+            database.execSQL("UPDATE settings SET mainupdatealert = 1");
+        }
+    };
 }

@@ -12,9 +12,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 
 public class UpdateDescription extends AppCompatActivity {
     private static final int[] slideImages = {
-            R.drawable.description_update_information,
-            R.drawable.description_update_navigation,
-            R.drawable.description_update_sort
+            R.drawable.description_update_new_tea,
+            R.drawable.description_update_counter
     };
 
     private LinearLayout dotLayout;
