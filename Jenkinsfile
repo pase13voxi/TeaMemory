@@ -39,7 +39,7 @@ pipeline {
                     ./gradlew \
                     sonarqube \
                     -Dorg.gradle.java.home=$JAVA_HOME \
-                    -Dsonar.projectKey=TestProject1 \
+                    -Dsonar.projectKey=TeaMemory \
                     -Dsonar.host.url=http://192.168.0.147:9000 \
                     -Dsonar.login=$SONARQUBE_LOGIN \
                     -Dsonar.language=java \
