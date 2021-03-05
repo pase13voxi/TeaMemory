@@ -1,11 +1,53 @@
 pipeline {
     agent any
+    options { 
+        disableConcurrentBuilds() 
+        
+    }
+    triggers {
+        pollSCM 'H/5 * * * *'
+    }
     stages {
-        stage('Stage 1') {
+        stage('Checkout') {
             steps {
-                echo 'Hello world!'
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/pase13voxi/TeaMemory.git']]])
             }
-            sdfgkjsldfgsdfadsdfgdf
+        }
+        stage('Build') {
+            steps {
+                script {
+                    sh 'chmod +x gradlew'
+                    sh '''
+                    ./gradlew \
+                    -Dorg.gradle.java.home=$JAVA_HOME \
+                    clean \
+                    test \
+                    jacocoTestReport
+                    '''
+                }
+            }
+        }
+        stage('Sonar Analysis') {
+            steps {
+                script {
+                    sh '''
+                    ./gradlew \
+                    sonarqube \
+                    -Dorg.gradle.java.home=$JAVA_HOME \
+                    -Dsonar.projectKey=TestProject1 \
+                    -Dsonar.host.url=http://192.168.0.147:9000 \
+                    -Dsonar.login=credentials('sonarqube-token') \
+                    -Dsonar.language=java \
+                    -Dsonar.java.binaries=**/javac/debug/classes \
+                    -Dsonar.coverage.jacoco.xmlReportPaths=**/reports/jacocoTestReport/jacocoTestReport.xml
+                    '''
+                }
+            }
+        }
+    }
+    post { 
+        always { 
+            cleanWs()
         }
     }
 }
