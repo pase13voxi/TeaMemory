@@ -27,7 +27,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh './gradlew -Dorg.gradle.java.home=$JAVA_HOME check'
+                    sh './gradlew -Dorg.gradle.java.home=$JAVA_HOME check jacocoTestReport'
                 }
             }
         }
