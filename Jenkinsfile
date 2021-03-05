@@ -4,6 +4,9 @@ pipeline {
         disableConcurrentBuilds() 
         
     }
+    environment {
+        SONARQUBE_LOGIN = credentials('sonarqube-token')
+    }
     triggers {
         pollSCM 'H/5 * * * *'
     }
@@ -36,7 +39,7 @@ pipeline {
                     -Dorg.gradle.java.home=$JAVA_HOME \
                     -Dsonar.projectKey=TestProject1 \
                     -Dsonar.host.url=http://192.168.0.147:9000 \
-                    -Dsonar.login=credentials('sonarqube-token') \
+                    -Dsonar.login=$SONARQUBE_LOGIN \
                     -Dsonar.language=java \
                     -Dsonar.java.binaries=**/javac/debug/classes \
                     -Dsonar.coverage.jacoco.xmlReportPaths=**/reports/jacocoTestReport/jacocoTestReport.xml
