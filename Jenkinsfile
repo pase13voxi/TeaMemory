@@ -34,7 +34,6 @@ pipeline {
         stage('Sonar Analysis') {
             steps {
                 script {
-                    sh './gradlew -Dorg.gradle.java.home=$JAVA_HOME jacocoTestReport'
                     sh '''
                     ./gradlew \
                     sonarqube \
