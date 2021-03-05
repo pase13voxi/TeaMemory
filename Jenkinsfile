@@ -1,11 +1,13 @@
 pipeline {
     agent any
+    environment {
+        SONARQUBE_LOGIN = credentials('sonarqube-token')
+        TELEGRAM_TOKEN = credentials('telegram-token')
+        TELEGRAM_CHAT_ID = credentials('telegram-chat-id')
+    }
     options { 
         disableConcurrentBuilds() 
         
-    }
-    environment {
-        SONARQUBE_LOGIN = credentials('sonarqube-token')
     }
     triggers {
         pollSCM 'H/5 * * * *'
@@ -50,6 +52,16 @@ pipeline {
         }
     }
     post { 
+        success {
+            script {
+                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory successfully build"'
+            }
+        }
+        failure {
+            script {
+                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory failed to build"'
+            }
+        }
         always { 
             cleanWs()
         }
