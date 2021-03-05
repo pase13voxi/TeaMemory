@@ -16,23 +16,25 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/pase13voxi/TeaMemory.git']]])
             }
         }
-        stage('Build') {
+        stage('Compile') {
             steps {
                 script {
                     sh 'chmod +x gradlew'
-                    sh '''
-                    ./gradlew \
-                    -Dorg.gradle.java.home=$JAVA_HOME \
-                    clean \
-                    test \
-                    jacocoTestReport
-                    '''
+                    sh './gradlew -Dorg.gradle.java.home=$JAVA_HOME clean assemble'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    sh './gradlew -Dorg.gradle.java.home=$JAVA_HOME check'
                 }
             }
         }
         stage('Sonar Analysis') {
             steps {
                 script {
+                    sh './gradlew -Dorg.gradle.java.home=$JAVA_HOME jacocoTestReport'
                     sh '''
                     ./gradlew \
                     sonarqube \
