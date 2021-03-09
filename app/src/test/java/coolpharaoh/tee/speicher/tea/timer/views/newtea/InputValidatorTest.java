@@ -12,8 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-// allow system.out.println
-@SuppressWarnings("java:S106")
 @RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
 

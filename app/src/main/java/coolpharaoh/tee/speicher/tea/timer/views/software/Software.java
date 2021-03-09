@@ -14,6 +14,8 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class Software extends AppCompatActivity {
 
     @Override

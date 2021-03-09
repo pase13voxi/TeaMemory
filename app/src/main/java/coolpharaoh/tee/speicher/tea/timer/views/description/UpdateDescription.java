@@ -10,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class UpdateDescription extends AppCompatActivity {
     private static final int[] slideImages = {
             R.drawable.description_update_new_tea,

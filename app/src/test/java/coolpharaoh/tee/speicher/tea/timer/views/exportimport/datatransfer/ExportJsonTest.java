@@ -40,8 +40,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-// allow system.out.println
-@SuppressWarnings("java:S106")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Environment.class)
 public class ExportJsonTest {

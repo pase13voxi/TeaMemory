@@ -48,7 +48,7 @@ public class TemperatureConversationTest {
 
         int celsius = TemperatureConversation.fahrenheitToCelsius(fahrenheit);
 
-        assertThat(celsius).isEqualTo(0);
+        assertThat(celsius).isZero();
     }
 
     @Test

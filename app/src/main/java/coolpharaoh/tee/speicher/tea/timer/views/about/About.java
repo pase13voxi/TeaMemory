@@ -22,6 +22,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class About extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private enum ListItems {

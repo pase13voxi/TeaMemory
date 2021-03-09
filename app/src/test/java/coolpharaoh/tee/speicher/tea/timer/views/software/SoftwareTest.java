@@ -28,8 +28,6 @@ public class SoftwareTest {
         softwareActivityScenario = ActivityScenario.launch(Software.class);
     }
 
-    // the cast is needed
-    @SuppressWarnings("java:S1905")
     @Test
     public void expectSoftwareList() {
         softwareActivityScenario.onActivity(software -> {

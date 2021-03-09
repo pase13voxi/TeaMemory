@@ -38,8 +38,6 @@ public class AboutTest {
         aboutActivityScenario = ActivityScenario.launch(About.class);
     }
 
-    // the cast is needed
-    @SuppressWarnings("java:S1905")
     @Test
     public void expectAboutListAndVersion() {
         aboutActivityScenario.onActivity(about -> {

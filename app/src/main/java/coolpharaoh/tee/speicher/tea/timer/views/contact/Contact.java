@@ -15,6 +15,8 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class Contact extends AppCompatActivity {
 
     @Override

@@ -33,6 +33,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class Main extends AppCompatActivity implements View.OnLongClickListener {
     private MainViewModel mainActivityViewModel;
 

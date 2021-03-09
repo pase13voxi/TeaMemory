@@ -31,7 +31,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
-
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class NewTea extends AppCompatActivity implements View.OnLongClickListener, Printer {
 
     private static final String FAHRENHEIT = "Fahrenheit";

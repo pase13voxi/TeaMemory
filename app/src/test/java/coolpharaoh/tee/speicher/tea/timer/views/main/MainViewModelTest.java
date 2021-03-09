@@ -25,7 +25,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -115,7 +114,7 @@ public class MainViewModelTest {
     public void showTeasBySearchString() {
         String searchString = "search";
         mainActivityViewModel.visualizeTeasBySearchString(searchString);
-        verify(teaRepository).getTeasBySearchString(eq(searchString));
+        verify(teaRepository).getTeasBySearchString(searchString);
     }
 
     @Test

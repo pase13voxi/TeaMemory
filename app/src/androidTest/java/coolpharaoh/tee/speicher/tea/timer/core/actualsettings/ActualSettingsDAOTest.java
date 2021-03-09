@@ -75,7 +75,7 @@ public class ActualSettingsDAOTest {
 
     @Test
     public void countSettings() {
-        assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(0);
+        assertThat(mActualSettingsDAO.getCountItems()).isZero();
 
         mActualSettingsDAO.insert(createSettings(false));
 

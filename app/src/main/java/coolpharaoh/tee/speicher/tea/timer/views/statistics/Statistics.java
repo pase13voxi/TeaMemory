@@ -20,6 +20,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class Statistics extends AppCompatActivity {
 
     private StatisticsViewModel statisticsViewModel;
@@ -66,6 +68,7 @@ public class Statistics extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 

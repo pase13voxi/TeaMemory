@@ -42,6 +42,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
     public static final String EXTRA_TEA_ID = "teaId";

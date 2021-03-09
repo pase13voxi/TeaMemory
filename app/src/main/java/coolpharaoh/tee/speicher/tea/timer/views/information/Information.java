@@ -28,6 +28,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class Information extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
     private static final String DATE_FORMAT = "dd MMMM yyyy";

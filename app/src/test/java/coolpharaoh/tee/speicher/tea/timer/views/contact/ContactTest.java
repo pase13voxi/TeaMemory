@@ -34,8 +34,6 @@ public class ContactTest {
         contactActivityScenario = ActivityScenario.launch(Contact.class);
     }
 
-    // the cast is needed
-    @SuppressWarnings("java:S1905")
     @Test
     public void launchActivity() {
         contactActivityScenario.onActivity(contact -> {
@@ -51,7 +49,7 @@ public class ContactTest {
             assertThat(emailIntent.getAction()).isEqualTo(INTENT_ACTION_SENDTO);
 
             String mailTo = "mailto:" + contact.getString(R.string.contact_email_address).replace("@", "%40");
-            assertThat(emailIntent.getData().toString()).isEqualTo(mailTo);
+            assertThat(emailIntent.getData()).hasToString(mailTo);
         });
     }
 }
