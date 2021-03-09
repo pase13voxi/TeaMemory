@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.core.tea;
 import android.app.Application;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 public class ColorConversation {
 
@@ -12,25 +13,25 @@ public class ColorConversation {
     public static int getVarietyColor(int variety, Application application) {
         switch (variety) {
             case 0:
-                return application.getResources().getColor(R.color.blacktea);
+                return new CustomResources(application).getColor(R.color.blacktea);
             case 1:
-                return application.getResources().getColor(R.color.greentea);
+                return new CustomResources(application).getColor(R.color.greentea);
             case 2:
-                return application.getResources().getColor(R.color.yellowtea);
+                return new CustomResources(application).getColor(R.color.yellowtea);
             case 3:
-                return application.getResources().getColor(R.color.whitetea);
+                return new CustomResources(application).getColor(R.color.whitetea);
             case 4:
-                return application.getResources().getColor(R.color.oolongtea);
+                return new CustomResources(application).getColor(R.color.oolongtea);
             case 5:
-                return application.getResources().getColor(R.color.puerhtea);
+                return new CustomResources(application).getColor(R.color.puerhtea);
             case 6:
-                return application.getResources().getColor(R.color.herbaltea);
+                return new CustomResources(application).getColor(R.color.herbaltea);
             case 7:
-                return application.getResources().getColor(R.color.fruittea);
+                return new CustomResources(application).getColor(R.color.fruittea);
             case 8:
-                return application.getResources().getColor(R.color.rooibustea);
+                return new CustomResources(application).getColor(R.color.rooibustea);
             default:
-                return application.getResources().getColor(R.color.other);
+                return new CustomResources(application).getColor(R.color.other);
         }
     }
 

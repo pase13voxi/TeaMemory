@@ -30,6 +30,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -403,7 +404,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void showTooltip(final View v, final int gravity, final String text) {
         new Tooltip.Builder(v)
                 .setText(text)
-                .setTextColor(getResources().getColor(R.color.white))
+                .setTextColor(new CustomResources(getApplication()).getColor(R.color.white))
                 .setGravity(gravity)
                 .setCornerRadius(8f)
                 .setCancelable(true)

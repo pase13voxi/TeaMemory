@@ -41,6 +41,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -641,7 +642,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     @Override
-    public boolean onLongClick(View view) {
+    public boolean onLongClick(final View view) {
         if (view.getId() == R.id.buttonTemperature) {
             showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_temperature));
         } else if (view.getId() == R.id.buttonCalculateAmount) {
@@ -654,11 +655,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         return true;
     }
 
-    //creates a Tooltip
-    private void showTooltip(View v, int gravity, String text) {
-        new Tooltip.Builder(v)
+    private void showTooltip(final View view, final int gravity, final String text) {
+        new Tooltip.Builder(view)
                 .setText(text)
-                .setTextColor(getResources().getColor(R.color.white))
+                .setTextColor(new CustomResources(getApplication()).getColor(R.color.white))
                 .setGravity(gravity)
                 .setCornerRadius(8f)
                 .setCancelable(true)

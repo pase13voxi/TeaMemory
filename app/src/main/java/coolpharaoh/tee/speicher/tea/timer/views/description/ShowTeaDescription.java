@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -43,16 +44,18 @@ public class ShowTeaDescription extends AppCompatActivity {
     public void addDotsIndicator(final int position, final int size) {
         final TextView[] dots = new TextView[size];
         dotLayout.removeAllViews();
+
+        final CustomResources customResources = new CustomResources(getApplication());
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(R.string.description_dots);
             dots[i].setTextSize(35);
-            dots[i].setTextColor(getResources().getColor(R.color.colorPrimary));
+            dots[i].setTextColor(customResources.getColor(R.color.colorPrimary));
 
             dotLayout.addView(dots[i]);
         }
 
-        dots[position].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        dots[position].setTextColor(customResources.getColor(R.color.colorPrimaryDark));
     }
 
 

@@ -21,6 +21,7 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 public class VarietyPickerDialog extends DialogFragment {
     public static final String TAG = "VarietyPickerDialog";
@@ -96,14 +97,16 @@ public class VarietyPickerDialog extends DialogFragment {
     private RadioButton createRadioButton(final String variety) {
         final RadioButton varietyRadioButton = new RadioButton(getActivity());
         varietyRadioButton.setText(variety);
+
+        final CustomResources customResources = new CustomResources(getActivity().getApplication());
         final ColorStateList colorStateList = new ColorStateList(
                 new int[][]{
                         new int[]{-android.R.attr.state_checked}, // unchecked
                         new int[]{android.R.attr.state_checked}  // checked
                 },
                 new int[]{
-                        getResources().getColor(R.color.light_grey),
-                        getResources().getColor(R.color.colorPrimary)
+                        customResources.getColor(R.color.light_grey),
+                        customResources.getColor(R.color.colorPrimary)
                 }
         );
         varietyRadioButton.setButtonTintList(colorStateList);
