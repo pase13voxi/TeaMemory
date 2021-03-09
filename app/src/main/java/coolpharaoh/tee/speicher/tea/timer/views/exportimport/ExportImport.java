@@ -29,6 +29,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequ
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_WRITE;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class ExportImport extends AppCompatActivity implements Printer {
     private boolean keepStoredTeas = true;
 

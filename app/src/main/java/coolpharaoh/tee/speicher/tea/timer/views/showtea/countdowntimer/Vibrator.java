@@ -25,6 +25,8 @@ class Vibrator {
         this.timerViewModel = timerViewModel;
     }
 
+    //deprecated vibrate can be removed once the minimum sdk is greater that 25
+    @SuppressWarnings("java:S1874")
     // The SDK is checked but android studio doesn't recognize it.
     @SuppressLint("NewApi")
     void vibrate() {

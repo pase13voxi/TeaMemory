@@ -31,6 +31,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequ
 
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
 
+// This class has 9 Parent because of AppCompatActivity
+@SuppressWarnings("java:S110")
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     public static final int REQUEST_CODE_MUSIC_CHOICE = 4532;

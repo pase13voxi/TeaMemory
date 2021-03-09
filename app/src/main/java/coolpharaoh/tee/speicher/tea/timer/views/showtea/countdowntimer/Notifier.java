@@ -74,6 +74,8 @@ class Notifier {
         return notification.build();
     }
 
+    //deprecated builder can be removed once the minimum sdk is greater that 25
+    @SuppressWarnings("java:S1874")
     private android.app.Notification getNotificationBeforeAndroidO() {
         final android.app.Notification.Builder notification = new android.app.Notification.Builder(application)
                 .setTicker(application.getString(R.string.notification_ticker))
