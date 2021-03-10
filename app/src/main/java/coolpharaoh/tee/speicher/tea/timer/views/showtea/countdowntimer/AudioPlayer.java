@@ -1,7 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 import android.app.Application;
-import android.media.AudioManager;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -30,8 +30,10 @@ class AudioPlayer {
         if (timerViewModel.getMusicchoice() != null) {
             Uri uri = Uri.parse(timerViewModel.getMusicchoice());
             try {
-                //synchronize musicstreams
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
+                mediaPlayer.setAudioAttributes(new AudioAttributes
+                        .Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .build());
                 mediaPlayer.setDataSource(application, uri);
                 mediaPlayer.prepare();
                 mediaPlayer.start();

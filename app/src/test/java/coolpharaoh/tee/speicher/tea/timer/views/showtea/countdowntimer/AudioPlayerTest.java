@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
-import android.media.AudioManager;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -43,7 +43,7 @@ public class AudioPlayerTest {
         AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
         audioPlayer.start();
 
-        verify(mediaPlayer).setAudioStreamType(AudioManager.STREAM_RING);
+        verify(mediaPlayer).setAudioAttributes(any(AudioAttributes.class));
         verify(mediaPlayer).setDataSource(null, uri);
         verify(mediaPlayer).prepare();
         verify(mediaPlayer).start();

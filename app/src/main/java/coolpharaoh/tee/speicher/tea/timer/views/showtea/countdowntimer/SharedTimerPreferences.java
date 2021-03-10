@@ -3,7 +3,8 @@ package coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
+import androidx.preference.PreferenceManager;
 
 public class SharedTimerPreferences {
 

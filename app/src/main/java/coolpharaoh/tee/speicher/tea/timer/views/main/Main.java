@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tooltip.Tooltip;
@@ -32,7 +33,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -267,7 +267,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     private void showTooltip(View view, String text) {
         new Tooltip.Builder(view)
                 .setText(text)
-                .setTextColor(new CustomResources(getApplication()).getColor(R.color.white))
+                .setTextColor(ContextCompat.getColor(getApplication(), R.color.white))
                 .setGravity(Gravity.TOP)
                 .setCornerRadius(8f)
                 .setCancelable(true)

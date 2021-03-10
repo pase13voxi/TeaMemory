@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.pm.PackageInfoCompat;
 
 import java.util.Objects;
 
@@ -50,12 +51,13 @@ public class Contact extends AppCompatActivity {
         try {
             final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             final String versionName = packageInfo.versionName;
-            final int versioncode = packageInfo.versionCode;
+            final long longVersionCode = PackageInfoCompat.getLongVersionCode(packageInfo);
+            final int versionCode = (int) longVersionCode;
 
             final Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                     "mailto", getResources().getString(R.string.contact_email_address), null));
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.contact_email_subject));
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Release: " + versioncode
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Release: " + versionCode
                     + "\nApp: " + versionName + "\n\n");
             startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.contact_email_chooser)));
         } catch (PackageManager.NameNotFoundException e) {

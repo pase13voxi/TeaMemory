@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.tooltip.Tooltip;
 
@@ -41,7 +42,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerController;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.CustomResources;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -658,7 +658,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void showTooltip(final View view, final int gravity, final String text) {
         new Tooltip.Builder(view)
                 .setText(text)
-                .setTextColor(new CustomResources(getApplication()).getColor(R.color.white))
+                .setTextColor(ContextCompat.getColor(getApplication(), R.color.white))
                 .setGravity(gravity)
                 .setCornerRadius(8f)
                 .setCancelable(true)
