@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.view.menu.ActionMenuItemView;
@@ -50,7 +47,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
-import static android.view.HapticFeedbackConstants.LONG_PRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -348,7 +344,6 @@ public class MainTest {
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
             ListView teaList = main.findViewById(R.id.listViewTealist);
-            longClickItem(teaList, 1);
 
             //TODO how to click contextMenu?
         });
@@ -364,7 +359,6 @@ public class MainTest {
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
             ListView teaList = main.findViewById(R.id.listViewTealist);
-            longClickItem(teaList, 1);
 
             //TODO how to click contextMenu?
         });
@@ -410,18 +404,6 @@ public class MainTest {
         for (int i = 0; i < 3; i++) {
             assertThat(((Tea) teaAdapter.getItem(i)).getName()).isEqualTo(teaName + i);
         }
-    }
-
-    public static void longClickItem(ListView listView, int position) {
-        if (!listView.isLongClickable())
-            return;
-        AdapterView.OnItemLongClickListener listener = listView.getOnItemLongClickListener();
-        if (listener == null)
-            return;
-        ListAdapter adapter = listView.getAdapter();
-        View itemView = adapter.getView(position, null, listView);
-        listener.onItemLongClick(listView, itemView, position, adapter.getItemId(position));
-        listView.performHapticFeedback(LONG_PRESS);
     }
 
     private void checkTitleAndMessageOfLatestDialog(final Main main, final AlertDialog dialog,
