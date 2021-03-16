@@ -504,7 +504,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             imageViewFill.setImageResource(R.drawable.cup_fill0pr);
             imageViewSteam.setVisibility((View.INVISIBLE));
             //für animation zurücksetzen
-            imageViewCup.setImageResource(R.drawable.cup_steam);
+            imageViewCup.setImageResource(R.drawable.cup);
             percent = 0;
         }
     }
