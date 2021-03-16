@@ -2,21 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dip"
-    android:padding="10dip"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dip">
 
     <TextView
+        android:id="@+id/textViewListTeaName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewListTeaName"
-        />
+        android:textColor="@color/text_black" />
+
     <TextView
+        android:id="@+id/textViewListVarietyOfTea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/textAppearanceGrey"
-        android:id="@+id/textViewListVarietyOfTea"
-        />
+        android:textColor="@color/text_grey" />
 
 </LinearLayout>

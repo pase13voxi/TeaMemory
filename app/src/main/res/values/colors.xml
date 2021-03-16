@@ -3,16 +3,13 @@
     <color name="background">#ffffff</color>
     <color name="colorPrimary">#329e5f</color>
     <color name="colorPrimaryDark">#277c4b</color>
-    <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-    <color name="red">#FF0000</color>
-    <color name="grey">#363434</color>
-    <color name="light_grey">#c5c5c5</color>
-    <color name="textAppearanceGrey">#797979</color>
-    <color name="whitepicture">#88FFFFFF</color>
-    <color name="darkpicture">#880d0d0f</color>
-    <color name="darkbutton">#4f4e4e</color>
-    <!-- Teacolors -->
+    <color name="text_black">#000000</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_grey">#797979</color>
+    <color name="text_red">#FF0000</color>
+    <color name="element_grey">#939393</color>
+    <color name="button_dark">#4f4e4e</color>
+    <!-- tea_colors -->
     <color name="blacktea">#141450</color>
     <color name="greentea">#9ACD32</color>
     <color name="yellowtea">#FFC24B</color>

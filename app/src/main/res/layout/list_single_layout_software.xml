@@ -2,25 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dip"
-    android:padding="10dip"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dip">
 
     <TextView
+        android:id="@+id/textViewListSoftwareHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewListSoftwareHeading"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/colorPrimaryDark"
-        />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimaryDark" />
+
     <TextView
+        android:id="@+id/textViewListSoftwareDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/textAppearanceGrey"
-        android:id="@+id/textViewListSoftwareDescription"
         android:layout_marginStart="5dp"
-        />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_grey" />
 
 </LinearLayout>

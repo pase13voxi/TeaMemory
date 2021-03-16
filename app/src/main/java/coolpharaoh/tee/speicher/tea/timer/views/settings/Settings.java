@@ -167,7 +167,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         LayoutInflater inflater = getLayoutInflater();
         View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.DialogTheme);
         adb.setView(alertLayoutDialogProblem);
         adb.setTitle(R.string.settings_read_permission_dialog_header);
         adb.setPositiveButton(R.string.settings_read_permission_dialog_ok, (dialog, which) -> askPermissionAccepted(alertLayoutDialogProblem));
@@ -231,8 +231,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         int checkedItem = settingsViewModel.isVibration() ? 0 : 1;
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                R.style.MaterialThemeDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.settings_vibration);
         builder.setSingleChoiceItems(items, checkedItem, this::vibrationChanged);
         builder.setNegativeButton(R.string.settings_cancel, null);
@@ -257,8 +256,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         int checkedItem = settingsViewModel.isAnimation() ? 0 : 1;
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                R.style.MaterialThemeDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.settings_animation);
         builder.setSingleChoiceItems(items, checkedItem, this::animationChanged);
         builder.setNegativeButton(R.string.settings_cancel, null);
@@ -283,8 +281,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         int checkedItem = settingsViewModel.getTemperatureunit().equals(items[0]) ? 0 : 1;
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                R.style.MaterialThemeDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.settings_temperature_unit);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog));
         builder.setNegativeButton(R.string.settings_cancel, null);
@@ -317,7 +314,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         checkBoxPermission.setChecked(settingsViewModel.isSettingsPermissionAlert());
 
 
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setView(alertLayoutDialog)
                 .setTitle(R.string.settings_show_hints_header)
                 .setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxUpdate,
@@ -336,7 +333,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void settingFactorySettings(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setMessage(R.string.settings_factory_settings_text);
         builder.setTitle(R.string.settings_factory_settings);
         builder.setPositiveButton(R.string.settings_factory_settings_ok, (dialogInterface, i) -> resetToFactorySettings());

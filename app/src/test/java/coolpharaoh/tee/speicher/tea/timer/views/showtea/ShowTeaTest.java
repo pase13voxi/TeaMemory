@@ -64,7 +64,8 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
-public class ShowTeaTest {
+public class
+ShowTeaTest {
     private static final String TEA_ID_EXTRA = "teaId";
     private static final long TEA_ID = 1L;
     private static final String VARIETY = "variety";
@@ -328,7 +329,7 @@ public class ShowTeaTest {
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
-            Button buttonInfo = showTea.findViewById(R.id.buttonInfo);
+            ImageButton buttonInfo = showTea.findViewById(R.id.buttonInfo);
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
             Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
 

@@ -1,5 +1,6 @@
 <resources>
     <string name="showtea_heading">Informationen</string>
+    <string name="showtea_background_description">Hintergrund</string>
     <string name="showtea_action_edit">Bearbeiten</string>
     <string name="showtea_action_information">Weitere Informationen</string>
     <string name="showtea_dialog_tea_missing_header">Fehler beim Anzeigen des Tees</string>
@@ -33,6 +34,7 @@
     <string name="showtea_dialog_infusion_count_description">Aufguss %1$d</string>
     <string name="showtea_dialog_infusion_count_negative">Abbrechen</string>
     <string name="showtea_cooldown_not_found">Für diesen Aufguss / Tee ist keine Abkühlzeit festgelegt.</string>
+    <string name="showtea_cooldown_content_description">Abkühlzeiten</string>
     <string name="showtea_cooldown_header">Abkühlzeiten</string>
     <string name="showtea_cooldown_description">Bei Grünem oder Weißem Tee sollte man vor dem Aufguss das kochende Wasser abkühlen lassen.</string>
     <string name="showtea_cooldown_ok">Ok</string>

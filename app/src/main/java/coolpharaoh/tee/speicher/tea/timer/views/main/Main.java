@@ -52,6 +52,8 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         initializeTeaList();
         initializeNewTeaButton();
         showDialogsOnStart();
+
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
     private void defineToolbarAsActionbar() {
@@ -67,7 +69,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
         final String[] items = getResources().getStringArray(R.array.main_sort_options);
         int checkedItem = mainActivityViewModel.getSort();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MaterialThemeDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setIcon(R.drawable.sort_black);
         builder.setTitle(R.string.main_dialog_sort_title);
         builder.setSingleChoiceItems(items, checkedItem, this::changeSortOption);
@@ -167,7 +169,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
     private void showUpdateDialog() {
         if (mainActivityViewModel.isMainUpdateAlert()) {
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this, R.style.DialogTheme)
                     .setTitle(R.string.main_dialog_update_header)
                     .setMessage(R.string.main_dialog_update_description)
                     .setPositiveButton(R.string.main_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
@@ -194,7 +196,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     private void showRatingDialog() {
         mainActivityViewModel.resetMainRatecounter();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.main_dialog_rating_header);
         builder.setMessage(R.string.main_dialog_rating_description);
         builder.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
@@ -267,7 +269,7 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     private void showTooltip(View view, String text) {
         new Tooltip.Builder(view)
                 .setText(text)
-                .setTextColor(ContextCompat.getColor(getApplication(), R.color.white))
+                .setTextColor(ContextCompat.getColor(getApplication(), R.color.text_white))
                 .setGravity(Gravity.TOP)
                 .setCornerRadius(8f)
                 .setCancelable(true)

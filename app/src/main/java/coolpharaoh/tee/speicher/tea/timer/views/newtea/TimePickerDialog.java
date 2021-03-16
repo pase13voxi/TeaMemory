@@ -44,7 +44,7 @@ public class TimePickerDialog extends DialogFragment {
         setTimePicker();
         setSuggestions();
 
-        return new AlertDialog.Builder(activity)
+        return new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_time_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)

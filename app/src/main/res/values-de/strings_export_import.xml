@@ -2,6 +2,7 @@
     <string name="exportimport_heading">Exportiere/Importiere Tees</string>
     <string name="exportimport_info_top">Durch die Benutzung des Imports und Exports kannst du deine gespeicherten Tees auf ein anderes Gerät übertragen.</string>
     <string name="exportimport_procedure">Vorgehen:</string>
+    <string name="exportimport_dots">&#8226;</string>
     <string name="exportimport_step1_text">Exportiere deine Teeliste als Json-Datei mit dem Namen tealist.json.</string>
     <string name="exportimport_step2_text">Übertrage die Datei auf das andere Gerät.</string>
     <string name="exportimport_step3_text">Importiere die Datei in die App auf dem anderen Gerät.</string>

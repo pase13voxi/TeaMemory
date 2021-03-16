@@ -56,7 +56,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private Spinner spinnerSeconds;
     private TextView textViewTimer;
     private ImageButton buttonTemperature;
-    private Button buttonInfo;
+    private ImageButton buttonInfo;
     private ImageView imageViewFill;
     private ImageView imageViewSteam;
     private Button buttonStartTimer;
@@ -312,7 +312,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
         final CheckBox donNotShowAgain = alertLayoutDialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
 
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setView(alertLayoutDialogDescription)
                 .setTitle(R.string.showtea_dialog_description_header)
                 .setNegativeButton(R.string.showtea_dialog_description_cancel, (dialog, which) -> disableDescription(donNotShowAgain))
@@ -342,7 +342,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         int lastInfusion = showTeaViewModel.getNextInfusion();
         int nextInfusion = showTeaViewModel.getNextInfusion() + 1;
         //Infomationen anzeigen
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.showtea_dialog_following_infusion_header);
         builder.setMessage(getResources().getString(R.string.showtea_dialog_following_infusion_description, lastInfusion, nextInfusion));
         builder.setPositiveButton(R.string.showtea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
@@ -504,7 +504,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             imageViewFill.setImageResource(R.drawable.cup_fill0pr);
             imageViewSteam.setVisibility((View.INVISIBLE));
             //für animation zurücksetzen
-            imageViewCup.setImageResource(R.drawable.cup);
+            imageViewCup.setImageResource(R.drawable.cup_steam);
             percent = 0;
         }
     }
@@ -520,8 +520,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         int checkedItem = showTeaViewModel.getInfusionIndex();
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                R.style.MaterialThemeDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setIcon(R.drawable.infusion_black);
         builder.setTitle(R.string.showtea_dialog_infusion_count_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
@@ -560,7 +559,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     }
 
     private void showDialogCoolingPeriod() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.showtea_cooldown_header);
         builder.setMessage(R.string.showtea_cooldown_description);
         builder.setPositiveButton("OK", null);
@@ -594,10 +593,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
             }
         });
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.DialogTheme);
         adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.showtea_dialog_amount);
-        adb.setIcon(R.drawable.spoon);
+        adb.setIcon(R.drawable.spoon_black);
         adb.setPositiveButton(R.string.showtea_dialog_amount_ok, null);
         adb.show();
     }
@@ -658,7 +657,7 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
     private void showTooltip(final View view, final int gravity, final String text) {
         new Tooltip.Builder(view)
                 .setText(text)
-                .setTextColor(ContextCompat.getColor(getApplication(), R.color.white))
+                .setTextColor(ContextCompat.getColor(getApplication(), R.color.text_white))
                 .setGravity(gravity)
                 .setCornerRadius(8f)
                 .setCancelable(true)

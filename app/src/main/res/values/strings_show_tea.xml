@@ -1,5 +1,6 @@
 <resources>
     <string name="showtea_heading">Information</string>
+    <string name="showtea_background_description">background</string>
     <string name="showtea_action_edit">Edit</string>
     <string name="showtea_action_information">Further information</string>
     <string name="showtea_dialog_tea_missing_header">Error displaying the tea</string>
@@ -33,6 +34,7 @@
     <string name="showtea_dialog_infusion_count_description">Infusion %1$d</string>
     <string name="showtea_dialog_infusion_count_negative">Cancel</string>
     <string name="showtea_cooldown_not_found">There is no cooldown time set for this infusion / tea.</string>
+    <string name="showtea_cooldown_content_description">Cooling period</string>
     <string name="showtea_cooldown_header">Cooling period</string>
     <string name="showtea_cooldown_description">For green or white tea the boiling water should be cool down before infuse the tea.</string>
     <string name="showtea_cooldown_ok">OK</string>
@@ -41,7 +43,7 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Ready</string>
-    <string name="showtea_tooltip_temperature">Cooldown time</string>
+    <string name="showtea_tooltip_temperature">Cool down time</string>
     <string name="showtea_tooltip_calculateamount">Calculate amount</string>
     <string name="showtea_tooltip_infusion">Choose infusion</string>
     <string name="showtea_tooltip_nextinfusion">Next infusion</string>

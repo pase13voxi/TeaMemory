@@ -83,8 +83,7 @@ public class Statistics extends AppCompatActivity {
         final String[] items = getResources().getStringArray(R.array.statistics_category);
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                R.style.MaterialThemeDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setIcon(R.drawable.statistics_black);
         builder.setTitle(R.string.statistics_dialog_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {

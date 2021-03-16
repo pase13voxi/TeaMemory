@@ -404,7 +404,7 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void showTooltip(final View v, final int gravity, final String text) {
         new Tooltip.Builder(v)
                 .setText(text)
-                .setTextColor(ContextCompat.getColor(getApplication(), R.color.white))
+                .setTextColor(ContextCompat.getColor(getApplication(), R.color.text_white))
                 .setGravity(gravity)
                 .setCornerRadius(8f)
                 .setCancelable(true)

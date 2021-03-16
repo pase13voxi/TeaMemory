@@ -20,7 +20,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/description_close_button"
         android:scaleType="fitXY"
-        android:src="@drawable/close" />
+        android:src="@drawable/close_black" />
 
     <LinearLayout
         android:id="@+id/dotsLayout"

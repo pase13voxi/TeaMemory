@@ -44,7 +44,7 @@ public class VarietyPickerDialog extends DialogFragment {
 
         defineVarietyRadioGroup();
 
-        return new AlertDialog.Builder(activity)
+        return new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_variety_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
@@ -104,7 +104,7 @@ public class VarietyPickerDialog extends DialogFragment {
                         new int[]{android.R.attr.state_checked}  // checked
                 },
                 new int[]{
-                        ContextCompat.getColor(getActivity().getApplication(), R.color.light_grey),
+                        ContextCompat.getColor(getActivity().getApplication(), R.color.element_grey),
                         ContextCompat.getColor(getActivity().getApplication(), R.color.colorPrimary)
                 }
         );

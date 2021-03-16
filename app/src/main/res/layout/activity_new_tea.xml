@@ -105,7 +105,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/new_tea_tooltip_addinfusion"
                 android:scaleType="fitXY"
-                android:src="@drawable/add" />
+                android:src="@drawable/add_black" />
 
             <ImageButton
                 android:id="@+id/new_tea_button_delete_infusion"
@@ -120,7 +120,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/new_tea_tooltip_deleteinfusion"
                 android:scaleType="fitXY"
-                android:src="@drawable/delete"
+                android:src="@drawable/delete_black"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -150,7 +150,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/new_tea_count_infusion_first"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grey" />
+                    android:textColor="@color/text_black" />
 
                 <ImageButton
                     android:id="@+id/new_tea_button_next_infusion"

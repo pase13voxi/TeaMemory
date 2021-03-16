@@ -46,7 +46,7 @@ public class TemperaturePickerDialog extends DialogFragment {
         setTemperatureUnit();
         setSuggestions();
 
-        return new AlertDialog.Builder(activity)
+        return new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_temperature_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)

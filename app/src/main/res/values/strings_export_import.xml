@@ -2,6 +2,7 @@
     <string name="exportimport_heading">Export and Import Teas</string>
     <string name="exportimport_info_top">By using the Import and Export, you can transfer your teas to another device.</string>
     <string name="exportimport_procedure">Procedure:</string>
+    <string name="exportimport_dots">&#8226;</string>
     <string name="exportimport_step1_text">Export your Tealist as a Jsonfile called tealist.json</string>
     <string name="exportimport_step2_text">Transfer the file to the other device.</string>
     <string name="exportimport_step3_text">Import the file into the Application on the other device.</string>

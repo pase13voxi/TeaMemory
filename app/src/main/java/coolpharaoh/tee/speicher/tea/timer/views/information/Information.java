@@ -132,7 +132,8 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         final EditText editTextHeading = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_header);
         final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
 
-        new AlertDialog.Builder(this).setTitle(R.string.information_add_detail_dialog_heading)
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.information_add_detail_dialog_heading)
                 .setView(dialogLayout)
                 .setNegativeButton(R.string.information_edit_detail_dialog_negative, null)
                 .setPositiveButton(R.string.information_edit_detail_dialog_positive,
@@ -185,7 +186,8 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
         final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
         editTextDescription.setText(detail.getDescription());
 
-        new AlertDialog.Builder(this).setTitle(R.string.information_edit_detail_dialog_heading)
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.information_edit_detail_dialog_heading)
                 .setView(dialogLayout)
                 .setNegativeButton(R.string.information_edit_detail_dialog_negative, null)
                 .setPositiveButton(R.string.information_edit_detail_dialog_positive,

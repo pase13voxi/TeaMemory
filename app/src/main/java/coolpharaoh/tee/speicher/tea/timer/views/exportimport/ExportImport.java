@@ -77,7 +77,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogAfterWritePermissionDenied() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.exportimport_write_permission_dialog_header);
         builder.setMessage(R.string.exportimport_write_permission_dialog_description);
         builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> PermissionRequester.getWritePermission(this));
@@ -97,7 +97,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogAfterReadPermissionDenied() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.exportimport_read_permission_dialog_header);
         builder.setMessage(R.string.exportimport_read_permission_dialog_description);
         builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> PermissionRequester.getReadPermission(this));
@@ -135,13 +135,13 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogExportLocation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.exportimport_location_dialog_header);
         builder.setMessage(R.string.exportimport_location_dialog_description).setPositiveButton(R.string.exportimport_location_dialog_ok, null).show();
     }
 
     private void dialogExportFailed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.exportimport_export_failed_dialog_header);
         builder.setMessage(R.string.exportimport_export_failed_dialog_description).setPositiveButton(R.string.exportimport_export_failed_dialog_ok, null).show();
     }
@@ -161,7 +161,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
             LayoutInflater inflater = getLayoutInflater();
             View layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false);
 
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.DialogTheme).create();
             alertDialog.setView(layoutDialogImport);
             alertDialog.setTitle(R.string.exportimport_import_dialog_header);
 
@@ -202,7 +202,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogImportComplete() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.exportimport_import_complete_dialog_header);
         if (keepStoredTeas) {
             builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
@@ -212,7 +212,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogImportFailed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.exportimport_import_failed_dialog_header);
         builder.setMessage(R.string.exportimport_import_failed_dialog_description).setPositiveButton(R.string.exportimport_import_failed_dialog_ok, null).show();
     }

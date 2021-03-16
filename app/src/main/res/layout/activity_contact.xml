@@ -15,37 +15,37 @@
         android:id="@+id/imageViewMyPicture"
         android:layout_width="150dp"
         android:layout_height="225dp"
-        android:src="@drawable/picture"
-        android:contentDescription="@string/contact_content_description_photo"
         android:layout_below="@+id/tool_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/contact_content_description_photo"
+        android:src="@drawable/picture" />
 
     <TextView
         android:id="@+id/textViewAboutMe"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:text="@string/contact_about_me"
-        android:gravity="center_horizontal"
         android:layout_below="@+id/imageViewMyPicture"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/textAppearanceGrey"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/contact_about_me"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_black" />
 
     <Button
         android:id="@+id/buttonSendEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/email"
-        android:text="@string/contact_email"
-        android:background="@null"
         android:layout_below="@id/textViewAboutMe"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
+        android:background="@null"
+        android:drawableStart="@drawable/email_black"
+        android:text="@string/contact_email"
         android:textAllCaps="false"
-        />
+        android:textColor="@color/text_black" />
 
 
 </RelativeLayout>

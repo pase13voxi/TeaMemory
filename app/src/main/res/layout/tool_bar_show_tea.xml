@@ -20,7 +20,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:paddingHorizontal="10dp"
-            android:textColor="@color/white"
+            android:textColor="@color/text_white"
             android:textSize="22sp" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:layout_toStartOf="@id/toolbar_infusionindex"
             android:text="@string/showtea_first_infusion_index"
-            android:textColor="@color/white"
+            android:textColor="@color/text_white"
             android:textSize="22sp" />
 
         <ImageButton
@@ -56,7 +56,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/showtea_tooltip_nextinfusion"
             android:scaleType="fitXY"
-            android:src="@drawable/triangleright" />
+            android:src="@drawable/triangle_right_white" />
     </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>

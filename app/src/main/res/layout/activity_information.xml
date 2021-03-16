@@ -79,7 +79,7 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/information_add_detail_button_description"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/add" />
+                        android:src="@drawable/add_black" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
