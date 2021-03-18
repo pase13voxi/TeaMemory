@@ -10,6 +10,7 @@
     <string name="settings_animation">Animation</string>
     <string name="settings_cancel">Abbrechen</string>
     <string name="settings_temperature_unit">Temperatur Einheit</string>
+    <string name="settings_dark_mode">Dunkles Design</string>
     <string name="settings_show_hints">Hinweise</string>
     <string name="settings_show_hints_description">Aktiviere/Deaktiviere Hinweise</string>
     <string name="settings_show_hints_header">Hinweise</string>
@@ -34,5 +35,10 @@
     <array name="settings_temperature_units">
         <item>Celsius</item>
         <item>Fahrenheit</item>
+    </array>
+    <array name="settings_dark_mode">
+        <item>Verwendet Systemeinstellung</item>
+        <item>Einschalten</item>
+        <item>Ausschalten</item>
     </array>
 </resources>

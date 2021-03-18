@@ -150,4 +150,14 @@ class Migrations {
             database.execSQL("UPDATE settings SET mainupdatealert = 1");
         }
     };
+
+    static final Migration MIGRATION_8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE settings ADD COLUMN darkmode TEXT DEFAULT 'system'");
+
+            // new update description available! Later!
+            //database.execSQL("UPDATE settings SET mainupdatealert = 1");
+        }
+    };
 }

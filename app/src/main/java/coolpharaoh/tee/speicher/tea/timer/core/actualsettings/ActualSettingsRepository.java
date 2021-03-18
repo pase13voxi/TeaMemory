@@ -5,7 +5,7 @@ import android.app.Application;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 
 public class ActualSettingsRepository {
-    private ActualSettingsDao actualSettingsDao;
+    private final ActualSettingsDao actualSettingsDao;
 
     public ActualSettingsRepository(Application application) {
         TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);

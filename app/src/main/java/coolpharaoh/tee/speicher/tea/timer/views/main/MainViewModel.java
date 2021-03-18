@@ -13,6 +13,7 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -20,6 +21,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+
+import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.SYSTEM;
 
 class MainViewModel extends ViewModel {
 
@@ -78,6 +81,7 @@ class MainViewModel extends ViewModel {
         defaultSettings.setVibration(true);
         defaultSettings.setAnimation(true);
         defaultSettings.setTemperatureUnit("Celsius");
+        defaultSettings.setDarkMode(SYSTEM.getText());
         defaultSettings.setMainRateAlert(true);
         defaultSettings.setMainRateCounter(0);
         defaultSettings.setMainUpdateAlert(false);
@@ -111,6 +115,10 @@ class MainViewModel extends ViewModel {
     }
 
     // Settings
+    public DarkMode getDarkMode() {
+        return DarkMode.fromText(actualSettings.getDarkMode());
+    }
+
     int getSort() {
         return actualSettings.getSort();
     }
@@ -175,5 +183,4 @@ class MainViewModel extends ViewModel {
             default:
         }
     }
-
 }

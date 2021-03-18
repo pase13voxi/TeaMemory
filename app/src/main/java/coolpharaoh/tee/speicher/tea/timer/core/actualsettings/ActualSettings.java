@@ -32,6 +32,9 @@ public class ActualSettings {
     @ColumnInfo(name = "temperatureunit")
     private String temperatureUnit;
 
+    @ColumnInfo(name = "darkmode")
+    private String darkMode;
+
     @ColumnInfo(name = "mainratealert")
     private boolean mainRateAlert;
 

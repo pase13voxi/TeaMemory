@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,19 +35,19 @@ public class SettingsViewModelTest {
 
     @Test
     public void setMusicchoice(){
-        String musicChoice = "MUSIC_CHOICE";
+        final String musicChoice = "MUSIC_CHOICE";
         settingsViewModel.setMusicchoice(musicChoice);
 
-        ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
+        final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
         verify(actualSettingsRepository).updateSettings((captor.capture()));
-        ActualSettings actualSettings = captor.getValue();
+        final ActualSettings actualSettings = captor.getValue();
 
         assertThat(actualSettings.getMusicChoice()).isEqualTo(musicChoice);
     }
 
     @Test
     public void setMusicName(){
-        String musicName = "MUSIC_NAME";
+        final String musicName = "MUSIC_NAME";
         settingsViewModel.setMusicname(musicName);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -56,7 +57,7 @@ public class SettingsViewModelTest {
 
     @Test
     public void setVibration(){
-        boolean vibration = true;
+        final boolean vibration = true;
         settingsViewModel.setVibration(vibration);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -65,8 +66,8 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setAnimation(){
-        boolean animation = true;
+    public void setAnimation() {
+        final boolean animation = true;
         settingsViewModel.setAnimation(animation);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -75,18 +76,28 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setTemperatureunit(){
-        String temperatureUnit = "TEMPERATURE_UNIT";
-        settingsViewModel.setTemperatureunit(temperatureUnit);
+    public void setTemperatureUnit() {
+        final String temperatureUnit = "TEMPERATURE_UNIT";
+        settingsViewModel.setTemperatureUnit(temperatureUnit);
 
         verify(actualSettingsRepository).updateSettings(any());
 
-        assertThat(settingsViewModel.getTemperatureunit()).isEqualTo(temperatureUnit);
+        assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(temperatureUnit);
     }
 
     @Test
-    public void setShowTeaAlert(){
-        boolean showTeaAlert = true;
+    public void setDarkMode() {
+        final DarkMode darkModeSetting = DarkMode.fromText("enabled");
+        settingsViewModel.setDarkMode(darkModeSetting);
+
+        verify(actualSettingsRepository).updateSettings(any());
+
+        assertThat(settingsViewModel.getDarkMode()).isEqualTo(darkModeSetting);
+    }
+
+    @Test
+    public void setShowTeaAlert() {
+        final boolean showTeaAlert = true;
         settingsViewModel.setShowTeaAlert(showTeaAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -96,7 +107,7 @@ public class SettingsViewModelTest {
 
     @Test
     public void setMainRateAlert() {
-        boolean mainRateAlert = true;
+        final boolean mainRateAlert = true;
         settingsViewModel.setMainRateAlert(mainRateAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -106,7 +117,7 @@ public class SettingsViewModelTest {
 
     @Test
     public void setMainUpdateAlert() {
-        boolean mainUpdateAlert = true;
+        final boolean mainUpdateAlert = true;
         settingsViewModel.setMainUpdateAlert(mainUpdateAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -116,7 +127,7 @@ public class SettingsViewModelTest {
 
     @Test
     public void setSettingsPermissionAlert() {
-        boolean settingsPermissionAlert = true;
+        final boolean settingsPermissionAlert = true;
         settingsViewModel.setSettingsPermissionAlert(settingsPermissionAlert);
 
         verify(actualSettingsRepository).updateSettings(any());
@@ -128,9 +139,9 @@ public class SettingsViewModelTest {
     public void setDefaultSettings(){
         settingsViewModel.setDefaultSettings();
 
-        ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
+        final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
         verify(actualSettingsRepository).updateSettings(captor.capture());
-        ActualSettings actualSettings = captor.getValue();
+        final ActualSettings actualSettings = captor.getValue();
 
         assertThat(actualSettings.getMusicChoice()).isEqualTo("content://settings/system/ringtone");
         assertThat(actualSettings.getMusicName()).isEqualTo("Default");

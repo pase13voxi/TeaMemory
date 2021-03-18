@@ -20,12 +20,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
 
@@ -38,7 +41,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     public static final int REQUEST_CODE_MUSIC_CHOICE = 4532;
 
     private enum ListItems {
-        ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, HINTS, FACTORY_SETTINGS
+        ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, DARK_MODE, HINTS, FACTORY_SETTINGS
     }
 
     private SettingsViewModel settingsViewModel;
@@ -47,7 +50,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private SettingsListAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         defineToolbarAsActionbar();
@@ -59,8 +62,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void defineToolbarAsActionbar() {
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        final TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
         mToolbarCustomTitle.setText(R.string.settings_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -77,7 +80,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
         adapter = new SettingsListAdapter(this, settingsList);
 
-        ListView listViewSetting = findViewById(R.id.listView_settings);
+        final ListView listViewSetting = findViewById(R.id.listView_settings);
         listViewSetting.setAdapter(adapter);
 
         listViewSetting.setOnItemClickListener(this);
@@ -90,33 +93,41 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         addVibrationChoiceToSettingsList();
         addAnimationChoiceToSettingsList();
         addTemperatureChoiceToSettingsList();
+        addDarkModeChoiceToSettingsList();
         addHintsDesciptionToSettingsList();
         addFactorySettingsDesciptionToSettingsList();
     }
 
     private void addMusicChoiceToSettingsList() {
-        ListRowItem itemSound = new ListRowItem(getResources().getString(R.string.settings_alarm), settingsViewModel.getMusicname());
+        final ListRowItem itemSound = new ListRowItem(getResources().getString(R.string.settings_alarm), settingsViewModel.getMusicname());
         settingsList.add(itemSound);
     }
 
     private void addVibrationChoiceToSettingsList() {
-        String[] itemsOnOff = getResources().getStringArray(R.array.settings_options);
+        final String[] itemsOnOff = getResources().getStringArray(R.array.settings_options);
 
-        int vibrationOption = settingsViewModel.isVibration() ? 0 : 1;
+        final int vibrationOption = settingsViewModel.isVibration() ? 0 : 1;
 
         settingsList.add(new ListRowItem(getResources().getString(R.string.settings_vibration), itemsOnOff[vibrationOption]));
     }
 
     private void addAnimationChoiceToSettingsList() {
-        String[] itemsOnOff = getResources().getStringArray(R.array.settings_options);
+        final String[] itemsOnOff = getResources().getStringArray(R.array.settings_options);
 
-        int animationOption = settingsViewModel.isAnimation() ? 0 : 1;
+        final int animationOption = settingsViewModel.isAnimation() ? 0 : 1;
 
         settingsList.add(new ListRowItem(getResources().getString(R.string.settings_animation), itemsOnOff[animationOption]));
     }
 
     private void addTemperatureChoiceToSettingsList() {
-        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureunit()));
+        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
+    }
+
+    private void addDarkModeChoiceToSettingsList() {
+        final DarkMode darkMode = settingsViewModel.getDarkMode();
+        final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
+
+        settingsList.add(new ListRowItem("Dark mode", items[darkMode.getChoice()]));
     }
 
     private void addHintsDesciptionToSettingsList() {
@@ -128,8 +139,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        ListItems item = ListItems.values()[position];
+    public void onItemClick(final AdapterView<?> adapterView, final View view, final int position, final long id) {
+        final ListItems item = ListItems.values()[position];
         switch (item) {
             case ALARM:
                 settingAlarm();
@@ -143,11 +154,14 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             case TEMPERATURE_UNIT:
                 settingTemperatureUnit();
                 break;
+            case DARK_MODE:
+                settingDarkMode();
+                break;
             case HINTS:
                 settingHints();
                 break;
             case FACTORY_SETTINGS:
-                settingFactorySettings(view);
+                settingFactorySettings();
                 break;
             default:
         }
@@ -162,19 +176,19 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void readPermissionDialog() {
-        ViewGroup parent = findViewById(R.id.main_parent);
+        final ViewGroup parent = findViewById(R.id.main_parent);
 
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.DialogTheme);
-        adb.setView(alertLayoutDialogProblem);
-        adb.setTitle(R.string.settings_read_permission_dialog_header);
-        adb.setPositiveButton(R.string.settings_read_permission_dialog_ok, (dialog, which) -> askPermissionAccepted(alertLayoutDialogProblem));
-        adb.show();
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setView(alertLayoutDialogProblem)
+                .setTitle(R.string.settings_read_permission_dialog_header)
+                .setPositiveButton(R.string.settings_read_permission_dialog_ok, (dialog, which) -> askPermissionAccepted(alertLayoutDialogProblem))
+                .show();
     }
 
-    private void askPermissionAccepted(View alertLayoutDialogProblem) {
+    private void askPermissionAccepted(final View alertLayoutDialogProblem) {
         final CheckBox dontShowAgain = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsReadPermission);
 
         if (dontShowAgain.isChecked()) {
@@ -209,10 +223,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
-    private void processMusicChoice(Intent intent) {
-        Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
-        String name = ringtone.getTitle(this);
+    private void processMusicChoice(final Intent intent) {
+        final Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+        final Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
+        final String name = ringtone.getTitle(this);
         if (uri != null) {
             settingsViewModel.setMusicchoice(uri.toString());
             settingsViewModel.setMusicname(name);
@@ -227,18 +241,16 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private void settingVibration() {
         final String[] items = getResources().getStringArray(R.array.settings_options);
 
-        //Get CheckedItem
-        int checkedItem = settingsViewModel.isVibration() ? 0 : 1;
+        final int checkedItem = settingsViewModel.isVibration() ? 0 : 1;
 
-        // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.settings_vibration);
-        builder.setSingleChoiceItems(items, checkedItem, this::vibrationChanged);
-        builder.setNegativeButton(R.string.settings_cancel, null);
-        builder.create().show();
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.settings_vibration)
+                .setSingleChoiceItems(items, checkedItem, this::vibrationChanged)
+                .setNegativeButton(R.string.settings_cancel, null)
+                .show();
     }
 
-    private void vibrationChanged(DialogInterface dialog, int item) {
+    private void vibrationChanged(final DialogInterface dialog, final int item) {
         if (item == 0) {
             settingsViewModel.setVibration(true);
         } else if (item == 1) {
@@ -252,18 +264,16 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private void settingAnimation() {
         final String[] items = getResources().getStringArray(R.array.settings_options);
 
-        //Get CheckedItem
-        int checkedItem = settingsViewModel.isAnimation() ? 0 : 1;
+        final int checkedItem = settingsViewModel.isAnimation() ? 0 : 1;
 
-        // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.settings_animation);
-        builder.setSingleChoiceItems(items, checkedItem, this::animationChanged);
-        builder.setNegativeButton(R.string.settings_cancel, null);
-        builder.create().show();
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.settings_animation)
+                .setSingleChoiceItems(items, checkedItem, this::animationChanged)
+                .setNegativeButton(R.string.settings_cancel, null)
+                .show();
     }
 
-    private void animationChanged(DialogInterface dialog, int item) {
+    private void animationChanged(final DialogInterface dialog, final int item) {
         if (item == 0) {
             settingsViewModel.setAnimation(true);
         } else if (item == 1) {
@@ -277,29 +287,69 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private void settingTemperatureUnit() {
         final String[] items = getResources().getStringArray(R.array.settings_temperature_units);
 
-        //Get CheckedItem
-        int checkedItem = settingsViewModel.getTemperatureunit().equals(items[0]) ? 0 : 1;
+        final int checkedItem = settingsViewModel.getTemperatureUnit().equals(items[0]) ? 0 : 1;
 
-        // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.settings_temperature_unit);
-        builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog));
-        builder.setNegativeButton(R.string.settings_cancel, null);
-        builder.create().show();
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.settings_temperature_unit)
+                .setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog))
+                .setNegativeButton(R.string.settings_cancel, null)
+                .show();
     }
 
-    private void temperatureUnitChanged(String item, DialogInterface dialog) {
-        settingsViewModel.setTemperatureunit(item);
+    private void temperatureUnitChanged(final String item, final DialogInterface dialog) {
+        settingsViewModel.setTemperatureUnit(item);
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
         dialog.dismiss();
     }
 
-    private void settingHints() {
-        ViewGroup parent = findViewById(R.id.settings_parent);
+    private void settingDarkMode() {
+        final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialog = inflater.inflate(R.layout.dialog_settings_hints, parent, false);
+        final int checkedItem = settingsViewModel.getDarkMode().getChoice();
+
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle("Dark mode")
+                .setSingleChoiceItems(items, checkedItem, (dialog, item) -> darkModeChanged(items[item], dialog))
+                .setNegativeButton(R.string.settings_cancel, null)
+                .show();
+    }
+
+    private void darkModeChanged(final String item, final DialogInterface dialog) {
+        final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
+        final int choice = Arrays.asList(items).indexOf(item);
+        final DarkMode darkMode = DarkMode.fromChoice(choice);
+
+        settingsViewModel.setDarkMode(darkMode);
+        setDarkMode(darkMode);
+
+        fillAndRefreshSettingsList();
+        adapter.notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
+    private void setDarkMode(final DarkMode darkMode) {
+        if (darkMode != null) {
+            switch (darkMode) {
+                case SYSTEM:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    break;
+                case ENABLED:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+                case DISABLED:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+                default:
+            }
+        }
+    }
+
+    private void settingHints() {
+        final ViewGroup parent = findViewById(R.id.settings_parent);
+
+        final LayoutInflater inflater = getLayoutInflater();
+        final View alertLayoutDialog = inflater.inflate(R.layout.dialog_settings_hints, parent, false);
 
         final CheckBox checkBoxUpdate = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsUpdate);
         checkBoxUpdate.setChecked(settingsViewModel.isMainUpdateAlert());
@@ -332,13 +382,13 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
     }
 
-    private void settingFactorySettings(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setMessage(R.string.settings_factory_settings_text);
-        builder.setTitle(R.string.settings_factory_settings);
-        builder.setPositiveButton(R.string.settings_factory_settings_ok, (dialogInterface, i) -> resetToFactorySettings());
-        builder.setNegativeButton(R.string.settings_factory_settings_cancel, null);
-        builder.show();
+    private void settingFactorySettings() {
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setMessage(R.string.settings_factory_settings_text)
+                .setTitle(R.string.settings_factory_settings)
+                .setPositiveButton(R.string.settings_factory_settings_ok, (dialogInterface, i) -> resetToFactorySettings())
+                .setNegativeButton(R.string.settings_factory_settings_cancel, null)
+                .show();
     }
 
     private void resetToFactorySettings() {
@@ -347,7 +397,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
-        Toast toast = Toast.makeText(getApplicationContext(), R.string.settings_factory_settings_toast, Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(getApplicationContext(), R.string.settings_factory_settings_toast, Toast.LENGTH_SHORT).show();
     }
 }

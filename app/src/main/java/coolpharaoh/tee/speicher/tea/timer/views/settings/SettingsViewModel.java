@@ -6,6 +6,7 @@ import androidx.annotation.VisibleForTesting;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class SettingsViewModel {
@@ -60,12 +61,12 @@ class SettingsViewModel {
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
-    String getTemperatureunit() {
+    String getTemperatureUnit() {
         return actualSettings.getTemperatureUnit();
     }
 
-    void setTemperatureunit(String temperatureunit) {
-        actualSettings.setTemperatureUnit(temperatureunit);
+    void setTemperatureUnit(String temperatureUnit) {
+        actualSettings.setTemperatureUnit(temperatureUnit);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
@@ -124,5 +125,16 @@ class SettingsViewModel {
     //Tea
     void deleteAllTeas() {
         teaRepository.deleteAllTeas();
+    }
+
+    public void setDarkMode(final DarkMode darkModeSetting) {
+        if (darkModeSetting != null) {
+            actualSettings.setDarkMode(darkModeSetting.getText());
+            actualSettingsRepository.updateSettings(actualSettings);
+        }
+    }
+
+    public DarkMode getDarkMode() {
+        return DarkMode.fromText(actualSettings.getDarkMode());
     }
 }
