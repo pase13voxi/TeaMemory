@@ -101,7 +101,6 @@ public class SettingsTest {
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureUnit("Ts");
-        actualSettings.setDarkMode(DISABLED.getText());
         actualSettings.setMainRateAlert(false);
         actualSettings.setShowTeaAlert(false);
         actualSettings.setSettingsPermissionAlert(false);
