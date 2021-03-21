@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
@@ -28,7 +27,6 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.application.TeaMemory;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
@@ -51,28 +49,9 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
 
         mainActivityViewModel = new MainViewModel(getApplication());
 
-        setDarkMode();
         initializeTeaList();
         initializeNewTeaButton();
         showDialogsOnStart();
-    }
-
-    private void setDarkMode() {
-        final DarkMode darkMode = mainActivityViewModel.getDarkMode();
-        if (darkMode != null) {
-            switch (darkMode) {
-                case SYSTEM:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                    break;
-                case ENABLED:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    break;
-                case DISABLED:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    break;
-                default:
-            }
-        }
     }
 
     private void defineToolbarAsActionbar() {

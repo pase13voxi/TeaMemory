@@ -31,13 +31,14 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.application.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.DISABLED;
@@ -100,7 +101,7 @@ public class SettingsTest {
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureUnit("Ts");
-        actualSettings.setDarkMode(ENABLED.getText());
+        actualSettings.setDarkMode(DISABLED.getText());
         actualSettings.setMainRateAlert(false);
         actualSettings.setShowTeaAlert(false);
         actualSettings.setSettingsPermissionAlert(false);
@@ -109,7 +110,7 @@ public class SettingsTest {
 
     @Test
     public void launchActivityAndExpectFilledListView() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -132,7 +133,7 @@ public class SettingsTest {
             ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
             assertThat(itemDarkMode.getHeading()).isEqualTo(settings.getString(R.string.settings_dark_mode));
             final String[] darkModes = settings.getResources().getStringArray(R.array.settings_dark_mode);
-            assertThat(itemDarkMode.getDescription()).isEqualTo(darkModes[ENABLED.getChoice()]);
+            assertThat(itemDarkMode.getDescription()).isEqualTo(darkModes[SYSTEM.getChoice()]);
 
             ListRowItem itemHints = (ListRowItem) settingsList.getAdapter().getItem(HINTS);
             assertThat(itemHints.getHeading()).isEqualTo(settings.getString(R.string.settings_show_hints));
@@ -146,7 +147,7 @@ public class SettingsTest {
 
     @Test
     public void clickAlarmAndExpectAlarmPicker() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -160,7 +161,7 @@ public class SettingsTest {
 
     @Test
     public void setVibrationFalseAndExpectVibrationFalse() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -181,7 +182,7 @@ public class SettingsTest {
 
     @Test
     public void setVibrationTrueAndExpectVibrationTrue() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -202,7 +203,7 @@ public class SettingsTest {
 
     @Test
     public void setAnimationFalseAndExpectAnimationFalse() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -222,7 +223,7 @@ public class SettingsTest {
 
     @Test
     public void setAnimationTrueAndExpectAnimationTrue() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -242,7 +243,7 @@ public class SettingsTest {
 
     @Test
     public void setTemperatureUnitCelsiusAndExpectCelsius() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -262,7 +263,7 @@ public class SettingsTest {
 
     @Test
     public void setTemperatureUnitFahrenheitAndExpectFahrenheit() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -280,34 +281,10 @@ public class SettingsTest {
         });
     }
 
-    @Test
-    public void setDarkModeSystem() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
-
-            settingsList.performItemClick(settingsList, DARK_MODE, settingsList.getItemIdAtPosition(DARK_MODE));
-
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
-
-
-            verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getDarkMode()).isEqualTo(SYSTEM.getText());
-
-            ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
-            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
-            assertThat(itemDarkMode.getDescription()).isEqualTo(expectedChoice);
-
-            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_FOLLOW_SYSTEM);
-        });
-    }
-
-    @Ignore("For some reason this test is not working???")
+    @Ignore("Leads to a nullpointer exception I don't know why!")
     @Test
     public void setDarkModeEnabled() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -316,9 +293,8 @@ public class SettingsTest {
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(ENABLED.getChoice());
 
-            verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getDarkMode()).isEqualTo(ENABLED.getText());
+            SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            assertThat(sharedSettings.getDarkMode()).isEqualTo(ENABLED);
 
             ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
             final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[ENABLED.getChoice()];
@@ -329,8 +305,30 @@ public class SettingsTest {
     }
 
     @Test
+    public void setDarkModeSystem() {
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            ListView settingsList = settings.findViewById(R.id.listView_settings);
+
+            settingsList.performItemClick(settingsList, DARK_MODE, settingsList.getItemIdAtPosition(DARK_MODE));
+
+            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
+
+            SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
+
+            ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
+            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
+            assertThat(itemDarkMode.getDescription()).isEqualTo(expectedChoice);
+
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_AUTO_BATTERY);
+        });
+    }
+
+    @Test
     public void setDarkModeDisabled() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -339,9 +337,8 @@ public class SettingsTest {
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(DISABLED.getChoice());
 
-            verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getDarkMode()).isEqualTo(DISABLED.getText());
+            SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            assertThat(sharedSettings.getDarkMode()).isEqualTo(DISABLED);
 
             ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
             final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[DISABLED.getChoice()];
@@ -353,7 +350,7 @@ public class SettingsTest {
 
     @Test
     public void setAllHintsAndExpectAllHints() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 
@@ -391,7 +388,7 @@ public class SettingsTest {
 
     @Test
     public void setFactorySettingsAndExpectFactorySettings() {
-        ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             ListView settingsList = settings.findViewById(R.id.listView_settings);
 

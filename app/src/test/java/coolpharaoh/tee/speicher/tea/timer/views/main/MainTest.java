@@ -47,7 +47,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.SYSTEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -345,8 +344,6 @@ public class MainTest {
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
             ListView teaList = main.findViewById(R.id.listViewTealist);
-
-            //TODO how to click contextMenu?
         });
     }
 
@@ -360,8 +357,6 @@ public class MainTest {
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
             ListView teaList = main.findViewById(R.id.listViewTealist);
-
-            //TODO how to click contextMenu?
         });
     }
 
@@ -381,7 +376,6 @@ public class MainTest {
                                     final int mainRateCounter, final boolean mainUpdateAlert) {
         ActualSettings actualSettings = new ActualSettings();
         actualSettings.setSort(sort);
-        actualSettings.setDarkMode(SYSTEM.getText());
         actualSettings.setMainRateAlert(mainRateAlert);
         actualSettings.setMainRateCounter(mainRateCounter);
         actualSettings.setMainUpdateAlert(mainUpdateAlert);

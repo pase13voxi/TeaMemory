@@ -25,9 +25,8 @@ import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRAT
 import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_5_6;
 import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_6_7;
 import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_7_8;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_8_9;
 
-@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 9, exportSchema = false)
+@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 8, exportSchema = false)
 public abstract class TeaMemoryDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "teamemory";
     private static TeaMemoryDatabase instance;
@@ -63,7 +62,6 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
         builder.addMigrations(MIGRATION_5_6);
         builder.addMigrations(MIGRATION_6_7);
         builder.addMigrations(MIGRATION_7_8);
-        builder.addMigrations(MIGRATION_8_9);
 
         return builder.build();
     }

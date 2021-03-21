@@ -9,7 +9,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,16 +82,6 @@ public class SettingsViewModelTest {
         verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(temperatureUnit);
-    }
-
-    @Test
-    public void setDarkMode() {
-        final DarkMode darkModeSetting = DarkMode.fromText("enabled");
-        settingsViewModel.setDarkMode(darkModeSetting);
-
-        verify(actualSettingsRepository).updateSettings(any());
-
-        assertThat(settingsViewModel.getDarkMode()).isEqualTo(darkModeSetting);
     }
 
     @Test

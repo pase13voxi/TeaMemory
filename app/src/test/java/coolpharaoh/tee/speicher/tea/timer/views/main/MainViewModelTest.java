@@ -19,12 +19,10 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.ENABLED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -74,7 +72,6 @@ public class MainViewModelTest {
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
         actualSettings.setTemperatureUnit("Celsius");
-        actualSettings.setDarkMode(ENABLED.getText());
         actualSettings.setMainRateAlert(true);
         actualSettings.setMainRateCounter(0);
         actualSettings.setShowTeaAlert(true);
@@ -129,12 +126,6 @@ public class MainViewModelTest {
 
         verify(teaRepository, never()).getTeasBySearchString(any());
         verify(teaRepository, atLeastOnce()).getTeasOrderByActivity();
-    }
-
-    @Test
-    public void getDarkMode() {
-        final DarkMode darkMode = mainActivityViewModel.getDarkMode();
-        assertThat(darkMode).isEqualTo(ENABLED);
     }
 
     @Test

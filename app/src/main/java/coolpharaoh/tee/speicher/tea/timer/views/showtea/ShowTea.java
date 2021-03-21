@@ -201,10 +201,10 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
 
     private void setFieldsTransparent() {
         int alpha = 130;
-        textViewName.getBackground().setAlpha(alpha);
-        textViewVariety.getBackground().setAlpha(alpha);
-        textViewDoublePoint.getBackground().setAlpha(alpha);
-        textViewTimer.getBackground().setAlpha(alpha);
+        textViewName.getBackground().mutate().setAlpha(alpha);
+        textViewVariety.getBackground().mutate().setAlpha(alpha);
+        textViewDoublePoint.getBackground().mutate().setAlpha(alpha);
+        textViewTimer.getBackground().mutate().setAlpha(alpha);
     }
 
     private void initializeSpinnerWithBigCharacters() {

@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
@@ -28,8 +27,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.application.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
 
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
@@ -45,6 +46,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private SettingsViewModel settingsViewModel;
+    private SharedSettings sharedSettings;
 
     private ArrayList<ListRowItem> settingsList;
     private SettingsListAdapter adapter;
@@ -57,6 +59,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         enableAndShowBackButton();
 
         settingsViewModel = new SettingsViewModel(getApplication());
+        sharedSettings = new SharedSettings(getApplication());
 
         initializeSettingsListView();
     }
@@ -124,7 +127,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void addDarkModeChoiceToSettingsList() {
-        final DarkMode darkMode = settingsViewModel.getDarkMode();
+        final DarkMode darkMode = sharedSettings.getDarkMode();
         final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
         settingsList.add(new ListRowItem("Dark mode", items[darkMode.getChoice()]));
@@ -306,7 +309,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private void settingDarkMode() {
         final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
-        final int checkedItem = settingsViewModel.getDarkMode().getChoice();
+        final int checkedItem = sharedSettings.getDarkMode().getChoice();
 
         new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle("Dark mode")
@@ -320,29 +323,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         final int choice = Arrays.asList(items).indexOf(item);
         final DarkMode darkMode = DarkMode.fromChoice(choice);
 
-        settingsViewModel.setDarkMode(darkMode);
-        setDarkMode(darkMode);
+        sharedSettings.setSetDarkMode(darkMode);
+        ThemeManager.applyTheme(darkMode);
 
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
         dialog.dismiss();
-    }
-
-    private void setDarkMode(final DarkMode darkMode) {
-        if (darkMode != null) {
-            switch (darkMode) {
-                case SYSTEM:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                    break;
-                case ENABLED:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    break;
-                case DISABLED:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    break;
-                default:
-            }
-        }
     }
 
     private void settingHints() {

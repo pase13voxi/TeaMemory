@@ -27,7 +27,7 @@ public enum DarkMode {
                 return darkModeSetting;
             }
         }
-        return null;
+        return SYSTEM;
     }
 
     public static DarkMode fromChoice(final int choice) {
@@ -36,6 +36,6 @@ public enum DarkMode {
                 return darkModeSetting;
             }
         }
-        return null;
+        return SYSTEM;
     }
 }

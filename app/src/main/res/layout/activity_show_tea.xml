@@ -4,12 +4,12 @@
     android:id="@+id/showtea_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".views.showtea.ShowTea">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:contentDescription="@string/showtea_background_description"
         android:scaleType="fitXY"
         android:src="@drawable/background" />
