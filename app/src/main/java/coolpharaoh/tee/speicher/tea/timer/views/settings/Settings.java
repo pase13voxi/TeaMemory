@@ -102,7 +102,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void addMusicChoiceToSettingsList() {
-        final ListRowItem itemSound = new ListRowItem(getResources().getString(R.string.settings_alarm), settingsViewModel.getMusicname());
+        final ListRowItem itemSound = new ListRowItem(getString(R.string.settings_alarm), settingsViewModel.getMusicname());
         settingsList.add(itemSound);
     }
 
@@ -111,7 +111,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
         final int vibrationOption = settingsViewModel.isVibration() ? 0 : 1;
 
-        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_vibration), itemsOnOff[vibrationOption]));
+        settingsList.add(new ListRowItem(getString(R.string.settings_vibration), itemsOnOff[vibrationOption]));
     }
 
     private void addAnimationChoiceToSettingsList() {
@@ -119,26 +119,26 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
         final int animationOption = settingsViewModel.isAnimation() ? 0 : 1;
 
-        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_animation), itemsOnOff[animationOption]));
+        settingsList.add(new ListRowItem(getString(R.string.settings_animation), itemsOnOff[animationOption]));
     }
 
     private void addTemperatureChoiceToSettingsList() {
-        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
+        settingsList.add(new ListRowItem(getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
     }
 
     private void addDarkModeChoiceToSettingsList() {
         final DarkMode darkMode = sharedSettings.getDarkMode();
         final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
-        settingsList.add(new ListRowItem("Dark mode", items[darkMode.getChoice()]));
+        settingsList.add(new ListRowItem(getString(R.string.settings_dark_mode), items[darkMode.getChoice()]));
     }
 
     private void addHintsDesciptionToSettingsList() {
-        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_show_hints), getResources().getString(R.string.settings_show_hints_description)));
+        settingsList.add(new ListRowItem(getString(R.string.settings_show_hints), getString(R.string.settings_show_hints_description)));
     }
 
     private void addFactorySettingsDesciptionToSettingsList() {
-        settingsList.add(new ListRowItem(getResources().getString(R.string.settings_factory_settings), getResources().getString(R.string.settings_factory_settings_description)));
+        settingsList.add(new ListRowItem(getString(R.string.settings_factory_settings), getString(R.string.settings_factory_settings_description)));
     }
 
     @Override
@@ -312,7 +312,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         final int checkedItem = sharedSettings.getDarkMode().getChoice();
 
         new AlertDialog.Builder(this, R.style.DialogTheme)
-                .setTitle("Dark mode")
+                .setTitle(R.string.settings_dark_mode)
                 .setSingleChoiceItems(items, checkedItem, (dialog, item) -> darkModeChanged(items[item], dialog))
                 .setNegativeButton(R.string.settings_cancel, null)
                 .show();

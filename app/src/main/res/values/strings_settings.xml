@@ -11,7 +11,7 @@
     <string name="settings_animation">Animation</string>
     <string name="settings_cancel">Cancel</string>
     <string name="settings_temperature_unit">Temperature unit</string>
-    <string name="settings_dark_mode">Dark mode</string>
+    <string name="settings_dark_mode">Dark theme</string>
     <string name="settings_show_hints">Hints</string>
     <string name="settings_show_hints_description">Activate/Deactivate hints</string>
     <string name="settings_show_hints_header">Hints</string>
@@ -37,7 +37,7 @@
         <item>Fahrenheit</item>
     </array>
     <array name="settings_dark_mode">
-        <item>Use system setting</item>
+        <item>System setting</item>
         <item>Enable</item>
         <item>Disable</item>
     </array>

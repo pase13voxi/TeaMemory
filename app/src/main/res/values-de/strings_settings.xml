@@ -37,7 +37,7 @@
         <item>Fahrenheit</item>
     </array>
     <array name="settings_dark_mode">
-        <item>Verwendet Systemeinstellung</item>
+        <item>Systemeinstellung</item>
         <item>Einschalten</item>
         <item>Ausschalten</item>
     </array>
