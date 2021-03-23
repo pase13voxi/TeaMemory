@@ -154,7 +154,7 @@ class Migrations {
     static final Migration MIGRATION_8_9 = new Migration(8, 9) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            // new update description available! Later!
+            // new update description available!
             database.execSQL("UPDATE settings SET mainupdatealert = 1");
         }
     };

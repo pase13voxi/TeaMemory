@@ -4,8 +4,8 @@
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
-        <item>New look: tea input</item>
-        <item>Move usage statistics to \n information window</item>
+        <item>Dark theme</item>
+        <item>Dark theme setting</item>
     </string-array>
     <string-array name="description_showtea_slide_description">
         <item>Show the cooling time</item>

@@ -15,8 +15,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 @SuppressWarnings("java:S110")
 public class UpdateDescription extends AppCompatActivity {
     private static final int[] slideImages = {
-            R.drawable.description_update_new_tea,
-            R.drawable.description_update_counter
+            R.drawable.description_update_dark_mode_example,
+            R.drawable.description_update_dark_mode_setting
     };
 
     private LinearLayout dotLayout;
