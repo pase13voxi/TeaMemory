@@ -155,7 +155,7 @@ class Migrations {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             // new update description available! Later!
-            //database.execSQL("UPDATE settings SET mainupdatealert = 1");
+            database.execSQL("UPDATE settings SET mainupdatealert = 1");
         }
     };
 }
