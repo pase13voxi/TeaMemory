@@ -12,7 +12,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/text_green" />
 
     <TextView
         android:id="@+id/textViewListSoftwareDescription"
