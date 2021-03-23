@@ -48,7 +48,7 @@ public class ShowTeaDescription extends AppCompatActivity {
             dots[i] = new TextView(this);
             dots[i].setText(R.string.description_dots);
             dots[i].setTextSize(35);
-            dots[i].setTextColor(ContextCompat.getColor(getApplication(), R.color.colorPrimary));
+            dots[i].setTextColor(ContextCompat.getColor(getApplication(), R.color.element_green));
 
             dotLayout.addView(dots[i]);
         }

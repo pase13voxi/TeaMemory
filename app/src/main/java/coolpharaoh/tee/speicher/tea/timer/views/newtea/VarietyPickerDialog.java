@@ -105,7 +105,7 @@ public class VarietyPickerDialog extends DialogFragment {
                 },
                 new int[]{
                         ContextCompat.getColor(getActivity().getApplication(), R.color.element_grey),
-                        ContextCompat.getColor(getActivity().getApplication(), R.color.colorPrimary)
+                        ContextCompat.getColor(getActivity().getApplication(), R.color.element_green)
                 }
         );
         varietyRadioButton.setButtonTintList(colorStateList);

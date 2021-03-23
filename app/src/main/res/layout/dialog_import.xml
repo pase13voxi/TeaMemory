@@ -42,7 +42,7 @@ android:layout_height="match_parent">
         style="?android:attr/borderlessButtonStyle"
         android:gravity="center_horizontal"
         android:text="@string/exportimport_import_dialog_delete_button"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/text_green"
         android:background="@color/background" />
 
     <Button
@@ -54,7 +54,7 @@ android:layout_height="match_parent">
         style="?android:attr/borderlessButtonStyle"
         android:gravity="center_horizontal"
         android:text="@string/exportimport_import_dialog_keep_button"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/text_green"
         android:background="@color/background" />
 </LinearLayout>
 

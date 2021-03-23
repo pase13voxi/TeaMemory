@@ -6,7 +6,7 @@
         <item name="android:textColorSecondary">@color/text_white</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/element_green</item>
         <item name="autoCompleteTextViewStyle">@style/SearchTextView</item>
     </style>
     <style name="spinner_style" >
@@ -15,16 +15,16 @@
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="colorControlNormal">@color/element_grey</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/element_green</item>
     </style>
 
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@color/element_grey</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/element_green</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/element_green</item>
         <item name="android:background">@color/background</item>
         <item name="android:textColorPrimary">@color/text_black</item>
         <item name="android:textColorSecondary">@color/element_grey</item>
@@ -35,7 +35,7 @@
     </style>
 
     <style name="DialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/text_green</item>
     </style>
 
     <style name="SearchTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
