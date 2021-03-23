@@ -8,6 +8,7 @@
     <color name="text_grey">#797979</color>
     <color name="text_red">#FF0000</color>
     <color name="element_grey">#939393</color>
+    <color name="element_black">#000000</color>
     <color name="button_dark">#4f4e4e</color>
     <!-- tea_colors -->
     <color name="blacktea">#141450</color>

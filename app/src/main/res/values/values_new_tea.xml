@@ -144,7 +144,7 @@
         <item>212</item>
     </integer-array>
     <string-array name="new_tea_suggestions_puerh_tea_time">
-        <item>0:5</item>
+        <item>0:05</item>
         <item>0:15</item>
     </string-array>
 
