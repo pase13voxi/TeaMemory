@@ -26,7 +26,7 @@
     </style>
 
     <style name="number_picker_theme_overlay" parent="">
-        <item name="colorControlNormal">@color/element_green</item>
+        <item name="colorControlNormal">@color/background_green</item>
     </style>
 
     <style name="new_tea_number_picker_temperature_unit">

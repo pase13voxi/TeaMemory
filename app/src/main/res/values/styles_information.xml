@@ -17,8 +17,8 @@
     </style>
 
     <style name="information_rating_bar_style" parent="@android:style/Widget.RatingBar">
-        <item name="colorControlNormal">@color/element_green</item>
-        <item name="colorControlActivated">@color/element_green</item>
+        <item name="colorControlNormal">@color/background_green</item>
+        <item name="colorControlActivated">@color/background_green</item>
         <item name="android:transformPivotX">20dp</item>
         <item name="android:transformPivotY">20dp</item>
         <item name="android:scaleX">.8</item>
@@ -26,8 +26,8 @@
     </style>
 
     <style name="information_edit_text_theme">
-        <item name="colorControlNormal">@color/element_grey</item>
-        <item name="colorControlActivated">@color/element_green</item>
+        <item name="colorControlNormal">@color/background_grey</item>
+        <item name="colorControlActivated">@color/background_green</item>
     </style>
 
     <style name="information_edit_text_style">
@@ -63,6 +63,6 @@
     </style>
 
     <style name="information_counter_separation_style">
-        <item name="android:background">@color/element_grey</item>
+        <item name="android:background">@color/background_grey</item>
     </style>
 </resources>

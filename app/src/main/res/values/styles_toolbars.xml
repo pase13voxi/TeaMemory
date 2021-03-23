@@ -2,7 +2,7 @@
 <resources>
 
     <style name="toolbarGeneralStyle">
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/color_primary</item>
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>

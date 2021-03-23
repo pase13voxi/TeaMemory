@@ -1,26 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_primary">#3c3c48</color>
+    <color name="color_primary_dark">#272734</color>
     <color name="background">#272734</color>
-    <color name="colorPrimary">#3c3c48</color>
-    <color name="colorPrimaryDark">#272734</color>
+    <color name="background_black">#ffffff</color>
     <color name="text_black">#ffffff</color>
-    <color name="text_white">#ffffff</color>
-    <color name="text_grey">#797979</color>
-    <color name="text_red">#FF0000</color>
-    <color name="text_green">#329e5f</color>
-    <color name="element_grey">#939393</color>
-    <color name="element_black">#ffffff</color>
-    <color name="element_green">#329e5f</color>
-    <color name="button_pressed">#4f4e4e</color>
-    <!-- Teacolors -->
-    <color name="blacktea">#141450</color>
-    <color name="greentea">#9ACD32</color>
-    <color name="yellowtea">#FFC24B</color>
-    <color name="whitetea">#FFF996</color>
-    <color name="oolongtea">#FFA500</color>
-    <color name="puerhtea">#8B2500</color>
-    <color name="herbaltea">#439936</color>
-    <color name="fruittea">#FF2A16</color>
-    <color name="rooibustea">#FA5A00</color>
-    <color name="other">#7F7FBA</color>
 </resources>
