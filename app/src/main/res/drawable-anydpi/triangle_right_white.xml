@@ -2,7 +2,7 @@
     android:width="92dp"
     android:height="92dp"
     android:autoMirrored="true"
-    android:tint="@color/text_white"
+    android:tint="@color/background_white"
     android:viewportWidth="24"
     android:viewportHeight="24">
 
@@ -12,7 +12,7 @@
         android:pivotX="12"
         android:pivotY="10">
         <path
-            android:fillColor="@android:color/white"
+            android:fillColor="@color/background_white"
             android:pathData="M10,17l5,-5 -5,-5v10z" />
     </group>
 

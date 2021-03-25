@@ -68,7 +68,7 @@ class Notifier {
                 .setTicker(application.getString(R.string.notification_ticker))
                 .setContentTitle(application.getString(R.string.notification_title))
                 .setContentText(timerViewModel.getName(teaId))
-                .setSmallIcon(R.drawable.notification)
+                .setSmallIcon(R.drawable.notification_white)
                 .setContentIntent(createPendingIntent())
                 .setAutoCancel(true);
         return notification.build();
@@ -81,7 +81,7 @@ class Notifier {
                 .setTicker(application.getString(R.string.notification_ticker))
                 .setContentTitle(application.getString(R.string.notification_title))
                 .setContentText(timerViewModel.getName(teaId))
-                .setSmallIcon(R.drawable.notification)
+                .setSmallIcon(R.drawable.notification_white)
                 .setContentIntent(createPendingIntent())
                 .setAutoCancel(true);
         return notification.build();

@@ -4,6 +4,7 @@
     <color name="color_primary_dark">#277c4b</color>
     <color name="background">#ffffff</color>
     <color name="background_black">#000000</color>
+    <color name="background_white">#ffffff</color>
     <color name="background_grey">#939393</color>
     <color name="background_green">#329e5f</color>
     <color name="background_green_dark">#277c4b</color>
