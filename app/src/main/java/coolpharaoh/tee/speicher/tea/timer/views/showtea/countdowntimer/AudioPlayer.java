@@ -32,7 +32,7 @@ class AudioPlayer {
             try {
                 mediaPlayer.setAudioAttributes(new AudioAttributes
                         .Builder()
-                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                         .build());
                 mediaPlayer.setDataSource(application, uri);
                 mediaPlayer.prepare();
