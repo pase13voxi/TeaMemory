@@ -14,24 +14,25 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".application.TeaMemory"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".application.TeaMemory">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".views.main.Main"
+            android:permission=""
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".views.description.UpdateDescription"
+            android:exported="false"
             android:label="Update Information"
             android:screenOrientation="portrait">
             <meta-data
@@ -40,6 +41,7 @@
         </activity>
         <activity
             android:name=".views.newtea.NewTea"
+            android:exported="false"
             android:label="Create/Edit tea"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -49,6 +51,7 @@
         </activity>
         <activity
             android:name=".views.showtea.ShowTea"
+            android:exported="false"
             android:label="Information"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -58,6 +61,7 @@
         </activity>
         <activity
             android:name=".views.description.ShowTeaDescription"
+            android:exported="false"
             android:label="ShowTea Description"
             android:screenOrientation="portrait">
             <meta-data
@@ -66,6 +70,7 @@
         </activity>
         <activity
             android:name=".views.information.Information"
+            android:exported="false"
             android:label="More Information"
             android:screenOrientation="portrait">
             <meta-data
@@ -74,6 +79,7 @@
         </activity>
         <activity
             android:name=".views.settings.Settings"
+            android:exported="false"
             android:label="Settings"
             android:screenOrientation="portrait">
             <meta-data
@@ -82,6 +88,7 @@
         </activity>
         <activity
             android:name=".views.exportimport.ExportImport"
+            android:exported="false"
             android:label="ExportImport"
             android:screenOrientation="portrait">
             <meta-data
@@ -90,6 +97,7 @@
         </activity>
         <activity
             android:name=".views.about.About"
+            android:exported="false"
             android:label="About"
             android:screenOrientation="portrait">
             <meta-data
@@ -98,6 +106,7 @@
         </activity>
         <activity
             android:name=".views.contact.Contact"
+            android:exported="false"
             android:label="Contact"
             android:screenOrientation="portrait">
             <meta-data
@@ -106,6 +115,7 @@
         </activity>
         <activity
             android:name=".views.statistics.Statistics"
+            android:exported="false"
             android:label="Statistics"
             android:screenOrientation="portrait">
             <meta-data
@@ -114,6 +124,7 @@
         </activity>
         <activity
             android:name=".views.software.Software"
+            android:exported="false"
             android:label="Software"
             android:screenOrientation="portrait">
             <meta-data
