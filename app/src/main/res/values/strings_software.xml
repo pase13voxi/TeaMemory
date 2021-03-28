@@ -2,8 +2,6 @@
     <string name="software_heading">Software Licenses</string>
     <string name="software_colorpicker_heading">ColorPickerPreference</string>
     <string name="software_colorpicker_description">The ColorPicker is an open source software, which allows the selection of a color.</string>
-    <string name="software_tooltip_heading">Android Tooltips</string>
-    <string name="software_tooltip_description">Android Tooltips is an open source software, which provides nice tooltips.</string>
     <string name="software_statistic_heading">Horizontal Bar Graph</string>
     <string name="software_statistic_description">Horizontal Bar Graph is an open source software that can be used to display graphics.</string>
 </resources>

@@ -54,8 +54,6 @@ public class Software extends AppCompatActivity {
         List<ListRowItem> softwareList = new ArrayList<>();
         ListRowItem itemPicker = new ListRowItem(getResources().getString(R.string.software_colorpicker_heading), getResources().getString(R.string.software_colorpicker_description));
         softwareList.add(itemPicker);
-        ListRowItem itemTooltips = new ListRowItem(getResources().getString(R.string.software_tooltip_heading), getResources().getString(R.string.software_tooltip_description));
-        softwareList.add(itemTooltips);
         ListRowItem itemStatistic = new ListRowItem(getResources().getString(R.string.software_statistic_heading), getResources().getString(R.string.software_statistic_description));
         softwareList.add(itemStatistic);
         return softwareList;

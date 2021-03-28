@@ -33,17 +33,13 @@ public class SoftwareTest {
         softwareActivityScenario.onActivity(software -> {
             ListView aboutList = software.findViewById(R.id.listview_software);
 
-            assertThat(aboutList.getAdapter().getCount()).isEqualTo(3);
+            assertThat(aboutList.getAdapter().getCount()).isEqualTo(2);
 
             ListRowItem itemPicker = (ListRowItem) aboutList.getAdapter().getItem(0);
             assertThat(itemPicker.getHeading()).isEqualTo(software.getString(R.string.software_colorpicker_heading));
             assertThat(itemPicker.getDescription()).isEqualTo(software.getString(R.string.software_colorpicker_description));
 
-            ListRowItem itemTooltips = (ListRowItem) aboutList.getAdapter().getItem(1);
-            assertThat(itemTooltips.getHeading()).isEqualTo(software.getString(R.string.software_tooltip_heading));
-            assertThat(itemTooltips.getDescription()).isEqualTo(software.getString(R.string.software_tooltip_description));
-
-            ListRowItem itemStatistic = (ListRowItem) aboutList.getAdapter().getItem(2);
+            ListRowItem itemStatistic = (ListRowItem) aboutList.getAdapter().getItem(1);
             assertThat(itemStatistic.getHeading()).isEqualTo(software.getString(R.string.software_statistic_heading));
             assertThat(itemStatistic.getDescription()).isEqualTo(software.getString(R.string.software_statistic_description));
         });

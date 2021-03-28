@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.newtea;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +16,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
-import com.tooltip.Tooltip;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
@@ -34,7 +30,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class NewTea extends AppCompatActivity implements View.OnLongClickListener, Printer {
+public class NewTea extends AppCompatActivity implements Printer {
 
     private static final String FAHRENHEIT = "Fahrenheit";
 
@@ -95,7 +91,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         final Button buttonColor = findViewById(R.id.new_tea_button_color);
         buttonColorShape = new ButtonColorShape(buttonColor.getBackground(), getApplication());
         buttonColor.setOnClickListener(view -> createColorPicker());
-        buttonColor.setOnLongClickListener(this);
     }
 
     private void createColorPicker() {
@@ -108,19 +103,15 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
     private void defineInfusionBar() {
         final ImageButton buttonPreviousInfusion = findViewById(R.id.new_tea_button_previous_infusion);
         buttonPreviousInfusion.setOnClickListener(v -> newTeaViewModel.previousInfusion());
-        buttonPreviousInfusion.setOnLongClickListener(this);
 
         final ImageButton buttonNextInfusion = findViewById(R.id.new_tea_button_next_infusion);
         buttonNextInfusion.setOnClickListener(v -> newTeaViewModel.nextInfusion());
-        buttonNextInfusion.setOnLongClickListener(this);
 
         final ImageButton buttonDeleteInfusion = findViewById(R.id.new_tea_button_delete_infusion);
         buttonDeleteInfusion.setOnClickListener(v -> newTeaViewModel.deleteInfusion());
-        buttonDeleteInfusion.setOnLongClickListener(this);
 
         final ImageButton buttonAddInfusion = findViewById(R.id.new_tea_button_add_infusion);
         buttonAddInfusion.setOnClickListener(v -> newTeaViewModel.addInfusion());
-        buttonAddInfusion.setOnLongClickListener(this);
     }
 
     private void defineInputPicker() {
@@ -383,33 +374,6 @@ public class NewTea extends AppCompatActivity implements View.OnLongClickListene
         showteaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
         startActivity(showteaScreen);
         finish();
-    }
-
-    @Override
-    public boolean onLongClick(final View view) {
-        if (view.getId() == R.id.new_tea_button_color) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_choosecolor));
-        } else if (view.getId() == R.id.new_tea_button_previous_infusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_arrowleft));
-        } else if (view.getId() == R.id.new_tea_button_next_infusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_arrowright));
-        } else if (view.getId() == R.id.new_tea_button_add_infusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_addinfusion));
-        } else if (view.getId() == R.id.new_tea_button_delete_infusion) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.new_tea_tooltip_deleteinfusion));
-        }
-        return true;
-    }
-
-    private void showTooltip(final View v, final int gravity, final String text) {
-        new Tooltip.Builder(v)
-                .setText(text)
-                .setTextColor(ContextCompat.getColor(getApplication(), R.color.text_white))
-                .setGravity(gravity)
-                .setCornerRadius(8f)
-                .setCancelable(true)
-                .setDismissOnClick(true)
-                .show();
     }
 
     @Override

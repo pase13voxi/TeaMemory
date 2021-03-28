@@ -33,6 +33,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/main_tooltip_newtea"
-        android:src="@drawable/add_white" />
+        android:src="@drawable/add_white"
+        android:tooltipText="@string/main_tooltip_newtea"
+        tools:targetApi="o" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

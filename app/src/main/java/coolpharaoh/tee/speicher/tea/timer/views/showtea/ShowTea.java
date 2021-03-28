@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,9 +26,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
-import com.tooltip.Tooltip;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -45,7 +41,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.countdowntimer.TimerCont
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class ShowTea extends AppCompatActivity implements View.OnLongClickListener {
+public class ShowTea extends AppCompatActivity {
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
     public static final String EXTRA_TEA_ID = "teaId";
 
@@ -141,18 +137,14 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         buttonStartTimer.setOnClickListener(v -> startOrResetTimer());
 
         buttonInfusionIndex.setOnClickListener(v -> showDialogChangeInfusion());
-        buttonInfusionIndex.setOnLongClickListener(this);
 
         buttonNextInfusion.setOnClickListener(v -> displayNextInfusion());
-        buttonNextInfusion.setOnLongClickListener(this);
 
         buttonTemperature.setOnClickListener(v -> switchToCoolingPeriod());
-        buttonTemperature.setOnLongClickListener(this);
 
         buttonInfo.setOnClickListener(v -> showDialogCoolingPeriod());
 
         buttonCalculateAmount.setOnClickListener(view -> showDialogAmount());
-        buttonCalculateAmount.setOnLongClickListener(this);
     }
 
     private void defineToolbarAsActionbar() {
@@ -638,30 +630,5 @@ public class ShowTea extends AppCompatActivity implements View.OnLongClickListen
         startActivity(newTeaScreen);
         finish();
         return true;
-    }
-
-    @Override
-    public boolean onLongClick(final View view) {
-        if (view.getId() == R.id.buttonTemperature) {
-            showTooltip(view, Gravity.TOP, getResources().getString(R.string.showtea_tooltip_temperature));
-        } else if (view.getId() == R.id.buttonCalculateAmount) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_calculateamount));
-        } else if (view.getId() == R.id.toolbar_infusionindex) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_infusion));
-        } else if (view.getId() == R.id.toolbar_nextinfusion) {
-            showTooltip(view, Gravity.BOTTOM, getResources().getString(R.string.showtea_tooltip_nextinfusion));
-        }
-        return true;
-    }
-
-    private void showTooltip(final View view, final int gravity, final String text) {
-        new Tooltip.Builder(view)
-                .setText(text)
-                .setTextColor(ContextCompat.getColor(getApplication(), R.color.text_white))
-                .setGravity(gravity)
-                .setCornerRadius(8f)
-                .setCancelable(true)
-                .setDismissOnClick(true)
-                .show();
     }
 }

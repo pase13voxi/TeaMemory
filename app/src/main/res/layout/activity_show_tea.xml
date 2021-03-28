@@ -86,7 +86,9 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/showtea_tooltip_temperature"
         android:scaleType="fitXY"
-        android:src="@drawable/temperature_black" />
+        android:src="@drawable/temperature_black"
+        android:tooltipText="@string/showtea_tooltip_temperature"
+        tools:targetApi="o" />
 
     <TextView
         android:id="@+id/textViewTemperature"
@@ -109,7 +111,9 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/showtea_tooltip_temperature"
         android:scaleType="fitXY"
-        android:src="@drawable/spoon_black" />
+        android:src="@drawable/spoon_black"
+        android:tooltipText="@string/showtea_tooltip_calculate_amount"
+        tools:targetApi="o" />
 
     <TextView
         android:id="@+id/textViewAmount"

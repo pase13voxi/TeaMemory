@@ -17,8 +17,10 @@
     <string name="showtea_dialog_following_infusion_no">Nein</string>
     <string name="showtea_display_celsius">%1$s °C</string>
     <string name="showtea_display_fahrenheit">%1$s °F</string>
+    <string name="showtea_tooltip_temperature">Abkühlzeit</string>
     <string name="showtea_display_ts">%1$s TL/L</string>
     <string name="showtea_display_gr">%1$s g/L</string>
+    <string name="showtea_tooltip_calculate_amount">Menge berechnen</string>
     <string name="showtea_dialog_amount">Menge</string>
     <string name="showtea_dialog_amount_scala_left">0.0l</string>
     <string name="showtea_dialog_amount_scala_center">1.0l</string>
@@ -30,6 +32,8 @@
     <string name="showtea_display_sec">Sek</string>
     <string name="showtea_first_infusion_index">1.</string>
     <string name="showtea_break_count_point">%1$d.</string>
+    <string name="showtea_tooltip_infusion">Aufguss auswählen</string>
+    <string name="showtea_tooltip_next_infusion">Nächster Aufguss</string>
     <string name="showtea_dialog_infusion_count_title">Wähle deinen Aufguss</string>
     <string name="showtea_dialog_infusion_count_description">Aufguss %1$d</string>
     <string name="showtea_dialog_infusion_count_negative">Abbrechen</string>
@@ -43,10 +47,6 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Fertig</string>
-    <string name="showtea_tooltip_temperature">Abkühlzeit</string>
-    <string name="showtea_tooltip_calculateamount">Menge berechnen</string>
-    <string name="showtea_tooltip_infusion">Aufguss auswählen</string>
-    <string name="showtea_tooltip_nextinfusion">Nächster Aufguss</string>
     <string name="showtea_channel_name">Fertiger Tee</string>
     <string name="showtea_channel_description">Wird gezeigt wenn der Tee Fertig ist.</string>
     <string name="showtea_content_description_steam">Dampf</string>

@@ -17,8 +17,10 @@
     <string name="showtea_dialog_following_infusion_no">No</string>
     <string name="showtea_display_celsius">%1$s °C</string>
     <string name="showtea_display_fahrenheit">%1$s °F</string>
+    <string name="showtea_tooltip_temperature">Cool down time</string>
     <string name="showtea_display_ts">%1$s ts/L</string>
     <string name="showtea_display_gr">%1$s g/L</string>
+    <string name="showtea_tooltip_calculate_amount">Calculate amount</string>
     <string name="showtea_dialog_amount">Amount</string>
     <string name="showtea_dialog_amount_scala_left">0.0l</string>
     <string name="showtea_dialog_amount_scala_center">1.0l</string>
@@ -30,6 +32,8 @@
     <string name="showtea_display_sec">Sec</string>
     <string name="showtea_first_infusion_index">1.</string>
     <string name="showtea_break_count_point">%1$d.</string>
+    <string name="showtea_tooltip_infusion">Choose infusion</string>
+    <string name="showtea_tooltip_next_infusion">Next infusion</string>
     <string name="showtea_dialog_infusion_count_title">Choose your infusion</string>
     <string name="showtea_dialog_infusion_count_description">Infusion %1$d</string>
     <string name="showtea_dialog_infusion_count_negative">Cancel</string>
@@ -43,10 +47,6 @@
     <string name="showtea_timer_start">Start</string>
     <string name="showtea_timer_reset">Reset</string>
     <string name="showtea_tea_ready">Ready</string>
-    <string name="showtea_tooltip_temperature">Cool down time</string>
-    <string name="showtea_tooltip_calculateamount">Calculate amount</string>
-    <string name="showtea_tooltip_infusion">Choose infusion</string>
-    <string name="showtea_tooltip_nextinfusion">Next infusion</string>
     <string name="showtea_channel_name">Finished tea</string>
     <string name="showtea_channel_description">Will be shown when the tea is ready.</string>
     <string name="showtea_content_description_steam">steam</string>

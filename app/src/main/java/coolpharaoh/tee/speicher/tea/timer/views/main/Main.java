@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,10 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.tooltip.Tooltip;
 
 import java.util.Objects;
 
@@ -36,7 +33,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Main extends AppCompatActivity implements View.OnLongClickListener {
+public class Main extends AppCompatActivity {
     private MainViewModel mainActivityViewModel;
 
     private TeaAdapter adapter;
@@ -144,7 +141,6 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     private void initializeNewTeaButton() {
         FloatingActionButton newTea = findViewById(R.id.newtea);
         newTea.setOnClickListener(v -> navigateToNewOrEditTea(null));
-        newTea.setOnLongClickListener(this);
     }
 
     private void navigateToNewOrEditTea(Long teaId) {
@@ -254,25 +250,6 @@ public class Main extends AppCompatActivity implements View.OnLongClickListener 
     private void navigateToAbout() {
         Intent aboutScreen = new Intent(Main.this, About.class);
         startActivity(aboutScreen);
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        if (view.getId() == R.id.newtea) {
-            showTooltip(view, getResources().getString(R.string.main_tooltip_newtea));
-        }
-        return true;
-    }
-
-    private void showTooltip(View view, String text) {
-        new Tooltip.Builder(view)
-                .setText(text)
-                .setTextColor(ContextCompat.getColor(getApplication(), R.color.text_white))
-                .setGravity(Gravity.TOP)
-                .setCornerRadius(8f)
-                .setCancelable(true)
-                .setDismissOnClick(true)
-                .show();
     }
 
     @Override
