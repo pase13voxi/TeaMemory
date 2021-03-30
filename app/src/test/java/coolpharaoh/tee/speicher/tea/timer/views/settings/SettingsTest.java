@@ -100,7 +100,7 @@ public class SettingsTest {
         actualSettings.setMusicName("MusicName");
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
-        actualSettings.setTemperatureUnit("Ts");
+        actualSettings.setTemperatureUnit(CELSIUS);
         actualSettings.setMainRateAlert(false);
         actualSettings.setShowTeaAlert(false);
         actualSettings.setSettingsPermissionAlert(false);

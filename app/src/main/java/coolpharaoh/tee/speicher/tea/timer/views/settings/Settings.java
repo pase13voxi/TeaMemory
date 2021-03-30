@@ -254,11 +254,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void vibrationChanged(final DialogInterface dialog, final int item) {
-        if (item == 0) {
-            settingsViewModel.setVibration(true);
-        } else if (item == 1) {
-            settingsViewModel.setVibration(false);
-        }
+        settingsViewModel.setVibration(item == 0);
+
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
         dialog.dismiss();
@@ -277,11 +274,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void animationChanged(final DialogInterface dialog, final int item) {
-        if (item == 0) {
-            settingsViewModel.setAnimation(true);
-        } else if (item == 1) {
-            settingsViewModel.setAnimation(false);
-        }
+        settingsViewModel.setAnimation(item == 0);
+
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
         dialog.dismiss();
