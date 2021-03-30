@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateConverter;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateConverterTest {

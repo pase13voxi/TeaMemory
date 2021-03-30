@@ -1,10 +1,8 @@
-package coolpharaoh.tee.speicher.tea.timer.application;
+package coolpharaoh.tee.speicher.tea.timer.core.actualsettings;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 
 public class SharedSettings {
 

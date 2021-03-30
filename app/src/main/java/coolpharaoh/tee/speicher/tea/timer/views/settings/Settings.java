@@ -27,8 +27,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.application.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;

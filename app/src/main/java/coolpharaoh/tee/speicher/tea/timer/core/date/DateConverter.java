@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.converter;
+package coolpharaoh.tee.speicher.tea.timer.core.date;
 
 import androidx.room.TypeConverter;
 

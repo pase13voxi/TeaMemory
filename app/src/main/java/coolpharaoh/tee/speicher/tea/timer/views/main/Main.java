@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.application.TeaMemory;
+import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;

@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import coolpharaoh.tee.speicher.tea.timer.core.converter.DateConverter;
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
