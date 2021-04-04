@@ -4,7 +4,7 @@ import android.app.Application;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
 public class NoteRepository {
 

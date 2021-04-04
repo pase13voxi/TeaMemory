@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.database;
+package coolpharaoh.tee.speicher.tea.timer.database;
 
 import androidx.annotation.NonNull;
 import androidx.room.migration.Migration;

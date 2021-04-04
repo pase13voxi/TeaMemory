@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.database;
+package coolpharaoh.tee.speicher.tea.timer.database;
 
 import android.content.Context;
 
@@ -18,14 +18,14 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_1_2;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_2_3;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_3_4;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_4_5;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_5_6;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_6_7;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_7_8;
-import static coolpharaoh.tee.speicher.tea.timer.core.database.Migrations.MIGRATION_8_9;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_1_2;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_2_3;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_3_4;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_4_5;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_5_6;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_6_7;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_7_8;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_8_9;
 
 @Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 9, exportSchema = false)
 public abstract class TeaMemoryDatabase extends RoomDatabase {

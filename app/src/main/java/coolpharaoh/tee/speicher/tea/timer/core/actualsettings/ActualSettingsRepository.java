@@ -2,7 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.core.actualsettings;
 
 import android.app.Application;
 
-import coolpharaoh.tee.speicher.tea.timer.core.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
 public class ActualSettingsRepository {
     private final ActualSettingsDao actualSettingsDao;
