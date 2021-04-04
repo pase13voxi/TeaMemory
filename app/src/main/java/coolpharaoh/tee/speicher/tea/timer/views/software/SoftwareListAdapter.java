@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 /**
  * Created by paseb on 03.11.2016.

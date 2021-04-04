@@ -112,7 +112,7 @@ public class SettingsTest {
     public void launchActivityAndExpectFilledListView() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             settingsRecyclerView.scrollToPosition(ALARM);
             checkHeadingAtPosition(settingsRecyclerView, ALARM, settings.getString(R.string.settings_alarm));
@@ -149,7 +149,7 @@ public class SettingsTest {
     public void clickAlarmAndExpectAlarmPicker() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, ALARM);
 
@@ -163,7 +163,7 @@ public class SettingsTest {
     public void setVibrationFalseAndExpectVibrationFalse() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION);
 
@@ -182,7 +182,7 @@ public class SettingsTest {
     public void setVibrationTrueAndExpectVibrationTrue() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION);
 
@@ -201,7 +201,7 @@ public class SettingsTest {
     public void setAnimationFalseAndExpectAnimationFalse() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION);
 
@@ -220,7 +220,7 @@ public class SettingsTest {
     public void setAnimationTrueAndExpectAnimationTrue() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION);
 
@@ -239,7 +239,7 @@ public class SettingsTest {
     public void setTemperatureUnitCelsiusAndExpectCelsius() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
 
@@ -258,7 +258,7 @@ public class SettingsTest {
     public void setTemperatureUnitFahrenheitAndExpectFahrenheit() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
 
@@ -278,7 +278,7 @@ public class SettingsTest {
     public void setDarkModeEnabled() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
 
@@ -299,7 +299,7 @@ public class SettingsTest {
     public void setDarkModeSystem() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
 
@@ -320,7 +320,7 @@ public class SettingsTest {
     public void setDarkModeDisabled() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
 
@@ -341,7 +341,7 @@ public class SettingsTest {
     public void setAllHintsAndExpectAllHints() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, HINTS);
 
@@ -379,7 +379,7 @@ public class SettingsTest {
     public void setFactorySettingsAndExpectFactorySettings() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
             clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
 
@@ -402,11 +402,11 @@ public class SettingsTest {
     }
 
     private void checkHeadingAtPosition(final RecyclerView recyclerView, final int position, final String heading) {
-        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_settings_recycler_view_heading, heading);
+        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_heading, heading);
     }
 
     private void checkDescriptionAtPosition(final RecyclerView recyclerView, final int position, final String description) {
-        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_settings_recycler_view_description, description);
+        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_description, description);
     }
 
     private void checkViewAtPositionInRecyclerView(RecyclerView recyclerView, int position, int viewId, String toCheck) {

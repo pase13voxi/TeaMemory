@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 /**
  * Created by paseb on 03.11.2016.
  */
 
-class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewAdapter.ViewHolder> {
 
     private final List<ListRowItem> listRowItems;
     private final OnClickListener onClickListener;
 
-    public RecyclerViewAdapter(List<ListRowItem> listRowItems, OnClickListener onClickListener) {
+    public DetailRecyclerViewAdapter(List<ListRowItem> listRowItems, OnClickListener onClickListener) {
         this.listRowItems = listRowItems;
         this.onClickListener = onClickListener;
     }

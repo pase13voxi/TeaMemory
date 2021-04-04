@@ -4,9 +4,10 @@ import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.widget.ListView;
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
@@ -21,7 +22,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
 import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
@@ -41,25 +41,25 @@ public class AboutTest {
     @Test
     public void expectAboutListAndVersion() {
         aboutActivityScenario.onActivity(about -> {
-            ListView aboutList = about.findViewById(R.id.listview_about);
+            final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
-            assertThat(aboutList.getAdapter().getCount()).isEqualTo(4);
+            assertThat(aboutRecyclerView.getAdapter().getItemCount()).isEqualTo(4);
 
-            ListRowItem itemContact = (ListRowItem) aboutList.getAdapter().getItem(0);
-            assertThat(itemContact.getHeading()).isEqualTo(about.getString(R.string.about_contact_heading));
-            assertThat(itemContact.getDescription()).isEqualTo(about.getString(R.string.about_contact_description));
+            aboutRecyclerView.scrollToPosition(0);
+            checkHeaderAndPositionAtPositionInRecyclerView(aboutRecyclerView, 0,
+                    about.getString(R.string.about_contact_heading), about.getString(R.string.about_contact_description));
 
-            ListRowItem itemRating = (ListRowItem) aboutList.getAdapter().getItem(1);
-            assertThat(itemRating.getHeading()).isEqualTo(about.getString(R.string.about_rating_heading));
-            assertThat(itemRating.getDescription()).isEqualTo(about.getString(R.string.about_rating_description));
+            aboutRecyclerView.scrollToPosition(1);
+            checkHeaderAndPositionAtPositionInRecyclerView(aboutRecyclerView, 1,
+                    about.getString(R.string.about_rating_heading), about.getString(R.string.about_rating_description));
 
-            ListRowItem itemStatistics = (ListRowItem) aboutList.getAdapter().getItem(2);
-            assertThat(itemStatistics.getHeading()).isEqualTo(about.getString(R.string.about_statistics_heading));
-            assertThat(itemStatistics.getDescription()).isEqualTo(about.getString(R.string.about_statistics_description));
+            aboutRecyclerView.scrollToPosition(2);
+            checkHeaderAndPositionAtPositionInRecyclerView(aboutRecyclerView, 2,
+                    about.getString(R.string.about_statistics_heading), about.getString(R.string.about_statistics_description));
 
-            ListRowItem itemSoftware = (ListRowItem) aboutList.getAdapter().getItem(3);
-            assertThat(itemSoftware.getHeading()).isEqualTo(about.getString(R.string.about_software_heading));
-            assertThat(itemSoftware.getDescription()).isEqualTo(about.getString(R.string.about_software_description));
+            aboutRecyclerView.scrollToPosition(3);
+            checkHeaderAndPositionAtPositionInRecyclerView(aboutRecyclerView, 3,
+                    about.getString(R.string.about_software_heading), about.getString(R.string.about_software_description));
 
 
             TextView textViewVersion = about.findViewById(R.id.textViewVersion);
@@ -72,9 +72,9 @@ public class AboutTest {
         int positionContact = 0;
 
         aboutActivityScenario.onActivity(about -> {
-            ListView aboutList = about.findViewById(R.id.listview_about);
+            final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
-            aboutList.performItemClick(aboutList, positionContact, aboutList.getItemIdAtPosition(positionContact));
+            clickAtPositionRecyclerView(aboutRecyclerView, positionContact);
 
             Intent expected = new Intent(about, Contact.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -88,9 +88,9 @@ public class AboutTest {
         int positionRating = 1;
 
         aboutActivityScenario.onActivity(about -> {
-            ListView aboutList = about.findViewById(R.id.listview_about);
+            final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
-            aboutList.performItemClick(aboutList, positionRating, aboutList.getItemIdAtPosition(positionRating));
+            clickAtPositionRecyclerView(aboutRecyclerView, positionRating);
 
             Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + about.getPackageName()));
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -104,9 +104,9 @@ public class AboutTest {
         int positionStatistics = 2;
 
         aboutActivityScenario.onActivity(about -> {
-            ListView aboutList = about.findViewById(R.id.listview_about);
+            final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
-            aboutList.performItemClick(aboutList, positionStatistics, aboutList.getItemIdAtPosition(positionStatistics));
+            clickAtPositionRecyclerView(aboutRecyclerView, positionStatistics);
 
             Intent expected = new Intent(about, Statistics.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -120,9 +120,9 @@ public class AboutTest {
         int positionSoftware = 3;
 
         aboutActivityScenario.onActivity(about -> {
-            ListView aboutList = about.findViewById(R.id.listview_about);
+            final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
-            aboutList.performItemClick(aboutList, positionSoftware, aboutList.getItemIdAtPosition(positionSoftware));
+            clickAtPositionRecyclerView(aboutRecyclerView, positionSoftware);
 
             Intent expected = new Intent(about, Software.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -131,4 +131,18 @@ public class AboutTest {
         });
     }
 
+    private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {
+        recyclerView.scrollToPosition(position);
+        final View itemAnimationBefore = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        itemAnimationBefore.performClick();
+    }
+
+    private void checkHeaderAndPositionAtPositionInRecyclerView(final RecyclerView recyclerView, final int position,
+                                                                final String header, final String description) {
+        final View itemAtPosition = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        final TextView textViewHeading = itemAtPosition.findViewById(R.id.text_view_recycler_view_heading);
+        assertThat(textViewHeading.getText()).hasToString(header);
+        final TextView textViewDescription = itemAtPosition.findViewById(R.id.text_view_recycler_view_description);
+        assertThat(textViewDescription.getText()).hasToString(description);
+    }
 }

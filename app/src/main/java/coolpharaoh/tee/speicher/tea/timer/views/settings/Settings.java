@@ -30,15 +30,16 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
 
 import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Settings extends AppCompatActivity implements SettingsRecyclerViewAdapter.OnClickListener {
+public class Settings extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
     public static final int REQUEST_CODE_MUSIC_CHOICE = 4532;
 
@@ -50,7 +51,7 @@ public class Settings extends AppCompatActivity implements SettingsRecyclerViewA
     private SharedSettings sharedSettings;
 
     private ArrayList<ListRowItem> settingsList;
-    private SettingsRecyclerViewAdapter adapter;
+    private RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -82,12 +83,12 @@ public class Settings extends AppCompatActivity implements SettingsRecyclerViewA
         settingsList = new ArrayList<>();
         fillAndRefreshSettingsList();
 
-        adapter = new SettingsRecyclerViewAdapter(settingsList, this);
+        adapter = new RecyclerViewAdapter(R.layout.list_single_layout_setting, settingsList, this);
 
-        final RecyclerView recyclerViewDetails = findViewById(R.id.settings_recycler_view);
+        final RecyclerView recyclerViewDetails = findViewById(R.id.recycler_view_settings);
         recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerViewDetails.setAdapter(adapter);
         recyclerViewDetails.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewDetails.setAdapter(adapter);
     }
 
     private void fillAndRefreshSettingsList() {

@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

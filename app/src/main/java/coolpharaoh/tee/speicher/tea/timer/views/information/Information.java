@@ -26,11 +26,11 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Information extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
+public class Information extends AppCompatActivity implements DetailRecyclerViewAdapter.OnClickListener {
 
     private static final String DATE_FORMAT = "dd MMMM yyyy";
     private static final String TEA_ID_EXTRA = "teaId";
@@ -91,7 +91,7 @@ public class Information extends AppCompatActivity implements RecyclerViewAdapte
             for (final Note note : details) {
                 detailsList.add(new ListRowItem(note.getHeader(), note.getDescription()));
             }
-            final RecyclerViewAdapter adapter = new RecyclerViewAdapter(detailsList, this);
+            final DetailRecyclerViewAdapter adapter = new DetailRecyclerViewAdapter(detailsList, this);
             recyclerViewDetails.setAdapter(adapter);
             recyclerViewDetails.setLayoutManager(new LinearLayoutManager(this));
         });

@@ -3,13 +3,13 @@ package coolpharaoh.tee.speicher.tea.timer.views.about;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +20,12 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
 import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class About extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class About extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
     private enum ListItems {
         CONTACT, RATING, STATISTICS, SOFTWARE
@@ -57,11 +58,12 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
     private void configureAndShowListView() {
         List<ListRowItem> aboutList = generateListItems();
 
-        AboutListAdapter adapter = new AboutListAdapter(this, aboutList);
+        final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_about, aboutList, this);
 
-        ListView listViewAbout = findViewById(R.id.listview_about);
-        listViewAbout.setAdapter(adapter);
-        listViewAbout.setOnItemClickListener(this);
+        final RecyclerView recyclerViewDetails = findViewById(R.id.recycler_view_about);
+        recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerViewDetails.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewDetails.setAdapter(adapter);
     }
 
     private List<ListRowItem> generateListItems() {
@@ -85,7 +87,7 @@ public class About extends AppCompatActivity implements AdapterView.OnItemClickL
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+    public void onOptionsRecyclerItemClick(final int position) {
         ListItems item = ListItems.values()[position];
         switch (item) {
             case CONTACT:

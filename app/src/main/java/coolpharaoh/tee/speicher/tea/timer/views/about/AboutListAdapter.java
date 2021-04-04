@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 /**
  * Created by paseb on 03.11.2016.
@@ -57,8 +57,8 @@ class AboutListAdapter extends BaseAdapter {
             // Pass null because (parent, false) destroys the layout
             vi = inflater.inflate(R.layout.list_single_layout_about, null);
 
-        TextView txtName = vi.findViewById(R.id.textViewListAboutHeading);
-        TextView txtSort = vi.findViewById(R.id.textViewListAboutDescription);
+        TextView txtName = vi.findViewById(R.id.text_view_recycler_view_heading);
+        TextView txtSort = vi.findViewById(R.id.text_view_recycler_view_description);
 
         txtName.setText(item.getHeading());
         txtSort.setText(item.getDescription());
