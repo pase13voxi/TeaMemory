@@ -149,7 +149,7 @@ public class InformationTest {
 
         informationActivityScenario.close();
 
-        ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
+        final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
         verify(noteDao).update(captor.capture());
         assertThat(captor.getValue())
                 .extracting(Note::getPosition, Note::getHeader, Note::getDescription)
@@ -168,7 +168,7 @@ public class InformationTest {
             final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
             ratingBar.setRating(newRating);
 
-            ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+            final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(captor.capture());
             assertThat(captor.getValue().getRating()).isEqualTo(4);
         });
@@ -195,9 +195,9 @@ public class InformationTest {
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
+            final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
             verify(noteDao).insert(captor.capture());
-            Note note = captor.getValue();
+            final Note note = captor.getValue();
 
             assertThat(note).extracting(Note::getHeader, Note::getDescription)
                     .containsExactly(HEADER, DESCRIPTION);
@@ -241,7 +241,7 @@ public class InformationTest {
 
             buttonChangeItem.performClick();
 
-            selectItemOptionMenu(R.id.action_information_option_delete);
+            selectItemPopUpMenu(R.id.action_information_details_delete);
 
             verify(noteDao).deleteNoteByTeaIdAndPosition(TEA_ID, position);
         });
@@ -263,7 +263,7 @@ public class InformationTest {
 
             buttonChangeItem.performClick();
 
-            selectItemOptionMenu(R.id.action_information_option_edit);
+            selectItemPopUpMenu(R.id.action_information_details_edit);
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_edit_detail_dialog_heading);
 
@@ -274,9 +274,9 @@ public class InformationTest {
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
+            final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
             verify(noteDao).update(captor.capture());
-            Note note = captor.getValue();
+            final Note note = captor.getValue();
 
             assertThat(note).extracting(Note::getHeader, Note::getDescription)
                     .containsExactly(HEADER, DESCRIPTION);
@@ -353,13 +353,13 @@ public class InformationTest {
         return notes;
     }
 
-    private void selectItemOptionMenu(int p) {
-        PopupMenu latestPopupMenu = ShadowPopupMenu.getLatestPopupMenu();
-        Menu menu = latestPopupMenu.getMenu();
-        menu.performIdentifierAction(p, FLAG_ALWAYS_PERFORM_CLOSE);
+    private void selectItemPopUpMenu(final int itemId) {
+        final PopupMenu latestPopupMenu = ShadowPopupMenu.getLatestPopupMenu();
+        final Menu menu = latestPopupMenu.getMenu();
+        menu.performIdentifierAction(itemId, FLAG_ALWAYS_PERFORM_CLOSE);
     }
 
-    private AlertDialog getAndCheckAlertDialog(Information information, int dialogHeading) {
+    private AlertDialog getAndCheckAlertDialog(final Information information, final int dialogHeading) {
         final AlertDialog dialogAddDetail = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialogAddDetail = Shadows.shadowOf(dialogAddDetail);
         assertThat(shadowDialogAddDetail).isNotNull();
@@ -367,17 +367,19 @@ public class InformationTest {
         return dialogAddDetail;
     }
 
-    private void checkAndSetContentInDetailsDialog(AlertDialog dialog, int editTextId, String oldContent, String newContent) {
+    private void checkAndSetContentInDetailsDialog(final AlertDialog dialog, final int editTextId,
+                                                   final String oldContent, final String newContent) {
         final EditText editTextAddHeader = dialog.findViewById(editTextId);
         assertThat(editTextAddHeader.getText()).hasToString(oldContent);
         editTextAddHeader.setText(newContent);
     }
 
-    private void checkCounter(Information information, String today, String week, String month, String overall) {
-        TextView textViewToday = information.findViewById(R.id.information_text_view_counter_today);
-        TextView textViewWeek = information.findViewById(R.id.information_text_view_counter_week);
-        TextView textViewMonth = information.findViewById(R.id.information_text_view_counter_month);
-        TextView textViewOverall = information.findViewById(R.id.information_text_view_counter_overall);
+    private void checkCounter(final Information information, final String today, final String week,
+                              final String month, final String overall) {
+        final TextView textViewToday = information.findViewById(R.id.information_text_view_counter_today);
+        final TextView textViewWeek = information.findViewById(R.id.information_text_view_counter_week);
+        final TextView textViewMonth = information.findViewById(R.id.information_text_view_counter_month);
+        final TextView textViewOverall = information.findViewById(R.id.information_text_view_counter_overall);
 
         assertThat(textViewToday.getText()).hasToString(today);
         assertThat(textViewWeek.getText()).hasToString(week);

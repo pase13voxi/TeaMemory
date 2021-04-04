@@ -5,18 +5,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,10 +34,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapter.OnClickListener {
     private MainViewModel mainActivityViewModel;
-
-    private TeaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,81 +77,64 @@ public class Main extends AppCompatActivity {
     }
 
     private void initializeTeaList() {
-        ListView teaList = findViewById(R.id.listViewTealist);
+        final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_tea_list);
+        recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
 
-        bindTeaListWithTeaAdapterAndObserve(teaList);
-
-        teaList.setOnItemClickListener((parent, view, position, id) -> navigateToShowTea(position));
-
-        registerForContextMenu(teaList);
+        bindTeaListWithTeaAdapterAndObserve(recyclerViewTeaList);
     }
 
-    private void bindTeaListWithTeaAdapterAndObserve(ListView tealist) {
+    private void bindTeaListWithTeaAdapterAndObserve(final RecyclerView teaList) {
         mainActivityViewModel.getTeas().observe(this, teas -> {
-            adapter = new TeaAdapter(Main.this, teas);
-            //add adapter to listview
-            tealist.setAdapter(adapter);
+            final TeaListRecyclerViewAdapter teaListRecyclerViewAdapter = new TeaListRecyclerViewAdapter(teas, this, getApplication());
+            teaList.setAdapter(teaListRecyclerViewAdapter);
         });
     }
 
-    private void navigateToShowTea(int position) {
-        Intent showteaScreen = new Intent(Main.this, ShowTea.class);
+    @Override
+    public void onRecyclerItemClick(final int position) {
+        navigateToShowTea(position);
+    }
+
+    private void navigateToShowTea(final int position) {
+        final Intent showteaScreen = new Intent(Main.this, ShowTea.class);
         showteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(position).getId());
         startActivity(showteaScreen);
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId() == R.id.listViewTealist) {
-            showEditAndDeleteMenu(menu, (AdapterView.AdapterContextMenuInfo) menuInfo);
-        }
-    }
+    public void onRecyclerItemLongClick(final View itemView, final int position) {
+        final PopupMenu popup = new PopupMenu(getApplication(), itemView, Gravity.END);
+        popup.inflate(R.menu.menu_main_tea_list);
 
-    private void showEditAndDeleteMenu(ContextMenu menu, AdapterView.AdapterContextMenuInfo menuInfo) {
-        menu.setHeaderTitle(mainActivityViewModel.getTeaByPosition(menuInfo.position).getName());
-
-        String[] menuItems = getResources().getStringArray(R.array.itemMenu);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        return editOrDeleteTea(item);
-    }
-
-    private boolean editOrDeleteTea(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int menuItemIndex = item.getItemId();
-        String[] menuItems = getResources().getStringArray(R.array.itemMenu);
-        String menuItemName = menuItems[menuItemIndex];
-        String editOption = menuItems[0];
-        String deleteOption = menuItems[1];
-
-        if (menuItemName.equals(editOption)) {
-            navigateToNewOrEditTea(mainActivityViewModel.getTeaByPosition(info.position).getId());
-        } else if (menuItemName.equals(deleteOption)) {
-            mainActivityViewModel.deleteTea(info.position);
-        }
-        return true;
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_main_tea_list_edit) {
+                navigateToNewOrEditTea(mainActivityViewModel.getTeaByPosition(position).getId());
+                return true;
+            } else if (item.getItemId() == R.id.action_main_tea_list_delete) {
+                mainActivityViewModel.deleteTea(position);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
     }
 
     private void initializeNewTeaButton() {
-        FloatingActionButton newTea = findViewById(R.id.newtea);
+        final FloatingActionButton newTea = findViewById(R.id.newtea);
         newTea.setOnClickListener(v -> navigateToNewOrEditTea(null));
     }
 
-    private void navigateToNewOrEditTea(Long teaId) {
-        Intent newteaScreen = new Intent(Main.this, NewTea.class);
+    private void navigateToNewOrEditTea(final Long teaId) {
+        final Intent newTeaScreen = new Intent(Main.this, NewTea.class);
         if (teaId != null) {
-            newteaScreen.putExtra("teaId", teaId);
+            newTeaScreen.putExtra("teaId", teaId);
         }
-        startActivity(newteaScreen);
+        startActivity(newTeaScreen);
     }
 
     private void showDialogsOnStart() {
-        TeaMemory application = (TeaMemory) getApplication();
+        final TeaMemory application = (TeaMemory) getApplication();
         if (application != null && !application.isMainDialogsShown()) {
             application.setMainDialogsShown(true);
 
@@ -175,7 +157,7 @@ public class Main extends AppCompatActivity {
 
     private void navigateToUpdateWindow() {
         mainActivityViewModel.setMainUpdateAlert(false);
-        Intent intent = new Intent(Main.this, UpdateDescription.class);
+        final Intent intent = new Intent(Main.this, UpdateDescription.class);
         startActivity(intent);
     }
 
@@ -190,7 +172,7 @@ public class Main extends AppCompatActivity {
     private void showRatingDialog() {
         mainActivityViewModel.resetMainRatecounter();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.main_dialog_rating_header);
         builder.setMessage(R.string.main_dialog_rating_description);
         builder.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
@@ -211,8 +193,8 @@ public class Main extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
         SearchView.configureSearchView(menu, mainActivityViewModel);
@@ -221,8 +203,8 @@ public class Main extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
 
         if (id == R.id.action_settings) {
             navigateToSettings();
@@ -238,17 +220,17 @@ public class Main extends AppCompatActivity {
     }
 
     private void navigateToSettings() {
-        Intent settingScreen = new Intent(Main.this, Settings.class);
+        final Intent settingScreen = new Intent(Main.this, Settings.class);
         startActivity(settingScreen);
     }
 
     private void navigateToExportImport() {
-        Intent exportImportScreen = new Intent(Main.this, ExportImport.class);
+        final Intent exportImportScreen = new Intent(Main.this, ExportImport.class);
         startActivity(exportImportScreen);
     }
 
     private void navigateToAbout() {
-        Intent aboutScreen = new Intent(Main.this, About.class);
+        final Intent aboutScreen = new Intent(Main.this, About.class);
         startActivity(aboutScreen);
     }
 

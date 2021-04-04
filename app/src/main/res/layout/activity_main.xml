@@ -20,8 +20,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ListView
-        android:id="@+id/listViewTealist"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_tea_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

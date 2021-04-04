@@ -60,10 +60,10 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
 
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_about, aboutList, this);
 
-        final RecyclerView recyclerViewDetails = findViewById(R.id.recycler_view_about);
-        recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerViewDetails.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewDetails.setAdapter(adapter);
+        final RecyclerView recyclerViewAbout = findViewById(R.id.recycler_view_about);
+        recyclerViewAbout.addItemDecoration(new DividerItemDecoration(recyclerViewAbout.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerViewAbout.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewAbout.setAdapter(adapter);
     }
 
     private List<ListRowItem> generateListItems() {
@@ -87,7 +87,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     @Override
-    public void onOptionsRecyclerItemClick(final int position) {
+    public void onRecyclerItemClick(final int position) {
         ListItems item = ListItems.values()[position];
         switch (item) {
             case CONTACT:

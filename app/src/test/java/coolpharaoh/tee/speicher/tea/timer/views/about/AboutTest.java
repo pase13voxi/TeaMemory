@@ -133,16 +133,16 @@ public class AboutTest {
 
     private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {
         recyclerView.scrollToPosition(position);
-        final View itemAnimationBefore = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-        itemAnimationBefore.performClick();
+        final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        itemView.performClick();
     }
 
     private void checkHeaderAndPositionAtPositionInRecyclerView(final RecyclerView recyclerView, final int position,
                                                                 final String header, final String description) {
-        final View itemAtPosition = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-        final TextView textViewHeading = itemAtPosition.findViewById(R.id.text_view_recycler_view_heading);
+        final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        final TextView textViewHeading = itemView.findViewById(R.id.text_view_recycler_view_heading);
         assertThat(textViewHeading.getText()).hasToString(header);
-        final TextView textViewDescription = itemAtPosition.findViewById(R.id.text_view_recycler_view_description);
+        final TextView textViewDescription = itemView.findViewById(R.id.text_view_recycler_view_description);
         assertThat(textViewDescription.getText()).hasToString(description);
     }
 }

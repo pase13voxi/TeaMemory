@@ -144,7 +144,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     @Override
-    public void onOptionsRecyclerItemClick(int position) {
+    public void onRecyclerItemClick(int position) {
         applyOptionsSelection(position);
     }
 

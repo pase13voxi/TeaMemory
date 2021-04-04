@@ -156,15 +156,15 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     @Override
-    public void onOptionsRecyclerItemClick(Button buttonOptions, int position) {
+    public void onRecyclerItemClick(Button buttonOptions, int position) {
         final PopupMenu popup = new PopupMenu(getApplication(), buttonOptions);
-        popup.inflate(R.menu.menu_information_options);
+        popup.inflate(R.menu.menu_information_details);
 
         popup.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_information_option_edit) {
+            if (item.getItemId() == R.id.action_information_details_edit) {
                 editDetail(position);
                 return true;
-            } else if (item.getItemId() == R.id.action_information_option_delete) {
+            } else if (item.getItemId() == R.id.action_information_details_delete) {
                 informationViewModel.deleteDetail(position);
                 return true;
             }

@@ -31,19 +31,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final Context context = parent.getContext();
         final LayoutInflater inflater = LayoutInflater.from(context);
 
-        final View settingsView = inflater.inflate(viewId, parent, false);
+        final View view = inflater.inflate(viewId, parent, false);
 
-        return new ViewHolder(settingsView, onClickListener);
+        return new ViewHolder(view, onClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final ListRowItem detail = listRowItems.get(position);
+        final ListRowItem listRowItem = listRowItems.get(position);
 
         final TextView header = holder.header;
-        header.setText(detail.getHeading());
+        header.setText(listRowItem.getHeading());
         final TextView description = holder.description;
-        description.setText(detail.getDescription());
+        description.setText(listRowItem.getDescription());
     }
 
     @Override
@@ -69,11 +69,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(final View view) {
-            onClickListener.onOptionsRecyclerItemClick(getAdapterPosition());
+            onClickListener.onRecyclerItemClick(getAdapterPosition());
         }
     }
 
     public interface OnClickListener {
-        void onOptionsRecyclerItemClick(int position);
+        void onRecyclerItemClick(int position);
     }
 }

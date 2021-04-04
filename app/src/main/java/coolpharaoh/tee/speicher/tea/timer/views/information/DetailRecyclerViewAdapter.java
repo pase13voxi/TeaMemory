@@ -74,11 +74,11 @@ class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewA
         @Override
         public void onClick(View view) {
             final Button buttonOptions = view.findViewById(R.id.buttonDetailOptions);
-            onClickListener.onOptionsRecyclerItemClick(buttonOptions, getAdapterPosition());
+            onClickListener.onRecyclerItemClick(buttonOptions, getAdapterPosition());
         }
     }
 
     public interface OnClickListener {
-        void onOptionsRecyclerItemClick(Button buttonOptions, int position);
+        void onRecyclerItemClick(Button buttonOptions, int position);
     }
 }

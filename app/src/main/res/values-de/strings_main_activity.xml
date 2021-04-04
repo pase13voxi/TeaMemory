@@ -6,6 +6,8 @@
     <string name="main_action_search">Suche</string>
     <string name="main_dialog_sort_title">Sortiermodus</string>
     <string name="main_dialog_sort_negative">Abbrechen</string>
+    <string name="main_tea_list_menu_edit">Bearbeiten</string>
+    <string name="main_tea_list_menu_delete">Löschen</string>
     <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
     <string name="main_tooltip_newtea">Tee hinzufügen</string>
     <string name="main_dialog_update_header">Neue Funktionen</string>
@@ -23,9 +25,5 @@
         <item>Alphabetisch</item>
         <item>Nach Sorte</item>
         <item>Bewertung</item>
-    </string-array>
-    <string-array name="itemMenu">
-        <item>Bearbeiten</item>
-        <item>Löschen</item>
     </string-array>
 </resources>

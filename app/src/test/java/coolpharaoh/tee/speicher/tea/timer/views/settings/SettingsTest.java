@@ -397,8 +397,8 @@ public class SettingsTest {
 
     private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {
         recyclerView.scrollToPosition(position);
-        final View itemAnimationBefore = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-        itemAnimationBefore.performClick();
+        final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        itemView.performClick();
     }
 
     private void checkHeadingAtPosition(final RecyclerView recyclerView, final int position, final String heading) {
@@ -410,8 +410,8 @@ public class SettingsTest {
     }
 
     private void checkViewAtPositionInRecyclerView(RecyclerView recyclerView, int position, int viewId, String toCheck) {
-        final View itemAtPosition = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-        final TextView textViewHeading = itemAtPosition.findViewById(viewId);
+        final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        final TextView textViewHeading = itemView.findViewById(viewId);
         assertThat(textViewHeading.getText()).hasToString(toCheck);
     }
 }

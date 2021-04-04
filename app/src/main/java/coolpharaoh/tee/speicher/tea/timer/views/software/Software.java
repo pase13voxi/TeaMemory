@@ -19,7 +19,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewA
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Software extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
+public class Software extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -47,7 +47,8 @@ public class Software extends AppCompatActivity implements RecyclerViewAdapter.O
     private void configureAndShowListView() {
         final List<ListRowItem> softwareList = generateListItems();
 
-        final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_software, softwareList, this);
+        final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_software, softwareList,
+                position -> { /*this functionality is not needed, but needs to be override*/ });
 
         final RecyclerView recyclerViewDetails = findViewById(R.id.recycler_view_software);
         recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
@@ -62,10 +63,5 @@ public class Software extends AppCompatActivity implements RecyclerViewAdapter.O
         final ListRowItem itemStatistic = new ListRowItem(getResources().getString(R.string.software_statistic_heading), getResources().getString(R.string.software_statistic_description));
         softwareList.add(itemStatistic);
         return softwareList;
-    }
-
-    @Override
-    public void onOptionsRecyclerItemClick(final int position) {
-        //just do nothing
     }
 }
