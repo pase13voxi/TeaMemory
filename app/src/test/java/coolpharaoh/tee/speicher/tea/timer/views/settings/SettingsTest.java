@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
@@ -36,7 +38,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ListRowItem;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
@@ -111,36 +112,36 @@ public class SettingsTest {
     public void launchActivityAndExpectFilledListView() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            ListRowItem itemAlarm = (ListRowItem) settingsList.getAdapter().getItem(ALARM);
-            assertThat(itemAlarm.getHeading()).isEqualTo(settings.getString(R.string.settings_alarm));
-            assertThat(itemAlarm.getDescription()).isEqualTo(actualSettings.getMusicName());
+            settingsRecyclerView.scrollToPosition(ALARM);
+            checkHeadingAtPosition(settingsRecyclerView, ALARM, settings.getString(R.string.settings_alarm));
+            checkDescriptionAtPosition(settingsRecyclerView, ALARM, actualSettings.getMusicName());
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
-            assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
-            assertThat(itemVibration.getDescription()).isEqualTo(actualSettings.isVibration() ? ON : OFF);
+            settingsRecyclerView.scrollToPosition(VIBRATION);
+            checkHeadingAtPosition(settingsRecyclerView, VIBRATION, settings.getString(R.string.settings_vibration));
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, actualSettings.isVibration() ? ON : OFF);
 
-            ListRowItem itemAnimation = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
-            assertThat(itemAnimation.getHeading()).isEqualTo(settings.getString(R.string.settings_animation));
-            assertThat(itemAnimation.getDescription()).isEqualTo(actualSettings.isAnimation() ? ON : OFF);
+            settingsRecyclerView.scrollToPosition(ANIMATION);
+            checkHeadingAtPosition(settingsRecyclerView, ANIMATION, settings.getString(R.string.settings_animation));
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, actualSettings.isAnimation() ? ON : OFF);
 
-            ListRowItem itemTemperatureUnit = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
-            assertThat(itemTemperatureUnit.getHeading()).isEqualTo(settings.getString(R.string.settings_temperature_unit));
-            assertThat(itemTemperatureUnit.getDescription()).isEqualTo(actualSettings.getTemperatureUnit());
+            settingsRecyclerView.scrollToPosition(TEMPERATURE_UNIT);
+            checkHeadingAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, settings.getString(R.string.settings_temperature_unit));
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, actualSettings.getTemperatureUnit());
 
-            ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
-            assertThat(itemDarkMode.getHeading()).isEqualTo(settings.getString(R.string.settings_dark_mode));
+            settingsRecyclerView.scrollToPosition(DARK_MODE);
             final String[] darkModes = settings.getResources().getStringArray(R.array.settings_dark_mode);
-            assertThat(itemDarkMode.getDescription()).isEqualTo(darkModes[SYSTEM.getChoice()]);
+            checkHeadingAtPosition(settingsRecyclerView, DARK_MODE, settings.getString(R.string.settings_dark_mode));
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, darkModes[SYSTEM.getChoice()]);
 
-            ListRowItem itemHints = (ListRowItem) settingsList.getAdapter().getItem(HINTS);
-            assertThat(itemHints.getHeading()).isEqualTo(settings.getString(R.string.settings_show_hints));
-            assertThat(itemHints.getDescription()).isEqualTo(settings.getString(R.string.settings_show_hints_description));
+            settingsRecyclerView.scrollToPosition(HINTS);
+            checkHeadingAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints));
+            checkDescriptionAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints_description));
 
-            ListRowItem itemFactorySettings = (ListRowItem) settingsList.getAdapter().getItem(FACTORY_SETTINGS);
-            assertThat(itemFactorySettings.getHeading()).isEqualTo(settings.getString(R.string.settings_factory_settings));
-            assertThat(itemFactorySettings.getDescription()).isEqualTo(settings.getString(R.string.settings_factory_settings_description));
+            settingsRecyclerView.scrollToPosition(FACTORY_SETTINGS);
+            checkHeadingAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings));
+            checkDescriptionAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings_description));
         });
     }
 
@@ -148,11 +149,11 @@ public class SettingsTest {
     public void clickAlarmAndExpectAlarmPicker() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, ALARM, settingsList.getItemIdAtPosition(ALARM));
+            clickAtPositionRecyclerView(settingsRecyclerView, ALARM);
 
-            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getAction()).isEqualTo(RingtoneManager.ACTION_RINGTONE_PICKER);
         });
@@ -162,20 +163,18 @@ public class SettingsTest {
     public void setVibrationFalseAndExpectVibrationFalse() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, VIBRATION, settingsList.getItemIdAtPosition(VIBRATION));
+            clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_OFF);
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isVibration()).isFalse();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
-            assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
-            assertThat(itemVibration.getDescription()).isEqualTo(OFF);
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, OFF);
         });
     }
 
@@ -183,20 +182,18 @@ public class SettingsTest {
     public void setVibrationTrueAndExpectVibrationTrue() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, VIBRATION, settingsList.getItemIdAtPosition(VIBRATION));
+            clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_ON);
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isVibration()).isTrue();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(VIBRATION);
-            assertThat(itemVibration.getHeading()).isEqualTo(settings.getString(R.string.settings_vibration));
-            assertThat(itemVibration.getDescription()).isEqualTo(ON);
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, ON);
         });
     }
 
@@ -204,19 +201,18 @@ public class SettingsTest {
     public void setAnimationFalseAndExpectAnimationFalse() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, ANIMATION, settingsList.getItemIdAtPosition(ANIMATION));
+            clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_OFF);
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isAnimation()).isFalse();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
-            assertThat(itemVibration.getDescription()).isEqualTo(OFF);
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, OFF);
         });
     }
 
@@ -224,19 +220,18 @@ public class SettingsTest {
     public void setAnimationTrueAndExpectAnimationTrue() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, ANIMATION, settingsList.getItemIdAtPosition(ANIMATION));
+            clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_ON);
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.isAnimation()).isTrue();
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(ANIMATION);
-            assertThat(itemVibration.getDescription()).isEqualTo(ON);
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, ON);
         });
     }
 
@@ -244,19 +239,18 @@ public class SettingsTest {
     public void setTemperatureUnitCelsiusAndExpectCelsius() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, TEMPERATURE_UNIT, settingsList.getItemIdAtPosition(TEMPERATURE_UNIT));
+            clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_CELSIUS);
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(CELSIUS);
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
-            assertThat(itemVibration.getDescription()).isEqualTo(CELSIUS);
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS);
         });
     }
 
@@ -264,40 +258,38 @@ public class SettingsTest {
     public void setTemperatureUnitFahrenheitAndExpectFahrenheit() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, TEMPERATURE_UNIT, settingsList.getItemIdAtPosition(TEMPERATURE_UNIT));
+            clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_FAHRENHEIT);
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
 
-            ListRowItem itemVibration = (ListRowItem) settingsList.getAdapter().getItem(TEMPERATURE_UNIT);
-            assertThat(itemVibration.getDescription()).isEqualTo(FAHRENHEIT);
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT);
         });
     }
 
-    @Ignore("Leads to a nullpointer exception I don't know why!")
+    @Ignore("Leads to a null pointer exception I don't know why!")
     @Test
     public void setDarkModeEnabled() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, DARK_MODE, settingsList.getItemIdAtPosition(DARK_MODE));
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(ENABLED.getChoice());
 
-            SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
             assertThat(sharedSettings.getDarkMode()).isEqualTo(ENABLED);
 
-            ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
             final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[ENABLED.getChoice()];
-            assertThat(itemDarkMode.getDescription()).isEqualTo(expectedChoice);
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
 
             assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_YES);
         });
@@ -307,19 +299,18 @@ public class SettingsTest {
     public void setDarkModeSystem() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, DARK_MODE, settingsList.getItemIdAtPosition(DARK_MODE));
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
 
-            SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
             assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
 
-            ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
             final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
-            assertThat(itemDarkMode.getDescription()).isEqualTo(expectedChoice);
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
 
             assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_AUTO_BATTERY);
         });
@@ -329,19 +320,18 @@ public class SettingsTest {
     public void setDarkModeDisabled() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, DARK_MODE, settingsList.getItemIdAtPosition(DARK_MODE));
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(DISABLED.getChoice());
 
-            SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
             assertThat(sharedSettings.getDarkMode()).isEqualTo(DISABLED);
 
-            ListRowItem itemDarkMode = (ListRowItem) settingsList.getAdapter().getItem(DARK_MODE);
             final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[DISABLED.getChoice()];
-            assertThat(itemDarkMode.getDescription()).isEqualTo(expectedChoice);
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
 
             assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_NO);
         });
@@ -351,16 +341,16 @@ public class SettingsTest {
     public void setAllHintsAndExpectAllHints() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, HINTS, settingsList.getItemIdAtPosition(HINTS));
+            clickAtPositionRecyclerView(settingsRecyclerView, HINTS);
 
-            AlertDialog alertDialog = getLatestAlertDialog();
+            final AlertDialog alertDialog = getLatestAlertDialog();
 
-            CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.checkboxDialogSettingsUpdate);
-            CheckBox checkBoxRating = alertDialog.findViewById(R.id.checkboxDialogSettingsRating);
-            CheckBox checkBoxDescription = alertDialog.findViewById(R.id.checkboxDialogSettingsDescription);
-            CheckBox checkBoxPermission = alertDialog.findViewById(R.id.checkboxDialogSettingsPermission);
+            final CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.checkboxDialogSettingsUpdate);
+            final CheckBox checkBoxRating = alertDialog.findViewById(R.id.checkboxDialogSettingsRating);
+            final CheckBox checkBoxDescription = alertDialog.findViewById(R.id.checkboxDialogSettingsDescription);
+            final CheckBox checkBoxPermission = alertDialog.findViewById(R.id.checkboxDialogSettingsPermission);
 
             assertThat(checkBoxUpdate.isChecked()).isFalse();
             assertThat(checkBoxRating.isChecked()).isFalse();
@@ -372,11 +362,11 @@ public class SettingsTest {
             checkBoxDescription.setChecked(true);
             checkBoxPermission.setChecked(true);
 
-            Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            final Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             accept.performClick();
 
             verify(actualSettingsDao, times(4)).update(captor.capture());
-            List<ActualSettings> updatedSettings = captor.getAllValues();
+            final List<ActualSettings> updatedSettings = captor.getAllValues();
 
             assertThat(updatedSettings.get(3).isMainUpdateAlert()).isTrue();
             assertThat(updatedSettings.get(3).isMainRateAlert()).isTrue();
@@ -389,19 +379,39 @@ public class SettingsTest {
     public void setFactorySettingsAndExpectFactorySettings() {
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
-            ListView settingsList = settings.findViewById(R.id.listView_settings);
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.settings_recycler_view);
 
-            settingsList.performItemClick(settingsList, FACTORY_SETTINGS, settingsList.getItemIdAtPosition(FACTORY_SETTINGS));
+            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
 
-            AlertDialog alertDialog = getLatestAlertDialog();
+            final AlertDialog alertDialog = getLatestAlertDialog();
 
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             verify(actualSettingsDao).update(captor.capture());
-            ActualSettings updatedSettings = captor.getValue();
+            final ActualSettings updatedSettings = captor.getValue();
             assertThat(updatedSettings.getMusicName()).isEqualTo("Default");
 
             verify(teaDao).deleteAll();
         });
+    }
+
+    private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {
+        recyclerView.scrollToPosition(position);
+        final View itemAnimationBefore = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        itemAnimationBefore.performClick();
+    }
+
+    private void checkHeadingAtPosition(final RecyclerView recyclerView, final int position, final String heading) {
+        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_settings_recycler_view_heading, heading);
+    }
+
+    private void checkDescriptionAtPosition(final RecyclerView recyclerView, final int position, final String description) {
+        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_settings_recycler_view_description, description);
+    }
+
+    private void checkViewAtPositionInRecyclerView(RecyclerView recyclerView, int position, int viewId, String toCheck) {
+        final View itemAtPosition = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        final TextView textViewHeading = itemAtPosition.findViewById(viewId);
+        assertThat(textViewHeading.getText()).hasToString(toCheck);
     }
 }

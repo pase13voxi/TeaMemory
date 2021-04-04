@@ -12,15 +12,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permiss
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class Settings extends AppCompatActivity implements SettingsRecyclerViewAdapter.OnClickListener {
 
     public static final int REQUEST_CODE_MUSIC_CHOICE = 4532;
 
@@ -49,7 +50,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private SharedSettings sharedSettings;
 
     private ArrayList<ListRowItem> settingsList;
-    private SettingsListAdapter adapter;
+    private SettingsRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -81,12 +82,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         settingsList = new ArrayList<>();
         fillAndRefreshSettingsList();
 
-        adapter = new SettingsListAdapter(this, settingsList);
+        adapter = new SettingsRecyclerViewAdapter(settingsList, this);
 
-        final ListView listViewSetting = findViewById(R.id.listView_settings);
-        listViewSetting.setAdapter(adapter);
-
-        listViewSetting.setOnItemClickListener(this);
+        final RecyclerView recyclerViewDetails = findViewById(R.id.settings_recycler_view);
+        recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerViewDetails.setAdapter(adapter);
+        recyclerViewDetails.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void fillAndRefreshSettingsList() {
@@ -142,7 +143,11 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     @Override
-    public void onItemClick(final AdapterView<?> adapterView, final View view, final int position, final long id) {
+    public void onOptionsRecyclerItemClick(int position) {
+        applyOptionsSelection(position);
+    }
+
+    private void applyOptionsSelection(int position) {
         final ListItems item = ListItems.values()[position];
         switch (item) {
             case ALARM:
@@ -201,7 +206,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
         if (requestCode == REQUEST_CODE_READ) {
             if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 Toast.makeText(getApplicationContext(), R.string.settings_read_permission_denied, Toast.LENGTH_LONG).show();
