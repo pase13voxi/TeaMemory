@@ -1,8 +1,10 @@
 package coolpharaoh.tee.speicher.tea.timer.views.software;
 
 import android.os.Build;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Before;
@@ -12,7 +14,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,17 +32,27 @@ public class SoftwareTest {
     @Test
     public void expectSoftwareList() {
         softwareActivityScenario.onActivity(software -> {
-            ListView aboutList = software.findViewById(R.id.listview_software);
+            final RecyclerView softwareRecyclerView = software.findViewById(R.id.recycler_view_software);
 
-            assertThat(aboutList.getAdapter().getCount()).isEqualTo(2);
+            assertThat(softwareRecyclerView.getAdapter().getItemCount()).isEqualTo(2);
 
-            ListRowItem itemPicker = (ListRowItem) aboutList.getAdapter().getItem(0);
-            assertThat(itemPicker.getHeading()).isEqualTo(software.getString(R.string.software_colorpicker_heading));
-            assertThat(itemPicker.getDescription()).isEqualTo(software.getString(R.string.software_colorpicker_description));
+            softwareRecyclerView.scrollToPosition(0);
+            checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 0,
+                    software.getString(R.string.software_colorpicker_heading), software.getString(R.string.software_colorpicker_description));
 
-            ListRowItem itemStatistic = (ListRowItem) aboutList.getAdapter().getItem(1);
-            assertThat(itemStatistic.getHeading()).isEqualTo(software.getString(R.string.software_statistic_heading));
-            assertThat(itemStatistic.getDescription()).isEqualTo(software.getString(R.string.software_statistic_description));
+            softwareRecyclerView.scrollToPosition(1);
+            checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 1,
+                    software.getString(R.string.software_statistic_heading), software.getString(R.string.software_statistic_description));
         });
+    }
+
+
+    private void checkHeaderAndPositionAtPositionInRecyclerView(final RecyclerView recyclerView, final int position,
+                                                                final String header, final String description) {
+        final View itemAtPosition = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+        final TextView textViewHeading = itemAtPosition.findViewById(R.id.text_view_recycler_view_heading);
+        assertThat(textViewHeading.getText()).hasToString(header);
+        final TextView textViewDescription = itemAtPosition.findViewById(R.id.text_view_recycler_view_description);
+        assertThat(textViewDescription.getText()).hasToString(description);
     }
 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dip"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dip">
 
     <TextView
-        android:id="@+id/textViewListSoftwareHeading"
+        android:id="@+id/text_view_recycler_view_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -15,7 +15,7 @@
         android:textColor="@color/text_green" />
 
     <TextView
-        android:id="@+id/textViewListSoftwareDescription"
+        android:id="@+id/text_view_recycler_view_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
