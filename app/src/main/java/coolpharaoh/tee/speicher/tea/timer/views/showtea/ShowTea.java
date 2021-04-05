@@ -144,7 +144,7 @@ public class ShowTea extends AppCompatActivity {
 
         buttonInfo.setOnClickListener(v -> showDialogCoolingPeriod());
 
-        buttonCalculateAmount.setOnClickListener(view -> showDialogAmount());
+        buttonCalculateAmount.setOnClickListener(view -> decideToShowDialogAmount());
     }
 
     private void defineToolbarAsActionbar() {
@@ -274,7 +274,6 @@ public class ShowTea extends AppCompatActivity {
                 textViewAmount.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
             }
         } else {
-            buttonCalculateAmount.setEnabled(false);
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
                 textViewAmount.setText(getResources().getString(R.string.showtea_display_gr, "-"));
             } else {
@@ -540,7 +539,7 @@ public class ShowTea extends AppCompatActivity {
                 spinnerMinutes.setSelection(cooldowntime.getMinutes());
                 spinnerSeconds.setSelection(cooldowntime.getSeconds());
             } else {
-                Toast.makeText(getApplication(), R.string.showtea_cooldown_not_found, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), R.string.showtea_cool_down_time_not_found, Toast.LENGTH_LONG).show();
             }
         } else {
             buttonInfo.setVisibility(View.INVISIBLE);
@@ -556,6 +555,14 @@ public class ShowTea extends AppCompatActivity {
         builder.setMessage(R.string.showtea_cooldown_description);
         builder.setPositiveButton("OK", null);
         builder.show();
+    }
+
+    private void decideToShowDialogAmount() {
+        if (showTeaViewModel.getAmount() == -500 || showTeaViewModel.getAmount() == 0) {
+            Toast.makeText(getApplication(), R.string.showtea_amount_not_found, Toast.LENGTH_LONG).show();
+        } else {
+            showDialogAmount();
+        }
     }
 
     private void showDialogAmount() {

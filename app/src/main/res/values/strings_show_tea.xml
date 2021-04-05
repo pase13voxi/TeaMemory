@@ -21,6 +21,7 @@
     <string name="showtea_display_ts">%1$s ts/L</string>
     <string name="showtea_display_gr">%1$s g/L</string>
     <string name="showtea_tooltip_calculate_amount">Calculate amount</string>
+    <string name="showtea_amount_not_found">The amount is zero or there is no amount set for this tea.</string>
     <string name="showtea_dialog_amount">Amount</string>
     <string name="showtea_dialog_amount_scala_left">0.0l</string>
     <string name="showtea_dialog_amount_scala_center">1.0l</string>
@@ -37,7 +38,7 @@
     <string name="showtea_dialog_infusion_count_title">Choose your infusion</string>
     <string name="showtea_dialog_infusion_count_description">Infusion %1$d</string>
     <string name="showtea_dialog_infusion_count_negative">Cancel</string>
-    <string name="showtea_cooldown_not_found">There is no cooldown time set for this infusion / tea.</string>
+    <string name="showtea_cool_down_time_not_found">There is no cooldown time set for this infusion / tea.</string>
     <string name="showtea_cooldown_content_description">Cooling period</string>
     <string name="showtea_cooldown_header">Cooling period</string>
     <string name="showtea_cooldown_description">For green or white tea the boiling water should be cool down before infuse the tea.</string>
