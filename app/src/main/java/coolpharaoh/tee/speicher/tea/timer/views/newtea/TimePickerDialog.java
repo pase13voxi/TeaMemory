@@ -127,8 +127,12 @@ public class TimePickerDialog extends DialogFragment {
         final int minutes = timePickerMinutes.getValue();
         final int seconds = timePickerSeconds.getValue();
 
-        final TimeConverter timeConverter = new TimeConverter(minutes, seconds);
-        newTeaViewModel.setInfusionTime(timeConverter.getTime());
+        if (minutes == 0 && seconds == 0) {
+            newTeaViewModel.setInfusionTime(null);
+        } else {
+            final TimeConverter timeConverter = new TimeConverter(minutes, seconds);
+            newTeaViewModel.setInfusionTime(timeConverter.getTime());
+        }
     }
 
 }

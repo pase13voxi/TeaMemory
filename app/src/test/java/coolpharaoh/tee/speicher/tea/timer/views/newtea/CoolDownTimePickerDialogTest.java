@@ -152,6 +152,22 @@ public class CoolDownTimePickerDialogTest {
     }
 
     @Test
+    public void inputZeroTimeAndExpectSavedNull() {
+        dialogFragment.show(fragmentManager, TAG);
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        numberPickerTimeMinutes.setValue(0);
+
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        numberPickerTimeSeconds.setValue(0);
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        verify(newTeaViewModel).setInfusionCoolDownTime(null);
+    }
+
+    @Test
     public void showExistingCoolDownTimeConfiguration() {
         when(newTeaViewModel.getInfusionCoolDownTime()).thenReturn("05:15");
 
