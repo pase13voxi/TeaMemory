@@ -16,9 +16,9 @@ class NotExistingTeaDialog {
 
     AlertDialog show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.showtea_dialog_tea_missing_header);
-        builder.setMessage(R.string.showtea_dialog_tea_missing_description);
-        builder.setPositiveButton(R.string.showtea_dialog_tea_missing_to_main, (dialog, which) -> navigateToMain());
+        builder.setTitle(R.string.show_tea_dialog_tea_missing_header);
+        builder.setMessage(R.string.show_tea_dialog_tea_missing_description);
+        builder.setPositiveButton(R.string.show_tea_dialog_tea_missing_to_main, (dialog, which) -> navigateToMain());
         builder.setCancelable(false);
         return builder.show();
     }

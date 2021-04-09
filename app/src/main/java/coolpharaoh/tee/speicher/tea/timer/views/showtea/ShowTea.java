@@ -88,7 +88,7 @@ public class ShowTea extends AppCompatActivity {
                     updateImage(millis);
                 }
                 if (ready) {
-                    textViewTimer.setText(R.string.showtea_tea_ready);
+                    textViewTimer.setText(R.string.show_tea_tea_ready);
                     if (!infoShown && showTeaViewModel.isAnimation()) {
                         imageViewFill.setImageResource(R.drawable.cup_fill100pr);
                         imageViewSteam.setVisibility((View.VISIBLE));
@@ -150,7 +150,7 @@ public class ShowTea extends AppCompatActivity {
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(R.string.showtea_heading);
+        toolbarTitle.setText(R.string.show_tea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
 
@@ -201,7 +201,7 @@ public class ShowTea extends AppCompatActivity {
 
     private void initializeSpinnerWithBigCharacters() {
         ArrayAdapter<CharSequence> spinnerTimeAdapter = ArrayAdapter.createFromResource(
-                this, R.array.itemsTimer, R.layout.spinner_item);
+                this, R.array.show_tea_items_timer, R.layout.spinner_item);
         spinnerTimeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerMinutes.setAdapter(spinnerTimeAdapter);
         spinnerSeconds.setAdapter(spinnerTimeAdapter);
@@ -253,15 +253,15 @@ public class ShowTea extends AppCompatActivity {
     private void fillTemperatureWithUnit() {
         if (showTeaViewModel.getTemperature() != -500) {
             if (getResources().getString(R.string.new_tea_fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
             } else {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
             if (getResources().getString(R.string.new_tea_fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, "-"));
             } else {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, "-"));
             }
         }
     }
@@ -269,15 +269,15 @@ public class ShowTea extends AppCompatActivity {
     private void fillAmountWithUnit() {
         if (showTeaViewModel.getAmount() != -500) {
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(getResources().getString(R.string.showtea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
+                textViewAmount.setText(getResources().getString(R.string.show_tea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
             } else {
-                textViewAmount.setText(getResources().getString(R.string.showtea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
+                textViewAmount.setText(getResources().getString(R.string.show_tea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
             }
         } else {
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(getResources().getString(R.string.showtea_display_gr, "-"));
+                textViewAmount.setText(getResources().getString(R.string.show_tea_display_gr, "-"));
             } else {
-                textViewAmount.setText(getResources().getString(R.string.showtea_display_ts, "-"));
+                textViewAmount.setText(getResources().getString(R.string.show_tea_display_ts, "-"));
             }
         }
     }
@@ -305,9 +305,9 @@ public class ShowTea extends AppCompatActivity {
 
         new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setView(alertLayoutDialogDescription)
-                .setTitle(R.string.showtea_dialog_description_header)
-                .setNegativeButton(R.string.showtea_dialog_description_cancel, (dialog, which) -> disableDescription(donNotShowAgain))
-                .setPositiveButton(R.string.showtea_dialog_description_show, (dialog, which) -> navigateToShowTeaDescription(donNotShowAgain))
+                .setTitle(R.string.show_tea_dialog_description_header)
+                .setNegativeButton(R.string.show_tea_dialog_description_cancel, (dialog, which) -> disableDescription(donNotShowAgain))
+                .setPositiveButton(R.string.show_tea_dialog_description_show, (dialog, which) -> navigateToShowTeaDescription(donNotShowAgain))
                 .show();
     }
 
@@ -334,10 +334,10 @@ public class ShowTea extends AppCompatActivity {
         int nextInfusion = showTeaViewModel.getNextInfusion() + 1;
         //Infomationen anzeigen
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.showtea_dialog_following_infusion_header);
-        builder.setMessage(getResources().getString(R.string.showtea_dialog_following_infusion_description, lastInfusion, nextInfusion));
-        builder.setPositiveButton(R.string.showtea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
-        builder.setNegativeButton(R.string.showtea_dialog_following_infusion_no, (dialog, which) -> showTeaViewModel.resetNextInfusion());
+        builder.setTitle(R.string.show_tea_dialog_following_infusion_header);
+        builder.setMessage(getResources().getString(R.string.show_tea_dialog_following_infusion_description, lastInfusion, nextInfusion));
+        builder.setPositiveButton(R.string.show_tea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
+        builder.setNegativeButton(R.string.show_tea_dialog_following_infusion_no, (dialog, which) -> showTeaViewModel.resetNextInfusion());
         builder.show();
     }
 
@@ -349,21 +349,21 @@ public class ShowTea extends AppCompatActivity {
     private void infusionIndexChanged() {
         if (showTeaViewModel.getTemperature() != -500) {
             if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
             } else {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
             if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_fahrenheit, "-"));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, "-"));
             } else {
-                textViewTemperature.setText(getResources().getString(R.string.showtea_display_celsius, "-"));
+                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, "-"));
             }
         }
 
         spinnerMinutes.setSelection(showTeaViewModel.getTime().getMinutes());
         spinnerSeconds.setSelection(showTeaViewModel.getTime().getSeconds());
-        textViewInfusionIndex.setText(getResources().getString(R.string.showtea_break_count_point, (showTeaViewModel.getInfusionIndex() + 1)));
+        textViewInfusionIndex.setText(getResources().getString(R.string.show_tea_break_count_point, (showTeaViewModel.getInfusionIndex() + 1)));
 
         nextInfusionEnable();
 
@@ -376,15 +376,15 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void startOrResetTimer() {
-        if (getResources().getString(R.string.showtea_timer_start).contentEquals(buttonStartTimer.getText())) {
+        if (getResources().getString(R.string.show_tea_timer_start).contentEquals(buttonStartTimer.getText())) {
             startTimer();
-        } else if (getResources().getString(R.string.showtea_timer_reset).contentEquals(buttonStartTimer.getText())) {
+        } else if (getResources().getString(R.string.show_tea_timer_reset).contentEquals(buttonStartTimer.getText())) {
             resetTimer();
         }
     }
 
     private void startTimer() {
-        buttonStartTimer.setText(R.string.showtea_timer_reset);
+        buttonStartTimer.setText(R.string.show_tea_timer_reset);
 
         collectDrinkingBehaviorInformation();
 
@@ -466,7 +466,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void resetTimer() {
-        buttonStartTimer.setText(R.string.showtea_timer_start);
+        buttonStartTimer.setText(R.string.show_tea_timer_start);
 
         enableInfusionBarAndCooldownSwitch();
 
@@ -504,7 +504,7 @@ public class ShowTea extends AppCompatActivity {
         int tmpSize = showTeaViewModel.getInfusionSize();
         String[] items = new String[tmpSize];
         for (int i = 0; i < tmpSize; i++) {
-            items[i] = getResources().getString(R.string.showtea_dialog_infusion_count_description, i + 1);
+            items[i] = getResources().getString(R.string.show_tea_dialog_infusion_count_description, i + 1);
         }
 
         //Get CheckedItem
@@ -513,13 +513,13 @@ public class ShowTea extends AppCompatActivity {
         // Creating and Building the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setIcon(R.drawable.infusion_black);
-        builder.setTitle(R.string.showtea_dialog_infusion_count_title);
+        builder.setTitle(R.string.show_tea_dialog_infusion_count_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             showTeaViewModel.setInfusionIndex(item);
             infusionIndexChanged();
             dialog.dismiss();
         });
-        builder.setNegativeButton(R.string.showtea_dialog_infusion_count_negative, null);
+        builder.setNegativeButton(R.string.show_tea_dialog_infusion_count_negative, null);
         builder.create().show();
     }
 
@@ -539,7 +539,7 @@ public class ShowTea extends AppCompatActivity {
                 spinnerMinutes.setSelection(cooldowntime.getMinutes());
                 spinnerSeconds.setSelection(cooldowntime.getSeconds());
             } else {
-                Toast.makeText(getApplication(), R.string.showtea_cool_down_time_not_found, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), R.string.show_tea_cool_down_time_not_found, Toast.LENGTH_LONG).show();
             }
         } else {
             buttonInfo.setVisibility(View.INVISIBLE);
@@ -551,15 +551,15 @@ public class ShowTea extends AppCompatActivity {
 
     private void showDialogCoolingPeriod() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.showtea_cooldown_header);
-        builder.setMessage(R.string.showtea_cooldown_description);
+        builder.setTitle(R.string.show_tea_cool_down_time_header);
+        builder.setMessage(R.string.show_tea_cool_down_time_description);
         builder.setPositiveButton("OK", null);
         builder.show();
     }
 
     private void decideToShowDialogAmount() {
         if (showTeaViewModel.getAmount() == -500 || showTeaViewModel.getAmount() == 0) {
-            Toast.makeText(getApplication(), R.string.showtea_amount_not_found, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplication(), R.string.show_tea_amount_not_found, Toast.LENGTH_LONG).show();
         } else {
             showDialogAmount();
         }
@@ -594,9 +594,9 @@ public class ShowTea extends AppCompatActivity {
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.DialogTheme);
         adb.setView(alertLayoutDialogAmount);
-        adb.setTitle(R.string.showtea_dialog_amount);
+        adb.setTitle(R.string.show_tea_dialog_amount);
         adb.setIcon(R.drawable.spoon_black);
-        adb.setPositiveButton(R.string.showtea_dialog_amount_ok, null);
+        adb.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
         adb.show();
     }
 
@@ -604,9 +604,9 @@ public class ShowTea extends AppCompatActivity {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
         if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-            textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_gr, amountPerLiter, liter));
+            textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_gr, amountPerLiter, liter));
         } else {
-            textViewAmountPerAmount.setText(getResources().getString(R.string.showtea_dialog_amount_per_amount_ts, amountPerLiter, liter));
+            textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_ts, amountPerLiter, liter));
         }
 
     }

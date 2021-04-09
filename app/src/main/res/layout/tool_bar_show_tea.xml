@@ -30,7 +30,7 @@
             android:layout_height="30dp"
             android:layout_centerInParent="true"
             android:layout_toStartOf="@id/toolbar_infusionindex"
-            android:text="@string/showtea_first_infusion_index"
+            android:text="@string/show_tea_first_infusion_index"
             android:textColor="@color/text_white"
             android:textSize="22sp" />
 
@@ -42,10 +42,10 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@id/toolbar_nextinfusion"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/showtea_tooltip_infusion"
+            android:contentDescription="@string/show_tea_tooltip_infusion"
             android:scaleType="fitXY"
             android:src="@drawable/infusion_white"
-            android:tooltipText="@string/showtea_tooltip_infusion"
+            android:tooltipText="@string/show_tea_tooltip_infusion"
             tools:targetApi="o" />
 
         <ImageButton
@@ -57,10 +57,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/showtea_tooltip_next_infusion"
+            android:contentDescription="@string/show_tea_tooltip_next_infusion"
             android:scaleType="fitXY"
             android:src="@drawable/triangle_right_white"
-            android:tooltipText="@string/showtea_tooltip_next_infusion"
+            android:tooltipText="@string/show_tea_tooltip_next_infusion"
             tools:targetApi="o" />
     </RelativeLayout>
 

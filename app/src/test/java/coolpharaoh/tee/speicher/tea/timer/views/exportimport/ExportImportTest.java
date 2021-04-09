@@ -96,8 +96,8 @@ public class ExportImportTest {
             buttonExport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_write_permission_dialog_header));
-            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_write_permission_dialog_description));
+            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_write_permission_dialog_header));
+            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_write_permission_dialog_description));
 
             verify(permissions, never()).getWritePermission(any());
         });
@@ -114,8 +114,8 @@ public class ExportImportTest {
             buttonExport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_location_dialog_header));
-            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_location_dialog_description));
+            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_location_dialog_header));
+            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_location_dialog_description));
         });
     }
 
@@ -130,8 +130,8 @@ public class ExportImportTest {
             buttonExport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_export_failed_dialog_header));
-            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_export_failed_dialog_description));
+            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_export_failed_dialog_header));
+            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_export_failed_dialog_description));
         });
     }
 
@@ -160,8 +160,8 @@ public class ExportImportTest {
             buttonImport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_read_permission_dialog_header));
-            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_read_permission_dialog_description));
+            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_read_permission_dialog_header));
+            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_read_permission_dialog_description));
 
             verify(permissions, never()).getReadPermission(any());
         });
@@ -179,7 +179,7 @@ public class ExportImportTest {
 
             AlertDialog alertDialog = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(alertDialog);
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_dialog_header));
+            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
 
             alertDialog.findViewById(R.id.buttonImportDelete).performClick();
 
@@ -189,8 +189,8 @@ public class ExportImportTest {
             mockReturnActivityResult(exportImport);
 
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_complete_dialog_header));
-            assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_import_complete_delete_dialog_description));
+            assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_complete_dialog_header));
+            assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_import_complete_delete_dialog_description));
         });
     }
 
@@ -207,7 +207,7 @@ public class ExportImportTest {
 
             AlertDialog alertDialogImport = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialogChooseImport = Shadows.shadowOf(alertDialogImport);
-            assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_dialog_header));
+            assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
 
             alertDialogImport.findViewById(R.id.buttonImportKeep).performClick();
 
@@ -217,8 +217,8 @@ public class ExportImportTest {
             mockReturnActivityResult(exportImport);
 
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_complete_dialog_header));
-            assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_import_complete_keep_dialog_description));
+            assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_complete_dialog_header));
+            assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_import_complete_keep_dialog_description));
         });
     }
 
@@ -235,7 +235,7 @@ public class ExportImportTest {
 
             AlertDialog alertDialogImport = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialogChooseImport = Shadows.shadowOf(alertDialogImport);
-            assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_dialog_header));
+            assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
 
             alertDialogImport.findViewById(R.id.buttonImportKeep).performClick();
 
@@ -245,8 +245,8 @@ public class ExportImportTest {
             mockReturnActivityResult(exportImport);
 
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.exportimport_import_failed_dialog_header));
-            assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.exportimport_import_failed_dialog_description));
+            assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_header));
+            assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_description));
         });
     }
 

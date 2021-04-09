@@ -45,9 +45,9 @@ public class ExportJson {
 
     private boolean writeFile(String json) {
         //Create Folder
-        File folder = new File(Environment.getExternalStorageDirectory().toString() + application.getString(R.string.exportimport_export_folder_name));
+        File folder = new File(Environment.getExternalStorageDirectory().toString() + application.getString(R.string.export_import_export_folder_name));
         if (!folder.exists() && !folder.mkdirs()) {
-            printer.print(application.getString(R.string.exportimport_export_create_folder_failed));
+            printer.print(application.getString(R.string.export_import_export_create_folder_failed));
             return false;
         }
 
@@ -55,14 +55,14 @@ public class ExportJson {
         String storageDirectory = folder.toString();
 
 
-        File file = new File(storageDirectory, application.getString(R.string.exportimport_export_file_name));
+        File file = new File(storageDirectory, application.getString(R.string.export_import_export_file_name));
         try (Writer output = new BufferedWriter(new FileWriter(file))) {
             output.write(json);
         } catch (IOException e) {
-            printer.print(application.getString(R.string.exportimport_save_failed));
+            printer.print(application.getString(R.string.export_import_save_failed));
             return false;
         }
-        printer.print(application.getString(R.string.exportimport_saved));
+        printer.print(application.getString(R.string.export_import_saved));
 
 
         return true;

@@ -94,9 +94,9 @@ public class ExportJsonTest {
     }
 
     private void mockUsedStrings() {
-        when(application.getString(R.string.exportimport_export_folder_name)).thenReturn("/TeaMemory");
-        when(application.getString(R.string.exportimport_export_file_name)).thenReturn("tealist.json");
-        when(application.getString(R.string.exportimport_saved)).thenReturn("tealist.json saved");
+        when(application.getString(R.string.export_import_export_folder_name)).thenReturn("/TeaMemory");
+        when(application.getString(R.string.export_import_export_file_name)).thenReturn("tealist.json");
+        when(application.getString(R.string.export_import_saved)).thenReturn("tealist.json saved");
     }
 
     private void mockFixedDate() {

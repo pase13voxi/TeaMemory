@@ -20,7 +20,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:text="@string/exportimport_info_top"
+        android:text="@string/export_import_info_top"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
@@ -31,7 +31,7 @@
         android:layout_below="@+id/textViewImportExportInfo"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        android:text="@string/exportimport_procedure"
+        android:text="@string/export_import_procedure"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
@@ -43,7 +43,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:text="@string/exportimport_dots"
+        android:text="@string/export_import_dots"
         android:textColor="@color/text_black"
         android:textSize="20sp" />
 
@@ -55,7 +55,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/textView1BulletPoint"
-        android:text="@string/exportimport_step1_text"
+        android:text="@string/export_import_step1_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
@@ -67,7 +67,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:text="@string/exportimport_dots"
+        android:text="@string/export_import_dots"
         android:textColor="@color/text_black"
         android:textSize="20sp" />
 
@@ -79,7 +79,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/textView2BulletPoint"
-        android:text="@string/exportimport_step2_text"
+        android:text="@string/export_import_step2_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
@@ -91,7 +91,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:text="@string/exportimport_dots"
+        android:text="@string/export_import_dots"
         android:textColor="@color/text_black"
         android:textSize="20sp" />
 
@@ -103,7 +103,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/textView3BulletPoint"
-        android:text="@string/exportimport_step3_text"
+        android:text="@string/export_import_step3_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
@@ -115,7 +115,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="@drawable/button_round_dark"
-        android:text="@string/exportimport_export"
+        android:text="@string/export_import_export"
         android:textAllCaps="false"
         android:textColor="@color/text_white"
         android:textSize="17sp" />
@@ -128,7 +128,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:background="@drawable/button_round_dark"
-        android:text="@string/exportimport_import"
+        android:text="@string/export_import_import"
         android:textAllCaps="false"
         android:textColor="@color/text_white"
         android:textSize="17sp" />
@@ -141,7 +141,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
-        android:text="@string/exportimport_warning"
+        android:text="@string/export_import_warning"
         android:textColor="@color/text_red"
         android:visibility="invisible" />
 

@@ -45,7 +45,7 @@ public class ImportJson {
         }
         POJOToDatabase pojoToDatabase = new POJOToDatabase(new DataTransferViewModel(application));
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
-        printer.print(application.getString(R.string.exportimport_teas_imported));
+        printer.print(application.getString(R.string.export_import_teas_imported));
         return true;
     }
 
@@ -74,7 +74,7 @@ public class ImportJson {
         try{
             return gson.fromJson(json, listType);
         }catch(JsonSyntaxException e){
-            printer.print(application.getString(R.string.exportimport_import_parse_teas_failed));
+            printer.print(application.getString(R.string.export_import_import_parse_teas_failed));
             return Collections.emptyList();
         }
     }

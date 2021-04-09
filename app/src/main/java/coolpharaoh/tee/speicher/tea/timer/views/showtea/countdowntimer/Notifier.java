@@ -47,8 +47,8 @@ class Notifier {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createChannel() {
-        final String name = application.getString(R.string.showtea_channel_name);
-        final String description = application.getString(R.string.showtea_channel_description);
+        final String name = application.getString(R.string.show_tea_channel_name);
+        final String description = application.getString(R.string.show_tea_channel_description);
         final int importance = NotificationManager.IMPORTANCE_HIGH;
         final NotificationChannel channel = new NotificationChannel(CHANNEL_ID_NOTIFY, name, importance);
         channel.setDescription(description);
@@ -65,8 +65,8 @@ class Notifier {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private android.app.Notification getNotificationAfterAndroidO() {
         final android.app.Notification.Builder notification = new android.app.Notification.Builder(application, CHANNEL_ID_NOTIFY)
-                .setTicker(application.getString(R.string.notification_ticker))
-                .setContentTitle(application.getString(R.string.notification_title))
+                .setTicker(application.getString(R.string.show_tea_notification_ticker))
+                .setContentTitle(application.getString(R.string.show_tea_notification_title))
                 .setContentText(timerViewModel.getName(teaId))
                 .setSmallIcon(R.drawable.notification_white)
                 .setContentIntent(createPendingIntent())
@@ -78,8 +78,8 @@ class Notifier {
     @SuppressWarnings("java:S1874")
     private android.app.Notification getNotificationBeforeAndroidO() {
         final android.app.Notification.Builder notification = new android.app.Notification.Builder(application)
-                .setTicker(application.getString(R.string.notification_ticker))
-                .setContentTitle(application.getString(R.string.notification_title))
+                .setTicker(application.getString(R.string.show_tea_notification_ticker))
+                .setContentTitle(application.getString(R.string.show_tea_notification_title))
                 .setContentText(timerViewModel.getName(teaId))
                 .setSmallIcon(R.drawable.notification_white)
                 .setContentIntent(createPendingIntent())

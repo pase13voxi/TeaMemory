@@ -53,7 +53,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
-        mToolbarCustomTitle.setText(R.string.exportimport_heading);
+        mToolbarCustomTitle.setText(R.string.export_import_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
     }
@@ -78,9 +78,9 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void dialogAfterWritePermissionDenied() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.exportimport_write_permission_dialog_header);
-        builder.setMessage(R.string.exportimport_write_permission_dialog_description);
-        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> PermissionRequester.getWritePermission(this));
+        builder.setTitle(R.string.export_import_write_permission_dialog_header);
+        builder.setMessage(R.string.export_import_write_permission_dialog_description);
+        builder.setPositiveButton(R.string.export_import_location_dialog_ok, (dialog, which) -> PermissionRequester.getWritePermission(this));
         builder.show();
     }
 
@@ -98,9 +98,9 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void dialogAfterReadPermissionDenied() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.exportimport_read_permission_dialog_header);
-        builder.setMessage(R.string.exportimport_read_permission_dialog_description);
-        builder.setPositiveButton(R.string.exportimport_location_dialog_ok, (dialog, which) -> PermissionRequester.getReadPermission(this));
+        builder.setTitle(R.string.export_import_read_permission_dialog_header);
+        builder.setMessage(R.string.export_import_read_permission_dialog_description);
+        builder.setPositiveButton(R.string.export_import_location_dialog_ok, (dialog, which) -> PermissionRequester.getReadPermission(this));
         builder.show();
     }
 
@@ -121,7 +121,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             exportJson();
         } else {
-            Toast.makeText(getApplicationContext(), R.string.exportimport_write_permission_denied, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.export_import_write_permission_denied, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -136,21 +136,21 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void dialogExportLocation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.exportimport_location_dialog_header);
-        builder.setMessage(R.string.exportimport_location_dialog_description).setPositiveButton(R.string.exportimport_location_dialog_ok, null).show();
+        builder.setTitle(R.string.export_import_location_dialog_header);
+        builder.setMessage(R.string.export_import_location_dialog_description).setPositiveButton(R.string.export_import_location_dialog_ok, null).show();
     }
 
     private void dialogExportFailed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.exportimport_export_failed_dialog_header);
-        builder.setMessage(R.string.exportimport_export_failed_dialog_description).setPositiveButton(R.string.exportimport_export_failed_dialog_ok, null).show();
+        builder.setTitle(R.string.export_import_export_failed_dialog_header);
+        builder.setMessage(R.string.export_import_export_failed_dialog_description).setPositiveButton(R.string.export_import_export_failed_dialog_ok, null).show();
     }
 
     private void codeRequestRead(@NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             dialogImport();
         } else {
-            Toast.makeText(getApplicationContext(), R.string.exportimport_read_permission_denied, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.export_import_read_permission_denied, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -163,7 +163,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
             AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.DialogTheme).create();
             alertDialog.setView(layoutDialogImport);
-            alertDialog.setTitle(R.string.exportimport_import_dialog_header);
+            alertDialog.setTitle(R.string.export_import_import_dialog_header);
 
             final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.buttonImportDelete);
             buttonImportDelete.setOnClickListener(view -> importFile(alertDialog, false));
@@ -185,7 +185,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent,
-                getApplicationContext().getResources().getString(R.string.exportimport_import_choose_file)), ImportJson.READ_REQUEST_CODE);
+                getApplicationContext().getResources().getString(R.string.export_import_import_choose_file)), ImportJson.READ_REQUEST_CODE);
     }
 
     @Override
@@ -203,18 +203,18 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void dialogImportComplete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.exportimport_import_complete_dialog_header);
+        builder.setTitle(R.string.export_import_import_complete_dialog_header);
         if (keepStoredTeas) {
-            builder.setMessage(R.string.exportimport_import_complete_keep_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
+            builder.setMessage(R.string.export_import_import_complete_keep_dialog_description).setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show();
         } else {
-            builder.setMessage(R.string.exportimport_import_complete_delete_dialog_description).setPositiveButton(R.string.exportimport_import_complete_dialog_ok, null).show();
+            builder.setMessage(R.string.export_import_import_complete_delete_dialog_description).setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show();
         }
     }
 
     private void dialogImportFailed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        builder.setTitle(R.string.exportimport_import_failed_dialog_header);
-        builder.setMessage(R.string.exportimport_import_failed_dialog_description).setPositiveButton(R.string.exportimport_import_failed_dialog_ok, null).show();
+        builder.setTitle(R.string.export_import_import_failed_dialog_header);
+        builder.setMessage(R.string.export_import_import_failed_dialog_description).setPositiveButton(R.string.export_import_import_failed_dialog_ok, null).show();
     }
 
     private void showWarning() {

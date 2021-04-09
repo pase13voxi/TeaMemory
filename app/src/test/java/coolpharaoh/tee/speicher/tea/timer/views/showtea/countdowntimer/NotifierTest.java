@@ -52,8 +52,8 @@ public class NotifierTest {
         Notification notification = notifier.getNotification();
 
         assertThat(notification.getChannelId()).isEqualTo(CHANNEL_ID_NOTIFY);
-        assertThat(notification.tickerText).isEqualTo(application.getString(R.string.notification_ticker));
-        assertThat(notification.extras.get("android.title")).isEqualTo(application.getString(R.string.notification_title));
+        assertThat(notification.tickerText).isEqualTo(application.getString(R.string.show_tea_notification_ticker));
+        assertThat(notification.extras.get("android.title")).isEqualTo(application.getString(R.string.show_tea_notification_title));
         assertThat(notification.extras.get("android.text")).isEqualTo(TEA_NAME);
     }
 
@@ -66,8 +66,8 @@ public class NotifierTest {
         Notification notification = notifier.getNotification();
 
         assertThat(notification.getChannelId()).isNull();
-        assertThat(notification.tickerText).isEqualTo(application.getString(R.string.notification_ticker));
-        assertThat(notification.extras.get("android.title")).isEqualTo(application.getString(R.string.notification_title));
+        assertThat(notification.tickerText).isEqualTo(application.getString(R.string.show_tea_notification_ticker));
+        assertThat(notification.extras.get("android.title")).isEqualTo(application.getString(R.string.show_tea_notification_title));
         assertThat(notification.extras.get("android.text")).isEqualTo(TEA_NAME);
     }
 }

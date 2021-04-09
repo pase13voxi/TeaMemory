@@ -98,7 +98,7 @@ ShowTeaTest {
         ActivityScenario<ShowTea> newTeaActivityScenario = ActivityScenario.launch(ShowTea.class);
         newTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogFail = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_dialog_tea_missing_header, R.string.showtea_dialog_tea_missing_description);
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             Intent expected = new Intent(showTea, Main.class);
@@ -117,7 +117,7 @@ ShowTeaTest {
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogFail = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.showtea_dialog_tea_missing_header, R.string.showtea_dialog_tea_missing_description);
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             Intent expected = new Intent(showTea, Main.class);
@@ -140,7 +140,7 @@ ShowTeaTest {
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogDescription = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogDescription, R.string.showtea_dialog_description_header);
+            checkTitleAndMessageOfLatestDialog(showTea, dialogDescription, R.string.show_tea_dialog_description_header);
 
             CheckBox checkBox = dialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
             checkBox.setChecked(true);
@@ -170,7 +170,7 @@ ShowTeaTest {
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogNextInfusion = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.showtea_dialog_following_infusion_header, showTea.getString(R.string.showtea_dialog_following_infusion_description, 2, 3));
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3));
 
             dialogNextInfusion.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
@@ -200,7 +200,7 @@ ShowTeaTest {
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             AlertDialog dialogNextInfusion = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.showtea_dialog_following_infusion_header, showTea.getString(R.string.showtea_dialog_following_infusion_description, 2, 3));
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3));
 
             dialogNextInfusion.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
 
@@ -344,7 +344,7 @@ ShowTeaTest {
 
             buttonInfo.performClick();
             AlertDialog dialogInfo = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogInfo, R.string.showtea_cooldown_header, R.string.showtea_cooldown_description);
+            checkTitleAndMessageOfLatestDialog(showTea, dialogInfo, R.string.show_tea_cool_down_time_header, R.string.show_tea_cool_down_time_description);
             dialogInfo.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             buttonTemperature.performClick();
@@ -371,7 +371,7 @@ ShowTeaTest {
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.showtea_dialog_amount);
+            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.show_tea_dialog_amount);
 
             final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
             final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
@@ -515,7 +515,7 @@ ShowTeaTest {
 
             buttonInfusionIndex.performClick();
             AlertDialog dialogInfusionIndex = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogInfusionIndex, R.string.showtea_dialog_infusion_count_title);
+            checkTitleAndMessageOfLatestDialog(showTea, dialogInfusionIndex, R.string.show_tea_dialog_infusion_count_title);
 
             ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialogInfusionIndex);
             shadowDialog.clickOnItem(2);
@@ -623,7 +623,7 @@ ShowTeaTest {
             broadcastIntent.putExtra(BROADCAST_EXTRA_READY, true);
             showTea.sendBroadcast(broadcastIntent);
 
-            assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.showtea_tea_ready));
+            assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.show_tea_tea_ready));
             assertThat(imageViewSteam.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }
@@ -741,8 +741,8 @@ ShowTeaTest {
         startButton.performClick();
 
         assertThat(startButton.getText())
-                .hasToString(showTea.getString(start ? R.string.showtea_timer_reset :
-                        R.string.showtea_timer_start));
+                .hasToString(showTea.getString(start ? R.string.show_tea_timer_reset :
+                        R.string.show_tea_timer_start));
         // disableInfusionBarAndCooldownSwitch
         assertThat(buttonTemperature.isEnabled()).isEqualTo(!start);
         assertThat(buttonInfusionIndex.isEnabled()).isEqualTo(!start);
