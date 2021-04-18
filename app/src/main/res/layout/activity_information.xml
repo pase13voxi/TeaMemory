@@ -38,7 +38,7 @@
                         android:text="@string/information_details_rating" />
 
                     <RatingBar
-                        android:id="@+id/information_rating_bar"
+                        android:id="@+id/rating_bar_information"
                         style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -67,13 +67,13 @@
                         android:text="@string/information_details_heading" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/information_recycler_view_details"
+                        android:id="@+id/recycler_view_information_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp" />
 
                     <ImageButton
-                        android:id="@+id/information_button_add_detail"
+                        android:id="@+id/button_information_add_detail"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:background="?android:attr/selectableItemBackground"
@@ -100,7 +100,7 @@
                         android:text="@string/information_counter_heading" />
 
                     <TextView
-                        android:id="@+id/information_text_view_last_used"
+                        android:id="@+id/text_view_information_last_used"
                         style="@style/information_text_view_last_usage_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -112,41 +112,41 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            style="@style/information_linear_layout_counter_style"
+                            style="@style/linear_layout_information_counter_style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/information_text_view_counter_header_style"
+                                style="@style/text_view_information_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_today" />
 
                             <TextView
-                                android:id="@+id/information_text_view_counter_today"
+                                android:id="@+id/text_view_information_counter_today"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
                         <View
-                            style="@style/information_counter_separation_style"
+                            style="@style/view_information_counter_separation"
                             android:layout_width="1dp"
                             android:layout_height="match_parent" />
 
                         <LinearLayout
-                            style="@style/information_linear_layout_counter_style"
+                            style="@style/linear_layout_information_counter_style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/information_text_view_counter_header_style"
+                                style="@style/text_view_information_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_week" />
 
                             <TextView
-                                android:id="@+id/information_text_view_counter_week"
+                                android:id="@+id/text_view_information_counter_week"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
@@ -154,7 +154,7 @@
                     </LinearLayout>
 
                     <View
-                        style="@style/information_counter_separation_style"
+                        style="@style/view_information_counter_separation"
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
 
@@ -164,41 +164,41 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            style="@style/information_linear_layout_counter_style"
+                            style="@style/linear_layout_information_counter_style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/information_text_view_counter_header_style"
+                                style="@style/text_view_information_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_month" />
 
                             <TextView
-                                android:id="@+id/information_text_view_counter_month"
+                                android:id="@+id/text_view_information_counter_month"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
                         <View
-                            style="@style/information_counter_separation_style"
+                            style="@style/view_information_counter_separation"
                             android:layout_width="1dp"
                             android:layout_height="match_parent" />
 
                         <LinearLayout
-                            style="@style/information_linear_layout_counter_style"
+                            style="@style/linear_layout_information_counter_style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <TextView
-                                style="@style/information_text_view_counter_header_style"
+                                style="@style/text_view_information_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/information_counter_overall" />
 
                             <TextView
-                                android:id="@+id/information_text_view_counter_overall"
+                                android:id="@+id/text_view_information_counter_overall"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
@@ -225,7 +225,7 @@
                         android:text="@string/information_notes_heading" />
 
                     <EditText
-                        android:id="@+id/information_edit_text_notes"
+                        android:id="@+id/edit_text_information_notes"
                         style="@style/information_edit_text_style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

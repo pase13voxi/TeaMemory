@@ -12,7 +12,7 @@
         layout="@layout/tool_bar" />
 
     <TextView
-        android:id="@+id/textViewImportExportInfo"
+        android:id="@+id/text_view_export_import_info"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_bar"
@@ -25,10 +25,10 @@
         android:textColor="@color/text_black" />
 
     <TextView
-        android:id="@+id/textViewImportExportProcedure"
+        android:id="@+id/text_view_export_import_procedure"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewImportExportInfo"
+        android:layout_below="@+id/text_view_export_import_info"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:text="@string/export_import_procedure"
@@ -36,10 +36,10 @@
         android:textColor="@color/text_black" />
 
     <TextView
-        android:id="@+id/textView1BulletPoint"
+        android:id="@+id/text_view_export_import_1_bullet_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewImportExportProcedure"
+        android:layout_below="@+id/text_view_export_import_procedure"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
@@ -48,22 +48,22 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textViewStep1Text"
+        android:id="@+id/text_view_export_import_step_1_text"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewImportExportProcedure"
+        android:layout_below="@+id/text_view_export_import_procedure"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/textView1BulletPoint"
+        android:layout_toEndOf="@id/text_view_export_import_1_bullet_point"
         android:text="@string/export_import_step1_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
     <TextView
-        android:id="@+id/textView2BulletPoint"
+        android:id="@+id/text_view_export_import_2_bullet_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewStep1Text"
+        android:layout_below="@+id/text_view_export_import_step_1_text"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
@@ -72,22 +72,22 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textViewStep2Text"
+        android:id="@+id/text_view_export_import_step_2_text"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewStep1Text"
+        android:layout_below="@+id/text_view_export_import_step_1_text"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/textView2BulletPoint"
+        android:layout_toEndOf="@id/text_view_export_import_2_bullet_point"
         android:text="@string/export_import_step2_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
     <TextView
-        android:id="@+id/textView3BulletPoint"
+        android:id="@+id/text_view_export_import_3_bullet_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewStep2Text"
+        android:layout_below="@+id/text_view_export_import_step_2_text"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
@@ -96,22 +96,22 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textViewStep3Text"
+        android:id="@+id/text_view_export_import_step_3_text"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewStep2Text"
+        android:layout_below="@+id/text_view_export_import_step_2_text"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/textView3BulletPoint"
+        android:layout_toEndOf="@id/text_view_export_import_3_bullet_point"
         android:text="@string/export_import_step3_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_black" />
 
     <Button
-        android:id="@+id/buttonExport"
+        android:id="@+id/button_export_import_export"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewStep3Text"
+        android:layout_below="@id/text_view_export_import_step_3_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="@drawable/button_round_dark"
@@ -121,10 +121,10 @@
         android:textSize="17sp" />
 
     <Button
-        android:id="@+id/buttonImport"
+        android:id="@+id/button_export_import_import"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonExport"
+        android:layout_below="@id/button_export_import_export"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:background="@drawable/button_round_dark"
@@ -134,10 +134,10 @@
         android:textSize="17sp" />
 
     <TextView
-        android:id="@+id/textViewWarning"
+        android:id="@+id/text_view_export_import_warning"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonImport"
+        android:layout_below="@+id/button_export_import_import"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:gravity="center_horizontal"

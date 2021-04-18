@@ -15,11 +15,11 @@
         android:id="@+id/recycler_view_about"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/textViewVersion"
+        android:layout_above="@id/text_view_about_version"
         android:layout_below="@+id/tool_bar" />
 
     <TextView
-        android:id="@+id/textViewVersion"
+        android:id="@+id/text_view_about_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

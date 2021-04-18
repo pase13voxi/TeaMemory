@@ -192,10 +192,10 @@ public class NewTeaTest {
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
+            final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
             amountPicker.setValue(7);
 
-            final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
+            final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
             amountKindPicker.setValue(0);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -214,7 +214,7 @@ public class NewTeaTest {
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
+            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_new_tea_dialog_temperature);
             numberPickerTemperature.setValue(80);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -233,7 +233,7 @@ public class NewTeaTest {
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
+            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_new_tea_dialog_temperature);
             numberPickerTemperature.setValue(80);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -254,7 +254,7 @@ public class NewTeaTest {
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.new_tea_number_picker_dialog_temperature);
+            final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_new_tea_dialog_temperature);
             numberPickerTemperature.setValue(212);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -275,10 +275,10 @@ public class NewTeaTest {
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
             numberPickerTimeMinutes.setValue(5);
 
-            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -296,10 +296,10 @@ public class NewTeaTest {
 
             final AlertDialog dialog = getLatestAlertDialog();
 
-            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+            final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
             numberPickerTimeMinutes.setValue(5);
 
-            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+            final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -377,11 +377,11 @@ public class NewTeaTest {
         mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
-            final ImageButton buttonLeft = newTea.findViewById(R.id.new_tea_button_previous_infusion);
-            final ImageButton buttonRight = newTea.findViewById(R.id.new_tea_button_next_infusion);
-            final ImageButton buttonDelete = newTea.findViewById(R.id.new_tea_button_delete_infusion);
-            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.new_tea_button_add_infusion);
-            final TextView textViewInfunsionBar = newTea.findViewById(R.id.new_tea_text_view_count_infusion);
+            final ImageButton buttonLeft = newTea.findViewById(R.id.button_new_tea_previous_infusion);
+            final ImageButton buttonRight = newTea.findViewById(R.id.button_new_tea_next_infusion);
+            final ImageButton buttonDelete = newTea.findViewById(R.id.button_new_tea_delete_infusion);
+            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.button_new_tea_add_infusion);
+            final TextView textViewInfunsionBar = newTea.findViewById(R.id.text_view_new_tea_count_infusion);
 
             assertThat(textViewInfunsionBar.getText()).isEqualTo(FIRST_INFUSION);
             assertThat(buttonLeft.isEnabled()).isFalse();
@@ -417,11 +417,11 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            final ImageButton buttonLeft = newTea.findViewById(R.id.new_tea_button_previous_infusion);
-            final ImageButton buttonRight = newTea.findViewById(R.id.new_tea_button_next_infusion);
-            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.new_tea_button_delete_infusion);
-            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.new_tea_button_add_infusion);
-            final TextView textViewInfusionBar = newTea.findViewById(R.id.new_tea_text_view_count_infusion);
+            final ImageButton buttonLeft = newTea.findViewById(R.id.button_new_tea_previous_infusion);
+            final ImageButton buttonRight = newTea.findViewById(R.id.button_new_tea_next_infusion);
+            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.button_new_tea_delete_infusion);
+            final ImageButton buttonAddInfusion = newTea.findViewById(R.id.button_new_tea_add_infusion);
+            final TextView textViewInfusionBar = newTea.findViewById(R.id.text_view_new_tea_count_infusion);
 
             assertThat(buttonLeft.isEnabled()).isFalse();
             assertThat(buttonRight.isEnabled()).isTrue();
@@ -466,9 +466,9 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            final ImageButton buttonNextInfusion = newTea.findViewById(R.id.new_tea_button_next_infusion);
-            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.new_tea_button_delete_infusion);
-            final TextView textViewInfusionBar = newTea.findViewById(R.id.new_tea_text_view_count_infusion);
+            final ImageButton buttonNextInfusion = newTea.findViewById(R.id.button_new_tea_next_infusion);
+            final ImageButton buttonDeleteInfusion = newTea.findViewById(R.id.button_new_tea_delete_infusion);
+            final TextView textViewInfusionBar = newTea.findViewById(R.id.text_view_new_tea_count_infusion);
 
             buttonNextInfusion.performClick();
 
@@ -548,7 +548,7 @@ public class NewTeaTest {
     }
 
     private List<RadioButton> getRadioButtons(AlertDialog dialog) {
-        final RadioGroup radioGroup = dialog.findViewById(R.id.new_tea_radio_group_variety_input);
+        final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_new_tea_variety_input);
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
             View o = radioGroup.getChildAt(i);

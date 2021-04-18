@@ -70,17 +70,17 @@ public class AmountPickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         assertThat(buttonSuggestion1)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "4");
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
         assertThat(buttonSuggestion2)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "5");
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_3);
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
         assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -90,7 +90,7 @@ public class AmountPickerDialogTest {
         dialogFragment.show(fragmentManager, TAG);
 
         final AlertDialog dialog = getLatestAlertDialog();
-        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.new_tea_layout_custom_variety);
+        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
         assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -102,24 +102,24 @@ public class AmountPickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         amountKindPicker.setValue(1);
         Shadows.shadowOf(amountKindPicker).getOnValueChangeListener().onValueChange(amountKindPicker, 0, 1);
 
-        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.new_tea_layout_custom_variety);
+        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
         assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.VISIBLE);
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         assertThat(buttonSuggestion1)
                 .extracting(View::getVisibility, btn -> btn.getText().toString())
                 .containsExactly(View.VISIBLE, "10");
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
         assertThat(buttonSuggestion2)
                 .extracting(View::getVisibility, btn -> btn.getText().toString())
                 .containsExactly(View.VISIBLE, "11");
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_3);
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
         assertThat(buttonSuggestion3)
                 .extracting(View::getVisibility, btn -> btn.getText().toString())
                 .containsExactly(View.VISIBLE, "12");
@@ -132,10 +132,10 @@ public class AmountPickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         buttonSuggestion1.performClick();
 
-        final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
         assertThat(amountPicker.getValue()).isEqualTo(4);
     }
 
@@ -145,10 +145,10 @@ public class AmountPickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
         amountPicker.setValue(7);
 
-        final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         amountKindPicker.setValue(0);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -162,10 +162,10 @@ public class AmountPickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
         amountPicker.setValue(7);
 
-        final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         amountKindPicker.setValue(1);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -182,10 +182,10 @@ public class AmountPickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker amountPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount);
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
         assertThat(amountPicker.getValue()).isEqualTo(7);
 
-        final NumberPicker amountKindPicker = dialog.findViewById(R.id.new_tea_number_picker_dialog_amount_kind);
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         assertThat(amountKindPicker.getValue()).isEqualTo(1);
     }
 }

@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/information_edit_text_dialog_add_edit_header"
+        android:id="@+id/edit_text_information_dialog_add_edit_header"
         style="@style/information_edit_text_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:theme="@style/information_edit_text_theme" />
 
     <EditText
-        android:id="@+id/information_edit_text_dialog_add_edit_description"
+        android:id="@+id/edit_text_information_dialog_add_edit_description"
         style="@style/information_edit_text_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

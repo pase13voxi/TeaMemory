@@ -310,7 +310,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            final FloatingActionButton addTeaButton = main.findViewById(R.id.newtea);
+            final FloatingActionButton addTeaButton = main.findViewById(R.id.floating_button_main_new_tea);
             addTeaButton.performClick();
 
             final Intent expected = new Intent(main, NewTea.class);
@@ -329,7 +329,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            final RecyclerView teaListRecyclerView = main.findViewById(R.id.recycler_view_tea_list);
+            final RecyclerView teaListRecyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
             clickAtPositionRecyclerView(teaListRecyclerView, positionTea);
 
             final Intent expected = new Intent(main, ShowTea.class);
@@ -349,7 +349,7 @@ public class MainTest {
 
         ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_tea_list);
+            final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
             itemViewRecyclerItem.performLongClick();
 
@@ -372,7 +372,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_tea_list);
+            final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
             itemViewRecyclerItem.performLongClick();
 
@@ -420,7 +420,7 @@ public class MainTest {
     }
 
     private void checkExpectedTeas(final String teaName, final Main main) {
-        final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_tea_list);
+        final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
 
         assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
         for (int i = 0; i < 3; i++) {

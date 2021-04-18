@@ -62,7 +62,7 @@ public class AboutTest {
                     about.getString(R.string.about_software_heading), about.getString(R.string.about_software_description));
 
 
-            TextView textViewVersion = about.findViewById(R.id.textViewVersion);
+            TextView textViewVersion = about.findViewById(R.id.text_view_about_version);
             assertThat(textViewVersion.getText()).isEqualTo(about.getString(R.string.about_version, BuildConfig.VERSION_NAME));
         });
     }

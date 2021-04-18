@@ -29,14 +29,14 @@ public class UpdateDescription extends AppCompatActivity {
 
         final String[] slideDescription = getResources().getStringArray(R.array.description_update_slide_description);
         final SlideAdapter slideAdapter = new SlideAdapter(getApplication(), slideImages, slideDescription);
-        final ViewPager slideViewPager = findViewById(R.id.slideViewPager);
+        final ViewPager slideViewPager = findViewById(R.id.slide_view_description_pager);
         slideViewPager.setAdapter(slideAdapter);
 
-        dotLayout = findViewById(R.id.dotsLayout);
+        dotLayout = findViewById(R.id.layout_description_dots);
         addDotsIndicator(0, slideImages.length);
         slideViewPager.addOnPageChangeListener(viewListener);
 
-        final ImageButton buttonClose = findViewById(R.id.buttonDescriptionClose);
+        final ImageButton buttonClose = findViewById(R.id.button_description_close);
         buttonClose.setOnClickListener(view -> finish());
     }
 

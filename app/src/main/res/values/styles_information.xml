@@ -37,7 +37,7 @@
         <item name="android:theme">@style/information_edit_text_theme</item>
     </style>
 
-    <style name="information_linear_layout_counter_style">
+    <style name="linear_layout_information_counter_style">
         <item name="android:orientation">vertical</item>
         <item name="android:layout_weight">0.5</item>
         <item name="android:paddingTop">4dp</item>
@@ -50,7 +50,7 @@
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
-    <style name="information_text_view_counter_header_style">
+    <style name="text_view_information_counter_header_style">
         <item name="android:textColor">@color/text_black</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">17sp</item>
@@ -62,7 +62,7 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="information_counter_separation_style">
+    <style name="view_information_counter_separation">
         <item name="android:background">@color/background_grey</item>
     </style>
 </resources>

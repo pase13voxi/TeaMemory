@@ -24,7 +24,7 @@ public class ShowTeaDescriptionTest {
     public void launchActivityExpectThreeImages() {
         ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
         showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
-            final ViewPager viewPager = showTeaDescription.findViewById(R.id.slideViewPager);
+            final ViewPager viewPager = showTeaDescription.findViewById(R.id.slide_view_description_pager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
             assertThat(slideAdapter.getCount()).isEqualTo(4);
         });
@@ -34,7 +34,7 @@ public class ShowTeaDescriptionTest {
     public void exitActivity() {
         ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
         showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
-            ImageButton buttonClose = showTeaDescription.findViewById(R.id.buttonDescriptionClose);
+            ImageButton buttonClose = showTeaDescription.findViewById(R.id.button_description_close);
             buttonClose.performClick();
 
             assertThat(showTeaDescription.isFinishing()).isTrue();

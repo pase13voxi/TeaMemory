@@ -96,13 +96,13 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
+            final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             assertThat(ratingBar.getRating()).isZero();
 
-            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isZero();
 
-            final EditText editTextNotes = information.findViewById(R.id.information_edit_text_notes);
+            final EditText editTextNotes = information.findViewById(R.id.edit_text_information_notes);
             assertThat(editTextNotes.getText().toString()).isBlank();
             verify(noteDao).insert(any());
         });
@@ -122,13 +122,13 @@ public class InformationTest {
             final TextView toolbarTitle = information.findViewById(R.id.tool_bar_title);
             assertThat(toolbarTitle.getText()).hasToString(TEA_NAME);
 
-            final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
+            final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             assertThat(ratingBar.getRating()).isEqualTo(4);
 
-            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
 
-            final EditText editTextNotes = information.findViewById(R.id.information_edit_text_notes);
+            final EditText editTextNotes = information.findViewById(R.id.edit_text_information_notes);
             assertThat(editTextNotes.getText()).hasToString(notes.getDescription());
         });
     }
@@ -143,7 +143,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final EditText editTextNotes = information.findViewById(R.id.information_edit_text_notes);
+            final EditText editTextNotes = information.findViewById(R.id.edit_text_information_notes);
             editTextNotes.setText(notes);
         });
 
@@ -165,7 +165,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
+            final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             ratingBar.setRating(newRating);
 
             final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
@@ -183,14 +183,14 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final ImageButton buttonAddDetail = information.findViewById(R.id.information_button_add_detail);
+            final ImageButton buttonAddDetail = information.findViewById(R.id.button_information_add_detail);
             buttonAddDetail.performClick();
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_add_detail_dialog_heading);
 
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_header,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.edit_text_information_dialog_add_edit_header,
                     "", HEADER);
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_description,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.edit_text_information_dialog_add_edit_description,
                     "", DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -213,7 +213,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final ImageButton buttonAddDetail = information.findViewById(R.id.information_button_add_detail);
+            final ImageButton buttonAddDetail = information.findViewById(R.id.button_information_add_detail);
             buttonAddDetail.performClick();
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_add_detail_dialog_heading);
@@ -235,7 +235,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(position).itemView;
             final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.button_detail_options);
 
@@ -257,7 +257,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
+            final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(position).itemView;
             final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.button_detail_options);
 
@@ -267,9 +267,9 @@ public class InformationTest {
 
             final AlertDialog dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_edit_detail_dialog_heading);
 
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_header,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.edit_text_information_dialog_add_edit_header,
                     details.get(position).getHeader(), HEADER);
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.information_edit_text_dialog_add_edit_description,
+            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.edit_text_information_dialog_add_edit_description,
                     details.get(position).getDescription(), DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -293,7 +293,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final TextView textViewLastUsed = information.findViewById(R.id.information_text_view_last_used);
+            final TextView textViewLastUsed = information.findViewById(R.id.text_view_information_last_used);
 
             final SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             final String strDate = formatter.format(date);
@@ -376,10 +376,10 @@ public class InformationTest {
 
     private void checkCounter(final Information information, final String today, final String week,
                               final String month, final String overall) {
-        final TextView textViewToday = information.findViewById(R.id.information_text_view_counter_today);
-        final TextView textViewWeek = information.findViewById(R.id.information_text_view_counter_week);
-        final TextView textViewMonth = information.findViewById(R.id.information_text_view_counter_month);
-        final TextView textViewOverall = information.findViewById(R.id.information_text_view_counter_overall);
+        final TextView textViewToday = information.findViewById(R.id.text_view_information_counter_today);
+        final TextView textViewWeek = information.findViewById(R.id.text_view_information_counter_week);
+        final TextView textViewMonth = information.findViewById(R.id.text_view_information_counter_month);
+        final TextView textViewOverall = information.findViewById(R.id.text_view_information_counter_overall);
 
         assertThat(textViewToday.getText()).hasToString(today);
         assertThat(textViewWeek.getText()).hasToString(week);

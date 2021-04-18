@@ -88,7 +88,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void defineColorPicker() {
-        final Button buttonColor = findViewById(R.id.new_tea_button_color);
+        final Button buttonColor = findViewById(R.id.button_new_tea_color);
         buttonColorShape = new ButtonColorShape(buttonColor.getBackground(), getApplication());
         buttonColor.setOnClickListener(view -> createColorPicker());
     }
@@ -101,16 +101,16 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void defineInfusionBar() {
-        final ImageButton buttonPreviousInfusion = findViewById(R.id.new_tea_button_previous_infusion);
+        final ImageButton buttonPreviousInfusion = findViewById(R.id.button_new_tea_previous_infusion);
         buttonPreviousInfusion.setOnClickListener(v -> newTeaViewModel.previousInfusion());
 
-        final ImageButton buttonNextInfusion = findViewById(R.id.new_tea_button_next_infusion);
+        final ImageButton buttonNextInfusion = findViewById(R.id.button_new_tea_next_infusion);
         buttonNextInfusion.setOnClickListener(v -> newTeaViewModel.nextInfusion());
 
-        final ImageButton buttonDeleteInfusion = findViewById(R.id.new_tea_button_delete_infusion);
+        final ImageButton buttonDeleteInfusion = findViewById(R.id.button_new_tea_delete_infusion);
         buttonDeleteInfusion.setOnClickListener(v -> newTeaViewModel.deleteInfusion());
 
-        final ImageButton buttonAddInfusion = findViewById(R.id.new_tea_button_add_infusion);
+        final ImageButton buttonAddInfusion = findViewById(R.id.button_new_tea_add_infusion);
         buttonAddInfusion.setOnClickListener(v -> newTeaViewModel.addInfusion());
     }
 
@@ -282,7 +282,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void refreshInfusionBar() {
-        final TextView textViewInfusion = findViewById(R.id.new_tea_text_view_count_infusion);
+        final TextView textViewInfusion = findViewById(R.id.text_view_new_tea_count_infusion);
         textViewInfusion.setText(getResources().getString(R.string.new_tea_count_infusion, newTeaViewModel.getInfusionIndex() + 1));
 
         showDeleteInfusion();
@@ -293,28 +293,28 @@ public class NewTea extends AppCompatActivity implements Printer {
 
     private void showDeleteInfusion() {
         if (newTeaViewModel.getInfusionSize() > 1) {
-            findViewById(R.id.new_tea_button_delete_infusion).setVisibility(View.VISIBLE);
+            findViewById(R.id.button_new_tea_delete_infusion).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.new_tea_button_delete_infusion).setVisibility(View.GONE);
+            findViewById(R.id.button_new_tea_delete_infusion).setVisibility(View.GONE);
         }
     }
 
     private void showAddInfusion() {
         if (((newTeaViewModel.getInfusionIndex() + 1) == newTeaViewModel.getInfusionSize()) && (newTeaViewModel.getInfusionSize() < 20)) {
-            findViewById(R.id.new_tea_button_add_infusion).setVisibility(View.VISIBLE);
+            findViewById(R.id.button_new_tea_add_infusion).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.new_tea_button_add_infusion).setVisibility(View.GONE);
+            findViewById(R.id.button_new_tea_add_infusion).setVisibility(View.GONE);
         }
     }
 
     private void showPreviousInfusion() {
         final boolean enabled = newTeaViewModel.getInfusionIndex() != 0;
-        findViewById(R.id.new_tea_button_previous_infusion).setEnabled(enabled);
+        findViewById(R.id.button_new_tea_previous_infusion).setEnabled(enabled);
     }
 
     private void showNextInfusion() {
         final boolean enabled = (newTeaViewModel.getInfusionIndex() + 1) != newTeaViewModel.getInfusionSize();
-        findViewById(R.id.new_tea_button_next_infusion).setEnabled(enabled);
+        findViewById(R.id.button_new_tea_next_infusion).setEnabled(enabled);
     }
 
     @Override

@@ -49,7 +49,7 @@
                     android:text="@string/new_tea_text_view_heading_color" />
 
                 <Button
-                    android:id="@+id/new_tea_button_color"
+                    android:id="@+id/button_new_tea_color"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dip"
@@ -96,7 +96,7 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/new_tea_button_add_infusion"
+                android:id="@+id/button_new_tea_add_infusion"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_below="@id/layout_new_tea_amount"
@@ -112,7 +112,7 @@
                 tools:targetApi="o" />
 
             <ImageButton
-                android:id="@+id/new_tea_button_delete_infusion"
+                android:id="@+id/button_new_tea_delete_infusion"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignWithParentIfMissing="true"
@@ -120,7 +120,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_toStartOf="@id/new_tea_button_add_infusion"
+                android:layout_toStartOf="@id/button_new_tea_add_infusion"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/new_tea_tooltip_delete_infusion"
                 android:scaleType="fitXY"
@@ -130,16 +130,16 @@
                 tools:targetApi="o" />
 
             <RelativeLayout
-                android:id="@+id/new_tea_linear_layout_infusions"
+                android:id="@+id/linear_layout_new_tea_infusions"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@id/layout_new_tea_amount"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_toStartOf="@id/new_tea_button_delete_infusion">
+                android:layout_toStartOf="@id/button_new_tea_delete_infusion">
 
                 <ImageButton
-                    android:id="@+id/new_tea_button_previous_infusion"
+                    android:id="@+id/button_new_tea_previous_infusion"
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_alignParentStart="true"
@@ -152,7 +152,7 @@
                     tools:targetApi="o" />
 
                 <TextView
-                    android:id="@+id/new_tea_text_view_count_infusion"
+                    android:id="@+id/text_view_new_tea_count_infusion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -161,7 +161,7 @@
                     android:textColor="@color/text_black" />
 
                 <ImageButton
-                    android:id="@+id/new_tea_button_next_infusion"
+                    android:id="@+id/button_new_tea_next_infusion"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
@@ -177,7 +177,7 @@
             <LinearLayout
                 android:id="@+id/layout_new_tea_temperature"
                 style="@style/new_tea_layout_input_field"
-                android:layout_below="@+id/new_tea_linear_layout_infusions">
+                android:layout_below="@+id/linear_layout_new_tea_infusions">
 
                 <TextView
                     style="@style/new_tea_text_view_input_field"

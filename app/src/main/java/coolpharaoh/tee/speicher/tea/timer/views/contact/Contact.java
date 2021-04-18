@@ -30,7 +30,7 @@ public class Contact extends AppCompatActivity {
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        final Button buttonEmail = findViewById(R.id.buttonSendEmail);
+        final Button buttonEmail = findViewById(R.id.button_contact_send_email);
         buttonEmail.setOnClickListener(v -> writeEmail());
     }
 

@@ -14,7 +14,7 @@
         android:textSize="20sp" />
 
     <ImageView
-        android:id="@+id/slide_image"
+        android:id="@+id/image_view_description_slide_image"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_below="@+id/text_view_description"

@@ -142,7 +142,7 @@ ShowTeaTest {
             AlertDialog dialogDescription = getLatestAlertDialog();
             checkTitleAndMessageOfLatestDialog(showTea, dialogDescription, R.string.show_tea_dialog_description_header);
 
-            CheckBox checkBox = dialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
+            CheckBox checkBox = dialogDescription.findViewById(R.id.check_box_show_tea_dialog_description);
             checkBox.setChecked(true);
 
             dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -175,9 +175,9 @@ ShowTeaTest {
             dialogNextInfusion.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
 
             assertThat(textViewInfusionIndex.getText()).hasToString("3.");
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(2).getTemperatureCelsius() + " °C");
@@ -227,12 +227,12 @@ ShowTeaTest {
             ImageButton buttonInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_infusion_index);
             TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
             ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-            TextView textViewName = showTea.findViewById(R.id.textViewName);
-            TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
-            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            TextView textViewName = showTea.findViewById(R.id.text_view_show_tea_name);
+            TextView textViewVariety = showTea.findViewById(R.id.text_view_show_tea_variety);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
+            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
 
             assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.GONE);
             assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.GONE);
@@ -259,8 +259,8 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
-            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
+            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
 
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
             assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " g/L");
@@ -280,11 +280,11 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewVariety = showTea.findViewById(R.id.textViewVariety);
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
-            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            TextView textViewVariety = showTea.findViewById(R.id.text_view_show_tea_variety);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
+            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
 
             assertThat(textViewVariety.getText()).isEmpty();
             assertThat(textViewTemperature.getText()).isEqualTo("- °C");
@@ -307,8 +307,8 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
-            TextView textViewAmount = showTea.findViewById(R.id.textViewAmount);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
+            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
 
             assertThat(textViewTemperature.getText()).isEqualTo("- °F");
             assertThat(textViewAmount.getText()).isEqualTo("- g/L");
@@ -328,10 +328,10 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
-            ImageButton buttonInfo = showTea.findViewById(R.id.buttonInfo);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
+            ImageButton buttonTemperature = showTea.findViewById(R.id.button_show_tea_temperature);
+            ImageButton buttonInfo = showTea.findViewById(R.id.button_show_tea_info);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
 
             assertThat(buttonTemperature.isEnabled()).isTrue();
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
@@ -367,14 +367,14 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
+            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.button_show_tea_calculate_amount);
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
             checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.show_tea_dialog_amount);
 
-            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
-            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
+            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
+            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
 
             assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 ts / 1.0 L");
 
@@ -397,13 +397,13 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.buttonCalculateAmount);
+            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.button_show_tea_calculate_amount);
 
             buttonCalculateAmount.performClick();
             AlertDialog dialogCalculateAmount = getLatestAlertDialog();
 
-            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seekBarAmountPerAmount);
-            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.textViewShowAmountPerAmount);
+            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
+            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
 
             assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 g / 1.0 L");
 
@@ -497,9 +497,9 @@ ShowTeaTest {
             ImageButton buttonInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_infusion_index);
             TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
             ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-            Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-            Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
+            Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
+            Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
 
             assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
             assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
@@ -540,8 +540,8 @@ ShowTeaTest {
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
             ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-            ImageButton buttonExchange = showTea.findViewById(R.id.buttonTemperature);
-            TextView textViewTemperature = showTea.findViewById(R.id.textViewTemperature);
+            ImageButton buttonExchange = showTea.findViewById(R.id.button_show_tea_temperature);
+            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
 
             assertThat(textViewTemperature.getText()).hasToString("212 °F");
 
@@ -582,9 +582,9 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
-            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+            Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
+            TextView textViewTimer = showTea.findViewById(R.id.text_view_show_tea_timer);
+            ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
 
             startButton.performClick();
 
@@ -613,9 +613,9 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-            TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
-            ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
+            Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
+            TextView textViewTimer = showTea.findViewById(R.id.text_view_show_tea_timer);
+            ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
 
             startButton.performClick();
 
@@ -642,11 +642,11 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
-            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
-            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
-            ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
+            ImageButton buttonTemperature = showTea.findViewById(R.id.button_show_tea_temperature);
+            Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
+            ImageView imageViewCup = showTea.findViewById(R.id.image_view_show_tea_cup);
+            ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
+            ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
 
             buttonTemperature.performClick();
             startButton.performClick();
@@ -681,10 +681,10 @@ ShowTeaTest {
 
         ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
         showTeaActivityScenario.onActivity(showTea -> {
-            Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-            ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
-            ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
-            ImageView imageViewSteam = showTea.findViewById(R.id.imageViewSteam);
+            Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
+            ImageView imageViewCup = showTea.findViewById(R.id.image_view_show_tea_cup);
+            ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
+            ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
 
             startButton.performClick();
 
@@ -721,18 +721,18 @@ ShowTeaTest {
     }
 
     private void checkStartOrReset(ShowTea showTea, boolean start) {
-        Button startButton = showTea.findViewById(R.id.buttonStartTimer);
-        ImageButton buttonTemperature = showTea.findViewById(R.id.buttonTemperature);
+        Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
+        ImageButton buttonTemperature = showTea.findViewById(R.id.button_show_tea_temperature);
         ImageButton buttonInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_infusion_index);
         ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-        Spinner spinnerMinutes = showTea.findViewById(R.id.spinnerMinutes);
-        Spinner spinnerSeconds = showTea.findViewById(R.id.spinnerSeconds);
-        TextView textViewMinutes = showTea.findViewById(R.id.textViewMinutes);
-        TextView textViewSeconds = showTea.findViewById(R.id.textViewSeconds);
-        TextView textViewDoublePoint = showTea.findViewById(R.id.textViewDoublePoint);
-        TextView textViewTimer = showTea.findViewById(R.id.textViewTimer);
-        ImageView imageViewCup = showTea.findViewById(R.id.imageViewCup);
-        ImageView imageViewFill = showTea.findViewById(R.id.imageViewFill);
+        Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
+        Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
+        TextView textViewMinutes = showTea.findViewById(R.id.text_view_show_tea_minutes);
+        TextView textViewSeconds = showTea.findViewById(R.id.text_view_show_tea_seconds);
+        TextView textViewDoublePoint = showTea.findViewById(R.id.text_view_show_tea_double_point);
+        TextView textViewTimer = showTea.findViewById(R.id.text_view_show_tea_timer);
+        ImageView imageViewCup = showTea.findViewById(R.id.image_view_show_tea_cup);
+        ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
 
         if (!start) {
             // start before reset

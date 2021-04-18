@@ -78,7 +78,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonExport = exportImport.findViewById(R.id.buttonExport);
+            Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
 
             verify(permissions).getWritePermission(any());
@@ -92,7 +92,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonExport = exportImport.findViewById(R.id.buttonExport);
+            Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
@@ -110,7 +110,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonExport = exportImport.findViewById(R.id.buttonExport);
+            Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
@@ -126,7 +126,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonExport = exportImport.findViewById(R.id.buttonExport);
+            Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
@@ -142,7 +142,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.buttonImport);
+            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
             buttonImport.performClick();
 
             verify(permissions).getReadPermission(any());
@@ -156,7 +156,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.buttonImport);
+            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
             buttonImport.performClick();
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
@@ -174,14 +174,14 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.buttonImport);
+            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
             buttonImport.performClick();
 
             AlertDialog alertDialog = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(alertDialog);
             assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
 
-            alertDialog.findViewById(R.id.buttonImportDelete).performClick();
+            alertDialog.findViewById(R.id.button_export_import_import_delete).performClick();
 
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
             assertThat(actual.getAction()).isEqualTo(Intent.ACTION_CHOOSER);
@@ -202,14 +202,14 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.buttonImport);
+            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
             buttonImport.performClick();
 
             AlertDialog alertDialogImport = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialogChooseImport = Shadows.shadowOf(alertDialogImport);
             assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
 
-            alertDialogImport.findViewById(R.id.buttonImportKeep).performClick();
+            alertDialogImport.findViewById(R.id.button_export_import_import_keep).performClick();
 
             Intent intentChooser = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
             assertThat(intentChooser.getAction()).isEqualTo(Intent.ACTION_CHOOSER);
@@ -230,14 +230,14 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.buttonImport);
+            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
             buttonImport.performClick();
 
             AlertDialog alertDialogImport = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialogChooseImport = Shadows.shadowOf(alertDialogImport);
             assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
 
-            alertDialogImport.findViewById(R.id.buttonImportKeep).performClick();
+            alertDialogImport.findViewById(R.id.button_export_import_import_keep).performClick();
 
             Intent intentChooser = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
             assertThat(intentChooser.getAction()).isEqualTo(Intent.ACTION_CHOOSER);
@@ -256,7 +256,7 @@ public class ExportImportTest {
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
-            TextView textViewWarning = exportImport.findViewById(R.id.textViewWarning);
+            TextView textViewWarning = exportImport.findViewById(R.id.text_view_export_import_warning);
             assertThat(textViewWarning.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }

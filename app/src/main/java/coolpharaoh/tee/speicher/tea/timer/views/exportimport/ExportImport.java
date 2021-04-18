@@ -41,10 +41,10 @@ public class ExportImport extends AppCompatActivity implements Printer {
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        Button buttonExport = findViewById(R.id.buttonExport);
+        Button buttonExport = findViewById(R.id.button_export_import_export);
         buttonExport.setOnClickListener(v -> checkPermissionsBeforeExport());
 
-        Button buttonImport = findViewById(R.id.buttonImport);
+        Button buttonImport = findViewById(R.id.button_export_import_import);
         buttonImport.setOnClickListener(v -> checkPermissionsBeforeImport());
 
         showWarning();
@@ -165,9 +165,9 @@ public class ExportImport extends AppCompatActivity implements Printer {
             alertDialog.setView(layoutDialogImport);
             alertDialog.setTitle(R.string.export_import_import_dialog_header);
 
-            final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.buttonImportDelete);
+            final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.button_export_import_import_delete);
             buttonImportDelete.setOnClickListener(view -> importFile(alertDialog, false));
-            final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.buttonImportKeep);
+            final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.button_export_import_import_keep);
             buttonImportKeep.setOnClickListener(view -> importFile(alertDialog, true));
 
             alertDialog.show();
@@ -219,7 +219,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void showWarning() {
         if (CurrentSdk.getSdkVersion() < Build.VERSION_CODES.O) {
-            TextView textViewWarning = findViewById(R.id.textViewWarning);
+            TextView textViewWarning = findViewById(R.id.text_view_export_import_warning);
             textViewWarning.setVisibility(View.VISIBLE);
         }
     }

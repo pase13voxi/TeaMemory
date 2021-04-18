@@ -133,7 +133,7 @@ public class ShowTea extends AppCompatActivity {
 
         foregroundTimer = new TimerController(getApplication(), new SharedTimerPreferences(getApplication()));
 
-        buttonStartTimer = findViewById(R.id.buttonStartTimer);
+        buttonStartTimer = findViewById(R.id.button_show_tea_start_timer);
         buttonStartTimer.setOnClickListener(v -> startOrResetTimer());
 
         buttonInfusionIndex.setOnClickListener(v -> showDialogChangeInfusion());
@@ -173,22 +173,22 @@ public class ShowTea extends AppCompatActivity {
         buttonInfusionIndex = findViewById(R.id.show_tea_tool_bar_infusion_index);
         textViewInfusionIndex = findViewById(R.id.show_tea_tool_bar_text_infusion_index);
         buttonNextInfusion = findViewById(R.id.show_tea_tool_bar_next_infusion);
-        textViewName = findViewById(R.id.textViewName);
-        textViewVariety = findViewById(R.id.textViewVariety);
-        textViewTemperature = findViewById(R.id.textViewTemperature);
-        buttonInfo = findViewById(R.id.buttonInfo);
-        buttonTemperature = findViewById(R.id.buttonTemperature);
-        textViewAmount = findViewById(R.id.textViewAmount);
-        buttonCalculateAmount = findViewById(R.id.buttonCalculateAmount);
-        spinnerMinutes = findViewById(R.id.spinnerMinutes);
-        spinnerSeconds = findViewById(R.id.spinnerSeconds);
-        textViewMinutes = findViewById(R.id.textViewMinutes);
-        textViewSeconds = findViewById(R.id.textViewSeconds);
-        textViewDoublePoint = findViewById(R.id.textViewDoublePoint);
-        textViewTimer = findViewById(R.id.textViewTimer);
-        imageViewCup = findViewById(R.id.imageViewCup);
-        imageViewFill = findViewById(R.id.imageViewFill);
-        imageViewSteam = findViewById(R.id.imageViewSteam);
+        textViewName = findViewById(R.id.text_view_show_tea_name);
+        textViewVariety = findViewById(R.id.text_view_show_tea_variety);
+        textViewTemperature = findViewById(R.id.text_view_show_tea_temperature);
+        buttonInfo = findViewById(R.id.button_show_tea_info);
+        buttonTemperature = findViewById(R.id.button_show_tea_temperature);
+        textViewAmount = findViewById(R.id.text_view_show_tea_amount);
+        buttonCalculateAmount = findViewById(R.id.button_show_tea_calculate_amount);
+        spinnerMinutes = findViewById(R.id.spinner_show_tea_minutes);
+        spinnerSeconds = findViewById(R.id.spinner_show_tea_seconds);
+        textViewMinutes = findViewById(R.id.text_view_show_tea_minutes);
+        textViewSeconds = findViewById(R.id.text_view_show_tea_seconds);
+        textViewDoublePoint = findViewById(R.id.text_view_show_tea_double_point);
+        textViewTimer = findViewById(R.id.text_view_show_tea_timer);
+        imageViewCup = findViewById(R.id.image_view_show_tea_cup);
+        imageViewFill = findViewById(R.id.image_view_show_tea_fill);
+        imageViewSteam = findViewById(R.id.image_view_show_tea_steam);
     }
 
     private void setFieldsTransparent() {
@@ -297,11 +297,11 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void dialogShowTeaDescription() {
-        ViewGroup parent = findViewById(R.id.showtea_parent);
+        ViewGroup parent = findViewById(R.id.show_tea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
         View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
-        final CheckBox donNotShowAgain = alertLayoutDialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
+        final CheckBox donNotShowAgain = alertLayoutDialogDescription.findViewById(R.id.check_box_show_tea_dialog_description);
 
         new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setView(alertLayoutDialogDescription)
@@ -566,12 +566,12 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void showDialogAmount() {
-        ViewGroup parent = findViewById(R.id.showtea_parent);
+        ViewGroup parent = findViewById(R.id.show_tea_parent);
 
         LayoutInflater inflater = getLayoutInflater();
         View alertLayoutDialogAmount = inflater.inflate(R.layout.dialog_amount, parent, false);
-        final SeekBar seekBarAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.seekBarAmountPerAmount);
-        final TextView textViewAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.textViewShowAmountPerAmount);
+        final SeekBar seekBarAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
+        final TextView textViewAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
         // 10 for 1 liter
         fillAmountPerAmount(10, textViewAmountPerAmount);
 

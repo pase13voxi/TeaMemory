@@ -21,7 +21,7 @@
         android:layout_below="@+id/tool_bar_layout">
 
         <br.com.felix.horizontalbargraph.HorizontalBar
-            android:id="@+id/statistic_chart"
+            android:id="@+id/horizontal_bar_statistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

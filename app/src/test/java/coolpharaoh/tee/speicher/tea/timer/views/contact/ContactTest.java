@@ -37,7 +37,7 @@ public class ContactTest {
     @Test
     public void launchActivity() {
         contactActivityScenario.onActivity(contact -> {
-            Button buttonEmail = contact.findViewById(R.id.buttonSendEmail);
+            Button buttonEmail = contact.findViewById(R.id.button_contact_send_email);
 
             buttonEmail.performClick();
 

@@ -75,7 +75,7 @@ public class CoolDownTimePickerDialogTest {
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
         assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header));
 
-        final LinearLayout linearLayout = dialog.findViewById(R.id.new_tea_layout_custom_variety);
+        final LinearLayout linearLayout = dialog.findViewById(R.id.layout_new_tea_custom_variety);
         assertThat(linearLayout.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -90,7 +90,7 @@ public class CoolDownTimePickerDialogTest {
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
         assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header));
 
-        final LinearLayout linearLayout = dialog.findViewById(R.id.new_tea_layout_custom_variety);
+        final LinearLayout linearLayout = dialog.findViewById(R.id.layout_new_tea_custom_variety);
         assertThat(linearLayout.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -102,18 +102,18 @@ public class CoolDownTimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final TextView textViewSuggestions = dialog.findViewById(R.id.textView_suggestions_description);
+        final TextView textViewSuggestions = dialog.findViewById(R.id.text_view_new_tea_suggestions_description);
         assertThat(textViewSuggestions.getText()).hasToString(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_calculated_suggestion));
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         assertThat(buttonSuggestion1)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "5:00");
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
         assertThat(buttonSuggestion2.getVisibility()).isEqualTo(View.GONE);
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_3);
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
         assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -125,13 +125,13 @@ public class CoolDownTimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         buttonSuggestion.performClick();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         assertThat(numberPickerTimeMinutes.getValue()).isEqualTo(2);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         assertThat(numberPickerTimeSeconds.getValue()).isEqualTo(30);
     }
 
@@ -141,10 +141,10 @@ public class CoolDownTimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         numberPickerTimeMinutes.setValue(5);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         numberPickerTimeSeconds.setValue(45);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -157,10 +157,10 @@ public class CoolDownTimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         numberPickerTimeMinutes.setValue(0);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         numberPickerTimeSeconds.setValue(0);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -175,10 +175,10 @@ public class CoolDownTimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         assertThat(numberPickerTimeMinutes.getValue()).isEqualTo(5);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         assertThat(numberPickerTimeSeconds.getValue()).isEqualTo(15);
     }
 }

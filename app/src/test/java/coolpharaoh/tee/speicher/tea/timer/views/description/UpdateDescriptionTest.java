@@ -24,7 +24,7 @@ public class UpdateDescriptionTest {
     public void launchActivityExpectThreeImages() {
         ActivityScenario<UpdateDescription> updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription.class);
         updateDescriptionActivityScenario.onActivity(updateDescription -> {
-            final ViewPager viewPager = updateDescription.findViewById(R.id.slideViewPager);
+            final ViewPager viewPager = updateDescription.findViewById(R.id.slide_view_description_pager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
             assertThat(slideAdapter.getCount()).isEqualTo(2);
         });
@@ -34,7 +34,7 @@ public class UpdateDescriptionTest {
     public void exitActivity() {
         ActivityScenario<UpdateDescription> updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription.class);
         updateDescriptionActivityScenario.onActivity(updateDescription -> {
-            ImageButton buttonClose = updateDescription.findViewById(R.id.buttonDescriptionClose);
+            ImageButton buttonClose = updateDescription.findViewById(R.id.button_description_close);
             buttonClose.performClick();
 
             assertThat(updateDescription.isFinishing()).isTrue();

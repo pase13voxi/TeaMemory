@@ -14,7 +14,7 @@
         android:textSize="14sp" />
 
     <CheckBox
-        android:id="@+id/checkboxDialogShowTeaDescription"
+        android:id="@+id/check_box_show_tea_dialog_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"

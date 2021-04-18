@@ -138,7 +138,7 @@ public class StatisticsTest {
     }
 
     private void checkExpectedItems(List<StatisticsPOJO> statisticsPOJOs, Statistics statistics) {
-        HorizontalBar horizontalBar = statistics.findViewById(R.id.statistic_chart);
+        HorizontalBar horizontalBar = statistics.findViewById(R.id.horizontal_bar_statistics);
         List<BarItem> items = horizontalBar.getItems();
         assertThat(items)
                 .extracting(

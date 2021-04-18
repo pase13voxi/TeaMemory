@@ -57,7 +57,7 @@ public class VarietyPickerDialog extends DialogFragment {
 
     private void defineVarietyRadioGroup() {
         final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
-        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.new_tea_radio_group_variety_input);
+        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.radio_group_new_tea_variety_input);
 
         for (final String variety : varietyList) {
             final RadioButton varietyRadioButton = createRadioButton(variety);
@@ -76,7 +76,7 @@ public class VarietyPickerDialog extends DialogFragment {
 
         if (varietyIndex == -1) {
             radioButtons.get(VARIETY_OTHER).setChecked(true);
-            final EditText editTextCustomVariety = dialogView.findViewById(R.id.new_tea_edit_text_custom_variety);
+            final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
             editTextCustomVariety.setText(variety);
         } else {
             radioButtons.get(varietyIndex).setChecked(true);
@@ -125,7 +125,7 @@ public class VarietyPickerDialog extends DialogFragment {
     private void showCustomVariety(final RadioGroup radioGroup, final int checkedId) {
         final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
         final RadioButton radioButton = radioGroup.findViewById(checkedId);
-        final EditText editTextCustomVariety = dialogView.findViewById(R.id.new_tea_edit_text_custom_variety);
+        final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
 
         if (varietyList[VARIETY_OTHER].equals(radioButton.getText().toString())) {
             editTextCustomVariety.setVisibility(View.VISIBLE);
@@ -135,13 +135,13 @@ public class VarietyPickerDialog extends DialogFragment {
     }
 
     private void persistVariety() {
-        final EditText editTextCustomVariety = dialogView.findViewById(R.id.new_tea_edit_text_custom_variety);
+        final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
 
         if (editTextCustomVariety.getVisibility() == View.VISIBLE &&
                 !editTextCustomVariety.getText().toString().isEmpty()) {
             newTeaViewModel.setVariety(editTextCustomVariety.getText().toString());
         } else {
-            final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.new_tea_radio_group_variety_input);
+            final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.radio_group_new_tea_variety_input);
             final RadioButton radioButton = varietyRadioGroup.findViewById(varietyRadioGroup.getCheckedRadioButtonId());
 
             newTeaViewModel.setVariety(radioButton.getText().toString());
@@ -150,7 +150,7 @@ public class VarietyPickerDialog extends DialogFragment {
 
     private void persistColor() {
         final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
-        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.new_tea_radio_group_variety_input);
+        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.radio_group_new_tea_variety_input);
         final RadioButton radioButton = varietyRadioGroup.findViewById(varietyRadioGroup.getCheckedRadioButtonId());
 
         final int varietyIndex = Arrays.asList(varietyList).indexOf(radioButton.getText().toString());

@@ -81,7 +81,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     private void displayVersion() {
-        TextView textViewVersion = findViewById(R.id.textViewVersion);
+        TextView textViewVersion = findViewById(R.id.text_view_about_version);
         String version = BuildConfig.VERSION_NAME;
         textViewVersion.setText(getResources().getString(R.string.about_version, version));
     }

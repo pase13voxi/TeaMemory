@@ -70,17 +70,17 @@ public class TimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         assertThat(buttonSuggestion1)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "2:00");
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_2);
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
         assertThat(buttonSuggestion2)
                 .extracting(View::getVisibility, tv -> tv.getText().toString())
                 .containsExactly(View.VISIBLE, "3:00");
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_3);
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
         assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -91,13 +91,13 @@ public class TimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.new_tea_button_picker_suggestion_1);
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
         buttonSuggestion1.performClick();
 
-        final NumberPicker numberPickerMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         assertThat(numberPickerMinutes.getValue()).isEqualTo(2);
 
-        final NumberPicker numberPickerSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         assertThat(numberPickerSeconds.getValue()).isEqualTo(30);
     }
 
@@ -107,7 +107,7 @@ public class TimePickerDialogTest {
         dialogFragment.show(fragmentManager, TAG);
 
         final AlertDialog dialog = getLatestAlertDialog();
-        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.new_tea_layout_custom_variety);
+        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
         assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -117,10 +117,10 @@ public class TimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         numberPickerTimeMinutes.setValue(5);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         numberPickerTimeSeconds.setValue(45);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -133,10 +133,10 @@ public class TimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         numberPickerTimeMinutes.setValue(0);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         numberPickerTimeSeconds.setValue(0);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -151,10 +151,10 @@ public class TimePickerDialogTest {
 
         final AlertDialog dialog = getLatestAlertDialog();
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         assertThat(numberPickerTimeMinutes.getValue()).isEqualTo(5);
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         assertThat(numberPickerTimeSeconds.getValue()).isEqualTo(15);
     }
 }

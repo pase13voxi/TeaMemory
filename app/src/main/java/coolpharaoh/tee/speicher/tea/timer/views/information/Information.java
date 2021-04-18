@@ -54,10 +54,10 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         fillCounter();
         fillNotes();
 
-        final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
+        final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
 
-        final ImageButton buttonAddDetail = findViewById(R.id.information_button_add_detail);
+        final ImageButton buttonAddDetail = findViewById(R.id.button_information_add_detail);
         buttonAddDetail.setOnClickListener(v -> addDetail());
     }
 
@@ -78,12 +78,12 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillRatingBar() {
-        final RatingBar ratingBar = findViewById(R.id.information_rating_bar);
+        final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setRating(informationViewModel.getTeaRating());
     }
 
     private void showDetailsList() {
-        final RecyclerView recyclerViewDetails = findViewById(R.id.information_recycler_view_details);
+        final RecyclerView recyclerViewDetails = findViewById(R.id.recycler_view_information_details);
         recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
 
         informationViewModel.getDetails().observe(this, details -> {
@@ -98,17 +98,17 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillLastUsed() {
-        final TextView textViewLastUsed = findViewById(R.id.information_text_view_last_used);
+        final TextView textViewLastUsed = findViewById(R.id.text_view_information_last_used);
         final SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         final String date = formatter.format(informationViewModel.getDate());
         textViewLastUsed.setText(getString(R.string.information_counter_last_used, date));
     }
 
     private void fillCounter() {
-        final TextView textViewToday = findViewById(R.id.information_text_view_counter_today);
-        final TextView textViewWeek = findViewById(R.id.information_text_view_counter_week);
-        final TextView textViewMonth = findViewById(R.id.information_text_view_counter_month);
-        final TextView textViewOverall = findViewById(R.id.information_text_view_counter_overall);
+        final TextView textViewToday = findViewById(R.id.text_view_information_counter_today);
+        final TextView textViewWeek = findViewById(R.id.text_view_information_counter_week);
+        final TextView textViewMonth = findViewById(R.id.text_view_information_counter_month);
+        final TextView textViewOverall = findViewById(R.id.text_view_information_counter_overall);
 
         final Counter counter = informationViewModel.getCounter();
         textViewToday.setText(String.valueOf(counter.getDay()));
@@ -118,7 +118,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillNotes() {
-        final EditText editTextNotes = findViewById(R.id.information_edit_text_notes);
+        final EditText editTextNotes = findViewById(R.id.edit_text_information_notes);
         final Note note = informationViewModel.getNotes();
         editTextNotes.setText(note.getDescription());
     }
@@ -129,8 +129,8 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         final LayoutInflater inflater = getLayoutInflater();
         final View dialogLayout = inflater.inflate(R.layout.dialog_add_edit_information, parent, false);
 
-        final EditText editTextHeading = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_header);
-        final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
+        final EditText editTextHeading = dialogLayout.findViewById(R.id.edit_text_information_dialog_add_edit_header);
+        final EditText editTextDescription = dialogLayout.findViewById(R.id.edit_text_information_dialog_add_edit_description);
 
         new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.information_add_detail_dialog_heading)
@@ -181,9 +181,9 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         final Note detail = informationViewModel.getDetail(position);
 
-        final EditText editTextHeading = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_header);
+        final EditText editTextHeading = dialogLayout.findViewById(R.id.edit_text_information_dialog_add_edit_header);
         editTextHeading.setText(detail.getHeader());
-        final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
+        final EditText editTextDescription = dialogLayout.findViewById(R.id.edit_text_information_dialog_add_edit_description);
         editTextDescription.setText(detail.getDescription());
 
         new AlertDialog.Builder(this, R.style.dialog_theme)
@@ -201,7 +201,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     protected void onPause() {
         super.onPause();
 
-        final EditText editTextNotes = findViewById(R.id.information_edit_text_notes);
+        final EditText editTextNotes = findViewById(R.id.edit_text_information_notes);
         informationViewModel.updateNotes(editTextNotes.getText().toString());
     }
 }

@@ -53,10 +53,10 @@ public class TimePickerDialog extends DialogFragment {
     }
 
     private void setTimePicker() {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
+        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
         timePickerMinutes.setMinValue(0);
         timePickerMinutes.setMaxValue(59);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         timePickerSeconds.setMinValue(0);
         timePickerSeconds.setMaxValue(59);
         timePickerSeconds.setFormatter(value -> String.format("%02d", value));
@@ -77,9 +77,9 @@ public class TimePickerDialog extends DialogFragment {
 
     private void setSuggestions() {
         final List<Button> buttons = new ArrayList<>();
-        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_1));
-        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_2));
-        buttons.add(dialogView.findViewById(R.id.new_tea_button_picker_suggestion_3));
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_1));
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_2));
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_3));
 
         if (suggestions.getTimeSuggestions() != null && suggestions.getTimeSuggestions().length > 0) {
             fillSuggestions(buttons);
@@ -102,8 +102,8 @@ public class TimePickerDialog extends DialogFragment {
     }
 
     private void setClickListener(final List<Button> buttons) {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         final String[] timeSuggestions = suggestions.getTimeSuggestions();
 
         for (int i = 0; i < timeSuggestions.length; i++) {
@@ -117,13 +117,13 @@ public class TimePickerDialog extends DialogFragment {
     }
 
     private void disableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.new_tea_layout_custom_variety);
+        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_new_tea_custom_variety);
         layoutSuggestions.setVisibility(View.GONE);
     }
 
     private void persistTime() {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.new_tea_number_picker_dialog_time_seconds);
+        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
+        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
         final int minutes = timePickerMinutes.getValue();
         final int seconds = timePickerSeconds.getValue();
 

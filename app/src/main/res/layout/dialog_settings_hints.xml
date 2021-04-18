@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/checkboxDialogSettingsUpdate"
+        android:id="@+id/check_box_settings_dialog_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -15,7 +15,7 @@
         android:theme="@style/check_box_style" />
 
     <CheckBox
-        android:id="@+id/checkboxDialogSettingsRating"
+        android:id="@+id/check_box_settings_dialog_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -25,7 +25,7 @@
         android:theme="@style/check_box_style" />
 
     <CheckBox
-        android:id="@+id/checkboxDialogSettingsDescription"
+        android:id="@+id/check_box_settings_dialog_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -35,7 +35,7 @@
         android:theme="@style/check_box_style" />
 
     <CheckBox
-        android:id="@+id/checkboxDialogSettingsPermission"
+        android:id="@+id/check_box_settings_dialog_permission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

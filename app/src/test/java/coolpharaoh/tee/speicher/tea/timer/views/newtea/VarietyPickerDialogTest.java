@@ -102,7 +102,7 @@ public class VarietyPickerDialogTest {
         dialogFragment.show(fragmentManager, TAG);
 
         final AlertDialog dialog = getLatestAlertDialog();
-        final EditText editTextCustomVariety = dialog.findViewById(R.id.new_tea_edit_text_custom_variety);
+        final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
         assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.GONE);
 
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
@@ -122,7 +122,7 @@ public class VarietyPickerDialogTest {
 
         radioButtons.get(INDEX_OTHER).performClick();
 
-        final EditText editTextCustomVariety = dialog.findViewById(R.id.new_tea_edit_text_custom_variety);
+        final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
         editTextCustomVariety.setText(CUSTOM_VARIETY);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
@@ -153,12 +153,12 @@ public class VarietyPickerDialogTest {
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
         assertThat(radioButtons.get(INDEX_OTHER).isChecked()).isTrue();
 
-        final EditText editTextCustomVariety = dialog.findViewById(R.id.new_tea_edit_text_custom_variety);
+        final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
         assertThat(editTextCustomVariety.getText()).hasToString(CUSTOM_VARIETY);
     }
 
     private List<RadioButton> getRadioButtons(AlertDialog dialog) {
-        final RadioGroup radioGroup = dialog.findViewById(R.id.new_tea_radio_group_variety_input);
+        final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_new_tea_variety_input);
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
             View o = radioGroup.getChildAt(i);

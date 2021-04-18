@@ -77,7 +77,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void initializeTeaList() {
-        final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_tea_list);
+        final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_main_tea_list);
         recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -121,7 +121,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void initializeNewTeaButton() {
-        final FloatingActionButton newTea = findViewById(R.id.newtea);
+        final FloatingActionButton newTea = findViewById(R.id.floating_button_main_new_tea);
         newTea.setOnClickListener(v -> navigateToNewOrEditTea(null));
     }
 

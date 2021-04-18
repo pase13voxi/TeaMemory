@@ -198,7 +198,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void askPermissionAccepted(final View alertLayoutDialogProblem) {
-        final CheckBox dontShowAgain = alertLayoutDialogProblem.findViewById(R.id.checkboxDialogSettingsReadPermission);
+        final CheckBox dontShowAgain = alertLayoutDialogProblem.findViewById(R.id.check_box_settings_dialog_read_permission);
 
         if (dontShowAgain.isChecked()) {
             settingsViewModel.setSettingsPermissionAlert(false);
@@ -338,16 +338,16 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         final LayoutInflater inflater = getLayoutInflater();
         final View alertLayoutDialog = inflater.inflate(R.layout.dialog_settings_hints, parent, false);
 
-        final CheckBox checkBoxUpdate = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsUpdate);
+        final CheckBox checkBoxUpdate = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_update);
         checkBoxUpdate.setChecked(settingsViewModel.isMainUpdateAlert());
 
-        final CheckBox checkBoxRating = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsRating);
+        final CheckBox checkBoxRating = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_rating);
         checkBoxRating.setChecked(settingsViewModel.isMainRateAlert());
 
-        final CheckBox checkBoxDescription = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsDescription);
+        final CheckBox checkBoxDescription = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_description);
         checkBoxDescription.setChecked(settingsViewModel.isShowTeaAlert());
 
-        final CheckBox checkBoxPermission = alertLayoutDialog.findViewById(R.id.checkboxDialogSettingsPermission);
+        final CheckBox checkBoxPermission = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_permission);
         checkBoxPermission.setChecked(settingsViewModel.isSettingsPermissionAlert());
 
 

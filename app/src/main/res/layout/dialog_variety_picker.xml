@@ -12,13 +12,13 @@
         android:orientation="vertical">
 
         <RadioGroup
-            android:id="@+id/new_tea_radio_group_variety_input"
+            android:id="@+id/radio_group_new_tea_variety_input"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical" />
 
         <LinearLayout
-            android:id="@+id/new_tea_layout_custom_variety"
+            android:id="@+id/layout_new_tea_custom_variety"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -26,7 +26,7 @@
             android:paddingVertical="10dp">
 
             <EditText
-                android:id="@+id/new_tea_edit_text_custom_variety"
+                android:id="@+id/edit_text_new_tea_custom_variety"
                 style="@style/new_tea_edit_text_input_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

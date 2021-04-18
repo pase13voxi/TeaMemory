@@ -56,7 +56,7 @@ public class Statistics extends AppCompatActivity {
     }
 
     private void initHorizontalBar() {
-        horizontalBar = findViewById(R.id.statistic_chart);
+        horizontalBar = findViewById(R.id.horizontal_bar_statistics);
         horizontalBar.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
     }
 
