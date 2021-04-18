@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -47,10 +47,10 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
-import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
-import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
+import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
-import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;

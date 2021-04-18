@@ -4,8 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class SettingsViewModel {

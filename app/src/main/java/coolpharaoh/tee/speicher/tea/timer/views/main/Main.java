@@ -27,10 +27,10 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
-import coolpharaoh.tee.speicher.tea.timer.views.exportimport.ExportImport;
-import coolpharaoh.tee.speicher.tea.timer.views.newtea.NewTea;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
+import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
-import coolpharaoh.tee.speicher.tea.timer.views.showtea.ShowTea;
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")

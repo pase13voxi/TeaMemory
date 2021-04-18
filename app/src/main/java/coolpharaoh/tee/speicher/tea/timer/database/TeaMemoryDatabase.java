@@ -7,8 +7,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;

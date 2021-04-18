@@ -9,7 +9,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
-import coolpharaoh.tee.speicher.tea.timer.views.exportimport.datatransfer.pojo.StatisticsPOJO;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.pojo.StatisticsPOJO;
 
 public class StatisticsViewModel {
     private final CounterRepository counterRepository;

@@ -33,18 +33,18 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.ActualSettingsDao;
-import coolpharaoh.tee.speicher.tea.timer.core.actualsettings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
-import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.DISABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.ENABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.actualsettings.DarkMode.SYSTEM;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.DISABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.ENABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.SYSTEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

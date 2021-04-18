@@ -40,7 +40,7 @@
                 android:value=".views.main.Main" />
         </activity>
         <activity
-            android:name=".views.newtea.NewTea"
+            android:name=".views.new_tea.NewTea"
             android:exported="false"
             android:label="Create/Edit tea"
             android:screenOrientation="portrait"
@@ -50,7 +50,7 @@
                 android:value=".views.main.Main" />
         </activity>
         <activity
-            android:name=".views.showtea.ShowTea"
+            android:name=".views.show_tea.ShowTea"
             android:exported="false"
             android:label="Information"
             android:launchMode="singleTask"
@@ -66,7 +66,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.showtea.ShowTea" />
+                android:value=".views.show_tea.ShowTea" />
         </activity>
         <activity
             android:name=".views.information.Information"
@@ -75,7 +75,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.showtea.ShowTea" />
+                android:value=".views.show_tea.ShowTea" />
         </activity>
         <activity
             android:name=".views.settings.Settings"
@@ -87,7 +87,7 @@
                 android:value=".views.main.Main" />
         </activity>
         <activity
-            android:name=".views.exportimport.ExportImport"
+            android:name=".views.export_import.ExportImport"
             android:exported="false"
             android:label="ExportImport"
             android:screenOrientation="portrait">
@@ -132,9 +132,9 @@
                 android:value=".views.about.About" />
         </activity>
 
-        <receiver android:name=".views.showtea.countdowntimer.TeaCompleteReceiver" />
+        <receiver android:name=".views.show_tea.countdowntimer.TeaCompleteReceiver" />
 
-        <service android:name=".views.showtea.countdowntimer.NotificationService" />
+        <service android:name=".views.show_tea.countdowntimer.NotificationService" />
     </application>
 
 </manifest>
