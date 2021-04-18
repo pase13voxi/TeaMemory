@@ -5,7 +5,7 @@
     tools:context=".views.statistics.Statistics">
 
     <item
-        android:id="@+id/action_period"
+        android:id="@+id/action_statistics_period"
         android:orderInCategory="1"
         android:icon="@drawable/statistics_white"
         android:title="@string/statistics_action_period"

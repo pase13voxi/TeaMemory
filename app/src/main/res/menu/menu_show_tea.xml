@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.showtea.ShowTea">
     <item
-        android:id="@+id/action_edit"
+        android:id="@+id/action_show_tea_edit"
         android:orderInCategory="100"
         android:title="@string/show_tea_action_edit"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_information"
+        android:id="@+id/action_show_tea_information"
         android:orderInCategory="100"
         android:title="@string/show_tea_action_information"
         app:showAsAction="never" />

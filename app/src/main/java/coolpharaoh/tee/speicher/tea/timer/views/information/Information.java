@@ -73,7 +73,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillToolbarTitle() {
-        final TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        final TextView toolbarTitle = findViewById(R.id.tool_bar_title);
         toolbarTitle.setText(informationViewModel.getTeaName());
     }
 
@@ -132,7 +132,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         final EditText editTextHeading = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_header);
         final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.information_add_detail_dialog_heading)
                 .setView(dialogLayout)
                 .setNegativeButton(R.string.information_edit_detail_dialog_negative, null)
@@ -186,7 +186,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         final EditText editTextDescription = dialogLayout.findViewById(R.id.information_edit_text_dialog_add_edit_description);
         editTextDescription.setText(detail.getDescription());
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.information_edit_detail_dialog_heading)
                 .setView(dialogLayout)
                 .setNegativeButton(R.string.information_edit_detail_dialog_negative, null)

@@ -77,7 +77,7 @@ public class StatisticsTest {
         ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
-            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_period));
+            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OVERALL_ITEM);
@@ -94,7 +94,7 @@ public class StatisticsTest {
         ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
-            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_period));
+            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(MONTH_ITEM);
@@ -111,7 +111,7 @@ public class StatisticsTest {
         ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
-            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_period));
+            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(WEEK_ITEM);
@@ -128,7 +128,7 @@ public class StatisticsTest {
         ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
-            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_period));
+            statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(DAY_ITEM);

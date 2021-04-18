@@ -131,7 +131,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextName = newTea.findViewById(R.id.edit_text_new_tea_name);
             editTextName.setText("Name");
-            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
+            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_new_tea_done));
             final ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).insert(captorTea.capture());
             final Tea tea = captorTea.getValue();
@@ -358,7 +358,7 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
+            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_new_tea_done));
 
             final ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(captorTea.capture());
@@ -527,7 +527,7 @@ public class NewTeaTest {
 
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
         newTeaActivityScenario.onActivity(newTea -> {
-            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_done));
+            newTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_new_tea_done));
 
             final Intent expected = new Intent(newTea, ShowTea.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();

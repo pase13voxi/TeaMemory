@@ -180,7 +180,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_settings));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_settings));
 
             final Intent expected = new Intent(main, Settings.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -195,7 +195,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_exportImport));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_export_import));
 
             final Intent expected = new Intent(main, ExportImport.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -210,7 +210,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_about));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_about));
 
             final Intent expected = new Intent(main, About.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -227,9 +227,9 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_search));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_search));
 
-            final MenuItemImpl menuItem = ((ActionMenuItemView) main.findViewById(R.id.action_search)).getItemData();
+            final MenuItemImpl menuItem = ((ActionMenuItemView) main.findViewById(R.id.action_main_search)).getItemData();
             final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
             searchView.setQuery(teaName, false);
 
@@ -244,7 +244,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
@@ -261,7 +261,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ALPHABETICALLY);
@@ -278,7 +278,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_VARIETY);
@@ -295,7 +295,7 @@ public class MainTest {
 
         final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
         mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_sort));
+            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_RATING);

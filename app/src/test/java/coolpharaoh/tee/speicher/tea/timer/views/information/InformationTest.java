@@ -119,7 +119,7 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final TextView toolbarTitle = information.findViewById(R.id.toolbar_title);
+            final TextView toolbarTitle = information.findViewById(R.id.tool_bar_title);
             assertThat(toolbarTitle.getText()).hasToString(TEA_NAME);
 
             final RatingBar ratingBar = information.findViewById(R.id.information_rating_bar);
@@ -237,7 +237,7 @@ public class InformationTest {
         informationActivityScenario.onActivity(information -> {
             final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-            final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.buttonDetailOptions);
+            final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.button_detail_options);
 
             buttonChangeItem.performClick();
 
@@ -259,7 +259,7 @@ public class InformationTest {
         informationActivityScenario.onActivity(information -> {
             final RecyclerView recyclerView = information.findViewById(R.id.information_recycler_view_details);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-            final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.buttonDetailOptions);
+            final Button buttonChangeItem = itemViewRecyclerItem.findViewById(R.id.button_detail_options);
 
             buttonChangeItem.performClick();
 

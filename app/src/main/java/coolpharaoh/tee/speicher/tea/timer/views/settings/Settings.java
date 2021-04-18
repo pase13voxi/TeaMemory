@@ -68,7 +68,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
     private void defineToolbarAsActionbar() {
         final Toolbar toolbar = findViewById(R.id.tool_bar);
-        final TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        final TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.settings_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -190,7 +190,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         final LayoutInflater inflater = getLayoutInflater();
         final View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setView(alertLayoutDialogProblem)
                 .setTitle(R.string.settings_read_permission_dialog_header)
                 .setPositiveButton(R.string.settings_read_permission_dialog_ok, (dialog, which) -> askPermissionAccepted(alertLayoutDialogProblem))
@@ -253,7 +253,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
         final int checkedItem = settingsViewModel.isVibration() ? 0 : 1;
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.settings_vibration)
                 .setSingleChoiceItems(items, checkedItem, this::vibrationChanged)
                 .setNegativeButton(R.string.settings_cancel, null)
@@ -273,7 +273,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
         final int checkedItem = settingsViewModel.isAnimation() ? 0 : 1;
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.settings_animation)
                 .setSingleChoiceItems(items, checkedItem, this::animationChanged)
                 .setNegativeButton(R.string.settings_cancel, null)
@@ -293,7 +293,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
         final int checkedItem = settingsViewModel.getTemperatureUnit().equals(items[0]) ? 0 : 1;
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.settings_temperature_unit)
                 .setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog))
                 .setNegativeButton(R.string.settings_cancel, null)
@@ -312,7 +312,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
         final int checkedItem = sharedSettings.getDarkMode().getChoice();
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.settings_dark_mode)
                 .setSingleChoiceItems(items, checkedItem, (dialog, item) -> darkModeChanged(items[item], dialog))
                 .setNegativeButton(R.string.settings_cancel, null)
@@ -351,7 +351,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         checkBoxPermission.setChecked(settingsViewModel.isSettingsPermissionAlert());
 
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setView(alertLayoutDialog)
                 .setTitle(R.string.settings_show_hints_header)
                 .setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxUpdate,
@@ -370,7 +370,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void settingFactorySettings() {
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setMessage(R.string.settings_factory_settings_text)
                 .setTitle(R.string.settings_factory_settings)
                 .setPositiveButton(R.string.settings_factory_settings_ok, (dialogInterface, i) -> resetToFactorySettings())

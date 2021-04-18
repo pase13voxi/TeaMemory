@@ -44,7 +44,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.about_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);

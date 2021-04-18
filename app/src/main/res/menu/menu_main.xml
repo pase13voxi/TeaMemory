@@ -4,30 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.main.Main">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_main_settings"
         android:orderInCategory="1"
         android:title="@string/main_action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_exportImport"
+        android:id="@+id/action_main_export_import"
         android:orderInCategory="2"
         android:title="@string/main_action_export"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_about"
+        android:id="@+id/action_main_about"
         android:orderInCategory="3"
         android:title="@string/main_action_about"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_sort"
+        android:id="@+id/action_main_sort"
         android:orderInCategory="4"
         android:icon="@drawable/sort_white"
         android:title="@string/main_action_sort"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_main_search"
         android:orderInCategory="5"
         android:icon="@drawable/search_white"
         android:title="@string/main_action_search"

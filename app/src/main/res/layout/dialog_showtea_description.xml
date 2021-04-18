@@ -22,5 +22,5 @@
         android:text="@string/show_tea_dialog_description_checkbox"
         android:textColor="@color/text_black"
         android:textSize="14sp"
-        android:theme="@style/CheckBoxStyle" />
+        android:theme="@style/check_box_style" />
 </LinearLayout>

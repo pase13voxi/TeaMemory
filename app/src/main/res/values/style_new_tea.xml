@@ -22,10 +22,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">17sp</item>
-        <item name="android:theme">@style/EditTextStyle</item>
+        <item name="android:theme">@style/edit_text_style</item>
     </style>
 
-    <style name="number_picker_theme_overlay" parent="">
+    <style name="new_tea_number_picker_theme" parent="">
         <item name="colorControlNormal">@color/background_green</item>
     </style>
 

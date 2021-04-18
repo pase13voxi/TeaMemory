@@ -44,7 +44,7 @@ public class Statistics extends AppCompatActivity {
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.statistics_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -72,7 +72,7 @@ public class Statistics extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_period) {
+        if (id == R.id.action_statistics_period) {
             dialogSortOption();
         }
 
@@ -83,7 +83,7 @@ public class Statistics extends AppCompatActivity {
         final String[] items = getResources().getStringArray(R.array.statistics_category);
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setIcon(R.drawable.statistics_black);
         builder.setTitle(R.string.statistics_dialog_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {

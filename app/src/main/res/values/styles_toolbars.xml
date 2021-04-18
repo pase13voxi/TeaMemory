@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="toolbarGeneralStyle">
+    <style name="toolbar_general_style">
         <item name="android:background">@color/color_primary</item>
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetStart">0dp</item>

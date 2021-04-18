@@ -76,7 +76,7 @@ public class NewTea extends AppCompatActivity implements Printer {
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.new_tea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -328,7 +328,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_done) {
+        if (id == R.id.action_new_tea_done) {
             addTea();
         } else if (id == android.R.id.home) {
             if (showTea) {

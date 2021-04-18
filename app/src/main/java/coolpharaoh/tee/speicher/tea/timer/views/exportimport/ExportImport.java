@@ -52,7 +52,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.export_import_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -77,7 +77,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogAfterWritePermissionDenied() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.export_import_write_permission_dialog_header);
         builder.setMessage(R.string.export_import_write_permission_dialog_description);
         builder.setPositiveButton(R.string.export_import_location_dialog_ok, (dialog, which) -> PermissionRequester.getWritePermission(this));
@@ -97,7 +97,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogAfterReadPermissionDenied() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.export_import_read_permission_dialog_header);
         builder.setMessage(R.string.export_import_read_permission_dialog_description);
         builder.setPositiveButton(R.string.export_import_location_dialog_ok, (dialog, which) -> PermissionRequester.getReadPermission(this));
@@ -135,13 +135,13 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogExportLocation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.export_import_location_dialog_header);
         builder.setMessage(R.string.export_import_location_dialog_description).setPositiveButton(R.string.export_import_location_dialog_ok, null).show();
     }
 
     private void dialogExportFailed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.export_import_export_failed_dialog_header);
         builder.setMessage(R.string.export_import_export_failed_dialog_description).setPositiveButton(R.string.export_import_export_failed_dialog_ok, null).show();
     }
@@ -161,7 +161,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
             LayoutInflater inflater = getLayoutInflater();
             View layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false);
 
-            AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.DialogTheme).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialog_theme).create();
             alertDialog.setView(layoutDialogImport);
             alertDialog.setTitle(R.string.export_import_import_dialog_header);
 
@@ -202,7 +202,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogImportComplete() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.export_import_import_complete_dialog_header);
         if (keepStoredTeas) {
             builder.setMessage(R.string.export_import_import_complete_keep_dialog_description).setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show();
@@ -212,7 +212,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogImportFailed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.export_import_import_failed_dialog_header);
         builder.setMessage(R.string.export_import_import_failed_dialog_description).setPositiveButton(R.string.export_import_import_failed_dialog_ok, null).show();
     }

@@ -36,7 +36,7 @@ public class Contact extends AppCompatActivity {
 
     private void defineToolbarAsActionbar() {
         final Toolbar toolbar = findViewById(R.id.tool_bar);
-        final TextView mToolbarCustomTitle = findViewById(R.id.toolbar_title);
+        final TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.contact_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);

@@ -33,7 +33,7 @@ public class Software extends AppCompatActivity {
 
     private void defineToolbarAsActionbar() {
         final Toolbar toolbar = findViewById(R.id.tool_bar);
-        final TextView toolbarCustomTitle = findViewById(R.id.toolbar_title);
+        final TextView toolbarCustomTitle = findViewById(R.id.tool_bar_title);
         toolbarCustomTitle.setText(R.string.software_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);

@@ -13,14 +13,14 @@
         android:paddingVertical="4dp">
 
         <TextView
-            android:id="@+id/textViewListDetailsHeading"
+            android:id="@+id/text_view_list_details_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_black"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textViewListDetailsDescription"
+            android:id="@+id/text_view_list_details_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonDetailOptions"
+        android:id="@+id/button_detail_options"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

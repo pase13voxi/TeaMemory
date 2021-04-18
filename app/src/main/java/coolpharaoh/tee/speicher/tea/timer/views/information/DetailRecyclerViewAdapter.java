@@ -63,9 +63,9 @@ class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewA
         public ViewHolder(View itemView, OnClickListener onClickListener) {
             super(itemView);
 
-            header = itemView.findViewById(R.id.textViewListDetailsHeading);
-            description = itemView.findViewById(R.id.textViewListDetailsDescription);
-            itemView.findViewById(R.id.buttonDetailOptions).setOnClickListener(this);
+            header = itemView.findViewById(R.id.text_view_list_details_heading);
+            description = itemView.findViewById(R.id.text_view_list_details_description);
+            itemView.findViewById(R.id.button_detail_options).setOnClickListener(this);
 
             this.onClickListener = onClickListener;
         }
@@ -73,7 +73,7 @@ class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewA
 
         @Override
         public void onClick(View view) {
-            final Button buttonOptions = view.findViewById(R.id.buttonDetailOptions);
+            final Button buttonOptions = view.findViewById(R.id.button_detail_options);
             onClickListener.onRecyclerItemClick(buttonOptions, getAdapterPosition());
         }
     }

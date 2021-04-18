@@ -45,7 +45,7 @@ public class AmountPickerDialog extends DialogFragment {
         setAmountPicker();
         setSuggestions();
 
-        return new AlertDialog.Builder(activity, R.style.DialogTheme)
+        return new AlertDialog.Builder(activity, R.style.dialog_theme)
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_amount_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)

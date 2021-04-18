@@ -43,7 +43,7 @@ public class CoolDownTimePickerDialog extends DialogFragment {
         setTimePicker();
         setCalculatedCoolDownTime();
 
-        return new AlertDialog.Builder(activity, R.style.DialogTheme)
+        return new AlertDialog.Builder(activity, R.style.dialog_theme)
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_cool_down_time_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)

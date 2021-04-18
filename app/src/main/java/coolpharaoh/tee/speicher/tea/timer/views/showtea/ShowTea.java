@@ -149,7 +149,7 @@ public class ShowTea extends AppCompatActivity {
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        TextView toolbarTitle = findViewById(R.id.tool_bar_title);
         toolbarTitle.setText(R.string.show_tea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -170,9 +170,9 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void declareViewElements() {
-        buttonInfusionIndex = findViewById(R.id.toolbar_infusionindex);
-        textViewInfusionIndex = findViewById(R.id.toolbar_text_infusionindex);
-        buttonNextInfusion = findViewById(R.id.toolbar_nextinfusion);
+        buttonInfusionIndex = findViewById(R.id.show_tea_tool_bar_infusion_index);
+        textViewInfusionIndex = findViewById(R.id.show_tea_tool_bar_text_infusion_index);
+        buttonNextInfusion = findViewById(R.id.show_tea_tool_bar_next_infusion);
         textViewName = findViewById(R.id.textViewName);
         textViewVariety = findViewById(R.id.textViewVariety);
         textViewTemperature = findViewById(R.id.textViewTemperature);
@@ -303,7 +303,7 @@ public class ShowTea extends AppCompatActivity {
         View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
         final CheckBox donNotShowAgain = alertLayoutDialogDescription.findViewById(R.id.checkboxDialogShowTeaDescription);
 
-        new AlertDialog.Builder(this, R.style.DialogTheme)
+        new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setView(alertLayoutDialogDescription)
                 .setTitle(R.string.show_tea_dialog_description_header)
                 .setNegativeButton(R.string.show_tea_dialog_description_cancel, (dialog, which) -> disableDescription(donNotShowAgain))
@@ -333,7 +333,7 @@ public class ShowTea extends AppCompatActivity {
         int lastInfusion = showTeaViewModel.getNextInfusion();
         int nextInfusion = showTeaViewModel.getNextInfusion() + 1;
         //Infomationen anzeigen
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.show_tea_dialog_following_infusion_header);
         builder.setMessage(getResources().getString(R.string.show_tea_dialog_following_infusion_description, lastInfusion, nextInfusion));
         builder.setPositiveButton(R.string.show_tea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
@@ -511,7 +511,7 @@ public class ShowTea extends AppCompatActivity {
         int checkedItem = showTeaViewModel.getInfusionIndex();
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setIcon(R.drawable.infusion_black);
         builder.setTitle(R.string.show_tea_dialog_infusion_count_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
@@ -550,7 +550,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void showDialogCoolingPeriod() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.show_tea_cool_down_time_header);
         builder.setMessage(R.string.show_tea_cool_down_time_description);
         builder.setPositiveButton("OK", null);
@@ -592,7 +592,7 @@ public class ShowTea extends AppCompatActivity {
             }
         });
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.dialog_theme);
         adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.show_tea_dialog_amount);
         adb.setIcon(R.drawable.spoon_black);
@@ -620,9 +620,9 @@ public class ShowTea extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_edit) {
+        if (id == R.id.action_show_tea_edit) {
             return navigateToEditTea();
-        } else if (id == R.id.action_information) {
+        } else if (id == R.id.action_show_tea_information) {
             navigateToDetailInformation();
         }
 

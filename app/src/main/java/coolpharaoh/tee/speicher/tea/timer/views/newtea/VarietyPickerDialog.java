@@ -44,7 +44,7 @@ public class VarietyPickerDialog extends DialogFragment {
 
         defineVarietyRadioGroup();
 
-        return new AlertDialog.Builder(activity, R.style.DialogTheme)
+        return new AlertDialog.Builder(activity, R.style.dialog_theme)
                 .setView(dialogView)
                 .setTitle(R.string.new_tea_dialog_variety_header)
                 .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)

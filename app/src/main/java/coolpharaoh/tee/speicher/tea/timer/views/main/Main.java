@@ -52,7 +52,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
 
     private void defineToolbarAsActionbar() {
         Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView toolbarCustomTitle = findViewById(R.id.toolbar_title);
+        TextView toolbarCustomTitle = findViewById(R.id.tool_bar_title);
         toolbarCustomTitle.setPadding(40, 0, 0, 0);
         toolbarCustomTitle.setText(R.string.app_name);
         setSupportActionBar(toolbar);
@@ -63,7 +63,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
         final String[] items = getResources().getStringArray(R.array.main_sort_options);
         int checkedItem = mainActivityViewModel.getSort();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setIcon(R.drawable.sort_black);
         builder.setTitle(R.string.main_dialog_sort_title);
         builder.setSingleChoiceItems(items, checkedItem, this::changeSortOption);
@@ -145,7 +145,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
 
     private void showUpdateDialog() {
         if (mainActivityViewModel.isMainUpdateAlert()) {
-            new AlertDialog.Builder(this, R.style.DialogTheme)
+            new AlertDialog.Builder(this, R.style.dialog_theme)
                     .setTitle(R.string.main_dialog_update_header)
                     .setMessage(R.string.main_dialog_update_description)
                     .setPositiveButton(R.string.main_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
@@ -172,7 +172,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     private void showRatingDialog() {
         mainActivityViewModel.resetMainRatecounter();
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.main_dialog_rating_header);
         builder.setMessage(R.string.main_dialog_rating_description);
         builder.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
@@ -206,13 +206,13 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     public boolean onOptionsItemSelected(final MenuItem item) {
         final int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_main_settings) {
             navigateToSettings();
-        } else if (id == R.id.action_exportImport) {
+        } else if (id == R.id.action_main_export_import) {
             navigateToExportImport();
-        } else if (id == R.id.action_about) {
+        } else if (id == R.id.action_main_about) {
             navigateToAbout();
-        } else if (id == R.id.action_sort) {
+        } else if (id == R.id.action_main_sort) {
             dialogSortOption();
         }
 

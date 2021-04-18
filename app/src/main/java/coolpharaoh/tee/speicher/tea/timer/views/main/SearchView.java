@@ -12,7 +12,7 @@ class SearchView {
     }
 
     static void configureSearchView(Menu menu, MainViewModel mainViewModel) {
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem searchItem = menu.findItem(R.id.action_main_search);
 
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
 
