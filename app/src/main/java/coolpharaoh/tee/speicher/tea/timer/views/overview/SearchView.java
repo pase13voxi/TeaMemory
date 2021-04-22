@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.main;
+package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,23 +11,23 @@ class SearchView {
     private SearchView() {
     }
 
-    static void configureSearchView(Menu menu, MainViewModel mainViewModel) {
-        MenuItem searchItem = menu.findItem(R.id.action_main_search);
+    static void configureSearchView(Menu menu, OverviewViewModel overviewViewModel) {
+        MenuItem searchItem = menu.findItem(R.id.action_overview_search);
 
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
 
-        searchOpenedOrClosed(menu, mainViewModel, searchItem, searchView);
+        searchOpenedOrClosed(menu, overviewViewModel, searchItem, searchView);
 
-        textChanged(mainViewModel, searchView);
+        textChanged(overviewViewModel, searchView);
     }
 
-    private static void searchOpenedOrClosed(Menu menu, MainViewModel mainViewModel, MenuItem searchItem, androidx.appcompat.widget.SearchView searchView) {
+    private static void searchOpenedOrClosed(Menu menu, OverviewViewModel overviewViewModel, MenuItem searchItem, androidx.appcompat.widget.SearchView searchView) {
         searchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
 
             @Override
             public void onViewDetachedFromWindow(View view) {
                 setItemsVisibility(menu, searchItem, true);
-                mainViewModel.refreshTeas();
+                overviewViewModel.refreshTeas();
             }
 
             @Override
@@ -37,7 +37,7 @@ class SearchView {
         });
     }
 
-    private static void textChanged(MainViewModel mainViewModel, androidx.appcompat.widget.SearchView searchView) {
+    private static void textChanged(OverviewViewModel overviewViewModel, androidx.appcompat.widget.SearchView searchView) {
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
             @Override
@@ -47,7 +47,7 @@ class SearchView {
 
             @Override
             public boolean onQueryTextChange(String searchString) {
-                mainViewModel.visualizeTeasBySearchString(searchString);
+                overviewViewModel.visualizeTeasBySearchString(searchString);
                 return false;
             }
 

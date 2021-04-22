@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_main_tea_list_edit"
+        android:id="@+id/action_overview_tea_list_edit"
         android:orderInCategory="1"
-        android:title="@string/main_tea_list_menu_edit"
+        android:title="@string/overview_tea_list_menu_edit"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_main_tea_list_delete"
+        android:id="@+id/action_overview_tea_list_delete"
         android:orderInCategory="2"
-        android:title="@string/main_tea_list_menu_delete"
+        android:title="@string/overview_tea_list_menu_delete"
         app:showAsAction="never" />
 </menu>

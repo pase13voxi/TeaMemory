@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.main;
+package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.Application;
 
@@ -21,7 +21,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
-class MainViewModel extends ViewModel {
+class OverviewViewModel extends ViewModel {
 
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
@@ -30,14 +30,14 @@ class MainViewModel extends ViewModel {
     private final MutableLiveData<List<Tea>> teas;
     private final ActualSettings actualSettings;
 
-    MainViewModel(Application application) {
+    OverviewViewModel(Application application) {
         this(application, new TeaRepository(application), new InfusionRepository(application),
                 new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
-    MainViewModel(Application application, TeaRepository teaRepository, InfusionRepository infusionRepository,
-                  ActualSettingsRepository actualSettingsRepository) {
+    OverviewViewModel(Application application, TeaRepository teaRepository, InfusionRepository infusionRepository,
+                      ActualSettingsRepository actualSettingsRepository) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.actualSettingsRepository = actualSettingsRepository;

@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/app_theme">
         <activity
-            android:name=".views.main.Main"
+            android:name=".views.overview.Overview"
             android:permission=""
             android:screenOrientation="portrait">
             <intent-filter>
@@ -37,7 +37,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.main.Main" />
+                android:value=".views.overview.Overview" />
         </activity>
         <activity
             android:name=".views.new_tea.NewTea"
@@ -47,7 +47,7 @@
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.main.Main" />
+                android:value=".views.overview.Overview" />
         </activity>
         <activity
             android:name=".views.show_tea.ShowTea"
@@ -57,7 +57,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.main.Main" />
+                android:value=".views.overview.Overview" />
         </activity>
         <activity
             android:name=".views.description.ShowTeaDescription"
@@ -84,7 +84,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.main.Main" />
+                android:value=".views.overview.Overview" />
         </activity>
         <activity
             android:name=".views.export_import.ExportImport"
@@ -93,7 +93,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.main.Main" />
+                android:value=".views.overview.Overview" />
         </activity>
         <activity
             android:name=".views.about.About"
@@ -102,7 +102,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.main.Main" />
+                android:value=".views.overview.Overview" />
         </activity>
         <activity
             android:name=".views.contact.Contact"

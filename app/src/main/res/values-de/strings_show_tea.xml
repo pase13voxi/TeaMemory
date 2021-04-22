@@ -5,7 +5,7 @@
     <string name="show_tea_action_information">Weitere Informationen</string>
     <string name="show_tea_dialog_tea_missing_header">Fehler beim Anzeigen des Tees</string>
     <string name="show_tea_dialog_tea_missing_description">Der ausgewählte Tee kann nicht angezeigt werden. Sollte dieser Fehler noch einmal auftauchen, so ist der Tee invalide und er sollte gelöscht werden.</string>
-    <string name="show_tea_dialog_tea_missing_to_main">Zurück zum Startfenster</string>
+    <string name="show_tea_dialog_tea_missing_to_overview">Zurück zum Startfenster</string>
     <string name="show_tea_dialog_description_header">Benutzung</string>
     <string name="show_tea_dialog_description_description">Es gibt eine Erklärung für dieses Fenster.</string>
     <string name="show_tea_dialog_description_checkbox">Bitte nicht mehr zeigen!</string>

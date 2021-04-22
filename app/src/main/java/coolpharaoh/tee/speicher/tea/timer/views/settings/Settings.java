@@ -185,7 +185,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void readPermissionDialog() {
-        final ViewGroup parent = findViewById(R.id.main_parent);
+        final ViewGroup parent = findViewById(R.id.overview_parent);
 
         final LayoutInflater inflater = getLayoutInflater();
         final View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);

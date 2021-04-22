@@ -1,26 +1,26 @@
 <resources>
-    <string name="main_action_settings">Einstellungen</string>
-    <string name="main_action_about">Über den Tee Speicher</string>
-    <string name="main_action_export">Export/Import Tees</string>
-    <string name="main_action_sort">Sortiermodus</string>
-    <string name="main_action_search">Suche</string>
-    <string name="main_dialog_sort_title">Sortiermodus</string>
-    <string name="main_dialog_sort_negative">Abbrechen</string>
-    <string name="main_tea_list_menu_edit">Bearbeiten</string>
-    <string name="main_tea_list_menu_delete">Löschen</string>
-    <string name="main_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
-    <string name="main_tooltip_newtea">Tee hinzufügen</string>
-    <string name="main_dialog_update_header">Neue Funktionen</string>
-    <string name="main_dialog_update_description">Mit dem Update sind neue Funktionalitäten dazu gekommen.</string>
-    <string name="main_dialog_update_positive">Anzeigen</string>
-    <string name="main_dialog_update_neutral">Später</string>
-    <string name="main_dialog_update_negative">Nein, danke</string>
-    <string name="main_dialog_rating_header">Bewerte die App</string>
-    <string name="main_dialog_rating_description">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
-    <string name="main_dialog_rating_positive">Bewerten</string>
-    <string name="main_dialog_rating_neutral">Später</string>
-    <string name="main_dialog_rating_negative">Nein, danke</string>
-    <string-array name="main_sort_options">
+    <string name="overview_action_settings">Einstellungen</string>
+    <string name="overview_action_about">Über den Tee Speicher</string>
+    <string name="overview_action_export">Export/Import Tees</string>
+    <string name="overview_action_sort">Sortiermodus</string>
+    <string name="overview_action_search">Suche</string>
+    <string name="overview_dialog_sort_title">Sortiermodus</string>
+    <string name="overview_dialog_sort_negative">Abbrechen</string>
+    <string name="overview_tea_list_menu_edit">Bearbeiten</string>
+    <string name="overview_tea_list_menu_delete">Löschen</string>
+    <string name="overview_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
+    <string name="overview_tooltip_newtea">Tee hinzufügen</string>
+    <string name="overview_dialog_update_header">Neue Funktionen</string>
+    <string name="overview_dialog_update_description">Mit dem Update sind neue Funktionalitäten dazu gekommen.</string>
+    <string name="overview_dialog_update_positive">Anzeigen</string>
+    <string name="overview_dialog_update_neutral">Später</string>
+    <string name="overview_dialog_update_negative">Nein, danke</string>
+    <string name="overview_dialog_rating_header">Bewerte die App</string>
+    <string name="overview_dialog_rating_description">Gefällt dir die App? Ich würde mich über eine Bewertung freuen.</string>
+    <string name="overview_dialog_rating_positive">Bewerten</string>
+    <string name="overview_dialog_rating_neutral">Später</string>
+    <string name="overview_dialog_rating_negative">Nein, danke</string>
+    <string-array name="overview_sort_options">
         <item>Letzte Verwendung</item>
         <item>Alphabetisch</item>
         <item>Nach Sorte</item>

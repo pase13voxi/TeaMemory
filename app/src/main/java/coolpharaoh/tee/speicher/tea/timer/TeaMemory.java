@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TeaMemory extends Application {
-    boolean mainDialogsShown = false;
+    boolean overviewDialogsShown = false;
 
     @Override
     public void onCreate() {

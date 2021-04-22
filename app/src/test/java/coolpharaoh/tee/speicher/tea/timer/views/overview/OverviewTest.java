@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.main;
+package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.AlertDialog;
 import android.app.Application;
@@ -65,7 +65,7 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
-public class MainTest {
+public class OverviewTest {
     private static final int SORT_ACTIVITY = 0;
     private static final int SORT_ALPHABETICALLY = 1;
     private static final int SORT_VARIETY = 2;
@@ -100,9 +100,9 @@ public class MainTest {
         mockActualSettings(false, true, 10);
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            checkExpectedTeas(TEA_NAME_ACTIVITY, main);
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
             verify(actualSettingsDao).update(any());
         });
     }
@@ -112,16 +112,16 @@ public class MainTest {
         mockActualSettings(true, false, 20);
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
             final AlertDialog dialogUpdate = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(main, dialogUpdate,
-                    R.string.main_dialog_update_header, R.string.main_dialog_update_description);
+            checkTitleAndMessageOfLatestDialog(overview, dialogUpdate,
+                    R.string.overview_dialog_update_header, R.string.overview_dialog_update_description);
             dialogUpdate.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
             verify(actualSettingsDao).update(any());
 
-            final Intent expected = new Intent(main, UpdateDescription.class);
+            final Intent expected = new Intent(overview, UpdateDescription.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getData()).isEqualTo(expected.getData());
@@ -133,8 +133,8 @@ public class MainTest {
         mockActualSettings(true, false, 20);
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
             getLatestAlertDialog().getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
 
             verify(actualSettingsDao).update(any());
@@ -145,14 +145,14 @@ public class MainTest {
     public void launchActivityExpectRatingDialog() {
         mockActualSettings(false, true, 20);
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
             final AlertDialog dialogRating = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(main, dialogRating,
-                    R.string.main_dialog_rating_header, R.string.main_dialog_rating_description);
+            checkTitleAndMessageOfLatestDialog(overview, dialogRating,
+                    R.string.overview_dialog_rating_header, R.string.overview_dialog_rating_description);
             dialogRating.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            final Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + main.getPackageName()));
+            final Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + overview.getPackageName()));
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getData()).isEqualTo(expected.getData());
@@ -163,11 +163,11 @@ public class MainTest {
     public void launchActivityExpectRatingDialogClickNegative() {
         mockActualSettings(false, true, 20);
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
             final AlertDialog dialogRating = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(main, dialogRating,
-                    R.string.main_dialog_rating_header, R.string.main_dialog_rating_description);
+            checkTitleAndMessageOfLatestDialog(overview, dialogRating,
+                    R.string.overview_dialog_rating_header, R.string.overview_dialog_rating_description);
             dialogRating.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
 
             verify(actualSettingsDao, times(2)).update(any());
@@ -178,11 +178,11 @@ public class MainTest {
     public void navigateToSettingsExpectSettingsActivity() {
         mockActualSettings();
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_settings));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_settings));
 
-            final Intent expected = new Intent(main, Settings.class);
+            final Intent expected = new Intent(overview, Settings.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -193,11 +193,11 @@ public class MainTest {
     public void navigateToExportImportExpectExportImportActivity() {
         mockActualSettings();
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_export_import));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_export_import));
 
-            final Intent expected = new Intent(main, ExportImport.class);
+            final Intent expected = new Intent(overview, ExportImport.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -208,11 +208,11 @@ public class MainTest {
     public void navigateToAboutExpectAboutActivity() {
         mockActualSettings();
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_about));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_about));
 
-            final Intent expected = new Intent(main, About.class);
+            final Intent expected = new Intent(overview, About.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -225,15 +225,15 @@ public class MainTest {
         final String teaName = "SEARCH_";
         when(teaDao.getTeasBySearchString(teaName)).thenReturn(generateTeaList(teaName));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_search));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_search));
 
-            final MenuItemImpl menuItem = ((ActionMenuItemView) main.findViewById(R.id.action_main_search)).getItemData();
+            final MenuItemImpl menuItem = ((ActionMenuItemView) overview.findViewById(R.id.action_overview_search)).getItemData();
             final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
             searchView.setQuery(teaName, false);
 
-            checkExpectedTeas(teaName, main);
+            checkExpectedTeas(teaName, overview);
         });
     }
 
@@ -242,14 +242,14 @@ public class MainTest {
         mockActualSettings(1);
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
 
-            checkExpectedTeas(TEA_NAME_ACTIVITY, main);
+            checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
         });
     }
 
@@ -259,14 +259,14 @@ public class MainTest {
         String teaName = "ALPHABETICALLY_";
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(generateTeaList(teaName));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ALPHABETICALLY);
 
-            checkExpectedTeas(teaName, main);
+            checkExpectedTeas(teaName, overview);
         });
     }
 
@@ -276,14 +276,14 @@ public class MainTest {
         String teaName = "VARIETY_";
         when(teaDao.getTeasOrderByVariety()).thenReturn(generateTeaList(teaName));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_VARIETY);
 
-            checkExpectedTeas(teaName, main);
+            checkExpectedTeas(teaName, overview);
         });
     }
 
@@ -293,14 +293,14 @@ public class MainTest {
         String teaName = "RATING_";
         when(teaDao.getTeasOrderByRating()).thenReturn(generateTeaList(teaName));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            main.onOptionsItemSelected(new RoboMenuItem(R.id.action_main_sort));
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_RATING);
 
-            checkExpectedTeas(teaName, main);
+            checkExpectedTeas(teaName, overview);
         });
     }
 
@@ -308,12 +308,12 @@ public class MainTest {
     public void clickAddTeaExpectNewTeaActivity() {
         mockActualSettings();
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            final FloatingActionButton addTeaButton = main.findViewById(R.id.floating_button_main_new_tea);
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            final FloatingActionButton addTeaButton = overview.findViewById(R.id.floating_button_overview_new_tea);
             addTeaButton.performClick();
 
-            final Intent expected = new Intent(main, NewTea.class);
+            final Intent expected = new Intent(overview, NewTea.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -327,12 +327,12 @@ public class MainTest {
         final String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            final RecyclerView teaListRecyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            final RecyclerView teaListRecyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
             clickAtPositionRecyclerView(teaListRecyclerView, positionTea);
 
-            final Intent expected = new Intent(main, ShowTea.class);
+            final Intent expected = new Intent(overview, ShowTea.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -347,15 +347,15 @@ public class MainTest {
         final String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
-        ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
+        ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
             itemViewRecyclerItem.performLongClick();
 
-            selectItemPopUpMenu(R.id.action_main_tea_list_edit);
+            selectItemPopUpMenu(R.id.action_overview_tea_list_edit);
 
-            final Intent expected = new Intent(main, NewTea.class);
+            final Intent expected = new Intent(overview, NewTea.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -370,13 +370,13 @@ public class MainTest {
         String teaName = "TEA_";
         when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
 
-        final ActivityScenario<Main> mainActivityScenario = ActivityScenario.launch(Main.class);
-        mainActivityScenario.onActivity(main -> {
-            final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
             itemViewRecyclerItem.performLongClick();
 
-            selectItemPopUpMenu(R.id.action_main_tea_list_delete);
+            selectItemPopUpMenu(R.id.action_overview_tea_list_delete);
 
             final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).delete(captor.capture());
@@ -419,8 +419,8 @@ public class MainTest {
         return teaList;
     }
 
-    private void checkExpectedTeas(final String teaName, final Main main) {
-        final RecyclerView recyclerView = main.findViewById(R.id.recycler_view_main_tea_list);
+    private void checkExpectedTeas(final String teaName, final Overview overview) {
+        final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
 
         assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
         for (int i = 0; i < 3; i++) {
@@ -430,12 +430,12 @@ public class MainTest {
         }
     }
 
-    private void checkTitleAndMessageOfLatestDialog(final Main main, final AlertDialog dialog,
+    private void checkTitleAndMessageOfLatestDialog(final Overview overview, final AlertDialog dialog,
                                                     final int title, final int message) {
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
         assertThat(shadowDialog).isNotNull();
-        assertThat(shadowDialog.getTitle()).isEqualTo(main.getString(title));
-        assertThat(shadowDialog.getMessage()).isEqualTo(main.getString(message));
+        assertThat(shadowDialog.getTitle()).isEqualTo(overview.getString(title));
+        assertThat(shadowDialog.getMessage()).isEqualTo(overview.getString(message));
     }
 
     private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {

@@ -46,8 +46,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
-import coolpharaoh.tee.speicher.tea.timer.views.main.Main;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.Overview;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -101,7 +101,7 @@ ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            Intent expected = new Intent(showTea, Main.class);
+            Intent expected = new Intent(showTea, Overview.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
@@ -120,7 +120,7 @@ ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
-            Intent expected = new Intent(showTea, Main.class);
+            Intent expected = new Intent(showTea, Overview.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());

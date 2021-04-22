@@ -2,13 +2,13 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_parent"
+    android:id="@+id/overview_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".views.main.Main">
+    tools:context=".views.overview.Overview">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -21,20 +21,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_main_tea_list"
+        android:id="@+id/recycler_view_overview_tea_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_button_main_new_tea"
+        android:id="@+id/floating_button_overview_new_tea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="@string/main_tooltip_newtea"
+        android:contentDescription="@string/overview_tooltip_newtea"
         android:src="@drawable/add_white"
-        android:tooltipText="@string/main_tooltip_newtea"
+        android:tooltipText="@string/overview_tooltip_newtea"
         tools:targetApi="o" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.main;
+package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.Application;
 import android.content.Context;

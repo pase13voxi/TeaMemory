@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.main;
+package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -34,16 +34,16 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapter.OnClickListener {
-    private MainViewModel mainActivityViewModel;
+public class Overview extends AppCompatActivity implements TeaListRecyclerViewAdapter.OnClickListener {
+    private OverviewViewModel overviewViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_overview);
         defineToolbarAsActionbar();
 
-        mainActivityViewModel = new MainViewModel(getApplication());
+        overviewViewModel = new OverviewViewModel(getApplication());
 
         initializeTeaList();
         initializeNewTeaButton();
@@ -60,24 +60,24 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void dialogSortOption() {
-        final String[] items = getResources().getStringArray(R.array.main_sort_options);
-        int checkedItem = mainActivityViewModel.getSort();
+        final String[] items = getResources().getStringArray(R.array.overview_sort_options);
+        int checkedItem = overviewViewModel.getSort();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setIcon(R.drawable.sort_black);
-        builder.setTitle(R.string.main_dialog_sort_title);
+        builder.setTitle(R.string.overview_dialog_sort_title);
         builder.setSingleChoiceItems(items, checkedItem, this::changeSortOption);
-        builder.setNegativeButton(R.string.main_dialog_sort_negative, null);
+        builder.setNegativeButton(R.string.overview_dialog_sort_negative, null);
         builder.create().show();
     }
 
     private void changeSortOption(DialogInterface dialog, int item) {
-        mainActivityViewModel.setSort(item);
+        overviewViewModel.setSort(item);
         dialog.dismiss();
     }
 
     private void initializeTeaList() {
-        final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_main_tea_list);
+        final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_overview_tea_list);
         recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -85,7 +85,7 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void bindTeaListWithTeaAdapterAndObserve(final RecyclerView teaList) {
-        mainActivityViewModel.getTeas().observe(this, teas -> {
+        overviewViewModel.getTeas().observe(this, teas -> {
             final TeaListRecyclerViewAdapter teaListRecyclerViewAdapter = new TeaListRecyclerViewAdapter(teas, this, getApplication());
             teaList.setAdapter(teaListRecyclerViewAdapter);
         });
@@ -97,22 +97,22 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void navigateToShowTea(final int position) {
-        final Intent showteaScreen = new Intent(Main.this, ShowTea.class);
-        showteaScreen.putExtra("teaId", mainActivityViewModel.getTeaByPosition(position).getId());
+        final Intent showteaScreen = new Intent(Overview.this, ShowTea.class);
+        showteaScreen.putExtra("teaId", overviewViewModel.getTeaByPosition(position).getId());
         startActivity(showteaScreen);
     }
 
     @Override
     public void onRecyclerItemLongClick(final View itemView, final int position) {
         final PopupMenu popup = new PopupMenu(getApplication(), itemView, Gravity.END);
-        popup.inflate(R.menu.menu_main_tea_list);
+        popup.inflate(R.menu.menu_overview_tea_list);
 
         popup.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_main_tea_list_edit) {
-                navigateToNewOrEditTea(mainActivityViewModel.getTeaByPosition(position).getId());
+            if (item.getItemId() == R.id.action_overview_tea_list_edit) {
+                navigateToNewOrEditTea(overviewViewModel.getTeaByPosition(position).getId());
                 return true;
-            } else if (item.getItemId() == R.id.action_main_tea_list_delete) {
-                mainActivityViewModel.deleteTea(position);
+            } else if (item.getItemId() == R.id.action_overview_tea_list_delete) {
+                overviewViewModel.deleteTea(position);
                 return true;
             }
             return false;
@@ -121,12 +121,12 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void initializeNewTeaButton() {
-        final FloatingActionButton newTea = findViewById(R.id.floating_button_main_new_tea);
+        final FloatingActionButton newTea = findViewById(R.id.floating_button_overview_new_tea);
         newTea.setOnClickListener(v -> navigateToNewOrEditTea(null));
     }
 
     private void navigateToNewOrEditTea(final Long teaId) {
-        final Intent newTeaScreen = new Intent(Main.this, NewTea.class);
+        final Intent newTeaScreen = new Intent(Overview.this, NewTea.class);
         if (teaId != null) {
             newTeaScreen.putExtra("teaId", teaId);
         }
@@ -135,8 +135,8 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
 
     private void showDialogsOnStart() {
         final TeaMemory application = (TeaMemory) getApplication();
-        if (application != null && !application.isMainDialogsShown()) {
-            application.setMainDialogsShown(true);
+        if (application != null && !application.isOverviewDialogsShown()) {
+            application.setOverviewDialogsShown(true);
 
             showUpdateDialog();
             showRatingDialogOrIncrementRateCounter();
@@ -144,45 +144,45 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void showUpdateDialog() {
-        if (mainActivityViewModel.isMainUpdateAlert()) {
+        if (overviewViewModel.isMainUpdateAlert()) {
             new AlertDialog.Builder(this, R.style.dialog_theme)
-                    .setTitle(R.string.main_dialog_update_header)
-                    .setMessage(R.string.main_dialog_update_description)
-                    .setPositiveButton(R.string.main_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
-                    .setNeutralButton(R.string.main_dialog_update_neutral, null)
-                    .setNegativeButton(R.string.main_dialog_update_negative, (dialog, which) -> mainActivityViewModel.setMainUpdateAlert(false))
+                    .setTitle(R.string.overview_dialog_update_header)
+                    .setMessage(R.string.overview_dialog_update_description)
+                    .setPositiveButton(R.string.overview_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
+                    .setNeutralButton(R.string.overview_dialog_update_neutral, null)
+                    .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setMainUpdateAlert(false))
                     .show();
         }
     }
 
     private void navigateToUpdateWindow() {
-        mainActivityViewModel.setMainUpdateAlert(false);
-        final Intent intent = new Intent(Main.this, UpdateDescription.class);
+        overviewViewModel.setMainUpdateAlert(false);
+        final Intent intent = new Intent(Overview.this, UpdateDescription.class);
         startActivity(intent);
     }
 
     private void showRatingDialogOrIncrementRateCounter() {
-        if (mainActivityViewModel.isMainRateAlert() && mainActivityViewModel.getMainRatecounter() >= 20) {
+        if (overviewViewModel.isMainRateAlert() && overviewViewModel.getMainRatecounter() >= 20) {
             showRatingDialog();
-        } else if (mainActivityViewModel.getMainRatecounter() < 20) {
-            mainActivityViewModel.incrementMainRatecounter();
+        } else if (overviewViewModel.getMainRatecounter() < 20) {
+            overviewViewModel.incrementMainRatecounter();
         }
     }
 
     private void showRatingDialog() {
-        mainActivityViewModel.resetMainRatecounter();
+        overviewViewModel.resetMainRatecounter();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
-        builder.setTitle(R.string.main_dialog_rating_header);
-        builder.setMessage(R.string.main_dialog_rating_description);
-        builder.setPositiveButton(R.string.main_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
-        builder.setNeutralButton(R.string.main_dialog_rating_neutral, null);
-        builder.setNegativeButton(R.string.main_dialog_rating_negative, (dialogInterface, i) -> mainActivityViewModel.setMainRateAlert(false));
+        builder.setTitle(R.string.overview_dialog_rating_header);
+        builder.setMessage(R.string.overview_dialog_rating_description);
+        builder.setPositiveButton(R.string.overview_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
+        builder.setNeutralButton(R.string.overview_dialog_rating_neutral, null);
+        builder.setNegativeButton(R.string.overview_dialog_rating_negative, (dialogInterface, i) -> overviewViewModel.setMainRateAlert(false));
         builder.show();
     }
 
     private void navigateToStoreForRating() {
-        mainActivityViewModel.setMainRateAlert(false);
+        overviewViewModel.setMainRateAlert(false);
 
         final String appPackageName = getPackageName();
         try {
@@ -195,9 +195,9 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_overview, menu);
 
-        SearchView.configureSearchView(menu, mainActivityViewModel);
+        SearchView.configureSearchView(menu, overviewViewModel);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -206,13 +206,13 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     public boolean onOptionsItemSelected(final MenuItem item) {
         final int id = item.getItemId();
 
-        if (id == R.id.action_main_settings) {
+        if (id == R.id.action_overview_settings) {
             navigateToSettings();
-        } else if (id == R.id.action_main_export_import) {
+        } else if (id == R.id.action_overview_export_import) {
             navigateToExportImport();
-        } else if (id == R.id.action_main_about) {
+        } else if (id == R.id.action_overview_about) {
             navigateToAbout();
-        } else if (id == R.id.action_main_sort) {
+        } else if (id == R.id.action_overview_sort) {
             dialogSortOption();
         }
 
@@ -220,23 +220,23 @@ public class Main extends AppCompatActivity implements TeaListRecyclerViewAdapte
     }
 
     private void navigateToSettings() {
-        final Intent settingScreen = new Intent(Main.this, Settings.class);
+        final Intent settingScreen = new Intent(Overview.this, Settings.class);
         startActivity(settingScreen);
     }
 
     private void navigateToExportImport() {
-        final Intent exportImportScreen = new Intent(Main.this, ExportImport.class);
+        final Intent exportImportScreen = new Intent(Overview.this, ExportImport.class);
         startActivity(exportImportScreen);
     }
 
     private void navigateToAbout() {
-        final Intent aboutScreen = new Intent(Main.this, About.class);
+        final Intent aboutScreen = new Intent(Overview.this, About.class);
         startActivity(aboutScreen);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivityViewModel.refreshTeas();
+        overviewViewModel.refreshTeas();
     }
 }

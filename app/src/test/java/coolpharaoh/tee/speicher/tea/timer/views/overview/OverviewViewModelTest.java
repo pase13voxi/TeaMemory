@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.main;
+package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.Application;
 import android.content.res.Resources;
@@ -31,8 +31,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MainViewModelTest {
-    private MainViewModel mainActivityViewModel;
+public class OverviewViewModelTest {
+    private OverviewViewModel overviewViewModel;
     @Mock
     Application application;
     @Mock
@@ -54,7 +54,7 @@ public class MainViewModelTest {
         mockResources();
         mockSettings();
         mockTeas();
-        mainActivityViewModel = new MainViewModel(application, teaRepository, infusionRepository,
+        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository,
                 actualSettingsRepository);
     }
 
@@ -92,28 +92,28 @@ public class MainViewModelTest {
 
     @Test
     public void getTeas() {
-        List<Tea> teasAfter = mainActivityViewModel.getTeas().getValue();
+        List<Tea> teasAfter = overviewViewModel.getTeas().getValue();
         assertThat(teasAfter).isEqualTo(teas);
     }
 
     @Test
     public void getTeaByPosition() {
         int position = 1;
-        Tea tea = mainActivityViewModel.getTeaByPosition(position);
+        Tea tea = overviewViewModel.getTeaByPosition(position);
         assertThat(tea).isEqualToComparingFieldByField(teas.get(position));
     }
 
     @Test
     public void deleteTea() {
         int position = 1;
-        mainActivityViewModel.deleteTea(position);
+        overviewViewModel.deleteTea(position);
         verify(teaRepository).deleteTea(any(Tea.class));
     }
 
     @Test
     public void showTeasBySearchString() {
         String searchString = "search";
-        mainActivityViewModel.visualizeTeasBySearchString(searchString);
+        overviewViewModel.visualizeTeasBySearchString(searchString);
         verify(teaRepository).getTeasBySearchString(searchString);
     }
 
@@ -122,7 +122,7 @@ public class MainViewModelTest {
         actualSettings.setSort(0);
         String searchString = "";
 
-        mainActivityViewModel.visualizeTeasBySearchString(searchString);
+        overviewViewModel.visualizeTeasBySearchString(searchString);
 
         verify(teaRepository, never()).getTeasBySearchString(any());
         verify(teaRepository, atLeastOnce()).getTeasOrderByActivity();
@@ -130,84 +130,84 @@ public class MainViewModelTest {
 
     @Test
     public void getSort() {
-        int sort = mainActivityViewModel.getSort();
+        int sort = overviewViewModel.getSort();
         assertThat(sort).isEqualTo(actualSettings.getSort());
     }
 
     @Test
     public void setSort() {
         int sort = 2;
-        mainActivityViewModel.setSort(sort);
+        overviewViewModel.setSort(sort);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test
     public void isMainRateAlert() {
-        assertThat(mainActivityViewModel.isMainRateAlert()).isEqualTo(actualSettings.isMainRateAlert());
+        assertThat(overviewViewModel.isMainRateAlert()).isEqualTo(actualSettings.isMainRateAlert());
     }
 
     @Test
     public void setMainRateAlert() {
         boolean alert = false;
-        mainActivityViewModel.setMainRateAlert(alert);
+        overviewViewModel.setMainRateAlert(alert);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test
     public void getMainRatecounter() {
-        int counter = mainActivityViewModel.getMainRatecounter();
+        int counter = overviewViewModel.getMainRatecounter();
         assertThat(counter).isEqualTo(actualSettings.getMainRateCounter());
     }
 
     @Test
     public void resetMainRatecounter() {
-        mainActivityViewModel.resetMainRatecounter();
+        overviewViewModel.resetMainRatecounter();
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test
     public void incrementMainRatecounter() {
-        mainActivityViewModel.incrementMainRatecounter();
+        overviewViewModel.incrementMainRatecounter();
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test
     public void isMainUpdateAlert() {
-        assertThat(mainActivityViewModel.isMainUpdateAlert()).isEqualTo(actualSettings.isMainUpdateAlert());
+        assertThat(overviewViewModel.isMainUpdateAlert()).isEqualTo(actualSettings.isMainUpdateAlert());
     }
 
     @Test
     public void setMainUpdateAlert() {
         boolean alert = true;
-        mainActivityViewModel.setMainUpdateAlert(alert);
+        overviewViewModel.setMainUpdateAlert(alert);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test
     public void refreshTeasWithSort0() {
         actualSettings.setSort(0);
-        mainActivityViewModel.refreshTeas();
+        overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByActivity();
     }
 
     @Test
     public void refreshTeasWithSort1() {
         actualSettings.setSort(1);
-        mainActivityViewModel.refreshTeas();
+        overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByAlphabetic();
     }
 
     @Test
     public void refreshTeasWithSort2() {
         actualSettings.setSort(2);
-        mainActivityViewModel.refreshTeas();
+        overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByVariety();
     }
 
     @Test
     public void refreshTeasWithSort3() {
         actualSettings.setSort(3);
-        mainActivityViewModel.refreshTeas();
+        overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByRating();
     }
 

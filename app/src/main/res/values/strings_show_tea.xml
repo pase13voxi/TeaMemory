@@ -5,7 +5,7 @@
     <string name="show_tea_action_information">Further information</string>
     <string name="show_tea_dialog_tea_missing_header">Error displaying the tea</string>
     <string name="show_tea_dialog_tea_missing_description">The selected tea cannot be displayed. If this error occurs again, the tea is invalid and it should be deleted.</string>
-    <string name="show_tea_dialog_tea_missing_to_main">Back to the start window</string>
+    <string name="show_tea_dialog_tea_missing_to_overview">Back to the start window</string>
     <string name="show_tea_dialog_description_header">How to use.</string>
     <string name="show_tea_dialog_description_description">There is an explanation for this window.</string>
     <string name="show_tea_dialog_description_checkbox">Do not show me again!</string>
