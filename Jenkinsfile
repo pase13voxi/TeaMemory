@@ -41,7 +41,7 @@ pipeline {
                     sonarqube \
                     -Dorg.gradle.java.home=$JAVA_HOME \
                     -Dsonar.projectKey=TeaMemory \
-                    -Dsonar.host.url=http://192.168.0.147:9000 \
+                    -Dsonar.host.url=http://192.168.2.108:9000 \
                     -Dsonar.login=$SONARQUBE_LOGIN \
                     -Dsonar.language=java \
                     -Dsonar.java.binaries=**/javac/debug/classes \
