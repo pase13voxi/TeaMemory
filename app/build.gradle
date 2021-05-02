@@ -35,7 +35,7 @@ android {
         // Return default values for CountDownTimer
         unitTests.returnDefaultValues = true
         unitTests.all {
-            systemProperty 'robolectric.enabledSdks', '27'
+            systemProperty 'robolectric.enabledSdks', 27
         
             jacoco {
                 includeNoLocationClasses = true
