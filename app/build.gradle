@@ -35,8 +35,7 @@ android {
         // Return default values for CountDownTimer
         unitTests.returnDefaultValues = true
         unitTests.all {
-            systemProperty 'robolectric.dependency.repo.url', 'https://local-mirror/repo'
-            systemProperty 'robolectric.dependency.repo.id', 'local'
+            includeAndroidResources = true
         
             jacoco {
                 includeNoLocationClasses = true
