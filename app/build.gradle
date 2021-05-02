@@ -45,8 +45,8 @@ android {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }
 
-            systemProperty 'robolectric.dependency.repo.url', 'https://repo1.maven.org/maven2/org/robolectric/android-all/10-robolectric-5803371/android-all-10-robolectric-5803371.jar'
-            systemProperty 'robolectric.dependency.repo.id', 'local'
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo1.maven.org/maven2'
+            systemProperty 'robolectric.dependency.repo.id', 'central'
 
         }
         //execution 'ANDROIDX_TEST_ORCHESTRATOR' only need if the database needs to be cleaned
