@@ -35,8 +35,6 @@ android {
         // Return default values for CountDownTimer
         unitTests.returnDefaultValues = true
         unitTests.all {
-            includeAndroidResources = true
-        
             jacoco {
                 includeNoLocationClasses = true
             }
