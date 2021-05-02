@@ -32,28 +32,28 @@ public class ImportJson {
 
     private String json;
 
-    public ImportJson(Application application, Printer printer) {
+    public ImportJson(final Application application, final Printer printer) {
         this.application = application;
         this.printer = printer;
     }
 
-    public boolean read(Uri fileUri, boolean keepStoredTeas) {
+    public boolean read(final Uri fileUri, final boolean keepStoredTeas) {
         json = readJsonFile(fileUri);
-        List<TeaPOJO> teaList = createTeaListFromJson();
+        final List<TeaPOJO> teaList = createTeaListFromJson();
         if (teaList.isEmpty()) {
             return false;
         }
-        POJOToDatabase pojoToDatabase = new POJOToDatabase(new DataTransferViewModel(application));
+        final POJOToDatabase pojoToDatabase = new POJOToDatabase(new DataTransferViewModel(application));
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
         printer.print(application.getString(R.string.export_import_teas_imported));
         return true;
     }
 
-    private String readJsonFile(Uri fileUri) {
-        StringBuilder stringBuilder = new StringBuilder();
-        try (InputStream inputStream =
+    private String readJsonFile(final Uri fileUri) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        try (final InputStream inputStream =
                      application.getContentResolver().openInputStream(fileUri);
-             BufferedReader reader = new BufferedReader(
+             final BufferedReader reader = new BufferedReader(
                      new InputStreamReader(Objects.requireNonNull(inputStream)))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -66,14 +66,14 @@ public class ImportJson {
     }
 
     private List<TeaPOJO> createTeaListFromJson() {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 
-        Type listType = new TypeToken<ArrayList<TeaPOJO>>() {
+        final Type listType = new TypeToken<ArrayList<TeaPOJO>>() {
         }.getType();
 
-        try{
+        try {
             return gson.fromJson(json, listType);
-        }catch(JsonSyntaxException e){
+        } catch (final JsonSyntaxException e) {
             printer.print(application.getString(R.string.export_import_import_parse_teas_failed));
             return Collections.emptyList();
         }

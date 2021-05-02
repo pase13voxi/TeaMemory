@@ -14,7 +14,7 @@
     <string name="export_import_saved">tealist.json saved</string>
     <string name="export_import_save_failed">tealist.json save failed</string>
     <string name="export_import_location_dialog_header">Location of the file</string>
-    <string name="export_import_location_dialog_description">The file tealist.json could be found in the internal storage of your smartphone in the folder TeaMemory.</string>
+    <string name="export_import_location_dialog_description">The file tealist.json could be found in the storage of your smartphone under the chosen path.</string>
     <string name="export_import_location_dialog_ok">OK</string>
     <string name="export_import_export_folder_name">/TeaMemory</string>
     <string name="export_import_export_file_name">"tealist.json"</string>

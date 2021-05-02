@@ -31,6 +31,8 @@ import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -49,8 +51,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.Overview;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
-import edu.emory.mathcs.backport.java.util.Arrays;
-import edu.emory.mathcs.backport.java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

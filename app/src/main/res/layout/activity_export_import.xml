@@ -11,139 +11,148 @@
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_info"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tool_bar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:text="@string/export_import_info_top"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_black" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar">
 
-    <TextView
-        android:id="@+id/text_view_export_import_procedure"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_info"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/export_import_procedure"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_black" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/text_view_export_import_1_bullet_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_procedure"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:text="@string/export_import_dots"
-        android:textColor="@color/text_black"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/text_view_export_import_info"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="@string/export_import_info_top"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_black" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_step_1_text"
-        android:layout_width="310dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_procedure"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/text_view_export_import_1_bullet_point"
-        android:text="@string/export_import_step1_text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_black" />
+            <TextView
+                android:id="@+id/text_view_export_import_procedure"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_info"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/export_import_procedure"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_black" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_2_bullet_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_step_1_text"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:text="@string/export_import_dots"
-        android:textColor="@color/text_black"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/text_view_export_import_1_bullet_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_procedure"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:text="@string/export_import_dots"
+                android:textColor="@color/text_black"
+                android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_step_2_text"
-        android:layout_width="310dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_step_1_text"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/text_view_export_import_2_bullet_point"
-        android:text="@string/export_import_step2_text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_black" />
+            <TextView
+                android:id="@+id/text_view_export_import_step_1_text"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_procedure"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/text_view_export_import_1_bullet_point"
+                android:text="@string/export_import_step1_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_black" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_3_bullet_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_step_2_text"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:text="@string/export_import_dots"
-        android:textColor="@color/text_black"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/text_view_export_import_2_bullet_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_step_1_text"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:text="@string/export_import_dots"
+                android:textColor="@color/text_black"
+                android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_step_3_text"
-        android:layout_width="310dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_export_import_step_2_text"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/text_view_export_import_3_bullet_point"
-        android:text="@string/export_import_step3_text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_black" />
+            <TextView
+                android:id="@+id/text_view_export_import_step_2_text"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_step_1_text"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/text_view_export_import_2_bullet_point"
+                android:text="@string/export_import_step2_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_black" />
 
-    <Button
-        android:id="@+id/button_export_import_export"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_export_import_step_3_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/button_round_dark"
-        android:text="@string/export_import_export"
-        android:textAllCaps="false"
-        android:textColor="@color/text_white"
-        android:textSize="17sp" />
+            <TextView
+                android:id="@+id/text_view_export_import_3_bullet_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_step_2_text"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:text="@string/export_import_dots"
+                android:textColor="@color/text_black"
+                android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/button_export_import_import"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button_export_import_export"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/button_round_dark"
-        android:text="@string/export_import_import"
-        android:textAllCaps="false"
-        android:textColor="@color/text_white"
-        android:textSize="17sp" />
+            <TextView
+                android:id="@+id/text_view_export_import_step_3_text"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_export_import_step_2_text"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/text_view_export_import_3_bullet_point"
+                android:text="@string/export_import_step3_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_black" />
 
-    <TextView
-        android:id="@+id/text_view_export_import_warning"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_export_import_import"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:gravity="center_horizontal"
-        android:text="@string/export_import_warning"
-        android:textColor="@color/text_red"
-        android:visibility="invisible" />
+            <Button
+                android:id="@+id/button_export_import_export"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_export_import_step_3_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/button_round_dark"
+                android:text="@string/export_import_export"
+                android:textAllCaps="false"
+                android:textColor="@color/text_white"
+                android:textSize="17sp" />
 
+            <Button
+                android:id="@+id/button_export_import_import"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/button_export_import_export"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button_round_dark"
+                android:text="@string/export_import_import"
+                android:textAllCaps="false"
+                android:textColor="@color/text_white"
+                android:textSize="17sp" />
 
+            <TextView
+                android:id="@+id/text_view_export_import_warning"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_export_import_import"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:gravity="center_horizontal"
+                android:text="@string/export_import_warning"
+                android:textColor="@color/text_red"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
