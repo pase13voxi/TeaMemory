@@ -20,8 +20,8 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -31,8 +31,10 @@ import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialo
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
+@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -59,7 +61,7 @@ public class AmountPickerDialogTest {
         dialogFragment.show(fragmentManager, TAG);
 
         final AlertDialog dialog = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
+        final ShadowAlertDialog shadowDialog = shadowOf(dialog);
         assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_amount_header));
     }
 
@@ -104,7 +106,7 @@ public class AmountPickerDialogTest {
 
         final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         amountKindPicker.setValue(1);
-        Shadows.shadowOf(amountKindPicker).getOnValueChangeListener().onValueChange(amountKindPicker, 0, 1);
+        shadowOf(amountKindPicker).getOnValueChangeListener().onValueChange(amountKindPicker, 0, 1);
 
         final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
         assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.VISIBLE);

@@ -25,7 +25,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowPopupMenu;
@@ -45,12 +44,14 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
+import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
@@ -195,6 +196,8 @@ public class InformationTest {
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
+            shadowOf(getMainLooper()).idle();
+
             final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
             verify(noteDao).insert(captor.capture());
             final Note note = captor.getValue();
@@ -273,6 +276,8 @@ public class InformationTest {
                     details.get(position).getDescription(), DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+            shadowOf(getMainLooper()).idle();
 
             final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
             verify(noteDao).update(captor.capture());
@@ -361,7 +366,7 @@ public class InformationTest {
 
     private AlertDialog getAndCheckAlertDialog(final Information information, final int dialogHeading) {
         final AlertDialog dialogAddDetail = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialogAddDetail = Shadows.shadowOf(dialogAddDetail);
+        final ShadowAlertDialog shadowDialogAddDetail = shadowOf(dialogAddDetail);
         assertThat(shadowDialogAddDetail).isNotNull();
         assertThat(shadowDialogAddDetail.getTitle()).isEqualTo(information.getString(dialogHeading));
         return dialogAddDetail;

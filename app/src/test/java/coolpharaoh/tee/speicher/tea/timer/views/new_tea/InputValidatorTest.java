@@ -15,10 +15,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
 
-    public static final String CELSIUS = "Celsius";
-    public static final String FAHRENHEIT = "Fahrenheit";
-    public static final String COOL_DOWN_TIME = "02:00";
-    public static final String TIME = "05:00";
     @Mock
     private Application application;
 

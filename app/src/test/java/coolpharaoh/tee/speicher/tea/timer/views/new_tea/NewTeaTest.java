@@ -27,6 +27,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
 import org.robolectric.fakes.RoboMenuItem;
 
 import java.time.Clock;
@@ -54,7 +55,7 @@ import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
-
+@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
