@@ -30,7 +30,6 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowPopupMenu;
@@ -53,6 +52,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
+import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -62,7 +62,6 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -152,6 +151,7 @@ public class OverviewTest {
             checkTitleAndMessageOfLatestDialog(overview, dialogRating,
                     R.string.overview_dialog_rating_header, R.string.overview_dialog_rating_description);
             dialogRating.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             final Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + overview.getPackageName()));
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -170,6 +170,7 @@ public class OverviewTest {
             checkTitleAndMessageOfLatestDialog(overview, dialogRating,
                     R.string.overview_dialog_rating_header, R.string.overview_dialog_rating_description);
             dialogRating.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao, times(2)).update(any());
         });
@@ -233,6 +234,7 @@ public class OverviewTest {
             final MenuItemImpl menuItem = ((ActionMenuItemView) overview.findViewById(R.id.action_overview_search)).getItemData();
             final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
             searchView.setQuery(teaName, false);
+            shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
         });
@@ -249,6 +251,7 @@ public class OverviewTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
+            shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
         });
@@ -266,6 +269,7 @@ public class OverviewTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_ALPHABETICALLY);
+            shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
         });
@@ -283,6 +287,7 @@ public class OverviewTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_VARIETY);
+            shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
         });
@@ -300,6 +305,7 @@ public class OverviewTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SORT_RATING);
+            shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
         });

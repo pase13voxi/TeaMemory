@@ -22,19 +22,19 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
+import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.TimePickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -59,6 +59,7 @@ public class TimePickerDialogTest {
     @Test
     public void showDialogAndExpectTitle() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
@@ -68,7 +69,9 @@ public class TimePickerDialogTest {
     @Test
     public void showDialogAndExpectTwoSuggestions() {
         when(suggestions.getTimeSuggestions()).thenReturn(new String[]{"2:00", "3:00"});
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -89,7 +92,9 @@ public class TimePickerDialogTest {
     @Test
     public void clickSuggestionAndExpectShownSuggestion() {
         when(suggestions.getTimeSuggestions()).thenReturn(new String[]{"2:30", "3:00"});
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -106,7 +111,9 @@ public class TimePickerDialogTest {
     @Test
     public void showDialogAndExpectNoSuggestions() {
         when(suggestions.getTimeSuggestions()).thenReturn(new String[]{});
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
@@ -116,6 +123,7 @@ public class TimePickerDialogTest {
     @Test
     public void acceptInputAndExpectSavedTime() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -126,12 +134,15 @@ public class TimePickerDialogTest {
         numberPickerTimeSeconds.setValue(45);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
+
         verify(newTeaViewModel).setInfusionTime("05:45");
     }
 
     @Test
     public void inputZeroTimeAndExpectSavedNull() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -142,6 +153,8 @@ public class TimePickerDialogTest {
         numberPickerTimeSeconds.setValue(0);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
+
         verify(newTeaViewModel).setInfusionTime(null);
     }
 
@@ -150,6 +163,7 @@ public class TimePickerDialogTest {
         when(newTeaViewModel.getInfusionTime()).thenReturn("05:15");
 
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 

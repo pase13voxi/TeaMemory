@@ -195,7 +195,6 @@ public class InformationTest {
                     "", DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-
             shadowOf(getMainLooper()).idle();
 
             final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
@@ -276,7 +275,6 @@ public class InformationTest {
                     details.get(position).getDescription(), DESCRIPTION);
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-
             shadowOf(getMainLooper()).idle();
 
             final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);

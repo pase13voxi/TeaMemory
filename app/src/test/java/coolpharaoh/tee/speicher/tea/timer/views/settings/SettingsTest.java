@@ -28,7 +28,6 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import java.util.List;
@@ -40,6 +39,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
+import static android.os.Looper.getMainLooper;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
@@ -53,7 +53,6 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -115,32 +114,32 @@ public class SettingsTest {
         settingsActivityScenario.onActivity(settings -> {
             final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
 
-            settingsRecyclerView.scrollToPosition(ALARM);
+            scrollToPosition(settingsRecyclerView, ALARM);
             checkHeadingAtPosition(settingsRecyclerView, ALARM, settings.getString(R.string.settings_alarm));
             checkDescriptionAtPosition(settingsRecyclerView, ALARM, actualSettings.getMusicName());
 
-            settingsRecyclerView.scrollToPosition(VIBRATION);
+            scrollToPosition(settingsRecyclerView, VIBRATION);
             checkHeadingAtPosition(settingsRecyclerView, VIBRATION, settings.getString(R.string.settings_vibration));
             checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, actualSettings.isVibration() ? ON : OFF);
 
-            settingsRecyclerView.scrollToPosition(ANIMATION);
+            scrollToPosition(settingsRecyclerView, ANIMATION);
             checkHeadingAtPosition(settingsRecyclerView, ANIMATION, settings.getString(R.string.settings_animation));
             checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, actualSettings.isAnimation() ? ON : OFF);
 
-            settingsRecyclerView.scrollToPosition(TEMPERATURE_UNIT);
+            scrollToPosition(settingsRecyclerView, TEMPERATURE_UNIT);
             checkHeadingAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, settings.getString(R.string.settings_temperature_unit));
             checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, actualSettings.getTemperatureUnit());
 
-            settingsRecyclerView.scrollToPosition(DARK_MODE);
+            scrollToPosition(settingsRecyclerView, DARK_MODE);
             final String[] darkModes = settings.getResources().getStringArray(R.array.settings_dark_mode);
             checkHeadingAtPosition(settingsRecyclerView, DARK_MODE, settings.getString(R.string.settings_dark_mode));
             checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, darkModes[SYSTEM.getChoice()]);
 
-            settingsRecyclerView.scrollToPosition(HINTS);
+            scrollToPosition(settingsRecyclerView, HINTS);
             checkHeadingAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints));
             checkDescriptionAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints_description));
 
-            settingsRecyclerView.scrollToPosition(FACTORY_SETTINGS);
+            scrollToPosition(settingsRecyclerView, FACTORY_SETTINGS);
             checkHeadingAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings));
             checkDescriptionAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings_description));
         });
@@ -170,6 +169,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_OFF);
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -189,6 +189,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_ON);
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -208,6 +209,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_OFF);
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -227,6 +229,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OPTION_ON);
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -246,6 +249,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_CELSIUS);
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -265,6 +269,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_FAHRENHEIT);
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -306,6 +311,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
+            shadowOf(getMainLooper()).idle();
 
             final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
             assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
@@ -327,6 +333,7 @@ public class SettingsTest {
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(DISABLED.getChoice());
+            shadowOf(getMainLooper()).idle();
 
             final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
             assertThat(sharedSettings.getDarkMode()).isEqualTo(DISABLED);
@@ -365,6 +372,7 @@ public class SettingsTest {
 
             final Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             accept.performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao, times(4)).update(captor.capture());
             final List<ActualSettings> updatedSettings = captor.getAllValues();
@@ -387,6 +395,7 @@ public class SettingsTest {
             final AlertDialog alertDialog = getLatestAlertDialog();
 
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
@@ -397,9 +406,14 @@ public class SettingsTest {
     }
 
     private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {
-        recyclerView.scrollToPosition(position);
+        scrollToPosition(recyclerView, position);
         final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
         itemView.performClick();
+    }
+
+    private void scrollToPosition(RecyclerView settingsRecyclerView, int alarm) {
+        settingsRecyclerView.scrollToPosition(alarm);
+        shadowOf(getMainLooper()).idle();
     }
 
     private void checkHeadingAtPosition(final RecyclerView recyclerView, final int position, final String heading) {
