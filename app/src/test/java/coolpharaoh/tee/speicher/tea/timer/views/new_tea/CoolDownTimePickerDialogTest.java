@@ -23,18 +23,18 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
+import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.CoolDownTimePickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -60,6 +60,7 @@ public class CoolDownTimePickerDialogTest {
     @Test
     public void showDialog() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
@@ -72,6 +73,7 @@ public class CoolDownTimePickerDialogTest {
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(CELSIUS);
 
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
@@ -87,6 +89,7 @@ public class CoolDownTimePickerDialogTest {
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
 
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
@@ -100,7 +103,9 @@ public class CoolDownTimePickerDialogTest {
     public void showDialogAndExpectCalculatedCoolDownTime() {
         when(newTeaViewModel.getInfusionTemperature()).thenReturn(90);
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(CELSIUS);
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -123,7 +128,9 @@ public class CoolDownTimePickerDialogTest {
     public void clickCalculatedCoolDownTimeAndExpectShownCalculatedCoolDownTime() {
         when(newTeaViewModel.getInfusionTemperature()).thenReturn(95);
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(CELSIUS);
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -140,6 +147,7 @@ public class CoolDownTimePickerDialogTest {
     @Test
     public void acceptInputAndExpectSavedCoolDownTime() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -150,12 +158,15 @@ public class CoolDownTimePickerDialogTest {
         numberPickerTimeSeconds.setValue(45);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
+
         verify(newTeaViewModel).setInfusionCoolDownTime("05:45");
     }
 
     @Test
     public void inputZeroTimeAndExpectSavedNull() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -166,6 +177,8 @@ public class CoolDownTimePickerDialogTest {
         numberPickerTimeSeconds.setValue(0);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
+
         verify(newTeaViewModel).setInfusionCoolDownTime(null);
     }
 
@@ -174,6 +187,7 @@ public class CoolDownTimePickerDialogTest {
         when(newTeaViewModel.getInfusionCoolDownTime()).thenReturn("05:15");
 
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 

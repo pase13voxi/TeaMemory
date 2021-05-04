@@ -23,19 +23,19 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
+import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.TemperaturePickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -62,6 +62,7 @@ public class TemperaturePickerDialogTest {
     @Test
     public void showDialogAndExpectTitle() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
@@ -71,6 +72,7 @@ public class TemperaturePickerDialogTest {
     @Test
     public void showDialogAndExpectCelsiusUnit() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final TextView textViewUnit = dialog.findViewById(R.id.text_view_new_tea_temperature_picker_unit);
@@ -81,7 +83,9 @@ public class TemperaturePickerDialogTest {
     @Test
     public void showDialogAndExpectFahrenheitUnit() {
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final TextView textViewUnit = dialog.findViewById(R.id.text_view_new_tea_temperature_picker_unit);
@@ -92,7 +96,9 @@ public class TemperaturePickerDialogTest {
     @Test
     public void showDialogAndExpectTwoCelsiusSuggestions() {
         when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{100, 90});
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -114,7 +120,9 @@ public class TemperaturePickerDialogTest {
     public void showDialogAndExpectTwoFahrenheitSuggestions() {
         when(suggestions.getTemperatureFahrenheitSuggestions()).thenReturn(new int[]{212, 194});
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -135,7 +143,9 @@ public class TemperaturePickerDialogTest {
     @Test
     public void showDialogAndExpectNoSuggestions() {
         when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
@@ -145,7 +155,9 @@ public class TemperaturePickerDialogTest {
     @Test
     public void showDialogAndClickSuggestions() {
         when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{100, 90, 80});
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -159,6 +171,7 @@ public class TemperaturePickerDialogTest {
     @Test
     public void acceptInputAndExpectSavedTemperature() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -166,6 +179,8 @@ public class TemperaturePickerDialogTest {
         numberPickerTemperature.setValue(80);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
+
         verify(newTeaViewModel).setInfusionTemperature(80);
     }
 
@@ -174,6 +189,7 @@ public class TemperaturePickerDialogTest {
         when(newTeaViewModel.getInfusionTemperature()).thenReturn(85);
 
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 

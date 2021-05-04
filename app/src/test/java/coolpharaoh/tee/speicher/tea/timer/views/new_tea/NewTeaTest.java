@@ -27,7 +27,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.fakes.RoboMenuItem;
 
 import java.time.Clock;
@@ -48,6 +47,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
+import static android.os.Looper.getMainLooper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +55,6 @@ import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -169,6 +168,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextVariety = newTea.findViewById(R.id.edit_text_new_tea_variety);
             editTextVariety.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -177,6 +177,7 @@ public class NewTeaTest {
             radioButtons.get(3).performClick();
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             final String[] varieties = newTea.getResources().getStringArray(R.array.new_tea_variety_teas);
             assertThat(editTextVariety.getText()).hasToString(varieties[3]);
@@ -190,6 +191,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
             editTextAmount.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -200,6 +202,7 @@ public class NewTeaTest {
             amountKindPicker.setValue(0);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_ts, 7));
         });
@@ -212,6 +215,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
             editTextTemperature.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -219,6 +223,7 @@ public class NewTeaTest {
             numberPickerTemperature.setValue(80);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_celsius, 80));
         });
@@ -231,6 +236,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
             editTextTemperature.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -252,6 +258,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
             editTextTemperature.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -273,6 +280,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
             editTextCoolDownTime.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -283,6 +291,8 @@ public class NewTeaTest {
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
             assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_text, "05:45"));
         });
     }
@@ -294,6 +304,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTime = newTea.findViewById(R.id.edit_text_new_tea_time);
             editTextTime.performClick();
+            shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
 
@@ -304,6 +315,7 @@ public class NewTeaTest {
             numberPickerTimeSeconds.setValue(45);
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_text, "05:45"));
         });

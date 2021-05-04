@@ -27,7 +27,6 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowAlertDialog;
 
@@ -53,6 +52,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.Overview;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
 
+import static android.os.Looper.getMainLooper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -62,7 +62,6 @@ import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -102,6 +101,7 @@ ShowTeaTest {
             AlertDialog dialogFail = getLatestAlertDialog();
             checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             Intent expected = new Intent(showTea, Overview.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -121,6 +121,7 @@ ShowTeaTest {
             AlertDialog dialogFail = getLatestAlertDialog();
             checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
             dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             Intent expected = new Intent(showTea, Overview.class);
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -148,6 +149,7 @@ ShowTeaTest {
             checkBox.setChecked(true);
 
             dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(any(ActualSettings.class));
 
@@ -175,6 +177,7 @@ ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3));
 
             dialogNextInfusion.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
             TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
@@ -205,6 +208,7 @@ ShowTeaTest {
             checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3));
 
             dialogNextInfusion.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(teaCaptor.capture());
@@ -589,11 +593,13 @@ ShowTeaTest {
             ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
 
             startButton.performClick();
+            shadowOf(getMainLooper()).idle();
 
             Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
             broadcastIntent.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
             broadcastIntent.putExtra(BROADCAST_EXTRA_READY, false);
             showTea.sendBroadcast(broadcastIntent);
+            shadowOf(getMainLooper()).idle();
 
             assertThat(textViewTimer.getText()).hasToString("00 : 30");
             int imageId = showTea.getResources().getIdentifier("cup_fill50pr", "drawable", showTea.getPackageName());
@@ -620,10 +626,12 @@ ShowTeaTest {
             ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
 
             startButton.performClick();
+            shadowOf(getMainLooper()).idle();
 
             Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
             broadcastIntent.putExtra(BROADCAST_EXTRA_READY, true);
             showTea.sendBroadcast(broadcastIntent);
+            shadowOf(getMainLooper()).idle();
 
             assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.show_tea_tea_ready));
             assertThat(imageViewSteam.getVisibility()).isEqualTo(View.VISIBLE);

@@ -22,7 +22,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import java.util.ArrayList;
@@ -30,13 +29,14 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
+import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
-@LooperMode(LooperMode.Mode.LEGACY)
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -64,6 +64,7 @@ public class VarietyPickerDialogTest {
     @Test
     public void showDialogAndExpectTitle() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
@@ -73,6 +74,7 @@ public class VarietyPickerDialogTest {
     @Test
     public void selectYellowTeaAndExpectSavedYellowTea() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
@@ -80,6 +82,7 @@ public class VarietyPickerDialogTest {
         radioButtons.get(INDEX_WHITE_TEA).performClick();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
 
         verify(newTeaViewModel).setVariety(WHITE_TEA);
     }
@@ -87,6 +90,7 @@ public class VarietyPickerDialogTest {
     @Test
     public void selectYellowTeaAndExpectSavedColorForYellowTea() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
@@ -94,6 +98,7 @@ public class VarietyPickerDialogTest {
         radioButtons.get(INDEX_WHITE_TEA).performClick();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
 
         verify(newTeaViewModel).setColor(-1642);
     }
@@ -101,7 +106,9 @@ public class VarietyPickerDialogTest {
     @Test
     public void showAndHideCustomVarityInputField() {
         when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
+
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
@@ -118,6 +125,7 @@ public class VarietyPickerDialogTest {
     @Test
     public void inputCustomVarietyAndExpectSavedCustomVariety() {
         dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
@@ -128,6 +136,7 @@ public class VarietyPickerDialogTest {
         editTextCustomVariety.setText(CUSTOM_VARIETY);
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
 
         verify(newTeaViewModel).setVariety(CUSTOM_VARIETY);
     }
@@ -137,6 +146,7 @@ public class VarietyPickerDialogTest {
         when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
 
         dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 
@@ -149,6 +159,7 @@ public class VarietyPickerDialogTest {
         when(newTeaViewModel.getVariety()).thenReturn(CUSTOM_VARIETY);
 
         dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
+        shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
 

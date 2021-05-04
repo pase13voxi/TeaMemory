@@ -118,6 +118,7 @@ public class OverviewTest {
             checkTitleAndMessageOfLatestDialog(overview, dialogUpdate,
                     R.string.overview_dialog_update_header, R.string.overview_dialog_update_description);
             dialogUpdate.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(any());
 
@@ -136,6 +137,7 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             getLatestAlertDialog().getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(any());
         });
