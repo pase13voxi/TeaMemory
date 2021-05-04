@@ -14,7 +14,6 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,8 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
@@ -72,50 +69,28 @@ public class ExportImportTest {
         CurrentSdk.setFixedSystem(systemUtility);
     }
 
-    @Ignore("Not working")
     @Test
-    public void exportTeasAndExpectPermissionRequest(){
-        when(permissions.checkWritePermission(any())).thenReturn(false);
-        when(permissions.checkWritePermissionDeniedBefore(any())).thenReturn(false);
-
+    public void exportTeasAndExpectIntentActionOpenDocumentTree() {
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
             Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
 
-            verify(permissions).getWritePermission(any());
+            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            assertThat(actual.getAction()).isEqualTo(Intent.ACTION_OPEN_DOCUMENT_TREE);
         });
     }
 
-    @Ignore("Not working")
-    @Test
-    public void exportTeasAndExpectDialogBeforePermissionRequest(){
-        when(permissions.checkWritePermission(any())).thenReturn(false);
-        when(permissions.checkWritePermissionDeniedBefore(any())).thenReturn(true);
-
-        ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
-        exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
-            buttonExport.performClick();
-
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_write_permission_dialog_header));
-            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_write_permission_dialog_description));
-
-            verify(permissions, never()).getWritePermission(any());
-        });
-    }
-
-    @Ignore("Not working")
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
-        when(permissions.checkWritePermission(any())).thenReturn(true);
-        when(exportJson.write(any())).thenReturn(true); //TODO
+        when(exportJson.write(any())).thenReturn(true);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
             Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
+
+            mockReturnActionActivityResult(exportImport, Intent.ACTION_OPEN_DOCUMENT_TREE);
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_location_dialog_header));
@@ -123,16 +98,16 @@ public class ExportImportTest {
         });
     }
 
-    @Ignore("Not working")
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
-        when(permissions.checkWritePermission(any())).thenReturn(true);
-        when(exportJson.write(any())).thenReturn(false); //TODO
+        when(exportJson.write(any())).thenReturn(false);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
             Button buttonExport = exportImport.findViewById(R.id.button_export_import_export);
             buttonExport.performClick();
+
+            mockReturnActionActivityResult(exportImport, Intent.ACTION_OPEN_DOCUMENT_TREE);
 
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_export_failed_dialog_header));
@@ -140,45 +115,8 @@ public class ExportImportTest {
         });
     }
 
-    @Ignore("Not working")
     @Test
-    public void importTeasAndExpectPermissionRequest(){
-        when(permissions.checkReadPermission(any())).thenReturn(false);
-        when(permissions.checkReadPermissionDeniedBefore(any())).thenReturn(false);
-
-        ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
-        exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
-            buttonImport.performClick();
-
-            verify(permissions).getReadPermission(any());
-        });
-    }
-
-    @Ignore("Not working")
-    @Test
-    public void importTeasAndExpectDialogBeforePermissionRequest(){
-        when(permissions.checkReadPermission(any())).thenReturn(false);
-        when(permissions.checkReadPermissionDeniedBefore(any())).thenReturn(true);
-
-        ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
-        exportImportActivityScenario.onActivity(exportImport -> {
-            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
-            buttonImport.performClick();
-
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_read_permission_dialog_header));
-            assertThat(shadowAlertDialog.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_read_permission_dialog_description));
-
-            verify(permissions, never()).getReadPermission(any());
-        });
-    }
-
-    @Test
-    public void importTeasDeleteExistingAndExpectDialogImportComplete(){
-        when(permissions.checkReadPermission(any())).thenReturn(true);
-        when(importJson.read(any(), eq(false))).thenReturn(true);
-
+    public void importTeasExpectImportDialog() {
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
             Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
@@ -187,13 +125,25 @@ public class ExportImportTest {
             AlertDialog alertDialog = getLatestAlertDialog();
             ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(alertDialog);
             assertThat(shadowAlertDialog.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
+        });
+    }
 
+    @Test
+    public void importTeasDeleteExistingAndExpectDialogImportComplete(){
+        when(importJson.read(any(), eq(false))).thenReturn(true);
+
+        ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
+        exportImportActivityScenario.onActivity(exportImport -> {
+            Button buttonImport = exportImport.findViewById(R.id.button_export_import_import);
+            buttonImport.performClick();
+
+            AlertDialog alertDialog = getLatestAlertDialog();
             alertDialog.findViewById(R.id.button_export_import_import_delete).performClick();
 
             Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
             assertThat(actual.getAction()).isEqualTo(Intent.ACTION_CHOOSER);
 
-            mockReturnActivityResult(exportImport);
+            mockReturnActionActivityResult(exportImport, Intent.ACTION_CHOOSER);
 
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_complete_dialog_header));
@@ -203,9 +153,7 @@ public class ExportImportTest {
 
     @Test
     public void importTeasKeepExistingAndExpectDialogImportComplete(){
-        when(permissions.checkReadPermission(any())).thenReturn(true);
         when(importJson.read(any(), eq(true))).thenReturn(true);
-
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -213,15 +161,12 @@ public class ExportImportTest {
             buttonImport.performClick();
 
             AlertDialog alertDialogImport = getLatestAlertDialog();
-            ShadowAlertDialog shadowAlertDialogChooseImport = Shadows.shadowOf(alertDialogImport);
-            assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
-
             alertDialogImport.findViewById(R.id.button_export_import_import_keep).performClick();
 
             Intent intentChooser = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
             assertThat(intentChooser.getAction()).isEqualTo(Intent.ACTION_CHOOSER);
 
-            mockReturnActivityResult(exportImport);
+            mockReturnActionActivityResult(exportImport, Intent.ACTION_CHOOSER);
 
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_complete_dialog_header));
@@ -231,9 +176,7 @@ public class ExportImportTest {
 
     @Test
     public void importTeasAndExpectDialogImportFailed(){
-        when(permissions.checkReadPermission(any())).thenReturn(true);
         when(importJson.read(any(), anyBoolean())).thenReturn(false);
-
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -241,15 +184,12 @@ public class ExportImportTest {
             buttonImport.performClick();
 
             AlertDialog alertDialogImport = getLatestAlertDialog();
-            ShadowAlertDialog shadowAlertDialogChooseImport = Shadows.shadowOf(alertDialogImport);
-            assertThat(shadowAlertDialogChooseImport.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header));
-
             alertDialogImport.findViewById(R.id.button_export_import_import_keep).performClick();
 
             Intent intentChooser = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
             assertThat(intentChooser.getAction()).isEqualTo(Intent.ACTION_CHOOSER);
 
-            mockReturnActivityResult(exportImport);
+            mockReturnActionActivityResult(exportImport, Intent.ACTION_CHOOSER);
 
             ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_header));
@@ -268,10 +208,10 @@ public class ExportImportTest {
         });
     }
 
-    private void mockReturnActivityResult(ExportImport exportImport) {
+    private void mockReturnActionActivityResult(ExportImport exportImport, String intent) {
         Intent intentResult = new Intent();
         intentResult.setData(Uri.EMPTY);
         ShadowActivity shadowActivity = Shadows.shadowOf(exportImport);
-        shadowActivity.receiveResult(new Intent(Intent.ACTION_CHOOSER), Activity.RESULT_OK, intentResult);
+        shadowActivity.receiveResult(new Intent(intent), Activity.RESULT_OK, intentResult);
     }
 }
