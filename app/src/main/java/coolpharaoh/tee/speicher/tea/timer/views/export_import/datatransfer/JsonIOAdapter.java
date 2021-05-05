@@ -9,19 +9,20 @@ import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 
 public class JsonIOAdapter {
 
-    private JsonIOAdapter(){}
+    private JsonIOAdapter() {
+    }
 
     private static ExportJson exportJson;
     private static ImportJson importJson;
 
-    public static void init(Application application, Printer printer){
-        initExport(application, printer);
+    public static void init(final Application application, final Printer printer) {
+        initExport(application);
         initImport(application, printer);
     }
 
-    private static void initExport(Application application, Printer printer) {
-        if(exportJson == null) {
-            exportJson = new ExportJson(application, printer);
+    private static void initExport(final Application application) {
+        if (exportJson == null) {
+            exportJson = new ExportJson(application);
         }
     }
 
@@ -31,8 +32,8 @@ public class JsonIOAdapter {
         }
     }
 
-    public static boolean write(final Uri folderPath) {
-        return exportJson.write(folderPath);
+    public static boolean write(final Exporter exporter) {
+        return exportJson.write(exporter);
     }
 
     public static boolean read(Uri fileUri, boolean keepStoredTeas) {

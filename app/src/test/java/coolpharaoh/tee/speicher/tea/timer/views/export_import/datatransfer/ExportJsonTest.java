@@ -2,14 +2,11 @@ package coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer;
 
 import android.app.Application;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +15,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowEnvironment;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
@@ -43,7 +36,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 //could be removed when Robolectric supports Java 8 for API 29
@@ -83,6 +76,8 @@ public class ExportJsonTest {
     CounterDao counterDao;
     @Mock
     DateUtility fixedDate;
+    @Mock
+    Exporter exporter;
 
     @Before
     public void setUp() {
@@ -156,25 +151,12 @@ public class ExportJsonTest {
         when(counterDao.getCounters()).thenReturn(counters);
     }
 
-    @Ignore("Not working")
     @Test
-    public void exportTeas() throws IOException {
-        ShadowEnvironment.setExternalStorageState(Environment.MEDIA_MOUNTED);
-        final File folder = ShadowEnvironment.addExternalDir("/Test");
-
+    public void exportTeas() {
         final Context context = ApplicationProvider.getApplicationContext();
-        final ExportJson exportJson = new ExportJson((Application) context, System.out::println);
+        final ExportJson exportJson = new ExportJson((Application) context);
+        exportJson.write(exporter);
 
-
-        Uri path = Uri.parse(folder.getAbsolutePath());
-
-        exportJson.write(path);
-
-        File[] listOfFiles = folder.listFiles();
-        assertThat(listOfFiles).hasSize(1);
-        assertThat(listOfFiles[0]).hasName("tealist.json");
-
-        String content = new String(Files.readAllBytes(listOfFiles[0].toPath()));
-        assertThat(content).isEqualTo(DB_JSON_DUMP.replace("DATE", exportedDate));
+        verify(exporter).write(DB_JSON_DUMP.replace("DATE", exportedDate));
     }
 }

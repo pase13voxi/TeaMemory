@@ -22,6 +22,7 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.ExportJson;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.FileWriter;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.ImportJson;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.JsonIOAdapter;
 
@@ -111,7 +112,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void exportFile(final Uri folderPath) {
         JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.write(folderPath)) {
+        if (JsonIOAdapter.write(new FileWriter(getApplication(), this, folderPath))) {
             dialogExportLocation();
         } else {
             dialogExportFailed();
