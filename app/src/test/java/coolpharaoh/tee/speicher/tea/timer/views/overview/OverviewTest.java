@@ -98,7 +98,8 @@ public class OverviewTest {
     @Test
     public void launchActivityExpectTeaList() {
         mockActualSettings(false, true, 10);
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -110,7 +111,8 @@ public class OverviewTest {
     @Test
     public void launchActivityExpectUpdateDescription() {
         mockActualSettings(true, false, 20);
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -132,7 +134,8 @@ public class OverviewTest {
     @Test
     public void launchActivityExpectUpdateDescriptionClickNegative() {
         mockActualSettings(true, false, 20);
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -227,7 +230,8 @@ public class OverviewTest {
     public void searchStringExpectSearchList() {
         mockActualSettings();
         final String teaName = "SEARCH_";
-        when(teaDao.getTeasBySearchString(teaName)).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasBySearchString(teaName)).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -245,7 +249,8 @@ public class OverviewTest {
     @Test
     public void changeSortModeToActivityExpectTeaList() {
         mockActualSettings(1);
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(TEA_NAME_ACTIVITY));
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -263,7 +268,8 @@ public class OverviewTest {
     public void changeSortModeToAlphabeticallyExpectTeaList() {
         mockActualSettings();
         String teaName = "ALPHABETICALLY_";
-        when(teaDao.getTeasOrderByAlphabetic()).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByAlphabetic()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -281,7 +287,8 @@ public class OverviewTest {
     public void changeSortModeToVarietyExpectTeaList() {
         mockActualSettings();
         String teaName = "VARIETY_";
-        when(teaDao.getTeasOrderByVariety()).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByVariety()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -299,7 +306,8 @@ public class OverviewTest {
     public void changeSortModeToRatingExpectTeaList() {
         mockActualSettings();
         String teaName = "RATING_";
-        when(teaDao.getTeasOrderByRating()).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByRating()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -334,7 +342,8 @@ public class OverviewTest {
         int positionTea = 1;
         mockActualSettings();
         final String teaName = "TEA_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -354,7 +363,8 @@ public class OverviewTest {
         final int teaPosition = 1;
         mockActualSettings();
         final String teaName = "TEA_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -377,7 +387,8 @@ public class OverviewTest {
         final int teaPosition = 1;
         mockActualSettings();
         String teaName = "TEA_";
-        when(teaDao.getTeasOrderByActivity()).thenReturn(generateTeaList(teaName));
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
