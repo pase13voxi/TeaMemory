@@ -13,11 +13,6 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/pase13voxi/TeaMemory.git']]])
-            }
-        }
         stage('Compile') {
             steps {
                 script {
