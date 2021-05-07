@@ -171,18 +171,16 @@ public class JsonIOAdapterImportTest {
 
     @Test
     public void importTeasAndKeepStoredTeas() {
-        Uri uri = Uri.EMPTY;
         JsonIOAdapter.init(application, System.out::println, new FileSystemIO(application, System.out::println));
-        JsonIOAdapter.read(uri, true);
+        JsonIOAdapter.read(Uri.EMPTY, true);
 
         verifyImportedTeas();
     }
 
     @Test
     public void importTeasAndDeleteStoredTeas() {
-        Uri uri = Uri.EMPTY;
         JsonIOAdapter.init(application, System.out::println, new FileSystemIO(application, System.out::println));
-        JsonIOAdapter.read(uri, false);
+        JsonIOAdapter.read(Uri.EMPTY, false);
 
         verify(teaDao).deleteAll();
         verifyImportedTeas();
