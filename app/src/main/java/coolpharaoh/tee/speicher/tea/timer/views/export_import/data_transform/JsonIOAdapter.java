@@ -1,11 +1,12 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
 
 import android.app.Application;
-import android.net.Uri;
 
 import androidx.annotation.VisibleForTesting;
 
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.Exporter;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.Importer;
 
 public class JsonIOAdapter {
 
@@ -26,7 +27,7 @@ public class JsonIOAdapter {
         }
     }
 
-    private static void initImport(Application application, Printer printer) {
+    private static void initImport(final Application application, final Printer printer) {
         if (importJson == null) {
             importJson = new ImportJson(application, printer);
         }
@@ -36,8 +37,8 @@ public class JsonIOAdapter {
         return exportJson.write(exporter);
     }
 
-    public static boolean read(Uri fileUri, boolean keepStoredTeas) {
-        return importJson.read(fileUri, keepStoredTeas);
+    public static boolean read(final Importer importer, final boolean keepStoredTeas) {
+        return importJson.read(importer, keepStoredTeas);
     }
 
     @VisibleForTesting

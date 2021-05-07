@@ -29,11 +29,9 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.ExportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.ImportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.JsonIOAdapter;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.ExportJson;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.ImportJson;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.JsonIOAdapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,18 +50,14 @@ public class ExportImportTest {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Mock
-    Permissions permissions;
-    @Mock
     ExportJson exportJson;
     @Mock
     ImportJson importJson;
     @Mock
     SystemUtility systemUtility;
 
-
     @Before
     public void setUp() {
-        PermissionRequester.setMockedPermissions(permissions);
         JsonIOAdapter.setMockedExportImport(exportJson, importJson);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
         CurrentSdk.setFixedSystem(systemUtility);

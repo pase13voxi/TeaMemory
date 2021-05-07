@@ -1,31 +1,24 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
 
 import android.app.Application;
-import android.net.Uri;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer.pojo.TeaPOJO;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.Importer;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
 
 public class ImportJson {
     public static final int READ_REQUEST_CODE = 8777;
-    private static final String LOG_TAG = ImportJson.class.getSimpleName();
 
     private final Application application;
     private final Printer printer;
@@ -37,8 +30,8 @@ public class ImportJson {
         this.printer = printer;
     }
 
-    public boolean read(final Uri fileUri, final boolean keepStoredTeas) {
-        json = readJsonFile(fileUri);
+    public boolean read(final Importer importer, final boolean keepStoredTeas) {
+        json = importer.read();
         final List<TeaPOJO> teaList = createTeaListFromJson();
         if (teaList.isEmpty()) {
             return false;
@@ -47,22 +40,6 @@ public class ImportJson {
         pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
         printer.print(application.getString(R.string.export_import_teas_imported));
         return true;
-    }
-
-    private String readJsonFile(final Uri fileUri) {
-        final StringBuilder stringBuilder = new StringBuilder();
-        try (final InputStream inputStream =
-                     application.getContentResolver().openInputStream(fileUri);
-             final BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(Objects.requireNonNull(inputStream)))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Cannot read from file uri", e);
-        }
-        return stringBuilder.toString();
     }
 
     private List<TeaPOJO> createTeaListFromJson() {

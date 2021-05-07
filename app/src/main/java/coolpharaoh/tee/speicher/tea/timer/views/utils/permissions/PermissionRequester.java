@@ -14,25 +14,8 @@ public class PermissionRequester {
         return permissions.checkReadPermission(activity);
     }
 
-    public static boolean checkWritePermission(Activity activity) {
-        return permissions.checkWritePermission(activity);
-    }
-
-    public static boolean checkReadPermissionDeniedBefore(Activity activity) {
-        return permissions.checkReadPermissionDeniedBefore(activity);
-    }
-
-    public static boolean checkWritePermissionDeniedBefore(Activity activity) {
-        return permissions.checkWritePermissionDeniedBefore(activity);
-    }
-
     public static void getReadPermission(Activity activity) {
         permissions.getReadPermission(activity);
-
-    }
-
-    public static void getWritePermission(Activity activity) {
-        permissions.getWritePermission(activity);
 
     }
 

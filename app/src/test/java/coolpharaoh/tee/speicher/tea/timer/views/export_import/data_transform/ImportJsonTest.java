@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.datatransfer;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -25,6 +25,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.FileReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -142,7 +143,6 @@ public class ImportJsonTest {
     @Mock
     ContentResolver contentResolver;
 
-
     @Before
     public void setUp() throws FileNotFoundException {
         mockDB();
@@ -167,7 +167,7 @@ public class ImportJsonTest {
     public void importTeasAndKeepStoredTeas() {
         Uri uri = Uri.EMPTY;
         ImportJson importJson = new ImportJson(application, System.out::println);
-        importJson.read(uri,true);
+        importJson.read(new FileReader(application, uri), true);
 
         verifyImportedTeas();
     }
@@ -176,7 +176,7 @@ public class ImportJsonTest {
     public void importTeasAndDeleteStoredTeas() {
         Uri uri = Uri.EMPTY;
         ImportJson importJson = new ImportJson(application, System.out::println);
-        importJson.read(uri,false);
+        importJson.read(new FileReader(application, uri), false);
 
         verify(teaDao).deleteAll();
         verifyImportedTeas();
