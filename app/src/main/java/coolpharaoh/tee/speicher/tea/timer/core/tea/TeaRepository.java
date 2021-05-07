@@ -7,7 +7,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
 public class TeaRepository {
-    private TeaDao teaDao;
+    private final TeaDao teaDao;
 
     public TeaRepository(Application application) {
         TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);

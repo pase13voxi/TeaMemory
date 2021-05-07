@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ImportJsonTest {
+public class JsonIOAdapterImportTest {
     private static final String DB_JSON_DUMP = "[\n" +
             "  {\n" +
             "    \"name\": \"name1\",\n" +
@@ -166,8 +166,8 @@ public class ImportJsonTest {
     @Test
     public void importTeasAndKeepStoredTeas() {
         Uri uri = Uri.EMPTY;
-        ImportJson importJson = new ImportJson(application, System.out::println);
-        importJson.read(new FileReader(application, uri), true);
+        JsonIOAdapter.init(application, System.out::println);
+        JsonIOAdapter.read(new FileReader(application, uri), true);
 
         verifyImportedTeas();
     }
@@ -175,8 +175,8 @@ public class ImportJsonTest {
     @Test
     public void importTeasAndDeleteStoredTeas() {
         Uri uri = Uri.EMPTY;
-        ImportJson importJson = new ImportJson(application, System.out::println);
-        importJson.read(new FileReader(application, uri), false);
+        JsonIOAdapter.init(application, System.out::println);
+        JsonIOAdapter.read(new FileReader(application, uri), false);
 
         verify(teaDao).deleteAll();
         verifyImportedTeas();

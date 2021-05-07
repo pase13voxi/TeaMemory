@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import;
 
 import android.app.Application;
 import android.content.Context;
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
-public class ExportJsonTest {
+public class JsonIOAdapterExportTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
             "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"favorite\":true,\"nextInfusion\":1," +
@@ -155,8 +155,9 @@ public class ExportJsonTest {
     @Test
     public void exportTeas() {
         final Context context = ApplicationProvider.getApplicationContext();
-        final ExportJson exportJson = new ExportJson((Application) context);
-        exportJson.write(exporter);
+
+        JsonIOAdapter.init((Application) context, System.out::println);
+        JsonIOAdapter.write(exporter);
 
         verify(exporter).write(DB_JSON_DUMP.replace("DATE", exportedDate));
     }

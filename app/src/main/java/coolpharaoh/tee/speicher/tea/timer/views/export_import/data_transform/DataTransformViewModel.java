@@ -15,20 +15,20 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
-class DataTransferViewModel extends ViewModel {
+class DataTransformViewModel extends ViewModel {
 
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
     private final CounterRepository counterRepository;
     private final NoteRepository noteRepository;
 
-    DataTransferViewModel(Application application) {
+    DataTransformViewModel(Application application) {
         this(new TeaRepository(application), new InfusionRepository(application),
                 new CounterRepository(application), new NoteRepository(application));
     }
 
-    DataTransferViewModel(TeaRepository teaRepository, InfusionRepository infusionRepository,
-                          CounterRepository counterRepository, NoteRepository noteRepository) {
+    DataTransformViewModel(TeaRepository teaRepository, InfusionRepository infusionRepository,
+                           CounterRepository counterRepository, NoteRepository noteRepository) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.counterRepository = counterRepository;

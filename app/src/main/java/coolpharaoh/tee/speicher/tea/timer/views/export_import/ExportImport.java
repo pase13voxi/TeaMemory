@@ -23,9 +23,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.FileReader;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.FileWriter;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.ExportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.ImportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.JsonIOAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -63,7 +61,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void chooseExportFolder() {
         final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        startActivityForResult(intent, ExportJson.WRITE_REQUEST_CODE);
+        startActivityForResult(intent, DatabaseJsonTransformer.WRITE_REQUEST_CODE);
     }
 
     private void dialogImportDecision() {
@@ -97,14 +95,14 @@ public class ExportImport extends AppCompatActivity implements Printer {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent,
-                getApplicationContext().getResources().getString(R.string.export_import_import_choose_file)), ImportJson.READ_REQUEST_CODE);
+                getApplicationContext().getResources().getString(R.string.export_import_import_choose_file)), DatabaseJsonTransformer.READ_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent resultData) {
-        if (requestCode == ExportJson.WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
+        if (requestCode == DatabaseJsonTransformer.WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
             exportFile(resultData.getData());
-        } else if (requestCode == ImportJson.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
+        } else if (requestCode == DatabaseJsonTransformer.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
             importFile(resultData.getData());
         }
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,9 +30,7 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.ExportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.ImportJson;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.JsonIOAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,17 +49,20 @@ public class ExportImportTest {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Mock
-    ExportJson exportJson;
-    @Mock
-    ImportJson importJson;
+    DatabaseJsonTransformer databaseJsonTransformer;
     @Mock
     SystemUtility systemUtility;
 
     @Before
     public void setUp() {
-        JsonIOAdapter.setMockedExportImport(exportJson, importJson);
+        JsonIOAdapter.setMockedTransformer(databaseJsonTransformer);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
         CurrentSdk.setFixedSystem(systemUtility);
+    }
+
+    @After
+    public void tearDown() {
+        JsonIOAdapter.setMockedTransformer(null);
     }
 
     @Test
@@ -77,7 +79,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
-        when(exportJson.write(any())).thenReturn(true);
+        when(databaseJsonTransformer.databaseToJson(any())).thenReturn(true);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -94,7 +96,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
-        when(exportJson.write(any())).thenReturn(false);
+        when(databaseJsonTransformer.databaseToJson(any())).thenReturn(false);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -124,7 +126,7 @@ public class ExportImportTest {
 
     @Test
     public void importTeasDeleteExistingAndExpectDialogImportComplete(){
-        when(importJson.read(any(), eq(false))).thenReturn(true);
+        when(databaseJsonTransformer.jsonToDatabase(any(), eq(false))).thenReturn(true);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -147,7 +149,7 @@ public class ExportImportTest {
 
     @Test
     public void importTeasKeepExistingAndExpectDialogImportComplete(){
-        when(importJson.read(any(), eq(true))).thenReturn(true);
+        when(databaseJsonTransformer.jsonToDatabase(any(), eq(true))).thenReturn(true);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -170,7 +172,7 @@ public class ExportImportTest {
 
     @Test
     public void importTeasAndExpectDialogImportFailed(){
-        when(importJson.read(any(), anyBoolean())).thenReturn(false);
+        when(databaseJsonTransformer.jsonToDatabase(any(), anyBoolean())).thenReturn(false);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {

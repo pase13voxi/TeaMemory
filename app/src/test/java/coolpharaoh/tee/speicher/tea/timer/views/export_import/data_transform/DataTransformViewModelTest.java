@@ -26,9 +26,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DataTransferViewModelTest {
+public class DataTransformViewModelTest {
 
-    private DataTransferViewModel dataTransferViewModel;
+    private DataTransformViewModel dataTransformViewModel;
 
     @Mock
     TeaRepository teaRepository;
@@ -41,7 +41,7 @@ public class DataTransferViewModelTest {
 
     @Before
     public void setUp() {
-        dataTransferViewModel = new DataTransferViewModel(teaRepository, infusionRepository,
+        dataTransformViewModel = new DataTransformViewModel(teaRepository, infusionRepository,
                 counterRepository, noteRepository);
     }
 
@@ -56,7 +56,7 @@ public class DataTransferViewModelTest {
         teasBefore.add(tea2);
         when(teaRepository.getTeas()).thenReturn(teasBefore);
 
-        List<Tea> teasAfter = dataTransferViewModel.getTeaList();
+        List<Tea> teasAfter = dataTransformViewModel.getTeaList();
 
         assertThat(teasAfter).isEqualTo(teasBefore);
     }
@@ -67,7 +67,7 @@ public class DataTransferViewModelTest {
 
         Tea teaBefore = new Tea("Tea", "Variety", 1, "Kind", 1, 1, date);
 
-        dataTransferViewModel.insertTea(teaBefore);
+        dataTransformViewModel.insertTea(teaBefore);
 
         ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).insertTea(captor.capture());
@@ -78,7 +78,7 @@ public class DataTransferViewModelTest {
 
     @Test
     public void deleteAll() {
-        dataTransferViewModel.deleteAllTeas();
+        dataTransformViewModel.deleteAllTeas();
         verify(teaRepository).deleteAllTeas();
     }
 
@@ -92,7 +92,7 @@ public class DataTransferViewModelTest {
 
         when(infusionRepository.getInfusions()).thenReturn(infusionsBefore);
 
-        List<Infusion> infusionsAfter = dataTransferViewModel.getInfusionList();
+        List<Infusion> infusionsAfter = dataTransformViewModel.getInfusionList();
 
         assertThat(infusionsAfter).isEqualTo(infusionsBefore);
     }
@@ -101,7 +101,7 @@ public class DataTransferViewModelTest {
     public void insertInfusion() {
         Infusion infusionBefore = new Infusion(1L, 1, "1", "1", 1, 1);
 
-        dataTransferViewModel.insertInfusion(infusionBefore);
+        dataTransformViewModel.insertInfusion(infusionBefore);
 
         ArgumentCaptor<Infusion> captor = ArgumentCaptor.forClass(Infusion.class);
         verify(infusionRepository).insertInfusion(captor.capture());
@@ -122,7 +122,7 @@ public class DataTransferViewModelTest {
 
         when(counterRepository.getCounters()).thenReturn(countersBefore);
 
-        List<Counter> countersAfter = dataTransferViewModel.getCounterList();
+        List<Counter> countersAfter = dataTransformViewModel.getCounterList();
 
         assertThat(countersAfter).isEqualTo(countersBefore);
     }
@@ -132,7 +132,7 @@ public class DataTransferViewModelTest {
         Date date = new GregorianCalendar(2020, 1, 18).getTime();
         Counter counterBefore = new Counter(1L, 1, 1, 1, 1L, date, date, date);
 
-        dataTransferViewModel.insertCounter(counterBefore);
+        dataTransformViewModel.insertCounter(counterBefore);
 
         ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
         verify(counterRepository).insertCounter(captor.capture());
@@ -151,7 +151,7 @@ public class DataTransferViewModelTest {
 
         when(noteRepository.getNotes()).thenReturn(notesBefore);
 
-        List<Note> notesAfter = dataTransferViewModel.getNoteList();
+        List<Note> notesAfter = dataTransformViewModel.getNoteList();
 
         assertThat(notesAfter).isEqualTo(notesBefore);
     }
@@ -160,7 +160,7 @@ public class DataTransferViewModelTest {
     public void insertNote() {
         Note noteBefore = new Note(1L,1,"Header","Description");
 
-        dataTransferViewModel.insertNote(noteBefore);
+        dataTransformViewModel.insertNote(noteBefore);
 
         ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
         verify(noteRepository).insertNote(captor.capture());

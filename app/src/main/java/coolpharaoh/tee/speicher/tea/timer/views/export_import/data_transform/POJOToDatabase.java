@@ -12,10 +12,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.poj
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
 
 class POJOToDatabase {
-    private final DataTransferViewModel dataTransferViewModel;
+    private final DataTransformViewModel dataTransformViewModel;
 
-    POJOToDatabase(DataTransferViewModel dataTransferViewModel) {
-        this.dataTransferViewModel = dataTransferViewModel;
+    POJOToDatabase(DataTransformViewModel dataTransformViewModel) {
+        this.dataTransformViewModel = dataTransformViewModel;
     }
 
     void fillDatabaseWithTeaList(List<TeaPOJO> teaList, boolean keepStoredTeas) {
@@ -32,7 +32,7 @@ class POJOToDatabase {
     }
 
     private void deleteStoredTeas() {
-        dataTransferViewModel.deleteAllTeas();
+        dataTransformViewModel.deleteAllTeas();
     }
 
     private long insertTea(TeaPOJO teaPOJO) {
@@ -42,12 +42,12 @@ class POJOToDatabase {
         tea.setRating(teaPOJO.getRating());
         tea.setFavorite(teaPOJO.isFavorite());
 
-        return dataTransferViewModel.insertTea(tea);
+        return dataTransformViewModel.insertTea(tea);
     }
 
     private void insertInfusions(long teaId, List<InfusionPOJO> infusionList) {
         for (InfusionPOJO infusionPOJO : infusionList) {
-            dataTransferViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionindex(),
+            dataTransformViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionindex(),
                     infusionPOJO.getTime(), infusionPOJO.getCooldowntime(),
                     infusionPOJO.getTemperaturecelsius(), infusionPOJO.getTemperaturefahrenheit()));
         }
@@ -55,7 +55,7 @@ class POJOToDatabase {
 
     private void insertCounters(long teaId, List<CounterPOJO> counterList) {
         for (CounterPOJO counterPOJO : counterList) {
-            dataTransferViewModel.insertCounter(new Counter(teaId, counterPOJO.getDay(),
+            dataTransformViewModel.insertCounter(new Counter(teaId, counterPOJO.getDay(),
                     counterPOJO.getWeek(), counterPOJO.getMonth(), counterPOJO.getOverall(),
                     counterPOJO.getDaydate(), counterPOJO.getWeekdate(), counterPOJO.getMonthdate()));
         }
@@ -63,7 +63,7 @@ class POJOToDatabase {
 
     private void insertNotes(long teaId, List<NotePOJO> noteList) {
         for (NotePOJO notePOJO : noteList) {
-            dataTransferViewModel.insertNote(new Note(teaId, notePOJO.getPosition(),
+            dataTransformViewModel.insertNote(new Note(teaId, notePOJO.getPosition(),
                     notePOJO.getHeader(), notePOJO.getDescription()));
         }
     }

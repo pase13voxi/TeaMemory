@@ -8,7 +8,7 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
 public class InfusionRepository {
 
-    private InfusionDao infusionDao;
+    private final InfusionDao infusionDao;
 
     public InfusionRepository(Application application) {
         TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
