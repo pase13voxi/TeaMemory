@@ -14,8 +14,6 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.Exporter;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.Importer;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
 
 public class DatabaseJsonTransformer {
@@ -30,9 +28,8 @@ public class DatabaseJsonTransformer {
         this.printer = printer;
     }
 
-    public boolean databaseToJson(final Exporter exporter) {
-        final String json = generateJson();
-        return exporter.write(json);
+    public String databaseToJson() {
+        return generateJson();
     }
 
     private String generateJson() {
@@ -52,8 +49,7 @@ public class DatabaseJsonTransformer {
         return gson.toJson(teaList);
     }
 
-    public boolean jsonToDatabase(final Importer importer, final boolean keepStoredTeas) {
-        final String json = importer.read();
+    public boolean jsonToDatabase(final String json, final boolean keepStoredTeas) {
         final List<TeaPOJO> teaList = createTeaListFromJson(json);
         if (teaList.isEmpty()) {
             return false;

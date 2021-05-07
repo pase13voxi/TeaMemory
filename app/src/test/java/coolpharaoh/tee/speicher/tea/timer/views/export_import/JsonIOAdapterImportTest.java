@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 
 import org.assertj.core.groups.Tuple;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.FileReader;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.FileSystemIO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -149,6 +150,11 @@ public class JsonIOAdapterImportTest {
         mockFileReader();
     }
 
+    @After
+    public void tearDown() {
+        JsonIOAdapter.setMockedTransformer(null, null);
+    }
+
     private void mockDB() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
@@ -166,8 +172,8 @@ public class JsonIOAdapterImportTest {
     @Test
     public void importTeasAndKeepStoredTeas() {
         Uri uri = Uri.EMPTY;
-        JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(new FileReader(application, uri), true);
+        JsonIOAdapter.init(application, System.out::println, new FileSystemIO(application, System.out::println));
+        JsonIOAdapter.read(uri, true);
 
         verifyImportedTeas();
     }
@@ -175,8 +181,8 @@ public class JsonIOAdapterImportTest {
     @Test
     public void importTeasAndDeleteStoredTeas() {
         Uri uri = Uri.EMPTY;
-        JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(new FileReader(application, uri), false);
+        JsonIOAdapter.init(application, System.out::println, new FileSystemIO(application, System.out::println));
+        JsonIOAdapter.read(uri, false);
 
         verify(teaDao).deleteAll();
         verifyImportedTeas();

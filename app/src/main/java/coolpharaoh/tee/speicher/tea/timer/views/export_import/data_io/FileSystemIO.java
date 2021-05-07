@@ -2,29 +2,34 @@ package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io;
 
 import android.app.Application;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 
-public class FileWriter implements Exporter {
+public class FileSystemIO implements DataIO {
+    private static final String LOG_TAG = FileSystemIO.class.getSimpleName();
+
     final Application application;
     final Printer printer;
-    final Uri folderPath;
 
-    public FileWriter(final Application application, final Printer printer, final Uri folderPath) {
+    public FileSystemIO(final Application application, final Printer printer) {
         this.application = application;
         this.printer = printer;
-        this.folderPath = folderPath;
     }
 
     @Override
-    public boolean write(final String json) {
-        final DocumentFile pickedFolder = DocumentFile.fromTreeUri(application, folderPath);
+    public boolean write(final String json, final Uri folderUri) {
+        final DocumentFile pickedFolder = DocumentFile.fromTreeUri(application, folderUri);
         if (pickedFolder == null) {
             printer.print(application.getString(R.string.export_import_save_failed));
             return false;
@@ -44,5 +49,22 @@ public class FileWriter implements Exporter {
         printer.print(application.getString(R.string.export_import_saved));
 
         return true;
+    }
+
+    @Override
+    public String read(final Uri fileUri) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        try (final InputStream inputStream =
+                     application.getContentResolver().openInputStream(fileUri);
+             final BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(Objects.requireNonNull(inputStream)))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Cannot read from file uri", e);
+        }
+        return stringBuilder.toString();
     }
 }

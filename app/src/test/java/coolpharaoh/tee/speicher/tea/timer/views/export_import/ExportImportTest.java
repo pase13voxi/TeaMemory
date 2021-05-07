@@ -30,6 +30,7 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,18 +52,20 @@ public class ExportImportTest {
     @Mock
     DatabaseJsonTransformer databaseJsonTransformer;
     @Mock
+    DataIO dataIO;
+    @Mock
     SystemUtility systemUtility;
 
     @Before
     public void setUp() {
-        JsonIOAdapter.setMockedTransformer(databaseJsonTransformer);
+        JsonIOAdapter.setMockedTransformer(databaseJsonTransformer, dataIO);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
         CurrentSdk.setFixedSystem(systemUtility);
     }
 
     @After
     public void tearDown() {
-        JsonIOAdapter.setMockedTransformer(null);
+        JsonIOAdapter.setMockedTransformer(null, null);
     }
 
     @Test
@@ -79,7 +82,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
-        when(databaseJsonTransformer.databaseToJson(any())).thenReturn(true);
+        when(dataIO.write(any(), any())).thenReturn(true);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -96,7 +99,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
-        when(databaseJsonTransformer.databaseToJson(any())).thenReturn(false);
+        when(dataIO.write(any(), any())).thenReturn(false);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
