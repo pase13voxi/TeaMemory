@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.export_import;
 
 import android.app.Application;
-import android.net.Uri;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -15,39 +14,25 @@ public class JsonIOAdapter {
     }
 
     private static DatabaseJsonTransformer databaseJsonTransformer;
-    private static DataIO dataIO;
 
-    public static void init(final Application application, final Printer printer, final DataIO dataIO) {
-        initDatabaseJsonTransformer(application, printer);
-        initDataIO(dataIO);
-    }
-
-    private static void initDatabaseJsonTransformer(final Application application, final Printer printer) {
+    public static void init(final Application application, final Printer printer) {
         if (databaseJsonTransformer == null) {
             databaseJsonTransformer = new DatabaseJsonTransformer(application, printer);
         }
     }
 
-    private static void initDataIO(DataIO dataIO) {
-        if (JsonIOAdapter.dataIO == null) {
-            JsonIOAdapter.dataIO = dataIO;
-        }
-    }
-
-    public static boolean write(final Uri folderPath) {
+    public static boolean write(final DataIO dataIO) {
         final String json = databaseJsonTransformer.databaseToJson();
-        return dataIO.write(json, folderPath);
+        return dataIO.write(json);
     }
 
-    public static boolean read(final Uri filePath, final boolean keepStoredTeas) {
-        final String json = dataIO.read(filePath);
+    public static boolean read(final DataIO dataIO, final boolean keepStoredTeas) {
+        final String json = dataIO.read();
         return databaseJsonTransformer.jsonToDatabase(json, keepStoredTeas);
     }
 
     @VisibleForTesting
-    public static void setMockedTransformer(final DatabaseJsonTransformer mockedDatabaseJsonTransformer,
-                                            final DataIO mockedDataIO) {
+    public static void setMockedTransformer(final DatabaseJsonTransformer mockedDatabaseJsonTransformer) {
         databaseJsonTransformer = mockedDatabaseJsonTransformer;
-        dataIO = mockedDataIO;
     }
 }

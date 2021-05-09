@@ -16,20 +16,22 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 
-public class FileSystemIO implements DataIO {
+class FileSystemIO implements DataIO {
     private static final String LOG_TAG = FileSystemIO.class.getSimpleName();
 
     final Application application;
     final Printer printer;
+    final Uri uri;
 
-    public FileSystemIO(final Application application, final Printer printer) {
+    FileSystemIO(final Application application, final Printer printer, Uri uri) {
         this.application = application;
         this.printer = printer;
+        this.uri = uri;
     }
 
     @Override
-    public boolean write(final String json, final Uri folderUri) {
-        final DocumentFile pickedFolder = DocumentFile.fromTreeUri(application, folderUri);
+    public boolean write(final String json) {
+        final DocumentFile pickedFolder = DocumentFile.fromTreeUri(application, uri);
         if (pickedFolder == null) {
             printer.print(application.getString(R.string.export_import_save_failed));
             return false;
@@ -52,10 +54,10 @@ public class FileSystemIO implements DataIO {
     }
 
     @Override
-    public String read(final Uri fileUri) {
+    public String read() {
         final StringBuilder stringBuilder = new StringBuilder();
         try (final InputStream inputStream =
-                     application.getContentResolver().openInputStream(fileUri);
+                     application.getContentResolver().openInputStream(uri);
              final BufferedReader reader = new BufferedReader(
                      new InputStreamReader(Objects.requireNonNull(inputStream)))) {
             String line;

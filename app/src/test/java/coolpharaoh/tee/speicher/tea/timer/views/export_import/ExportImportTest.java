@@ -31,6 +31,7 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,14 +59,15 @@ public class ExportImportTest {
 
     @Before
     public void setUp() {
-        JsonIOAdapter.setMockedTransformer(databaseJsonTransformer, dataIO);
+        DataIOFactory.setMockedDataIO(dataIO);
+        JsonIOAdapter.setMockedTransformer(databaseJsonTransformer);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
         CurrentSdk.setFixedSystem(systemUtility);
     }
 
     @After
     public void tearDown() {
-        JsonIOAdapter.setMockedTransformer(null, null);
+        JsonIOAdapter.setMockedTransformer(null);
     }
 
     @Test
@@ -82,7 +84,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
-        when(dataIO.write(any(), any())).thenReturn(true);
+        when(dataIO.write(any())).thenReturn(true);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -99,7 +101,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
-        when(dataIO.write(any(), any())).thenReturn(false);
+        when(dataIO.write(any())).thenReturn(false);
 
         ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {

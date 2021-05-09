@@ -37,8 +37,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -158,9 +156,9 @@ public class JsonIOAdapterExportTest {
     public void exportTeas() {
         final Context context = ApplicationProvider.getApplicationContext();
 
-        JsonIOAdapter.init((Application) context, System.out::println, dataIO);
-        JsonIOAdapter.write(null);
+        JsonIOAdapter.init((Application) context, System.out::println);
+        JsonIOAdapter.write(dataIO);
 
-        verify(dataIO).write(eq(DB_JSON_DUMP.replace("DATE", exportedDate)), any());
+        verify(dataIO).write(DB_JSON_DUMP.replace("DATE", exportedDate));
     }
 }

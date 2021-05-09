@@ -1,9 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io;
 
-import android.net.Uri;
-
 public interface DataIO {
-    boolean write(String json, Uri folderUri);
+    boolean write(String json);
 
-    String read(Uri fileUri);
+    String read();
 }
