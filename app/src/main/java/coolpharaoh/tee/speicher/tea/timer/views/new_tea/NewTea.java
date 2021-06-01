@@ -321,7 +321,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_tea, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -645,7 +645,6 @@ ShowTeaTest {
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("1:00"),
                 Collections.singletonList(95), Collections.singletonList(203));
         mockActualSettings(CELSIUS, false, true);
-        mockCounter();
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);

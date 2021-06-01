@@ -16,7 +16,7 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="information_rating_bar_style" parent="@android:style/Widget.RatingBar">
+    <style name="information_rating_bar_style">
         <item name="colorControlNormal">@color/background_green</item>
         <item name="colorControlActivated">@color/background_green</item>
         <item name="android:transformPivotX">20dp</item>
