@@ -18,13 +18,13 @@
     <string name="new_tea_tooltip_delete_infusion">Aufguss löschen</string>
     <string name="new_tea_tooltip_add_infusion">Aufguss hinzufügen</string>
     <string name="new_tea_text_view_heading_amount">Menge</string>
-    <string name="new_tea_edit_text_amount_empty_text_ts">- TL/L (Teelöffel/Liter)</string>
-    <string name="new_tea_edit_text_amount_text_ts">%1$d TL/L (Teelöffel/Liter)</string>
-    <string name="new_tea_edit_text_amount_text_gr">%1$d g/L (Gramm/Liter)</string>
+    <string name="new_tea_edit_text_amount_empty_text_ts">- TL/l (Teelöffel/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_ts">%1$d TL/l (Teelöffel/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_gr">%1$d g/l (Gramm/Liter)</string>
     <string name="new_tea_dialog_amount_header">Menge eingeben</string>
     <string-array name="new_tea_dialog_amount_kind">
-        <item>TL/L</item>
-        <item>g/L</item>
+        <item>TL/l</item>
+        <item>g/l</item>
     </string-array>
     <string name="new_tea_text_view_heading_temperature">Temperatur</string>
     <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C (Celsius)</string>
@@ -74,8 +74,4 @@
         <item>09_rooibus</item>
         <item>10_other</item>
     </string-array>
-    <array name="new_tea_amount">
-        <item>TL/L</item>
-        <item>g/L</item>
-    </array>
 </resources>

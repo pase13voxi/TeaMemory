@@ -39,6 +39,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
 
+import static org.apache.commons.lang3.StringUtils.rightPad;
+
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
 public class ShowTea extends AppCompatActivity {
@@ -269,15 +271,15 @@ public class ShowTea extends AppCompatActivity {
     private void fillAmountWithUnit() {
         if (showTeaViewModel.getAmount() != -500) {
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(getResources().getString(R.string.show_tea_display_gr, String.valueOf(showTeaViewModel.getAmount())));
+                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_gr, String.valueOf(showTeaViewModel.getAmount())), 10));
             } else {
-                textViewAmount.setText(getResources().getString(R.string.show_tea_display_ts, String.valueOf(showTeaViewModel.getAmount())));
+                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_ts, String.valueOf(showTeaViewModel.getAmount())), 10));
             }
         } else {
             if ("Gr".equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(getResources().getString(R.string.show_tea_display_gr, "-"));
+                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_gr, "-"), 10));
             } else {
-                textViewAmount.setText(getResources().getString(R.string.show_tea_display_ts, "-"));
+                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_ts, "-"), 10));
             }
         }
     }

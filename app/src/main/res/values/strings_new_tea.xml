@@ -18,13 +18,13 @@
     <string name="new_tea_tooltip_delete_infusion">Delete infusion</string>
     <string name="new_tea_tooltip_add_infusion">Add infusion</string>
     <string name="new_tea_text_view_heading_amount">Amount</string>
-    <string name="new_tea_edit_text_amount_empty_text_ts">- ts/L (teaspoon/liter)</string>
-    <string name="new_tea_edit_text_amount_text_ts">%1$d ts/L (teaspoon/liter)</string>
-    <string name="new_tea_edit_text_amount_text_gr">%1$d gr/L (gram/liter)</string>
+    <string name="new_tea_edit_text_amount_empty_text_ts">- ts/l (teaspoon/liter)</string>
+    <string name="new_tea_edit_text_amount_text_ts">%1$d ts/l (teaspoon/liter)</string>
+    <string name="new_tea_edit_text_amount_text_gr">%1$d g/l (gram/liter)</string>
     <string name="new_tea_dialog_amount_header">Input amount</string>
     <string-array name="new_tea_dialog_amount_kind">
-        <item>ts/L</item>
-        <item>gr/L</item>
+        <item>ts/l</item>
+        <item>g/l</item>
     </string-array>
     <string name="new_tea_text_view_heading_temperature">Temperature</string>
     <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C (Celsius)</string>
@@ -74,8 +74,4 @@
         <item>09_rooibus</item>
         <item>10_other</item>
     </string-array>
-    <array name="new_tea_amount">
-        <item>ts/L</item>
-        <item>g/L</item>
-    </array>
 </resources>

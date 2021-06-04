@@ -246,7 +246,7 @@ ShowTeaTest {
             assertThat(textViewName.getText()).isEqualTo(tea.getName());
             assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
-            assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " ts/L");
+            assertThat(textViewAmount.getText()).contains(tea.getAmount() + " ts/l");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
@@ -269,7 +269,7 @@ ShowTeaTest {
             TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
 
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(textViewAmount.getText()).isEqualTo(tea.getAmount() + " g/L");
+            assertThat(textViewAmount.getText()).contains(tea.getAmount() + " g/l");
         });
     }
 
@@ -294,7 +294,7 @@ ShowTeaTest {
 
             assertThat(textViewVariety.getText()).isEmpty();
             assertThat(textViewTemperature.getText()).isEqualTo("- °C");
-            assertThat(textViewAmount.getText()).isEqualTo("- ts/L");
+            assertThat(textViewAmount.getText()).contains("- ts/l");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("00");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
@@ -317,7 +317,7 @@ ShowTeaTest {
             TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
 
             assertThat(textViewTemperature.getText()).isEqualTo("- °F");
-            assertThat(textViewAmount.getText()).isEqualTo("- g/L");
+            assertThat(textViewAmount.getText()).contains("- g/l");
         });
     }
 
@@ -382,11 +382,11 @@ ShowTeaTest {
             final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
             final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 ts / 1.0 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 ts / 1.0 l");
 
             seekBarAmountPerAmount.setProgress(5);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 ts / 0.5 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 ts / 0.5 l");
         });
     }
 
@@ -411,11 +411,11 @@ ShowTeaTest {
             final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
             final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 g / 1.0 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 g / 1.0 l");
 
             seekBarAmountPerAmount.setProgress(15);
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("13.5 g / 1.5 L");
+            assertThat(textViewAmountPerAmount.getText()).hasToString("13.5 g / 1.5 l");
         });
     }
 
