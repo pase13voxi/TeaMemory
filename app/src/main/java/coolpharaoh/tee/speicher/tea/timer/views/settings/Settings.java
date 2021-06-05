@@ -16,6 +16,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,8 +43,6 @@ import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permiss
 @SuppressWarnings("java:S110")
 public class Settings extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
-    public static final int REQUEST_CODE_MUSIC_CHOICE = 4532;
-
     private enum ListItems {
         ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, DARK_MODE, HINTS, FACTORY_SETTINGS
     }
@@ -52,6 +52,14 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
     private ArrayList<ListRowItem> settingsList;
     private RecyclerViewAdapter adapter;
+
+    private final ActivityResultLauncher<Intent> alarmRequestActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    processMusicChoice(result.getData());
+                }
+            });
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -215,22 +223,15 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
             }
             createAlarmRequest();
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void createAlarmRequest() {
-        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        final Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, R.string.settings_alarm_selection_title);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-        startActivityForResult(intent, REQUEST_CODE_MUSIC_CHOICE);
-    }
-
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_MUSIC_CHOICE) {
-            processMusicChoice(intent);
-        }
-        super.onActivityResult(requestCode, resultCode, intent);
+        alarmRequestActivityResultLauncher.launch(intent);
     }
 
     private void processMusicChoice(final Intent intent) {
