@@ -29,9 +29,11 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -177,15 +179,13 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void getAmountKind() {
-        String amountKindBefore = "AMOUNT_KIND";
-
-        Tea tea = new Tea();
-        tea.setAmountKind(amountKindBefore);
+        final Tea tea = new Tea();
+        tea.setAmountKind(TEA_SPOON.getText());
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        String amountKindAfter = showTeaViewModel.getAmountKind();
+        final AmountKind amountKind = showTeaViewModel.getAmountKind();
 
-        assertThat(amountKindAfter).isEqualTo(amountKindBefore);
+        assertThat(amountKind).isEqualTo(TEA_SPOON);
     }
 
     @Test

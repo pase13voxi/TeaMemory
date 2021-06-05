@@ -24,9 +24,12 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
+
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -212,13 +215,13 @@ public class NewTea extends AppCompatActivity implements Printer {
 
     private void bindAmountToInputField() {
         final int amount = newTeaViewModel.getAmount();
-        final String amountKind = newTeaViewModel.getAmountKind();
+        final AmountKind amountKind = newTeaViewModel.getAmountKind();
         final EditText editTextAmount = findViewById(R.id.edit_text_new_tea_amount);
 
         if (amount == -500) {
             editTextAmount.setText(R.string.new_tea_edit_text_amount_empty_text_ts);
         } else {
-            if ("Gr".equals(amountKind)) {
+            if (GRAM.equals(amountKind)) {
                 editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_gr, amount));
             } else {
                 editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_ts, amount));

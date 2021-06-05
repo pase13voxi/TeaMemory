@@ -28,6 +28,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -97,9 +98,9 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setAmountAndExpectAmountAndAmountKind() {
-        newTeaViewModelEmpty.setAmount(5, "Amount");
+        newTeaViewModelEmpty.setAmount(5, TEA_SPOON);
         assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(5);
-        assertThat(newTeaViewModelEmpty.getAmountKind()).isEqualTo("Amount");
+        assertThat(newTeaViewModelEmpty.getAmountKind()).isEqualTo(TEA_SPOON);
     }
 
     @Test

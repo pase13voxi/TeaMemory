@@ -14,6 +14,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -86,9 +87,9 @@ class NewTeaViewModel {
         signalDataChanged();
     }
 
-    void setAmount(final int amount, final String amountKind) {
+    void setAmount(final int amount, final AmountKind amountKind) {
         tea.setAmount(amount);
-        tea.setAmountKind(amountKind);
+        tea.setAmountKind(amountKind.getText());
         signalDataChanged();
     }
 
@@ -96,8 +97,8 @@ class NewTeaViewModel {
         return tea.getAmount();
     }
 
-    String getAmountKind() {
-        return tea.getAmountKind();
+    AmountKind getAmountKind() {
+        return AmountKind.fromText(tea.getAmountKind());
     }
 
     int getColor() {

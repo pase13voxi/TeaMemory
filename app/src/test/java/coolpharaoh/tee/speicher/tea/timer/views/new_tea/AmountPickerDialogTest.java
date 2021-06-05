@@ -27,6 +27,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
 import static android.os.Looper.getMainLooper;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -53,6 +55,8 @@ public class AmountPickerDialogTest {
         final FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
         fragmentManager = activity.getSupportFragmentManager();
         dialogFragment = new AmountPickerDialog(suggestions, newTeaViewModel);
+        // always default
+        when(newTeaViewModel.getAmountKind()).thenReturn(TEA_SPOON);
     }
 
     @Test
@@ -165,7 +169,7 @@ public class AmountPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         shadowOf(getMainLooper()).idle();
 
-        verify(newTeaViewModel).setAmount(7, "Ts");
+        verify(newTeaViewModel).setAmount(7, TEA_SPOON);
     }
 
     @Test
@@ -184,13 +188,13 @@ public class AmountPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         shadowOf(getMainLooper()).idle();
 
-        verify(newTeaViewModel).setAmount(7, "Gr");
+        verify(newTeaViewModel).setAmount(7, GRAM);
     }
 
     @Test
     public void showExistingAmountConfiguration() {
         when(newTeaViewModel.getAmount()).thenReturn(7);
-        when(newTeaViewModel.getAmountKind()).thenReturn("Gr");
+        when(newTeaViewModel.getAmountKind()).thenReturn(GRAM);
 
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();

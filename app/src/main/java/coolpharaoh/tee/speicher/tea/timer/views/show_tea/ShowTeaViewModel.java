@@ -15,6 +15,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
 import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -72,8 +73,9 @@ class ShowTeaViewModel {
         return teaRepository.getTeaById(teaId).getAmount();
     }
 
-    String getAmountKind() {
-        return teaRepository.getTeaById(teaId).getAmountKind();
+    AmountKind getAmountKind() {
+        final String amountKind = teaRepository.getTeaById(teaId).getAmountKind();
+        return AmountKind.fromText(amountKind);
     }
 
     int getColor() {

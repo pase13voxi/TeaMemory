@@ -39,6 +39,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -270,13 +271,13 @@ public class ShowTea extends AppCompatActivity {
 
     private void fillAmountWithUnit() {
         if (showTeaViewModel.getAmount() != -500) {
-            if ("Gr".equals(showTeaViewModel.getAmountKind())) {
+            if (GRAM.equals(showTeaViewModel.getAmountKind())) {
                 textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_gr, String.valueOf(showTeaViewModel.getAmount())), 10));
             } else {
                 textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_ts, String.valueOf(showTeaViewModel.getAmount())), 10));
             }
         } else {
-            if ("Gr".equals(showTeaViewModel.getAmountKind())) {
+            if (GRAM.equals(showTeaViewModel.getAmountKind())) {
                 textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_gr, "-"), 10));
             } else {
                 textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_ts, "-"), 10));
@@ -605,7 +606,7 @@ public class ShowTea extends AppCompatActivity {
     private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
-        if ("Gr".equals(showTeaViewModel.getAmountKind())) {
+        if (GRAM.equals(showTeaViewModel.getAmountKind())) {
             textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_gr, amountPerLiter, liter));
         } else {
             textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_ts, amountPerLiter, liter));
