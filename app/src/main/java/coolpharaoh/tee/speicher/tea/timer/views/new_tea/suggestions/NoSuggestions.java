@@ -13,6 +13,11 @@ class NoSuggestions implements Suggestions {
     }
 
     @Override
+    public int[] getAmountTbSuggestions() {
+        return new int[]{};
+    }
+
+    @Override
     public int[] getTemperatureCelsiusSuggestions() {
         return new int[]{};
     }

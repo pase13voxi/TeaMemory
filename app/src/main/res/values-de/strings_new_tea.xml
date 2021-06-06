@@ -21,10 +21,12 @@
     <string name="new_tea_edit_text_amount_empty_text_ts">- TL/l (Teelöffel/Liter)</string>
     <string name="new_tea_edit_text_amount_text_ts">%1$d TL/l (Teelöffel/Liter)</string>
     <string name="new_tea_edit_text_amount_text_gr">%1$d g/l (Gramm/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_tb">%1$d TB/l (Teebeutel/Liter)</string>
     <string name="new_tea_dialog_amount_header">Menge eingeben</string>
     <string-array name="new_tea_dialog_amount_kind">
         <item>TL/l</item>
         <item>g/l</item>
+        <item>TB/l</item>
     </string-array>
     <string name="new_tea_text_view_heading_temperature">Temperatur</string>
     <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C (Celsius)</string>

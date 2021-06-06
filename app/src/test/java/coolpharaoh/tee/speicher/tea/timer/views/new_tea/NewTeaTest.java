@@ -355,6 +355,29 @@ public class NewTeaTest {
     }
 
     @Test
+    public void showActivityEditModeAndExpectFilledAmountTeaBag() {
+        mockSettings(CELSIUS);
+        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Tb", 234, 0, Date.from(getFixedDate()));
+        tea.setId(1L);
+        when(teaDao.getTeaById(1)).thenReturn(tea);
+
+        final List<Infusion> infusions = new ArrayList<>();
+        infusions.add(new Infusion(1, 0, "2:00", "5:00", 90, 194));
+        when(infusionDao.getInfusionsByTeaId(1)).thenReturn(infusions);
+
+
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
+        intent.putExtra(TEA_ID, 1L);
+
+        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
+        newTeaActivityScenario.onActivity(newTea -> {
+            final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
+
+            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_tb, tea.getAmount()));
+        });
+    }
+
+    @Test
     public void editTeaAndExpectEditedTea() {
         mockSettings(FAHRENHEIT);
         final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));

@@ -23,6 +23,11 @@ public class BlackTeaSuggestions implements Suggestions {
     }
 
     @Override
+    public int[] getAmountTbSuggestions() {
+        return application.getResources().getIntArray(R.array.new_tea_suggestions_black_tea_amount_tb);
+    }
+
+    @Override
     public int[] getTemperatureCelsiusSuggestions() {
         return application.getResources().getIntArray(R.array.new_tea_suggestions_black_tea_temperature_celsius);
     }

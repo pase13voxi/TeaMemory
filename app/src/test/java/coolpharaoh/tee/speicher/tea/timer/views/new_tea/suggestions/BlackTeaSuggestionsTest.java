@@ -47,6 +47,14 @@ public class BlackTeaSuggestionsTest {
     }
 
     @Test
+    public void getAmountTbHint() {
+        final int[] arrayTb = new int[]{1, 2};
+        when(resources.getIntArray(R.array.new_tea_suggestions_black_tea_amount_tb)).thenReturn(arrayTb);
+
+        assertThat(blackTeaHints.getAmountTbSuggestions()).isEqualTo(arrayTb);
+    }
+
+    @Test
     public void getTemperatureCelsiusHint() {
         final int[] arrayCelsius = new int[]{1, 2};
         when(resources.getIntArray(R.array.new_tea_suggestions_black_tea_temperature_celsius)).thenReturn(arrayCelsius);

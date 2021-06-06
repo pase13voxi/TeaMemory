@@ -30,6 +30,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsF
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -223,6 +224,8 @@ public class NewTea extends AppCompatActivity implements Printer {
         } else {
             if (GRAM.equals(amountKind)) {
                 editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_gr, amount));
+            } else if (TEA_BAG.equals(amountKind)) {
+                editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_tb, amount));
             } else {
                 editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_ts, amount));
             }

@@ -12,6 +12,11 @@
         <item>10</item>
         <item>13</item>
     </integer-array>
+    <integer-array name="new_tea_suggestions_black_tea_amount_tb">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </integer-array>
     <integer-array name="new_tea_suggestions_black_tea_temperature_celsius">
         <item>95</item>
         <item>100</item>
@@ -36,6 +41,11 @@
         <item>10</item>
         <item>12</item>
         <item>14</item>
+    </integer-array>
+    <integer-array name="new_tea_suggestions_green_tea_amount_tb">
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
     </integer-array>
     <integer-array name="new_tea_suggestions_green_tea_temperature_celsius">
         <item>70</item>
@@ -63,6 +73,10 @@
         <item>11</item>
         <item>12</item>
     </integer-array>
+    <integer-array name="new_tea_suggestions_yellow_tea_amount_tb">
+        <item>4</item>
+        <item>5</item>
+    </integer-array>
     <integer-array name="new_tea_suggestions_yellow_tea_temperature_celsius">
         <item>75</item>
     </integer-array>
@@ -84,6 +98,10 @@
         <item>8</item>
         <item>10</item>
         <item>12</item>
+    </integer-array>
+    <integer-array name="new_tea_suggestions_white_tea_amount_tb">
+        <item>3</item>
+        <item>4</item>
     </integer-array>
     <integer-array name="new_tea_suggestions_white_tea_temperature_celsius">
         <item>70</item>
@@ -109,6 +127,11 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
+    </integer-array>
+    <integer-array name="new_tea_suggestions_oolong_tea_amount_tb">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </integer-array>
     <integer-array name="new_tea_suggestions_oolong_tea_temperature_celsius">
         <item>75</item>
@@ -137,6 +160,11 @@
         <item>10</item>
         <item>12</item>
     </integer-array>
+    <integer-array name="new_tea_suggestions_puerh_tea_amount_tb">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </integer-array>
     <integer-array name="new_tea_suggestions_puerh_tea_temperature_celsius">
         <item>100</item>
     </integer-array>
@@ -158,6 +186,11 @@
         <item>10</item>
         <item>13</item>
         <item>15</item>
+    </integer-array>
+    <integer-array name="new_tea_suggestions_herbal_tea_amount_tb">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </integer-array>
     <integer-array name="new_tea_suggestions_herbal_tea_temperature_celsius">
         <item>100</item>
@@ -182,6 +215,11 @@
         <item>17</item>
         <item>20</item>
     </integer-array>
+    <integer-array name="new_tea_suggestions_fruit_tea_amount_tb">
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </integer-array>
     <integer-array name="new_tea_suggestions_fruit_tea_temperature_celsius">
         <item>100</item>
     </integer-array>
@@ -204,6 +242,11 @@
         <item>12</item>
         <item>14</item>
         <item>15</item>
+    </integer-array>
+    <integer-array name="new_tea_suggestions_rooibus_tea_amount_tb">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </integer-array>
     <integer-array name="new_tea_suggestions_rooibus_tea_temperature_celsius">
         <item>100</item>

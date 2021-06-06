@@ -5,6 +5,8 @@ public interface Suggestions {
 
     int[] getAmountGrSuggestions();
 
+    int[] getAmountTbSuggestions();
+
     int[] getTemperatureCelsiusSuggestions();
 
     int[] getTemperatureFahrenheitSuggestions();

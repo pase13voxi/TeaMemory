@@ -21,6 +21,9 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
+
 public class AmountPickerDialog extends DialogFragment {
     public static final String TAG = "AmountPickerDialog";
 
@@ -59,7 +62,7 @@ public class AmountPickerDialog extends DialogFragment {
 
         final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         amountPickerKind.setMinValue(0);
-        amountPickerKind.setMaxValue(1);
+        amountPickerKind.setMaxValue(2);
         amountPickerKind.setDisplayedValues(getResources().getStringArray(R.array.new_tea_dialog_amount_kind));
         amountPickerKind.setOnValueChangedListener((numberPicker, oldValue, newValue) -> setSuggestions());
 
@@ -94,8 +97,10 @@ public class AmountPickerDialog extends DialogFragment {
 
     private int[] getSuggestions() {
         final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
-        if (amountPickerKind.getValue() == 1) {
+        if (GRAM.getChoice() == amountPickerKind.getValue()) {
             return suggestions.getAmountGrSuggestions();
+        } else if (TEA_BAG.getChoice() == amountPickerKind.getValue()) {
+            return suggestions.getAmountTbSuggestions();
         } else {
             return suggestions.getAmountTsSuggestions();
         }

@@ -25,6 +25,11 @@ public class NoSuggestionsTest {
     }
 
     @Test
+    public void getAmountTbHint() {
+        assertThat(noSuggestions.getAmountTbSuggestions()).isEmpty();
+    }
+
+    @Test
     public void getTemperatureCelsiusHint() {
         assertThat(noSuggestions.getTemperatureCelsiusSuggestions()).isEmpty();
     }

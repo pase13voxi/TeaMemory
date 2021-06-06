@@ -28,6 +28,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
 import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -138,6 +139,39 @@ public class AmountPickerDialogTest {
     }
 
     @Test
+    public void setAmountKindTbAndExpectTbSuggestions() {
+        when(suggestions.getAmountTsSuggestions()).thenReturn(null);
+        when(suggestions.getAmountTbSuggestions()).thenReturn(new int[]{10, 11, 12});
+
+        dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
+        amountKindPicker.setValue(2);
+        shadowOf(amountKindPicker).getOnValueChangeListener().onValueChange(amountKindPicker, 0, 1);
+
+        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
+        assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.VISIBLE);
+
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
+        assertThat(buttonSuggestion1)
+                .extracting(View::getVisibility, btn -> btn.getText().toString())
+                .containsExactly(View.VISIBLE, "10");
+
+        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
+        assertThat(buttonSuggestion2)
+                .extracting(View::getVisibility, btn -> btn.getText().toString())
+                .containsExactly(View.VISIBLE, "11");
+
+        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
+        assertThat(buttonSuggestion3)
+                .extracting(View::getVisibility, btn -> btn.getText().toString())
+                .containsExactly(View.VISIBLE, "12");
+    }
+
+    @Test
     public void clickSuggestionAndExpectShownSuggestion() {
         when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{4, 5});
 
@@ -189,6 +223,25 @@ public class AmountPickerDialogTest {
         shadowOf(getMainLooper()).idle();
 
         verify(newTeaViewModel).setAmount(7, GRAM);
+    }
+
+    @Test
+    public void acceptTbInputExceptSavedInput() {
+        dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
+        amountPicker.setValue(7);
+
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
+        amountKindPicker.setValue(2);
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+        shadowOf(getMainLooper()).idle();
+
+        verify(newTeaViewModel).setAmount(7, TEA_BAG);
     }
 
     @Test
