@@ -38,9 +38,9 @@ import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.display_amount_kind.DisplayAmountKind;
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.display_amount_kind.DisplayAmountKindFactory;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -271,22 +271,16 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void fillAmountWithUnit() {
+        final ImageButton imageButtonAmount = findViewById(R.id.button_show_tea_calculate_amount);
+
         if (showTeaViewModel.getAmount() != -500) {
-            if (GRAM.equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_gr, String.valueOf(showTeaViewModel.getAmount())), 10));
-            } else if (TEA_BAG.equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_tb, String.valueOf(showTeaViewModel.getAmount())), 10));
-            } else {
-                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_ts, String.valueOf(showTeaViewModel.getAmount())), 10));
-            }
+            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind());
+            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextId(), String.valueOf(showTeaViewModel.getAmount())), 10));
+            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceId());
         } else {
-            if (GRAM.equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_gr, "-"), 10));
-            } else if (TEA_BAG.equals(showTeaViewModel.getAmountKind())) {
-                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_tb, "-"), 10));
-            } else {
-                textViewAmount.setText(rightPad(getResources().getString(R.string.show_tea_display_ts, "-"), 10));
-            }
+            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind());
+            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextId(), "-"), 10));
+            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceId());
         }
     }
 
@@ -603,7 +597,7 @@ public class ShowTea extends AppCompatActivity {
         AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.dialog_theme);
         adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.show_tea_dialog_amount);
-        adb.setIcon(R.drawable.spoon_black);
+        adb.setIcon(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getImageResourceId());
         adb.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
         adb.show();
     }
@@ -611,13 +605,8 @@ public class ShowTea extends AppCompatActivity {
     private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
-        if (GRAM.equals(showTeaViewModel.getAmountKind())) {
-            textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_gr, amountPerLiter, liter));
-        } else if (TEA_BAG.equals(showTeaViewModel.getAmountKind())) {
-            textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_tb, amountPerLiter, liter));
-        } else {
-            textViewAmountPerAmount.setText(getResources().getString(R.string.show_tea_dialog_amount_per_amount_ts, amountPerLiter, liter));
-        }
+
+        textViewAmountPerAmount.setText(getResources().getString(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getTextIdCalculator(), amountPerLiter, liter));
     }
 
     @Override
