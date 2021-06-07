@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.display_amount_kind;
+package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
 
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 

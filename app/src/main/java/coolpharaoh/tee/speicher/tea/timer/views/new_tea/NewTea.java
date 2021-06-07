@@ -28,9 +28,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -222,13 +221,8 @@ public class NewTea extends AppCompatActivity implements Printer {
         if (amount == -500) {
             editTextAmount.setText(R.string.new_tea_edit_text_amount_empty_text_ts);
         } else {
-            if (GRAM.equals(amountKind)) {
-                editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_gr, amount));
-            } else if (TEA_BAG.equals(amountKind)) {
-                editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_tb, amount));
-            } else {
-                editTextAmount.setText(getString(R.string.new_tea_edit_text_amount_text_ts, amount));
-            }
+            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(amountKind);
+            editTextAmount.setText(getString(displayAmountKind.getTextIdNewTea(), amount));
         }
     }
 

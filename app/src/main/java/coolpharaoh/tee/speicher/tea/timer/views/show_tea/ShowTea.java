@@ -38,8 +38,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.display_amount_kind.DisplayAmountKind;
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.display_amount_kind.DisplayAmountKindFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
 
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
@@ -275,12 +275,12 @@ public class ShowTea extends AppCompatActivity {
 
         if (showTeaViewModel.getAmount() != -500) {
             final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind());
-            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextId(), String.valueOf(showTeaViewModel.getAmount())), 10));
-            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceId());
+            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), String.valueOf(showTeaViewModel.getAmount())), 10));
+            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
         } else {
             final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind());
-            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextId(), "-"), 10));
-            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceId());
+            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), "-"), 10));
+            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
         }
     }
 
@@ -597,7 +597,7 @@ public class ShowTea extends AppCompatActivity {
         AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.dialog_theme);
         adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.show_tea_dialog_amount);
-        adb.setIcon(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getImageResourceId());
+        adb.setIcon(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getImageResourceIdShowTea());
         adb.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
         adb.show();
     }
@@ -606,7 +606,7 @@ public class ShowTea extends AppCompatActivity {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
 
-        textViewAmountPerAmount.setText(getResources().getString(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getTextIdCalculator(), amountPerLiter, liter));
+        textViewAmountPerAmount.setText(getResources().getString(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getTextIdCalculatorShowTea(), amountPerLiter, liter));
     }
 
     @Override
