@@ -31,6 +31,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsF
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
@@ -223,7 +225,7 @@ public class NewTea extends AppCompatActivity implements Printer {
         if (amount == -500) {
             editTextAmount.setText(R.string.new_tea_edit_text_amount_empty_text_ts);
         } else {
-            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(amountKind);
+            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(amountKind);
             editTextAmount.setText(getString(displayAmountKind.getTextIdNewTea(), amount));
         }
     }
@@ -231,20 +233,14 @@ public class NewTea extends AppCompatActivity implements Printer {
     private void bindTemperatureToInputField() {
         final int temperature = newTeaViewModel.getInfusionTemperature();
         final TemperatureUnit temperatureUnit = newTeaViewModel.getTemperatureUnit();
+        final DisplayTemperatureUnit displayTemperatureUnit = DisplayTemperatureUnitFactory.get(temperatureUnit);
+
         final EditText editTextTemperature = findViewById(R.id.edit_text_new_tea_temperature);
 
         if (temperature == -500) {
-            if (FAHRENHEIT.equals(temperatureUnit)) {
-                editTextTemperature.setText(R.string.new_tea_edit_text_temperature_empty_text_fahrenheit);
-            } else {
-                editTextTemperature.setText(R.string.new_tea_edit_text_temperature_empty_text_celsius);
-            }
+            editTextTemperature.setText(displayTemperatureUnit.getTextIdEmptyTemperatureNewTea());
         } else {
-            if (FAHRENHEIT.equals(temperatureUnit)) {
-                editTextTemperature.setText(getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, temperature));
-            } else {
-                editTextTemperature.setText(getString(R.string.new_tea_edit_text_temperature_text_celsius, temperature));
-            }
+            editTextTemperature.setText(getString(displayTemperatureUnit.getTextIdNewTea(), temperature));
         }
     }
 

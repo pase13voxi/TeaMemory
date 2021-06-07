@@ -7,7 +7,7 @@ public class DisplayAmountKindFactory {
     private DisplayAmountKindFactory() {
     }
 
-    public static DisplayAmountKind getDisplayAmountKind(final AmountKind amountKind) {
+    public static DisplayAmountKind get(final AmountKind amountKind) {
         switch (amountKind) {
             case GRAM:
                 return new DisplayAmountKindGram();

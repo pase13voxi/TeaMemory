@@ -9,19 +9,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DisplayAmountKindGramTest {
 
     @Test
-    public void getTextId() {
+    public void getTextIdShowTea() {
         final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
         assertThat(displayAmountKindGram.getTextIdShowTea()).isEqualTo(R.string.show_tea_display_gr);
     }
 
     @Test
-    public void getResourceId() {
+    public void getImageResourceIdShowTea() {
         final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
         assertThat(displayAmountKindGram.getImageResourceIdShowTea()).isEqualTo(R.drawable.gram_black);
     }
 
     @Test
-    public void getTextIdCalculator() {
+    public void getTextIdCalculatorShowTea() {
         final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
         assertThat(displayAmountKindGram.getTextIdCalculatorShowTea()).isEqualTo(R.string.show_tea_dialog_amount_per_amount_gr);
     }

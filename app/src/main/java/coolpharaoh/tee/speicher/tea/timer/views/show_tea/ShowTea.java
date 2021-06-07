@@ -40,8 +40,9 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.SharedTi
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -256,18 +257,12 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void fillTemperatureWithUnit() {
+        final DisplayTemperatureUnit displayTemperatureUnit = DisplayTemperatureUnitFactory.get(showTeaViewModel.getTemperatureUnit());
+
         if (showTeaViewModel.getTemperature() != -500) {
-            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
-            } else {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
-            }
+            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), String.valueOf(showTeaViewModel.getTemperature())));
         } else {
-            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, "-"));
-            } else {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, "-"));
-            }
+            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), "-"));
         }
     }
 
@@ -275,11 +270,11 @@ public class ShowTea extends AppCompatActivity {
         final ImageButton imageButtonAmount = findViewById(R.id.button_show_tea_calculate_amount);
 
         if (showTeaViewModel.getAmount() != -500) {
-            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind());
+            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind());
             textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), String.valueOf(showTeaViewModel.getAmount())), 10));
             imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
         } else {
-            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind());
+            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind());
             textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), "-"), 10));
             imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
         }
@@ -350,18 +345,12 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void infusionIndexChanged() {
+        final DisplayTemperatureUnit displayTemperatureUnit = DisplayTemperatureUnitFactory.get(showTeaViewModel.getTemperatureUnit());
+
         if (showTeaViewModel.getTemperature() != -500) {
-            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
-            } else {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
-            }
+            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), String.valueOf(showTeaViewModel.getTemperature())));
         } else {
-            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, "-"));
-            } else {
-                textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, "-"));
-            }
+            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), "-"));
         }
 
         spinnerMinutes.setSelection(showTeaViewModel.getTime().getMinutes());
@@ -598,7 +587,7 @@ public class ShowTea extends AppCompatActivity {
         AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.dialog_theme);
         adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.show_tea_dialog_amount);
-        adb.setIcon(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getImageResourceIdShowTea());
+        adb.setIcon(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind()).getImageResourceIdShowTea());
         adb.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
         adb.show();
     }
@@ -607,7 +596,7 @@ public class ShowTea extends AppCompatActivity {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
 
-        textViewAmountPerAmount.setText(getResources().getString(DisplayAmountKindFactory.getDisplayAmountKind(showTeaViewModel.getAmountKind()).getTextIdCalculatorShowTea(), amountPerLiter, liter));
+        textViewAmountPerAmount.setText(getResources().getString(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind()).getTextIdCalculatorShowTea(), amountPerLiter, liter));
     }
 
     @Override
