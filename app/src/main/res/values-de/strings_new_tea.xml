@@ -50,8 +50,6 @@
     <string name="new_tea_dialog_picker_negative">Abbrechen</string>
     <string name="new_tea_dialog_picker_positive">Hinzufügen</string>
     <string name="new_tea_action_done_title">Tee speichern</string>
-    <string name="new_tea_fahrenheit">Fahrenheit</string>
-    <string name="new_tea_celsius">Celsius</string>
     <string-array name="new_tea_variety_teas">
         <item>Schwarzer Tee</item>
         <item>Grüner Tee</item>
