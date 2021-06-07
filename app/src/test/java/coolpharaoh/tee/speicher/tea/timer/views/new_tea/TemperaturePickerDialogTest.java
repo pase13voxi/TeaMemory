@@ -29,6 +29,7 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
 import static android.os.Looper.getMainLooper;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.TemperaturePickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -40,7 +41,6 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class TemperaturePickerDialogTest {
-    private static final String FAHRENHEIT = "Fahrenheit";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();

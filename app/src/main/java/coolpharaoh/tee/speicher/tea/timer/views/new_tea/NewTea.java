@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
@@ -31,11 +32,12 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
 public class NewTea extends AppCompatActivity implements Printer {
-
-    private static final String FAHRENHEIT = "Fahrenheit";
 
     private enum Variety {
         BLACK_TEA, GREEN_TEA, YELLOW_TEA, WHITE_TEA, OOLONG_TEA, PU_ERH_TEA,
@@ -228,7 +230,7 @@ public class NewTea extends AppCompatActivity implements Printer {
 
     private void bindTemperatureToInputField() {
         final int temperature = newTeaViewModel.getInfusionTemperature();
-        final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
+        final TemperatureUnit temperatureUnit = newTeaViewModel.getTemperatureUnit();
         final EditText editTextTemperature = findViewById(R.id.edit_text_new_tea_temperature);
 
         if (temperature == -500) {
@@ -258,11 +260,11 @@ public class NewTea extends AppCompatActivity implements Printer {
 
     private void showCoolDownTimeInput() {
         final int temperature = newTeaViewModel.getInfusionTemperature();
-        final String temperatureUnit = newTeaViewModel.getTemperatureUnit();
+        final TemperatureUnit temperatureUnit = newTeaViewModel.getTemperatureUnit();
         final LinearLayout layoutCoolDownTime = findViewById(R.id.layout_new_tea_cool_down_time);
 
         if (temperature == -500
-                || (temperature == 100 && "Celsius".equals(temperatureUnit))
+                || (temperature == 100 && CELSIUS.equals(temperatureUnit))
                 || (temperature == 212 && FAHRENHEIT.equals(temperatureUnit))) {
             layoutCoolDownTime.setVisibility(View.GONE);
             newTeaViewModel.resetInfusionCoolDownTime();

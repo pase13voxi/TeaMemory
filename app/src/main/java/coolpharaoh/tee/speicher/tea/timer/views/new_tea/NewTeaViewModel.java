@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -17,6 +18,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
 class NewTeaViewModel {
     private final Application application;
@@ -201,8 +204,8 @@ class NewTeaViewModel {
     }
 
     // Settings
-    String getTemperatureUnit() {
-        return actualSettingsRepository.getSettings().getTemperatureUnit();
+    TemperatureUnit getTemperatureUnit() {
+        return TemperatureUnit.fromText(actualSettingsRepository.getSettings().getTemperatureUnit());
     }
 
     // Overall
@@ -247,7 +250,7 @@ class NewTeaViewModel {
     }
 
     private boolean isFahrenheit() {
-        return "Fahrenheit".equals(getTemperatureUnit());
+        return FAHRENHEIT.equals(getTemperatureUnit());
     }
 
     private void signalDataChanged() {

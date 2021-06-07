@@ -41,6 +41,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerCon
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -256,13 +257,13 @@ public class ShowTea extends AppCompatActivity {
 
     private void fillTemperatureWithUnit() {
         if (showTeaViewModel.getTemperature() != -500) {
-            if (getResources().getString(R.string.new_tea_fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
+            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
             } else {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
-            if (getResources().getString(R.string.new_tea_fahrenheit).equals(showTeaViewModel.getTemperatureunit())) {
+            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, "-"));
             } else {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, "-"));
@@ -350,13 +351,13 @@ public class ShowTea extends AppCompatActivity {
 
     private void infusionIndexChanged() {
         if (showTeaViewModel.getTemperature() != -500) {
-            if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, String.valueOf(showTeaViewModel.getTemperature())));
             } else {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, String.valueOf(showTeaViewModel.getTemperature())));
             }
         } else {
-            if (showTeaViewModel.getTemperatureunit().equals("Fahrenheit")) {
+            if (FAHRENHEIT.equals(showTeaViewModel.getTemperatureUnit())) {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_fahrenheit, "-"));
             } else {
                 textViewTemperature.setText(getResources().getString(R.string.show_tea_display_celsius, "-"));

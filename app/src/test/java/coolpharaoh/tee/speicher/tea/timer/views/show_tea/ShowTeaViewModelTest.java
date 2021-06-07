@@ -33,6 +33,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -312,18 +313,18 @@ public class ShowTeaViewModelTest {
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
 
         TimeConverter time2 = showTeaViewModel.getTime();
-        TimeConverter cooldownTime2 = showTeaViewModel.getCoolDownTime();
+        TimeConverter coolDownTime2 = showTeaViewModel.getCoolDownTime();
         int temperature2 = showTeaViewModel.getTemperature();
 
         assertThat(time2.getTime()).isEqualTo(infusions.get(1).getTime());
         assertThat(time2.getMinutes()).isEqualTo(2);
         assertThat(time2.getSeconds()).isEqualTo(30);
-        assertThat(cooldownTime2.getTime()).isEqualTo(infusions.get(1).getCoolDownTime());
-        assertThat(cooldownTime2.getMinutes()).isEqualTo(5);
-        assertThat(cooldownTime2.getSeconds()).isEqualTo(30);
+        assertThat(coolDownTime2.getTime()).isEqualTo(infusions.get(1).getCoolDownTime());
+        assertThat(coolDownTime2.getMinutes()).isEqualTo(5);
+        assertThat(coolDownTime2.getSeconds()).isEqualTo(30);
         assertThat(temperature2).isEqualTo(infusions.get(1).getTemperatureCelsius());
 
-        actualSettings.setTemperatureUnit("Fahrenheit");
+        actualSettings.setTemperatureUnit(FAHRENHEIT.getText());
         showTeaViewModel.setInfusionIndex(0);
         assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 

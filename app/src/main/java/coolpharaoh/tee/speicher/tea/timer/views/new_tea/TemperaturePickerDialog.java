@@ -21,9 +21,10 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+
 public class TemperaturePickerDialog extends DialogFragment {
     public static final String TAG = "TemperaturePickerDialog";
-    private static final String FAHRENHEIT = "Fahrenheit";
 
     private final Suggestions suggestions;
     private final NewTeaViewModel newTeaViewModel;

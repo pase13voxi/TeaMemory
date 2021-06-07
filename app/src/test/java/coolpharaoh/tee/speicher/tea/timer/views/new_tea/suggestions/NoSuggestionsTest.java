@@ -15,32 +15,32 @@ public class NoSuggestionsTest {
     }
 
     @Test
-    public void getAmountTsHint() {
+    public void getAmountTsSuggestion() {
         assertThat(noSuggestions.getAmountTsSuggestions()).isEmpty();
     }
 
     @Test
-    public void getAmountGrHint() {
+    public void getAmountGrSuggestion() {
         assertThat(noSuggestions.getAmountGrSuggestions()).isEmpty();
     }
 
     @Test
-    public void getAmountTbHint() {
+    public void getAmountTbSuggestion() {
         assertThat(noSuggestions.getAmountTbSuggestions()).isEmpty();
     }
 
     @Test
-    public void getTemperatureCelsiusHint() {
+    public void getTemperatureCelsiusSuggestion() {
         assertThat(noSuggestions.getTemperatureCelsiusSuggestions()).isEmpty();
     }
 
     @Test
-    public void getTemperatureFahrenheitHint() {
+    public void getTemperatureFahrenheitSuggestion() {
         assertThat(noSuggestions.getTemperatureFahrenheitSuggestions()).isEmpty();
     }
 
     @Test
-    public void getSteepingTimeHint() {
+    public void getSteepingTimeSuggestion() {
         assertThat(noSuggestions.getTimeSuggestions()).isEmpty();
     }
 }

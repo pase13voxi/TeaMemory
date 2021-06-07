@@ -28,6 +28,8 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 import static android.os.Looper.getMainLooper;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.CoolDownTimePickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -39,8 +41,6 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class CoolDownTimePickerDialogTest {
-    private static final String CELSIUS = "Celsius";
-    public static final String FAHRENHEIT = "Fahrenheit";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();

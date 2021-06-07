@@ -46,6 +46,8 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.DISABLED;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.ENABLED;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.SYSTEM;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -68,10 +70,6 @@ public class SettingsTest {
     private static final int OPTION_OFF = 1;
     private static final String ON = "On";
     private static final String OFF = "Off";
-    private static final int TEMPERATURE_UNIT_CELSIUS = 0;
-    private static final int TEMPERATURE_UNIT_FAHRENHEIT = 1;
-    private static final String CELSIUS = "Celsius";
-    private static final String FAHRENHEIT = "Fahrenheit";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -101,7 +99,7 @@ public class SettingsTest {
         actualSettings.setMusicName("MusicName");
         actualSettings.setVibration(true);
         actualSettings.setAnimation(true);
-        actualSettings.setTemperatureUnit(CELSIUS);
+        actualSettings.setTemperatureUnit(CELSIUS.getText());
         actualSettings.setMainRateAlert(false);
         actualSettings.setShowTeaAlert(false);
         actualSettings.setSettingsPermissionAlert(false);
@@ -248,14 +246,14 @@ public class SettingsTest {
             clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_CELSIUS);
+            shadowAlertDialog.clickOnItem(CELSIUS.getChoice());
             shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(CELSIUS);
+            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(CELSIUS.getText());
 
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS);
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS.getText());
         });
     }
 
@@ -268,14 +266,14 @@ public class SettingsTest {
             clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(TEMPERATURE_UNIT_FAHRENHEIT);
+            shadowAlertDialog.clickOnItem(FAHRENHEIT.getChoice());
             shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(captor.capture());
             final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
+            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT.getText());
 
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT);
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT.getText());
         });
     }
 

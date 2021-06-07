@@ -31,7 +31,7 @@ public class FruitTeaSuggestionsTest {
     }
 
     @Test
-    public void getAmountTsHint() {
+    public void getAmountTsSuggestion() {
         final int[] arrayTs = new int[]{1, 2};
         when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_ts)).thenReturn(arrayTs);
 
@@ -39,7 +39,7 @@ public class FruitTeaSuggestionsTest {
     }
 
     @Test
-    public void getAmountGrHint() {
+    public void getAmountGrSuggestion() {
         final int[] arrayGr = new int[]{1, 2};
         when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_gr)).thenReturn(arrayGr);
 
@@ -47,7 +47,7 @@ public class FruitTeaSuggestionsTest {
     }
 
     @Test
-    public void getAmountTbHint() {
+    public void getAmountTbSuggestion() {
         final int[] arrayTb = new int[]{1, 2};
         when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_tb)).thenReturn(arrayTb);
 
@@ -55,7 +55,7 @@ public class FruitTeaSuggestionsTest {
     }
 
     @Test
-    public void getTemperatureCelsiusHint() {
+    public void getTemperatureCelsiusSuggestion() {
         final int[] arrayCelsius = new int[]{1, 2};
         when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_celsius)).thenReturn(arrayCelsius);
 
@@ -63,7 +63,7 @@ public class FruitTeaSuggestionsTest {
     }
 
     @Test
-    public void getTemperatureFahrenheitHint() {
+    public void getTemperatureFahrenheitSuggestion() {
         final int[] arrayFahrenheit = new int[]{1, 2};
         when(resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_fahrenheit)).thenReturn(arrayFahrenheit);
 
@@ -71,7 +71,7 @@ public class FruitTeaSuggestionsTest {
     }
 
     @Test
-    public void getSteepingTimeHint() {
+    public void getSteepingTimeSuggestion() {
         final String[] arrayTime = new String[]{"1:00", "2:30"};
         when(resources.getStringArray(R.array.new_tea_suggestions_fruit_tea_time)).thenReturn(arrayTime);
 

@@ -28,6 +28,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,8 +39,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NewTeaViewModelTest {
-    private static final String CELSIUS = "Celsius";
-    private static final String FAHRENHEIT = "Fahrenheit";
     private static final String TIME_1 = "05:45";
     private static final String[] VARIETY_CODES = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
             "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
@@ -111,7 +111,7 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setTemperatureCelsiusAndExpectTemperature() {
-        mockTemperatureUnit(CELSIUS);
+        mockTemperatureUnit(CELSIUS.getText());
         newTeaViewModelEmpty.setInfusionTemperature(90);
         assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(90);
         assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(CELSIUS);
@@ -119,7 +119,7 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setTemperatureFahrenheitAndExpectTemperature() {
-        mockTemperatureUnit(FAHRENHEIT);
+        mockTemperatureUnit(FAHRENHEIT.getText());
         newTeaViewModelEmpty.setInfusionTemperature(90);
         assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(90);
         assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
@@ -145,7 +145,7 @@ public class NewTeaViewModelTest {
 
     @Test
     public void addInfusion() {
-        mockTemperatureUnit(CELSIUS);
+        mockTemperatureUnit(CELSIUS.getText());
         assertThat(newTeaViewModelEmpty.getInfusionSize()).isEqualTo(1);
 
         newTeaViewModelEmpty.addInfusion();

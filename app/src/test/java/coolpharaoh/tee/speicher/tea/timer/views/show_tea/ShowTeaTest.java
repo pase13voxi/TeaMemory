@@ -53,6 +53,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.overview.Overview;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
 
 import static android.os.Looper.getMainLooper;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
@@ -73,8 +75,6 @@ ShowTeaTest {
     private static final String TEA_ID_EXTRA = "teaId";
     private static final long TEA_ID = 1L;
     private static final String VARIETY = "variety";
-    private static final String CELSIUS = "Celsius";
-    private static final String FAHRENHEIT = "Fahrenheit";
     private static final String BROADCAST_EXTRA_READY = "ready";
     private static final String BROADCAST_EXTRA_COUNTDOWN = "countdown";
 
@@ -137,7 +137,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, true, false);
+        mockActualSettings(CELSIUS.getText(), true, false);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
@@ -168,7 +168,7 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, null, null}),
                 Arrays.asList(new Integer[]{100, 100, 90}), Arrays.asList(new Integer[]{212, 212, 176}));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
@@ -199,7 +199,7 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, null, null}),
                 Arrays.asList(new Integer[]{100, 100, 90}), Arrays.asList(new Integer[]{212, 212, 176}));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
@@ -224,7 +224,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -259,7 +259,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, GRAM.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(FAHRENHEIT, false, false);
+        mockActualSettings(FAHRENHEIT.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -280,7 +280,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_BAG.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(FAHRENHEIT, false, false);
+        mockActualSettings(FAHRENHEIT.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -301,7 +301,7 @@ ShowTeaTest {
         mockTea(null, -500, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
                 Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -328,7 +328,7 @@ ShowTeaTest {
         mockTea(null, -500, GRAM.getText(), 0);
         mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
                 Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(FAHRENHEIT, false, false);
+        mockActualSettings(FAHRENHEIT.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -349,7 +349,7 @@ ShowTeaTest {
         mockTea(null, -500, TEA_BAG.getText(), 0);
         mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
                 Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(FAHRENHEIT, false, false);
+        mockActualSettings(FAHRENHEIT.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -368,7 +368,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -407,7 +407,7 @@ ShowTeaTest {
         mockTea(VARIETY, 4, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -437,7 +437,7 @@ ShowTeaTest {
         mockTea(VARIETY, 9, GRAM.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -466,7 +466,7 @@ ShowTeaTest {
         mockTea(VARIETY, 9, TEA_BAG.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -495,7 +495,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -518,7 +518,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -540,7 +540,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -563,7 +563,7 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00", "3:00"}), Arrays.asList(new String[]{null, "5:00", null}),
                 Arrays.asList(new Integer[]{100, -500, 100}), Arrays.asList(new Integer[]{212, -500, 212}));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -608,7 +608,7 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{null, "5:00"}),
                 Arrays.asList(new Integer[]{100, -500}), Arrays.asList(new Integer[]{212, -500}));
-        mockActualSettings(FAHRENHEIT, false, false);
+        mockActualSettings(FAHRENHEIT.getText(), false, false);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -634,7 +634,7 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
                 Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
-        mockActualSettings(CELSIUS, false, true);
+        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -650,7 +650,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, true);
+        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -683,7 +683,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, true);
+        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -714,7 +714,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("1:00"),
                 Collections.singletonList(95), Collections.singletonList(203));
-        mockActualSettings(CELSIUS, false, true);
+        mockActualSettings(CELSIUS.getText(), false, true);
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
@@ -752,7 +752,7 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS, false, false);
+        mockActualSettings(CELSIUS.getText(), false, false);
         mockCounter();
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
@@ -789,7 +789,7 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{"1:00", "1:00"}),
                 Arrays.asList(new Integer[]{95, 95}), Arrays.asList(new Integer[]{203, 203}));
-        mockActualSettings(CELSIUS, false, true);
+        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
 
         Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);

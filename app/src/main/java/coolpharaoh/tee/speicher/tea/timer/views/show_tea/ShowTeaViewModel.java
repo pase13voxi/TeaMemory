@@ -8,6 +8,7 @@ import java.util.Date;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
@@ -18,6 +19,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
 class ShowTeaViewModel {
 
@@ -118,7 +121,7 @@ class ShowTeaViewModel {
     }
 
     int getTemperature() {
-        if ("Fahrenheit".equals(getTemperatureunit())) {
+        if (FAHRENHEIT.equals(getTemperatureUnit())) {
             return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureFahrenheit();
         } else {
             return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
@@ -189,7 +192,7 @@ class ShowTeaViewModel {
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
-    String getTemperatureunit() {
-        return actualSettingsRepository.getSettings().getTemperatureUnit();
+    TemperatureUnit getTemperatureUnit() {
+        return TemperatureUnit.fromText(actualSettingsRepository.getSettings().getTemperatureUnit());
     }
 }
