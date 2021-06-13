@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview;
 import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,16 +11,19 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 import java.util.Objects;
 
-import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.WHITE_TEA;
 
 class OverviewViewModel extends ViewModel {
 
@@ -55,17 +59,17 @@ class OverviewViewModel extends ViewModel {
 
     // Defaults
     private void createDefaultTeas(Application application) {
-        Tea tea1 = new Tea("Earl Grey", application.getResources().getStringArray(R.array.new_tea_variety_codes)[0], 5, "Ts", ColorConversation.getVarietyColor(0, application), 0, CurrentDate.getDate());
+        Tea tea1 = new Tea("Earl Grey", BLACK_TEA.getCode(), 5, TEA_SPOON.getText(), ContextCompat.getColor(application, BLACK_TEA.getColor()), 0, CurrentDate.getDate());
         long teaId1 = teaRepository.insertTea(tea1);
         Infusion infusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
         infusionRepository.insertInfusion(infusion1);
 
-        Tea tea2 = new Tea("Pai Mu Tan", application.getResources().getStringArray(R.array.new_tea_variety_codes)[3], 4, "Ts", ColorConversation.getVarietyColor(3, application), 0, CurrentDate.getDate());
+        Tea tea2 = new Tea("Pai Mu Tan", WHITE_TEA.getCode(), 4, TEA_SPOON.getText(), ContextCompat.getColor(application, WHITE_TEA.getColor()), 0, CurrentDate.getDate());
         long teaId2 = teaRepository.insertTea(tea2);
         Infusion infusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
         infusionRepository.insertInfusion(infusion2);
 
-        Tea tea3 = new Tea("Sencha", application.getResources().getStringArray(R.array.new_tea_variety_codes)[1], 4, "Ts", ColorConversation.getVarietyColor(1, application), 0, CurrentDate.getDate());
+        Tea tea3 = new Tea("Sencha", GREEN_TEA.getCode(), 4, TEA_SPOON.getText(), ContextCompat.getColor(application, GREEN_TEA.getColor()), 0, CurrentDate.getDate());
         long teaId3 = teaRepository.insertTea(tea3);
         Infusion infusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
         infusionRepository.insertInfusion(infusion3);

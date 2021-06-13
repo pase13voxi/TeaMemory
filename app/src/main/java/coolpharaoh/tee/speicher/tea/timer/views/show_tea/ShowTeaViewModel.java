@@ -15,10 +15,10 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
-import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
@@ -65,10 +65,11 @@ class ShowTeaViewModel {
     }
 
     String getVariety() {
-        if ("".equals(teaRepository.getTeaById(teaId).getVariety())) {
+        final String variety = teaRepository.getTeaById(teaId).getVariety();
+        if (variety == null || "".equals(variety)) {
             return "-";
         } else {
-            return LanguageConversation.convertCodeToVariety(teaRepository.getTeaById(teaId).getVariety(), application);
+            return Variety.convertStoredVarietyToText(variety, application);
         }
     }
 

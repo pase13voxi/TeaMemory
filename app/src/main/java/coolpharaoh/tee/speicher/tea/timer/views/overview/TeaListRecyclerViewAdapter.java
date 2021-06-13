@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 public class TeaListRecyclerViewAdapter extends RecyclerView.Adapter<TeaListRecyclerViewAdapter.ViewHolder> {
 
@@ -47,9 +47,9 @@ public class TeaListRecyclerViewAdapter extends RecyclerView.Adapter<TeaListRecy
         header.setText(tea.getName());
         final TextView description = holder.description;
         if (tea.getVariety().equals("")) {
-            description.setText(LanguageConversation.convertCodeToVariety("-", application));
+            description.setText(Variety.convertStoredVarietyToText("-", application));
         } else {
-            description.setText(LanguageConversation.convertCodeToVariety(tea.getVariety(), application));
+            description.setText(Variety.convertStoredVarietyToText(tea.getVariety(), application));
         }
     }
 

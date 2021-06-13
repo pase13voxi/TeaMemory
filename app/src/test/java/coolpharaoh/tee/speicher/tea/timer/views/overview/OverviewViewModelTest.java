@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.Application;
-import android.content.res.Resources;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
@@ -16,7 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -36,8 +34,6 @@ public class OverviewViewModelTest {
     @Mock
     Application application;
     @Mock
-    Resources resources;
-    @Mock
     TeaRepository teaRepository;
     @Mock
     InfusionRepository infusionRepository;
@@ -51,18 +47,10 @@ public class OverviewViewModelTest {
 
     @Before
     public void setUp() {
-        mockResources();
         mockSettings();
         mockTeas();
         overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository,
                 actualSettingsRepository);
-    }
-
-    private void mockResources() {
-        String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-                "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
-        when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(varietyCodes);
     }
 
     private void mockSettings() {
@@ -78,6 +66,7 @@ public class OverviewViewModelTest {
         actualSettings.setSettingsPermissionAlert(true);
         actualSettings.setSort(0);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        when(actualSettingsRepository.getCountItems()).thenReturn(1);
     }
 
     private void mockTeas() {

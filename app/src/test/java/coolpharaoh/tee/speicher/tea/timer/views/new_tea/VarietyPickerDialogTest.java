@@ -30,6 +30,8 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 import static android.os.Looper.getMainLooper;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialog.TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -41,10 +43,8 @@ import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class VarietyPickerDialogTest {
-    private static final String WHITE_TEA = "White tea";
-    private static final int INDEX_WHITE_TEA = 3;
-    public static final int INDEX_OTHER = 9;
-    public static final String CUSTOM_VARIETY = "Custom Variety";
+    private static final String YELLOW_TEA_TEXT = "Yellow tea";
+    private static final String CUSTOM_VARIETY = "Custom Variety";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -79,12 +79,12 @@ public class VarietyPickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
 
-        radioButtons.get(INDEX_WHITE_TEA).performClick();
+        radioButtons.get(YELLOW_TEA.getChoice()).performClick();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         shadowOf(getMainLooper()).idle();
 
-        verify(newTeaViewModel).setVariety(WHITE_TEA);
+        verify(newTeaViewModel).setVariety(YELLOW_TEA_TEXT);
     }
 
     @Test
@@ -95,17 +95,18 @@ public class VarietyPickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
 
-        radioButtons.get(INDEX_WHITE_TEA).performClick();
+        radioButtons.get(YELLOW_TEA.getChoice()).performClick();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         shadowOf(getMainLooper()).idle();
 
-        verify(newTeaViewModel).setColor(-1642);
+        verify(newTeaViewModel).setColor(-15797);
     }
 
     @Test
     public void showAndHideCustomVarityInputField() {
-        when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
+        when(newTeaViewModel.getVarietyAsText()).thenReturn(YELLOW_TEA_TEXT);
+        when(newTeaViewModel.getVariety()).thenReturn(YELLOW_TEA);
 
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
@@ -115,10 +116,10 @@ public class VarietyPickerDialogTest {
         assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.GONE);
 
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        radioButtons.get(INDEX_OTHER).performClick();
+        radioButtons.get(OTHER.getChoice()).performClick();
         assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.VISIBLE);
 
-        radioButtons.get(INDEX_WHITE_TEA).performClick();
+        radioButtons.get(YELLOW_TEA.getChoice()).performClick();
         assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -130,7 +131,7 @@ public class VarietyPickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
 
-        radioButtons.get(INDEX_OTHER).performClick();
+        radioButtons.get(OTHER.getChoice()).performClick();
 
         final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
         editTextCustomVariety.setText(CUSTOM_VARIETY);
@@ -143,7 +144,8 @@ public class VarietyPickerDialogTest {
 
     @Test
     public void showExistingVarietyConfiguration() {
-        when(newTeaViewModel.getVariety()).thenReturn(WHITE_TEA);
+        when(newTeaViewModel.getVarietyAsText()).thenReturn(YELLOW_TEA_TEXT);
+        when(newTeaViewModel.getVariety()).thenReturn(YELLOW_TEA);
 
         dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
         shadowOf(getMainLooper()).idle();
@@ -151,12 +153,13 @@ public class VarietyPickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
 
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        assertThat(radioButtons.get(INDEX_WHITE_TEA).isChecked()).isTrue();
+        assertThat(radioButtons.get(YELLOW_TEA.getChoice()).isChecked()).isTrue();
     }
 
     @Test
     public void showExistingCustomVarietyConfiguration() {
-        when(newTeaViewModel.getVariety()).thenReturn(CUSTOM_VARIETY);
+        when(newTeaViewModel.getVariety()).thenReturn(OTHER);
+        when(newTeaViewModel.getVarietyAsText()).thenReturn(CUSTOM_VARIETY);
 
         dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
         shadowOf(getMainLooper()).idle();
@@ -164,7 +167,7 @@ public class VarietyPickerDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
 
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        assertThat(radioButtons.get(INDEX_OTHER).isChecked()).isTrue();
+        assertThat(radioButtons.get(OTHER.getChoice()).isChecked()).isTrue();
 
         final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
         assertThat(editTextCustomVariety.getText()).hasToString(CUSTOM_VARIETY);

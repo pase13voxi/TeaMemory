@@ -14,10 +14,10 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
@@ -81,13 +81,17 @@ class NewTeaViewModel {
         return tea.getName();
     }
 
-    String getVariety() {
-        return LanguageConversation.convertCodeToVariety(tea.getVariety(), application);
+    String getVarietyAsText() {
+        return Variety.convertStoredVarietyToText(tea.getVariety(), application);
     }
 
     void setVariety(final String variety) {
-        tea.setVariety(LanguageConversation.convertVarietyToCode(variety, application));
+        tea.setVariety(Variety.convertTextToStoredVariety(variety, application));
         signalDataChanged();
+    }
+
+    Variety getVariety() {
+        return Variety.fromStoredText(tea.getVariety());
     }
 
     void setAmount(final int amount, final AmountKind amountKind) {

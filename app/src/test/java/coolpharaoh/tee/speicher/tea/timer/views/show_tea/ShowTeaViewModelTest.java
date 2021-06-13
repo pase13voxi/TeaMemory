@@ -35,6 +35,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -108,32 +109,23 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void getVariety() {
-        String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-                "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
         String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
-        int varietyIndex = 4;
-        String varietyCode = varietyCodes[varietyIndex];
-        String varietyBefore = varietyTeas[varietyIndex];
-
         Tea tea = new Tea();
-        tea.setVariety(varietyCode);
+        tea.setVariety(OOLONG_TEA.getCode());
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(varietyCodes);
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
 
         String varietyAfter = showTeaViewModel.getVariety();
 
-        assertThat(varietyAfter).isEqualTo(varietyBefore);
+        assertThat(varietyAfter).isEqualTo(varietyTeas[OOLONG_TEA.getChoice()]);
     }
 
     @Test
     public void getUnkownVariety() {
-        String[] varietyCodes = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-                "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
         String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
@@ -144,7 +136,6 @@ public class ShowTeaViewModelTest {
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(varietyCodes);
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
 
         String varietyAfter = showTeaViewModel.getVariety();

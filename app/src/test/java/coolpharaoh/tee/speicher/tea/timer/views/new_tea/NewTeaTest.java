@@ -41,15 +41,20 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
 import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,7 +72,6 @@ public class NewTeaTest {
     private static final String SECOND_INFUSION = "2. Infusion";
     private static final String TEA_ID = "teaId";
     private static final String SHOW_TEA_FLAG = "showTea";
-    private static final String CODE_GREEN_TEA = "02_green";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -144,7 +148,7 @@ public class NewTeaTest {
                     Tea::getRating,
                     Tea::isFavorite
             ).containsExactly(
-                    "Name", "01_black", -15461296, -500, "Ts", 0, false
+                    "Name", BLACK_TEA.getCode(), -15461296, -500, TEA_SPOON.getText(), 0, false
             );
 
             final ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
@@ -324,7 +328,7 @@ public class NewTeaTest {
     @Test
     public void showActivityEditModeAndExpectFilledFields() {
         mockSettings(FAHRENHEIT.getText());
-        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -345,7 +349,7 @@ public class NewTeaTest {
             final EditText editTextTime = newTea.findViewById(R.id.edit_text_new_tea_time);
             final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
 
-            assertThat(editTextVariety.getText()).hasToString(LanguageConversation.convertCodeToVariety(tea.getVariety(), newTea.getApplication()));
+            assertThat(editTextVariety.getText()).hasToString(Variety.convertStoredVarietyToText(tea.getVariety(), newTea.getApplication()));
             assertThat(editTextName.getText()).hasToString(tea.getName());
             assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_ts, tea.getAmount()));
             assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, infusions.get(0).getTemperatureFahrenheit()));
@@ -357,7 +361,7 @@ public class NewTeaTest {
     @Test
     public void showActivityEditModeAndExpectFilledAmountTeaBag() {
         mockSettings(CELSIUS.getText());
-        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Tb", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_BAG.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -380,7 +384,7 @@ public class NewTeaTest {
     @Test
     public void editTeaAndExpectEditedTea() {
         mockSettings(FAHRENHEIT.getText());
-        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -435,7 +439,7 @@ public class NewTeaTest {
     @Test
     public void performNextAndPreviousInfusion() {
         mockSettings(FAHRENHEIT.getText());
-        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -484,7 +488,7 @@ public class NewTeaTest {
     @Test
     public void performDeleteInfusion() {
         mockSettings(FAHRENHEIT.getText());
-        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -519,7 +523,7 @@ public class NewTeaTest {
     @Test
     public void exitEditModeAndExpectShowTeaActivity() {
         mockSettings(CELSIUS.getText());
-        final Tea tea = new Tea("Tea", "01_black", 1, "Gr", 1, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", BLACK_TEA.getCode(), 1, GRAM.getText(), 1, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 
@@ -547,7 +551,7 @@ public class NewTeaTest {
     @Test
     public void editTeaAndExpectShowTeaActivity() {
         mockSettings(FAHRENHEIT.getText());
-        final Tea tea = new Tea("Tea", CODE_GREEN_TEA, 1, "Ts", 234, 0, Date.from(getFixedDate()));
+        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
 

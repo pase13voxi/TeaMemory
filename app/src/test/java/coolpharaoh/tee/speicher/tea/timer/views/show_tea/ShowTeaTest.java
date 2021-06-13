@@ -314,7 +314,7 @@ ShowTeaTest {
             Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
             Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
 
-            assertThat(textViewVariety.getText()).isEmpty();
+            assertThat(textViewVariety.getText()).isEqualTo("-");
             assertThat(textViewTemperature.getText()).isEqualTo("- °C");
             assertThat(textViewAmount.getText()).contains("- ts/l");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("00");

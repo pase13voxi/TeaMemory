@@ -21,11 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
+
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
 
 public class VarietyPickerDialog extends DialogFragment {
     public static final String TAG = "VarietyPickerDialog";
-    public static final int VARIETY_OTHER = 9;
 
     private final NewTeaViewModel newTeaViewModel;
     private View dialogView;
@@ -70,16 +71,17 @@ public class VarietyPickerDialog extends DialogFragment {
     }
 
     private void setConfiguredValues(final RadioGroup varietyRadioGroup, final String[] varietyList) {
-        final String variety = newTeaViewModel.getVariety();
-        final int varietyIndex = Arrays.asList(varietyList).indexOf(variety);
+        final String varietyAsText = newTeaViewModel.getVarietyAsText();
+        final int varietyIndex = Arrays.asList(varietyList).indexOf(varietyAsText);
         final List<RadioButton> radioButtons = getRadioButtons(varietyRadioGroup);
 
         if (varietyIndex == -1) {
-            radioButtons.get(VARIETY_OTHER).setChecked(true);
+            radioButtons.get(OTHER.getChoice()).setChecked(true);
             final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
-            editTextCustomVariety.setText(variety);
+            editTextCustomVariety.setText(varietyAsText);
         } else {
-            radioButtons.get(varietyIndex).setChecked(true);
+            final Variety variety = newTeaViewModel.getVariety();
+            radioButtons.get(variety.getChoice()).setChecked(true);
         }
     }
 
@@ -127,7 +129,7 @@ public class VarietyPickerDialog extends DialogFragment {
         final RadioButton radioButton = radioGroup.findViewById(checkedId);
         final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
 
-        if (varietyList[VARIETY_OTHER].equals(radioButton.getText().toString())) {
+        if (varietyList[OTHER.getChoice()].equals(radioButton.getText().toString())) {
             editTextCustomVariety.setVisibility(View.VISIBLE);
         } else {
             editTextCustomVariety.setVisibility(View.GONE);
@@ -154,7 +156,7 @@ public class VarietyPickerDialog extends DialogFragment {
         final RadioButton radioButton = varietyRadioGroup.findViewById(varietyRadioGroup.getCheckedRadioButtonId());
 
         final int varietyIndex = Arrays.asList(varietyList).indexOf(radioButton.getText().toString());
-        final int varietyColor = ColorConversation.getVarietyColor(varietyIndex, getActivity().getApplication());
+        final int varietyColor = ContextCompat.getColor(getActivity().getApplication(), Variety.fromChoice(varietyIndex).getColor());
 
         newTeaViewModel.setColor(varietyColor);
     }

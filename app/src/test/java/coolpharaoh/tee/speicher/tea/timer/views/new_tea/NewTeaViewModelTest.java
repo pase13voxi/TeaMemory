@@ -24,13 +24,14 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.language.LanguageConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -40,8 +41,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class NewTeaViewModelTest {
     private static final String TIME_1 = "05:45";
-    private static final String[] VARIETY_CODES = {"01_black", "02_green", "03_yellow", "04_white", "05_oolong",
-            "06_pu", "07_herbal", "08_fruit", "09_rooibus", "10_other"};
     private static final String[] VARIETY_TEAS = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
             "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
     private NewTeaViewModel newTeaViewModelEmpty;
@@ -83,17 +82,24 @@ public class NewTeaViewModelTest {
     }
 
     @Test
+    public void getVarietyAsText() {
+        mockStringResource();
+        assertThat(newTeaViewModelFilled.getVarietyAsText())
+                .isEqualTo(Variety.convertStoredVarietyToText(tea.getVariety(), application));
+    }
+
+    @Test
     public void getVariety() {
         mockStringResource();
         assertThat(newTeaViewModelFilled.getVariety())
-                .isEqualTo(LanguageConversation.convertCodeToVariety(tea.getVariety(), application));
+                .isEqualTo(Variety.fromStoredText(tea.getVariety()));
     }
 
     @Test
     public void setVariety() {
         mockStringResource();
         newTeaViewModelEmpty.setVariety("VARIETY");
-        assertThat(newTeaViewModelEmpty.getVariety()).isEqualTo("VARIETY");
+        assertThat(newTeaViewModelEmpty.getVarietyAsText()).isEqualTo("VARIETY");
     }
 
     @Test
@@ -230,7 +236,7 @@ public class NewTeaViewModelTest {
 
     private void mockStoredTea() {
         Date today = Date.from(Instant.now());
-        tea = new Tea("TEA", VARIETY_CODES[2], 3, "ts", 5, 0, today);
+        tea = new Tea("TEA", YELLOW_TEA.getCode(), 3, TEA_SPOON.getText(), 5, 0, today);
         tea.setId(TEA_ID_FILLED);
         when(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
 
@@ -244,7 +250,6 @@ public class NewTeaViewModelTest {
 
     private void mockStringResource() {
         when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_codes)).thenReturn(VARIETY_CODES);
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETY_TEAS);
     }
 }

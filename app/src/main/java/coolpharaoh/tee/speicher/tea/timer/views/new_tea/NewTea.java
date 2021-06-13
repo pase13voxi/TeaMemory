@@ -19,13 +19,13 @@ import androidx.core.app.NavUtils;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
@@ -41,12 +41,7 @@ import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.Temperatur
 @SuppressWarnings("java:S110")
 public class NewTea extends AppCompatActivity implements Printer {
 
-    private enum Variety {
-        BLACK_TEA, GREEN_TEA, YELLOW_TEA, WHITE_TEA, OOLONG_TEA, PU_ERH_TEA,
-        HERBAL_TEA, FRUIT_TEA, ROOIBUS_TEA, OTHER
-    }
-
-    private Variety variety = Variety.BLACK_TEA;
+    private Variety variety;
     private ButtonColorShape buttonColorShape;
 
     private NewTeaViewModel newTeaViewModel;
@@ -199,18 +194,12 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void bindVarietyToInputField() {
-        final String varietyText = newTeaViewModel.getVariety();
+        variety = newTeaViewModel.getVariety();
+
+        final String varietyText = newTeaViewModel.getVarietyAsText();
         final EditText editTextVariety = findViewById(R.id.edit_text_new_tea_variety);
 
         editTextVariety.setText(varietyText);
-
-        final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
-        final int varietyIndex = Arrays.asList(varietyList).indexOf(varietyText);
-        if (varietyIndex == -1) {
-            variety = Variety.OTHER;
-        } else {
-            variety = Variety.values()[varietyIndex];
-        }
     }
 
     private void bindColorToInputField() {
