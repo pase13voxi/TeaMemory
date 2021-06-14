@@ -13,7 +13,7 @@ import lombok.Setter;
 public class TeaPOJO {
     private String name;
     private String variety;
-    private int amount;
+    private double amount;
     private String amountKind;
     private int color;
     private int rating;

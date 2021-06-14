@@ -29,7 +29,7 @@
         <item name="colorControlNormal">@color/background_green</item>
     </style>
 
-    <style name="new_tea_number_picker_temperature_unit">
+    <style name="new_tea_text_view_number_picker">
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textSize">17sp</item>
         <item name="android:layout_width">wrap_content</item>

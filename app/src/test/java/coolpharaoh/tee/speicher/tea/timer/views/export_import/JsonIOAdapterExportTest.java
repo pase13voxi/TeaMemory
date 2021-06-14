@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class JsonIOAdapterExportTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
-    private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1," +
+    private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1.5," +
             "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"favorite\":true,\"nextInfusion\":1," +
             "\"date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":" +
             "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\"" +
@@ -53,7 +53,7 @@ public class JsonIOAdapterExportTest {
             ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"daydate\":\"DATE\"," +
             "\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
             ",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\"" +
-            ":2,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"favorite\":false,\"nextInfusion\":2,\"" +
+            ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"favorite\":false,\"nextInfusion\":2,\"" +
             "date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":" +
             "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1," +
             "\"time\":\"7:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
@@ -107,12 +107,12 @@ public class JsonIOAdapterExportTest {
 
     private void mockExistingTeas() {
         List<Tea> teas = new ArrayList<>();
-        Tea tea0 = new Tea("name1", "variety1", 1, "Gr", 1, 1, CurrentDate.getDate());
+        Tea tea0 = new Tea("name1", "variety1", 1.5, "Gr", 1, 1, CurrentDate.getDate());
         tea0.setId(0L);
         tea0.setRating(3);
         tea0.setFavorite(true);
         teas.add(tea0);
-        Tea tea1 = new Tea("name2", "variety2", 2, "Ts", 2, 2, CurrentDate.getDate());
+        Tea tea1 = new Tea("name2", "variety2", 2.0, "Ts", 2, 2, CurrentDate.getDate());
         tea1.setId(1L);
         tea0.setRating(5);
         teas.add(tea1);

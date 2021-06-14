@@ -246,7 +246,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void showExistingAmountConfiguration() {
-        when(newTeaViewModel.getAmount()).thenReturn(7);
+        when(newTeaViewModel.getAmount()).thenReturn(7.0);
         when(newTeaViewModel.getAmountKind()).thenReturn(GRAM);
 
         dialogFragment.show(fragmentManager, TAG);
@@ -259,5 +259,44 @@ public class AmountPickerDialogTest {
 
         final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         assertThat(amountKindPicker.getValue()).isEqualTo(1);
+    }
+
+    @Test
+    public void showExistingAmountConfigurationDecimal() {
+        when(newTeaViewModel.getAmount()).thenReturn(7.5);
+
+        dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
+        assertThat(amountPicker.getValue()).isEqualTo(7);
+
+        final NumberPicker amountPickerDecimal = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
+        assertThat(amountPickerDecimal.getValue()).isEqualTo(5);
+
+        final NumberPicker amountKindPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
+        assertThat(amountKindPicker.getValue()).isZero();
+    }
+
+    @Test
+    public void clickSuggestionAndExpectOverwrittenExistingConfiguration() {
+        when(newTeaViewModel.getAmount()).thenReturn(7.5);
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{4, 5});
+
+        dialogFragment.show(fragmentManager, TAG);
+        shadowOf(getMainLooper()).idle();
+
+        final AlertDialog dialog = getLatestAlertDialog();
+
+        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
+        buttonSuggestion1.performClick();
+
+        final NumberPicker amountPicker = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount);
+        assertThat(amountPicker.getValue()).isEqualTo(4);
+
+        final NumberPicker amountPickerDecimal = dialog.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
+        assertThat(amountPickerDecimal.getValue()).isZero();
     }
 }

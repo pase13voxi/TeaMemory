@@ -73,7 +73,7 @@ class ShowTeaViewModel {
         }
     }
 
-    int getAmount() {
+    double getAmount() {
         return teaRepository.getTeaById(teaId).getAmount();
     }
 

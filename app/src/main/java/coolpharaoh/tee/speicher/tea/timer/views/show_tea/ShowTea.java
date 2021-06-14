@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -271,12 +272,21 @@ public class ShowTea extends AppCompatActivity {
 
         if (showTeaViewModel.getAmount() != -500) {
             final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind());
-            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), String.valueOf(showTeaViewModel.getAmount())), 10));
+            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), removeZerosFromAmount(showTeaViewModel.getAmount())), 10));
             imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
         } else {
             final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind());
             textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), "-"), 10));
             imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
+        }
+    }
+
+    public String removeZerosFromAmount(final double amount) {
+        if (amount == (int) amount)
+            return String.valueOf((int) amount);
+        else {
+            final DecimalFormat df = new DecimalFormat("#.#");
+            return df.format(amount);
         }
     }
 

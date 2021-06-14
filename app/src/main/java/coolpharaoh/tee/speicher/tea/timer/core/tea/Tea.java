@@ -29,7 +29,7 @@ public class Tea {
     private String variety;
 
     @ColumnInfo(name = "amount")
-    private int amount;
+    private double amount;
 
     @ColumnInfo(name = "amountkind")
     private String amountKind;
@@ -51,7 +51,7 @@ public class Tea {
     private Date date;
 
     @Ignore
-    public Tea(String name, String variety, int amount, String amountKind, int color, int nextInfusion, Date date) {
+    public Tea(String name, String variety, double amount, String amountKind, int color, int nextInfusion, Date date) {
         this.name = name;
         this.variety = variety;
         this.amount = amount;

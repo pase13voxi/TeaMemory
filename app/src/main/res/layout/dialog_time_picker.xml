@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/text_view_new_tea_time_picker_double_point"
-            style="@style/new_tea_number_picker_temperature_unit"
+            style="@style/new_tea_text_view_number_picker"
             android:text="@string/new_tea_dialog_time_double_point"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

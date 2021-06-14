@@ -19,10 +19,11 @@
     <string name="new_tea_tooltip_add_infusion">Aufguss hinzufügen</string>
     <string name="new_tea_text_view_heading_amount">Menge</string>
     <string name="new_tea_edit_text_amount_empty_text_ts">- TL/l (Teelöffel/Liter)</string>
-    <string name="new_tea_edit_text_amount_text_ts">%1$d TL/l (Teelöffel/Liter)</string>
-    <string name="new_tea_edit_text_amount_text_gr">%1$d g/l (Gramm/Liter)</string>
-    <string name="new_tea_edit_text_amount_text_tb">%1$d TB/l (Teebeutel/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_ts">%1$s TL/l (Teelöffel/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_gr">%1$s g/l (Gramm/Liter)</string>
+    <string name="new_tea_edit_text_amount_text_tb">%1$s TB/l (Teebeutel/Liter)</string>
     <string name="new_tea_dialog_amount_header">Menge eingeben</string>
+    <string name="new_tea_dialog_amount_picker_comma">,</string>
     <string-array name="new_tea_dialog_amount_kind">
         <item>TL/l</item>
         <item>g/l</item>

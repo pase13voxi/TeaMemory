@@ -19,10 +19,11 @@
     <string name="new_tea_tooltip_add_infusion">Add infusion</string>
     <string name="new_tea_text_view_heading_amount">Amount</string>
     <string name="new_tea_edit_text_amount_empty_text_ts">- ts/l (teaspoon/liter)</string>
-    <string name="new_tea_edit_text_amount_text_ts">%1$d ts/l (teaspoon/liter)</string>
-    <string name="new_tea_edit_text_amount_text_gr">%1$d g/l (gram/liter)</string>
-    <string name="new_tea_edit_text_amount_text_tb">%1$d tb/l (teabag/liter)</string>
+    <string name="new_tea_edit_text_amount_text_ts">%1$s ts/l (teaspoon/liter)</string>
+    <string name="new_tea_edit_text_amount_text_gr">%1$s g/l (gram/liter)</string>
+    <string name="new_tea_edit_text_amount_text_tb">%1$s tb/l (teabag/liter)</string>
     <string name="new_tea_dialog_amount_header">Input amount</string>
+    <string name="new_tea_dialog_amount_picker_comma">.</string>
     <string-array name="new_tea_dialog_amount_kind">
         <item>ts/l</item>
         <item>g/l</item>

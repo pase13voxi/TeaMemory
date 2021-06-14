@@ -247,7 +247,7 @@ ShowTeaTest {
             assertThat(textViewName.getText()).isEqualTo(tea.getName());
             assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
-            assertThat(textViewAmount.getText()).contains(tea.getAmount() + " ts/l");
+            assertThat(textViewAmount.getText()).contains(((int) tea.getAmount()) + " ts/l");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
         });
@@ -270,7 +270,7 @@ ShowTeaTest {
             TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
 
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(textViewAmount.getText()).contains(tea.getAmount() + " g/l");
+            assertThat(textViewAmount.getText()).contains(((int) tea.getAmount()) + " g/l");
         });
     }
 
@@ -291,7 +291,7 @@ ShowTeaTest {
             TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
 
             assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(textViewAmount.getText()).contains(showTea.getString(R.string.show_tea_display_tb, tea.getAmount()));
+            assertThat(textViewAmount.getText()).contains(showTea.getString(R.string.show_tea_display_tb, (int) tea.getAmount()));
         });
     }
 

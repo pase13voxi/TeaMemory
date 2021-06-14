@@ -104,8 +104,8 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setAmountAndExpectAmountAndAmountKind() {
-        newTeaViewModelEmpty.setAmount(5, TEA_SPOON);
-        assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(5);
+        newTeaViewModelEmpty.setAmount(5.5, TEA_SPOON);
+        assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(5.5);
         assertThat(newTeaViewModelEmpty.getAmountKind()).isEqualTo(TEA_SPOON);
     }
 

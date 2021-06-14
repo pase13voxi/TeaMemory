@@ -19,6 +19,7 @@ import androidx.core.app.NavUtils;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -207,7 +208,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void bindAmountToInputField() {
-        final int amount = newTeaViewModel.getAmount();
+        final double amount = newTeaViewModel.getAmount();
         final AmountKind amountKind = newTeaViewModel.getAmountKind();
         final EditText editTextAmount = findViewById(R.id.edit_text_new_tea_amount);
 
@@ -215,7 +216,16 @@ public class NewTea extends AppCompatActivity implements Printer {
             editTextAmount.setText(R.string.new_tea_edit_text_amount_empty_text_ts);
         } else {
             final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(amountKind);
-            editTextAmount.setText(getString(displayAmountKind.getTextIdNewTea(), amount));
+            editTextAmount.setText(getString(displayAmountKind.getTextIdNewTea(), removeZerosFromAmount(amount)));
+        }
+    }
+
+    public String removeZerosFromAmount(final double amount) {
+        if (amount == (int) amount)
+            return String.valueOf((int) amount);
+        else {
+            final DecimalFormat df = new DecimalFormat("#.#");
+            return df.format(amount);
         }
     }
 

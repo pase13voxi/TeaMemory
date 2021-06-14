@@ -158,13 +158,13 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void getAmount() {
-        int amountBefore = 1;
+        double amountBefore = 1;
 
         Tea tea = new Tea();
         tea.setAmount(amountBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        int amountAfter = showTeaViewModel.getAmount();
+        double amountAfter = showTeaViewModel.getAmount();
 
         assertThat(amountAfter).isEqualTo(amountBefore);
     }

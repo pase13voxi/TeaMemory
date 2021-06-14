@@ -94,13 +94,13 @@ class NewTeaViewModel {
         return Variety.fromStoredText(tea.getVariety());
     }
 
-    void setAmount(final int amount, final AmountKind amountKind) {
+    void setAmount(final double amount, final AmountKind amountKind) {
         tea.setAmount(amount);
         tea.setAmountKind(amountKind.getText());
         signalDataChanged();
     }
 
-    int getAmount() {
+    double getAmount() {
         return tea.getAmount();
     }
 

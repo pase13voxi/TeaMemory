@@ -24,9 +24,9 @@
     <string name="show_tea_tooltip_calculate_amount">Menge berechnen</string>
     <string name="show_tea_amount_not_found">Die Menge ist null oder sie wurde für diesen Tee nicht festgelegt.</string>
     <string name="show_tea_dialog_amount">Menge</string>
-    <string name="show_tea_dialog_amount_scala_left">0.0l</string>
-    <string name="show_tea_dialog_amount_scala_center">1.0l</string>
-    <string name="show_tea_dialog_amount_scala_right">2.0l</string>
+    <string name="show_tea_dialog_amount_scala_left">0,0l</string>
+    <string name="show_tea_dialog_amount_scala_center">1,0l</string>
+    <string name="show_tea_dialog_amount_scala_right">2,0l</string>
     <string name="show_tea_dialog_amount_per_amount_ts">%1$.1f TL / %2$.1f l</string>
     <string name="show_tea_dialog_amount_per_amount_gr">%1$.1f g / %2$.1f l</string>
     <string name="show_tea_dialog_amount_per_amount_tb">%1$.1f TB / %2$.1f l</string>

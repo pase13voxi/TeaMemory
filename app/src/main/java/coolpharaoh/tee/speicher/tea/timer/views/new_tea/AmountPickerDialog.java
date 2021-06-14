@@ -60,23 +60,31 @@ public class AmountPickerDialog extends DialogFragment {
         amountPicker.setMinValue(0);
         amountPicker.setMaxValue(100);
 
+        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
+        amountPickerDecimal.setMinValue(0);
+        amountPickerDecimal.setMaxValue(9);
+
         final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         amountPickerKind.setMinValue(0);
         amountPickerKind.setMaxValue(2);
         amountPickerKind.setDisplayedValues(getResources().getStringArray(R.array.new_tea_dialog_amount_kind));
         amountPickerKind.setOnValueChangedListener((numberPicker, oldValue, newValue) -> setSuggestions());
 
-        setConfiguredValues(amountPicker, amountPickerKind);
+        setConfiguredValues(amountPicker, amountPickerDecimal, amountPickerKind);
     }
 
-    private void setConfiguredValues(final NumberPicker amountPicker, final NumberPicker amountKindPicker) {
-        final int amount = newTeaViewModel.getAmount();
-        final AmountKind amountKind = newTeaViewModel.getAmountKind();
+    private void setConfiguredValues(final NumberPicker amountPicker, final NumberPicker amountPickerDecimal,
+                                     final NumberPicker amountKindPicker) {
+        final double amount = newTeaViewModel.getAmount();
+        final int amountPreDecimal = (int) amount;
+        final int amountDecimal = (int) ((amount - amountPreDecimal) * 10);
 
         if (amount != -500) {
-            amountPicker.setValue(amount);
+            amountPicker.setValue(amountPreDecimal);
+            amountPickerDecimal.setValue(amountDecimal);
         }
 
+        final AmountKind amountKind = newTeaViewModel.getAmountKind();
         amountKindPicker.setValue(amountKind.getChoice());
     }
 
@@ -121,11 +129,15 @@ public class AmountPickerDialog extends DialogFragment {
 
     private void setClickListener(final List<Button> buttons) {
         final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount);
+        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
         final int[] amountSuggestions = getSuggestions();
 
         for (int i = 0; i < amountSuggestions.length; i++) {
             final int amount = amountSuggestions[i];
-            buttons.get(i).setOnClickListener(view -> amountPicker.setValue(amount));
+            buttons.get(i).setOnClickListener(view -> {
+                amountPicker.setValue(amount);
+                amountPickerDecimal.setValue(0);
+            });
         }
     }
 
@@ -141,7 +153,12 @@ public class AmountPickerDialog extends DialogFragment {
 
     private void persistAmount() {
         final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount);
-        final int amount = amountPicker.getValue();
+        final double amountPreDecimal = amountPicker.getValue();
+
+        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
+        final double amountDecimal = amountPickerDecimal.getValue();
+
+        final double amount = amountPreDecimal + amountDecimal / 10;
 
         final NumberPicker amountKindPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
         final int amountKindChoice = amountKindPicker.getValue();

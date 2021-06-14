@@ -39,7 +39,7 @@ public class JsonIOAdapterImportTest {
             "  {\n" +
             "    \"name\": \"name1\",\n" +
             "    \"variety\": \"variety1\",\n" +
-            "    \"amount\": 1,\n" +
+            "    \"amount\": 1.0,\n" +
             "    \"amountKind\": \"Gr\",\n" +
             "    \"color\": 1,\n" +
             "    \"rating\": 3,\n" +
@@ -84,7 +84,7 @@ public class JsonIOAdapterImportTest {
             "  {\n" +
             "    \"name\": \"name2\",\n" +
             "    \"variety\": \"variety2\",\n" +
-            "    \"amount\": 2,\n" +
+            "    \"amount\": 2.5,\n" +
             "    \"amountKind\": \"Ts\",\n" +
             "    \"color\": 2,\n" +
             "    \"rating\": 0,\n" +
@@ -194,8 +194,8 @@ public class JsonIOAdapterImportTest {
                 Tea::isFavorite,
                 Tea::getNextInfusion
         ).containsExactly(
-                Tuple.tuple("name1", "variety1", 1, "Gr", 1, 3, true, 1),
-                Tuple.tuple("name2", "variety2", 2, "Ts", 2, 0, false, 2)
+                Tuple.tuple("name1", "variety1", 1.0, "Gr", 1, 3, true, 1),
+                Tuple.tuple("name2", "variety2", 2.5, "Ts", 2, 0, false, 2)
         );
 
         ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);

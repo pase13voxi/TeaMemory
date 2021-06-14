@@ -148,7 +148,7 @@ public class NewTeaTest {
                     Tea::getRating,
                     Tea::isFavorite
             ).containsExactly(
-                    "Name", BLACK_TEA.getCode(), -15461296, -500, TEA_SPOON.getText(), 0, false
+                    "Name", BLACK_TEA.getCode(), -15461296, -500.0, TEA_SPOON.getText(), 0, false
             );
 
             final ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
@@ -351,7 +351,7 @@ public class NewTeaTest {
 
             assertThat(editTextVariety.getText()).hasToString(Variety.convertStoredVarietyToText(tea.getVariety(), newTea.getApplication()));
             assertThat(editTextName.getText()).hasToString(tea.getName());
-            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_ts, tea.getAmount()));
+            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_ts, (int) tea.getAmount()));
             assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, infusions.get(0).getTemperatureFahrenheit()));
             assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_text, infusions.get(0).getTime()));
             assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_text, infusions.get(0).getCoolDownTime()));
@@ -377,7 +377,7 @@ public class NewTeaTest {
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
 
-            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_tb, tea.getAmount()));
+            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_tb, (int) tea.getAmount()));
         });
     }
 
