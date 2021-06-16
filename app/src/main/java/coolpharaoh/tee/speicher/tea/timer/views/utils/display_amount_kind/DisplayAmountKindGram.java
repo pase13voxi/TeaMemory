@@ -1,12 +1,21 @@
 package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
 
+import android.app.Application;
+
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 class DisplayAmountKindGram implements DisplayAmountKind {
 
+    private final Application application;
+
+    public DisplayAmountKindGram(final Application application) {
+        this.application = application;
+    }
+
     @Override
-    public int getTextIdShowTea() {
-        return R.string.show_tea_display_gr;
+    public String getTextShowTea(final double amount) {
+        String text = DisplayAmountKind.getFormattedAmount(amount);
+        return application.getString(R.string.show_tea_display_gr, text);
     }
 
     @Override
@@ -15,12 +24,13 @@ class DisplayAmountKindGram implements DisplayAmountKind {
     }
 
     @Override
-    public int getTextIdCalculatorShowTea() {
-        return R.string.show_tea_dialog_amount_per_amount_gr;
+    public String getTextCalculatorShowTea(final float amountPerLiter, final float liter) {
+        return application.getString(R.string.show_tea_dialog_amount_per_amount_gr, amountPerLiter, liter);
     }
 
     @Override
-    public int getTextIdNewTea() {
-        return R.string.new_tea_edit_text_amount_text_gr;
+    public String getTextNewTea(final double amount) {
+        String text = DisplayAmountKind.getFormattedAmount(amount);
+        return application.getString(R.string.new_tea_edit_text_amount_text_gr, text);
     }
 }

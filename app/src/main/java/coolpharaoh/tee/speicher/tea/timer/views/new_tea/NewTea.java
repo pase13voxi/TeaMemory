@@ -208,16 +208,14 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void bindAmountToInputField() {
-        final double amount = newTeaViewModel.getAmount();
-        final AmountKind amountKind = newTeaViewModel.getAmountKind();
         final EditText editTextAmount = findViewById(R.id.edit_text_new_tea_amount);
 
-        if (amount == -500) {
-            editTextAmount.setText(R.string.new_tea_edit_text_amount_empty_text_ts);
-        } else {
-            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(amountKind);
-            editTextAmount.setText(getString(displayAmountKind.getTextIdNewTea(), removeZerosFromAmount(amount)));
-        }
+        final AmountKind amountKind = newTeaViewModel.getAmountKind();
+        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(amountKind, getApplication());
+
+        final double amount = newTeaViewModel.getAmount();
+        editTextAmount.setText(displayAmountKind.getTextNewTea(amount));
+
     }
 
     public String removeZerosFromAmount(final double amount) {

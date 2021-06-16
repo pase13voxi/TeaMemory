@@ -10,19 +10,19 @@ public class DisplayAmountKindFactoryTest {
 
     @Test
     public void getDisplayAmountKindGram() {
-        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(AmountKind.GRAM);
+        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(AmountKind.GRAM, null);
         assertThat(displayAmountKind).isInstanceOf(DisplayAmountKindGram.class);
     }
 
     @Test
     public void getDisplayAmountKindTeaBag() {
-        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(AmountKind.TEA_BAG);
+        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(AmountKind.TEA_BAG, null);
         assertThat(displayAmountKind).isInstanceOf(DisplayAmountKindTeaBag.class);
     }
 
     @Test
     public void getDisplayAmountKindTeaSpoon() {
-        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(AmountKind.TEA_SPOON);
+        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(AmountKind.TEA_SPOON, null);
         assertThat(displayAmountKind).isInstanceOf(DisplayAmountKindTeaSpoon.class);
     }
 }

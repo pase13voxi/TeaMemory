@@ -1,11 +1,34 @@
 package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
 
+import java.text.DecimalFormat;
+
 public interface DisplayAmountKind {
-    int getTextIdShowTea();
+    String getTextShowTea(double amount);
 
     int getImageResourceIdShowTea();
 
-    int getTextIdCalculatorShowTea();
+    String getTextCalculatorShowTea(float amountPerLiter, float liter);
 
-    int getTextIdNewTea();
+    String getTextNewTea(double amount);
+
+    static String getFormattedAmount(double amount) {
+        String text = "-";
+        if (exist(amount)) {
+            text = removeZerosFromAmount(amount);
+        }
+        return text;
+    }
+
+    static String removeZerosFromAmount(final double amount) {
+        if (amount == (int) amount)
+            return String.valueOf((int) amount);
+        else {
+            final DecimalFormat df = new DecimalFormat("#.#");
+            return df.format(amount);
+        }
+    }
+
+    static boolean exist(double amount) {
+        return amount != -500;
+    }
 }

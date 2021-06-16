@@ -1,34 +1,71 @@
 package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
 
+import android.app.Application;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DisplayAmountKindGramTest {
 
+    private DisplayAmountKindGram displayAmountKindGram;
+    @Mock
+    Application application;
+
+    @Before
+    public void setUp() {
+        displayAmountKindGram = new DisplayAmountKindGram(application);
+    }
+
     @Test
-    public void getTextIdShowTea() {
-        final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
-        assertThat(displayAmountKindGram.getTextIdShowTea()).isEqualTo(R.string.show_tea_display_gr);
+    public void getTextShowTea() {
+        when(application.getString(eq(R.string.show_tea_display_gr), anyString())).thenReturn("1.5 g/l");
+
+        assertThat(displayAmountKindGram.getTextShowTea(1.5)).isEqualTo("1.5 g/l");
+    }
+
+    @Test
+    public void getEmptyTextShowTea() {
+        when(application.getString(R.string.show_tea_display_gr, "-")).thenReturn("- g/l");
+
+        assertThat(displayAmountKindGram.getTextShowTea(-500)).isEqualTo("- g/l");
     }
 
     @Test
     public void getImageResourceIdShowTea() {
-        final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
         assertThat(displayAmountKindGram.getImageResourceIdShowTea()).isEqualTo(R.drawable.gram_black);
     }
 
     @Test
-    public void getTextIdCalculatorShowTea() {
-        final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
-        assertThat(displayAmountKindGram.getTextIdCalculatorShowTea()).isEqualTo(R.string.show_tea_dialog_amount_per_amount_gr);
+    public void getTextCalculatorShowTea() {
+        final float amountPerLiter = 1.5f;
+        final float liter = 0.5f;
+        when(application.getString(R.string.show_tea_dialog_amount_per_amount_gr, amountPerLiter, liter)).thenReturn("1.5 g / 0.5 l");
+
+        assertThat(displayAmountKindGram.getTextCalculatorShowTea(amountPerLiter, liter)).isEqualTo("1.5 g / 0.5 l");
     }
 
     @Test
-    public void getTextIdNewTea() {
-        final DisplayAmountKindGram displayAmountKindGram = new DisplayAmountKindGram();
-        assertThat(displayAmountKindGram.getTextIdNewTea()).isEqualTo(R.string.new_tea_edit_text_amount_text_gr);
+    public void getTextNewTea() {
+        when(application.getString(eq(R.string.new_tea_edit_text_amount_text_gr), anyString())).thenReturn("1.5 g/l (gram/liter)");
+
+        assertThat(displayAmountKindGram.getTextNewTea(1.5)).isEqualTo("1.5 g/l (gram/liter)");
+    }
+
+    @Test
+    public void getEmptyTextNewTea() {
+        when(application.getString(R.string.new_tea_edit_text_amount_text_gr, "-")).thenReturn("- g/l (gram/liter)");
+
+        assertThat(displayAmountKindGram.getTextNewTea(-500)).isEqualTo("- g/l (gram/liter)");
     }
 }

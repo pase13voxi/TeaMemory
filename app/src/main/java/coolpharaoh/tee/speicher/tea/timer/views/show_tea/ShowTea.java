@@ -27,7 +27,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -269,25 +268,10 @@ public class ShowTea extends AppCompatActivity {
 
     private void fillAmountWithUnit() {
         final ImageButton imageButtonAmount = findViewById(R.id.button_show_tea_calculate_amount);
+        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
 
-        if (showTeaViewModel.getAmount() != -500) {
-            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind());
-            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), removeZerosFromAmount(showTeaViewModel.getAmount())), 10));
-            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
-        } else {
-            final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind());
-            textViewAmount.setText(rightPad(getResources().getString(displayAmountKind.getTextIdShowTea(), "-"), 10));
-            imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
-        }
-    }
-
-    public String removeZerosFromAmount(final double amount) {
-        if (amount == (int) amount)
-            return String.valueOf((int) amount);
-        else {
-            final DecimalFormat df = new DecimalFormat("#.#");
-            return df.format(amount);
-        }
+        textViewAmount.setText(rightPad(displayAmountKind.getTextShowTea(showTeaViewModel.getAmount()), 10));
+        imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
     }
 
     private void decideToShowInfusionBar() {
@@ -597,7 +581,7 @@ public class ShowTea extends AppCompatActivity {
         AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.dialog_theme);
         adb.setView(alertLayoutDialogAmount);
         adb.setTitle(R.string.show_tea_dialog_amount);
-        adb.setIcon(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind()).getImageResourceIdShowTea());
+        adb.setIcon(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication()).getImageResourceIdShowTea());
         adb.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
         adb.show();
     }
@@ -606,7 +590,8 @@ public class ShowTea extends AppCompatActivity {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
 
-        textViewAmountPerAmount.setText(getResources().getString(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind()).getTextIdCalculatorShowTea(), amountPerLiter, liter));
+        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
+        textViewAmountPerAmount.setText(displayAmountKind.getTextCalculatorShowTea(amountPerLiter, liter));
     }
 
     @Override
