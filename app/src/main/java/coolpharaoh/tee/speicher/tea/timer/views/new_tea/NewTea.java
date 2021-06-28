@@ -19,7 +19,6 @@ import androidx.core.app.NavUtils;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
-import java.text.DecimalFormat;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -30,10 +29,10 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindStrategy;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitStrategy;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
@@ -211,34 +210,21 @@ public class NewTea extends AppCompatActivity implements Printer {
         final EditText editTextAmount = findViewById(R.id.edit_text_new_tea_amount);
 
         final AmountKind amountKind = newTeaViewModel.getAmountKind();
-        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(amountKind, getApplication());
+        final DisplayAmountKindStrategy displayAmountKindStrategy = DisplayAmountKindFactory.get(amountKind, getApplication());
 
         final double amount = newTeaViewModel.getAmount();
-        editTextAmount.setText(displayAmountKind.getTextNewTea(amount));
+        editTextAmount.setText(displayAmountKindStrategy.getTextNewTea(amount));
 
-    }
-
-    public String removeZerosFromAmount(final double amount) {
-        if (amount == (int) amount)
-            return String.valueOf((int) amount);
-        else {
-            final DecimalFormat df = new DecimalFormat("#.#");
-            return df.format(amount);
-        }
     }
 
     private void bindTemperatureToInputField() {
         final int temperature = newTeaViewModel.getInfusionTemperature();
         final TemperatureUnit temperatureUnit = newTeaViewModel.getTemperatureUnit();
-        final DisplayTemperatureUnit displayTemperatureUnit = DisplayTemperatureUnitFactory.get(temperatureUnit);
+        final DisplayTemperatureUnitStrategy displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory.get(temperatureUnit, getApplication());
 
         final EditText editTextTemperature = findViewById(R.id.edit_text_new_tea_temperature);
 
-        if (temperature == -500) {
-            editTextTemperature.setText(displayTemperatureUnit.getTextIdEmptyTemperatureNewTea());
-        } else {
-            editTextTemperature.setText(getString(displayTemperatureUnit.getTextIdNewTea(), temperature));
-        }
+        editTextTemperature.setText(displayTemperatureUnitStrategy.getTextNewTea(temperature));
     }
 
     private void bindCoolDownTimeToInputField() {

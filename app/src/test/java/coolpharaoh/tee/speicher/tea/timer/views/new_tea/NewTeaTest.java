@@ -112,7 +112,7 @@ public class NewTeaTest {
             assertThat(editTextVariety.getText()).hasToString(varieties[0]);
             assertThat(editTextName.getText().toString()).isBlank();
             assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_empty_text_ts));
-            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_empty_text_celsius));
+            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_celsius, "-"));
             assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_empty_text));
             assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_empty_text));
         });
@@ -124,7 +124,7 @@ public class NewTeaTest {
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
-            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_empty_text_fahrenheit));
+            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, "-"));
         });
     }
 

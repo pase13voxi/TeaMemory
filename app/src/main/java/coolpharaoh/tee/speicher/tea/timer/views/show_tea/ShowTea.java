@@ -38,10 +38,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.SharedTimerPreferences;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindStrategy;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitStrategy;
 
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
@@ -257,21 +257,17 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void fillTemperatureWithUnit() {
-        final DisplayTemperatureUnit displayTemperatureUnit = DisplayTemperatureUnitFactory.get(showTeaViewModel.getTemperatureUnit());
+        final DisplayTemperatureUnitStrategy displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory.get(showTeaViewModel.getTemperatureUnit(), getApplication());
 
-        if (showTeaViewModel.getTemperature() != -500) {
-            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), String.valueOf(showTeaViewModel.getTemperature())));
-        } else {
-            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), "-"));
-        }
+        textViewTemperature.setText(displayTemperatureUnitStrategy.getTextIdShowTea(showTeaViewModel.getTemperature()));
     }
 
     private void fillAmountWithUnit() {
         final ImageButton imageButtonAmount = findViewById(R.id.button_show_tea_calculate_amount);
-        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
+        final DisplayAmountKindStrategy displayAmountKindStrategy = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
 
-        textViewAmount.setText(rightPad(displayAmountKind.getTextShowTea(showTeaViewModel.getAmount()), 10));
-        imageButtonAmount.setImageResource(displayAmountKind.getImageResourceIdShowTea());
+        textViewAmount.setText(rightPad(displayAmountKindStrategy.getTextShowTea(showTeaViewModel.getAmount()), 10));
+        imageButtonAmount.setImageResource(displayAmountKindStrategy.getImageResourceIdShowTea());
     }
 
     private void decideToShowInfusionBar() {
@@ -339,13 +335,9 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void infusionIndexChanged() {
-        final DisplayTemperatureUnit displayTemperatureUnit = DisplayTemperatureUnitFactory.get(showTeaViewModel.getTemperatureUnit());
+        final DisplayTemperatureUnitStrategy displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory.get(showTeaViewModel.getTemperatureUnit(), getApplication());
 
-        if (showTeaViewModel.getTemperature() != -500) {
-            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), String.valueOf(showTeaViewModel.getTemperature())));
-        } else {
-            textViewTemperature.setText(getResources().getString(displayTemperatureUnit.getTextIdShowTea(), "-"));
-        }
+        textViewTemperature.setText(displayTemperatureUnitStrategy.getTextIdShowTea(showTeaViewModel.getTemperature()));
 
         spinnerMinutes.setSelection(showTeaViewModel.getTime().getMinutes());
         spinnerSeconds.setSelection(showTeaViewModel.getTime().getSeconds());
@@ -590,8 +582,8 @@ public class ShowTea extends AppCompatActivity {
         float liter = (float) value / 10;
         float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
 
-        final DisplayAmountKind displayAmountKind = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
-        textViewAmountPerAmount.setText(displayAmountKind.getTextCalculatorShowTea(amountPerLiter, liter));
+        final DisplayAmountKindStrategy displayAmountKindStrategy = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
+        textViewAmountPerAmount.setText(displayAmountKindStrategy.getTextCalculatorShowTea(amountPerLiter, liter));
     }
 
     @Override

@@ -9,14 +9,14 @@ public class DisplayAmountKindFactory {
     private DisplayAmountKindFactory() {
     }
 
-    public static DisplayAmountKind get(final AmountKind amountKind, final Application application) {
+    public static DisplayAmountKindStrategy get(final AmountKind amountKind, final Application application) {
         switch (amountKind) {
             case GRAM:
-                return new DisplayAmountKindGram(application);
+                return new DisplayAmountKindStrategyGram(application);
             case TEA_BAG:
-                return new DisplayAmountKindTeaBag(application);
+                return new DisplayAmountKindStrategyTeaBag(application);
             default:
-                return new DisplayAmountKindTeaSpoon(application);
+                return new DisplayAmountKindStrategyTeaSpoon(application);
         }
     }
 }

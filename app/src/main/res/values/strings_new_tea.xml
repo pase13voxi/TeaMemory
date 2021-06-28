@@ -30,10 +30,8 @@
         <item>tb/l</item>
     </string-array>
     <string name="new_tea_text_view_heading_temperature">Temperature</string>
-    <string name="new_tea_edit_text_temperature_empty_text_celsius">- °C (Celsius)</string>
-    <string name="new_tea_edit_text_temperature_empty_text_fahrenheit">- °F (Fahrenheit)</string>
-    <string name="new_tea_edit_text_temperature_text_celsius">%1$d °C (Celsius)</string>
-    <string name="new_tea_edit_text_temperature_text_fahrenheit">%1$d °F (Fahrenheit)</string>
+    <string name="new_tea_edit_text_temperature_text_celsius">%1$s °C (Celsius)</string>
+    <string name="new_tea_edit_text_temperature_text_fahrenheit">%1$s °F (Fahrenheit)</string>
     <string name="new_tea_dialog_temperature_header">Input temperature</string>
     <string name="new_tea_dialog_temperature_celsius">°C</string>
     <string name="new_tea_dialog_temperature_fahrenheit">°F</string>

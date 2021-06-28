@@ -16,34 +16,34 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DisplayAmountKindTeaBagTest {
+public class DisplayAmountKindStrategyTeaBagTest {
 
-    private DisplayAmountKindTeaBag displayAmountKindTeaBag;
+    private DisplayAmountKindStrategyTeaBag displayAmountKindStrategyTeaBag;
     @Mock
     Application application;
 
     @Before
     public void setUp() {
-        displayAmountKindTeaBag = new DisplayAmountKindTeaBag(application);
+        displayAmountKindStrategyTeaBag = new DisplayAmountKindStrategyTeaBag(application);
     }
 
     @Test
     public void getTextShowTea() {
         when(application.getString(eq(R.string.show_tea_display_tb), anyString())).thenReturn("1.5 tb/l");
 
-        assertThat(displayAmountKindTeaBag.getTextShowTea(1.5)).isEqualTo("1.5 tb/l");
+        assertThat(displayAmountKindStrategyTeaBag.getTextShowTea(1.5)).isEqualTo("1.5 tb/l");
     }
 
     @Test
     public void getEmptyTextShowTea() {
         when(application.getString(R.string.show_tea_display_tb, "-")).thenReturn("- tb/l");
 
-        assertThat(displayAmountKindTeaBag.getTextShowTea(-500)).isEqualTo("- tb/l");
+        assertThat(displayAmountKindStrategyTeaBag.getTextShowTea(-500)).isEqualTo("- tb/l");
     }
 
     @Test
     public void getResourceIdShowTea() {
-        assertThat(displayAmountKindTeaBag.getImageResourceIdShowTea()).isEqualTo(R.drawable.tea_bag_black);
+        assertThat(displayAmountKindStrategyTeaBag.getImageResourceIdShowTea()).isEqualTo(R.drawable.tea_bag_black);
     }
 
     @Test
@@ -52,20 +52,20 @@ public class DisplayAmountKindTeaBagTest {
         final float liter = 0.5f;
         when(application.getString(R.string.show_tea_dialog_amount_per_amount_tb, amountPerLiter, liter)).thenReturn("1.5 tb / 0.5 l");
 
-        assertThat(displayAmountKindTeaBag.getTextCalculatorShowTea(amountPerLiter, liter)).isEqualTo("1.5 tb / 0.5 l");
+        assertThat(displayAmountKindStrategyTeaBag.getTextCalculatorShowTea(amountPerLiter, liter)).isEqualTo("1.5 tb / 0.5 l");
     }
 
     @Test
     public void getTextNewTea() {
         when(application.getString(eq(R.string.new_tea_edit_text_amount_text_tb), anyString())).thenReturn("1.5 tb/l (teabag/liter)");
 
-        assertThat(displayAmountKindTeaBag.getTextNewTea(1.5)).isEqualTo("1.5 tb/l (teabag/liter)");
+        assertThat(displayAmountKindStrategyTeaBag.getTextNewTea(1.5)).isEqualTo("1.5 tb/l (teabag/liter)");
     }
 
     @Test
     public void getEmptyTextNewTea() {
         when(application.getString(R.string.new_tea_edit_text_amount_text_tb, "-")).thenReturn("- tb/l (teabag/liter)");
 
-        assertThat(displayAmountKindTeaBag.getTextNewTea(-500)).isEqualTo("- tb/l (teabag/liter)");
+        assertThat(displayAmountKindStrategyTeaBag.getTextNewTea(-500)).isEqualTo("- tb/l (teabag/liter)");
     }
 }

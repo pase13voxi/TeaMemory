@@ -4,13 +4,13 @@ import android.app.Application;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKind.getFormattedAmount;
+import static coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindStrategy.getFormattedAmount;
 
-class DisplayAmountKindTeaBag implements DisplayAmountKind {
+class DisplayAmountKindStrategyTeaBag implements DisplayAmountKindStrategy {
 
     private final Application application;
 
-    public DisplayAmountKindTeaBag(Application application) {
+    public DisplayAmountKindStrategyTeaBag(Application application) {
         this.application = application;
     }
 

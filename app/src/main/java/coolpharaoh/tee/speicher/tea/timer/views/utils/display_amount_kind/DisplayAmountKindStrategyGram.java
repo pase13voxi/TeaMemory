@@ -4,17 +4,17 @@ import android.app.Application;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-class DisplayAmountKindGram implements DisplayAmountKind {
+class DisplayAmountKindStrategyGram implements DisplayAmountKindStrategy {
 
     private final Application application;
 
-    public DisplayAmountKindGram(final Application application) {
+    public DisplayAmountKindStrategyGram(final Application application) {
         this.application = application;
     }
 
     @Override
     public String getTextShowTea(final double amount) {
-        String text = DisplayAmountKind.getFormattedAmount(amount);
+        String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
         return application.getString(R.string.show_tea_display_gr, text);
     }
 
@@ -30,7 +30,7 @@ class DisplayAmountKindGram implements DisplayAmountKind {
 
     @Override
     public String getTextNewTea(final double amount) {
-        String text = DisplayAmountKind.getFormattedAmount(amount);
+        String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
         return application.getString(R.string.new_tea_edit_text_amount_text_gr, text);
     }
 }

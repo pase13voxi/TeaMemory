@@ -2,7 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
 
 import java.text.DecimalFormat;
 
-public interface DisplayAmountKind {
+public interface DisplayAmountKindStrategy {
     String getTextShowTea(double amount);
 
     int getImageResourceIdShowTea();
@@ -11,7 +11,7 @@ public interface DisplayAmountKind {
 
     String getTextNewTea(double amount);
 
-    static String getFormattedAmount(double amount) {
+    static String getFormattedAmount(final double amount) {
         String text = "-";
         if (exist(amount)) {
             text = removeZerosFromAmount(amount);
@@ -28,7 +28,7 @@ public interface DisplayAmountKind {
         }
     }
 
-    static boolean exist(double amount) {
+    static boolean exist(final double amount) {
         return amount != -500;
     }
 }
