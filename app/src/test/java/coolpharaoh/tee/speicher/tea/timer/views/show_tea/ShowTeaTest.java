@@ -54,9 +54,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerCon
 
 import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -254,48 +251,6 @@ ShowTeaTest {
     }
 
     @Test
-    public void launchActivityWithFahrenheitAndGramValuesAndExpectFilledActivity() {
-        mockDB();
-        mockTea(VARIETY, 1, GRAM.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(FAHRENHEIT.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
-
-            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(textViewAmount.getText()).contains(((int) tea.getAmount()) + " g/l");
-        });
-    }
-
-    @Test
-    public void launchActivityWithTeaBagValuesAndExpectFilledActivity() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_BAG.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(FAHRENHEIT.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
-
-            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureFahrenheit() + " °F");
-            assertThat(textViewAmount.getText()).contains(showTea.getString(R.string.show_tea_display_tb, (int) tea.getAmount()));
-        });
-    }
-
-    @Test
     public void launchActivityWithEmptyValuesCelsiusAndTeaSpoonAndExpectFilledActivity() {
         mockDB();
         mockTea(null, -500, TEA_SPOON.getText(), 0);
@@ -319,46 +274,6 @@ ShowTeaTest {
             assertThat(textViewAmount.getText()).contains("- ts/l");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("00");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
-    }
-
-    @Test
-    public void launchActivityWithEmptyValuesFahrenheitAndGramAndExpectFilledActivity() {
-        mockDB();
-        mockTea(null, -500, GRAM.getText(), 0);
-        mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
-                Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(FAHRENHEIT.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
-
-            assertThat(textViewTemperature.getText()).isEqualTo("- °F");
-            assertThat(textViewAmount.getText()).contains("- g/l");
-        });
-    }
-
-    @Test
-    public void launchActivityWithEmptyValuesTeaBagAndExpectFilledActivity() {
-        mockDB();
-        mockTea(null, -500, TEA_BAG.getText(), 0);
-        mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
-                Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(FAHRENHEIT.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
-
-            assertThat(textViewAmount.getText()).contains("- tb/l");
         });
     }
 
@@ -428,64 +343,6 @@ ShowTeaTest {
             seekBarAmountPerAmount.setProgress(5);
 
             assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 ts / 0.5 l");
-        });
-    }
-
-    @Test
-    public void showDialogAmountAndCalcuateAmountGram() {
-        mockDB();
-        mockTea(VARIETY, 9, GRAM.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.button_show_tea_calculate_amount);
-
-            buttonCalculateAmount.performClick();
-            AlertDialog dialogCalculateAmount = getLatestAlertDialog();
-
-            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
-            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
-
-            assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 g / 1.0 l");
-
-            seekBarAmountPerAmount.setProgress(15);
-
-            assertThat(textViewAmountPerAmount.getText()).hasToString("13.5 g / 1.5 l");
-        });
-    }
-
-    @Test
-    public void showDialogAmountAndCalcuateAmountTeaBag() {
-        mockDB();
-        mockTea(VARIETY, 9, TEA_BAG.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonCalculateAmount = showTea.findViewById(R.id.button_show_tea_calculate_amount);
-
-            buttonCalculateAmount.performClick();
-            AlertDialog dialogCalculateAmount = getLatestAlertDialog();
-
-            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
-            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
-
-            assertThat(textViewAmountPerAmount.getText()).hasToString("9.0 tb / 1.0 l");
-
-            seekBarAmountPerAmount.setProgress(15);
-
-            assertThat(textViewAmountPerAmount.getText()).hasToString("13.5 tb / 1.5 l");
         });
     }
 
@@ -598,32 +455,6 @@ ShowTeaTest {
             assertThat(textViewTemperature.getText()).hasToString("100 °C");
             assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
             assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
-    }
-
-    @Test
-    public void switchBetweenInfusionsFahrenheit() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(
-                Arrays.asList(new String[]{"1:00", "2:00"}), Arrays.asList(new String[]{null, "5:00"}),
-                Arrays.asList(new Integer[]{100, -500}), Arrays.asList(new Integer[]{212, -500}));
-        mockActualSettings(FAHRENHEIT.getText(), false, false);
-
-        Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
-
-        ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-            ImageButton buttonExchange = showTea.findViewById(R.id.button_show_tea_temperature);
-            TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-
-            assertThat(textViewTemperature.getText()).hasToString("212 °F");
-
-            buttonNextInfusion.performClick();
-            assertThat(buttonExchange.isEnabled()).isTrue();
-            assertThat(textViewTemperature.getText()).hasToString("- °F");
         });
     }
 

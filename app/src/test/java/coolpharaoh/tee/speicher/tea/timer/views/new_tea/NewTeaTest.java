@@ -51,7 +51,6 @@ import static android.os.Looper.getMainLooper;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
@@ -115,16 +114,6 @@ public class NewTeaTest {
             assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_celsius, "-"));
             assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_empty_text));
             assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_empty_text));
-        });
-    }
-
-    @Test
-    public void showActivityAddModeAndExpectFilledDefaultValuesFahrenheit() {
-        mockSettings(FAHRENHEIT.getText());
-        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
-        newTeaActivityScenario.onActivity(newTea -> {
-            final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
-            assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, "-"));
         });
     }
 
@@ -355,29 +344,6 @@ public class NewTeaTest {
             assertThat(editTextTemperature.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_temperature_text_fahrenheit, infusions.get(0).getTemperatureFahrenheit()));
             assertThat(editTextTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_time_text, infusions.get(0).getTime()));
             assertThat(editTextCoolDownTime.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_cool_down_time_text, infusions.get(0).getCoolDownTime()));
-        });
-    }
-
-    @Test
-    public void showActivityEditModeAndExpectFilledAmountTeaBag() {
-        mockSettings(CELSIUS.getText());
-        final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_BAG.getText(), 234, 0, Date.from(getFixedDate()));
-        tea.setId(1L);
-        when(teaDao.getTeaById(1)).thenReturn(tea);
-
-        final List<Infusion> infusions = new ArrayList<>();
-        infusions.add(new Infusion(1, 0, "2:00", "5:00", 90, 194));
-        when(infusionDao.getInfusionsByTeaId(1)).thenReturn(infusions);
-
-
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), NewTea.class);
-        intent.putExtra(TEA_ID, 1L);
-
-        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(intent);
-        newTeaActivityScenario.onActivity(newTea -> {
-            final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
-
-            assertThat(editTextAmount.getText()).hasToString(newTea.getString(R.string.new_tea_edit_text_amount_text_tb, (int) tea.getAmount()));
         });
     }
 
