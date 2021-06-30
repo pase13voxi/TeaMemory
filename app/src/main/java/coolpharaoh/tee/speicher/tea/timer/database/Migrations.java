@@ -182,4 +182,12 @@ class Migrations {
             database.execSQL("ALTER TABLE backup_tea RENAME TO tea");
         }
     };
+
+    static final Migration MIGRATION_10_11 = new Migration(10, 11) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // new update description available!
+            database.execSQL("UPDATE settings SET mainupdatealert = 1");
+        }
+    };
 }

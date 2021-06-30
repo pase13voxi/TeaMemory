@@ -4,8 +4,8 @@
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
-        <item>Dunkles Design</item>
-        <item>Einstellung: dunkles Design</item>
+        <item>Menge: Dezimalzahlen</item>
+        <item>Teebeutel</item>
     </string-array>
     <string-array name="description_showtea_slide_description">
         <item>Zeige Abkühlzeit an</item>
