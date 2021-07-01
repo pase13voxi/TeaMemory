@@ -20,6 +20,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.celsiusToFahrenheit;
+import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.fahrenheitToCelsius;
 
 class NewTeaViewModel {
     private final Application application;
@@ -171,8 +173,10 @@ class NewTeaViewModel {
     void setInfusionTemperature(final int temperature) {
         if (isFahrenheit()) {
             infusions.get(getInfusionIndex()).setTemperatureFahrenheit(temperature);
+            infusions.get(getInfusionIndex()).setTemperatureCelsius(fahrenheitToCelsius(temperature));
         } else {
             infusions.get(getInfusionIndex()).setTemperatureCelsius(temperature);
+            infusions.get(getInfusionIndex()).setTemperatureFahrenheit(celsiusToFahrenheit(temperature));
         }
         signalDataChanged();
     }
