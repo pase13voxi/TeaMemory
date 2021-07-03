@@ -59,6 +59,7 @@ pipeline {
         }
         always { 
             cleanWs()
+            sh 'find ~/.gradle -type f -name "*.lock" -delete'
         }
     }
 }
