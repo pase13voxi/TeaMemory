@@ -10,23 +10,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import br.com.felix.horizontalbargraph.HorizontalBar;
-import br.com.felix.horizontalbargraph.model.BarItem;
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
 public class Statistics extends AppCompatActivity {
-
-    private StatisticsViewModel statisticsViewModel;
-
-    private HorizontalBar horizontalBar;
 
     private int checkedItem = 0;
 
@@ -36,10 +26,6 @@ public class Statistics extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
         defineToolbarAsActionbar();
         enableAndShowBackButton();
-
-        statisticsViewModel = new StatisticsViewModel(getApplication());
-
-        initHorizontalBar();
     }
 
     private void defineToolbarAsActionbar() {
@@ -53,11 +39,6 @@ public class Statistics extends AppCompatActivity {
     private void enableAndShowBackButton() {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void initHorizontalBar() {
-        horizontalBar = findViewById(R.id.horizontal_bar_statistics);
-        horizontalBar.init(this).hasAnimation(true).addAll(getItems(statisticsViewModel.getStatisticsOverall())).build();
     }
 
     @Override
@@ -88,39 +69,9 @@ public class Statistics extends AppCompatActivity {
         builder.setTitle(R.string.statistics_dialog_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
             checkedItem = item;
-            changePeriod(item);
             dialog.dismiss();
         });
         builder.setNegativeButton(R.string.statistics_dialog_negative, null);
         builder.create().show();
-    }
-
-    private void changePeriod(int choice) {
-        horizontalBar.removeAll();
-        switch (choice) {
-            case 0:
-                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsOverall()));
-                break;
-            case 1:
-                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsMonth()));
-                break;
-            case 2:
-                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsWeek()));
-                break;
-            case 3:
-                horizontalBar.addAll(getItems(statisticsViewModel.getStatisticsDay()));
-                break;
-            default:
-        }
-    }
-
-    private List<BarItem> getItems(List<StatisticsPOJO> statistics) {
-        List<BarItem> items = new ArrayList<>();
-
-        for (StatisticsPOJO statistic : statistics) {
-            items.add(new BarItem(statistic.teaname, (double) statistic.counter, statistic.teacolor, ColorConversation.discoverForegroundColor(statistic.teacolor)));
-        }
-
-        return items;
     }
 }

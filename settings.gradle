@@ -1,1 +1,1 @@
-include ':app', ':horizontalbargraph'
+include ':app'
