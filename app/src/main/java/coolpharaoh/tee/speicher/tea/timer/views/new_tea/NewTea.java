@@ -17,7 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 
-import net.margaritov.preference.colorpicker.ColorPickerDialog;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.util.Objects;
 
@@ -96,10 +97,17 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void createColorPicker() {
-        ColorPickerDialog colorPickerDialog = new ColorPickerDialog(NewTea.this, buttonColorShape.getColor());
-        colorPickerDialog.setTitle(getResources().getString(R.string.new_tea_color_dialog_title));
-        colorPickerDialog.setOnColorChangedListener(color -> newTeaViewModel.setColor(color));
-        colorPickerDialog.show();
+        ColorPickerDialogBuilder
+                .with(this)
+                .setTitle("Choose color")
+                .initialColor(buttonColorShape.getColor())
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .lightnessSliderOnly()
+                .density(12)
+                .setPositiveButton("ok", (dialog, selectedColor, allColors) -> newTeaViewModel.setColor(selectedColor))
+                .setNegativeButton("cancel", null)
+                .build()
+                .show();
     }
 
     private void defineInfusionBar() {

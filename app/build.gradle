@@ -87,7 +87,7 @@ dependencies {
     androidTestUtil 'androidx.test:orchestrator:1.4.0'
     // extra UI
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     // gson
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
