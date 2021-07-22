@@ -78,15 +78,19 @@ public class Statistics extends AppCompatActivity {
             checkedItem = item;
             switch (checkedItem) {
                 case 0:
+                    horizontalBarGraph.reset();
                     horizontalBarGraph.display(statisticsViewModel.getStatisticsOverall());
                     break;
                 case 1:
+                    horizontalBarGraph.reset();
                     horizontalBarGraph.display(statisticsViewModel.getStatisticsMonth());
                     break;
                 case 2:
+                    horizontalBarGraph.reset();
                     horizontalBarGraph.display(statisticsViewModel.getStatisticsWeek());
                     break;
                 case 3:
+                    horizontalBarGraph.reset();
                     horizontalBarGraph.display(statisticsViewModel.getStatisticsDay());
                     break;
                 default:

@@ -6,7 +6,9 @@
     <string name="new_tea_text_view_heading_name">Name</string>
     <string name="new_tea_edit_text_hint_name">Input name</string>
     <string name="new_tea_text_view_heading_color">Color</string>
-    <string name="new_tea_color_dialog_title">Choose Color: </string>
+    <string name="new_tea_color_dialog_title">Choose Color</string>
+    <string name="new_tea_color_dialog_positive">OK</string>
+    <string name="new_tea_color_dialog_negative">Cancel</string>
     <string name="new_tea_tooltip_choose_color">Choose color</string>
     <string name="new_tea_error_30Char">The type of tea exceeds the limit number of 30 characters.</string>
     <string name="new_tea_error_name">The name exceeds the limit number of 300 characters.</string>

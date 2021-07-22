@@ -99,13 +99,13 @@ public class NewTea extends AppCompatActivity implements Printer {
     private void createColorPicker() {
         ColorPickerDialogBuilder
                 .with(this)
-                .setTitle("Choose color")
+                .setTitle(R.string.new_tea_color_dialog_title)
                 .initialColor(buttonColorShape.getColor())
                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                 .lightnessSliderOnly()
                 .density(12)
-                .setPositiveButton("ok", (dialog, selectedColor, allColors) -> newTeaViewModel.setColor(selectedColor))
-                .setNegativeButton("cancel", null)
+                .setPositiveButton(R.string.new_tea_color_dialog_positive, (dialog, selectedColor, allColors) -> newTeaViewModel.setColor(selectedColor))
+                .setNegativeButton(R.string.new_tea_color_dialog_negative, null)
                 .build()
                 .show();
     }

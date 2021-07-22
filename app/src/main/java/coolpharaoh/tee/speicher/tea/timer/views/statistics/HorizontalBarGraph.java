@@ -83,8 +83,8 @@ public class HorizontalBarGraph {
 
         setGraphData(statistics);
 
-        chart.setVisibleXRangeMaximum(VISIBLE_RANGE);
-        chart.moveViewTo(0, statistics.size(), YAxis.AxisDependency.LEFT);
+        setVisibleRange(statistics);
+
         chart.invalidate();
         chart.animateY(ANIMATION_DURATION);
     }
@@ -169,6 +169,16 @@ public class HorizontalBarGraph {
         }
 
         barDataSet.setValueTextColors(textColors);
+    }
+
+    private void setVisibleRange(List<StatisticsPOJO> statistics) {
+        chart.setVisibleXRangeMaximum(VISIBLE_RANGE);
+        chart.moveViewTo(0, statistics.size(), YAxis.AxisDependency.LEFT);
+    }
+
+    public void reset() {
+        chart.clearValues();
+        chart.notifyDataSetChanged();
     }
 
     public static class XAxisFormatter extends ValueFormatter {

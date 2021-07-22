@@ -6,7 +6,9 @@
     <string name="new_tea_text_view_heading_name">Name</string>
     <string name="new_tea_edit_text_hint_name">Name eingeben</string>
     <string name="new_tea_text_view_heading_color">Farbe</string>
-    <string name="new_tea_color_dialog_title">Farbe auswählen: </string>
+    <string name="new_tea_color_dialog_title">Farbe auswählen</string>
+    <string name="new_tea_color_dialog_positive">Ok</string>
+    <string name="new_tea_color_dialog_negative">Abbrechen</string>
     <string name="new_tea_tooltip_choose_color">Farbe auswählen</string>
     <string name="new_tea_error_30Char">Die Teesorte überschreitet die Grenzanzahl von 30 Zeichen.</string>
     <string name="new_tea_error_name">Der Name überschreitet die Grenzanzahl von 300 Zeichen.</string>

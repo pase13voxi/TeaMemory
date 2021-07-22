@@ -1,7 +1,7 @@
 <resources>
     <string name="software_heading">Software Lizenzen</string>
-    <string name="software_colorpicker_heading">ColorPickerPreference</string>
-    <string name="software_colorpicker_description">Der ColorPicker ist eine Open Source Software, welche die Auswahl einer Farbe ermöglicht.</string>
-    <string name="software_statistic_heading">Horizontal Bar Graph</string>
-    <string name="software_statistic_description">Horizontal Bar Graph ist eine Open-Source-Software, mit der Grafiken angezeigt werden können.</string>
+    <string name="software_colorpicker_heading">Color Picker</string>
+    <string name="software_colorpicker_description">Der Color Picker ist eine Open Source Software, welche die Auswahl einer Farbe ermöglicht.</string>
+    <string name="software_statistic_heading">MPAndroidChart</string>
+    <string name="software_statistic_description">MPAndroidChart ist eine Open-Source-Software, mit der Diagramme angezeigt werden können.</string>
 </resources>
