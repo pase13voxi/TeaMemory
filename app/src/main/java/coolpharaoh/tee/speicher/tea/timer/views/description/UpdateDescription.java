@@ -47,12 +47,12 @@ public class UpdateDescription extends AppCompatActivity {
             dots[i] = new TextView(this);
             dots[i].setText(R.string.description_dots);
             dots[i].setTextSize(35);
-            dots[i].setTextColor(ContextCompat.getColor(getApplication(), R.color.background_green));
+            dots[i].setTextColor(ContextCompat.getColor(this, R.color.background_green));
 
             dotLayout.addView(dots[i]);
         }
 
-        dots[position].setTextColor(ContextCompat.getColor(getApplication(), R.color.background_green_dark));
+        dots[position].setTextColor(ContextCompat.getColor(this, R.color.background_green_dark));
     }
 
 

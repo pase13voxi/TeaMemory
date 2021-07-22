@@ -4,8 +4,10 @@ import android.os.Build;
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +28,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
@@ -38,7 +41,7 @@ public class StatisticsTest {
     private static final int MONTH_ITEM = 1;
     private static final int WEEK_ITEM = 2;
     private static final int DAY_ITEM = 3;
-    
+
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Mock
@@ -56,92 +59,105 @@ public class StatisticsTest {
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
     }
 
-    @Ignore("Use later with new diagram")
     @Test
     public void launchActivityAndExpectListOverall() {
-        List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("LAUNCH");
+        final int countSize = 2;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("LAUNCH", countSize);
         when(counterDao.getTeaCounterOverall()).thenReturn(statisticsPOJOs);
 
-        ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
+        final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
+            checkExpectedItems(statistics, countSize);
         });
     }
 
-    @Ignore("Use later with new diagram")
     @Test
     public void setPeriodOverallAndExpectListOverall() {
-        List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("OVERALL");
+        final int countSize = 3;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("OVERALL", countSize);
         when(counterDao.getTeaCounterOverall()).thenReturn(statisticsPOJOs);
 
-        ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
+        final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(OVERALL_ITEM);
+
+            checkExpectedItems(statistics, countSize);
         });
     }
 
-    @Ignore("Use later with new diagram")
     @Test
     public void setPeriodMonthAndExpectListMonth() {
-        List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("MONTH");
+        final int countSize = 4;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("MONTH", countSize);
         when(counterDao.getTeaCounterMonth()).thenReturn(statisticsPOJOs);
 
-        ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
+        final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(MONTH_ITEM);
 
-            //check something later
+            checkExpectedItems(statistics, countSize);
         });
     }
 
-    @Ignore("Use later with new diagram")
     @Test
     public void setPeriodWeekAndExpectListWeek() {
-        List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("WEEK");
+        final int countSize = 5;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("WEEK", countSize);
         when(counterDao.getTeaCounterWeek()).thenReturn(statisticsPOJOs);
 
-        ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
+        final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(WEEK_ITEM);
 
-            //check something later
+            checkExpectedItems(statistics, countSize);
         });
     }
 
-    @Ignore("Use later with new diagram")
     @Test
     public void setPeriodDayAndExpectListDay() {
-        List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("DAY");
+        final int countSize = 6;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("DAY", countSize);
         when(counterDao.getTeaCounterDay()).thenReturn(statisticsPOJOs);
 
-        ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
+        final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
         statisticsActivityScenario.onActivity(statistics -> {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
-            ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
             shadowAlertDialog.clickOnItem(DAY_ITEM);
 
-            //check something later
+            checkExpectedItems(statistics, countSize);
         });
     }
 
-    private List<StatisticsPOJO> getStatisticsPOJOs(String name) {
-        List<StatisticsPOJO> statisticsPOJOS = new ArrayList<>();
+    private void checkExpectedItems(final Statistics statistics, final int itemCount) {
+        final HorizontalBarChart horizontalBar = statistics.findViewById(R.id.horizontal_graph_statistics);
 
-        for (int count = 1; count <= 3; count++) {
+        final IBarDataSet iBarDataSet = horizontalBar.getData().getDataSets().get(0);
+        assertThat(iBarDataSet.getEntryCount()).isEqualTo(itemCount);
+        for (int i = 0; i < itemCount; i++) {
+            assertThat(iBarDataSet.getEntryForIndex(i).getY()).isEqualTo(i + 1);
+        }
+    }
+
+    private List<StatisticsPOJO> getStatisticsPOJOs(final String name, final int itemCount) {
+        final List<StatisticsPOJO> statisticsPOJOS = new ArrayList<>();
+
+        for (int count = 1; count <= itemCount; count++) {
             StatisticsPOJO statistic = new StatisticsPOJO();
             statistic.teaname = name + count;
             statistic.teacolor = count;

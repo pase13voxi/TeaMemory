@@ -15,11 +15,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/horizontal_graph_statistics"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tool_bar_layout">
-
-    </ScrollView>
+        android:background="@color/background"
+        android:layout_below="@+id/tool_bar_layout" />
 
 </RelativeLayout>

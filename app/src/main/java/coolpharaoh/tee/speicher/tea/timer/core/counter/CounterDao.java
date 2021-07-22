@@ -26,21 +26,25 @@ public interface CounterDao {
 
     @Query("SELECT tea.name, tea.color, counter.overall as counter FROM tea INNER JOIN counter\n" +
             "ON tea.tea_id = counter.tea_id\n" +
-            "ORDER BY counter.overall DESC")
+            "WHERE counter.overall > 0\n" +
+            "ORDER BY counter.overall ASC")
     List<StatisticsPOJO> getTeaCounterOverall();
 
     @Query("SELECT tea.name, tea.color, counter.month as counter FROM tea INNER JOIN counter\n" +
             "ON tea.tea_id = counter.tea_id\n" +
-            "ORDER BY counter.month DESC")
+            "WHERE counter.month > 0\n" +
+            "ORDER BY counter.month ASC")
     List<StatisticsPOJO> getTeaCounterMonth();
 
     @Query("SELECT tea.name, tea.color, counter.week as counter FROM tea INNER JOIN counter\n" +
             "ON tea.tea_id = counter.tea_id\n" +
-            "ORDER BY counter.week DESC")
+            "WHERE counter.week > 0\n" +
+            "ORDER BY counter.week ASC")
     List<StatisticsPOJO> getTeaCounterWeek();
 
     @Query("SELECT tea.name, tea.color, counter.day as counter FROM tea INNER JOIN counter\n" +
             "ON tea.tea_id = counter.tea_id\n" +
-            "ORDER BY counter.day DESC")
+            "WHERE counter.day > 0\n" +
+            "ORDER BY counter.day ASC")
     List<StatisticsPOJO> getTeaCounterDay();
 }
