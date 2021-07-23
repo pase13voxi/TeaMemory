@@ -108,12 +108,20 @@ public class HorizontalBarGraph {
 
         final ArrayList<String> values = new ArrayList<>();
         for (final StatisticsPOJO statistic : statistics) {
-            values.add(statistic.teaname);
+            final String teaName = truncateLongText(statistic.teaname, 5);
+            values.add(teaName);
         }
 
         final int labelCount = Math.min(statistics.size(), VISIBLE_RANGE);
         xAxis.setLabelCount(labelCount);
         xAxis.setValueFormatter(new XAxisFormatter(values));
+    }
+
+    public String truncateLongText(final String text, final int maxLength) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        return text.substring(0, Math.min(text.length(), maxLength));
     }
 
     private void setGraphData(final List<StatisticsPOJO> statistics) {
@@ -177,8 +185,12 @@ public class HorizontalBarGraph {
     }
 
     public void reset() {
-        chart.clearValues();
+        chart.fitScreen();
+        chart.getData().clearValues();
+        chart.getXAxis().setValueFormatter(null);
         chart.notifyDataSetChanged();
+        chart.clear();
+        chart.invalidate();
     }
 
     public static class XAxisFormatter extends ValueFormatter {
