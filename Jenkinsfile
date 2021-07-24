@@ -49,7 +49,7 @@ pipeline {
     post { 
         success {
             script {
-                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory successfully build \n[SonarQube](http://192.168.2.108:9000/dashboard?id=TeaMemory) , [Jenkins build]($BUILD_URL)" -d parse_mode="markdown"'
+                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory successfully build \n[Jenkins build]($BUILD_URL) , [SonarQube](http://192.168.2.108:9000/dashboard?id=TeaMemory)" -d parse_mode="markdown"'
             }
         }
         failure {
