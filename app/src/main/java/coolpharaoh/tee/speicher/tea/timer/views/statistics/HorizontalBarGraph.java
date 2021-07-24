@@ -203,7 +203,10 @@ public class HorizontalBarGraph {
 
         @Override
         public String getAxisLabel(final float value, final AxisBase axis) {
-            return this.values.get((int) value);
+            if (value % 1 == 0) {
+                return this.values.get((int) value);
+            }
+            return "";
         }
 
         @Override
