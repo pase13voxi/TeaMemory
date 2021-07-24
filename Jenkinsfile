@@ -49,12 +49,12 @@ pipeline {
     post { 
         success {
             script {
-                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory successfully build"'
+                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory successfully build /n http://192.168.2.108:9000/dashboard?id=TeaMemory /n $BUILD_URL"'
             }
         }
         failure {
             script {
-                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory failed to build"'
+                sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="TeaMemory failed to build /n $BUILD_URL"'
             }
         }
         always { 
