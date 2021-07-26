@@ -17,9 +17,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
 
 public class DatabaseJsonTransformer {
-    public static final int WRITE_REQUEST_CODE = 8778;
-    public static final int READ_REQUEST_CODE = 8777;
-
     private final Application application;
     private final Printer printer;
 
