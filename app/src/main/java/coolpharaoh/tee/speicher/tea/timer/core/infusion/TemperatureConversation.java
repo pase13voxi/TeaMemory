@@ -29,7 +29,7 @@ public class TemperatureConversation {
         if(celsius != 100 && celsius != -500) {
             float tmpTime = (100 - (float) celsius) / 2;
             int minute = (int) tmpTime;
-            int sek = (int) ((tmpTime - ((float) minute)) * 60);
+            int sek = (int) ((tmpTime - minute) * 60);
             DecimalFormat df = new DecimalFormat("00");
             return minute + ":" + df.format(sek);
         }else{

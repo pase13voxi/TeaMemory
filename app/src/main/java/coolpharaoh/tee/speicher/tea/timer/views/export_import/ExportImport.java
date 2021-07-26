@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -22,12 +24,29 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
 public class ExportImport extends AppCompatActivity implements Printer {
     private boolean keepStoredTeas = true;
+
+    private final ActivityResultLauncher<Intent> exportActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null
+                        && result.getData().getData() != null) {
+                    exportFile(result.getData().getData());
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> importActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null
+                        && result.getData().getData() != null) {
+                    importFile(result.getData().getData());
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +79,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void chooseExportFolder() {
         final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        startActivityForResult(intent, DatabaseJsonTransformer.WRITE_REQUEST_CODE);
+        exportActivityResultLauncher.launch(intent);
     }
 
     private void dialogImportDecision() {
@@ -93,19 +112,8 @@ public class ExportImport extends AppCompatActivity implements Printer {
         final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent,
-                getApplicationContext().getResources().getString(R.string.export_import_import_choose_file)), DatabaseJsonTransformer.READ_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent resultData) {
-        if (requestCode == DatabaseJsonTransformer.WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
-            exportFile(resultData.getData());
-        } else if (requestCode == DatabaseJsonTransformer.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK && resultData != null) {
-            importFile(resultData.getData());
-        }
-
-        super.onActivityResult(requestCode, resultCode, resultData);
+        importActivityResultLauncher.launch(Intent.createChooser(intent,
+                getApplicationContext().getResources().getString(R.string.export_import_import_choose_file)));
     }
 
     private void exportFile(final Uri folderPath) {
