@@ -14,11 +14,6 @@ public class PermissionRequester {
         return permissions.checkReadPermission(activity);
     }
 
-    public static void getReadPermission(Activity activity) {
-        permissions.getReadPermission(activity);
-
-    }
-
     @VisibleForTesting
     public static void setMockedPermissions(Permissions mockedPermissions) {
         permissions = mockedPermissions;

@@ -1,10 +1,10 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -37,7 +36,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequ
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
 
-import static coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.Permissions.REQUEST_CODE_READ;
+import static java.lang.Boolean.TRUE;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -52,6 +51,16 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
     private ArrayList<ListRowItem> settingsList;
     private RecyclerViewAdapter adapter;
+
+    private final ActivityResultLauncher<String> permissionResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            result -> {
+                if (TRUE.equals(result)) {
+                    createAlarmRequest();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.settings_read_permission_denied, Toast.LENGTH_LONG).show();
+                }
+            });
 
     private final ActivityResultLauncher<Intent> alarmRequestActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -211,19 +220,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         if (dontShowAgain.isChecked()) {
             settingsViewModel.setSettingsPermissionAlert(false);
         }
-        PermissionRequester.getReadPermission(this);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions,
-                                           @NonNull final int[] grantResults) {
-        if (requestCode == REQUEST_CODE_READ) {
-            if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                Toast.makeText(getApplicationContext(), R.string.settings_read_permission_denied, Toast.LENGTH_LONG).show();
-            }
-            createAlarmRequest();
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionResultLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     private void createAlarmRequest() {
