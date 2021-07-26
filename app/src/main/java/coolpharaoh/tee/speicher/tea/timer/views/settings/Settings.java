@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +34,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.permissions.PermissionRequester;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
 
@@ -194,11 +195,16 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void settingAlarm() {
-        if (!PermissionRequester.checkReadPermission(this) && settingsViewModel.isSettingsPermissionAlert()) {
+        if (!checkReadPermission() && settingsViewModel.isSettingsPermissionAlert()) {
             readPermissionDialog();
         } else {
             createAlarmRequest();
         }
+    }
+
+    private boolean checkReadPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private void readPermissionDialog() {
