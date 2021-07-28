@@ -1,11 +1,26 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static android.os.Looper.getMainLooper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
+
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -28,6 +43,7 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
+import org.robolectric.shadows.ShadowAlertDialog;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -46,20 +62,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-
-import static android.os.Looper.getMainLooper;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -155,7 +157,7 @@ public class NewTeaTest {
     }
 
     @Test
-    public void addVarietyAndExpectUpdatedVariety() {
+    public void changeVarietyAndExpectUpdatedVariety() {
         mockSettings(CELSIUS.getText());
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -178,7 +180,20 @@ public class NewTeaTest {
     }
 
     @Test
-    public void addAmountAndExpectUpdatedAmount() {
+    public void changeColorAndExpectUpdatedColor() {
+        mockSettings(CELSIUS.getText());
+        final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
+        newTeaActivityScenario.onActivity(newTea -> {
+            final Button buttonColor = newTea.findViewById(R.id.button_new_tea_color);
+            buttonColor.performClick();
+            shadowOf(getMainLooper()).idle();
+
+            assertThat(ShadowAlertDialog.getLatestDialog()).isNotNull();
+        });
+    }
+
+    @Test
+    public void changeAmountAndExpectUpdatedAmount() {
         mockSettings(CELSIUS.getText());
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -202,7 +217,7 @@ public class NewTeaTest {
     }
 
     @Test
-    public void addTemperatureAndExpectUpdatedTemperature() {
+    public void changeTemperatureAndExpectUpdatedTemperature() {
         mockSettings(CELSIUS.getText());
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -267,7 +282,7 @@ public class NewTeaTest {
     }
 
     @Test
-    public void addCoolDownTimeAndExpectUpdatedCoolDownTime() {
+    public void changeCoolDownTimeAndExpectUpdatedCoolDownTime() {
         mockSettings(CELSIUS.getText());
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
@@ -291,7 +306,7 @@ public class NewTeaTest {
     }
 
     @Test
-    public void addTimeAndExpectUpdatedTime() {
+    public void changeTimeAndExpectUpdatedTime() {
         mockSettings(CELSIUS.getText());
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
