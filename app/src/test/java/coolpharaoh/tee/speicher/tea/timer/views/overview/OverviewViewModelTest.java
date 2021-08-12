@@ -1,5 +1,12 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -20,13 +27,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRep
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OverviewViewModelTest {
@@ -86,17 +86,11 @@ public class OverviewViewModelTest {
     }
 
     @Test
-    public void getTeaByPosition() {
-        int position = 1;
-        Tea tea = overviewViewModel.getTeaByPosition(position);
-        assertThat(tea).isEqualToComparingFieldByField(teas.get(position));
-    }
-
-    @Test
     public void deleteTea() {
-        int position = 1;
-        overviewViewModel.deleteTea(position);
-        verify(teaRepository).deleteTea(any(Tea.class));
+        final long teaId = 1;
+
+        overviewViewModel.deleteTea(teaId);
+        verify(teaRepository).deleteTeaById(teaId);
     }
 
     @Test

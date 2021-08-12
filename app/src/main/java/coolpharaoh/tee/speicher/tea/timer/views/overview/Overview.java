@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -34,7 +35,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
-public class Overview extends AppCompatActivity implements TeaListRecyclerViewAdapter.OnClickListener {
+public class Overview extends AppCompatActivity implements RecyclerViewAdapterOverview.OnClickListener {
     private OverviewViewModel overviewViewModel;
 
     @Override
@@ -86,33 +87,35 @@ public class Overview extends AppCompatActivity implements TeaListRecyclerViewAd
 
     private void bindTeaListWithTeaAdapterAndObserve(final RecyclerView teaList) {
         overviewViewModel.getTeas().observe(this, teas -> {
-            final TeaListRecyclerViewAdapter teaListRecyclerViewAdapter = new TeaListRecyclerViewAdapter(teas, this, getApplication());
+            final List<RecyclerItemOverview> recyclerItems = RecyclerItemOverview.generateFrom(overviewViewModel.getSort(), teas, getApplication());
+
+            final RecyclerViewAdapterOverview teaListRecyclerViewAdapter = new RecyclerViewAdapterOverview(recyclerItems, this);
             teaList.setAdapter(teaListRecyclerViewAdapter);
         });
     }
 
     @Override
-    public void onRecyclerItemClick(final int position) {
-        navigateToShowTea(position);
+    public void onRecyclerItemClick(final long teaId) {
+        navigateToShowTea(teaId);
     }
 
-    private void navigateToShowTea(final int position) {
+    private void navigateToShowTea(final long teaId) {
         final Intent showteaScreen = new Intent(Overview.this, ShowTea.class);
-        showteaScreen.putExtra("teaId", overviewViewModel.getTeaByPosition(position).getId());
+        showteaScreen.putExtra("teaId", teaId);
         startActivity(showteaScreen);
     }
 
     @Override
-    public void onRecyclerItemLongClick(final View itemView, final int position) {
+    public void onRecyclerItemLongClick(final View itemView, final long teaId) {
         final PopupMenu popup = new PopupMenu(getApplication(), itemView, Gravity.END);
         popup.inflate(R.menu.menu_overview_tea_list);
 
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_overview_tea_list_edit) {
-                navigateToNewOrEditTea(overviewViewModel.getTeaByPosition(position).getId());
+                navigateToNewOrEditTea(teaId);
                 return true;
             } else if (item.getItemId() == R.id.action_overview_tea_list_delete) {
-                overviewViewModel.deleteTea(position);
+                overviewViewModel.deleteTea((int) teaId);
                 return true;
             }
             return false;

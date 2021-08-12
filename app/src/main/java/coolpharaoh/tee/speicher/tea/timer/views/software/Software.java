@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -45,7 +45,7 @@ public class Software extends AppCompatActivity {
     }
 
     private void configureAndShowListView() {
-        final List<ListRowItem> softwareList = generateListItems();
+        final List<RecyclerItem> softwareList = generateListItems();
 
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_software, softwareList,
                 position -> { /*this functionality is not needed, but needs to be override*/ });
@@ -56,11 +56,11 @@ public class Software extends AppCompatActivity {
         recyclerViewDetails.setAdapter(adapter);
     }
 
-    private List<ListRowItem> generateListItems() {
-        final List<ListRowItem> softwareList = new ArrayList<>();
-        final ListRowItem itemPicker = new ListRowItem(getString(R.string.software_colorpicker_heading), getString(R.string.software_colorpicker_description));
+    private List<RecyclerItem> generateListItems() {
+        final List<RecyclerItem> softwareList = new ArrayList<>();
+        final RecyclerItem itemPicker = new RecyclerItem(getString(R.string.software_colorpicker_heading), getString(R.string.software_colorpicker_description));
         softwareList.add(itemPicker);
-        final ListRowItem itemStatistic = new ListRowItem(getString(R.string.software_statistic_heading), getString(R.string.software_statistic_description));
+        final RecyclerItem itemStatistic = new RecyclerItem(getString(R.string.software_statistic_heading), getString(R.string.software_statistic_description));
         softwareList.add(itemStatistic);
         return softwareList;
     }

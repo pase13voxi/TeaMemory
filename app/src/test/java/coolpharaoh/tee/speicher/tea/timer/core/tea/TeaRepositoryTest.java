@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,10 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -52,12 +52,12 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void deleteTea() {
-        Tea tea = new Tea();
+    public void deleteTeaById() {
+        final long teaId = 1;
 
-        teaRepository.deleteTea(tea);
+        teaRepository.deleteTeaById(teaId);
 
-        verify(teaDao).delete(tea);
+        verify(teaDao).deleteTeaById(teaId);
     }
 
     @Test

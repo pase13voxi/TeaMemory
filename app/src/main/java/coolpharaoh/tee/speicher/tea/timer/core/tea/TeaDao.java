@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -16,9 +15,6 @@ public interface TeaDao {
 
     @Update
     void update(Tea items);
-
-    @Delete
-    void delete(Tea item);
 
     @Query("DELETE FROM tea")
     void deleteAll();
@@ -40,6 +36,9 @@ public interface TeaDao {
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getTeaById(long id);
+
+    @Query("DELETE FROM tea WHERE tea_id = :id")
+    void deleteTeaById(long id);
 
     @Query("SELECT * FROM tea WHERE name LIKE ('%' || :searchString || '%') ORDER BY LOWER(name)")
     List<Tea> getTeasBySearchString(String searchString);

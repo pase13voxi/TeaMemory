@@ -9,7 +9,7 @@
         android:id="@+id/text_view_recycler_view_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/text_green" />

@@ -1,5 +1,10 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.WHITE_TEA;
+
 import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
@@ -9,7 +14,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
-import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
@@ -19,11 +23,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.WHITE_TEA;
 
 class OverviewViewModel extends ViewModel {
 
@@ -96,12 +95,8 @@ class OverviewViewModel extends ViewModel {
         return teas;
     }
 
-    Tea getTeaByPosition(int position) {
-        return Objects.requireNonNull(teas.getValue()).get(position);
-    }
-
-    void deleteTea(int position) {
-        teaRepository.deleteTea(Objects.requireNonNull(teas.getValue()).get(position));
+    void deleteTea(long id) {
+        teaRepository.deleteTeaById(id);
 
         refreshTeas();
     }

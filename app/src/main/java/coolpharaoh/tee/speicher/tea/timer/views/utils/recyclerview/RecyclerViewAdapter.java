@@ -16,10 +16,10 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private final int viewId;
-    private final List<ListRowItem> listRowItems;
+    private final List<RecyclerItem> listRowItems;
     private final OnClickListener onClickListener;
 
-    public RecyclerViewAdapter(final int resource, final List<ListRowItem> listRowItems, final OnClickListener onClickListener) {
+    public RecyclerViewAdapter(final int resource, final List<RecyclerItem> listRowItems, final OnClickListener onClickListener) {
         this.viewId = resource;
         this.listRowItems = listRowItems;
         this.onClickListener = onClickListener;
@@ -38,7 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final ListRowItem listRowItem = listRowItems.get(position);
+        final RecyclerItem listRowItem = listRowItems.get(position);
 
         final TextView header = holder.header;
         header.setText(listRowItem.getHeading());

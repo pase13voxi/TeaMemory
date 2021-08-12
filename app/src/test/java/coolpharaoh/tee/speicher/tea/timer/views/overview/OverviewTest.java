@@ -1,5 +1,15 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
+import static android.os.Looper.getMainLooper;
+import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
@@ -23,7 +33,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -51,16 +60,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-
-import static android.os.Looper.getMainLooper;
-import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -354,7 +353,7 @@ public class OverviewTest {
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-            assertThat(actual.getExtras().get("teaId")).isEqualTo((long) positionTea);
+            assertThat(actual.getExtras().get("teaId")).isEqualTo((long) (positionTea - 1));
         });
     }
 
@@ -378,7 +377,7 @@ public class OverviewTest {
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-            assertThat(actual.getLongExtra("teaId", -1)).isEqualTo(teaPosition);
+            assertThat(actual.getLongExtra("teaId", -1)).isEqualTo((teaPosition - 1));
         });
     }
 
@@ -398,11 +397,7 @@ public class OverviewTest {
 
             selectItemPopUpMenu(R.id.action_overview_tea_list_delete);
 
-            final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-            verify(teaDao).delete(captor.capture());
-            final Tea tea = captor.getValue();
-
-            assertThat(tea.getName()).isEqualTo(teaName + teaPosition);
+            verify(teaDao).deleteTeaById(0L);
         });
     }
 
@@ -442,11 +437,11 @@ public class OverviewTest {
     private void checkExpectedTeas(final String teaName, final Overview overview) {
         final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
 
-        assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
-        for (int i = 0; i < 3; i++) {
+        assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(4);
+        for (int i = 1; i < 4; i++) {
             final View itemView = recyclerView.findViewHolderForAdapterPosition(i).itemView;
             final TextView heading = itemView.findViewById(R.id.text_view_recycler_view_heading);
-            assertThat(heading.getText()).hasToString(teaName + i);
+            assertThat(heading.getText()).hasToString(teaName + (i - 1));
         }
     }
 

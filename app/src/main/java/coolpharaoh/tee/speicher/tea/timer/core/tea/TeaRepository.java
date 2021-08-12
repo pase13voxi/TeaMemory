@@ -22,8 +22,8 @@ public class TeaRepository {
         teaDao.update(tea);
     }
 
-    public void deleteTea(Tea tea) {
-        teaDao.delete(tea);
+    public void deleteTeaById(final long id) {
+        teaDao.deleteTeaById(id);
     }
 
     public void deleteAllTeas() {

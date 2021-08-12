@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 
 /**
  * Created by paseb on 03.11.2016.
@@ -21,10 +21,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
 
 class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewAdapter.ViewHolder> {
 
-    private final List<ListRowItem> listRowItems;
+    private final List<RecyclerItem> listRowItems;
     private final OnClickListener onClickListener;
 
-    public DetailRecyclerViewAdapter(List<ListRowItem> listRowItems, OnClickListener onClickListener) {
+    public DetailRecyclerViewAdapter(List<RecyclerItem> listRowItems, OnClickListener onClickListener) {
         this.listRowItems = listRowItems;
         this.onClickListener = onClickListener;
     }
@@ -42,7 +42,7 @@ class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ListRowItem detail = listRowItems.get(position);
+        RecyclerItem detail = listRowItems.get(position);
 
         TextView header = holder.header;
         header.setText(detail.getHeading());

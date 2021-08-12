@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 import android.content.Context;
 
 import androidx.room.Room;
@@ -19,8 +21,6 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class TeaDaoTest {
@@ -51,7 +51,7 @@ public class TeaDaoTest {
         assertThat(teaDao.getTeas()).hasSize(1);
 
         Tea teaAfter = teaDao.getTeas().get(0);
-        assertThat(teaAfter).isEqualToIgnoringGivenFields(teaBefore, "id");
+        assertThat(teaAfter).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore);
     }
 
     @Test
@@ -69,11 +69,11 @@ public class TeaDaoTest {
         teaDao.update(teaUpdate);
 
         Tea teaAfter = teaDao.getTeas().get(0);
-        assertThat(teaAfter).isEqualToComparingFieldByField(teaUpdate);
+        assertThat(teaAfter).usingRecursiveComparison().isEqualTo(teaUpdate);
     }
 
     @Test
-    public void deleteTea(){
+    public void deleteTeaById() {
         assertThat(teaDao.getTeas()).isEmpty();
 
         Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
@@ -84,12 +84,12 @@ public class TeaDaoTest {
 
         assertThat(teaDao.getTeas()).hasSize(2);
 
-        teaDao.delete(teaDao.getTeas().get(0));
+        teaDao.deleteTeaById(teaDao.getTeas().get(0).getId());
 
         assertThat(teaDao.getTeas()).hasSize(1);
 
         Tea teaAfter2 = teaDao.getTeas().get(0);
-        assertThat(teaAfter2).isEqualToIgnoringGivenFields(teaBefore2, "id");
+        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
     }
 
     @Test
@@ -153,10 +153,10 @@ public class TeaDaoTest {
         long teaId2 = teaDao.insert(teaBefore2);
 
         Tea teaAfter1 = teaDao.getTeaById(teaId1);
-        assertThat(teaAfter1).isEqualToIgnoringGivenFields(teaBefore1, "id");
+        assertThat(teaAfter1).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore1);
 
         Tea teaAfter2 = teaDao.getTeaById(teaId2);
-        assertThat(teaAfter2).isEqualToIgnoringGivenFields(teaBefore2, "id");
+        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
     }
 
     @Test

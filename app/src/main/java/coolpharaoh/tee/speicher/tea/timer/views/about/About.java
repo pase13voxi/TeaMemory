@@ -20,7 +20,7 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
 import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -56,7 +56,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     private void configureAndShowListView() {
-        List<ListRowItem> aboutList = generateListItems();
+        List<RecyclerItem> aboutList = generateListItems();
 
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_about, aboutList, this);
 
@@ -66,16 +66,16 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
         recyclerViewAbout.setAdapter(adapter);
     }
 
-    private List<ListRowItem> generateListItems() {
+    private List<RecyclerItem> generateListItems() {
         //write into listView
-        List<ListRowItem> aboutList = new ArrayList<>();
-        ListRowItem itemContact = new ListRowItem(getResources().getString(R.string.about_contact_heading), getResources().getString(R.string.about_contact_description));
+        List<RecyclerItem> aboutList = new ArrayList<>();
+        RecyclerItem itemContact = new RecyclerItem(getResources().getString(R.string.about_contact_heading), getResources().getString(R.string.about_contact_description));
         aboutList.add(itemContact);
-        ListRowItem itemRating = new ListRowItem(getResources().getString(R.string.about_rating_heading), getResources().getString(R.string.about_rating_description));
+        RecyclerItem itemRating = new RecyclerItem(getResources().getString(R.string.about_rating_heading), getResources().getString(R.string.about_rating_description));
         aboutList.add(itemRating);
-        ListRowItem itemStatistics = new ListRowItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
+        RecyclerItem itemStatistics = new RecyclerItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
         aboutList.add(itemStatistics);
-        ListRowItem itemSoftware = new ListRowItem(getResources().getString(R.string.about_software_heading), getResources().getString(R.string.about_software_description));
+        RecyclerItem itemSoftware = new RecyclerItem(getResources().getString(R.string.about_software_heading), getResources().getString(R.string.about_software_description));
         aboutList.add(itemSoftware);
         return aboutList;
     }

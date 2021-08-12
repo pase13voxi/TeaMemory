@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import static java.lang.Boolean.TRUE;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,10 +36,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
-
-import static java.lang.Boolean.TRUE;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -50,7 +50,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     private SettingsViewModel settingsViewModel;
     private SharedSettings sharedSettings;
 
-    private ArrayList<ListRowItem> settingsList;
+    private ArrayList<RecyclerItem> settingsList;
     private RecyclerViewAdapter adapter;
 
     private final ActivityResultLauncher<String> permissionResultLauncher = registerForActivityResult(
@@ -122,7 +122,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void addMusicChoiceToSettingsList() {
-        final ListRowItem itemSound = new ListRowItem(getString(R.string.settings_alarm), settingsViewModel.getMusicname());
+        final RecyclerItem itemSound = new RecyclerItem(getString(R.string.settings_alarm), settingsViewModel.getMusicname());
         settingsList.add(itemSound);
     }
 
@@ -131,7 +131,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
         final int vibrationOption = settingsViewModel.isVibration() ? 0 : 1;
 
-        settingsList.add(new ListRowItem(getString(R.string.settings_vibration), itemsOnOff[vibrationOption]));
+        settingsList.add(new RecyclerItem(getString(R.string.settings_vibration), itemsOnOff[vibrationOption]));
     }
 
     private void addAnimationChoiceToSettingsList() {
@@ -139,26 +139,26 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
         final int animationOption = settingsViewModel.isAnimation() ? 0 : 1;
 
-        settingsList.add(new ListRowItem(getString(R.string.settings_animation), itemsOnOff[animationOption]));
+        settingsList.add(new RecyclerItem(getString(R.string.settings_animation), itemsOnOff[animationOption]));
     }
 
     private void addTemperatureChoiceToSettingsList() {
-        settingsList.add(new ListRowItem(getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
+        settingsList.add(new RecyclerItem(getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
     }
 
     private void addDarkModeChoiceToSettingsList() {
         final DarkMode darkMode = sharedSettings.getDarkMode();
         final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
-        settingsList.add(new ListRowItem(getString(R.string.settings_dark_mode), items[darkMode.getChoice()]));
+        settingsList.add(new RecyclerItem(getString(R.string.settings_dark_mode), items[darkMode.getChoice()]));
     }
 
     private void addHintsDesciptionToSettingsList() {
-        settingsList.add(new ListRowItem(getString(R.string.settings_show_hints), getString(R.string.settings_show_hints_description)));
+        settingsList.add(new RecyclerItem(getString(R.string.settings_show_hints), getString(R.string.settings_show_hints_description)));
     }
 
     private void addFactorySettingsDesciptionToSettingsList() {
-        settingsList.add(new ListRowItem(getString(R.string.settings_factory_settings), getString(R.string.settings_factory_settings_description)));
+        settingsList.add(new RecyclerItem(getString(R.string.settings_factory_settings), getString(R.string.settings_factory_settings_description)));
     }
 
     @Override

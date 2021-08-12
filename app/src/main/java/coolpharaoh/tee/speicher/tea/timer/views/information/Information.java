@@ -26,7 +26,7 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.ListRowItem;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -87,9 +87,9 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         recyclerViewDetails.addItemDecoration(new DividerItemDecoration(recyclerViewDetails.getContext(), DividerItemDecoration.VERTICAL));
 
         informationViewModel.getDetails().observe(this, details -> {
-            final List<ListRowItem> detailsList = new ArrayList<>();
+            final List<RecyclerItem> detailsList = new ArrayList<>();
             for (final Note note : details) {
-                detailsList.add(new ListRowItem(note.getHeader(), note.getDescription()));
+                detailsList.add(new RecyclerItem(note.getHeader(), note.getDescription()));
             }
             final DetailRecyclerViewAdapter adapter = new DetailRecyclerViewAdapter(detailsList, this);
             recyclerViewDetails.setAdapter(adapter);
