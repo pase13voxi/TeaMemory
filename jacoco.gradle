@@ -14,7 +14,8 @@ tasks.withType(Test) {
     jacoco.excludes = ['jdk.internal.*']
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest"){
+tasks.register("jacocoTestReport", JacocoReport) {
+    dependsOn = "testDebugUnitTest"
     group = "Reporting"
     description = "Generate Jacoco coverage reports for Debug build"
 
