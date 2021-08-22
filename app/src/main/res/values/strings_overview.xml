@@ -22,6 +22,7 @@
     <string name="overview_dialog_rating_positive">Rate now</string>
     <string name="overview_dialog_rating_neutral">Later</string>
     <string name="overview_dialog_rating_negative">No, thanks</string>
+    <string name="overview_sorting_header_star">%1$d \u2605</string>
     <string-array name="overview_sort_options">
         <item>Last used</item>
         <item>Alphabetical</item>

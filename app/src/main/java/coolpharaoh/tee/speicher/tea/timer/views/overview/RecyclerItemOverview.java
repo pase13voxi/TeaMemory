@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 import lombok.Getter;
@@ -114,7 +115,8 @@ public class RecyclerItemOverview {
         for (final Tea tea : teaList) {
             final int rating = tea.getRating();
             if (rating != lastRating) {
-                recyclerItems.add(new RecyclerItemOverview(String.valueOf(rating), null, null, null));
+                final String ratingHeader = application.getString(R.string.overview_sorting_header_star, rating);
+                recyclerItems.add(new RecyclerItemOverview(ratingHeader, null, null, null));
                 lastRating = rating;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);

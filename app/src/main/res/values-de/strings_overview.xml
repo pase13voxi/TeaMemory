@@ -22,6 +22,7 @@
     <string name="overview_dialog_rating_positive">Bewerten</string>
     <string name="overview_dialog_rating_neutral">Später</string>
     <string name="overview_dialog_rating_negative">Nein, danke</string>
+    <string name="overview_sorting_header_star">%1$d \u2605</string>
     <string-array name="overview_sort_options">
         <item>Letzte Verwendung</item>
         <item>Alphabetisch</item>
