@@ -2,7 +2,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.Application;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,7 +46,7 @@ public class RecyclerItemOverview {
         String lastDate = "";
 
         for (final Tea tea : teaList) {
-            final String date = extractDate(tea.getDate());
+            final String date = getLastUsedHeader(tea.getDate());
             if (!date.equals(lastDate)) {
                 recyclerItems.add(new RecyclerItemOverview(date, null, null, null));
                 lastDate = date;
@@ -58,26 +57,72 @@ public class RecyclerItemOverview {
         return recyclerItems;
     }
 
-    private static String extractDate(final Date teaDate) {
+    private static String getLastUsedHeader(final Date lastUsed) {
+        String[] monthNames = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+
         final Date today = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(today);
-        calendar.add(Calendar.DATE, -1);
-        final Date yesterday = calendar.getTime();
-
-        final SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-        final String dateString = formatter.format(teaDate);
-        final String todayString = formatter.format(today);
-        final String yesterdayString = formatter.format(yesterday);
-        if (dateString.equals(todayString)) {
+        if (isCurrentDay(lastUsed, today)) {
             return "today";
-        } else if (dateString.equals(yesterdayString)) {
-            return "yesterday";
+        } else if (isCurrentWeek(lastUsed, today)) {
+            return "this week";
+        } else if (isCurrentMonth(lastUsed, today)) {
+            return "this month";
+        } else if (isCurrentYear(lastUsed, today)) {
+            final Calendar cal = Calendar.getInstance();
+            cal.setTime(lastUsed);
+            final int lastUsedMonth = cal.get(Calendar.MONTH);
+            return monthNames[lastUsedMonth];
         } else {
-            return dateString;
+            final Calendar cal = Calendar.getInstance();
+            cal.setTime(lastUsed);
+            final int lastUsedYear = cal.get(Calendar.YEAR);
+            return String.valueOf(lastUsedYear);
         }
+    }
 
+    private static boolean isCurrentDay(final Date lastUsed, final Date currentDate) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+        final int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+        final int currentMonth = cal.get(Calendar.MONTH);
+        final int currentYear = cal.get(Calendar.YEAR);
+        cal.setTime(lastUsed);
+        final int lastUsedDay = cal.get(Calendar.DAY_OF_MONTH);
+        final int lasUsedMonth = cal.get(Calendar.MONTH);
+        final int lastUsedYear = cal.get(Calendar.YEAR);
+        return (currentDay == lastUsedDay && currentMonth == lasUsedMonth && currentYear == lastUsedYear);
+    }
 
+    private static boolean isCurrentWeek(final Date lastUsed, final Date currentDate) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+        final int currentWeek = cal.get(Calendar.WEEK_OF_YEAR);
+        final int currentYear = cal.get(Calendar.YEAR);
+        cal.setTime(lastUsed);
+        final int countWeek = cal.get(Calendar.WEEK_OF_YEAR);
+        final int countYear = cal.get(Calendar.YEAR);
+        return (currentWeek == countWeek && currentYear == countYear);
+    }
+
+    private static boolean isCurrentMonth(final Date lastUsed, final Date currentDate) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+        final int currentMonth = cal.get(Calendar.MONTH);
+        final int currentYear = cal.get(Calendar.YEAR);
+        cal.setTime(lastUsed);
+        final int countMonth = cal.get(Calendar.MONTH);
+        final int countYear = cal.get(Calendar.YEAR);
+        return (currentMonth == countMonth && currentYear == countYear);
+    }
+
+    private static boolean isCurrentYear(final Date lastUsed, final Date currentDate) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+        final int currentYear = cal.get(Calendar.YEAR);
+        cal.setTime(lastUsed);
+        final int countYear = cal.get(Calendar.YEAR);
+        return currentYear == countYear;
     }
 
     private static List<RecyclerItemOverview> generateWithAlphabeticalStrategy(final List<Tea> teaList, final Application application) {
