@@ -15,7 +15,7 @@ tasks.withType(Test) {
 }
 
 tasks.register("jacocoTestReport", JacocoReport) {
-    dependsOn = "testDebugUnitTest"
+    dependsOn = ['testDebugUnitTest']
     group = "Reporting"
     description = "Generate Jacoco coverage reports for Debug build"
 
