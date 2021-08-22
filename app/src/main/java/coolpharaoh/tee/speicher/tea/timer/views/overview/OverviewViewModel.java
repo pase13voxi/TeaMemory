@@ -17,6 +17,7 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -29,21 +30,24 @@ class OverviewViewModel extends ViewModel {
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
     private final ActualSettingsRepository actualSettingsRepository;
+    private final SharedSettings sharedSettings;
 
     private final MutableLiveData<List<Tea>> teas;
     private final ActualSettings actualSettings;
+    private boolean searchMode = false;
 
-    OverviewViewModel(Application application) {
+    OverviewViewModel(final Application application) {
         this(application, new TeaRepository(application), new InfusionRepository(application),
-                new ActualSettingsRepository(application));
+                new ActualSettingsRepository(application), new SharedSettings(application));
     }
 
     @VisibleForTesting
-    OverviewViewModel(Application application, TeaRepository teaRepository, InfusionRepository infusionRepository,
-                      ActualSettingsRepository actualSettingsRepository) {
+    OverviewViewModel(final Application application, final TeaRepository teaRepository, final InfusionRepository infusionRepository,
+                      final ActualSettingsRepository actualSettingsRepository, final SharedSettings sharedSettings) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.actualSettingsRepository = actualSettingsRepository;
+        this.sharedSettings = sharedSettings;
 
         if (actualSettingsRepository.getCountItems() == 0) {
             createDefaultTeas(application);
@@ -105,6 +109,7 @@ class OverviewViewModel extends ViewModel {
         if ("".equals(searchString)) {
             refreshTeas();
         } else {
+            searchMode = true;
             teas.setValue(teaRepository.getTeasBySearchString(searchString));
         }
     }
@@ -121,11 +126,23 @@ class OverviewViewModel extends ViewModel {
         refreshTeas();
     }
 
+    void setOverviewHeader(final boolean overviewHeader) {
+        sharedSettings.setOverviewHeader(overviewHeader);
+    }
+
+    boolean isOverviewHeader() {
+        return sharedSettings.isOverviewHeader();
+    }
+
+    int getSortWithHeader() {
+        return isOverviewHeader() && !searchMode ? getSort() : -1;
+    }
+
     boolean isMainRateAlert() {
         return actualSettings.isMainRateAlert();
     }
 
-    void setMainRateAlert(boolean mainRateAlert) {
+    void setMainRateAlert(final boolean mainRateAlert) {
         actualSettings.setMainRateAlert(mainRateAlert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -154,6 +171,7 @@ class OverviewViewModel extends ViewModel {
     }
 
     void refreshTeas() {
+        searchMode = false;
         switch (actualSettings.getSort()) {
             //activity
             case 0:

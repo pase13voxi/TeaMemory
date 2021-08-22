@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,20 +60,8 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void dialogSortOption() {
-        final String[] items = getResources().getStringArray(R.array.overview_sort_options);
-        int checkedItem = overviewViewModel.getSort();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
-        builder.setIcon(R.drawable.sort_black);
-        builder.setTitle(R.string.overview_dialog_sort_title);
-        builder.setSingleChoiceItems(items, checkedItem, this::changeSortOption);
-        builder.setNegativeButton(R.string.overview_dialog_sort_negative, null);
-        builder.create().show();
-    }
-
-    private void changeSortOption(DialogInterface dialog, int item) {
-        overviewViewModel.setSort(item);
-        dialog.dismiss();
+        new SortPickerDialog(overviewViewModel)
+                .show(getSupportFragmentManager(), SortPickerDialog.TAG);
     }
 
     private void initializeTeaList() {
@@ -87,7 +74,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
     private void bindTeaListWithTeaAdapterAndObserve(final RecyclerView teaList) {
         overviewViewModel.getTeas().observe(this, teas -> {
-            final List<RecyclerItemOverview> recyclerItems = RecyclerItemOverview.generateFrom(overviewViewModel.getSort(), teas, getApplication());
+            final List<RecyclerItemOverview> recyclerItems = RecyclerItemOverview.generateFrom(overviewViewModel.getSortWithHeader(), teas, getApplication());
 
             final RecyclerViewAdapterOverview teaListRecyclerViewAdapter = new RecyclerViewAdapterOverview(recyclerItems, this);
             teaList.setAdapter(teaListRecyclerViewAdapter);

@@ -8,6 +8,7 @@ public class SharedSettings {
 
     private static final String TEA_MEMORY_SETTINGS = "tea_memory_settings";
     private static final String DARK_MODE = "dark_mode";
+    private static final String OVERVIEW_HEADER = "overview_header";
     SharedPreferences sharedPreferences;
 
     public SharedSettings(Application application) {
@@ -22,6 +23,16 @@ public class SharedSettings {
     public void setSetDarkMode(final DarkMode darkMode) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(DARK_MODE, darkMode.getText());
+        editor.apply();
+    }
+
+    public boolean isOverviewHeader() {
+        return sharedPreferences.getBoolean(OVERVIEW_HEADER, false);
+    }
+
+    public void setOverviewHeader(final boolean overviewHeader) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(OVERVIEW_HEADER, overviewHeader);
         editor.apply();
     }
 }

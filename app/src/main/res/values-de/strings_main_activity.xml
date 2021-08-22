@@ -5,6 +5,8 @@
     <string name="overview_action_sort">Sortiermodus</string>
     <string name="overview_action_search">Suche</string>
     <string name="overview_dialog_sort_title">Sortiermodus</string>
+    <string name="overview_dialog_sort_switch_show_header">Sortierung anzeigen</string>
+    <string name="overview_dialog_sort_positive">Anwenden</string>
     <string name="overview_dialog_sort_negative">Abbrechen</string>
     <string name="overview_tea_list_menu_edit">Bearbeiten</string>
     <string name="overview_tea_list_menu_delete">Löschen</string>

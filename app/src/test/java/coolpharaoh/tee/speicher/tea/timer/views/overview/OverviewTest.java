@@ -19,10 +19,13 @@ import android.os.Build;
 import android.view.Menu;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -254,9 +257,15 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
+            shadowOf(getMainLooper()).idle();
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final List<RadioButton> radioButtons = getRadioButtons(dialog);
+
+            radioButtons.get(SORT_ACTIVITY).performClick();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
@@ -273,9 +282,15 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
+            shadowOf(getMainLooper()).idle();
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SORT_ALPHABETICALLY);
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final List<RadioButton> radioButtons = getRadioButtons(dialog);
+
+            radioButtons.get(SORT_ALPHABETICALLY).performClick();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
@@ -292,9 +307,15 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
+            shadowOf(getMainLooper()).idle();
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SORT_VARIETY);
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final List<RadioButton> radioButtons = getRadioButtons(dialog);
+
+            radioButtons.get(SORT_VARIETY).performClick();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
@@ -311,12 +332,44 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
+            shadowOf(getMainLooper()).idle();
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SORT_RATING);
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final List<RadioButton> radioButtons = getRadioButtons(dialog);
+
+            radioButtons.get(SORT_RATING).performClick();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
+        });
+    }
+
+    @Test
+    public void enableSortingHeaderExpectTeaListWithHeader() {
+        mockActualSettings(0);
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
+            shadowOf(getMainLooper()).idle();
+
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final SwitchCompat switchShowHeader = dialog.findViewById(R.id.switch_overview_show_header);
+
+            switchShowHeader.setChecked(true);
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
+            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
+
+            assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(4);
         });
     }
 
@@ -353,7 +406,7 @@ public class OverviewTest {
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-            assertThat(actual.getExtras().get("teaId")).isEqualTo((long) (positionTea - 1));
+            assertThat(actual.getExtras().get("teaId")).isEqualTo((long) (positionTea));
         });
     }
 
@@ -377,7 +430,7 @@ public class OverviewTest {
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-            assertThat(actual.getLongExtra("teaId", -1)).isEqualTo((teaPosition - 1));
+            assertThat(actual.getLongExtra("teaId", -1)).isEqualTo((teaPosition));
         });
     }
 
@@ -397,7 +450,7 @@ public class OverviewTest {
 
             selectItemPopUpMenu(R.id.action_overview_tea_list_delete);
 
-            verify(teaDao).deleteTeaById(0L);
+            verify(teaDao).deleteTeaById(1L);
         });
     }
 
@@ -437,11 +490,11 @@ public class OverviewTest {
     private void checkExpectedTeas(final String teaName, final Overview overview) {
         final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
 
-        assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(4);
-        for (int i = 1; i < 4; i++) {
+        assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
+        for (int i = 1; i < 3; i++) {
             final View itemView = recyclerView.findViewHolderForAdapterPosition(i).itemView;
             final TextView heading = itemView.findViewById(R.id.text_view_recycler_view_heading);
-            assertThat(heading.getText()).hasToString(teaName + (i - 1));
+            assertThat(heading.getText()).hasToString(teaName + (i));
         }
     }
 
@@ -463,5 +516,17 @@ public class OverviewTest {
         final PopupMenu latestPopupMenu = ShadowPopupMenu.getLatestPopupMenu();
         final Menu menu = latestPopupMenu.getMenu();
         menu.performIdentifierAction(itemId, FLAG_ALWAYS_PERFORM_CLOSE);
+    }
+
+    private List<RadioButton> getRadioButtons(AlertDialog dialog) {
+        final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_overview_sort_options_input);
+        final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View o = radioGroup.getChildAt(i);
+            if (o instanceof RadioButton) {
+                listRadioButtons.add((RadioButton) o);
+            }
+        }
+        return listRadioButtons;
     }
 }

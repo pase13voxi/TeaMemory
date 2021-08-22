@@ -24,6 +24,7 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
@@ -39,6 +40,8 @@ public class OverviewViewModelTest {
     InfusionRepository infusionRepository;
     @Mock
     ActualSettingsRepository actualSettingsRepository;
+    @Mock
+    SharedSettings sharedSettings;
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
 
@@ -50,7 +53,7 @@ public class OverviewViewModelTest {
         mockSettings();
         mockTeas();
         overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository,
-                actualSettingsRepository);
+                actualSettingsRepository, sharedSettings);
     }
 
     private void mockSettings() {
@@ -81,7 +84,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void getTeas() {
-        List<Tea> teasAfter = overviewViewModel.getTeas().getValue();
+        final List<Tea> teasAfter = overviewViewModel.getTeas().getValue();
         assertThat(teasAfter).isEqualTo(teas);
     }
 
@@ -95,7 +98,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void showTeasBySearchString() {
-        String searchString = "search";
+        final String searchString = "search";
         overviewViewModel.visualizeTeasBySearchString(searchString);
         verify(teaRepository).getTeasBySearchString(searchString);
     }
@@ -103,7 +106,7 @@ public class OverviewViewModelTest {
     @Test
     public void showTeasByEmptySearchString() {
         actualSettings.setSort(0);
-        String searchString = "";
+        final String searchString = "";
 
         overviewViewModel.visualizeTeasBySearchString(searchString);
 
@@ -113,15 +116,29 @@ public class OverviewViewModelTest {
 
     @Test
     public void getSort() {
-        int sort = overviewViewModel.getSort();
+        final int sort = overviewViewModel.getSort();
         assertThat(sort).isEqualTo(actualSettings.getSort());
     }
 
     @Test
     public void setSort() {
-        int sort = 2;
+        final int sort = 2;
         overviewViewModel.setSort(sort);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
+    }
+
+    @Test
+    public void setOverviewHeader() {
+        final boolean overviewHeader = true;
+        overviewViewModel.setOverviewHeader(overviewHeader);
+        verify(sharedSettings).setOverviewHeader(overviewHeader);
+    }
+
+    @Test
+    public void getOverviewHeader() {
+        when(sharedSettings.isOverviewHeader()).thenReturn(false);
+        final boolean isOverviewHeader = overviewViewModel.isOverviewHeader();
+        assertThat(isOverviewHeader).isFalse();
     }
 
     @Test
@@ -131,14 +148,14 @@ public class OverviewViewModelTest {
 
     @Test
     public void setMainRateAlert() {
-        boolean alert = false;
+        final boolean alert = false;
         overviewViewModel.setMainRateAlert(alert);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test
     public void getMainRatecounter() {
-        int counter = overviewViewModel.getMainRatecounter();
+        final int counter = overviewViewModel.getMainRatecounter();
         assertThat(counter).isEqualTo(actualSettings.getMainRateCounter());
     }
 
@@ -161,7 +178,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void setMainUpdateAlert() {
-        boolean alert = true;
+        final boolean alert = true;
         overviewViewModel.setMainUpdateAlert(alert);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
@@ -192,6 +209,27 @@ public class OverviewViewModelTest {
         actualSettings.setSort(3);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByRating();
+    }
+
+    @Test
+    public void getSortWithHeaderIsSort3() {
+        when(sharedSettings.isOverviewHeader()).thenReturn(true);
+        actualSettings.setSort(3);
+        overviewViewModel.refreshTeas();
+        assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(3);
+    }
+
+    @Test
+    public void getSortWithHeaderIsFalse() {
+        when(sharedSettings.isOverviewHeader()).thenReturn(false);
+        assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(-1);
+    }
+
+    @Test
+    public void getSortWithHeaderIsInSearchMode() {
+        final String searchString = "search";
+        overviewViewModel.visualizeTeasBySearchString(searchString);
+        assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(-1);
     }
 
 }
