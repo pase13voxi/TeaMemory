@@ -6,7 +6,7 @@ ext {
 
 jacoco {
     toolVersion = '0.8.7'
-    reportsDir = file("$buildDir/reports")
+    reportsDirectory = file("$buildDir/reports")
 }
 
 tasks.withType(Test) {
