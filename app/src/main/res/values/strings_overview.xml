@@ -8,6 +8,12 @@
     <string name="overview_dialog_sort_switch_show_header">Show sorting</string>
     <string name="overview_dialog_sort_positive">Use</string>
     <string name="overview_dialog_sort_negative">Cancel</string>
+    <string-array name="overview_sort_options">
+        <item>Last used</item>
+        <item>Alphabetical</item>
+        <item>By tea variety</item>
+        <item>Rating</item>
+    </string-array>
     <string name="overview_tea_list_menu_edit">Edit</string>
     <string name="overview_tea_list_menu_delete">Delete</string>
     <string name="overview_error_deletion">Deletion could not be performed.</string>
@@ -22,11 +28,22 @@
     <string name="overview_dialog_rating_positive">Rate now</string>
     <string name="overview_dialog_rating_neutral">Later</string>
     <string name="overview_dialog_rating_negative">No, thanks</string>
-    <string name="overview_sorting_header_star">%1$d \u2605</string>
-    <string-array name="overview_sort_options">
-        <item>Last used</item>
-        <item>Alphabetical</item>
-        <item>By tea variety</item>
-        <item>Rating</item>
+    <string name="overview_sort_header_star">%1$d \u2605</string>
+    <string name="overview_sort_last_used_today">Today</string>
+    <string name="overview_sort_last_used_this_week">This week</string>
+    <string name="overview_sort_last_used_this_month">This month</string>
+    <string-array name="overview_sort_last_used_month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
     </string-array>
 </resources>

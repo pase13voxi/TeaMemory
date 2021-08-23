@@ -6,6 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.ALPHABETICAL;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.LAST_USED;
 import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialog.TAG;
 
 import android.app.AlertDialog;
@@ -52,6 +54,8 @@ public class SortPickerDialogTest {
 
     @Before
     public void setUp() {
+        when(overviewViewModel.getSort()).thenReturn(LAST_USED);
+
         final FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
         fragmentManager = activity.getSupportFragmentManager();
         dialogFragment = new SortPickerDialog(overviewViewModel);
@@ -69,9 +73,8 @@ public class SortPickerDialogTest {
 
     @Test
     public void showDialogAndSortModeAlphabeticalAndCheckedShowHeader() {
-        final int sortMode = 1;
         when(overviewViewModel.isOverviewHeader()).thenReturn(true);
-        when(overviewViewModel.getSort()).thenReturn(sortMode);
+        when(overviewViewModel.getSort()).thenReturn(ALPHABETICAL);
 
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
@@ -82,25 +85,23 @@ public class SortPickerDialogTest {
         assertThat(switchShowHeader.isChecked()).isTrue();
 
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        assertThat(radioButtons.get(sortMode).isChecked()).isTrue();
+        assertThat(radioButtons.get(ALPHABETICAL.getIndex()).isChecked()).isTrue();
     }
 
     @Test
     public void selectSortModeAlphabeticalAndExpectPersistedAlphabeticalSortMode() {
-        final int sortModeAlphabetical = 1;
-
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
 
-        radioButtons.get(sortModeAlphabetical).performClick();
+        radioButtons.get(ALPHABETICAL.getIndex()).performClick();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         shadowOf(getMainLooper()).idle();
 
-        verify(overviewViewModel).setSort(sortModeAlphabetical);
+        verify(overviewViewModel).setSort(ALPHABETICAL);
     }
 
     @Test

@@ -18,6 +18,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -115,12 +116,12 @@ class OverviewViewModel extends ViewModel {
     }
 
     // Settings
-    int getSort() {
-        return actualSettings.getSort();
+    SortMode getSort() {
+        return SortMode.fromIndex(actualSettings.getSort());
     }
 
-    void setSort(int sort) {
-        actualSettings.setSort(sort);
+    void setSort(SortMode sortMode) {
+        actualSettings.setSort(sortMode.getIndex());
         actualSettingsRepository.updateSettings(actualSettings);
 
         refreshTeas();
@@ -135,7 +136,7 @@ class OverviewViewModel extends ViewModel {
     }
 
     int getSortWithHeader() {
-        return isOverviewHeader() && !searchMode ? getSort() : -1;
+        return isOverviewHeader() && !searchMode ? getSort().getIndex() : -1;
     }
 
     boolean isMainRateAlert() {

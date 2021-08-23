@@ -6,6 +6,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.LAST_USED;
 
 import android.app.Application;
 
@@ -25,6 +26,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
@@ -116,14 +118,13 @@ public class OverviewViewModelTest {
 
     @Test
     public void getSort() {
-        final int sort = overviewViewModel.getSort();
-        assertThat(sort).isEqualTo(actualSettings.getSort());
+        final SortMode sort = overviewViewModel.getSort();
+        assertThat(sort).isEqualTo(LAST_USED);
     }
 
     @Test
     public void setSort() {
-        final int sort = 2;
-        overviewViewModel.setSort(sort);
+        overviewViewModel.setSort(SortMode.BY_VARIETY);
         verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 

@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -29,6 +28,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header.RecyclerItemsHeaderStrategy;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header.RecyclerItemsHeaderStrategyFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
@@ -74,9 +75,9 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
     private void bindTeaListWithTeaAdapterAndObserve(final RecyclerView teaList) {
         overviewViewModel.getTeas().observe(this, teas -> {
-            final List<RecyclerItemOverview> recyclerItems = RecyclerItemOverview.generateFrom(overviewViewModel.getSortWithHeader(), teas, getApplication());
+            final RecyclerItemsHeaderStrategy recyclerItemsHeader = RecyclerItemsHeaderStrategyFactory.getStrategy(overviewViewModel.getSortWithHeader(), getApplication());
 
-            final RecyclerViewAdapterOverview teaListRecyclerViewAdapter = new RecyclerViewAdapterOverview(recyclerItems, this);
+            final RecyclerViewAdapterOverview teaListRecyclerViewAdapter = new RecyclerViewAdapterOverview(recyclerItemsHeader.generateFrom(teas), this);
             teaList.setAdapter(teaListRecyclerViewAdapter);
         });
     }

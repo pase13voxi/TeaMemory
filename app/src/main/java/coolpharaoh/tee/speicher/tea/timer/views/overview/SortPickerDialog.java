@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 
 public class SortPickerDialog extends DialogFragment {
     public static final String TAG = "SortPickerDialog";
@@ -72,9 +73,9 @@ public class SortPickerDialog extends DialogFragment {
     }
 
     private void setConfiguredValues(final RadioGroup varietyRadioGroup) {
-        final int sortOption = overviewViewModel.getSort();
+        final SortMode sortOption = overviewViewModel.getSort();
         final List<RadioButton> radioButtons = getRadioButtons(varietyRadioGroup);
-        radioButtons.get(sortOption).setChecked(true);
+        radioButtons.get(sortOption.getIndex()).setChecked(true);
     }
 
     private List<RadioButton> getRadioButtons(final RadioGroup radioGroup) {
@@ -133,6 +134,7 @@ public class SortPickerDialog extends DialogFragment {
                 checkedSortMode = i;
             }
         }
-        overviewViewModel.setSort(checkedSortMode);
+        final SortMode sortMode = SortMode.fromIndex(checkedSortMode);
+        overviewViewModel.setSort(sortMode);
     }
 }
