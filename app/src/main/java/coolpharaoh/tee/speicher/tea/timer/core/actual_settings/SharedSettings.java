@@ -20,7 +20,7 @@ public class SharedSettings {
         return DarkMode.fromText(darkModeString);
     }
 
-    public void setSetDarkMode(final DarkMode darkMode) {
+    public void setDarkMode(final DarkMode darkMode) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(DARK_MODE, darkMode.getText());
         editor.apply();

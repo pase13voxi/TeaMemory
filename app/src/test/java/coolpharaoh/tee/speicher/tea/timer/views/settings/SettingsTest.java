@@ -1,5 +1,21 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import static android.os.Looper.getMainLooper;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.DISABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.ENABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.SYSTEM;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
@@ -39,22 +55,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-import static android.os.Looper.getMainLooper;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.DISABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.ENABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.SYSTEM;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -63,9 +63,10 @@ public class SettingsTest {
     private static final int VIBRATION = 1;
     private static final int ANIMATION = 2;
     private static final int TEMPERATURE_UNIT = 3;
-    private static final int DARK_MODE = 4;
-    private static final int HINTS = 5;
-    private static final int FACTORY_SETTINGS = 6;
+    private static final int OVERVIEW_HEADER = 4;
+    private static final int DARK_MODE = 5;
+    private static final int HINTS = 6;
+    private static final int FACTORY_SETTINGS = 7;
     private static final int OPTION_ON = 0;
     private static final int OPTION_OFF = 1;
     private static final String ON = "On";
@@ -127,6 +128,10 @@ public class SettingsTest {
             scrollToPosition(settingsRecyclerView, TEMPERATURE_UNIT);
             checkHeadingAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, settings.getString(R.string.settings_temperature_unit));
             checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, actualSettings.getTemperatureUnit());
+
+            scrollToPosition(settingsRecyclerView, OVERVIEW_HEADER);
+            checkHeadingAtPosition(settingsRecyclerView, OVERVIEW_HEADER, settings.getString(R.string.settings_overview_header));
+            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, OFF);
 
             scrollToPosition(settingsRecyclerView, DARK_MODE);
             final String[] darkModes = settings.getResources().getStringArray(R.array.settings_dark_mode);
@@ -274,6 +279,48 @@ public class SettingsTest {
             assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT.getText());
 
             checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT.getText());
+        });
+    }
+
+    @Test
+    public void setOverviewHeaderFalseAndExpectOverviewHeaderFalse() {
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            sharedSettings.setOverviewHeader(true);
+
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+
+            clickAtPositionRecyclerView(settingsRecyclerView, OVERVIEW_HEADER);
+
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(OPTION_OFF);
+            shadowOf(getMainLooper()).idle();
+
+            assertThat(sharedSettings.isOverviewHeader()).isFalse();
+
+            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, OFF);
+        });
+    }
+
+    @Test
+    public void setOverviewHeaderTrueAndExpectOverviewHeaderTrue() {
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            sharedSettings.setOverviewHeader(false);
+
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+
+            clickAtPositionRecyclerView(settingsRecyclerView, OVERVIEW_HEADER);
+
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(OPTION_ON);
+            shadowOf(getMainLooper()).idle();
+
+            assertThat(sharedSettings.isOverviewHeader()).isTrue();
+
+            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, ON);
         });
     }
 

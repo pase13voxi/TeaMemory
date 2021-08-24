@@ -6,29 +6,34 @@ import androidx.annotation.VisibleForTesting;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class SettingsViewModel {
 
     private final ActualSettingsRepository actualSettingsRepository;
     private final TeaRepository teaRepository;
+    private final SharedSettings sharedSettings;
 
     private final ActualSettings actualSettings;
 
-    public SettingsViewModel(Application application) {
-        this(new TeaRepository(application), new ActualSettingsRepository(application));
+    public SettingsViewModel(final Application application) {
+        this(new TeaRepository(application), new ActualSettingsRepository(application),
+                new SharedSettings(application));
     }
 
     @VisibleForTesting
-    public SettingsViewModel(TeaRepository teaRepository,
-                             ActualSettingsRepository actualSettingsRepository) {
+    public SettingsViewModel(final TeaRepository teaRepository, final ActualSettingsRepository actualSettingsRepository,
+                             final SharedSettings sharedSettings) {
         this.teaRepository = teaRepository;
         this.actualSettingsRepository = actualSettingsRepository;
+        this.sharedSettings = sharedSettings;
         actualSettings = actualSettingsRepository.getSettings();
     }
 
     //Settings
-    void setMusicchoice(String musicchoice) {
+    void setMusicchoice(final String musicchoice) {
         actualSettings.setMusicChoice(musicchoice);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -37,7 +42,7 @@ class SettingsViewModel {
         return actualSettings.getMusicName();
     }
 
-    void setMusicname(String musicname) {
+    void setMusicname(final String musicname) {
         actualSettings.setMusicName(musicname);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -46,7 +51,7 @@ class SettingsViewModel {
         return actualSettings.isVibration();
     }
 
-    void setVibration(boolean vibration) {
+    void setVibration(final boolean vibration) {
         actualSettings.setVibration(vibration);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -55,7 +60,7 @@ class SettingsViewModel {
         return actualSettings.isAnimation();
     }
 
-    void setAnimation(boolean animation) {
+    void setAnimation(final boolean animation) {
         actualSettings.setAnimation(animation);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -64,16 +69,32 @@ class SettingsViewModel {
         return actualSettings.getTemperatureUnit();
     }
 
-    void setTemperatureUnit(String temperatureUnit) {
+    void setTemperatureUnit(final String temperatureUnit) {
         actualSettings.setTemperatureUnit(temperatureUnit);
         actualSettingsRepository.updateSettings(actualSettings);
+    }
+
+    void setOverviewHeader(final boolean overviewHeader) {
+        sharedSettings.setOverviewHeader(overviewHeader);
+    }
+
+    boolean isOverviewHeader() {
+        return sharedSettings.isOverviewHeader();
+    }
+
+    void setDarkMode(final DarkMode darkMode) {
+        sharedSettings.setDarkMode(darkMode);
+    }
+
+    DarkMode getDarkMode() {
+        return sharedSettings.getDarkMode();
     }
 
     boolean isShowTeaAlert() {
         return actualSettings.isShowTeaAlert();
     }
 
-    void setShowTeaAlert(boolean showteaalert) {
+    void setShowTeaAlert(final boolean showteaalert) {
         actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -82,7 +103,7 @@ class SettingsViewModel {
         return actualSettings.isMainRateAlert();
     }
 
-    void setMainRateAlert(boolean mainratealert) {
+    void setMainRateAlert(final boolean mainratealert) {
         actualSettings.setMainRateAlert(mainratealert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -91,7 +112,7 @@ class SettingsViewModel {
         return actualSettings.isMainUpdateAlert();
     }
 
-    void setMainUpdateAlert(boolean mainUpdateAlert) {
+    void setMainUpdateAlert(final boolean mainUpdateAlert) {
         actualSettings.setMainUpdateAlert(mainUpdateAlert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
@@ -100,7 +121,7 @@ class SettingsViewModel {
         return actualSettings.isSettingsPermissionAlert();
     }
 
-    void setSettingsPermissionAlert(boolean settingsPermissionAlert) {
+    void setSettingsPermissionAlert(final boolean settingsPermissionAlert) {
         actualSettings.setSettingsPermissionAlert(settingsPermissionAlert);
         actualSettingsRepository.updateSettings(actualSettings);
     }

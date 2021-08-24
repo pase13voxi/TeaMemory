@@ -1,5 +1,10 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,12 +14,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SettingsViewModelTest {
@@ -24,16 +26,18 @@ public class SettingsViewModelTest {
     TeaRepository teaRepository;
     @Mock
     ActualSettingsRepository actualSettingsRepository;
+    @Mock
+    SharedSettings sharedSettings;
 
     @Before
     public void setUp() {
         when(actualSettingsRepository.getSettings()).thenReturn(new ActualSettings());
 
-        settingsViewModel = new SettingsViewModel(teaRepository, actualSettingsRepository);
+        settingsViewModel = new SettingsViewModel(teaRepository, actualSettingsRepository, sharedSettings);
     }
 
     @Test
-    public void setMusicchoice(){
+    public void setMusicchoice() {
         final String musicChoice = "MUSIC_CHOICE";
         settingsViewModel.setMusicchoice(musicChoice);
 
@@ -82,6 +86,34 @@ public class SettingsViewModelTest {
         verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(temperatureUnit);
+    }
+
+    @Test
+    public void setOverviewHeader() {
+        final boolean overviewHeader = true;
+        settingsViewModel.setOverviewHeader(overviewHeader);
+        verify(sharedSettings).setOverviewHeader(overviewHeader);
+    }
+
+    @Test
+    public void isOverviewHeader() {
+        when(sharedSettings.isOverviewHeader()).thenReturn(false);
+        final boolean isOverviewHeader = settingsViewModel.isOverviewHeader();
+        assertThat(isOverviewHeader).isFalse();
+    }
+
+    @Test
+    public void setDarkMode() {
+        final DarkMode darkMode = DarkMode.ENABLED;
+        settingsViewModel.setDarkMode(darkMode);
+        verify(sharedSettings).setDarkMode(darkMode);
+    }
+
+    @Test
+    public void getDarkMode() {
+        when(sharedSettings.getDarkMode()).thenReturn(DarkMode.ENABLED);
+        final DarkMode darkMode = settingsViewModel.getDarkMode();
+        assertThat(darkMode).isEqualTo(DarkMode.ENABLED);
     }
 
     @Test

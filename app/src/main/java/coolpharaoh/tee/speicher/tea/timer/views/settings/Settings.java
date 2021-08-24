@@ -34,7 +34,6 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
@@ -44,11 +43,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewA
 public class Settings extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
     private enum ListItems {
-        ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, DARK_MODE, HINTS, FACTORY_SETTINGS
+        ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, OVERVIEW_HEADER, DARK_MODE, HINTS, FACTORY_SETTINGS
     }
 
     private SettingsViewModel settingsViewModel;
-    private SharedSettings sharedSettings;
 
     private ArrayList<RecyclerItem> settingsList;
     private RecyclerViewAdapter adapter;
@@ -79,7 +77,6 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         enableAndShowBackButton();
 
         settingsViewModel = new SettingsViewModel(getApplication());
-        sharedSettings = new SharedSettings(getApplication());
 
         initializeSettingsListView();
     }
@@ -116,6 +113,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         addVibrationChoiceToSettingsList();
         addAnimationChoiceToSettingsList();
         addTemperatureChoiceToSettingsList();
+        addOverviewHeaderToSettingsList();
         addDarkModeChoiceToSettingsList();
         addHintsDesciptionToSettingsList();
         addFactorySettingsDesciptionToSettingsList();
@@ -146,8 +144,16 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsList.add(new RecyclerItem(getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
     }
 
+    private void addOverviewHeaderToSettingsList() {
+        final String[] itemsOnOff = getResources().getStringArray(R.array.settings_options);
+
+        final int overviewHeaderOption = settingsViewModel.isOverviewHeader() ? 0 : 1;
+
+        settingsList.add(new RecyclerItem(getString(R.string.settings_overview_header), itemsOnOff[overviewHeaderOption]));
+    }
+
     private void addDarkModeChoiceToSettingsList() {
-        final DarkMode darkMode = sharedSettings.getDarkMode();
+        final DarkMode darkMode = settingsViewModel.getDarkMode();
         final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
         settingsList.add(new RecyclerItem(getString(R.string.settings_dark_mode), items[darkMode.getChoice()]));
@@ -180,6 +186,9 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
                 break;
             case TEMPERATURE_UNIT:
                 settingTemperatureUnit();
+                break;
+            case OVERVIEW_HEADER:
+                settingOverviewHeader();
                 break;
             case DARK_MODE:
                 settingDarkMode();
@@ -311,10 +320,30 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         dialog.dismiss();
     }
 
+    private void settingOverviewHeader() {
+        final String[] items = getResources().getStringArray(R.array.settings_options);
+
+        final int checkedItem = settingsViewModel.isOverviewHeader() ? 0 : 1;
+
+        new AlertDialog.Builder(this, R.style.dialog_theme)
+                .setTitle(R.string.settings_overview_header)
+                .setSingleChoiceItems(items, checkedItem, this::overviewHeaderChanged)
+                .setNegativeButton(R.string.settings_cancel, null)
+                .show();
+    }
+
+    private void overviewHeaderChanged(final DialogInterface dialog, final int item) {
+        settingsViewModel.setOverviewHeader(item == 0);
+
+        fillAndRefreshSettingsList();
+        adapter.notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
     private void settingDarkMode() {
         final String[] items = getResources().getStringArray(R.array.settings_dark_mode);
 
-        final int checkedItem = sharedSettings.getDarkMode().getChoice();
+        final int checkedItem = settingsViewModel.getDarkMode().getChoice();
 
         new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.settings_dark_mode)
@@ -328,7 +357,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         final int choice = Arrays.asList(items).indexOf(item);
         final DarkMode darkMode = DarkMode.fromChoice(choice);
 
-        sharedSettings.setSetDarkMode(darkMode);
+        settingsViewModel.setDarkMode(darkMode);
         ThemeManager.applyTheme(darkMode);
 
         fillAndRefreshSettingsList();

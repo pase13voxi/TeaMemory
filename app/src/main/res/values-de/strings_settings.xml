@@ -8,9 +8,10 @@
     <string name="settings_read_permission_dialog_ok">Ok</string>
     <string name="settings_vibration">Vibration</string>
     <string name="settings_animation">Animation</string>
-    <string name="settings_cancel">Abbrechen</string>
     <string name="settings_temperature_unit">Temperatur Einheit</string>
     <string name="settings_dark_mode">Dunkles Design</string>
+    <string name="settings_overview_header">Sortierung im Startfenster anzeigen</string>
+    <string name="settings_cancel">Abbrechen</string>
     <string name="settings_show_hints">Hinweise</string>
     <string name="settings_show_hints_description">Aktiviere/Deaktiviere Hinweise</string>
     <string name="settings_show_hints_header">Hinweise</string>
