@@ -5,8 +5,6 @@
     <string name="overview_action_sort">Sort mode</string>
     <string name="overview_action_search">Search</string>
     <string name="overview_dialog_sort_title">Sort mode</string>
-    <string name="overview_dialog_sort_switch_show_header">Show sorting</string>
-    <string name="overview_dialog_sort_positive">Use</string>
     <string name="overview_dialog_sort_negative">Cancel</string>
     <string-array name="overview_sort_options">
         <item>Last used</item>

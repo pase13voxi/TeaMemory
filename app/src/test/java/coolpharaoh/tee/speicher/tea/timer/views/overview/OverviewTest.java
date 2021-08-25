@@ -19,13 +19,10 @@ import android.os.Build;
 import android.view.Menu;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.view.menu.MenuItemImpl;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -52,6 +49,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -257,15 +255,9 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
-            shadowOf(getMainLooper()).idle();
 
-            final AlertDialog dialog = getLatestAlertDialog();
-
-            final List<RadioButton> radioButtons = getRadioButtons(dialog);
-
-            radioButtons.get(SORT_ACTIVITY).performClick();
-
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
@@ -282,15 +274,9 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
-            shadowOf(getMainLooper()).idle();
 
-            final AlertDialog dialog = getLatestAlertDialog();
-
-            final List<RadioButton> radioButtons = getRadioButtons(dialog);
-
-            radioButtons.get(SORT_ALPHABETICALLY).performClick();
-
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SORT_ALPHABETICALLY);
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
@@ -307,15 +293,9 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
-            shadowOf(getMainLooper()).idle();
 
-            final AlertDialog dialog = getLatestAlertDialog();
-
-            final List<RadioButton> radioButtons = getRadioButtons(dialog);
-
-            radioButtons.get(SORT_VARIETY).performClick();
-
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SORT_VARIETY);
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
@@ -332,15 +312,9 @@ public class OverviewTest {
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
-            shadowOf(getMainLooper()).idle();
 
-            final AlertDialog dialog = getLatestAlertDialog();
-
-            final List<RadioButton> radioButtons = getRadioButtons(dialog);
-
-            radioButtons.get(SORT_RATING).performClick();
-
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SORT_RATING);
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(teaName, overview);
@@ -355,16 +329,13 @@ public class OverviewTest {
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
+            final SharedSettings sharedSettings = new SharedSettings(overview.getApplication());
+            sharedSettings.setOverviewHeader(true);
+
             overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
-            shadowOf(getMainLooper()).idle();
 
-            final AlertDialog dialog = getLatestAlertDialog();
-
-            final SwitchCompat switchShowHeader = dialog.findViewById(R.id.switch_overview_show_header);
-
-            switchShowHeader.setChecked(true);
-
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SORT_ACTIVITY);
             shadowOf(getMainLooper()).idle();
 
             final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
@@ -516,17 +487,5 @@ public class OverviewTest {
         final PopupMenu latestPopupMenu = ShadowPopupMenu.getLatestPopupMenu();
         final Menu menu = latestPopupMenu.getMenu();
         menu.performIdentifierAction(itemId, FLAG_ALWAYS_PERFORM_CLOSE);
-    }
-
-    private List<RadioButton> getRadioButtons(AlertDialog dialog) {
-        final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_overview_sort_options_input);
-        final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View o = radioGroup.getChildAt(i);
-            if (o instanceof RadioButton) {
-                listRadioButtons.add((RadioButton) o);
-            }
-        }
-        return listRadioButtons;
     }
 }

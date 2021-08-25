@@ -1,6 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
@@ -61,8 +63,20 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void dialogSortOption() {
-        new SortPickerDialog(overviewViewModel)
-                .show(getSupportFragmentManager(), SortPickerDialog.TAG);
+        final String[] items = getResources().getStringArray(R.array.overview_sort_options);
+        SortMode sortMode = overviewViewModel.getSort();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
+        builder.setIcon(R.drawable.sort_black);
+        builder.setTitle(R.string.overview_dialog_sort_title);
+        builder.setSingleChoiceItems(items, sortMode.getIndex(), this::changeSortOption);
+        builder.setNegativeButton(R.string.overview_dialog_sort_negative, null);
+        builder.create().show();
+    }
+
+    private void changeSortOption(DialogInterface dialog, int item) {
+        overviewViewModel.setSort(SortMode.fromIndex(item));
+        dialog.dismiss();
     }
 
     private void initializeTeaList() {
