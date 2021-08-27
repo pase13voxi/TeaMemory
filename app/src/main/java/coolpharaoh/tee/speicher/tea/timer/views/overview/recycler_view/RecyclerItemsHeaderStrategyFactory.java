@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import android.app.Application;
 

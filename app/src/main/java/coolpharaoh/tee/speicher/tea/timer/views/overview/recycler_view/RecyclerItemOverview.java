@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

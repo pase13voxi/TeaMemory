@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -20,7 +20,6 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.RecyclerItemOverview;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecyclerItemsHeaderStrategyRatingTest {

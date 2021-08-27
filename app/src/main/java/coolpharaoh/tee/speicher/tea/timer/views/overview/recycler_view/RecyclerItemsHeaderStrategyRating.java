@@ -1,19 +1,19 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import android.app.Application;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.RecyclerItemOverview;
 
-public class RecyclerItemsHeaderStrategyAlphabetical implements RecyclerItemsHeaderStrategy {
+class RecyclerItemsHeaderStrategyRating implements RecyclerItemsHeaderStrategy {
 
     private final Application application;
 
-    RecyclerItemsHeaderStrategyAlphabetical(final Application application) {
+    RecyclerItemsHeaderStrategyRating(final Application application) {
         this.application = application;
     }
 
@@ -21,12 +21,13 @@ public class RecyclerItemsHeaderStrategyAlphabetical implements RecyclerItemsHea
     public List<RecyclerItemOverview> generateFrom(List<Tea> teaList) {
 
         final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
-        String lastFirstLetter = "";
+        int lastRating = -1;
         for (final Tea tea : teaList) {
-            final String firstLetter = tea.getName().substring(0, 1).toUpperCase();
-            if (!lastFirstLetter.equals(firstLetter)) {
-                recyclerItems.add(new RecyclerItemOverview("- " + firstLetter + " -", null, null, null));
-                lastFirstLetter = firstLetter;
+            final int rating = tea.getRating();
+            if (rating != lastRating) {
+                final String ratingHeader = application.getString(R.string.overview_sort_header_star, rating);
+                recyclerItems.add(new RecyclerItemOverview("- " + ratingHeader + " -", null, null, null));
+                lastRating = rating;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
             recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety));

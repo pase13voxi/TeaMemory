@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import android.app.Application;
 
@@ -11,7 +11,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.RecyclerItemOverview;
 
 class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy {
 

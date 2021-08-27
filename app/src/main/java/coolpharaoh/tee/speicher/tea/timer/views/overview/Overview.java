@@ -30,8 +30,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header.RecyclerItemsHeaderStrategy;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header.RecyclerItemsHeaderStrategyFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemsHeaderStrategy;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemsHeaderStrategyFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerViewAdapterOverview;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.StickyHeaderItemDecoration;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
@@ -104,7 +106,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         }
 
         if (overviewViewModel.getSortWithHeader() != -1) {
-            teaList.addItemDecoration(new StickHeaderItemDecoration(adapter));
+            teaList.addItemDecoration(new StickyHeaderItemDecoration(adapter));
         }
     }
 

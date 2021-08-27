@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.sort_mode_header;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -18,10 +18,9 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.RecyclerItemOverview;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RecyclerItemsHeaderStrategyDefaultTest {
+public class RecyclerItemsHeaderStrategyAlphabeticalTest {
     private static final String[] VARIETIES = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
     @Mock
@@ -39,7 +38,7 @@ public class RecyclerItemsHeaderStrategyDefaultTest {
     public void generateRecyclerItemsHeader() {
         final ArrayList<Tea> teas = createTeas();
 
-        final RecyclerItemsHeaderStrategy recyclerItemsHeader = new RecyclerItemsHeaderStrategyDefault(application);
+        final RecyclerItemsHeaderStrategy recyclerItemsHeader = new RecyclerItemsHeaderStrategyAlphabetical(application);
         final List<RecyclerItemOverview> recyclerItems = recyclerItemsHeader.generateFrom(teas);
 
         assertThat(recyclerItems)
@@ -49,6 +48,7 @@ public class RecyclerItemsHeaderStrategyDefaultTest {
                         RecyclerItemOverview::getVariety,
                         RecyclerItemOverview::getCategory
                 ).contains(
+                tuple(null, null, null, "- T -"),
                 tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), null),
                 tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), null),
                 tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), null)
@@ -66,4 +66,5 @@ public class RecyclerItemsHeaderStrategyDefaultTest {
         }
         return teas;
     }
+
 }

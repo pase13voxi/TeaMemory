@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import android.graphics.Canvas;
 import android.view.LayoutInflater;
@@ -8,28 +8,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-class StickHeaderItemDecoration extends RecyclerView.ItemDecoration {
+public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
     private final StickyHeaderInterface listener;
     private int stickyHeaderHeight;
 
-    public StickHeaderItemDecoration(@NonNull final StickyHeaderInterface listener) {
+    public StickyHeaderItemDecoration(@NonNull final StickyHeaderInterface listener) {
         this.listener = listener;
     }
 
     @Override
     public void onDrawOver(@NonNull final Canvas canvas, @NonNull final RecyclerView parent, @NonNull final RecyclerView.State state) {
         super.onDrawOver(canvas, parent, state);
-        final View topChild = parent.getChildAt(0);
-        if (topChild == null) {
-            return;
+        final int topChildPosition = getTopChildPosition(parent);
+        if (topChildPosition != -1) {
+            drawOverHeader(canvas, parent, topChildPosition);
         }
+    }
 
-        final int topChildPosition = parent.getChildAdapterPosition(topChild);
-        if (topChildPosition == RecyclerView.NO_POSITION) {
-            return;
-        }
-
+    private void drawOverHeader(@NonNull Canvas canvas, @NonNull RecyclerView parent, int topChildPosition) {
         final int headerPos = listener.getHeaderPositionForItem(topChildPosition);
         final View currentHeader = getHeaderViewForItem(headerPos, parent);
         fixLayoutSize(parent, currentHeader);
@@ -38,10 +35,20 @@ class StickHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
         if (childInContact != null && listener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(canvas, currentHeader, childInContact);
-            return;
+        } else {
+            drawHeader(canvas, currentHeader);
+        }
+    }
+
+    private int getTopChildPosition(@NonNull final RecyclerView parent) {
+        int topChildPosition = -1;
+
+        final View topChild = parent.getChildAt(0);
+        if (topChild != null) {
+            topChildPosition = parent.getChildAdapterPosition(topChild);
         }
 
-        drawHeader(canvas, currentHeader);
+        return topChildPosition;
     }
 
     private View getHeaderViewForItem(final int headerPosition, final RecyclerView parent) {
@@ -99,20 +106,13 @@ class StickHeaderItemDecoration extends RecyclerView.ItemDecoration {
     }
 
 
-    /**
-     * Properly measures and layouts the top sticky header.
-     *
-     * @param parent ViewGroup: RecyclerView in this case.
-     */
     private void fixLayoutSize(final ViewGroup parent, final View view) {
 
-        // Specs for parent (RecyclerView)
-        final int widthSpec = View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY);
-        final int heightSpec = View.MeasureSpec.makeMeasureSpec(parent.getHeight(), View.MeasureSpec.UNSPECIFIED);
+        final int parentWidthSpec = View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY);
+        final int parentHeightSpec = View.MeasureSpec.makeMeasureSpec(parent.getHeight(), View.MeasureSpec.UNSPECIFIED);
 
-        // Specs for children (headers)
-        final int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec, parent.getPaddingLeft() + parent.getPaddingRight(), view.getLayoutParams().width);
-        final int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec, parent.getPaddingTop() + parent.getPaddingBottom(), view.getLayoutParams().height);
+        final int childWidthSpec = ViewGroup.getChildMeasureSpec(parentWidthSpec, parent.getPaddingLeft() + parent.getPaddingRight(), view.getLayoutParams().width);
+        final int childHeightSpec = ViewGroup.getChildMeasureSpec(parentHeightSpec, parent.getPaddingTop() + parent.getPaddingBottom(), view.getLayoutParams().height);
 
         view.measure(childWidthSpec, childHeightSpec);
 
@@ -122,37 +122,12 @@ class StickHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
     public interface StickyHeaderInterface {
 
-        /**
-         * This method gets called by {@link StickHeaderItemDecoration} to fetch the position of the header item in the adapter
-         * that is used for (represents) item at specified position.
-         *
-         * @param itemPosition int. Adapter's position of the item for which to do the search of the position of the header item.
-         * @return int. Position of the header item in the adapter.
-         */
         int getHeaderPositionForItem(final int itemPosition);
 
-        /**
-         * This method gets called by {@link StickHeaderItemDecoration} to get layout resource id for the header item at specified adapter's position.
-         *
-         * @param headerPosition int. Position of the header item in the adapter.
-         * @return int. Layout resource id.
-         */
         int getHeaderLayout(final int headerPosition);
 
-        /**
-         * This method gets called by {@link StickHeaderItemDecoration} to setup the header View.
-         *
-         * @param header         View. Header to set the data on.
-         * @param headerPosition int. Position of the header item in the adapter.
-         */
         void bindHeaderData(final View header, final int headerPosition);
 
-        /**
-         * This method gets called by {@link StickHeaderItemDecoration} to verify whether the item represents a header.
-         *
-         * @param itemPosition int.
-         * @return true, if item at the specified adapter's position represents a header.
-         */
         boolean isHeader(final int itemPosition);
     }
 }
