@@ -27,7 +27,6 @@
     <string name="overview_dialog_rating_neutral">Later</string>
     <string name="overview_dialog_rating_negative">No, thanks</string>
     <string name="overview_sort_header_star">%1$d \u2605</string>
-    <string name="overview_sort_last_used_today">Today</string>
     <string name="overview_sort_last_used_this_week">This week</string>
     <string name="overview_sort_last_used_this_month">This month</string>
     <string-array name="overview_sort_last_used_month">

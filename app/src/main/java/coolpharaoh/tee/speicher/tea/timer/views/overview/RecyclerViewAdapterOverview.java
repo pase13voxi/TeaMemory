@@ -15,7 +15,7 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 
-public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickHeaderItemDecoration.StickyHeaderInterface {
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
 
     private final List<RecyclerItemOverview> recyclerItems;
@@ -59,6 +59,38 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
     @Override
     public int getItemCount() {
         return recyclerItems.size();
+    }
+
+    @Override
+    public int getHeaderPositionForItem(int itemPosition) {
+        int headerPosition = 0;
+        do {
+            if (this.isHeader(itemPosition)) {
+                headerPosition = itemPosition;
+                break;
+            }
+            itemPosition -= 1;
+        } while (itemPosition >= 0);
+        return headerPosition;
+    }
+
+    @Override
+    public int getHeaderLayout(final int headerPosition) {
+        return R.layout.list_single_layout_tea_heading;
+    }
+
+    @Override
+    public void bindHeaderData(final View header, final int headerPosition) {
+        final TextView textViewHeading = header.findViewById(R.id.text_view_recycler_view_heading);
+        textViewHeading.setText(recyclerItems.get(headerPosition).category);
+    }
+
+    @Override
+    public boolean isHeader(final int itemPosition) {
+        if (itemPosition < recyclerItems.size()) {
+            return recyclerItems.get(itemPosition).category != null;
+        }
+        return false;
     }
 
     static class ViewHolderCategory extends RecyclerView.ViewHolder {

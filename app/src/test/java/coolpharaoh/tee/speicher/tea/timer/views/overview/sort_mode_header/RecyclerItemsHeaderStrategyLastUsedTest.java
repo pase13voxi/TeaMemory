@@ -47,7 +47,6 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
         when(resources.getStringArray(R.array.overview_sort_last_used_month)).thenReturn(MONTH_NAMES);
         when(application.getResources()).thenReturn(resources);
-        when(application.getString(R.string.overview_sort_last_used_today)).thenReturn("Today");
         when(application.getString(R.string.overview_sort_last_used_this_week)).thenReturn("This week");
         when(application.getString(R.string.overview_sort_last_used_this_month)).thenReturn("This month");
 
@@ -74,16 +73,14 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
                         RecyclerItemOverview::getVariety,
                         RecyclerItemOverview::getCategory
                 ).contains(
-                tuple(null, null, null, "- Today -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), null),
                 tuple(null, null, null, "- This week -"),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), null),
+                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), null),
                 tuple(null, null, null, "- This month -"),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), null),
+                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), null),
                 tuple(null, null, null, "- June -"),
-                tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), null),
+                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), null),
                 tuple(null, null, null, "- 2019 -"),
-                tuple(teas.get(4).getId(), teas.get(4).getName(), teas.get(4).getVariety(), null)
+                tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), null)
         );
     }
 
@@ -91,7 +88,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
         List<Date> dates = generateDifferentDates();
 
         final ArrayList<Tea> teas = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             final Tea tea = new Tea();
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
@@ -107,9 +104,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
 
         final ArrayList<Date> dates = new ArrayList<>();
 
-        final Date today = Date.from(now);
-        dates.add(today);
-        final Date thisWeek = Date.from(now.minus(Duration.ofDays(2)));
+        final Date thisWeek = Date.from(now);
         dates.add(thisWeek);
         final Date thisMonth = Date.from(now.minus(Duration.ofDays(8)));
         dates.add(thisMonth);

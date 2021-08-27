@@ -43,9 +43,7 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
         final String[] monthNames = application.getResources().getStringArray(R.array.overview_sort_last_used_month);
 
         final Date today = CurrentDate.getDate();
-        if (isCurrentDay(lastUsed, today)) {
-            return application.getString(R.string.overview_sort_last_used_today);
-        } else if (isCurrentWeek(lastUsed, today)) {
+        if (isCurrentWeek(lastUsed, today)) {
             return application.getString(R.string.overview_sort_last_used_this_week);
         } else if (isCurrentMonth(lastUsed, today)) {
             return application.getString(R.string.overview_sort_last_used_this_month);
@@ -60,19 +58,6 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
             final int lastUsedYear = cal.get(Calendar.YEAR);
             return String.valueOf(lastUsedYear);
         }
-    }
-
-    private static boolean isCurrentDay(final Date lastUsed, final Date currentDate) {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTime(currentDate);
-        final int currentDay = cal.get(Calendar.DAY_OF_MONTH);
-        final int currentMonth = cal.get(Calendar.MONTH);
-        final int currentYear = cal.get(Calendar.YEAR);
-        cal.setTime(lastUsed);
-        final int lastUsedDay = cal.get(Calendar.DAY_OF_MONTH);
-        final int lasUsedMonth = cal.get(Calendar.MONTH);
-        final int lastUsedYear = cal.get(Calendar.YEAR);
-        return (currentDay == lastUsedDay && currentMonth == lasUsedMonth && currentYear == lastUsedYear);
     }
 
     private static boolean isCurrentWeek(final Date lastUsed, final Date currentDate) {

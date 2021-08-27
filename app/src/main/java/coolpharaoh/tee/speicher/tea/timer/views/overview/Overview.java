@@ -81,8 +81,8 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
     private void initializeTeaList() {
         final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_overview_tea_list);
-        recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
 
         bindTeaListWithTeaAdapterAndObserve(recyclerViewTeaList);
     }
@@ -91,9 +91,21 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         overviewViewModel.getTeas().observe(this, teas -> {
             final RecyclerItemsHeaderStrategy recyclerItemsHeader = RecyclerItemsHeaderStrategyFactory.getStrategy(overviewViewModel.getSortWithHeader(), getApplication());
 
-            final RecyclerViewAdapterOverview teaListRecyclerViewAdapter = new RecyclerViewAdapterOverview(recyclerItemsHeader.generateFrom(teas), this);
-            teaList.setAdapter(teaListRecyclerViewAdapter);
+            final RecyclerViewAdapterOverview adapter = new RecyclerViewAdapterOverview(recyclerItemsHeader.generateFrom(teas), this);
+            teaList.setAdapter(adapter);
+
+            updateStickyHeaderOnRecyclerView(teaList, adapter);
         });
+    }
+
+    private void updateStickyHeaderOnRecyclerView(RecyclerView teaList, RecyclerViewAdapterOverview adapter) {
+        if (teaList.getItemDecorationCount() > 1) {
+            teaList.removeItemDecorationAt(1);
+        }
+
+        if (overviewViewModel.getSortWithHeader() != -1) {
+            teaList.addItemDecoration(new StickHeaderItemDecoration(adapter));
+        }
     }
 
     @Override
