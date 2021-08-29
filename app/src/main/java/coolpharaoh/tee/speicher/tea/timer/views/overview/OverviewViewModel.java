@@ -110,8 +110,6 @@ class OverviewViewModel extends ViewModel {
         final Tea tea = teaRepository.getTeaById(id);
         tea.setFavorite(favorite);
         teaRepository.updateTea(tea);
-
-        refreshTeas();
     }
 
     void visualizeTeasBySearchString(String searchString) {

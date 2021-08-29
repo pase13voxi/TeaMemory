@@ -139,17 +139,20 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             } else {
                 description.setText(item.getVariety());
             }
-            if (item.isFavorite()) {
-                favorite.setImageResource(R.drawable.star_black);
-            }
+            favorite.setImageResource(getFavoriteId(item));
         }
 
+        private int getFavoriteId(RecyclerItemOverview item) {
+            return item.isFavorite() ? R.drawable.home_black : R.drawable.home_grey;
+        }
 
         @Override
         public void onClick(final View view) {
             if (item.teaId != null) {
                 if (view.getId() == R.id.button_overview_favorite) {
-                    onClickListener.onFavoriteItemClick(item.getTeaId(), !item.isFavorite());
+                    item.setFavorite(!item.isFavorite());
+                    favorite.setImageResource(getFavoriteId(item));
+                    onClickListener.onFavoriteItemClick(item.getTeaId(), item.isFavorite());
                 } else {
                     onClickListener.onRecyclerItemClick(item.getTeaId());
                 }

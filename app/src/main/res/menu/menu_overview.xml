@@ -22,7 +22,7 @@
     <item
         android:id="@+id/action_overview_favorite"
         android:orderInCategory="4"
-        android:icon="@drawable/star_white"
+        android:icon="@drawable/home_white"
         android:title="Favorite"
         app:showAsAction="always" />
 

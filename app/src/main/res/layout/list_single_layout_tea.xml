@@ -31,7 +31,8 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/star_grey"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_margin="10dp"
-        android:contentDescription="Favorite" />
+        android:contentDescription="Favorite"
+        android:src="@drawable/home_grey" />
 </RelativeLayout>
