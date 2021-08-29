@@ -12,4 +12,5 @@ public class RecyclerItemOverview {
     final Long teaId;
     final String teaName;
     final String variety;
+    final boolean favorite;
 }

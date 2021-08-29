@@ -26,11 +26,11 @@ class RecyclerItemsHeaderStrategyRating implements RecyclerItemsHeaderStrategy {
             final int rating = tea.getRating();
             if (rating != lastRating) {
                 final String ratingHeader = application.getString(R.string.overview_sort_header_star, rating);
-                recyclerItems.add(new RecyclerItemOverview("- " + ratingHeader + " -", null, null, null));
+                recyclerItems.add(new RecyclerItemOverview("- " + ratingHeader + " -", null, null, null, false));
                 lastRating = rating;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isFavorite()));
         }
         return recyclerItems;
     }

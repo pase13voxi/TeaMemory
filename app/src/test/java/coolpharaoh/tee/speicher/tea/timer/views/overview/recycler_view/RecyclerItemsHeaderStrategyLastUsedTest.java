@@ -70,16 +70,17 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
                         RecyclerItemOverview::getTeaId,
                         RecyclerItemOverview::getTeaName,
                         RecyclerItemOverview::getVariety,
+                        RecyclerItemOverview::isFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
-                tuple(null, null, null, "- This week -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), null),
-                tuple(null, null, null, "- This month -"),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), null),
-                tuple(null, null, null, "- June -"),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), null),
-                tuple(null, null, null, "- 2019 -"),
-                tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), null)
+                tuple(null, null, null, false, "- This week -"),
+                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), true, null),
+                tuple(null, null, null, false, "- This month -"),
+                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), true, null),
+                tuple(null, null, null, false, "- June -"),
+                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), true, null),
+                tuple(null, null, null, false, "- 2019 -"),
+                tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), true, null)
         );
     }
 
@@ -92,6 +93,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
             tea.setVariety("VARIETY" + i + 1);
+            tea.setFavorite(true);
             tea.setDate(dates.get(i));
             teas.add(tea);
         }

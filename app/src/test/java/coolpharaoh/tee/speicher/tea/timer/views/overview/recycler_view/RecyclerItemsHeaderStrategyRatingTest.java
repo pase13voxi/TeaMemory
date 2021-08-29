@@ -49,14 +49,15 @@ public class RecyclerItemsHeaderStrategyRatingTest {
                         RecyclerItemOverview::getTeaId,
                         RecyclerItemOverview::getTeaName,
                         RecyclerItemOverview::getVariety,
+                        RecyclerItemOverview::isFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
-                tuple(null, null, null, "- 3 \u2605 -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), null),
-                tuple(null, null, null, "- 3 \u2605 -"),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), null),
-                tuple(null, null, null, "- 3 \u2605 -"),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), null)
+                tuple(null, null, null, false, "- 3 \u2605 -"),
+                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), true, null),
+                tuple(null, null, null, false, "- 3 \u2605 -"),
+                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), true, null),
+                tuple(null, null, null, false, "- 3 \u2605 -"),
+                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), true, null)
         );
     }
 
@@ -67,6 +68,7 @@ public class RecyclerItemsHeaderStrategyRatingTest {
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
             tea.setVariety("VARIETY" + i + 1);
+            tea.setFavorite(true);
             tea.setRating(i + 1);
             teas.add(tea);
         }

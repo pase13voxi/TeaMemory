@@ -45,12 +45,12 @@ public class TeaDaoTest {
     public void insertTea(){
         assertThat(teaDao.getTeas()).isEmpty();
 
-        Tea teaBefore = createTea("name", VARIETY, CurrentDate.getDate());
+        final Tea teaBefore = createTea("name", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaBefore);
 
         assertThat(teaDao.getTeas()).hasSize(1);
 
-        Tea teaAfter = teaDao.getTeas().get(0);
+        final Tea teaAfter = teaDao.getTeas().get(0);
         assertThat(teaAfter).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore);
     }
 
@@ -58,17 +58,17 @@ public class TeaDaoTest {
     public void updateTea(){
         assertThat(teaDao.getTeas()).isEmpty();
 
-        Tea teaBefore = createTea("name", VARIETY, CurrentDate.getDate());
+        final Tea teaBefore = createTea("name", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaBefore);
 
         assertThat(teaDao.getTeas()).hasSize(1);
 
-        Tea teaUpdate = teaDao.getTeas().get(0);
+        final Tea teaUpdate = teaDao.getTeas().get(0);
         teaUpdate.setName("NameChanged");
         teaUpdate.setName("VarietyChanged");
         teaDao.update(teaUpdate);
 
-        Tea teaAfter = teaDao.getTeas().get(0);
+        final Tea teaAfter = teaDao.getTeas().get(0);
         assertThat(teaAfter).usingRecursiveComparison().isEqualTo(teaUpdate);
     }
 
@@ -76,10 +76,10 @@ public class TeaDaoTest {
     public void deleteTeaById() {
         assertThat(teaDao.getTeas()).isEmpty();
 
-        Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
+        final Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("name2", VARIETY, CurrentDate.getDate());
+        final Tea teaBefore2 = createTea("name2", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaBefore2);
 
         assertThat(teaDao.getTeas()).hasSize(2);
@@ -88,7 +88,7 @@ public class TeaDaoTest {
 
         assertThat(teaDao.getTeas()).hasSize(1);
 
-        Tea teaAfter2 = teaDao.getTeas().get(0);
+        final Tea teaAfter2 = teaDao.getTeas().get(0);
         assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
     }
 
@@ -96,10 +96,10 @@ public class TeaDaoTest {
     public void deleteAllTeas(){
         assertThat(teaDao.getTeas()).isEmpty();
 
-        Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
+        final Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaBefore1);
 
-        Tea teaBefore2 = createTea("name2", VARIETY, CurrentDate.getDate());
+        final Tea teaBefore2 = createTea("name2", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaBefore2);
 
         assertThat(teaDao.getTeas()).hasSize(2);
@@ -110,15 +110,30 @@ public class TeaDaoTest {
     }
 
     @Test
+    public void getTeaById() {
+        final Tea teaBefore1 = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
+        final long teaId1 = teaDao.insert(teaBefore1);
+
+        final Tea teaBefore2 = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
+        final long teaId2 = teaDao.insert(teaBefore2);
+
+        final Tea teaAfter1 = teaDao.getTeaById(teaId1);
+        assertThat(teaAfter1).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore1);
+
+        final Tea teaAfter2 = teaDao.getTeaById(teaId2);
+        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
+    }
+
+    @Test
     public void getTeasOrderByActivity() {
-        Tea teaOld = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
+        final Tea teaOld = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
         teaDao.insert(teaOld);
-        Tea teaMiddle = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
+        final Tea teaMiddle = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
         teaDao.insert(teaMiddle);
-        Tea teaNew = createTea("nameNew", VARIETY, new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
+        final Tea teaNew = createTea("nameNew", VARIETY, new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
         teaDao.insert(teaNew);
 
-        List<Tea> teaList = teaDao.getTeasOrderByActivity();
+        final List<Tea> teaList = teaDao.getTeasOrderByActivity();
 
         assertThat(teaList)
                 .extracting(
@@ -145,30 +160,30 @@ public class TeaDaoTest {
     }
 
     @Test
-    public void getTeaById(){
-        Tea teaBefore1 = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
-        long teaId1 = teaDao.insert(teaBefore1);
+    public void getFavoriteTeasOrderByActivity() {
+        final Tea teaOld = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
+        teaDao.insert(teaOld);
+        final Tea teaMiddle = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
+        teaMiddle.setFavorite(true);
+        teaDao.insert(teaMiddle);
+        final Tea teaNew = createTea("nameNew", VARIETY, new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
+        teaDao.insert(teaNew);
 
-        Tea teaBefore2 = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        long teaId2 = teaDao.insert(teaBefore2);
+        final List<Tea> teaList = teaDao.getFavoriteTeasOrderByActivity();
 
-        Tea teaAfter1 = teaDao.getTeaById(teaId1);
-        assertThat(teaAfter1).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore1);
-
-        Tea teaAfter2 = teaDao.getTeaById(teaId2);
-        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
+        assertThat(teaList).hasSize(1);
     }
 
     @Test
     public void getTeasOrderByAlphabetic() {
-        Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
+        final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaC);
-        Tea teaA = createTea("nameA", VARIETY, CurrentDate.getDate());
+        final Tea teaA = createTea("nameA", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaA);
-        Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
+        final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaB);
 
-        List<Tea> teaList = teaDao.getTeasOrderByAlphabetic();
+        final List<Tea> teaList = teaDao.getTeasOrderByAlphabetic();
 
         assertThat(teaList)
                 .extracting(
@@ -192,18 +207,33 @@ public class TeaDaoTest {
                                 teaC.getDate()
                         )
                 );
+    }
+
+    @Test
+    public void getFavoriteTeasOrderByAlphabetic() {
+        final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
+        teaDao.insert(teaC);
+        final Tea teaA = createTea("nameA", VARIETY, CurrentDate.getDate());
+        teaA.setFavorite(true);
+        teaDao.insert(teaA);
+        final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
+        teaDao.insert(teaB);
+
+        final List<Tea> teaList = teaDao.getFavoriteTeasOrderByAlphabetic();
+
+        assertThat(teaList).hasSize(1);
     }
 
     @Test
     public void getTeasOrderByVariety() {
-        Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
+        final Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
         teaDao.insert(teaC);
-        Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
+        final Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
         teaDao.insert(teaA);
-        Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
+        final Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
         teaDao.insert(teaB);
 
-        List<Tea> teaList = teaDao.getTeasOrderByVariety();
+        final List<Tea> teaList = teaDao.getTeasOrderByVariety();
 
         assertThat(teaList)
                 .extracting(
@@ -229,17 +259,31 @@ public class TeaDaoTest {
                 );
     }
 
+    @Test
+    public void getFavoriteTeasOrderByVariety() {
+        final Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
+        teaDao.insert(teaC);
+        final Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
+        teaA.setFavorite(true);
+        teaDao.insert(teaA);
+        final Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
+        teaDao.insert(teaB);
+
+        final List<Tea> teaList = teaDao.getFavoriteTeasOrderByVariety();
+
+        assertThat(teaList).hasSize(1);
+    }
 
     @Test
     public void getTeasOrderByRating() {
-        Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
+        final Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
         teaDao.insert(tea3);
-        Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
+        final Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
         teaDao.insert(tea5);
-        Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
+        final Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
         teaDao.insert(tea1);
 
-        List<Tea> teaList = teaDao.getTeasOrderByRating();
+        final List<Tea> teaList = teaDao.getTeasOrderByRating();
 
         assertThat(teaList)
                 .extracting(
@@ -262,15 +306,30 @@ public class TeaDaoTest {
     }
 
     @Test
+    public void getFavoriteTeasOrderByRating() {
+        final Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
+        teaDao.insert(tea3);
+        final Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
+        tea5.setFavorite(true);
+        teaDao.insert(tea5);
+        final Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
+        teaDao.insert(tea1);
+
+        final List<Tea> teaList = teaDao.getFavoriteTeasOrderByRating();
+
+        assertThat(teaList).hasSize(1);
+    }
+
+    @Test
     public void getTeasBySearchString() {
-        Tea teaA = createTea("A", VARIETY, CurrentDate.getDate());
+        final Tea teaA = createTea("A", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaA);
-        Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
+        final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaC);
-        Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
+        final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaB);
 
-        List<Tea> teaList = teaDao.getTeasBySearchString("name");
+        final List<Tea> teaList = teaDao.getTeasBySearchString("name");
 
         assertThat(teaList)
                 .extracting(

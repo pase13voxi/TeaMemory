@@ -100,8 +100,16 @@ class OverviewViewModel extends ViewModel {
         return teas;
     }
 
-    void deleteTea(long id) {
+    void deleteTea(final long id) {
         teaRepository.deleteTeaById(id);
+
+        refreshTeas();
+    }
+
+    void updateFavoriteOfTea(final long id, final boolean favorite) {
+        final Tea tea = teaRepository.getTeaById(id);
+        tea.setFavorite(favorite);
+        teaRepository.updateTea(tea);
 
         refreshTeas();
     }
@@ -127,12 +135,18 @@ class OverviewViewModel extends ViewModel {
         refreshTeas();
     }
 
-    void setOverviewHeader(final boolean overviewHeader) {
-        sharedSettings.setOverviewHeader(overviewHeader);
-    }
-
     boolean isOverviewHeader() {
         return sharedSettings.isOverviewHeader();
+    }
+
+    void setOverviewFavorites(final boolean overviewFavorites) {
+        sharedSettings.setOverviewFavorites(overviewFavorites);
+
+        refreshTeas();
+    }
+
+    boolean isOverViewFavorites() {
+        return sharedSettings.isOverviewFavorites();
     }
 
     int getSortWithHeader() {
@@ -176,19 +190,19 @@ class OverviewViewModel extends ViewModel {
         switch (actualSettings.getSort()) {
             //activity
             case 0:
-                teas.setValue(teaRepository.getTeasOrderByActivity());
+                teas.setValue(teaRepository.getTeasOrderByActivity(isOverViewFavorites()));
                 break;
             //alphabetic
             case 1:
-                teas.setValue(teaRepository.getTeasOrderByAlphabetic());
+                teas.setValue(teaRepository.getTeasOrderByAlphabetic(isOverViewFavorites()));
                 break;
             //variety
             case 2:
-                teas.setValue(teaRepository.getTeasOrderByVariety());
+                teas.setValue(teaRepository.getTeasOrderByVariety(isOverViewFavorites()));
                 break;
             //rating
             case 3:
-                teas.setValue(teaRepository.getTeasOrderByRating());
+                teas.setValue(teaRepository.getTeasOrderByRating(isOverViewFavorites()));
                 break;
             default:
         }

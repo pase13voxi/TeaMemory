@@ -29,11 +29,11 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
         for (final Tea tea : teaList) {
             final String date = getLastUsedHeader(tea.getDate());
             if (!date.equals(lastDate)) {
-                recyclerItems.add(new RecyclerItemOverview("- " + date + " -", null, null, null));
+                recyclerItems.add(new RecyclerItemOverview("- " + date + " -", null, null, null, false));
                 lastDate = date;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isFavorite()));
         }
         return recyclerItems;
     }

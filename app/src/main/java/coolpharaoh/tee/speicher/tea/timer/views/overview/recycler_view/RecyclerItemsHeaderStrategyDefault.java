@@ -22,7 +22,7 @@ class RecyclerItemsHeaderStrategyDefault implements RecyclerItemsHeaderStrategy 
         final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
         for (final Tea tea : teaList) {
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isFavorite()));
         }
         return recyclerItems;
     }

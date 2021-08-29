@@ -139,6 +139,11 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         popup.show();
     }
 
+    @Override
+    public void onFavoriteItemClick(final long teaId, final boolean favorite) {
+        overviewViewModel.updateFavoriteOfTea(teaId, favorite);
+    }
+
     private void initializeNewTeaButton() {
         final FloatingActionButton newTea = findViewById(R.id.floating_button_overview_new_tea);
         newTea.setOnClickListener(v -> navigateToNewOrEditTea(null));
@@ -233,6 +238,8 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
             navigateToAbout();
         } else if (id == R.id.action_overview_sort) {
             dialogSortOption();
+        } else if (id == R.id.action_overview_favorite) {
+            overviewViewModel.setOverviewFavorites(!overviewViewModel.isOverViewFavorites());
         }
 
         return super.onOptionsItemSelected(item);

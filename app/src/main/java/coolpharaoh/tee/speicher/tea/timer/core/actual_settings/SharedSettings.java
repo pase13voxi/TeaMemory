@@ -9,6 +9,7 @@ public class SharedSettings {
     private static final String TEA_MEMORY_SETTINGS = "tea_memory_settings";
     private static final String DARK_MODE = "dark_mode";
     private static final String OVERVIEW_HEADER = "overview_header";
+    private static final String OVERVIEW_FAVORITES = "overview_favorites";
     SharedPreferences sharedPreferences;
 
     public SharedSettings(Application application) {
@@ -33,6 +34,16 @@ public class SharedSettings {
     public void setOverviewHeader(final boolean overviewHeader) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(OVERVIEW_HEADER, overviewHeader);
+        editor.apply();
+    }
+
+    public boolean isOverviewFavorites() {
+        return sharedPreferences.getBoolean(OVERVIEW_FAVORITES, false);
+    }
+
+    public void setOverviewFavorites(final boolean favorites) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(OVERVIEW_FAVORITES, favorites);
         editor.apply();
     }
 }

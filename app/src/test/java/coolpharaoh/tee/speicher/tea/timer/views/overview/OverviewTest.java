@@ -265,6 +265,21 @@ public class OverviewTest {
     }
 
     @Test
+    public void enableShowFavoritesExpectFavoriteTeaList() {
+        mockActualSettings();
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(teaList);
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_favorite));
+            shadowOf(getMainLooper()).idle();
+
+            checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
+        });
+    }
+
+    @Test
     public void changeSortModeToAlphabeticallyExpectTeaList() {
         mockActualSettings();
         String teaName = "ALPHABETICALLY_";
@@ -453,6 +468,7 @@ public class OverviewTest {
         for (int i = 0; i < 3; i++) {
             Tea tea = new Tea(name + i, "VARIETY", i, "AMOUNT_KIND", i, 0, CurrentDate.getDate());
             tea.setId((long) i);
+            tea.setFavorite(true);
             teaList.add(tea);
         }
         return teaList;

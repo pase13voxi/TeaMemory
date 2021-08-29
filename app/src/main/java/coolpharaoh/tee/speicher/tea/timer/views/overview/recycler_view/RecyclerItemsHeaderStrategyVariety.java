@@ -24,10 +24,10 @@ class RecyclerItemsHeaderStrategyVariety implements RecyclerItemsHeaderStrategy 
         for (final Tea tea : teaList) {
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
             if (!variety.equals(lastVariety)) {
-                recyclerItems.add(new RecyclerItemOverview("- " + variety + " -", null, null, null));
+                recyclerItems.add(new RecyclerItemOverview("- " + variety + " -", null, null, null, false));
                 lastVariety = variety;
             }
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isFavorite()));
         }
         return recyclerItems;
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -112,6 +113,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         private final View view;
         private final TextView header;
         private final TextView description;
+        private final ImageButton favorite;
         private final OnClickListener onClickListener;
         private RecyclerItemOverview item;
 
@@ -119,10 +121,12 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             super(view);
 
             this.view = view;
-            header = view.findViewById(R.id.text_view_recycler_view_heading);
-            description = view.findViewById(R.id.text_view_recycler_view_description);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
+            header = view.findViewById(R.id.text_view_recycler_view_heading);
+            description = view.findViewById(R.id.text_view_recycler_view_description);
+            favorite = view.findViewById(R.id.button_overview_favorite);
+            favorite.setOnClickListener(this);
 
             this.onClickListener = onClickListener;
         }
@@ -135,13 +139,20 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             } else {
                 description.setText(item.getVariety());
             }
+            if (item.isFavorite()) {
+                favorite.setImageResource(R.drawable.star_black);
+            }
         }
 
 
         @Override
         public void onClick(final View view) {
             if (item.teaId != null) {
-                onClickListener.onRecyclerItemClick(item.getTeaId());
+                if (view.getId() == R.id.button_overview_favorite) {
+                    onClickListener.onFavoriteItemClick(item.getTeaId(), !item.isFavorite());
+                } else {
+                    onClickListener.onRecyclerItemClick(item.getTeaId());
+                }
             } else {
                 Log.e(LOG_TAG, "Recycler item does not contain tea id");
             }
@@ -162,5 +173,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         void onRecyclerItemClick(long teaId);
 
         void onRecyclerItemLongClick(View itemView, long teaId);
+
+        void onFavoriteItemClick(long teaId, boolean favorite);
     }
 }

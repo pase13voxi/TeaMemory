@@ -76,22 +76,38 @@ public class TeaRepositoryTest {
         assertThat(teas).hasSize(2);
     }
 
-
     @Test
     public void getTeasOrderByActivity() {
         when(teaDao.getTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByActivity();
+        List<Tea> teas = teaRepository.getTeasOrderByActivity(false);
 
         assertThat(teas).hasSize(2);
     }
 
+    @Test
+    public void getFavoriteTeasOrderByActivity() {
+        when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+
+        List<Tea> teas = teaRepository.getTeasOrderByActivity(true);
+
+        assertThat(teas).hasSize(2);
+    }
 
     @Test
     public void getTeasOrderByAlphabetic() {
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByAlphabetic();
+        List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(false);
+
+        assertThat(teas).hasSize(2);
+    }
+
+    @Test
+    public void getFavoriteTeasOrderByAlphabetic() {
+        when(teaDao.getFavoriteTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+
+        List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(true);
 
         assertThat(teas).hasSize(2);
     }
@@ -100,7 +116,16 @@ public class TeaRepositoryTest {
     public void getTeasOrderByVariety() {
         when(teaDao.getTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByVariety();
+        List<Tea> teas = teaRepository.getTeasOrderByVariety(false);
+
+        assertThat(teas).hasSize(2);
+    }
+
+    @Test
+    public void getFavoriteTeasOrderByVariety() {
+        when(teaDao.getFavoriteTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+
+        List<Tea> teas = teaRepository.getTeasOrderByVariety(true);
 
         assertThat(teas).hasSize(2);
     }
@@ -109,7 +134,16 @@ public class TeaRepositoryTest {
     public void getTeasOrderByRating() {
         when(teaDao.getTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByRating();
+        List<Tea> teas = teaRepository.getTeasOrderByRating(false);
+
+        assertThat(teas).hasSize(2);
+    }
+
+    @Test
+    public void getFavoriteTeasOrderByRating() {
+        when(teaDao.getFavoriteTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+
+        List<Tea> teas = teaRepository.getTeasOrderByRating(true);
 
         assertThat(teas).hasSize(2);
     }
