@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.description;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import android.os.Build;
 import android.widget.ImageButton;
 
@@ -13,8 +15,6 @@ import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -26,7 +26,7 @@ public class UpdateDescriptionTest {
         updateDescriptionActivityScenario.onActivity(updateDescription -> {
             final ViewPager viewPager = updateDescription.findViewById(R.id.slide_view_description_pager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
-            assertThat(slideAdapter.getCount()).isEqualTo(2);
+            assertThat(slideAdapter.getCount()).isEqualTo(4);
         });
     }
 

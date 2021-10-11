@@ -190,4 +190,12 @@ class Migrations {
             database.execSQL("UPDATE settings SET mainupdatealert = 1");
         }
     };
+
+    static final Migration MIGRATION_11_12 = new Migration(11, 12) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // new update description available!
+            database.execSQL("UPDATE settings SET mainupdatealert = 1");
+        }
+    };
 }

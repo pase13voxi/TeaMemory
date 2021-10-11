@@ -4,8 +4,10 @@
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
-        <item>Menge: Dezimalzahlen</item>
-        <item>Teebeutel</item>
+        <item>Vorrätige Tees markieren</item>
+        <item>Nur Tees auf Lager anzeigen</item>
+        <item>Sortierung anzeigen</item>
+        <item>Option: Sortierung anzeigen</item>
     </string-array>
     <string-array name="description_showtea_slide_description">
         <item>Zeige Abkühlzeit an</item>
