@@ -28,23 +28,23 @@ pipeline {
                 }
             }
         }
-        stage('Sonar Analysis') {
-            steps {
-                script {
-                    sh '''
-                    ./gradlew \
-                    sonarqube \
-                    -Dorg.gradle.java.home=$JAVA_HOME \
-                    -Dsonar.projectKey=TeaMemory \
-                    -Dsonar.host.url=http://192.168.2.108:9000 \
-                    -Dsonar.login=$SONARQUBE_LOGIN \
-                    -Dsonar.language=java \
-                    -Dsonar.java.binaries=**/javac/debug/classes \
-                    -Dsonar.coverage.jacoco.xmlReportPaths=**/reports/jacocoTestReport/jacocoTestReport.xml
-                    '''
-                }
-            }
-        }
+        //stage('Sonar Analysis') {
+        //    steps {
+        //        script {
+        //            sh '''
+        //            ./gradlew \
+        //            sonarqube \
+        //            -Dorg.gradle.java.home=$JAVA_HOME \
+        //            -Dsonar.projectKey=TeaMemory \
+        //            -Dsonar.host.url=http://192.168.2.108:9000 \
+        //            -Dsonar.login=$SONARQUBE_LOGIN \
+        //            -Dsonar.language=java \
+        //            -Dsonar.java.binaries=**/javac/debug/classes \
+        //            -Dsonar.coverage.jacoco.xmlReportPaths=**/reports/jacocoTestReport/jacocoTestReport.xml
+        //            '''
+        //        }
+        //    }
+        //}
     }
     post { 
         success {
