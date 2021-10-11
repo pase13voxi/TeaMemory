@@ -9,7 +9,7 @@ public class SharedSettings {
     private static final String TEA_MEMORY_SETTINGS = "tea_memory_settings";
     private static final String DARK_MODE = "dark_mode";
     private static final String OVERVIEW_HEADER = "overview_header";
-    private static final String OVERVIEW_FAVORITES = "overview_favorites";
+    private static final String OVERVIEW_IN_STOCK = "overview_in_stock";
     SharedPreferences sharedPreferences;
 
     public SharedSettings(Application application) {
@@ -37,13 +37,13 @@ public class SharedSettings {
         editor.apply();
     }
 
-    public boolean isOverviewFavorites() {
-        return sharedPreferences.getBoolean(OVERVIEW_FAVORITES, false);
+    public boolean isOverviewInStock() {
+        return sharedPreferences.getBoolean(OVERVIEW_IN_STOCK, false);
     }
 
-    public void setOverviewFavorites(final boolean favorites) {
+    public void setOverviewInStock(final boolean favorites) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(OVERVIEW_FAVORITES, favorites);
+        editor.putBoolean(OVERVIEW_IN_STOCK, favorites);
         editor.apply();
     }
 }

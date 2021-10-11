@@ -99,11 +99,21 @@ public class OverviewViewModelTest {
     }
 
     @Test
-    public void updateFavoriteOfTea() {
+    public void isTeaInStock() {
+        final long teaId = 1;
+        final Tea tea = new Tea();
+        tea.setFavorite(true);
+        when(teaRepository.getTeaById(teaId)).thenReturn(tea);
+
+        assertThat(overviewViewModel.isTeaInStock(teaId)).isTrue();
+    }
+
+    @Test
+    public void updateInStockOfTea() {
         final long teaId = 1;
         when(teaRepository.getTeaById(teaId)).thenReturn(new Tea());
 
-        overviewViewModel.updateFavoriteOfTea(teaId, true);
+        overviewViewModel.updateInStockOfTea(teaId, true);
         verify(teaRepository).updateTea(any(Tea.class));
     }
 
@@ -147,14 +157,14 @@ public class OverviewViewModelTest {
     @Test
     public void setOverviewFavorites() {
         final boolean overviewFavorites = true;
-        overviewViewModel.setOverviewFavorites(overviewFavorites);
-        verify(sharedSettings).setOverviewFavorites(overviewFavorites);
+        overviewViewModel.setOverviewInStock(overviewFavorites);
+        verify(sharedSettings).setOverviewInStock(overviewFavorites);
     }
 
     @Test
     public void isOverviewFavorites() {
-        when(sharedSettings.isOverviewFavorites()).thenReturn(false);
-        final boolean overViewFavorites = overviewViewModel.isOverViewFavorites();
+        when(sharedSettings.isOverviewInStock()).thenReturn(false);
+        final boolean overViewFavorites = overviewViewModel.isOverViewInStock();
         assertThat(overViewFavorites).isFalse();
     }
 
@@ -209,7 +219,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void refreshTeasWithSort0OnlyFavorites() {
-        when(sharedSettings.isOverviewFavorites()).thenReturn(true);
+        when(sharedSettings.isOverviewInStock()).thenReturn(true);
         actualSettings.setSort(0);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByActivity(true);
@@ -224,7 +234,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void refreshTeasWithSort1OnlyFavorites() {
-        when(sharedSettings.isOverviewFavorites()).thenReturn(true);
+        when(sharedSettings.isOverviewInStock()).thenReturn(true);
         actualSettings.setSort(1);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByAlphabetic(true);
@@ -239,7 +249,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void refreshTeasWithSort2OnlyFavorites() {
-        when(sharedSettings.isOverviewFavorites()).thenReturn(true);
+        when(sharedSettings.isOverviewInStock()).thenReturn(true);
         actualSettings.setSort(2);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByVariety(true);
@@ -254,7 +264,7 @@ public class OverviewViewModelTest {
 
     @Test
     public void refreshTeasWithSort3OnlyFavorites() {
-        when(sharedSettings.isOverviewFavorites()).thenReturn(true);
+        when(sharedSettings.isOverviewInStock()).thenReturn(true);
         actualSettings.setSort(3);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByRating(true);

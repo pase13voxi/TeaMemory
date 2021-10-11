@@ -106,10 +106,17 @@ class OverviewViewModel extends ViewModel {
         refreshTeas();
     }
 
-    void updateFavoriteOfTea(final long id, final boolean favorite) {
+    boolean isTeaInStock(final long id) {
         final Tea tea = teaRepository.getTeaById(id);
-        tea.setFavorite(favorite);
+        return tea.isFavorite();
+    }
+
+    void updateInStockOfTea(final long id, final boolean inStock) {
+        final Tea tea = teaRepository.getTeaById(id);
+        tea.setFavorite(inStock);
         teaRepository.updateTea(tea);
+
+        refreshTeas();
     }
 
     void visualizeTeasBySearchString(String searchString) {
@@ -137,14 +144,14 @@ class OverviewViewModel extends ViewModel {
         return sharedSettings.isOverviewHeader();
     }
 
-    void setOverviewFavorites(final boolean overviewFavorites) {
-        sharedSettings.setOverviewFavorites(overviewFavorites);
+    void setOverviewInStock(final boolean overviewInStock) {
+        sharedSettings.setOverviewInStock(overviewInStock);
 
         refreshTeas();
     }
 
-    boolean isOverViewFavorites() {
-        return sharedSettings.isOverviewFavorites();
+    boolean isOverViewInStock() {
+        return sharedSettings.isOverviewInStock();
     }
 
     int getSortWithHeader() {
@@ -188,19 +195,19 @@ class OverviewViewModel extends ViewModel {
         switch (actualSettings.getSort()) {
             //activity
             case 0:
-                teas.setValue(teaRepository.getTeasOrderByActivity(isOverViewFavorites()));
+                teas.setValue(teaRepository.getTeasOrderByActivity(isOverViewInStock()));
                 break;
             //alphabetic
             case 1:
-                teas.setValue(teaRepository.getTeasOrderByAlphabetic(isOverViewFavorites()));
+                teas.setValue(teaRepository.getTeasOrderByAlphabetic(isOverViewInStock()));
                 break;
             //variety
             case 2:
-                teas.setValue(teaRepository.getTeasOrderByVariety(isOverViewFavorites()));
+                teas.setValue(teaRepository.getTeasOrderByVariety(isOverViewInStock()));
                 break;
             //rating
             case 3:
-                teas.setValue(teaRepository.getTeasOrderByRating(isOverViewFavorites()));
+                teas.setValue(teaRepository.getTeasOrderByRating(isOverViewInStock()));
                 break;
             default:
         }

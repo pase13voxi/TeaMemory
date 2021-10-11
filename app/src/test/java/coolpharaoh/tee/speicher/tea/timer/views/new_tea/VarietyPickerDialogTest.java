@@ -1,5 +1,15 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static android.os.Looper.getMainLooper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.VarietyPickerDialog.TAG;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -28,16 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-
-import static android.os.Looper.getMainLooper;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.AmountPickerDialog.TAG;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)

@@ -21,15 +21,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemOverview;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemsHeaderStrategy;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemsHeaderStrategyFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerViewAdapterOverview;
@@ -40,7 +42,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
 public class Overview extends AppCompatActivity implements RecyclerViewAdapterOverview.OnClickListener {
+    private final List<RecyclerItemOverview> teaListData = new ArrayList<>();
+
     private OverviewViewModel overviewViewModel;
+    private RecyclerViewAdapterOverview teaListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,26 +70,16 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void dialogSortOption() {
-        final String[] items = getResources().getStringArray(R.array.overview_sort_options);
-        SortMode sortMode = overviewViewModel.getSort();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
-        builder.setIcon(R.drawable.sort_black);
-        builder.setTitle(R.string.overview_dialog_sort_title);
-        builder.setSingleChoiceItems(items, sortMode.getIndex(), this::changeSortOption);
-        builder.setNegativeButton(R.string.overview_dialog_sort_negative, null);
-        builder.create().show();
-    }
-
-    private void changeSortOption(DialogInterface dialog, int item) {
-        overviewViewModel.setSort(SortMode.fromIndex(item));
-        dialog.dismiss();
+        final RecyclerViewConfigurationDialog recyclerViewConfigurationDialog = new RecyclerViewConfigurationDialog(overviewViewModel);
+        recyclerViewConfigurationDialog.show(getSupportFragmentManager(), RecyclerViewConfigurationDialog.TAG);
     }
 
     private void initializeTeaList() {
         final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_overview_tea_list);
         recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
+        teaListAdapter = new RecyclerViewAdapterOverview(teaListData, this);
+        recyclerViewTeaList.setAdapter(teaListAdapter);
 
         bindTeaListWithTeaAdapterAndObserve(recyclerViewTeaList);
     }
@@ -92,11 +87,12 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     private void bindTeaListWithTeaAdapterAndObserve(final RecyclerView teaList) {
         overviewViewModel.getTeas().observe(this, teas -> {
             final RecyclerItemsHeaderStrategy recyclerItemsHeader = RecyclerItemsHeaderStrategyFactory.getStrategy(overviewViewModel.getSortWithHeader(), getApplication());
+            teaListData.clear();
+            teaListData.addAll(recyclerItemsHeader.generateFrom(teas));
 
-            final RecyclerViewAdapterOverview adapter = new RecyclerViewAdapterOverview(recyclerItemsHeader.generateFrom(teas), this);
-            teaList.setAdapter(adapter);
+            teaListAdapter.notifyDataSetChanged();
 
-            updateStickyHeaderOnRecyclerView(teaList, adapter);
+            updateStickyHeaderOnRecyclerView(teaList, teaListAdapter);
         });
     }
 
@@ -127,7 +123,10 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         popup.inflate(R.menu.menu_overview_tea_list);
 
         popup.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_overview_tea_list_edit) {
+            if (item.getItemId() == R.id.action_overview_tea_list_in_stock) {
+                dialogUpdateTeaInStock(teaId);
+                return true;
+            } else if (item.getItemId() == R.id.action_overview_tea_list_edit) {
                 navigateToNewOrEditTea(teaId);
                 return true;
             } else if (item.getItemId() == R.id.action_overview_tea_list_delete) {
@@ -139,9 +138,21 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         popup.show();
     }
 
-    @Override
-    public void onFavoriteItemClick(final long teaId, final boolean favorite) {
-        overviewViewModel.updateFavoriteOfTea(teaId, favorite);
+    private void dialogUpdateTeaInStock(final long teaId) {
+        final String[] items = getResources().getStringArray(R.array.overview_dialog_tea_in_stock_options);
+
+        final int checkedItem = overviewViewModel.isTeaInStock(teaId) ? 0 : 1;
+
+        new AlertDialog.Builder(this, R.style.dialog_theme)
+                .setTitle(R.string.overview_dialog_tea_in_stock)
+                .setSingleChoiceItems(items, checkedItem, (DialogInterface dialog, int item) -> updateTeaInStock(teaId, dialog, item))
+                .setNegativeButton(R.string.overview_dialog_tea_in_stock_negative, null)
+                .show();
+    }
+
+    private void updateTeaInStock(final long teaId, DialogInterface dialog, final int item) {
+        overviewViewModel.updateInStockOfTea(teaId, item == 0);
+        dialog.dismiss();
     }
 
     private void initializeNewTeaButton() {
@@ -238,8 +249,6 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
             navigateToAbout();
         } else if (id == R.id.action_overview_sort) {
             dialogSortOption();
-        } else if (id == R.id.action_overview_favorite) {
-            overviewViewModel.setOverviewFavorites(!overviewViewModel.isOverViewFavorites());
         }
 
         return super.onOptionsItemSelected(item);

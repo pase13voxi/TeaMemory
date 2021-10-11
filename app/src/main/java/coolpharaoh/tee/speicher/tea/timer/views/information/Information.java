@@ -13,6 +13,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +50,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         fillToolbarTitle();
         fillRatingBar();
+        fillInStock();
         showDetailsList();
         fillLastUsed();
         fillCounter();
@@ -56,6 +58,9 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
+
+        final SwitchCompat switchInStock = findViewById(R.id.switch_information_in_stock);
+        switchInStock.setOnCheckedChangeListener((buttonView, isChecked) -> updateTeaInStock(isChecked));
 
         final ImageButton buttonAddDetail = findViewById(R.id.button_information_add_detail);
         buttonAddDetail.setOnClickListener(v -> addDetail());
@@ -80,6 +85,11 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private void fillRatingBar() {
         final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setRating(informationViewModel.getTeaRating());
+    }
+
+    private void fillInStock() {
+        final SwitchCompat switchInStock = findViewById(R.id.switch_information_in_stock);
+        switchInStock.setChecked(informationViewModel.isInStock());
     }
 
     private void showDetailsList() {
@@ -144,6 +154,10 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
     private void updateTeaRating(final float rating) {
         informationViewModel.updateTeaRating((int) rating);
+    }
+
+    private void updateTeaInStock(boolean isChecked) {
+        informationViewModel.updateTeaInStock(isChecked);
     }
 
     private void storeDetail(final EditText editTextHeading, final EditText editTextDescription) {

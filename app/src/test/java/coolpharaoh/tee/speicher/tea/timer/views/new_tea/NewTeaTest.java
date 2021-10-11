@@ -139,7 +139,7 @@ public class NewTeaTest {
                     Tea::getRating,
                     Tea::isFavorite
             ).containsExactly(
-                    "Name", BLACK_TEA.getCode(), -15461296, -500.0, TEA_SPOON.getText(), 0, false
+                    "Name", BLACK_TEA.getCode(), -15461296, -500.0, TEA_SPOON.getText(), 0, true
             );
 
             final ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
@@ -568,7 +568,7 @@ public class NewTeaTest {
         return Instant.now(clock);
     }
 
-    private List<RadioButton> getRadioButtons(AlertDialog dialog) {
+    private List<RadioButton> getRadioButtons(final AlertDialog dialog) {
         final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_new_tea_variety_input);
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {

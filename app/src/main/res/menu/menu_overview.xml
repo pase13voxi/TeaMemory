@@ -20,18 +20,11 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_overview_favorite"
-        android:orderInCategory="4"
-        android:icon="@drawable/home_white"
-        android:title="Favorite"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_overview_sort"
         android:orderInCategory="5"
         android:icon="@drawable/sort_white"
         android:title="@string/overview_action_sort"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_overview_search"

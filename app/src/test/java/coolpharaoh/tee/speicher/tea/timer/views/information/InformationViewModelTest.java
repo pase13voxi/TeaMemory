@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.views.information;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import org.junit.Rule;
@@ -22,10 +26,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InformationViewModelTest {
@@ -77,6 +77,33 @@ public class InformationViewModelTest {
         verify(teaRepository).updateTea(captor.capture());
 
         assertThat(captor.getValue().getRating()).isEqualTo(rating);
+    }
+
+    @Test
+    public void isTeaInStock() {
+        final boolean inStock = true;
+        final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
+        tea.setFavorite(inStock);
+        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
+
+        assertThat(informationViewModel.isInStock()).isEqualTo(tea.isFavorite());
+    }
+
+    @Test
+    public void updateTeaInStock() {
+        final boolean inStock = true;
+        final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
+        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+
+        InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository);
+        informationViewModel.updateTeaInStock(inStock);
+
+        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+        verify(teaRepository).updateTea(captor.capture());
+
+        assertThat(captor.getValue().isFavorite()).isEqualTo(inStock);
     }
 
     @Test

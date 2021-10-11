@@ -1,5 +1,16 @@
 package coolpharaoh.tee.speicher.tea.timer.views.information;
 
+import static android.os.Looper.getMainLooper;
+import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +24,7 @@ import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
@@ -43,17 +55,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-import static android.os.Looper.getMainLooper;
-import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -100,6 +101,9 @@ public class InformationTest {
             final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             assertThat(ratingBar.getRating()).isZero();
 
+            final SwitchCompat switchInStock = information.findViewById(R.id.switch_information_in_stock);
+            assertThat(switchInStock.isChecked()).isFalse();
+
             final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isZero();
 
@@ -112,7 +116,8 @@ public class InformationTest {
     @Test
     public void launchActivityAndExpectFilledInformation() {
         final int rating = 4;
-        createTea(rating);
+        final boolean inStock = true;
+        createTea(rating, inStock);
         final Note notes = createNotes();
         createDetails();
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
@@ -125,6 +130,9 @@ public class InformationTest {
 
             final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             assertThat(ratingBar.getRating()).isEqualTo(4);
+
+            final SwitchCompat switchInStock = information.findViewById(R.id.switch_information_in_stock);
+            assertThat(switchInStock.isChecked()).isTrue();
 
             final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
@@ -172,6 +180,24 @@ public class InformationTest {
             final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(captor.capture());
             assertThat(captor.getValue().getRating()).isEqualTo(4);
+        });
+    }
+
+    @Test
+    public void updateInStock() {
+        final boolean inStock = true;
+        createTea(0);
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            final SwitchCompat switchInStock = information.findViewById(R.id.switch_information_in_stock);
+            switchInStock.setChecked(inStock);
+
+            final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+            verify(teaDao).update(captor.capture());
+            assertThat(captor.getValue().isFavorite()).isTrue();
         });
     }
 
@@ -336,8 +362,13 @@ public class InformationTest {
     }
 
     private void createTea(final int rating) {
+        createTea(rating, false);
+    }
+
+    private void createTea(final int rating, final boolean inStock) {
         final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, CurrentDate.getDate());
         tea.setRating(rating);
+        tea.setFavorite(inStock);
         when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
     }
 

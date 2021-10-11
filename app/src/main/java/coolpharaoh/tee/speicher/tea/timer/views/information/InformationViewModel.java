@@ -66,6 +66,17 @@ class InformationViewModel extends ViewModel {
         teaRepository.updateTea(tea);
     }
 
+    public boolean isInStock() {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        return tea.isFavorite();
+    }
+
+    public void updateTeaInStock(boolean inStock) {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        tea.setFavorite(inStock);
+        teaRepository.updateTea(tea);
+    }
+
     public Date getDate() {
         final Tea tea = teaRepository.getTeaById(teaId);
         return tea.getDate();

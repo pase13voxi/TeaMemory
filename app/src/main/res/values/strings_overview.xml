@@ -5,6 +5,9 @@
     <string name="overview_action_sort">Sort mode</string>
     <string name="overview_action_search">Search</string>
     <string name="overview_dialog_sort_title">Sort mode</string>
+    <string name="overview_dialog_filter_title">Filter</string>
+    <string name="overview_dialog_show_teas_in_stock">Show only teas in stock</string>
+    <string name="overview_dialog_sort_positive">Use</string>
     <string name="overview_dialog_sort_negative">Cancel</string>
     <string-array name="overview_sort_options">
         <item>Last used</item>
@@ -12,6 +15,13 @@
         <item>By tea variety</item>
         <item>Rating</item>
     </string-array>
+    <string name="overview_tea_list_menu_in_stock">In stock</string>
+    <string name="overview_dialog_tea_in_stock">In Stock</string>
+    <array name="overview_dialog_tea_in_stock_options">
+        <item>Yes</item>
+        <item>No</item>
+    </array>
+    <string name="overview_dialog_tea_in_stock_negative">Cancel</string>
     <string name="overview_tea_list_menu_edit">Edit</string>
     <string name="overview_tea_list_menu_delete">Delete</string>
     <string name="overview_error_deletion">Deletion could not be performed.</string>

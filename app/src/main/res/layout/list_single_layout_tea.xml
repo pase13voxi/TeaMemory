@@ -26,13 +26,12 @@
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/button_overview_favorite"
+    <ImageView
+        android:id="@+id/button_overview_in_stock"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_margin="10dp"
-        android:contentDescription="Favorite"
+        android:contentDescription="In stock"
         android:src="@drawable/home_grey" />
 </RelativeLayout>

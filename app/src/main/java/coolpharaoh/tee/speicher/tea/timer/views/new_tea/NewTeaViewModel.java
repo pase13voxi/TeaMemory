@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.celsiusToFahrenheit;
+import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.fahrenheitToCelsius;
+
 import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
@@ -18,10 +22,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.celsiusToFahrenheit;
-import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.fahrenheitToCelsius;
 
 class NewTeaViewModel {
     private final Application application;
@@ -65,7 +65,7 @@ class NewTeaViewModel {
             tea.setAmount(-500);
             tea.setAmountKind("Ts");
             tea.setRating(0);
-            tea.setFavorite(false);
+            tea.setFavorite(true);
             infusions = new ArrayList<>();
             addInfusion();
         } else {

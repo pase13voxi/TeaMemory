@@ -5,6 +5,9 @@
     <string name="overview_action_sort">Sortiermodus</string>
     <string name="overview_action_search">Suche</string>
     <string name="overview_dialog_sort_title">Sortiermodus</string>
+    <string name="overview_dialog_filter_title">Filter</string>
+    <string name="overview_dialog_show_teas_in_stock">Nur Tees auf Lager anzeigen</string>
+    <string name="overview_dialog_sort_positive">Verwenden</string>
     <string name="overview_dialog_sort_negative">Abbrechen</string>
     <string-array name="overview_sort_options">
         <item>Letzte Verwendung</item>
@@ -12,6 +15,13 @@
         <item>Nach Sorte</item>
         <item>Bewertung</item>
     </string-array>
+    <string name="overview_tea_list_menu_in_stock">Auf Lager</string>
+    <string name="overview_dialog_tea_in_stock">Auf Lager</string>
+    <array name="overview_dialog_tea_in_stock_options">
+        <item>Ja</item>
+        <item>Nein</item>
+    </array>
+    <string name="overview_dialog_tea_in_stock_negative">Abbrechen</string>
     <string name="overview_tea_list_menu_edit">Bearbeiten</string>
     <string name="overview_tea_list_menu_delete">Löschen</string>
     <string name="overview_error_deletion">Löschung konnte nicht durchgeführt werden.</string>

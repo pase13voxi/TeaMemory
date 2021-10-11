@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="information_rating">Bewertung</string>
     <string name="information_details_heading">Informationen</string>
-    <string name="information_details_rating">Bewertung</string>
     <string name="information_detail_options">&#8942;</string>
-    <string name="information_notes_heading">Notizen</string>
-    <string name="information_notes_hint">Gib deine Notizen hier ein.</string>
+    <string name="information_in_stock">Auf Lager</string>
     <string name="information_add_detail_button_description">Detail hinzufügen</string>
     <string name="information_add_detail_dialog_heading">Information hinzufügen</string>
     <string name="information_edit_detail_dialog_heading">Information ändern</string>
@@ -20,4 +19,6 @@
     <string name="information_counter_week">Diese Woche</string>
     <string name="information_counter_month">Dieser Monat</string>
     <string name="information_counter_overall">Insgesamt</string>
+    <string name="information_notes_heading">Notizen</string>
+    <string name="information_notes_hint">Gib deine Notizen hier ein.</string>
 </resources>
