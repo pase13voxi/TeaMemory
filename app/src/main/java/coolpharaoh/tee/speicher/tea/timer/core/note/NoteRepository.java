@@ -10,16 +10,16 @@ public class NoteRepository {
 
     private final NoteDao noteDao;
 
-    public NoteRepository(Application application) {
-        TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
+    public NoteRepository(final Application application) {
+        final TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
         noteDao = database.getNoteDao();
     }
 
-    public void insertNote(Note note) {
+    public void insertNote(final Note note) {
         noteDao.insert(note);
     }
 
-    public void updateNote(Note note) {
+    public void updateNote(final Note note) {
         noteDao.update(note);
     }
 
@@ -27,15 +27,15 @@ public class NoteRepository {
         return noteDao.getNotes();
     }
 
-    public Note getNoteByTeaIdAndPosition(long teaId, int position) {
+    public Note getNoteByTeaIdAndPosition(final long teaId, final int position) {
         return noteDao.getNoteByTeaIdAndPosition(teaId, position);
     }
 
-    public List<Note> getNotesByTeaIdAndPositionBiggerZero(long teaId) {
+    public List<Note> getNotesByTeaIdAndPositionBiggerZero(final long teaId) {
         return noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId);
     }
 
-    public void deleteNoteByTeaIdAndPosition(long teaId, int position) {
+    public void deleteNoteByTeaIdAndPosition(final long teaId, final int position) {
         noteDao.deleteNoteByTeaIdAndPosition(teaId, position);
     }
 }

@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.description;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import android.os.Build;
 import android.widget.ImageButton;
 
@@ -13,8 +15,6 @@ import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -22,7 +22,7 @@ public class ShowTeaDescriptionTest {
 
     @Test
     public void launchActivityExpectThreeImages() {
-        ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
+        final ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
         showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
             final ViewPager viewPager = showTeaDescription.findViewById(R.id.slide_view_description_pager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
@@ -32,9 +32,9 @@ public class ShowTeaDescriptionTest {
 
     @Test
     public void exitActivity() {
-        ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
+        final ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
         showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
-            ImageButton buttonClose = showTeaDescription.findViewById(R.id.button_description_close);
+            final ImageButton buttonClose = showTeaDescription.findViewById(R.id.button_description_close);
             buttonClose.performClick();
 
             assertThat(showTeaDescription.isFinishing()).isTrue();

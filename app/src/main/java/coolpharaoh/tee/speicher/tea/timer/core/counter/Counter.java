@@ -41,21 +41,22 @@ public class Counter {
     private long overall;
 
     @TypeConverters(DateConverter.class)
-    @ColumnInfo(name = "daydate")
+    @ColumnInfo(name = "day_date")
     private Date dayDate;
 
     @TypeConverters(DateConverter.class)
-    @ColumnInfo(name = "weekdate")
+    @ColumnInfo(name = "week_date")
     private Date weekDate;
 
     @TypeConverters(DateConverter.class)
-    @ColumnInfo(name = "monthdate")
+    @ColumnInfo(name = "month_date")
     private Date monthDate;
 
     // the constructor needs these parameters
     @SuppressWarnings("java:S107")
     @Ignore
-    public Counter(long teaId, int day, int week, int month, long overall, Date dayDate, Date weekDate, Date monthDate) {
+    public Counter(final long teaId, final int day, final int week, final int month, final long overall,
+                   final Date dayDate, final Date weekDate, final Date monthDate) {
         this.teaId = teaId;
         this.day = day;
         this.week = week;

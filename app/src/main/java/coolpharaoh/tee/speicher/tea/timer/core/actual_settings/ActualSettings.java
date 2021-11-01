@@ -31,10 +31,10 @@ public class ActualSettings {
 
     @ColumnInfo(name = "temperatureunit")
     private String temperatureUnit;
-
+    //could be removed
     @ColumnInfo(name = "mainratealert")
     private boolean mainRateAlert;
-
+    //could be removed
     @ColumnInfo(name = "mainratecounter")
     private int mainRateCounter;
 

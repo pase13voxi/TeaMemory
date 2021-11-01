@@ -36,7 +36,7 @@ class Vibrator {
                 throw new AssertionError("Vibrator is null.");
             } else {
                 // Vibrate for 1000 milliseconds
-                long[] twice = {0, 500, 400, 500};
+                final long[] twice = {0, 500, 400, 500};
                 if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
                 } else {
@@ -47,7 +47,7 @@ class Vibrator {
     }
 
     private boolean isSilent(final Application application) {
-        AudioManager audio = (AudioManager) application.getSystemService(Context.AUDIO_SERVICE);
+        final AudioManager audio = (AudioManager) application.getSystemService(Context.AUDIO_SERVICE);
         if (audio == null) {
             Log.w(LOG_TAG, "Cannot discover ringer mode because audio manager is not available");
             return false;

@@ -9,12 +9,12 @@ public class InputValidator {
     private final Application application;
     private final Printer printer;
 
-    InputValidator(Application application, Printer printer) {
+    InputValidator(final Application application, final Printer printer) {
         this.application = application;
         this.printer = printer;
     }
 
-    boolean nameIsNotEmpty(String nameInput) {
+    boolean nameIsNotEmpty(final String nameInput) {
         if ("".equals(nameInput)) {
             printer.print(application.getString(R.string.new_tea_error_no_name));
             return false;
@@ -22,7 +22,7 @@ public class InputValidator {
         return true;
     }
 
-    boolean nameIsValid(String nameInput) {
+    boolean nameIsValid(final String nameInput) {
         if (nameInput.length() > 300) {
             printer.print(application.getString(R.string.new_tea_error_name));
             return false;
@@ -30,7 +30,7 @@ public class InputValidator {
         return true;
     }
 
-    boolean varietyIsValid(String varietyInput) {
+    boolean varietyIsValid(final String varietyInput) {
         if (varietyInput.length() > 30) {
             printer.print(application.getString(R.string.new_tea_error_30Char));
             return false;

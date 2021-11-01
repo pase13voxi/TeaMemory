@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
@@ -16,10 +20,6 @@ import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -38,15 +38,15 @@ public class TeaCompleteReceiverTest {
     public void onReceiveAfterAndroidO() {
         CurrentSdk.setFixedSystem(systemUtility);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
-        TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
+        final TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
 
-        Intent intent = new Intent();
+        final Intent intent = new Intent();
         intent.putExtra(TEA_ID, 1L);
         teaCompleteReceiver.onReceive(application, intent);
 
-        ArgumentCaptor<Intent> serviceCaptor = ArgumentCaptor.forClass(Intent.class);
+        final ArgumentCaptor<Intent> serviceCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(application).startForegroundService(serviceCaptor.capture());
-        Intent service = serviceCaptor.getValue();
+        final Intent service = serviceCaptor.getValue();
 
         assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L);
     }
@@ -55,16 +55,16 @@ public class TeaCompleteReceiverTest {
     public void onReceiveBeforeAndroidO() {
         CurrentSdk.setFixedSystem(systemUtility);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
-        TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
+        final TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
 
-        Intent intent = new Intent();
+        final Intent intent = new Intent();
         intent.putExtra(TEA_ID, 1L);
         teaCompleteReceiver.onReceive(application, intent);
 
 
-        ArgumentCaptor<Intent> serviceCaptor = ArgumentCaptor.forClass(Intent.class);
+        final ArgumentCaptor<Intent> serviceCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(application).startService(serviceCaptor.capture());
-        Intent service = serviceCaptor.getValue();
+        final Intent service = serviceCaptor.getValue();
 
         assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L);
     }

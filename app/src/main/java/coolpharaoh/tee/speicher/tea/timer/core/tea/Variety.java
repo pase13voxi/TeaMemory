@@ -39,7 +39,7 @@ public enum Variety {
     }
 
     public static Variety fromStoredText(final String storedText) {
-        for (Variety variety : Variety.values()) {
+        for (final Variety variety : Variety.values()) {
             if (variety.code.equalsIgnoreCase(storedText)) {
                 return variety;
             }

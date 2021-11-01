@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 import android.app.Notification;
 import android.os.Build;
@@ -19,9 +22,6 @@ import org.robolectric.annotation.Config;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -47,9 +47,9 @@ public class NotifierTest {
     public void getNotificationAfterAndroidO() {
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
 
-        Application application = ApplicationProvider.getApplicationContext();
-        Notifier notifier = new Notifier(application, 1L, timerViewModel);
-        Notification notification = notifier.getNotification();
+        final Application application = ApplicationProvider.getApplicationContext();
+        final Notifier notifier = new Notifier(application, 1L, timerViewModel);
+        final Notification notification = notifier.getNotification();
 
         assertThat(notification.getChannelId()).isEqualTo(CHANNEL_ID_NOTIFY);
         assertThat(notification.tickerText).isEqualTo(application.getString(R.string.show_tea_notification_ticker));
@@ -61,9 +61,9 @@ public class NotifierTest {
     public void getNotificationBeforeAndroidO() {
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
 
-        Application application = ApplicationProvider.getApplicationContext();
-        Notifier notifier = new Notifier(application, 1L, timerViewModel);
-        Notification notification = notifier.getNotification();
+        final Application application = ApplicationProvider.getApplicationContext();
+        final Notifier notifier = new Notifier(application, 1L, timerViewModel);
+        final Notification notification = notifier.getNotification();
 
         assertThat(notification.getChannelId()).isNull();
         assertThat(notification.tickerText).isEqualTo(application.getString(R.string.show_tea_notification_ticker));

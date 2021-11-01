@@ -31,7 +31,7 @@ public class Tea {
     @ColumnInfo(name = "amount")
     private double amount;
 
-    @ColumnInfo(name = "amountkind")
+    @ColumnInfo(name = "amount_kind")
     private String amountKind;
 
     @ColumnInfo(name = "color")
@@ -40,10 +40,10 @@ public class Tea {
     @ColumnInfo(name = "rating")
     private int rating;
 
-    @ColumnInfo(name = "favorite")
-    private boolean favorite;
+    @ColumnInfo(name = "in_stock")
+    private boolean inStock;
 
-    @ColumnInfo(name = "nextinfusion")
+    @ColumnInfo(name = "next_infusion")
     private int nextInfusion;
 
     @TypeConverters(DateConverter.class)
@@ -51,7 +51,8 @@ public class Tea {
     private Date date;
 
     @Ignore
-    public Tea(String name, String variety, double amount, String amountKind, int color, int nextInfusion, Date date) {
+    public Tea(final String name, final String variety, final double amount, final String amountKind,
+               final int color, final int nextInfusion, final Date date) {
         this.name = name;
         this.variety = variety;
         this.amount = amount;
@@ -60,6 +61,6 @@ public class Tea {
         this.nextInfusion = nextInfusion;
         this.date = date;
         rating = 0;
-        favorite = false;
+        inStock = false;
     }
 }

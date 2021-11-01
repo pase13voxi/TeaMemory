@@ -1,5 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -15,12 +21,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -40,13 +40,13 @@ public class BackgroundTimerTest {
         when(sharedTimerPreferences.getStartedTime()).thenReturn(2000L);
         when(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(alarmManager);
 
-        BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
+        final BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
         backgroundTimer.setAlarmManager(1L, 6000L);
 
-        ArgumentCaptor<AlarmManager.AlarmClockInfo> captorAlarmClockInfo = ArgumentCaptor.forClass(AlarmManager.AlarmClockInfo.class);
+        final ArgumentCaptor<AlarmManager.AlarmClockInfo> captorAlarmClockInfo = ArgumentCaptor.forClass(AlarmManager.AlarmClockInfo.class);
         verify(alarmManager).setAlarmClock(captorAlarmClockInfo.capture(), any(PendingIntent.class));
 
-        AlarmManager.AlarmClockInfo alarmClockInfo = captorAlarmClockInfo.getValue();
+        final AlarmManager.AlarmClockInfo alarmClockInfo = captorAlarmClockInfo.getValue();
         assertThat(alarmClockInfo.getTriggerTime()).isEqualTo(8000L);
         assertThat(alarmClockInfo.getShowIntent()).isNotNull();
     }
@@ -55,7 +55,7 @@ public class BackgroundTimerTest {
     public void whenSetAlarmManagerAndItIsNullThrowException() {
         when(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(null);
 
-        BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
+        final BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
         backgroundTimer.setAlarmManager(1L, 6000L);
 
         verify(alarmManager, times(0)).setAlarmClock(any(), any());
@@ -65,7 +65,7 @@ public class BackgroundTimerTest {
     public void removeAlarmManager() {
         when(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(alarmManager);
 
-        BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
+        final BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
         backgroundTimer.removeAlarmManager();
 
         verify(alarmManager).cancel(any(PendingIntent.class));
@@ -75,7 +75,7 @@ public class BackgroundTimerTest {
     public void whenRemoveAlarmManagerAndItIsNullThrowException() {
         when(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(null);
 
-        BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
+        final BackgroundTimer backgroundTimer = new BackgroundTimer(application, sharedTimerPreferences);
         backgroundTimer.removeAlarmManager();
 
         verify(alarmManager, times(0)).setAlarmClock(any(), any());

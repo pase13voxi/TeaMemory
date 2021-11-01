@@ -1,5 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 
 import org.junit.Test;
@@ -11,12 +17,6 @@ import java.util.Calendar;
 
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TimerControllerTest {
@@ -33,7 +33,7 @@ public class TimerControllerTest {
 
     @Test
     public void startForegroundTimer() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
         when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
 
@@ -45,7 +45,7 @@ public class TimerControllerTest {
 
     @Test
     public void startBackgroundTimer() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
         when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
 
@@ -58,7 +58,7 @@ public class TimerControllerTest {
 
     @Test
     public void resumeForegroundTimer() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
         when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
@@ -77,7 +77,7 @@ public class TimerControllerTest {
 
     @Test
     public void resumeFinishedForegroundTimer() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
         when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
@@ -95,7 +95,7 @@ public class TimerControllerTest {
 
     @Test
     public void reset() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
         timerController.reset();
@@ -108,7 +108,7 @@ public class TimerControllerTest {
 
     @Test
     public void onTimerTick() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
         timerController.onTimerTick(6000L);
@@ -118,7 +118,7 @@ public class TimerControllerTest {
 
     @Test
     public void onTimerFinish() {
-        TimerController timerController = new TimerController(application, foregroundTimer,
+        final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
         timerController.onTimerFinish();
@@ -127,8 +127,8 @@ public class TimerControllerTest {
         verify(application).sendBroadcast(any());
     }
 
-    private void mockCurrentDate(long millis) {
-        Calendar calendar = Calendar.getInstance();
+    private void mockCurrentDate(final long millis) {
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(millis);
         when(dateUtility.getDate()).thenReturn(calendar.getTime());
 

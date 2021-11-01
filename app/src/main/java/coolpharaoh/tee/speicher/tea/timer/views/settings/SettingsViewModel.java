@@ -33,17 +33,17 @@ class SettingsViewModel {
     }
 
     //Settings
-    void setMusicchoice(final String musicchoice) {
-        actualSettings.setMusicChoice(musicchoice);
+    void setMusicChoice(final String musicChoice) {
+        actualSettings.setMusicChoice(musicChoice);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
-    String getMusicname() {
+    String getMusicName() {
         return actualSettings.getMusicName();
     }
 
-    void setMusicname(final String musicname) {
-        actualSettings.setMusicName(musicname);
+    void setMusicName(final String musicName) {
+        actualSettings.setMusicName(musicName);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 
@@ -94,17 +94,8 @@ class SettingsViewModel {
         return actualSettings.isShowTeaAlert();
     }
 
-    void setShowTeaAlert(final boolean showteaalert) {
-        actualSettings.setShowTeaAlert(showteaalert);
-        actualSettingsRepository.updateSettings(actualSettings);
-    }
-
-    boolean isMainRateAlert() {
-        return actualSettings.isMainRateAlert();
-    }
-
-    void setMainRateAlert(final boolean mainratealert) {
-        actualSettings.setMainRateAlert(mainratealert);
+    void setShowTeaAlert(final boolean showTeaAlert) {
+        actualSettings.setShowTeaAlert(showTeaAlert);
         actualSettingsRepository.updateSettings(actualSettings);
     }
 

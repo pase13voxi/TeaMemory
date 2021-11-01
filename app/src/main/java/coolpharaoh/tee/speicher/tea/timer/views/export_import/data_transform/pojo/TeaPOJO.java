@@ -17,7 +17,7 @@ public class TeaPOJO {
     private String amountKind;
     private int color;
     private int rating;
-    private boolean favorite;
+    private boolean inStock;
     private int nextInfusion;
     private Date date;
     private List<InfusionPOJO> infusions;

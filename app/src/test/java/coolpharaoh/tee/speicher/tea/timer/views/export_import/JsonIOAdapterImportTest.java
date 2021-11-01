@@ -1,5 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.export_import;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -27,12 +33,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 public class JsonIOAdapterImportTest {
     private static final String DB_JSON_DUMP = "[\n" +
@@ -43,7 +43,7 @@ public class JsonIOAdapterImportTest {
             "    \"amountKind\": \"Gr\",\n" +
             "    \"color\": 1,\n" +
             "    \"rating\": 3,\n" +
-            "    \"favorite\": true,\n" +
+            "    \"inStock\": true,\n" +
             "    \"nextInfusion\": 1,\n" +
             "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
@@ -88,7 +88,7 @@ public class JsonIOAdapterImportTest {
             "    \"amountKind\": \"Ts\",\n" +
             "    \"color\": 2,\n" +
             "    \"rating\": 0,\n" +
-            "    \"favorite\": false,\n" +
+            "    \"inStock\": false,\n" +
             "    \"nextInfusion\": 2,\n" +
             "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
@@ -181,9 +181,9 @@ public class JsonIOAdapterImportTest {
     }
 
     private void verifyImportedTeas() {
-        ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
+        final ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
         verify(teaDao, times(2)).insert(captorTea.capture());
-        List<Tea> teas = captorTea.getAllValues();
+        final List<Tea> teas = captorTea.getAllValues();
         assertThat(teas).extracting(
                 Tea::getName,
                 Tea::getVariety,
@@ -191,16 +191,16 @@ public class JsonIOAdapterImportTest {
                 Tea::getAmountKind,
                 Tea::getColor,
                 Tea::getRating,
-                Tea::isFavorite,
+                Tea::isInStock,
                 Tea::getNextInfusion
         ).containsExactly(
                 Tuple.tuple("name1", "variety1", 1.0, "Gr", 1, 3, true, 1),
                 Tuple.tuple("name2", "variety2", 2.5, "Ts", 2, 0, false, 2)
         );
 
-        ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
+        final ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
         verify(infusionDao, times(4)).insert(captorInfusion.capture());
-        List<Infusion> infusions = captorInfusion.getAllValues();
+        final List<Infusion> infusions = captorInfusion.getAllValues();
         assertThat(infusions).extracting(
                 Infusion::getTeaId,
                 Infusion::getInfusionIndex,
@@ -215,9 +215,9 @@ public class JsonIOAdapterImportTest {
                 Tuple.tuple(1L, 1, "7:00", "3:00", 90, 195)
         );
 
-        ArgumentCaptor<Counter> captorCounter = ArgumentCaptor.forClass(Counter.class);
+        final ArgumentCaptor<Counter> captorCounter = ArgumentCaptor.forClass(Counter.class);
         verify(counterDao, times(2)).insert(captorCounter.capture());
-        List<Counter> counters = captorCounter.getAllValues();
+        final List<Counter> counters = captorCounter.getAllValues();
         assertThat(counters).extracting(
                 Counter::getTeaId,
                 Counter::getDay,
@@ -229,9 +229,9 @@ public class JsonIOAdapterImportTest {
                 Tuple.tuple(1L, 5, 6, 7, 8L)
         );
 
-        ArgumentCaptor<Note> captorNote = ArgumentCaptor.forClass(Note.class);
+        final ArgumentCaptor<Note> captorNote = ArgumentCaptor.forClass(Note.class);
         verify(noteDao, times(2)).insert(captorNote.capture());
-        List<Note> notes = captorNote.getAllValues();
+        final List<Note> notes = captorNote.getAllValues();
         assertThat(notes).extracting(
                 Note::getTeaId,
                 Note::getPosition,

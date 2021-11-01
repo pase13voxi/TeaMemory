@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,8 +23,6 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-
 public class TemperaturePickerDialog extends DialogFragment {
     public static final String TAG = "TemperaturePickerDialog";
 
@@ -38,9 +38,9 @@ public class TemperaturePickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        Activity activity = requireActivity();
-        ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        LayoutInflater inflater = activity.getLayoutInflater();
+        final Activity activity = requireActivity();
+        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
+        final LayoutInflater inflater = activity.getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_temperature_picker, parent, false);
 
         setTemperaturePicker();

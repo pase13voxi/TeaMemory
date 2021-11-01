@@ -173,11 +173,11 @@ public class VarietyPickerDialogTest {
         assertThat(editTextCustomVariety.getText()).hasToString(CUSTOM_VARIETY);
     }
 
-    private List<RadioButton> getRadioButtons(AlertDialog dialog) {
+    private List<RadioButton> getRadioButtons(final AlertDialog dialog) {
         final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_new_tea_variety_input);
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View o = radioGroup.getChildAt(i);
+            final View o = radioGroup.getChildAt(i);
             if (o instanceof RadioButton) {
                 listRadioButtons.add((RadioButton) o);
             }

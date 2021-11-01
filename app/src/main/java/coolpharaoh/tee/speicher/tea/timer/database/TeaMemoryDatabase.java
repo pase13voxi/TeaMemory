@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.database;
 
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_10_11;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_11_12;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_12_13;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_1_2;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_2_3;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_3_4;
@@ -30,7 +31,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 
-@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 12, exportSchema = false)
+@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 13, exportSchema = false)
 public abstract class TeaMemoryDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "teamemory";
     private static TeaMemoryDatabase instance;
@@ -46,7 +47,7 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
     public abstract ActualSettingsDao getActualSettingsDao();
 
     // Get a database instance
-    public static synchronized TeaMemoryDatabase getDatabaseInstance(Context context) {
+    public static synchronized TeaMemoryDatabase getDatabaseInstance(final Context context) {
         if (instance == null) {
             instance = create(context);
         }
@@ -54,8 +55,8 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
     }
 
     // Create the database
-    private static TeaMemoryDatabase create(Context context) {
-        RoomDatabase.Builder<TeaMemoryDatabase> builder = Room.databaseBuilder(context.getApplicationContext(),
+    private static TeaMemoryDatabase create(final Context context) {
+        final RoomDatabase.Builder<TeaMemoryDatabase> builder = Room.databaseBuilder(context.getApplicationContext(),
                 TeaMemoryDatabase.class, DATABASE_NAME);
         builder.fallbackToDestructiveMigration();
         builder.allowMainThreadQueries();
@@ -70,12 +71,13 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
         builder.addMigrations(MIGRATION_9_10);
         builder.addMigrations(MIGRATION_10_11);
         builder.addMigrations(MIGRATION_11_12);
+        builder.addMigrations(MIGRATION_12_13);
 
         return builder.build();
     }
 
     @VisibleForTesting
-    public static void setMockedDatabase(TeaMemoryDatabase mockedDatabase) {
+    public static void setMockedDatabase(final TeaMemoryDatabase mockedDatabase) {
         instance = mockedDatabase;
     }
 

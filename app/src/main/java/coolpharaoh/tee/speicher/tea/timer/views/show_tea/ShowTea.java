@@ -1,6 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
 
 
+import static org.apache.commons.lang3.StringUtils.rightPad;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,6 +29,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
+
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -42,8 +49,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.Displa
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindStrategy;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitStrategy;
-
-import static org.apache.commons.lang3.StringUtils.rightPad;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -82,14 +87,14 @@ public class ShowTea extends AppCompatActivity {
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, final Intent intent) {
             updateClock(intent);
         }
 
-        private void updateClock(Intent intent) {
+        private void updateClock(final Intent intent) {
             if (intent.getExtras() != null) {
-                long millis = intent.getLongExtra("countdown", 0);
-                boolean ready = intent.getBooleanExtra("ready", false);
+                final long millis = intent.getLongExtra("countdown", 0);
+                final boolean ready = intent.getBooleanExtra("ready", false);
                 if (!infoShown && showTeaViewModel.isAnimation()) {
                     updateImage(millis);
                 }
@@ -100,7 +105,7 @@ public class ShowTea extends AppCompatActivity {
                         imageViewSteam.setVisibility((View.VISIBLE));
                     }
                 } else {
-                    String ms = String.format(Locale.getDefault(), "%02d : %02d",
+                    final String ms = String.format(Locale.getDefault(), "%02d : %02d",
                             TimeUnit.MILLISECONDS.toMinutes(millis),
                             TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
                     textViewTimer.setText(ms);
@@ -108,14 +113,14 @@ public class ShowTea extends AppCompatActivity {
             }
         }
 
-        private void updateImage(long millisec) {
-            int percentTmp = 100 - ((int) (((float) millisec / (float) maxMilliSec) * 100));
+        private void updateImage(final long milliSec) {
+            final int percentTmp = 100 - ((int) (((float) milliSec / (float) maxMilliSec) * 100));
             if (percentTmp > percent) {
                 percent = percentTmp;
 
-                Context context = getApplicationContext();
-                String imageName = String.format("cup_fill%spr", percent);
-                int imageId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
+                final Context context = getApplicationContext();
+                final String imageName = String.format("cup_fill%spr", percent);
+                final int imageId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
                 imageViewFill.setImageResource(imageId);
                 imageViewFill.setTag(imageId);
             }
@@ -123,7 +128,7 @@ public class ShowTea extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_tea);
         defineToolbarAsActionbar();
@@ -154,8 +159,8 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void defineToolbarAsActionbar() {
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView toolbarTitle = findViewById(R.id.tool_bar_title);
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        final TextView toolbarTitle = findViewById(R.id.tool_bar_title);
         toolbarTitle.setText(R.string.show_tea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -164,7 +169,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void navigateToDetailInformation() {
-        Intent informationScreen = new Intent(ShowTea.this, Information.class);
+        final Intent informationScreen = new Intent(ShowTea.this, Information.class);
         informationScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel.getTeaId());
         // Intent starten und zur zweiten Activity wechseln
         startActivity(informationScreen);
@@ -198,7 +203,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void setFieldsTransparent() {
-        int alpha = 130;
+        final int alpha = 130;
         textViewName.getBackground().mutate().setAlpha(alpha);
         textViewVariety.getBackground().mutate().setAlpha(alpha);
         textViewDoublePoint.getBackground().mutate().setAlpha(alpha);
@@ -206,7 +211,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void initializeSpinnerWithBigCharacters() {
-        ArrayAdapter<CharSequence> spinnerTimeAdapter = ArrayAdapter.createFromResource(
+        final ArrayAdapter<CharSequence> spinnerTimeAdapter = ArrayAdapter.createFromResource(
                 this, R.array.show_tea_items_timer, R.layout.spinner_item);
         spinnerTimeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerMinutes.setAdapter(spinnerTimeAdapter);
@@ -214,7 +219,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void initializeInformationWindow() {
-        long teaId = this.getIntent().getLongExtra(EXTRA_TEA_ID, 0);
+        final long teaId = this.getIntent().getLongExtra(EXTRA_TEA_ID, 0);
         if (teaId == 0) {
             Log.e(LOG_TAG, "The tea id was not set before navigate to this Activity.");
             disableCompleteActivity();
@@ -227,7 +232,7 @@ public class ShowTea extends AppCompatActivity {
         new NotExistingTeaDialog(this).show();
     }
 
-    private void showTeaInformation(long teaId) {
+    private void showTeaInformation(final long teaId) {
         showTeaViewModel = new ShowTeaViewModel(teaId, getApplication());
 
         if (showTeaViewModel.teaExists()) {
@@ -285,10 +290,10 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void dialogShowTeaDescription() {
-        ViewGroup parent = findViewById(R.id.show_tea_parent);
+        final ViewGroup parent = findViewById(R.id.show_tea_parent);
 
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View alertLayoutDialogDescription = inflater.inflate(R.layout.dialog_showtea_description, parent, false);
         final CheckBox donNotShowAgain = alertLayoutDialogDescription.findViewById(R.id.check_box_show_tea_dialog_description);
 
         new AlertDialog.Builder(this, R.style.dialog_theme)
@@ -299,15 +304,15 @@ public class ShowTea extends AppCompatActivity {
                 .show();
     }
 
-    private void disableDescription(CheckBox donNotShowAgain) {
+    private void disableDescription(final CheckBox donNotShowAgain) {
         if (donNotShowAgain.isChecked()) {
             showTeaViewModel.setShowteaAlert(false);
         }
     }
 
-    private void navigateToShowTeaDescription(CheckBox donNotShowAgain) {
+    private void navigateToShowTeaDescription(final CheckBox donNotShowAgain) {
         disableDescription(donNotShowAgain);
-        Intent intent = new Intent(ShowTea.this, ShowTeaDescription.class);
+        final Intent intent = new Intent(ShowTea.this, ShowTeaDescription.class);
         startActivity(intent);
     }
 
@@ -318,10 +323,10 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void displayContinueNextInfusionDialog() {
-        int lastInfusion = showTeaViewModel.getNextInfusion();
-        int nextInfusion = showTeaViewModel.getNextInfusion() + 1;
+        final int lastInfusion = showTeaViewModel.getNextInfusion();
+        final int nextInfusion = showTeaViewModel.getNextInfusion() + 1;
         //Infomationen anzeigen
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.show_tea_dialog_following_infusion_header);
         builder.setMessage(getResources().getString(R.string.show_tea_dialog_following_infusion_description, lastInfusion, nextInfusion));
         builder.setPositiveButton(R.string.show_tea_dialog_following_infusion_yes, (dialog, which) -> continueNextInfusion());
@@ -392,7 +397,7 @@ public class ShowTea extends AppCompatActivity {
         textViewTimer.setVisibility((View.VISIBLE));
     }
 
-    private void setVisibilityTimeInput(int visibility) {
+    private void setVisibilityTimeInput(final int visibility) {
         spinnerMinutes.setVisibility(visibility);
         spinnerSeconds.setVisibility(visibility);
         textViewMinutes.setVisibility(visibility);
@@ -410,9 +415,9 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void calculateInfusionTimeAndStartTimer() {
-        int min = Integer.parseInt(spinnerMinutes.getSelectedItem().toString());
-        int sec = Integer.parseInt(spinnerSeconds.getSelectedItem().toString());
-        long millisec = TimeUnit.MINUTES.toMillis(min) + TimeUnit.SECONDS.toMillis(sec);
+        final int min = Integer.parseInt(spinnerMinutes.getSelectedItem().toString());
+        final int sec = Integer.parseInt(spinnerSeconds.getSelectedItem().toString());
+        final long millisec = TimeUnit.MINUTES.toMillis(min) + TimeUnit.SECONDS.toMillis(sec);
 
         maxMilliSec = millisec;
 
@@ -453,6 +458,8 @@ public class ShowTea extends AppCompatActivity {
         hideAndResetTeaCup();
 
         foregroundTimer.reset();
+
+        askForRatingAfterTheCounterHasBeenUsed();
     }
 
     private void enableInfusionBarAndCooldownSwitch() {
@@ -478,18 +485,38 @@ public class ShowTea extends AppCompatActivity {
         }
     }
 
+    private void askForRatingAfterTheCounterHasBeenUsed() {
+        if (showTeaViewModel.getOverallCounter() % 3 == 0) {
+            askForRating();
+        }
+    }
+
+    private void askForRating() {
+        final ReviewManager reviewManager = ReviewManagerFactory.create(this);
+        final Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                final ReviewInfo reviewInfo = task.getResult();
+
+                final Task<Void> flow = reviewManager.launchReviewFlow(this, reviewInfo);
+                flow.addOnCompleteListener(task1 -> {
+                });
+            }
+        });
+    }
+
     private void showDialogChangeInfusion() {
-        int tmpSize = showTeaViewModel.getInfusionSize();
-        String[] items = new String[tmpSize];
+        final int tmpSize = showTeaViewModel.getInfusionSize();
+        final String[] items = new String[tmpSize];
         for (int i = 0; i < tmpSize; i++) {
             items[i] = getResources().getString(R.string.show_tea_dialog_infusion_count_description, i + 1);
         }
 
         //Get CheckedItem
-        int checkedItem = showTeaViewModel.getInfusionIndex();
+        final int checkedItem = showTeaViewModel.getInfusionIndex();
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setIcon(R.drawable.infusion_black);
         builder.setTitle(R.string.show_tea_dialog_infusion_count_title);
         builder.setSingleChoiceItems(items, checkedItem, (dialog, item) -> {
@@ -528,7 +555,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void showDialogCoolingPeriod() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
         builder.setTitle(R.string.show_tea_cool_down_time_header);
         builder.setMessage(R.string.show_tea_cool_down_time_description);
         builder.setPositiveButton("OK", null);
@@ -544,10 +571,10 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void showDialogAmount() {
-        ViewGroup parent = findViewById(R.id.show_tea_parent);
+        final ViewGroup parent = findViewById(R.id.show_tea_parent);
 
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayoutDialogAmount = inflater.inflate(R.layout.dialog_amount, parent, false);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View alertLayoutDialogAmount = inflater.inflate(R.layout.dialog_amount, parent, false);
         final SeekBar seekBarAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
         final TextView textViewAmountPerAmount = alertLayoutDialogAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
         // 10 for 1 liter
@@ -555,46 +582,46 @@ public class ShowTea extends AppCompatActivity {
 
         seekBarAmountPerAmount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
+            public void onProgressChanged(final SeekBar seekBar, final int value, final boolean b) {
                 fillAmountPerAmount(value, textViewAmountPerAmount);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(final SeekBar seekBar) {
                 // this functionality is not needed, but needs to be override
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(final SeekBar seekBar) {
                 // this functionality is not needed, but needs to be override
             }
         });
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this, R.style.dialog_theme);
-        adb.setView(alertLayoutDialogAmount);
-        adb.setTitle(R.string.show_tea_dialog_amount);
-        adb.setIcon(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication()).getImageResourceIdShowTea());
-        adb.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
-        adb.show();
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog_theme);
+        dialogBuilder.setView(alertLayoutDialogAmount);
+        dialogBuilder.setTitle(R.string.show_tea_dialog_amount);
+        dialogBuilder.setIcon(DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication()).getImageResourceIdShowTea());
+        dialogBuilder.setPositiveButton(R.string.show_tea_dialog_amount_ok, null);
+        dialogBuilder.show();
     }
 
-    private void fillAmountPerAmount(int value, TextView textViewAmountPerAmount) {
-        float liter = (float) value / 10;
-        float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
+    private void fillAmountPerAmount(final int value, final TextView textViewAmountPerAmount) {
+        final float liter = (float) value / 10;
+        final float amountPerLiter = (float) showTeaViewModel.getAmount() * liter;
 
         final DisplayAmountKindStrategy displayAmountKindStrategy = DisplayAmountKindFactory.get(showTeaViewModel.getAmountKind(), getApplication());
         textViewAmountPerAmount.setText(displayAmountKindStrategy.getTextCalculatorShowTea(amountPerLiter, liter));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_show_tea, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
         if (id == R.id.action_show_tea_edit) {
             return navigateToEditTea();
         } else if (id == R.id.action_show_tea_information) {
@@ -605,7 +632,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private boolean navigateToEditTea() {
-        Intent newTeaScreen = new Intent(ShowTea.this, NewTea.class);
+        final Intent newTeaScreen = new Intent(ShowTea.this, NewTea.class);
         newTeaScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel.getTeaId());
         newTeaScreen.putExtra("showTea", true);
         // Intent starten und zur zweiten Activity wechseln

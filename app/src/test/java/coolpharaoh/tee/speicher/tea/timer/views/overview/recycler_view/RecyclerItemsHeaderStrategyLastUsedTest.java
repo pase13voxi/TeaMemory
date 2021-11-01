@@ -54,7 +54,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
     }
 
     private Instant getFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
         return Instant.now(clock);
     }
 
@@ -85,7 +85,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
     }
 
     private ArrayList<Tea> createTeas() {
-        List<Date> dates = generateDifferentDates();
+        final List<Date> dates = generateDifferentDates();
 
         final ArrayList<Tea> teas = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -93,7 +93,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
             tea.setVariety("VARIETY" + i + 1);
-            tea.setFavorite(true);
+            tea.setInStock(true);
             tea.setDate(dates.get(i));
             teas.add(tea);
         }

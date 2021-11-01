@@ -11,42 +11,43 @@ class SearchView {
     private SearchView() {
     }
 
-    static void configureSearchView(Menu menu, OverviewViewModel overviewViewModel) {
-        MenuItem searchItem = menu.findItem(R.id.action_overview_search);
+    static void configureSearchView(final Menu menu, final OverviewViewModel overviewViewModel) {
+        final MenuItem searchItem = menu.findItem(R.id.action_overview_search);
 
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
 
         searchOpenedOrClosed(menu, overviewViewModel, searchItem, searchView);
 
         textChanged(overviewViewModel, searchView);
     }
 
-    private static void searchOpenedOrClosed(Menu menu, OverviewViewModel overviewViewModel, MenuItem searchItem, androidx.appcompat.widget.SearchView searchView) {
+    private static void searchOpenedOrClosed(final Menu menu, final OverviewViewModel overviewViewModel,
+                                             final MenuItem searchItem, final androidx.appcompat.widget.SearchView searchView) {
         searchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
 
             @Override
-            public void onViewDetachedFromWindow(View view) {
+            public void onViewDetachedFromWindow(final View view) {
                 setItemsVisibility(menu, searchItem, true);
                 overviewViewModel.refreshTeas();
             }
 
             @Override
-            public void onViewAttachedToWindow(View view) {
+            public void onViewAttachedToWindow(final View view) {
                 setItemsVisibility(menu, searchItem, false);
             }
         });
     }
 
-    private static void textChanged(OverviewViewModel overviewViewModel, androidx.appcompat.widget.SearchView searchView) {
+    private static void textChanged(final OverviewViewModel overviewViewModel, final androidx.appcompat.widget.SearchView searchView) {
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(final String query) {
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String searchString) {
+            public boolean onQueryTextChange(final String searchString) {
                 overviewViewModel.visualizeTeasBySearchString(searchString);
                 return false;
             }
@@ -55,9 +56,9 @@ class SearchView {
         });
     }
 
-    private static void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
+    private static void setItemsVisibility(final Menu menu, final MenuItem exception, final boolean visible) {
         for (int i = 0; i < menu.size(); ++i) {
-            MenuItem item = menu.getItem(i);
+            final MenuItem item = menu.getItem(i);
             if (item != exception) item.setVisible(visible);
         }
     }

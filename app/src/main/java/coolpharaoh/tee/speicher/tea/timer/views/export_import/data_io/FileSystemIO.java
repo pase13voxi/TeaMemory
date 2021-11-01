@@ -23,7 +23,7 @@ class FileSystemIO implements DataIO {
     final Printer printer;
     final Uri uri;
 
-    FileSystemIO(final Application application, final Printer printer, Uri uri) {
+    FileSystemIO(final Application application, final Printer printer, final Uri uri) {
         this.application = application;
         this.printer = printer;
         this.uri = uri;
@@ -44,7 +44,7 @@ class FileSystemIO implements DataIO {
 
         try (final OutputStream out = application.getContentResolver().openOutputStream(file.getUri())) {
             out.write(json.getBytes());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             printer.print(application.getString(R.string.export_import_save_failed));
             return false;
         }
@@ -64,7 +64,7 @@ class FileSystemIO implements DataIO {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.e(LOG_TAG, "Cannot read from file uri", e);
         }
         return stringBuilder.toString();

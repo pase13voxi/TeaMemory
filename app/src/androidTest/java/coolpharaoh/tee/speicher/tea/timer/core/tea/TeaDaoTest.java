@@ -31,7 +31,7 @@ public class TeaDaoTest {
 
     @Before
     public void createDb() {
-        Context context = ApplicationProvider.getApplicationContext();
+        final Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
         teaDao = db.getTeaDao();
     }
@@ -164,7 +164,7 @@ public class TeaDaoTest {
         final Tea teaOld = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
         teaDao.insert(teaOld);
         final Tea teaMiddle = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        teaMiddle.setFavorite(true);
+        teaMiddle.setInStock(true);
         teaDao.insert(teaMiddle);
         final Tea teaNew = createTea("nameNew", VARIETY, new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
         teaDao.insert(teaNew);
@@ -214,7 +214,7 @@ public class TeaDaoTest {
         final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaC);
         final Tea teaA = createTea("nameA", VARIETY, CurrentDate.getDate());
-        teaA.setFavorite(true);
+        teaA.setInStock(true);
         teaDao.insert(teaA);
         final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
         teaDao.insert(teaB);
@@ -264,7 +264,7 @@ public class TeaDaoTest {
         final Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
         teaDao.insert(teaC);
         final Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
-        teaA.setFavorite(true);
+        teaA.setInStock(true);
         teaDao.insert(teaA);
         final Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
         teaDao.insert(teaB);
@@ -310,7 +310,7 @@ public class TeaDaoTest {
         final Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
         teaDao.insert(tea3);
         final Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
-        tea5.setFavorite(true);
+        tea5.setInStock(true);
         teaDao.insert(tea5);
         final Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
         teaDao.insert(tea1);

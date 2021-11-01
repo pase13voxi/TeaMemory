@@ -39,7 +39,7 @@ public class SettingsViewModelTest {
     @Test
     public void setMusicchoice() {
         final String musicChoice = "MUSIC_CHOICE";
-        settingsViewModel.setMusicchoice(musicChoice);
+        settingsViewModel.setMusicChoice(musicChoice);
 
         final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
         verify(actualSettingsRepository).updateSettings((captor.capture()));
@@ -51,11 +51,11 @@ public class SettingsViewModelTest {
     @Test
     public void setMusicName(){
         final String musicName = "MUSIC_NAME";
-        settingsViewModel.setMusicname(musicName);
+        settingsViewModel.setMusicName(musicName);
 
         verify(actualSettingsRepository).updateSettings(any());
 
-        assertThat(settingsViewModel.getMusicname()).isEqualTo(musicName);
+        assertThat(settingsViewModel.getMusicName()).isEqualTo(musicName);
     }
 
     @Test
@@ -124,16 +124,6 @@ public class SettingsViewModelTest {
         verify(actualSettingsRepository).updateSettings(any());
 
         assertThat(settingsViewModel.isShowTeaAlert()).isEqualTo(showTeaAlert);
-    }
-
-    @Test
-    public void setMainRateAlert() {
-        final boolean mainRateAlert = true;
-        settingsViewModel.setMainRateAlert(mainRateAlert);
-
-        verify(actualSettingsRepository).updateSettings(any());
-
-        assertThat(settingsViewModel.isMainRateAlert()).isEqualTo(mainRateAlert);
     }
 
     @Test

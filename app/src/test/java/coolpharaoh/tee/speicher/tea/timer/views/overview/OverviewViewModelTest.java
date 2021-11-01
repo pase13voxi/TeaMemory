@@ -102,7 +102,7 @@ public class OverviewViewModelTest {
     public void isTeaInStock() {
         final long teaId = 1;
         final Tea tea = new Tea();
-        tea.setFavorite(true);
+        tea.setInStock(true);
         when(teaRepository.getTeaById(teaId)).thenReturn(tea);
 
         assertThat(overviewViewModel.isTeaInStock(teaId)).isTrue();
@@ -166,36 +166,6 @@ public class OverviewViewModelTest {
         when(sharedSettings.isOverviewInStock()).thenReturn(false);
         final boolean overViewFavorites = overviewViewModel.isOverViewInStock();
         assertThat(overViewFavorites).isFalse();
-    }
-
-    @Test
-    public void isMainRateAlert() {
-        assertThat(overviewViewModel.isMainRateAlert()).isEqualTo(actualSettings.isMainRateAlert());
-    }
-
-    @Test
-    public void setMainRateAlert() {
-        final boolean alert = false;
-        overviewViewModel.setMainRateAlert(alert);
-        verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
-    }
-
-    @Test
-    public void getMainRatecounter() {
-        final int counter = overviewViewModel.getMainRatecounter();
-        assertThat(counter).isEqualTo(actualSettings.getMainRateCounter());
-    }
-
-    @Test
-    public void resetMainRatecounter() {
-        overviewViewModel.resetMainRatecounter();
-        verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
-    }
-
-    @Test
-    public void incrementMainRatecounter() {
-        overviewViewModel.incrementMainRatecounter();
-        verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
     }
 
     @Test

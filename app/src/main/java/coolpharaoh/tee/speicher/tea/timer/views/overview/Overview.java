@@ -3,7 +3,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -48,7 +47,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     private RecyclerViewAdapterOverview teaListAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
         defineToolbarAsActionbar();
@@ -57,12 +56,12 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
         initializeTeaList();
         initializeNewTeaButton();
-        showDialogsOnStart();
+        showUpdateDialogOnStart();
     }
 
     private void defineToolbarAsActionbar() {
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView toolbarCustomTitle = findViewById(R.id.tool_bar_title);
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        final TextView toolbarCustomTitle = findViewById(R.id.tool_bar_title);
         toolbarCustomTitle.setPadding(40, 0, 0, 0);
         toolbarCustomTitle.setText(R.string.app_name);
         setSupportActionBar(toolbar);
@@ -96,7 +95,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         });
     }
 
-    private void updateStickyHeaderOnRecyclerView(RecyclerView teaList, RecyclerViewAdapterOverview adapter) {
+    private void updateStickyHeaderOnRecyclerView(final RecyclerView teaList, final RecyclerViewAdapterOverview adapter) {
         if (teaList.getItemDecorationCount() > 1) {
             teaList.removeItemDecorationAt(1);
         }
@@ -150,7 +149,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
                 .show();
     }
 
-    private void updateTeaInStock(final long teaId, DialogInterface dialog, final int item) {
+    private void updateTeaInStock(final long teaId, final DialogInterface dialog, final int item) {
         overviewViewModel.updateInStockOfTea(teaId, item == 0);
         dialog.dismiss();
     }
@@ -168,13 +167,12 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         startActivity(newTeaScreen);
     }
 
-    private void showDialogsOnStart() {
+    private void showUpdateDialogOnStart() {
         final TeaMemory application = (TeaMemory) getApplication();
         if (application != null && !application.isOverviewDialogsShown()) {
             application.setOverviewDialogsShown(true);
 
             showUpdateDialog();
-            showRatingDialogOrIncrementRateCounter();
         }
     }
 
@@ -194,37 +192,6 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         overviewViewModel.setMainUpdateAlert(false);
         final Intent intent = new Intent(Overview.this, UpdateDescription.class);
         startActivity(intent);
-    }
-
-    private void showRatingDialogOrIncrementRateCounter() {
-        if (overviewViewModel.isMainRateAlert() && overviewViewModel.getMainRatecounter() >= 20) {
-            showRatingDialog();
-        } else if (overviewViewModel.getMainRatecounter() < 20) {
-            overviewViewModel.incrementMainRatecounter();
-        }
-    }
-
-    private void showRatingDialog() {
-        overviewViewModel.resetMainRatecounter();
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme);
-        builder.setTitle(R.string.overview_dialog_rating_header);
-        builder.setMessage(R.string.overview_dialog_rating_description);
-        builder.setPositiveButton(R.string.overview_dialog_rating_positive, (dialog, which) -> navigateToStoreForRating());
-        builder.setNeutralButton(R.string.overview_dialog_rating_neutral, null);
-        builder.setNegativeButton(R.string.overview_dialog_rating_negative, (dialogInterface, i) -> overviewViewModel.setMainRateAlert(false));
-        builder.show();
-    }
-
-    private void navigateToStoreForRating() {
-        overviewViewModel.setMainRateAlert(false);
-
-        final String appPackageName = getPackageName();
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-        }
     }
 
     @Override

@@ -1,5 +1,12 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
+
 import android.app.Application;
 import android.content.res.Resources;
 
@@ -33,13 +40,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ShowTeaViewModelTest {
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
@@ -70,7 +70,7 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void teaExist() {
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         assertThat(showTeaViewModel.teaExists()).isTrue();
@@ -83,88 +83,88 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void getTeaId() {
-        long teaIdBefore = 1L;
+        final long teaIdBefore = 1L;
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setId(teaIdBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        long teaIdAfter = showTeaViewModel.getTeaId();
+        final long teaIdAfter = showTeaViewModel.getTeaId();
 
         assertThat(teaIdAfter).isEqualTo(teaIdBefore);
     }
 
     @Test
     public void getName() {
-        String teaNameBefore = "TEA";
+        final String teaNameBefore = "TEA";
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setName(teaNameBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        String teaNameAfter = showTeaViewModel.getName();
+        final String teaNameAfter = showTeaViewModel.getName();
 
         assertThat(teaNameAfter).isEqualTo(teaNameBefore);
     }
 
     @Test
     public void getVariety() {
-        String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
+        final String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setVariety(OOLONG_TEA.getCode());
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(application.getResources()).thenReturn(resources);
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
 
-        String varietyAfter = showTeaViewModel.getVariety();
+        final String varietyAfter = showTeaViewModel.getVariety();
 
         assertThat(varietyAfter).isEqualTo(varietyTeas[OOLONG_TEA.getChoice()]);
     }
 
     @Test
     public void getUnkownVariety() {
-        String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
+        final String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
-        String varietyBefore = "VARIETY";
+        final String varietyBefore = "VARIETY";
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setVariety(varietyBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         when(application.getResources()).thenReturn(resources);
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
 
-        String varietyAfter = showTeaViewModel.getVariety();
+        final String varietyAfter = showTeaViewModel.getVariety();
 
         assertThat(varietyAfter).isEqualTo(varietyBefore);
     }
 
     @Test
     public void getEmptyVariety() {
-        String varietyBefore = "";
+        final String varietyBefore = "";
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setVariety(varietyBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        String varietyAfter = showTeaViewModel.getVariety();
+        final String varietyAfter = showTeaViewModel.getVariety();
 
         assertThat(varietyAfter).isEqualTo("-");
     }
 
     @Test
     public void getAmount() {
-        double amountBefore = 1;
+        final double amountBefore = 1;
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setAmount(amountBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        double amountAfter = showTeaViewModel.getAmount();
+        final double amountAfter = showTeaViewModel.getAmount();
 
         assertThat(amountAfter).isEqualTo(amountBefore);
     }
@@ -182,48 +182,48 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void getColor() {
-        int colorBefore = 1;
+        final int colorBefore = 1;
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setColor(colorBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        int colorAfter = showTeaViewModel.getColor();
+        final int colorAfter = showTeaViewModel.getColor();
 
         assertThat(colorAfter).isEqualTo(colorBefore);
     }
 
     @Test
     public void setCurrentDate() {
-        Date fixedDate = mockFixedDate();
-        Tea teaBefore = new Tea();
+        final Date fixedDate = mockFixedDate();
+        final Tea teaBefore = new Tea();
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(teaBefore);
 
         showTeaViewModel.setCurrentDate();
 
-        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea((captor.capture()));
-        Tea teaAfter = captor.getValue();
+        final Tea teaAfter = captor.getValue();
 
         assertThat(teaAfter.getDate()).isEqualTo(fixedDate);
     }
 
     @Test
     public void getNextInfusion() {
-        int nextInfusionBefore = 0;
+        final int nextInfusionBefore = 0;
 
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setNextInfusion(nextInfusionBefore);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
-        int nextInfusionAfter = showTeaViewModel.getNextInfusion();
+        final int nextInfusionAfter = showTeaViewModel.getNextInfusion();
 
         assertThat(nextInfusionAfter).isEqualTo(nextInfusionBefore);
     }
 
     @Test
     public void updateNextInfusion() {
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setNextInfusion(0);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
@@ -231,31 +231,31 @@ public class ShowTeaViewModelTest {
 
         showTeaViewModel.updateNextInfusion();
 
-        ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
+        final ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea((teaCaptor.capture()));
-        Tea updatedTea = teaCaptor.getValue();
+        final Tea updatedTea = teaCaptor.getValue();
 
         assertThat(updatedTea.getNextInfusion()).isEqualTo(1);
     }
 
     @Test
     public void resetNextInfusion() {
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setNextInfusion(2);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
         showTeaViewModel.resetNextInfusion();
 
-        ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
+        final ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea((teaCaptor.capture()));
-        Tea updatedTea = teaCaptor.getValue();
+        final Tea updatedTea = teaCaptor.getValue();
 
         assertThat(updatedTea.getNextInfusion()).isZero();
     }
 
     @Test
     public void updateLastInfusionBiggerOrEqual() {
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setNextInfusion(0);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
@@ -263,24 +263,24 @@ public class ShowTeaViewModelTest {
 
         showTeaViewModel.updateNextInfusion();
 
-        ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea((captor.capture()));
-        Tea lastInfusionAfter = captor.getValue();
+        final Tea lastInfusionAfter = captor.getValue();
 
         assertThat(lastInfusionAfter.getNextInfusion()).isZero();
     }
 
     @Test
     public void navigateBetweenInfusions() {
-        ActualSettings actualSettings = new ActualSettings();
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit("Celsius");
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
-        List<Infusion> infusions = new ArrayList<>();
-        Infusion infusion1 = new Infusion(1L, 1, "1", "2", 1, 32);
+        final List<Infusion> infusions = new ArrayList<>();
+        final Infusion infusion1 = new Infusion(1L, 1, "1", "2", 1, 32);
         infusions.add(infusion1);
 
-        Infusion infusion2 = new Infusion(1L, 2, "2:30", "5:30", 2, 33);
+        final Infusion infusion2 = new Infusion(1L, 2, "2:30", "5:30", 2, 33);
         infusions.add(infusion2);
 
         when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
@@ -288,9 +288,9 @@ public class ShowTeaViewModelTest {
         assertThat(showTeaViewModel.getInfusionSize()).isEqualTo(infusions.size());
         assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 
-        TimeConverter time1 = showTeaViewModel.getTime();
-        TimeConverter cooldownTime1 = showTeaViewModel.getCoolDownTime();
-        int temperature1 = showTeaViewModel.getTemperature();
+        final TimeConverter time1 = showTeaViewModel.getTime();
+        final TimeConverter cooldownTime1 = showTeaViewModel.getCoolDownTime();
+        final int temperature1 = showTeaViewModel.getTemperature();
 
         assertThat(time1.getTime()).isEqualTo(infusions.get(0).getTime());
         assertThat(time1.getMinutes()).isEqualTo(1);
@@ -303,9 +303,9 @@ public class ShowTeaViewModelTest {
         showTeaViewModel.incrementInfusionIndex();
         assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
 
-        TimeConverter time2 = showTeaViewModel.getTime();
-        TimeConverter coolDownTime2 = showTeaViewModel.getCoolDownTime();
-        int temperature2 = showTeaViewModel.getTemperature();
+        final TimeConverter time2 = showTeaViewModel.getTime();
+        final TimeConverter coolDownTime2 = showTeaViewModel.getCoolDownTime();
+        final int temperature2 = showTeaViewModel.getTemperature();
 
         assertThat(time2.getTime()).isEqualTo(infusions.get(1).getTime());
         assertThat(time2.getMinutes()).isEqualTo(2);
@@ -319,19 +319,19 @@ public class ShowTeaViewModelTest {
         showTeaViewModel.setInfusionIndex(0);
         assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 
-        int temperature3 = showTeaViewModel.getTemperature();
+        final int temperature3 = showTeaViewModel.getTemperature();
         assertThat(temperature3).isEqualTo(infusions.get(0).getTemperatureFahrenheit());
     }
 
     @Test
     public void getEmptyTime() {
-        List<Infusion> infusions = new ArrayList<>();
-        Infusion infusion1 = new Infusion(1L, 1, null, null, 1, 1);
+        final List<Infusion> infusions = new ArrayList<>();
+        final Infusion infusion1 = new Infusion(1L, 1, null, null, 1, 1);
         infusions.add(infusion1);
 
         when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
 
-        TimeConverter timeAfter = showTeaViewModel.getTime();
+        final TimeConverter timeAfter = showTeaViewModel.getTime();
 
         assertThat(timeAfter.getTime()).isNull();
         assertThat(timeAfter.getMinutes()).isZero();
@@ -340,15 +340,15 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void countCounter() {
-        Date currentDate = mockFixedDate();
-        Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
+        final Date currentDate = mockFixedDate();
+        final Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
         when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
 
         showTeaViewModel.countCounter();
 
-        ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
+        final ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
         verify(counterRepository).updateCounter((captor.capture()));
-        Counter counterAfter = captor.getValue();
+        final Counter counterAfter = captor.getValue();
 
         assertThat(counterAfter)
                 .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
@@ -359,9 +359,9 @@ public class ShowTeaViewModelTest {
     public void countCounterAndCounterIsNull() {
         showTeaViewModel.countCounter();
 
-        ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
+        final ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
         verify(counterRepository).updateCounter((captor.capture()));
-        Counter counterAfter = captor.getValue();
+        final Counter counterAfter = captor.getValue();
 
         assertThat(counterAfter)
                 .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
@@ -369,51 +369,62 @@ public class ShowTeaViewModelTest {
     }
 
     @Test
-    public void isAnimation() {
-        boolean animationBefore = true;
+    public void getOverallCounter() {
+        final Date currentDate = mockFixedDate();
+        final Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
+        when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
 
-        ActualSettings actualSettings = new ActualSettings();
+        final long overallCounter = showTeaViewModel.getOverallCounter();
+
+        assertThat(overallCounter).isEqualTo(1L);
+    }
+
+    @Test
+    public void isAnimation() {
+        final boolean animationBefore = true;
+
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setAnimation(animationBefore);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
-        boolean animationAfter = showTeaViewModel.isAnimation();
+        final boolean animationAfter = showTeaViewModel.isAnimation();
 
         assertThat(animationAfter).isEqualTo(animationBefore);
     }
 
     @Test
     public void isShowTeaAlert() {
-        boolean showTeaAlertBefore = true;
+        final boolean showTeaAlertBefore = true;
 
-        ActualSettings actualSettings = new ActualSettings();
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setShowTeaAlert(showTeaAlertBefore);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
-        boolean showTeaAlertAfter = showTeaViewModel.isShowteaAlert();
+        final boolean showTeaAlertAfter = showTeaViewModel.isShowteaAlert();
 
         assertThat(showTeaAlertAfter).isEqualTo(showTeaAlertBefore);
     }
 
     @Test
     public void setShowTeaAlert() {
-        boolean showTeaAlertBefore = true;
+        final boolean showTeaAlertBefore = true;
 
-        ActualSettings actualSettings = new ActualSettings();
+        final ActualSettings actualSettings = new ActualSettings();
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
 
         showTeaViewModel.setShowteaAlert(showTeaAlertBefore);
 
-        ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
+        final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
         verify(actualSettingsRepository).updateSettings((captor.capture()));
-        ActualSettings actualSettingsAfter = captor.getValue();
+        final ActualSettings actualSettingsAfter = captor.getValue();
 
         assertThat(actualSettingsAfter.isShowTeaAlert()).isEqualTo(showTeaAlertBefore);
     }
 
     private Date mockFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
-        Instant now = Instant.now(clock);
-        Date fixedDate = Date.from(now);
+        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        final Instant now = Instant.now(clock);
+        final Date fixedDate = Date.from(now);
 
         CurrentDate.setFixedDate(dateUtility);
         when(dateUtility.getDate()).thenReturn(fixedDate);

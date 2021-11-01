@@ -49,7 +49,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
             });
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_import);
         defineToolbarAsActionbar();
@@ -102,7 +102,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
         }
     }
 
-    private void chooseImportFile(AlertDialog alertDialog, boolean keepTeas) {
+    private void chooseImportFile(final AlertDialog alertDialog, final boolean keepTeas) {
         dialogChooseImportFile();
         keepStoredTeas = keepTeas;
         alertDialog.cancel();

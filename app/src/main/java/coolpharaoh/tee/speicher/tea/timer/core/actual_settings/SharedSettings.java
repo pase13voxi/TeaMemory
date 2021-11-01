@@ -12,7 +12,7 @@ public class SharedSettings {
     private static final String OVERVIEW_IN_STOCK = "overview_in_stock";
     SharedPreferences sharedPreferences;
 
-    public SharedSettings(Application application) {
+    public SharedSettings(final Application application) {
         sharedPreferences = application.getSharedPreferences(TEA_MEMORY_SETTINGS, Context.MODE_PRIVATE);
     }
 

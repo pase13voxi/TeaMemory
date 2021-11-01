@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+
 import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
@@ -20,8 +22,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-
 class ShowTeaViewModel {
 
     private final Application application;
@@ -34,15 +34,15 @@ class ShowTeaViewModel {
     private final long teaId;
     private int infusionIndex = 0;
 
-    ShowTeaViewModel(long teaId, Application application) {
+    ShowTeaViewModel(final long teaId, final Application application) {
         this(teaId, application, new TeaRepository(application), new InfusionRepository(application),
                 new CounterRepository(application), new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
-    ShowTeaViewModel(long teaId, Application application, TeaRepository teaRepository,
-                     InfusionRepository infusionRepository, CounterRepository counterRepository,
-                     ActualSettingsRepository actualSettingsRepository) {
+    ShowTeaViewModel(final long teaId, final Application application, final TeaRepository teaRepository,
+                     final InfusionRepository infusionRepository, final CounterRepository counterRepository,
+                     final ActualSettingsRepository actualSettingsRepository) {
         this.teaId = teaId;
         this.application = application;
         this.teaRepository = teaRepository;
@@ -87,7 +87,7 @@ class ShowTeaViewModel {
     }
 
     void setCurrentDate() {
-        Tea tea = teaRepository.getTeaById(teaId);
+        final Tea tea = teaRepository.getTeaById(teaId);
         tea.setDate(CurrentDate.getDate());
         teaRepository.updateTea(tea);
     }
@@ -97,7 +97,7 @@ class ShowTeaViewModel {
     }
 
     void updateNextInfusion() {
-        Tea tea = teaRepository.getTeaById(teaId);
+        final Tea tea = teaRepository.getTeaById(teaId);
         if ((infusionIndex + 1) >= getInfusionSize()) {
             tea.setNextInfusion(0);
         } else {
@@ -107,7 +107,7 @@ class ShowTeaViewModel {
     }
 
     void resetNextInfusion() {
-        Tea tea = teaRepository.getTeaById(teaId);
+        final Tea tea = teaRepository.getTeaById(teaId);
         tea.setNextInfusion(0);
         teaRepository.updateTea(tea);
     }
@@ -137,7 +137,7 @@ class ShowTeaViewModel {
         return infusionIndex;
     }
 
-    void setInfusionIndex(int infusionIndex) {
+    void setInfusionIndex(final int infusionIndex) {
         this.infusionIndex = infusionIndex;
     }
 
@@ -147,9 +147,9 @@ class ShowTeaViewModel {
 
     //Counter
     void countCounter() {
-        Counter counter = getOrCreateCounter();
+        final Counter counter = getOrCreateCounter();
         RefreshCounter.refreshCounter(counter);
-        Date currentDate = CurrentDate.getDate();
+        final Date currentDate = CurrentDate.getDate();
         counter.setMonthDate(currentDate);
         counter.setWeekDate(currentDate);
         counter.setDayDate(currentDate);
@@ -158,6 +158,11 @@ class ShowTeaViewModel {
         counter.setWeek(counter.getWeek() + 1);
         counter.setDay(counter.getDay() + 1);
         counterRepository.updateCounter(counter);
+    }
+
+    long getOverallCounter() {
+        final Counter counter = getOrCreateCounter();
+        return counter.getOverall();
     }
 
     private Counter getOrCreateCounter() {
@@ -187,8 +192,8 @@ class ShowTeaViewModel {
         return actualSettingsRepository.getSettings().isShowTeaAlert();
     }
 
-    void setShowteaAlert(boolean showteaalert) {
-        ActualSettings actualSettings = actualSettingsRepository.getSettings();
+    void setShowteaAlert(final boolean showteaalert) {
+        final ActualSettings actualSettings = actualSettingsRepository.getSettings();
         actualSettings.setShowTeaAlert(showteaalert);
         actualSettingsRepository.updateSettings(actualSettings);
     }

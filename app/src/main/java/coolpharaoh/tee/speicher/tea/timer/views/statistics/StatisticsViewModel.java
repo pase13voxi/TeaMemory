@@ -14,12 +14,12 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.poj
 public class StatisticsViewModel {
     private final CounterRepository counterRepository;
 
-    public StatisticsViewModel(Application application) {
+    public StatisticsViewModel(final Application application) {
         this(new CounterRepository(application));
     }
 
     @VisibleForTesting
-    public StatisticsViewModel(CounterRepository counterRepository) {
+    public StatisticsViewModel(final CounterRepository counterRepository) {
         this.counterRepository = counterRepository;
         refreshAllCounter();
     }
@@ -41,7 +41,7 @@ public class StatisticsViewModel {
     }
 
     void refreshAllCounter() {
-        for (Counter counter : RefreshCounter.refreshCounters(counterRepository.getCounters())) {
+        for (final Counter counter : RefreshCounter.refreshCounters(counterRepository.getCounters())) {
             counterRepository.updateCounter(counter);
         }
     }

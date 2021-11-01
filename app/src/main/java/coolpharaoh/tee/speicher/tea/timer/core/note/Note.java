@@ -35,7 +35,7 @@ public class Note {
     private String description;
 
     @Ignore
-    public Note(long teaId, int position, String header, String description) {
+    public Note(final long teaId, final int position, final String header, final String description) {
         this.teaId = teaId;
         this.position = position;
         this.header = header;

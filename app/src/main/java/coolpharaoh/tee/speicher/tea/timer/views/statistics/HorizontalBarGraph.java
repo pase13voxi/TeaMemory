@@ -93,7 +93,7 @@ public class HorizontalBarGraph {
         final YAxis yLeft = chart.getAxisLeft();
 
         long max = 0;
-        for (StatisticsPOJO statistic : statistics) {
+        for (final StatisticsPOJO statistic : statistics) {
             if (max <= statistic.counter) {
                 max = statistic.counter;
             }
@@ -179,7 +179,7 @@ public class HorizontalBarGraph {
         barDataSet.setValueTextColors(textColors);
     }
 
-    private void setVisibleRange(List<StatisticsPOJO> statistics) {
+    private void setVisibleRange(final List<StatisticsPOJO> statistics) {
         chart.setVisibleXRangeMaximum(VISIBLE_RANGE);
         chart.moveViewTo(0, statistics.size(), YAxis.AxisDependency.LEFT);
     }

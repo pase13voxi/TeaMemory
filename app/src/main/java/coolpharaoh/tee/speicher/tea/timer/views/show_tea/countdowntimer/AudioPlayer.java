@@ -15,11 +15,11 @@ class AudioPlayer {
     private final TimerViewModel timerViewModel;
     private final MediaPlayer mediaPlayer;
 
-    AudioPlayer(Application application) {
+    AudioPlayer(final Application application) {
         this(application, new TimerViewModel(application), new MediaPlayer());
     }
 
-    AudioPlayer(Application application, TimerViewModel timerViewModel, MediaPlayer mediaPlayer) {
+    AudioPlayer(final Application application, final TimerViewModel timerViewModel, final MediaPlayer mediaPlayer) {
         this.application = application;
         this.timerViewModel = timerViewModel;
         this.mediaPlayer = mediaPlayer;
@@ -27,8 +27,8 @@ class AudioPlayer {
 
     void start() {
         //initial music track
-        if (timerViewModel.getMusicchoice() != null) {
-            Uri uri = Uri.parse(timerViewModel.getMusicchoice());
+        if (timerViewModel.getMusicChoice() != null) {
+            final Uri uri = Uri.parse(timerViewModel.getMusicChoice());
             try {
                 mediaPlayer.setAudioAttributes(new AudioAttributes
                         .Builder()
@@ -37,7 +37,7 @@ class AudioPlayer {
                 mediaPlayer.setDataSource(application, uri);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.e(LOG_TAG, "Something went wrong when start playing the Ringtone.", e);
             }
         }

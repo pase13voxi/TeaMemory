@@ -19,8 +19,7 @@
     <string name="settings_show_hints_ok">OK</string>
     <string name="settings_show_hints_cancel">Cancel</string>
     <string name="settings_show_hints_update_checkbox">Update information</string>
-    <string name="settings_show_hints_rating_checkbox">Rating hint</string>
-    <string name="settings_show_hints_desciption_checkbox">Desciption in the information window</string>
+    <string name="settings_show_hints_description_checkbox">Description in the information window</string>
     <string name="settings_show_hints_ignore_optimization_checkbox">Ask for background process permission</string>
     <string name="settings_show_hints_permission_checkbox">Ask for read permission</string>
     <string name="settings_factory_settings">Factory setting</string>

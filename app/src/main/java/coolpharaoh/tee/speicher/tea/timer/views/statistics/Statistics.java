@@ -23,7 +23,7 @@ public class Statistics extends AppCompatActivity {
     private int checkedItem = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
         defineToolbarAsActionbar();
@@ -58,7 +58,7 @@ public class Statistics extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         if (id == R.id.action_statistics_period) {
             dialogSortOption();

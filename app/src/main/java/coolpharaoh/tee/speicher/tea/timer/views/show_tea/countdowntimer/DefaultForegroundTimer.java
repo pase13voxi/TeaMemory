@@ -7,11 +7,11 @@ class DefaultForegroundTimer implements ForegroundTimer {
     private CountDownTimer countDownTimer;
 
     @Override
-    public void start(TimerController timerController, long millisUntilFinished) {
+    public void start(final TimerController timerController, final long millisUntilFinished) {
         countDownTimer = new CountDownTimer(millisUntilFinished, 1000) {
 
             @Override
-            public void onTick(long millisUntilFinished) {
+            public void onTick(final long millisUntilFinished) {
                 timerController.onTimerTick(millisUntilFinished);
             }
 

@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import android.content.Intent;
 import android.os.Build;
 
@@ -20,9 +23,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -38,8 +38,8 @@ public class NotificationServiceTest {
 
     @Test
     public void bind() {
-        ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class);
-        NotificationService notificationService = controller.create().bind().get();
+        final ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class);
+        final NotificationService notificationService = controller.create().bind().get();
         assertThat(notificationService).isNotNull();
     }
 
@@ -47,13 +47,13 @@ public class NotificationServiceTest {
     public void startAndDestroy() {
         mockDB();
 
-        Intent intent = new Intent();
+        final Intent intent = new Intent();
         intent.putExtra("teaId", 1L);
-        ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class, intent);
+        final ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class, intent);
 
         controller.startCommand(0, 0);
 
-        NotificationService notificationService = controller.get();
+        final NotificationService notificationService = controller.get();
         assertThat(notificationService.audioPlayer).isNotNull();
         assertThat(notificationService.notifier).isNotNull();
         assertThat(notificationService.vibrator).isNotNull();
@@ -66,10 +66,10 @@ public class NotificationServiceTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
         tea.setName("Tea");
         when(teaDao.getTeaById(1L)).thenReturn(tea);
-        ActualSettings actualSettings = new ActualSettings();
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setVibration(false);
         actualSettings.setMusicChoice(null);
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);

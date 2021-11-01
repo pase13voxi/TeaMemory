@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.contact;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
+
 import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
@@ -15,9 +18,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.robolectric.Shadows.shadowOf;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -37,18 +37,18 @@ public class ContactTest {
     @Test
     public void launchActivity() {
         contactActivityScenario.onActivity(contact -> {
-            Button buttonEmail = contact.findViewById(R.id.button_contact_send_email);
+            final Button buttonEmail = contact.findViewById(R.id.button_contact_send_email);
 
             buttonEmail.performClick();
 
-            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getAction()).isEqualTo(INTENT_ACTION_CHOOSER);
 
-            Intent emailIntent = (Intent) actual.getExtras().get(EXTRA_INTENT);
+            final Intent emailIntent = (Intent) actual.getExtras().get(EXTRA_INTENT);
             assertThat(emailIntent.getAction()).isEqualTo(INTENT_ACTION_SENDTO);
 
-            String mailTo = "mailto:" + contact.getString(R.string.contact_email_address).replace("@", "%40");
+            final String mailTo = "mailto:" + contact.getString(R.string.contact_email_address).replace("@", "%40");
             assertThat(emailIntent.getData()).hasToString(mailTo);
         });
     }

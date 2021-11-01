@@ -7,20 +7,20 @@ public class TemperatureConversation {
     private TemperatureConversation() {
     }
 
-    public static int celsiusToFahrenheit(int celsius) {
+    public static int celsiusToFahrenheit(final int celsius) {
         if (celsius == -500) {
             return -500;
         } else {
-            float tmp = (float) (9.0 / 5.0 * celsius + 32.0);
+            final float tmp = (float) (9.0 / 5.0 * celsius + 32.0);
             return Math.round(tmp);
         }
     }
 
-    public static int fahrenheitToCelsius(int fahrenheit){
-        if(fahrenheit == -500){
+    public static int fahrenheitToCelsius(final int fahrenheit) {
+        if (fahrenheit == -500) {
             return -500;
-        }else {
-            float tmp = (float) ((5.0 / 9.0) * (fahrenheit - 32.0));
+        } else {
+            final float tmp = (float) ((5.0 / 9.0) * (fahrenheit - 32.0));
             return Math.round(tmp);
         }
     }

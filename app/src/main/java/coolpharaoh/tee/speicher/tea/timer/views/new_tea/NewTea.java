@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,9 +38,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.Displa
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitStrategy;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
 public class NewTea extends AppCompatActivity implements Printer {
@@ -51,7 +51,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     private boolean showTea;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tea);
         hideKeyboardAtFirst();
@@ -78,8 +78,8 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void defineToolbarAsActionbar() {
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        final TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.new_tea_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -307,15 +307,15 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_tea, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
 
         if (id == R.id.action_new_tea_done) {
             addTea();
@@ -333,7 +333,7 @@ public class NewTea extends AppCompatActivity implements Printer {
     private void addTea() {
         final EditText editTextName = findViewById(R.id.edit_text_new_tea_name);
 
-        String nameInput = editTextName.getText().toString();
+        final String nameInput = editTextName.getText().toString();
 
         if (inputIsValid(nameInput)) {
             createOrEditTea(nameInput);
@@ -359,9 +359,9 @@ public class NewTea extends AppCompatActivity implements Printer {
     }
 
     private void navigateToShowTeaActivity() {
-        final Intent showteaScreen = new Intent(NewTea.this, ShowTea.class);
-        showteaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
-        startActivity(showteaScreen);
+        final Intent showTeaScreen = new Intent(NewTea.this, ShowTea.class);
+        showTeaScreen.putExtra("teaId", newTeaViewModel.getTeaId());
+        startActivity(showTeaScreen);
         finish();
     }
 

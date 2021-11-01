@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.export_import;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
@@ -37,23 +40,20 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class JsonIOAdapterExportTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1.5," +
-            "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"favorite\":true,\"nextInfusion\":1," +
+            "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"inStock\":true,\"nextInfusion\":1," +
             "\"date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":" +
             "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\"" +
             ":1,\"time\":\"5:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
             ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"daydate\":\"DATE\"," +
             "\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
             ",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\"" +
-            ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"favorite\":false,\"nextInfusion\":2,\"" +
+            ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"inStock\":false,\"nextInfusion\":2,\"" +
             "date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":" +
             "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1," +
             "\"time\":\"7:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
@@ -88,12 +88,12 @@ public class JsonIOAdapterExportTest {
     }
 
     private void mockFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
-        Instant instant = Instant.now(clock);
-        Date date = Date.from(instant);
+        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        final Instant instant = Instant.now(clock);
+        final Date date = Date.from(instant);
         when(this.fixedDate.getDate()).thenReturn(date);
         CurrentDate.setFixedDate(this.fixedDate);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         exportedDate = formatter.format(date);
     }
 
@@ -106,47 +106,47 @@ public class JsonIOAdapterExportTest {
     }
 
     private void mockExistingTeas() {
-        List<Tea> teas = new ArrayList<>();
-        Tea tea0 = new Tea("name1", "variety1", 1.5, "Gr", 1, 1, CurrentDate.getDate());
+        final List<Tea> teas = new ArrayList<>();
+        final Tea tea0 = new Tea("name1", "variety1", 1.5, "Gr", 1, 1, CurrentDate.getDate());
         tea0.setId(0L);
         tea0.setRating(3);
-        tea0.setFavorite(true);
+        tea0.setInStock(true);
         teas.add(tea0);
-        Tea tea1 = new Tea("name2", "variety2", 2.0, "Ts", 2, 2, CurrentDate.getDate());
+        final Tea tea1 = new Tea("name2", "variety2", 2.0, "Ts", 2, 2, CurrentDate.getDate());
         tea1.setId(1L);
         tea0.setRating(5);
         teas.add(tea1);
         when(teaDao.getTeas()).thenReturn(teas);
 
-        List<Infusion> infusions = new ArrayList<>();
-        Infusion infusion00 = new Infusion(0L, 0, "2:00", "5:00", 100, 212);
+        final List<Infusion> infusions = new ArrayList<>();
+        final Infusion infusion00 = new Infusion(0L, 0, "2:00", "5:00", 100, 212);
         infusion00.setId(0L);
         infusions.add(infusion00);
-        Infusion infusion01 = new Infusion(0L, 1, "5:00", "3:00", 90, 195);
+        final Infusion infusion01 = new Infusion(0L, 1, "5:00", "3:00", 90, 195);
         infusion01.setId(1L);
         infusions.add(infusion01);
-        Infusion infusion10 = new Infusion(1L, 0, "6:00", "5:00", 100, 212);
+        final Infusion infusion10 = new Infusion(1L, 0, "6:00", "5:00", 100, 212);
         infusion10.setId(2L);
         infusions.add(infusion10);
-        Infusion infusion11 = new Infusion(1L, 1, "7:00", "3:00", 90, 195);
+        final Infusion infusion11 = new Infusion(1L, 1, "7:00", "3:00", 90, 195);
         infusion11.setId(3L);
         infusions.add(infusion11);
         when(infusionDao.getInfusions()).thenReturn(infusions);
 
-        List<Note> notes = new ArrayList<>();
-        Note note0 = new Note(0L, 0, "Header", "Description");
+        final List<Note> notes = new ArrayList<>();
+        final Note note0 = new Note(0L, 0, "Header", "Description");
         note0.setId(0L);
         notes.add(note0);
-        Note note1 = new Note(1L, 0, "Header", "Description");
+        final Note note1 = new Note(1L, 0, "Header", "Description");
         notes.add(note1);
         note0.setId(1L);
         when(noteDao.getNotes()).thenReturn(notes);
 
-        List<Counter> counters = new ArrayList<>();
-        Counter counter0 = new Counter(0L, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final List<Counter> counters = new ArrayList<>();
+        final Counter counter0 = new Counter(0L, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counter0.setId(0L);
         counters.add(counter0);
-        Counter counter1 = new Counter(1L, 5, 6, 7, 8, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counter1 = new Counter(1L, 5, 6, 7, 8, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counter1.setId(1L);
         counters.add(counter1);
         when(counterDao.getCounters()).thenReturn(counters);

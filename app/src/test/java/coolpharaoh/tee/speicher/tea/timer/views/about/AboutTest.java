@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.about;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
+
 import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,9 +25,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
 import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.robolectric.Shadows.shadowOf;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -62,22 +62,22 @@ public class AboutTest {
                     about.getString(R.string.about_software_heading), about.getString(R.string.about_software_description));
 
 
-            TextView textViewVersion = about.findViewById(R.id.text_view_about_version);
+            final TextView textViewVersion = about.findViewById(R.id.text_view_about_version);
             assertThat(textViewVersion.getText()).isEqualTo(about.getString(R.string.about_version, BuildConfig.VERSION_NAME));
         });
     }
 
     @Test
     public void navigateToContact() {
-        int positionContact = 0;
+        final int positionContact = 0;
 
         aboutActivityScenario.onActivity(about -> {
             final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
             clickAtPositionRecyclerView(aboutRecyclerView, positionContact);
 
-            Intent expected = new Intent(about, Contact.class);
-            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            final Intent expected = new Intent(about, Contact.class);
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
@@ -85,15 +85,15 @@ public class AboutTest {
 
     @Test
     public void navigateToRating() {
-        int positionRating = 1;
+        final int positionRating = 1;
 
         aboutActivityScenario.onActivity(about -> {
             final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
             clickAtPositionRecyclerView(aboutRecyclerView, positionRating);
 
-            Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + about.getPackageName()));
-            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            final Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + about.getPackageName()));
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getData()).isEqualTo(expected.getData());
         });
@@ -101,15 +101,15 @@ public class AboutTest {
 
     @Test
     public void navigateToStatistics() {
-        int positionStatistics = 2;
+        final int positionStatistics = 2;
 
         aboutActivityScenario.onActivity(about -> {
             final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
             clickAtPositionRecyclerView(aboutRecyclerView, positionStatistics);
 
-            Intent expected = new Intent(about, Statistics.class);
-            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            final Intent expected = new Intent(about, Statistics.class);
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });
@@ -117,15 +117,15 @@ public class AboutTest {
 
     @Test
     public void navigateToSoftware() {
-        int positionSoftware = 3;
+        final int positionSoftware = 3;
 
         aboutActivityScenario.onActivity(about -> {
             final RecyclerView aboutRecyclerView = about.findViewById(R.id.recycler_view_about);
 
             clickAtPositionRecyclerView(aboutRecyclerView, positionSoftware);
 
-            Intent expected = new Intent(about, Software.class);
-            Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            final Intent expected = new Intent(about, Software.class);
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
         });

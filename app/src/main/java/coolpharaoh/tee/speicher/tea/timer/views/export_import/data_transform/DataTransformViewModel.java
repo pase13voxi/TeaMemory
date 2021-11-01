@@ -22,13 +22,13 @@ class DataTransformViewModel extends ViewModel {
     private final CounterRepository counterRepository;
     private final NoteRepository noteRepository;
 
-    DataTransformViewModel(Application application) {
+    DataTransformViewModel(final Application application) {
         this(new TeaRepository(application), new InfusionRepository(application),
                 new CounterRepository(application), new NoteRepository(application));
     }
 
-    DataTransformViewModel(TeaRepository teaRepository, InfusionRepository infusionRepository,
-                           CounterRepository counterRepository, NoteRepository noteRepository) {
+    DataTransformViewModel(final TeaRepository teaRepository, final InfusionRepository infusionRepository,
+                           final CounterRepository counterRepository, final NoteRepository noteRepository) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.counterRepository = counterRepository;
@@ -40,7 +40,7 @@ class DataTransformViewModel extends ViewModel {
         return teaRepository.getTeas();
     }
 
-    long insertTea(Tea tea) {
+    long insertTea(final Tea tea) {
         return teaRepository.insertTea(tea);
     }
 
@@ -53,7 +53,7 @@ class DataTransformViewModel extends ViewModel {
         return infusionRepository.getInfusions();
     }
 
-    public void insertInfusion(Infusion infusion){
+    public void insertInfusion(final Infusion infusion) {
         infusionRepository.insertInfusion(infusion);
     }
 
@@ -62,7 +62,7 @@ class DataTransformViewModel extends ViewModel {
         return counterRepository.getCounters();
     }
 
-    void insertCounter(Counter counter) {
+    void insertCounter(final Counter counter) {
         counterRepository.insertCounter(counter);
     }
 
@@ -71,7 +71,7 @@ class DataTransformViewModel extends ViewModel {
         return noteRepository.getNotes();
     }
 
-    void insertNote(Note note) {
+    void insertNote(final Note note) {
         noteRepository.insertNote(note);
 
     }

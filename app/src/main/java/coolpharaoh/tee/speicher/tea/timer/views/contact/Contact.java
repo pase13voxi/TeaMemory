@@ -24,7 +24,7 @@ public class Contact extends AppCompatActivity {
     private static final String LOG_TAG = Contact.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
         defineToolbarAsActionbar();
@@ -60,7 +60,7 @@ public class Contact extends AppCompatActivity {
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Release: " + versionCode
                     + "\nApp: " + versionName + "\n\n");
             startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.contact_email_chooser)));
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (final PackageManager.NameNotFoundException e) {
             Toast.makeText(getApplication(), R.string.contact_email_open_failed, Toast.LENGTH_LONG).show();
             Log.e(LOG_TAG, "The package manager was not found while sending an email.");
         }

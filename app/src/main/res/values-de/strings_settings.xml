@@ -19,8 +19,7 @@
     <string name="settings_show_hints_cancel">Abbrechen</string>
     <string name="settings_read_permission_denied">Erlaubnis verweigert.</string>
     <string name="settings_show_hints_update_checkbox">Updateinformationen</string>
-    <string name="settings_show_hints_rating_checkbox">Bewertungshinweis</string>
-    <string name="settings_show_hints_desciption_checkbox">Hilfe im Informationsfenster</string>
+    <string name="settings_show_hints_description_checkbox">Hilfe im Informationsfenster</string>
     <string name="settings_show_hints_ignore_optimization_checkbox">Hintergrundprozessberechtigung</string>
     <string name="settings_show_hints_permission_checkbox">Leseberechtigung</string>
     <string name="settings_factory_settings">Werkseinstellungen</string>

@@ -21,7 +21,7 @@ public class SlideAdapter extends PagerAdapter {
     final int[] slideImages;
     final String[] slideDescription;
 
-    public SlideAdapter(Application application, int[] slideImages, String[] slideDescription) {
+    public SlideAdapter(final Application application, final int[] slideImages, final String[] slideDescription) {
         this.application = application;
         this.slideImages = slideImages;
         this.slideDescription = slideDescription;
@@ -33,20 +33,20 @@ public class SlideAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+    public boolean isViewFromObject(@NonNull final View view, @NonNull final Object object) {
         return view == object;
     }
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        LayoutInflater layoutInflater = (LayoutInflater) application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = Objects.requireNonNull(layoutInflater).inflate(R.layout.slide_layout, container, false);
+    public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
+        final LayoutInflater layoutInflater = (LayoutInflater) application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View view = Objects.requireNonNull(layoutInflater).inflate(R.layout.slide_layout, container, false);
 
-        TextView slideTextViewDescription = view.findViewById(R.id.text_view_description);
+        final TextView slideTextViewDescription = view.findViewById(R.id.text_view_description);
         slideTextViewDescription.setText(slideDescription[position]);
 
-        ImageView slideImageView = view.findViewById(R.id.image_view_description_slide_image);
+        final ImageView slideImageView = view.findViewById(R.id.image_view_description_slide_image);
         slideImageView.setImageResource(slideImages[position]);
 
         container.addView(view);
@@ -55,7 +55,7 @@ public class SlideAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+    public void destroyItem(@NonNull final ViewGroup container, final int position, @NonNull final Object object) {
         container.removeView((RelativeLayout) object);
     }
 }

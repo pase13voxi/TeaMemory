@@ -1,5 +1,12 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
+
 import android.app.Application;
 import android.content.res.Resources;
 
@@ -9,13 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.GREEN_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VarietyTest {
@@ -81,7 +81,7 @@ public class VarietyTest {
     @Test
     public void convertBlackTeaVarietyToCode() {
         mockVarietyStrings();
-        String code = Variety.convertTextToStoredVariety(varieties[0], application);
+        final String code = Variety.convertTextToStoredVariety(varieties[0], application);
 
         assertThat(code).isEqualTo(BLACK_TEA.getCode());
 
@@ -90,7 +90,7 @@ public class VarietyTest {
     @Test
     public void convertOolongTeaVarietyToCode() {
         mockVarietyStrings();
-        String code = Variety.convertTextToStoredVariety(varieties[4], application);
+        final String code = Variety.convertTextToStoredVariety(varieties[4], application);
 
         assertThat(code).isEqualTo(OOLONG_TEA.getCode());
 
@@ -99,8 +99,8 @@ public class VarietyTest {
     @Test
     public void convertVarietyToCodeReturnInputBecauseVarietyNotExist() {
         mockVarietyStrings();
-        String otherVariety = "Other Variety";
-        String code = Variety.convertTextToStoredVariety(otherVariety, application);
+        final String otherVariety = "Other Variety";
+        final String code = Variety.convertTextToStoredVariety(otherVariety, application);
 
         assertThat(code).isEqualTo(otherVariety);
     }
@@ -108,7 +108,7 @@ public class VarietyTest {
     @Test
     public void convertBlackTeaCodeToVariety() {
         mockVarietyStrings();
-        String variety = Variety.convertStoredVarietyToText(BLACK_TEA.getCode(), application);
+        final String variety = Variety.convertStoredVarietyToText(BLACK_TEA.getCode(), application);
 
         assertThat(variety).isEqualTo(varieties[0]);
     }
@@ -116,7 +116,7 @@ public class VarietyTest {
     @Test
     public void convertOolongTeaCodeToVariety() {
         mockVarietyStrings();
-        String variety = Variety.convertStoredVarietyToText(OOLONG_TEA.getCode(), application);
+        final String variety = Variety.convertStoredVarietyToText(OOLONG_TEA.getCode(), application);
 
         assertThat(variety).isEqualTo(varieties[4]);
     }
@@ -124,8 +124,8 @@ public class VarietyTest {
     @Test
     public void convertCodeToVarietyReturnInputBecauseCodeNotExist() {
         mockVarietyStrings();
-        String otherCode = "Other Code";
-        String variety = Variety.convertStoredVarietyToText(otherCode, application);
+        final String otherCode = "Other Code";
+        final String variety = Variety.convertStoredVarietyToText(otherCode, application);
 
         assertThat(variety).isEqualTo(otherCode);
     }

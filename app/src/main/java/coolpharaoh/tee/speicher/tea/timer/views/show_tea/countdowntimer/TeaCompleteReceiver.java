@@ -13,9 +13,9 @@ public class TeaCompleteReceiver extends BroadcastReceiver {
     // The SDK is checked but android studio doesn't recognize it.
     @SuppressLint("NewApi")
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
         final long teaId = intent.getLongExtra("teaId", 0);
-        Intent notificationService = new Intent(context, NotificationService.class);
+        final Intent notificationService = new Intent(context, NotificationService.class);
         notificationService.putExtra("teaId", teaId);
         if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
             context.startForegroundService(notificationService);

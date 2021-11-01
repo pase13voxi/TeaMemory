@@ -401,31 +401,27 @@ public class SettingsTest {
             final AlertDialog alertDialog = getLatestAlertDialog();
 
             final CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.check_box_settings_dialog_update);
-            final CheckBox checkBoxRating = alertDialog.findViewById(R.id.check_box_settings_dialog_rating);
             final CheckBox checkBoxDescription = alertDialog.findViewById(R.id.check_box_settings_dialog_description);
             final CheckBox checkBoxPermission = alertDialog.findViewById(R.id.check_box_settings_dialog_permission);
 
             assertThat(checkBoxUpdate.isChecked()).isFalse();
-            assertThat(checkBoxRating.isChecked()).isFalse();
             assertThat(checkBoxDescription.isChecked()).isFalse();
             assertThat(checkBoxPermission.isChecked()).isFalse();
 
             checkBoxUpdate.setChecked(true);
-            checkBoxRating.setChecked(true);
             checkBoxDescription.setChecked(true);
             checkBoxPermission.setChecked(true);
 
-            final Button accept = (Button) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            final Button accept = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             accept.performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao, times(4)).update(captor.capture());
+            verify(actualSettingsDao, times(3)).update(captor.capture());
             final List<ActualSettings> updatedSettings = captor.getAllValues();
 
-            assertThat(updatedSettings.get(3).isMainUpdateAlert()).isTrue();
-            assertThat(updatedSettings.get(3).isMainRateAlert()).isTrue();
-            assertThat(updatedSettings.get(3).isShowTeaAlert()).isTrue();
-            assertThat(updatedSettings.get(3).isSettingsPermissionAlert()).isTrue();
+            assertThat(updatedSettings.get(2).isMainUpdateAlert()).isTrue();
+            assertThat(updatedSettings.get(2).isShowTeaAlert()).isTrue();
+            assertThat(updatedSettings.get(2).isSettingsPermissionAlert()).isTrue();
         });
     }
 
@@ -456,7 +452,7 @@ public class SettingsTest {
         itemView.performClick();
     }
 
-    private void scrollToPosition(RecyclerView settingsRecyclerView, int alarm) {
+    private void scrollToPosition(final RecyclerView settingsRecyclerView, final int alarm) {
         settingsRecyclerView.scrollToPosition(alarm);
         shadowOf(getMainLooper()).idle();
     }
@@ -469,7 +465,8 @@ public class SettingsTest {
         checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_description, description);
     }
 
-    private void checkViewAtPositionInRecyclerView(RecyclerView recyclerView, int position, int viewId, String toCheck) {
+    private void checkViewAtPositionInRecyclerView(final RecyclerView recyclerView, final int position,
+                                                   final int viewId, final String toCheck) {
         final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
         final TextView textViewHeading = itemView.findViewById(viewId);
         assertThat(textViewHeading.getText()).hasToString(toCheck);

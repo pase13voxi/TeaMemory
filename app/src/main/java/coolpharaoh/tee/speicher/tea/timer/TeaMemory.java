@@ -16,7 +16,7 @@ public class TeaMemory extends Application {
     public void onCreate() {
         super.onCreate();
 
-        SharedSettings sharedSettings = new SharedSettings(this);
+        final SharedSettings sharedSettings = new SharedSettings(this);
         ThemeManager.applyTheme(sharedSettings.getDarkMode());
     }
 }

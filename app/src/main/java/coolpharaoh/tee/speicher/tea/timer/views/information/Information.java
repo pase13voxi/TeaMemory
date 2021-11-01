@@ -39,13 +39,13 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private InformationViewModel informationViewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
+        final long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
         fillToolbarTitle();
@@ -156,7 +156,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         informationViewModel.updateTeaRating((int) rating);
     }
 
-    private void updateTeaInStock(boolean isChecked) {
+    private void updateTeaInStock(final boolean isChecked) {
         informationViewModel.updateTeaInStock(isChecked);
     }
 
@@ -170,7 +170,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     @Override
-    public void onRecyclerItemClick(Button buttonOptions, int position) {
+    public void onRecyclerItemClick(final Button buttonOptions, final int position) {
         final PopupMenu popup = new PopupMenu(getApplication(), buttonOptions);
         popup.inflate(R.menu.menu_information_details);
 
@@ -187,7 +187,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         popup.show();
     }
 
-    private void editDetail(int position) {
+    private void editDetail(final int position) {
         final ViewGroup parent = findViewById(R.id.information_parent);
 
         final LayoutInflater inflater = getLayoutInflater();

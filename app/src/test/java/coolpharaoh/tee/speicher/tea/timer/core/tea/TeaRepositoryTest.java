@@ -35,7 +35,7 @@ public class TeaRepositoryTest {
 
     @Test
     public void insertTea() {
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
 
         teaRepository.insertTea(tea);
 
@@ -44,7 +44,7 @@ public class TeaRepositoryTest {
 
     @Test
     public void updateTea() {
-        Tea tea = new Tea();
+        final Tea tea = new Tea();
 
         teaRepository.updateTea(tea);
 
@@ -71,7 +71,7 @@ public class TeaRepositoryTest {
     public void getTeas() {
         when(teaDao.getTeas()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeas();
+        final List<Tea> teas = teaRepository.getTeas();
 
         assertThat(teas).hasSize(2);
     }
@@ -80,7 +80,7 @@ public class TeaRepositoryTest {
     public void getTeasOrderByActivity() {
         when(teaDao.getTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByActivity(false);
+        final List<Tea> teas = teaRepository.getTeasOrderByActivity(false);
 
         assertThat(teas).hasSize(2);
     }
@@ -89,7 +89,7 @@ public class TeaRepositoryTest {
     public void getFavoriteTeasOrderByActivity() {
         when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByActivity(true);
+        final List<Tea> teas = teaRepository.getTeasOrderByActivity(true);
 
         assertThat(teas).hasSize(2);
     }
@@ -98,7 +98,7 @@ public class TeaRepositoryTest {
     public void getTeasOrderByAlphabetic() {
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(false);
+        final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(false);
 
         assertThat(teas).hasSize(2);
     }
@@ -107,7 +107,7 @@ public class TeaRepositoryTest {
     public void getFavoriteTeasOrderByAlphabetic() {
         when(teaDao.getFavoriteTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(true);
+        final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(true);
 
         assertThat(teas).hasSize(2);
     }
@@ -116,7 +116,7 @@ public class TeaRepositoryTest {
     public void getTeasOrderByVariety() {
         when(teaDao.getTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByVariety(false);
+        final List<Tea> teas = teaRepository.getTeasOrderByVariety(false);
 
         assertThat(teas).hasSize(2);
     }
@@ -125,7 +125,7 @@ public class TeaRepositoryTest {
     public void getFavoriteTeasOrderByVariety() {
         when(teaDao.getFavoriteTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByVariety(true);
+        final List<Tea> teas = teaRepository.getTeasOrderByVariety(true);
 
         assertThat(teas).hasSize(2);
     }
@@ -134,7 +134,7 @@ public class TeaRepositoryTest {
     public void getTeasOrderByRating() {
         when(teaDao.getTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByRating(false);
+        final List<Tea> teas = teaRepository.getTeasOrderByRating(false);
 
         assertThat(teas).hasSize(2);
     }
@@ -143,28 +143,28 @@ public class TeaRepositoryTest {
     public void getFavoriteTeasOrderByRating() {
         when(teaDao.getFavoriteTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasOrderByRating(true);
+        final List<Tea> teas = teaRepository.getTeasOrderByRating(true);
 
         assertThat(teas).hasSize(2);
     }
 
     @Test
     public void getTeaById() {
-        long teaId = 1;
-        Tea tea = new Tea();
+        final long teaId = 1;
+        final Tea tea = new Tea();
         when(teaDao.getTeaById(teaId)).thenReturn(tea);
 
-        Tea teaById = teaRepository.getTeaById(teaId);
+        final Tea teaById = teaRepository.getTeaById(teaId);
 
         assertThat(tea).isEqualTo(teaById);
     }
 
     @Test
     public void getTeasBySearchString() {
-        String searchString = "search";
+        final String searchString = "search";
         when(teaDao.getTeasBySearchString(searchString)).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
-        List<Tea> teas = teaRepository.getTeasBySearchString(searchString);
+        final List<Tea> teas = teaRepository.getTeasBySearchString(searchString);
 
         assertThat(teas).hasSize(2);
     }

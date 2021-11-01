@@ -12,18 +12,18 @@ class TimerViewModel {
     private final TeaRepository teaRepository;
     private final ActualSettingsRepository actualSettingsRepository;
 
-    TimerViewModel(Application application) {
+    TimerViewModel(final Application application) {
         this(new TeaRepository(application), new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
-    TimerViewModel(TeaRepository teaRepository, ActualSettingsRepository actualSettingsRepository) {
+    TimerViewModel(final TeaRepository teaRepository, final ActualSettingsRepository actualSettingsRepository) {
         this.teaRepository = teaRepository;
         this.actualSettingsRepository = actualSettingsRepository;
     }
 
     //teaDAO
-    String getName(long teaId) {
+    String getName(final long teaId) {
         if (teaId == 0) {
             return "Default Tea";
         }
@@ -35,7 +35,7 @@ class TimerViewModel {
         return actualSettingsRepository.getSettings().isVibration();
     }
 
-    String getMusicchoice() {
+    String getMusicChoice() {
         return actualSettingsRepository.getSettings().getMusicChoice();
     }
 }

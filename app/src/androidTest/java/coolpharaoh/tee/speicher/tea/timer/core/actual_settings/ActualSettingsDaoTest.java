@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import android.content.Context;
 
 import androidx.room.Room;
@@ -13,8 +15,6 @@ import org.junit.runner.RunWith;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 @RunWith(AndroidJUnit4.class)
 public class ActualSettingsDaoTest {
@@ -23,7 +23,7 @@ public class ActualSettingsDaoTest {
 
     @Before
     public void createDb() {
-        Context context = ApplicationProvider.getApplicationContext();
+        final Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
         mActualSettingsDAO = db.getActualSettingsDao();
     }
@@ -35,41 +35,41 @@ public class ActualSettingsDaoTest {
 
     @Test
     public void insertSettings() {
-        ActualSettings actualSettingsBefore = createSettings(false);
+        final ActualSettings actualSettingsBefore = createSettings(false);
         mActualSettingsDAO.insert(actualSettingsBefore);
 
         assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
-        ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
+        final ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
         assertThat(actualSettingsAfter).isEqualToIgnoringGivenFields(actualSettingsBefore, "id");
     }
 
     @Test
     public void insertIncompleteSettings() {
-        ActualSettings actualSettingsBefore = createSettings(true);
+        final ActualSettings actualSettingsBefore = createSettings(true);
         mActualSettingsDAO.insert(actualSettingsBefore);
 
         assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
-        ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
+        final ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
         assertThat(actualSettingsAfter).isEqualToIgnoringGivenFields(actualSettingsBefore, "id");
     }
 
     @Test
     public void updateSettings() {
-        ActualSettings actualSettingsBefore = createSettings(false);
+        final ActualSettings actualSettingsBefore = createSettings(false);
         mActualSettingsDAO.insert(actualSettingsBefore);
 
         assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
-        ActualSettings actualSettingsUpdate = mActualSettingsDAO.getSettings();
+        final ActualSettings actualSettingsUpdate = mActualSettingsDAO.getSettings();
         actualSettingsUpdate.setTemperatureUnit("Fahrenheit");
         actualSettingsUpdate.setVibration(false);
         mActualSettingsDAO.update(actualSettingsUpdate);
 
         assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(1);
 
-        ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
+        final ActualSettings actualSettingsAfter = mActualSettingsDAO.getSettings();
         assertThat(actualSettingsAfter).isEqualToComparingFieldByField(actualSettingsUpdate);
     }
 
@@ -87,12 +87,12 @@ public class ActualSettingsDaoTest {
         assertThat(mActualSettingsDAO.getCountItems()).isEqualTo(3);
     }
 
-    private ActualSettings createSettings(boolean incomplete){
-        ActualSettings actualSettings = new ActualSettings();
+    private ActualSettings createSettings(final boolean incomplete) {
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setMusicChoice("choice");
         actualSettings.setMusicName("name");
         actualSettings.setVibration(true);
-        if(incomplete) {
+        if (incomplete) {
             actualSettings.setAnimation(true);
             actualSettings.setTemperatureUnit("Celsius");
             actualSettings.setMainRateCounter(10);

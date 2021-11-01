@@ -1,5 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -16,12 +22,6 @@ import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
@@ -36,11 +36,11 @@ public class AudioPlayerTest {
 
     @Test
     public void startAudioPlayer() throws IOException {
-        String musicChoice = "/music/choice";
-        Uri uri = Uri.parse(musicChoice);
-        when(timerViewModel.getMusicchoice()).thenReturn(musicChoice);
+        final String musicChoice = "/music/choice";
+        final Uri uri = Uri.parse(musicChoice);
+        when(timerViewModel.getMusicChoice()).thenReturn(musicChoice);
 
-        AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer).setAudioAttributes(any(AudioAttributes.class));
@@ -51,9 +51,9 @@ public class AudioPlayerTest {
 
     @Test
     public void startAudioPlayerButDoNothingWhenMusicChoiceIsNull() {
-        when(timerViewModel.getMusicchoice()).thenReturn(null);
+        when(timerViewModel.getMusicChoice()).thenReturn(null);
 
-        AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer, times(0)).start();
@@ -61,12 +61,12 @@ public class AudioPlayerTest {
 
     @Test
     public void startAudioPlayerButDoNothingWhenIOExceptionIsThrown() throws IOException {
-        String musicChoice = "/music/choice";
-        when(timerViewModel.getMusicchoice()).thenReturn(musicChoice);
+        final String musicChoice = "/music/choice";
+        when(timerViewModel.getMusicChoice()).thenReturn(musicChoice);
 
         doThrow(IOException.class).when(mediaPlayer).setDataSource(any(), any());
 
-        AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer, times(0)).start();
@@ -74,7 +74,7 @@ public class AudioPlayerTest {
 
     @Test
     public void restAudioPlayer() throws Exception {
-        AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
 
         audioPlayer.reset();
 

@@ -10,7 +10,7 @@ public class CurrentSdk {
     private static SystemUtility systemUtility = new SystemUtility();
 
     @VisibleForTesting
-    public static void setFixedSystem(SystemUtility fixedSystem) {
+    public static void setFixedSystem(final SystemUtility fixedSystem) {
         systemUtility = fixedSystem;
     }
 

@@ -32,7 +32,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         defineToolbarAsActionbar();
@@ -43,8 +43,8 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     private void defineToolbarAsActionbar() {
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        final TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
         mToolbarCustomTitle.setText(R.string.about_heading);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
@@ -56,7 +56,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     private void configureAndShowListView() {
-        List<RecyclerItem> aboutList = generateListItems();
+        final List<RecyclerItem> aboutList = generateListItems();
 
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.list_single_layout_about, aboutList, this);
 
@@ -68,27 +68,27 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
 
     private List<RecyclerItem> generateListItems() {
         //write into listView
-        List<RecyclerItem> aboutList = new ArrayList<>();
-        RecyclerItem itemContact = new RecyclerItem(getResources().getString(R.string.about_contact_heading), getResources().getString(R.string.about_contact_description));
+        final List<RecyclerItem> aboutList = new ArrayList<>();
+        final RecyclerItem itemContact = new RecyclerItem(getResources().getString(R.string.about_contact_heading), getResources().getString(R.string.about_contact_description));
         aboutList.add(itemContact);
-        RecyclerItem itemRating = new RecyclerItem(getResources().getString(R.string.about_rating_heading), getResources().getString(R.string.about_rating_description));
+        final RecyclerItem itemRating = new RecyclerItem(getResources().getString(R.string.about_rating_heading), getResources().getString(R.string.about_rating_description));
         aboutList.add(itemRating);
-        RecyclerItem itemStatistics = new RecyclerItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
+        final RecyclerItem itemStatistics = new RecyclerItem(getResources().getString(R.string.about_statistics_heading), getResources().getString(R.string.about_statistics_description));
         aboutList.add(itemStatistics);
-        RecyclerItem itemSoftware = new RecyclerItem(getResources().getString(R.string.about_software_heading), getResources().getString(R.string.about_software_description));
+        final RecyclerItem itemSoftware = new RecyclerItem(getResources().getString(R.string.about_software_heading), getResources().getString(R.string.about_software_description));
         aboutList.add(itemSoftware);
         return aboutList;
     }
 
     private void displayVersion() {
-        TextView textViewVersion = findViewById(R.id.text_view_about_version);
-        String version = BuildConfig.VERSION_NAME;
+        final TextView textViewVersion = findViewById(R.id.text_view_about_version);
+        final String version = BuildConfig.VERSION_NAME;
         textViewVersion.setText(getResources().getString(R.string.about_version, version));
     }
 
     @Override
     public void onRecyclerItemClick(final int position) {
-        ListItems item = ListItems.values()[position];
+        final ListItems item = ListItems.values()[position];
         switch (item) {
             case CONTACT:
                 navigateToContact();
@@ -107,7 +107,7 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
     }
 
     private void navigateToContact() {
-        Intent contactScreen = new Intent(About.this, Contact.class);
+        final Intent contactScreen = new Intent(About.this, Contact.class);
         startActivity(contactScreen);
     }
 
@@ -115,18 +115,18 @@ public class About extends AppCompatActivity implements RecyclerViewAdapter.OnCl
         final String appPackageName = getPackageName();
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
+        } catch (final android.content.ActivityNotFoundException anfe) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
 
     private void navigateToStatistics() {
-        Intent statisticsScreen = new Intent(About.this, Statistics.class);
+        final Intent statisticsScreen = new Intent(About.this, Statistics.class);
         startActivity(statisticsScreen);
     }
 
     private void navigateToSoftware() {
-        Intent softwareScreen = new Intent(About.this, Software.class);
+        final Intent softwareScreen = new Intent(About.this, Software.class);
         startActivity(softwareScreen);
     }
 }

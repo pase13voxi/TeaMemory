@@ -14,7 +14,7 @@ class DisplayAmountKindStrategyGram implements DisplayAmountKindStrategy {
 
     @Override
     public String getTextShowTea(final double amount) {
-        String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
+        final String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
         return application.getString(R.string.show_tea_display_gr, text);
     }
 
@@ -30,7 +30,7 @@ class DisplayAmountKindStrategyGram implements DisplayAmountKindStrategy {
 
     @Override
     public String getTextNewTea(final double amount) {
-        String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
+        final String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
         return application.getString(R.string.new_tea_edit_text_amount_text_gr, text);
     }
 }

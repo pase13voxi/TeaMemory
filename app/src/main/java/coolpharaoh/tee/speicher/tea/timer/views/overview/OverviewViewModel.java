@@ -62,25 +62,25 @@ class OverviewViewModel extends ViewModel {
     }
 
     // Defaults
-    private void createDefaultTeas(Application application) {
-        Tea tea1 = new Tea("Earl Grey", BLACK_TEA.getCode(), 5, TEA_SPOON.getText(), ContextCompat.getColor(application, BLACK_TEA.getColor()), 0, CurrentDate.getDate());
-        long teaId1 = teaRepository.insertTea(tea1);
-        Infusion infusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
+    private void createDefaultTeas(final Application application) {
+        final Tea tea1 = new Tea("Earl Grey", BLACK_TEA.getCode(), 5, TEA_SPOON.getText(), ContextCompat.getColor(application, BLACK_TEA.getColor()), 0, CurrentDate.getDate());
+        final long teaId1 = teaRepository.insertTea(tea1);
+        final Infusion infusion1 = new Infusion(teaId1, 0, "3:30", TemperatureConversation.celsiusToCoolDownTime(100), 100, TemperatureConversation.celsiusToFahrenheit(100));
         infusionRepository.insertInfusion(infusion1);
 
-        Tea tea2 = new Tea("Pai Mu Tan", WHITE_TEA.getCode(), 4, TEA_SPOON.getText(), ContextCompat.getColor(application, WHITE_TEA.getColor()), 0, CurrentDate.getDate());
-        long teaId2 = teaRepository.insertTea(tea2);
-        Infusion infusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
+        final Tea tea2 = new Tea("Pai Mu Tan", WHITE_TEA.getCode(), 4, TEA_SPOON.getText(), ContextCompat.getColor(application, WHITE_TEA.getColor()), 0, CurrentDate.getDate());
+        final long teaId2 = teaRepository.insertTea(tea2);
+        final Infusion infusion2 = new Infusion(teaId2, 0, "2", TemperatureConversation.celsiusToCoolDownTime(85), 85, TemperatureConversation.celsiusToFahrenheit(85));
         infusionRepository.insertInfusion(infusion2);
 
-        Tea tea3 = new Tea("Sencha", GREEN_TEA.getCode(), 4, TEA_SPOON.getText(), ContextCompat.getColor(application, GREEN_TEA.getColor()), 0, CurrentDate.getDate());
-        long teaId3 = teaRepository.insertTea(tea3);
-        Infusion infusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
+        final Tea tea3 = new Tea("Sencha", GREEN_TEA.getCode(), 4, TEA_SPOON.getText(), ContextCompat.getColor(application, GREEN_TEA.getColor()), 0, CurrentDate.getDate());
+        final long teaId3 = teaRepository.insertTea(tea3);
+        final Infusion infusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
         infusionRepository.insertInfusion(infusion3);
     }
 
     private void createDefaultSettings(){
-        ActualSettings defaultSettings = new ActualSettings();
+        final ActualSettings defaultSettings = new ActualSettings();
         defaultSettings.setMusicChoice("content://settings/system/ringtone");
         defaultSettings.setMusicName("Default");
         defaultSettings.setVibration(true);
@@ -108,18 +108,18 @@ class OverviewViewModel extends ViewModel {
 
     boolean isTeaInStock(final long id) {
         final Tea tea = teaRepository.getTeaById(id);
-        return tea.isFavorite();
+        return tea.isInStock();
     }
 
     void updateInStockOfTea(final long id, final boolean inStock) {
         final Tea tea = teaRepository.getTeaById(id);
-        tea.setFavorite(inStock);
+        tea.setInStock(inStock);
         teaRepository.updateTea(tea);
 
         refreshTeas();
     }
 
-    void visualizeTeasBySearchString(String searchString) {
+    void visualizeTeasBySearchString(final String searchString) {
         if ("".equals(searchString)) {
             refreshTeas();
         } else {
@@ -133,7 +133,7 @@ class OverviewViewModel extends ViewModel {
         return SortMode.fromIndex(actualSettings.getSort());
     }
 
-    void setSort(SortMode sortMode) {
+    void setSort(final SortMode sortMode) {
         actualSettings.setSort(sortMode.getIndex());
         actualSettingsRepository.updateSettings(actualSettings);
 
@@ -156,29 +156,6 @@ class OverviewViewModel extends ViewModel {
 
     int getSortWithHeader() {
         return isOverviewHeader() && !searchMode ? getSort().getIndex() : -1;
-    }
-
-    boolean isMainRateAlert() {
-        return actualSettings.isMainRateAlert();
-    }
-
-    void setMainRateAlert(final boolean mainRateAlert) {
-        actualSettings.setMainRateAlert(mainRateAlert);
-        actualSettingsRepository.updateSettings(actualSettings);
-    }
-
-    int getMainRatecounter() {
-        return actualSettings.getMainRateCounter();
-    }
-
-    void resetMainRatecounter() {
-        actualSettings.setMainRateCounter(0);
-        actualSettingsRepository.updateSettings(actualSettings);
-    }
-
-    void incrementMainRatecounter() {
-        actualSettings.setMainRateCounter(actualSettings.getMainRateCounter() + 1);
-        actualSettingsRepository.updateSettings(actualSettings);
     }
 
     boolean isMainUpdateAlert() {

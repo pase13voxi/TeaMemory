@@ -11,7 +11,7 @@ public class CurrentDate {
     private static DateUtility dateUtility = new DateUtility();
 
     @VisibleForTesting
-    public static void setFixedDate(DateUtility fixedDate) {
+    public static void setFixedDate(final DateUtility fixedDate) {
         dateUtility = fixedDate;
     }
 

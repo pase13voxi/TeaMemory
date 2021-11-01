@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.core.counter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +19,6 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,7 +39,7 @@ public class RefreshCounterTest {
 
     @Before
     public void setUp() {
-        Instant now = getFixedDate();
+        final Instant now = getFixedDate();
 
         today = Date.from(now);
         dayBefore = Date.from(now.minus(Duration.ofDays(1)));
@@ -51,13 +51,13 @@ public class RefreshCounterTest {
     }
 
     private Instant getFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
         return Instant.now(clock);
     }
 
     @Test
     public void refreshCounterNothingChanged() {
-        Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
+        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
 
         RefreshCounter.refreshCounter(counter);
 
@@ -77,7 +77,7 @@ public class RefreshCounterTest {
 
     @Test
     public void refreshCounterDayRefreshed() {
-        Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, dayBefore, dayBefore, dayBefore);
+        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, dayBefore, dayBefore, dayBefore);
 
         RefreshCounter.refreshCounter(counter);
 
@@ -97,7 +97,7 @@ public class RefreshCounterTest {
 
     @Test
     public void refreshCounterDayWeekRefreshed() {
-        Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, weekBefore, weekBefore, weekBefore);
+        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, weekBefore, weekBefore, weekBefore);
 
         RefreshCounter.refreshCounter(counter);
 
@@ -117,7 +117,7 @@ public class RefreshCounterTest {
 
     @Test
     public void refreshCounterDayWeekMonthRefreshed() {
-        Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, monthBefore, monthBefore, monthBefore);
+        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, monthBefore, monthBefore, monthBefore);
 
         RefreshCounter.refreshCounter(counter);
 
@@ -137,10 +137,10 @@ public class RefreshCounterTest {
 
     @Test
     public void refreshCounters() {
-        Counter counter1 = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
-        Counter counter2 = new Counter(0, DAY, WEEK, MONTH, OVERALL, monthBefore, monthBefore, monthBefore);
+        final Counter counter1 = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
+        final Counter counter2 = new Counter(0, DAY, WEEK, MONTH, OVERALL, monthBefore, monthBefore, monthBefore);
 
-        List<Counter> counters = Arrays.asList(counter1, counter2);
+        final List<Counter> counters = Arrays.asList(counter1, counter2);
 
         RefreshCounter.refreshCounters(counters);
 

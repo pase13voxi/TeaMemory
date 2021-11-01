@@ -17,7 +17,7 @@ class RecyclerItemsHeaderStrategyVariety implements RecyclerItemsHeaderStrategy 
     }
 
     @Override
-    public List<RecyclerItemOverview> generateFrom(List<Tea> teaList) {
+    public List<RecyclerItemOverview> generateFrom(final List<Tea> teaList) {
 
         final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
         String lastVariety = "";
@@ -27,7 +27,7 @@ class RecyclerItemsHeaderStrategyVariety implements RecyclerItemsHeaderStrategy 
                 recyclerItems.add(new RecyclerItemOverview("- " + variety + " -", null, null, null, false));
                 lastVariety = variety;
             }
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isFavorite()));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isInStock()));
         }
         return recyclerItems;
     }

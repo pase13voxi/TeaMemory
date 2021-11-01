@@ -120,7 +120,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void addMusicChoiceToSettingsList() {
-        final RecyclerItem itemSound = new RecyclerItem(getString(R.string.settings_alarm), settingsViewModel.getMusicname());
+        final RecyclerItem itemSound = new RecyclerItem(getString(R.string.settings_alarm), settingsViewModel.getMusicName());
         settingsList.add(itemSound);
     }
 
@@ -251,11 +251,11 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         final Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
         final String name = ringtone.getTitle(this);
         if (uri != null) {
-            settingsViewModel.setMusicchoice(uri.toString());
-            settingsViewModel.setMusicname(name);
+            settingsViewModel.setMusicChoice(uri.toString());
+            settingsViewModel.setMusicName(name);
         } else {
-            settingsViewModel.setMusicchoice(null);
-            settingsViewModel.setMusicname("-");
+            settingsViewModel.setMusicChoice(null);
+            settingsViewModel.setMusicName("-");
         }
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
@@ -374,9 +374,6 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         final CheckBox checkBoxUpdate = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_update);
         checkBoxUpdate.setChecked(settingsViewModel.isMainUpdateAlert());
 
-        final CheckBox checkBoxRating = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_rating);
-        checkBoxRating.setChecked(settingsViewModel.isMainRateAlert());
-
         final CheckBox checkBoxDescription = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_description);
         checkBoxDescription.setChecked(settingsViewModel.isShowTeaAlert());
 
@@ -388,16 +385,15 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
                 .setView(alertLayoutDialog)
                 .setTitle(R.string.settings_show_hints_header)
                 .setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxUpdate,
-                        checkBoxRating, checkBoxDescription, checkBoxPermission))
+                        checkBoxDescription, checkBoxPermission))
                 .setNegativeButton(R.string.settings_show_hints_cancel, null)
                 .show();
 
     }
 
-    private void displayedHintsChanged(final CheckBox checkBoxUpdate, final CheckBox checkBoxRating,
-                                       final CheckBox checkBoxDescription, final CheckBox checkBoxPermission) {
+    private void displayedHintsChanged(final CheckBox checkBoxUpdate, final CheckBox checkBoxDescription,
+                                       final CheckBox checkBoxPermission) {
         settingsViewModel.setMainUpdateAlert(checkBoxUpdate.isChecked());
-        settingsViewModel.setMainRateAlert(checkBoxRating.isChecked());
         settingsViewModel.setShowTeaAlert(checkBoxDescription.isChecked());
         settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
     }

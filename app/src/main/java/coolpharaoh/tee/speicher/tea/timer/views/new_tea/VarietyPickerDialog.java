@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,8 +25,6 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
-
 public class VarietyPickerDialog extends DialogFragment {
     public static final String TAG = "VarietyPickerDialog";
 
@@ -38,9 +38,9 @@ public class VarietyPickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        Activity activity = requireActivity();
-        ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        LayoutInflater inflater = activity.getLayoutInflater();
+        final Activity activity = requireActivity();
+        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
+        final LayoutInflater inflater = activity.getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_variety_picker, parent, false);
 
         defineVarietyRadioGroup();
@@ -88,7 +88,7 @@ public class VarietyPickerDialog extends DialogFragment {
     private List<RadioButton> getRadioButtons(final RadioGroup radioGroup) {
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View o = radioGroup.getChildAt(i);
+            final View o = radioGroup.getChildAt(i);
             if (o instanceof RadioButton) {
                 listRadioButtons.add((RadioButton) o);
             }
@@ -111,7 +111,7 @@ public class VarietyPickerDialog extends DialogFragment {
                 }
         );
         varietyRadioButton.setButtonTintList(colorStateList);
-        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(dpToPixel(20), dpToPixel(10), 0, 0);
         varietyRadioButton.setLayoutParams(params);
         varietyRadioButton.setPadding(dpToPixel(15), 0, 0, 0);
@@ -119,7 +119,7 @@ public class VarietyPickerDialog extends DialogFragment {
         return varietyRadioButton;
     }
 
-    private int dpToPixel(int dpValue) {
+    private int dpToPixel(final int dpValue) {
         final float density = getActivity().getApplication().getResources().getDisplayMetrics().density;
         return (int) (dpValue * density); // margin in pixels
     }

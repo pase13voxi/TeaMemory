@@ -1,5 +1,15 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
+
 import android.app.Application;
 import android.content.res.Resources;
 
@@ -27,16 +37,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NewTeaViewModelTest {
@@ -282,22 +282,22 @@ public class NewTeaViewModelTest {
         verify(infusionRepository, times(2)).insertInfusion(any());
     }
 
-    private void mockTemperatureUnit(String temperatureUnit) {
-        ActualSettings actualSettings = new ActualSettings();
+    private void mockTemperatureUnit(final String temperatureUnit) {
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit(temperatureUnit);
         when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
     }
 
     private void mockStoredTea() {
-        Date today = Date.from(Instant.now());
+        final Date today = Date.from(Instant.now());
         tea = new Tea("TEA", YELLOW_TEA.getCode(), 3, TEA_SPOON.getText(), 5, 0, today);
         tea.setId(TEA_ID_FILLED);
         when(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
 
-        List<Infusion> infusions = new ArrayList<>();
-        Infusion infusion1 = new Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5);
+        final List<Infusion> infusions = new ArrayList<>();
+        final Infusion infusion1 = new Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5);
         infusions.add(infusion1);
-        Infusion infusion2 = new Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100);
+        final Infusion infusion2 = new Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100);
         infusions.add(infusion2);
         when(infusionRepository.getInfusionsByTeaId(TEA_ID_FILLED)).thenReturn(infusions);
     }

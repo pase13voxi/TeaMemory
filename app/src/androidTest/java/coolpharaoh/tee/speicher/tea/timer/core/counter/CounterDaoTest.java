@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.core.counter;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import android.content.Context;
 
 import androidx.room.Room;
@@ -19,8 +21,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-
 
 @RunWith(AndroidJUnit4.class)
 public class CounterDaoTest {
@@ -30,7 +30,7 @@ public class CounterDaoTest {
 
     @Before
     public void createDb() {
-        Context context = ApplicationProvider.getApplicationContext();
+        final Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
         counterDao = db.getCounterDao();
         teaDAO = db.getTeaDao();
@@ -43,54 +43,54 @@ public class CounterDaoTest {
 
     @Test
     public void insertCounter(){
-        long teaId = teaDAO.insert(createTea("name"));
+        final long teaId = teaDAO.insert(createTea("name"));
 
         assertThat(counterDao.getCounters()).hasSize(0);
 
-        Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterBefore);
 
         assertThat(counterDao.getCounters()).hasSize(1);
 
-        Counter counterAfter = counterDao.getCounterByTeaId(teaId);
+        final Counter counterAfter = counterDao.getCounterByTeaId(teaId);
         assertThat(counterAfter).isEqualToIgnoringGivenFields(counterBefore, "id");
     }
 
     @Test
     public void updateCounter(){
-        long teaId = teaDAO.insert(createTea("name"));
+        final long teaId = teaDAO.insert(createTea("name"));
 
-        Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterBefore = new Counter(teaId, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterBefore);
 
         assertThat(counterDao.getCounters()).hasSize(1);
 
-        Counter counterUpdate = counterDao.getCounterByTeaId(teaId);
+        final Counter counterUpdate = counterDao.getCounterByTeaId(teaId);
         counterUpdate.setDay(5);
         counterUpdate.setWeek(4);
         counterUpdate.setMonth(3);
         counterDao.update(counterUpdate);
 
-        Counter counterAfter = counterDao.getCounterByTeaId(teaId);
+        final Counter counterAfter = counterDao.getCounterByTeaId(teaId);
         assertThat(counterAfter).isEqualToComparingFieldByField(counterUpdate);
     }
 
     @Test
     public void getTeaCounterOverall() {
-        List<Tea> teas = insertTeas();
+        final List<Tea> teas = insertTeas();
 
-        Counter counterA = new Counter(teas.get(0).getId(), 4, 4, 4, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterA = new Counter(teas.get(0).getId(), 4, 4, 4, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teas.get(1).getId(), 3, 3, 3, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterB = new Counter(teas.get(1).getId(), 3, 3, 3, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teas.get(2).getId(), 2, 2, 2, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterC = new Counter(teas.get(2).getId(), 2, 2, 2, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teas.get(3).getId(), 1, 1, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterD = new Counter(teas.get(3).getId(), 1, 1, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
-        Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        List<StatisticsPOJO> counterOverall = counterDao.getTeaCounterOverall();
+        final List<StatisticsPOJO> counterOverall = counterDao.getTeaCounterOverall();
 
         assertThat(counterOverall).hasSize(4);
 
@@ -120,20 +120,20 @@ public class CounterDaoTest {
 
     @Test
     public void getTeaCounterMonth() {
-        List<Tea> teas = insertTeas();
+        final List<Tea> teas = insertTeas();
 
-        Counter counterA = new Counter(teas.get(0).getId(), 4, 4, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterA = new Counter(teas.get(0).getId(), 4, 4, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teas.get(1).getId(), 3, 3, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterB = new Counter(teas.get(1).getId(), 3, 3, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teas.get(2).getId(), 2, 2, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterC = new Counter(teas.get(2).getId(), 2, 2, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teas.get(3).getId(), 1, 1, 4, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterD = new Counter(teas.get(3).getId(), 1, 1, 4, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
-        Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        List<StatisticsPOJO> counterMonth = counterDao.getTeaCounterMonth();
+        final List<StatisticsPOJO> counterMonth = counterDao.getTeaCounterMonth();
 
         assertThat(counterMonth).hasSize(4);
 
@@ -153,20 +153,20 @@ public class CounterDaoTest {
 
     @Test
     public void getTeaCounterWeek() {
-        List<Tea> teas = insertTeas();
+        final List<Tea> teas = insertTeas();
 
-        Counter counterA = new Counter(teas.get(0).getId(), 4, 3, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterA = new Counter(teas.get(0).getId(), 4, 3, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teas.get(1).getId(), 3, 2, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterB = new Counter(teas.get(1).getId(), 3, 2, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teas.get(2).getId(), 2, 1, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterC = new Counter(teas.get(2).getId(), 2, 1, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teas.get(3).getId(), 1, 4, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterD = new Counter(teas.get(3).getId(), 1, 4, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
-        Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        List<StatisticsPOJO> counterWeek = counterDao.getTeaCounterWeek();
+        final List<StatisticsPOJO> counterWeek = counterDao.getTeaCounterWeek();
 
         assertThat(counterWeek).hasSize(4);
 
@@ -186,20 +186,20 @@ public class CounterDaoTest {
 
     @Test
     public void getTeaCounterDay() {
-        List<Tea> teas = insertTeas();
+        final List<Tea> teas = insertTeas();
 
-        Counter counterA = new Counter(teas.get(0).getId(), 2, 4, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterA = new Counter(teas.get(0).getId(), 2, 4, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterA);
-        Counter counterB = new Counter(teas.get(1).getId(), 4, 3, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterB = new Counter(teas.get(1).getId(), 4, 3, 3, 3, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterB);
-        Counter counterC = new Counter(teas.get(2).getId(), 3, 2, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterC = new Counter(teas.get(2).getId(), 3, 2, 2, 2, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterC);
-        Counter counterD = new Counter(teas.get(3).getId(), 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterD = new Counter(teas.get(3).getId(), 1, 1, 1, 1, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterD);
-        Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
+        final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        List<StatisticsPOJO> counterDay = counterDao.getTeaCounterDay();
+        final List<StatisticsPOJO> counterDay = counterDao.getTeaCounterDay();
 
         assertThat(counterDay).hasSize(4);
 
@@ -217,7 +217,7 @@ public class CounterDaoTest {
         assertThat(counterDay.get(0).teacolor).isEqualTo(teas.get(3).getColor());
     }
 
-    private Tea createTea(String name){
+    private Tea createTea(final String name) {
         return new Tea(name, "variety", 3, "ts", 15, 0, CurrentDate.getDate());
     }
 

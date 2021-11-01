@@ -25,23 +25,24 @@ public class Infusion {
     @ColumnInfo(name = "tea_id")
     private long teaId;
 
-    @ColumnInfo(name = "infusionindex")
+    @ColumnInfo(name = "infusion_index")
     private int infusionIndex;
 
     @ColumnInfo(name = "time")
     private String time;
 
-    @ColumnInfo(name = "cooldowntime")
+    @ColumnInfo(name = "cool_down_time")
     private String coolDownTime;
 
-    @ColumnInfo(name = "temperaturecelsius")
+    @ColumnInfo(name = "temperature_celsius")
     private int temperatureCelsius;
 
-    @ColumnInfo(name = "temperaturefahrenheit")
+    @ColumnInfo(name = "temperature_fahrenheit")
     private int temperatureFahrenheit;
 
     @Ignore
-    public Infusion(long teaId, int infusionIndex, String time, String coolDownTime, int temperatureCelsius, int temperatureFahrenheit) {
+    public Infusion(final long teaId, final int infusionIndex, final String time, final String coolDownTime,
+                    final int temperatureCelsius, final int temperatureFahrenheit) {
         this.teaId = teaId;
         this.infusionIndex = infusionIndex;
         this.time = time;

@@ -10,12 +10,12 @@ public class DateConverter {
     }
 
     @TypeConverter
-    public static Date toDate(Long dateLong) {
+    public static Date toDate(final Long dateLong) {
         return dateLong == null ? null : new Date(dateLong);
     }
 
     @TypeConverter
-    public static Long fromDate(Date date) {
+    public static Long fromDate(final Date date) {
         return date == null ? null : date.getTime();
     }
 }

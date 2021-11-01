@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 
 import org.junit.Before;
@@ -7,10 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InputValidatorTest {
@@ -38,8 +38,8 @@ public class InputValidatorTest {
 
     @Test
     public void nameIsValidReturnsFalse() {
-        char[] data = new char[350];
-        String largeName = new String(data);
+        final char[] data = new char[350];
+        final String largeName = new String(data);
         assertThat(inputValidator.nameIsValid(largeName)).isFalse();
     }
 
@@ -50,8 +50,8 @@ public class InputValidatorTest {
 
     @Test
     public void varietyIsValidReturnsFalse() {
-        char[] data = new char[50];
-        String largeVariety = new String(data);
+        final char[] data = new char[50];
+        final String largeVariety = new String(data);
         assertThat(inputValidator.varietyIsValid(largeVariety)).isFalse();
     }
 

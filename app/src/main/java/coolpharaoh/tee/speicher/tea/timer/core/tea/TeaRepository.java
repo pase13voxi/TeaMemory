@@ -9,16 +9,16 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 public class TeaRepository {
     private final TeaDao teaDao;
 
-    public TeaRepository(Application application) {
-        TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
+    public TeaRepository(final Application application) {
+        final TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
         teaDao = teaMemoryDatabase.getTeaDao();
     }
 
-    public long insertTea(Tea tea) {
+    public long insertTea(final Tea tea) {
         return teaDao.insert(tea);
     }
 
-    public void updateTea(Tea tea) {
+    public void updateTea(final Tea tea) {
         teaDao.update(tea);
     }
 
@@ -66,11 +66,11 @@ public class TeaRepository {
         }
     }
 
-    public Tea getTeaById(long id) {
+    public Tea getTeaById(final long id) {
         return teaDao.getTeaById(id);
     }
 
-    public List<Tea> getTeasBySearchString(String searchString) {
+    public List<Tea> getTeasBySearchString(final String searchString) {
         return teaDao.getTeasBySearchString(searchString);
     }
 }

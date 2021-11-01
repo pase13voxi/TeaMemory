@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.views.statistics;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
+
 import android.os.Build;
 
 import androidx.test.core.app.ActivityScenario;
@@ -27,10 +31,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 
 
 //could be removed when Robolectric supports Java 8 for API 29
@@ -67,9 +67,7 @@ public class StatisticsTest {
 
         final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
-        statisticsActivityScenario.onActivity(statistics -> {
-            checkExpectedItems(statistics, countSize);
-        });
+        statisticsActivityScenario.onActivity(statistics -> checkExpectedItems(statistics, countSize));
     }
 
     @Test
@@ -158,7 +156,7 @@ public class StatisticsTest {
         final List<StatisticsPOJO> statisticsPOJOS = new ArrayList<>();
 
         for (int count = 1; count <= itemCount; count++) {
-            StatisticsPOJO statistic = new StatisticsPOJO();
+            final StatisticsPOJO statistic = new StatisticsPOJO();
             statistic.teaname = name + count;
             statistic.teacolor = count;
             statistic.counter = count;

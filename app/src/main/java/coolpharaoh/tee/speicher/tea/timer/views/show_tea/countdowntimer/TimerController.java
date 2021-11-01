@@ -26,15 +26,15 @@ public class TimerController {
                 new BackgroundTimer(application, sharedPreferences));
     }
 
-    public TimerController(final Application application, ForegroundTimer foregroundTimer,
-                           SharedTimerPreferences sharedPreferences, BackgroundTimer backgroundTimer) {
+    public TimerController(final Application application, final ForegroundTimer foregroundTimer,
+                           final SharedTimerPreferences sharedPreferences, final BackgroundTimer backgroundTimer) {
         this.application = application;
         this.foregroundTimer = foregroundTimer;
         this.sharedPreferences = sharedPreferences;
         this.backgroundTimer = backgroundTimer;
     }
 
-    public void startForegroundTimer(long time, long teaId) {
+    public void startForegroundTimer(final long time, final long teaId) {
         this.teaId = teaId;
         this.time = time;
         initTimer();
@@ -66,7 +66,7 @@ public class TimerController {
     }
 
     private void initTimer() {
-        long startTime = sharedPreferences.getStartedTime();
+        final long startTime = sharedPreferences.getStartedTime();
         if (startTime > 0) {
             timeToStart = (time - (getNow() - startTime));
             if (timeToStart <= 0) {
@@ -84,17 +84,17 @@ public class TimerController {
         timerState = TimerState.RUNNING;
     }
 
-    void onTimerTick(long millisUntilFinished) {
+    void onTimerTick(final long millisUntilFinished) {
         broadcastIntent.putExtra("countdown", millisUntilFinished);
         broadcastIntent.putExtra("ready", false);
         application.sendBroadcast(broadcastIntent);
     }
 
     void onTimerFinish() {
-        Intent intent = new Intent();
+        final Intent intent = new Intent();
         intent.putExtra("teaId", teaId);
 
-        TeaCompleteReceiver receiver = new TeaCompleteReceiver();
+        final TeaCompleteReceiver receiver = new TeaCompleteReceiver();
         receiver.onReceive(application, intent);
 
         showTimerFinished();

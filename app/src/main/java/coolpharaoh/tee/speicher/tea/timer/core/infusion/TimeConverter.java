@@ -23,9 +23,9 @@ public class TimeConverter {
     }
 
     private void extractText() {
-        DecimalFormat formatter = new DecimalFormat("00");
-        String formattedMinutes = formatter.format(minutes);
-        String formattedSeconds = formatter.format(seconds);
+        final DecimalFormat formatter = new DecimalFormat("00");
+        final String formattedMinutes = formatter.format(minutes);
+        final String formattedSeconds = formatter.format(seconds);
         time = formattedMinutes + ":" + formattedSeconds;
     }
 
@@ -34,7 +34,7 @@ public class TimeConverter {
             minutes = 0;
             seconds = 0;
         } else {
-            String[] split = time.split(":");
+            final String[] split = time.split(":");
             minutes = Integer.parseInt(split[0]);
             if (split.length > 1) seconds = Integer.parseInt(split[1]);
             else seconds = 0;

@@ -35,9 +35,9 @@ public class RecyclerViewConfigurationDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        Activity activity = requireActivity();
-        ViewGroup parent = activity.findViewById(R.id.overview_parent);
-        LayoutInflater inflater = activity.getLayoutInflater();
+        final Activity activity = requireActivity();
+        final ViewGroup parent = activity.findViewById(R.id.overview_parent);
+        final LayoutInflater inflater = activity.getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_overview_list_configuration, parent, false);
 
         defineVarietyRadioGroup();
@@ -80,7 +80,7 @@ public class RecyclerViewConfigurationDialog extends DialogFragment {
                 }
         );
         varietyRadioButton.setButtonTintList(colorStateList);
-        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(dpToPixel(20), dpToPixel(10), 0, 0);
         varietyRadioButton.setLayoutParams(params);
         varietyRadioButton.setPadding(dpToPixel(15), 0, 0, 0);
@@ -88,7 +88,7 @@ public class RecyclerViewConfigurationDialog extends DialogFragment {
         return varietyRadioButton;
     }
 
-    private int dpToPixel(int dpValue) {
+    private int dpToPixel(final int dpValue) {
         final float density = getActivity().getApplication().getResources().getDisplayMetrics().density;
         return (int) (dpValue * density); // margin in pixels
     }
@@ -103,7 +103,7 @@ public class RecyclerViewConfigurationDialog extends DialogFragment {
     private List<RadioButton> getRadioButtons(final RadioGroup radioGroup) {
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View o = radioGroup.getChildAt(i);
+            final View o = radioGroup.getChildAt(i);
             if (o instanceof RadioButton) {
                 listRadioButtons.add((RadioButton) o);
             }

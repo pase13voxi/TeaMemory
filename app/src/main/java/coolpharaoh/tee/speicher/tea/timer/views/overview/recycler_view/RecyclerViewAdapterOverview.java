@@ -53,7 +53,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(final int position) {
         return recyclerItems.get(position).category != null ? 1 : 0;
     }
 
@@ -141,7 +141,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             inStock.setVisibility(isInStock(item));
         }
 
-        private int isInStock(RecyclerItemOverview item) {
+        private int isInStock(final RecyclerItemOverview item) {
             return item.isFavorite() ? View.VISIBLE : View.GONE;
         }
 

@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.core.counter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +15,6 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,7 +36,7 @@ public class CounterRepositoryTest {
 
     @Test
     public void insertCounter() {
-        Counter counter = new Counter();
+        final Counter counter = new Counter();
 
         counterRepository.insertCounter(counter);
 
@@ -45,7 +45,7 @@ public class CounterRepositoryTest {
 
     @Test
     public void updateCounter() {
-        Counter counter = new Counter();
+        final Counter counter = new Counter();
 
         counterRepository.updateCounter(counter);
 
@@ -56,7 +56,7 @@ public class CounterRepositoryTest {
     public void getCounters() {
         when(counterDao.getCounters()).thenReturn(Arrays.asList(new Counter(), new Counter()));
 
-        List<Counter> counters = counterRepository.getCounters();
+        final List<Counter> counters = counterRepository.getCounters();
 
         verify(counterDao).getCounters();
         assertThat(counters).hasSize(2);
@@ -64,11 +64,11 @@ public class CounterRepositoryTest {
 
     @Test
     public void getCounterByTeaId() {
-        int teaId = 2;
-        Counter counter = new Counter();
+        final int teaId = 2;
+        final Counter counter = new Counter();
         when(counterDao.getCounterByTeaId(teaId)).thenReturn(counter);
 
-        Counter counterByTeaId = counterRepository.getCounterByTeaId(teaId);
+        final Counter counterByTeaId = counterRepository.getCounterByTeaId(teaId);
 
         assertThat(counterByTeaId).isEqualTo(counter);
     }
@@ -77,7 +77,7 @@ public class CounterRepositoryTest {
     public void getTeaCounterOverall() {
         when(counterDao.getTeaCounterOverall()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
 
-        List<StatisticsPOJO> counters = counterRepository.getTeaCounterOverall();
+        final List<StatisticsPOJO> counters = counterRepository.getTeaCounterOverall();
 
         verify(counterDao).getTeaCounterOverall();
         assertThat(counters).hasSize(2);
@@ -87,7 +87,7 @@ public class CounterRepositoryTest {
     public void getTeaCounterMonth() {
         when(counterDao.getTeaCounterMonth()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
 
-        List<StatisticsPOJO> counters = counterRepository.getTeaCounterMonth();
+        final List<StatisticsPOJO> counters = counterRepository.getTeaCounterMonth();
 
         verify(counterDao).getTeaCounterMonth();
         assertThat(counters).hasSize(2);
@@ -97,7 +97,7 @@ public class CounterRepositoryTest {
     public void getTeaCounterWeek() {
         when(counterDao.getTeaCounterWeek()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
 
-        List<StatisticsPOJO> counters = counterRepository.getTeaCounterWeek();
+        final List<StatisticsPOJO> counters = counterRepository.getTeaCounterWeek();
 
         verify(counterDao).getTeaCounterWeek();
         assertThat(counters).hasSize(2);
@@ -107,7 +107,7 @@ public class CounterRepositoryTest {
     public void getTeaCounterDay() {
         when(counterDao.getTeaCounterDay()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
 
-        List<StatisticsPOJO> counters = counterRepository.getTeaCounterDay();
+        final List<StatisticsPOJO> counters = counterRepository.getTeaCounterDay();
 
         verify(counterDao).getTeaCounterDay();
         assertThat(counters).hasSize(2);

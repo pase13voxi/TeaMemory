@@ -15,12 +15,12 @@ public class NotificationService extends Service {
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(final Intent intent) {
         return null;
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
         super.onStartCommand(intent, flags, startId);
 
         showNotification(intent);
@@ -30,7 +30,7 @@ public class NotificationService extends Service {
         return START_REDELIVER_INTENT;
     }
 
-    private void showNotification(Intent intent) {
+    private void showNotification(final Intent intent) {
         notifier = new Notifier(getApplication(), intent.getLongExtra("teaId", 0));
         startForeground(NOTIFICATION_ID, notifier.getNotification());
     }
@@ -51,7 +51,7 @@ public class NotificationService extends Service {
 
         audioPlayer.reset();
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {
             throw new AssertionError("NotificationManager is null.");
         } else {

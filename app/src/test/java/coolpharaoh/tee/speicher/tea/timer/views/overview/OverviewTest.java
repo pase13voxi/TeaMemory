@@ -4,7 +4,6 @@ import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -18,7 +17,6 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.view.Menu;
 import android.view.View;
@@ -105,10 +103,7 @@ public class OverviewTest {
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
-        overviewActivityScenario.onActivity(overview -> {
-            checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
-            verify(actualSettingsDao).update(any());
-        });
+        overviewActivityScenario.onActivity(overview -> checkExpectedTeas(TEA_NAME_ACTIVITY, overview));
     }
 
     @Test
@@ -146,41 +141,6 @@ public class OverviewTest {
             shadowOf(getMainLooper()).idle();
 
             verify(actualSettingsDao).update(any());
-        });
-    }
-
-    @Test
-    public void launchActivityExpectRatingDialog() {
-        mockActualSettings(false, true, 20);
-
-        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
-        overviewActivityScenario.onActivity(overview -> {
-            final AlertDialog dialogRating = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(overview, dialogRating,
-                    R.string.overview_dialog_rating_header, R.string.overview_dialog_rating_description);
-            dialogRating.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
-
-            final Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + overview.getPackageName()));
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
-
-            assertThat(actual.getData()).isEqualTo(expected.getData());
-        });
-    }
-
-    @Test
-    public void launchActivityExpectRatingDialogClickNegative() {
-        mockActualSettings(false, true, 20);
-
-        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
-        overviewActivityScenario.onActivity(overview -> {
-            final AlertDialog dialogRating = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(overview, dialogRating,
-                    R.string.overview_dialog_rating_header, R.string.overview_dialog_rating_description);
-            dialogRating.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
-            shadowOf(getMainLooper()).idle();
-
-            verify(actualSettingsDao, times(2)).update(any());
         });
     }
 
@@ -273,7 +233,7 @@ public class OverviewTest {
     }
 
     @Test
-    public void enableShowFavoritesExpectFavoriteTeaList() {
+    public void enableShowTeasInStockExpectTeasInStock() {
         mockActualSettings();
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(teaList);
@@ -291,9 +251,6 @@ public class OverviewTest {
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-
-            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
-
             checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
         });
     }
@@ -301,7 +258,7 @@ public class OverviewTest {
     @Test
     public void changeSortModeToAlphabeticallyExpectTeaList() {
         mockActualSettings();
-        String teaName = "ALPHABETICALLY_";
+        final String teaName = "ALPHABETICALLY_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(teaList);
 
@@ -325,7 +282,7 @@ public class OverviewTest {
     @Test
     public void changeSortModeToVarietyExpectTeaList() {
         mockActualSettings();
-        String teaName = "VARIETY_";
+        final String teaName = "VARIETY_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByVariety()).thenReturn(teaList);
 
@@ -349,7 +306,7 @@ public class OverviewTest {
     @Test
     public void changeSortModeToRatingExpectTeaList() {
         mockActualSettings();
-        String teaName = "RATING_";
+        final String teaName = "RATING_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByRating()).thenReturn(teaList);
 
@@ -416,7 +373,7 @@ public class OverviewTest {
 
     @Test
     public void clickTeaExpectShowTeaActivity() {
-        int positionTea = 1;
+        final int positionTea = 1;
         mockActualSettings();
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
@@ -443,7 +400,7 @@ public class OverviewTest {
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
-        ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
             final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
             final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
@@ -463,7 +420,7 @@ public class OverviewTest {
     public void deleteTeaExpectDeletion() {
         final int teaPosition = 1;
         mockActualSettings();
-        String teaName = "TEA_";
+        final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -505,9 +462,9 @@ public class OverviewTest {
     private List<Tea> generateTeaList(final String name) {
         final List<Tea> teaList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            Tea tea = new Tea(name + i, "VARIETY", i, "AMOUNT_KIND", i, 0, CurrentDate.getDate());
+            final Tea tea = new Tea(name + i, "VARIETY", i, "AMOUNT_KIND", i, 0, CurrentDate.getDate());
             tea.setId((long) i);
-            tea.setFavorite(true);
+            tea.setInStock(true);
             teaList.add(tea);
         }
         return teaList;

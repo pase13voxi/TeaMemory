@@ -11,7 +11,7 @@ public class SharedTimerPreferences {
     private static final String START_TIME = "countdown_timer";
     private final SharedPreferences preferences;
 
-    public SharedTimerPreferences(Application application) {
+    public SharedTimerPreferences(final Application application) {
         preferences = PreferenceManager.getDefaultSharedPreferences(application);
         setStartedTime(0);
     }
@@ -20,8 +20,8 @@ public class SharedTimerPreferences {
         return preferences.getLong(START_TIME, 0);
     }
 
-    void setStartedTime(long startedTime) {
-        SharedPreferences.Editor editor = preferences.edit();
+    void setStartedTime(final long startedTime) {
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(START_TIME, startedTime);
         editor.apply();
     }

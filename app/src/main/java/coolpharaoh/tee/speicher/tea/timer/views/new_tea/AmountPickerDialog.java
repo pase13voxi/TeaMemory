@@ -1,5 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
+import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,9 +24,6 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
-
 public class AmountPickerDialog extends DialogFragment {
     public static final String TAG = "AmountPickerDialog";
 
@@ -39,9 +39,9 @@ public class AmountPickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        Activity activity = requireActivity();
-        ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        LayoutInflater inflater = activity.getLayoutInflater();
+        final Activity activity = requireActivity();
+        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
+        final LayoutInflater inflater = activity.getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_amount_picker, parent, false);
 
         setAmountPicker();

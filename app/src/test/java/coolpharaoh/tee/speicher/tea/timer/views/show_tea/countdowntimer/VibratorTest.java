@@ -1,5 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
@@ -17,12 +23,6 @@ import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 //could be removed when Robolectric supports Java 8 for API 29
 @Config(sdk = Build.VERSION_CODES.O_MR1)
@@ -46,7 +46,7 @@ public class VibratorTest {
     public void whenSettingVibrationIsFalseDoNothing() {
         when(timerViewModel.isVibration()).thenReturn(false);
 
-        Vibrator vibrator = new Vibrator(application, timerViewModel);
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
 
         verify(systemVibrator, times(0)).vibrate(any());
@@ -58,7 +58,7 @@ public class VibratorTest {
         when(timerViewModel.isVibration()).thenReturn(true);
         mockAudioManager(AudioManager.RINGER_MODE_SILENT);
 
-        Vibrator vibrator = new Vibrator(application, timerViewModel);
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
 
         verify(systemVibrator, times(0)).vibrate(any());
@@ -71,7 +71,7 @@ public class VibratorTest {
         when(timerViewModel.isVibration()).thenReturn(true);
         mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
 
-        Vibrator vibrator = new Vibrator(application, timerViewModel);
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
     }
 
@@ -83,7 +83,7 @@ public class VibratorTest {
         CurrentSdk.setFixedSystem(systemUtility);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
 
-        Vibrator vibrator = new Vibrator(application, timerViewModel);
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
 
         verify(systemVibrator).vibrate(any(VibrationEffect.class));
@@ -97,7 +97,7 @@ public class VibratorTest {
         CurrentSdk.setFixedSystem(systemUtility);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
 
-        Vibrator vibrator = new Vibrator(application, timerViewModel);
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
 
         verify(systemVibrator).vibrate(any(VibrationEffect.class));
@@ -111,7 +111,7 @@ public class VibratorTest {
         CurrentSdk.setFixedSystem(systemUtility);
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
 
-        Vibrator vibrator = new Vibrator(application, timerViewModel);
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
 
         verify(systemVibrator).vibrate(any(long[].class), eq(-1));

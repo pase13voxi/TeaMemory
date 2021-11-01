@@ -24,7 +24,7 @@ public class UpdateDescription extends AppCompatActivity {
     private LinearLayout dotLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
 
@@ -60,17 +60,17 @@ public class UpdateDescription extends AppCompatActivity {
 
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
-        public void onPageScrolled(int i, float v, int i1) {
+        public void onPageScrolled(final int i, final float v, final int i1) {
             // this functionality is not needed, but needs to be override
         }
 
         @Override
-        public void onPageSelected(int i) {
+        public void onPageSelected(final int i) {
             addDotsIndicator(i, slideImages.length);
         }
 
         @Override
-        public void onPageScrollStateChanged(int i) {
+        public void onPageScrollStateChanged(final int i) {
             // this functionality is not needed, but needs to be override
         }
     };

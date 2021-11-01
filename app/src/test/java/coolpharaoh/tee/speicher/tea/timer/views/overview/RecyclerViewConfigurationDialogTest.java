@@ -137,11 +137,11 @@ public class RecyclerViewConfigurationDialogTest {
         verify(overviewViewModel).setOverviewInStock(true);
     }
 
-    private List<RadioButton> getRadioButtons(AlertDialog dialog) {
+    private List<RadioButton> getRadioButtons(final AlertDialog dialog) {
         final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_overview_sort_mode);
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View o = radioGroup.getChildAt(i);
+            final View o = radioGroup.getChildAt(i);
             if (o instanceof RadioButton) {
                 listRadioButtons.add((RadioButton) o);
             }

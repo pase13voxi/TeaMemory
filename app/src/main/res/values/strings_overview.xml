@@ -31,11 +31,6 @@
     <string name="overview_dialog_update_positive">Show</string>
     <string name="overview_dialog_update_neutral">Later</string>
     <string name="overview_dialog_update_negative">No, thanks</string>
-    <string name="overview_dialog_rating_header">Rate this app</string>
-    <string name="overview_dialog_rating_description">Do you like the app? I would look forward to a review.</string>
-    <string name="overview_dialog_rating_positive">Rate now</string>
-    <string name="overview_dialog_rating_neutral">Later</string>
-    <string name="overview_dialog_rating_negative">No, thanks</string>
     <string name="overview_sort_header_star">%1$d \u2605</string>
     <string name="overview_sort_last_used_this_week">This week</string>
     <string name="overview_sort_last_used_this_month">This month</string>

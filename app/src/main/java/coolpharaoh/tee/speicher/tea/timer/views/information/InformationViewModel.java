@@ -35,7 +35,7 @@ class InformationViewModel extends ViewModel {
 
     @VisibleForTesting
     InformationViewModel(final long teaId, final TeaRepository teaRepository, final NoteRepository noteRepository,
-                         CounterRepository counterRepository) {
+                         final CounterRepository counterRepository) {
         this.teaRepository = teaRepository;
         this.noteRepository = noteRepository;
         this.counterRepository = counterRepository;
@@ -68,12 +68,12 @@ class InformationViewModel extends ViewModel {
 
     public boolean isInStock() {
         final Tea tea = teaRepository.getTeaById(teaId);
-        return tea.isFavorite();
+        return tea.isInStock();
     }
 
-    public void updateTeaInStock(boolean inStock) {
+    public void updateTeaInStock(final boolean inStock) {
         final Tea tea = teaRepository.getTeaById(teaId);
-        tea.setFavorite(inStock);
+        tea.setInStock(inStock);
         teaRepository.updateTea(tea);
     }
 
@@ -87,7 +87,7 @@ class InformationViewModel extends ViewModel {
         return details;
     }
 
-    Note getDetail(int position) {
+    Note getDetail(final int position) {
         return details.getValue().get(position);
     }
 
@@ -132,13 +132,13 @@ class InformationViewModel extends ViewModel {
         noteRepository.updateNote(notes);
     }
 
-    private void updateDetails(long teaId, NoteRepository noteRepository) {
+    private void updateDetails(final long teaId, final NoteRepository noteRepository) {
         details.setValue(noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId));
     }
 
     // Counter
     public Counter getCounter() {
-        Counter counter = getOrCreateCounter();
+        final Counter counter = getOrCreateCounter();
         RefreshCounter.refreshCounter(counter);
         counterRepository.updateCounter(counter);
         return counter;

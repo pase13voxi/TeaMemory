@@ -36,9 +36,9 @@ public class TimePickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        Activity activity = requireActivity();
-        ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        LayoutInflater inflater = activity.getLayoutInflater();
+        final Activity activity = requireActivity();
+        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
+        final LayoutInflater inflater = activity.getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_time_picker, parent, false);
 
         setTimePicker();

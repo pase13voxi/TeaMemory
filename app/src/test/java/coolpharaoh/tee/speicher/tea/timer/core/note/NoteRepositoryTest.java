@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.core.note;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,10 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,7 +36,7 @@ public class NoteRepositoryTest {
 
     @Test
     public void insertNote() {
-        Note note = new Note();
+        final Note note = new Note();
 
         noteRepository.insertNote(note);
 
@@ -45,7 +45,7 @@ public class NoteRepositoryTest {
 
     @Test
     public void updateNote() {
-        Note note = new Note();
+        final Note note = new Note();
 
         noteRepository.updateNote(note);
 
@@ -56,7 +56,7 @@ public class NoteRepositoryTest {
     public void getNotes() {
         when(noteDao.getNotes()).thenReturn(Arrays.asList(new Note(), new Note()));
 
-        List<Note> notes = noteRepository.getNotes();
+        final List<Note> notes = noteRepository.getNotes();
 
         verify(noteDao).getNotes();
         assertThat(notes).hasSize(2);
@@ -65,10 +65,10 @@ public class NoteRepositoryTest {
     @Test
     public void getNoteByTeaIdAndPosition() {
         final long teaId = 2;
-        Note note = new Note();
+        final Note note = new Note();
         when(noteDao.getNoteByTeaIdAndPosition(teaId, 1)).thenReturn(note);
 
-        Note noteByTeaId = noteRepository.getNoteByTeaIdAndPosition(teaId, 1);
+        final Note noteByTeaId = noteRepository.getNoteByTeaIdAndPosition(teaId, 1);
 
         assertThat(noteByTeaId).isEqualTo(note);
     }
@@ -76,10 +76,10 @@ public class NoteRepositoryTest {
     @Test
     public void getNotesByTeaIdAndPositionBiggerZero() {
         final long teaId = 2;
-        List<Note> notes = Arrays.asList(new Note(), new Note());
+        final List<Note> notes = Arrays.asList(new Note(), new Note());
         when(noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId)).thenReturn(notes);
 
-        List<Note> notesByTeaId = noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId);
+        final List<Note> notesByTeaId = noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId);
 
         assertThat(notesByTeaId).isEqualTo(notes);
     }

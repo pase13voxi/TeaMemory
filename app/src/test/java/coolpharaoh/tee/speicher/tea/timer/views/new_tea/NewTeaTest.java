@@ -137,7 +137,7 @@ public class NewTeaTest {
                     Tea::getAmount,
                     Tea::getAmountKind,
                     Tea::getRating,
-                    Tea::isFavorite
+                    Tea::isInStock
             ).containsExactly(
                     "Name", BLACK_TEA.getCode(), -15461296, -500.0, TEA_SPOON.getText(), 0, true
             );
@@ -557,14 +557,14 @@ public class NewTeaTest {
         });
     }
 
-    private void mockSettings(String temperatureUnit) {
-        ActualSettings actualSettings = new ActualSettings();
+    private void mockSettings(final String temperatureUnit) {
+        final ActualSettings actualSettings = new ActualSettings();
         actualSettings.setTemperatureUnit(temperatureUnit);
         when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
     }
 
     private Instant getFixedDate() {
-        Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
+        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
         return Instant.now(clock);
     }
 
@@ -572,7 +572,7 @@ public class NewTeaTest {
         final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_new_tea_variety_input);
         final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View o = radioGroup.getChildAt(i);
+            final View o = radioGroup.getChildAt(i);
             if (o instanceof RadioButton) {
                 listRadioButtons.add((RadioButton) o);
             }

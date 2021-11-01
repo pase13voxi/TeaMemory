@@ -65,7 +65,7 @@ public class RecyclerItemsHeaderStrategyVarietyTest {
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
             tea.setVariety("VARIETY" + i + 1);
-            tea.setFavorite(true);
+            tea.setInStock(true);
             teas.add(tea);
         }
         return teas;

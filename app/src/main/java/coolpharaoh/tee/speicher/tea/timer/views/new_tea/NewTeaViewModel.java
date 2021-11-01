@@ -34,20 +34,20 @@ class NewTeaViewModel {
     private Tea tea;
     private List<Infusion> infusions;
 
-    NewTeaViewModel(Application application) {
+    NewTeaViewModel(final Application application) {
         this(null, application, new TeaRepository(application),
                 new InfusionRepository(application), new ActualSettingsRepository(application));
     }
 
-    NewTeaViewModel(long teaId, Application application) {
+    NewTeaViewModel(final long teaId, final Application application) {
         this(teaId, application, new TeaRepository(application),
                 new InfusionRepository(application), new ActualSettingsRepository(application));
     }
 
     @VisibleForTesting
-    NewTeaViewModel(Long teaId, Application application, TeaRepository teaRepository,
-                    InfusionRepository infusionRepository,
-                    ActualSettingsRepository actualSettingsRepository) {
+    NewTeaViewModel(final Long teaId, final Application application, final TeaRepository teaRepository,
+                    final InfusionRepository infusionRepository,
+                    final ActualSettingsRepository actualSettingsRepository) {
         this.application = application;
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
@@ -56,7 +56,7 @@ class NewTeaViewModel {
         initializeTeaAndInfusions(teaId);
     }
 
-    private void initializeTeaAndInfusions(Long teaId) {
+    private void initializeTeaAndInfusions(final Long teaId) {
         infusionIndex = new MutableLiveData<>(0);
         if (teaId == null) {
             tea = new Tea();
@@ -65,7 +65,7 @@ class NewTeaViewModel {
             tea.setAmount(-500);
             tea.setAmountKind("Ts");
             tea.setRating(0);
-            tea.setFavorite(true);
+            tea.setInStock(true);
             infusions = new ArrayList<>();
             addInfusion();
         } else {

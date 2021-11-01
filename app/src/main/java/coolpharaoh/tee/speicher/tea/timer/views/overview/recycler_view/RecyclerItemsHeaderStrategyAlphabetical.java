@@ -17,7 +17,7 @@ public class RecyclerItemsHeaderStrategyAlphabetical implements RecyclerItemsHea
     }
 
     @Override
-    public List<RecyclerItemOverview> generateFrom(List<Tea> teaList) {
+    public List<RecyclerItemOverview> generateFrom(final List<Tea> teaList) {
 
         final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
         String lastFirstLetter = "";
@@ -28,7 +28,7 @@ public class RecyclerItemsHeaderStrategyAlphabetical implements RecyclerItemsHea
                 lastFirstLetter = firstLetter;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isFavorite()));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isInStock()));
         }
         return recyclerItems;
     }

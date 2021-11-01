@@ -8,7 +8,7 @@ public class RecyclerItem {
     private final String heading;
     private final String description;
 
-    public RecyclerItem(String heading, String description) {
+    public RecyclerItem(final String heading, final String description) {
         this.heading = heading;
         this.description = description;
     }

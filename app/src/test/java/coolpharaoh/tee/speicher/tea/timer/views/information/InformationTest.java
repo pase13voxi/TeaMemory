@@ -197,7 +197,7 @@ public class InformationTest {
 
             final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(captor.capture());
-            assertThat(captor.getValue().isFavorite()).isTrue();
+            assertThat(captor.getValue().isInStock()).isTrue();
         });
     }
 
@@ -368,7 +368,7 @@ public class InformationTest {
     private void createTea(final int rating, final boolean inStock) {
         final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, CurrentDate.getDate());
         tea.setRating(rating);
-        tea.setFavorite(inStock);
+        tea.setInStock(inStock);
         when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
     }
 
