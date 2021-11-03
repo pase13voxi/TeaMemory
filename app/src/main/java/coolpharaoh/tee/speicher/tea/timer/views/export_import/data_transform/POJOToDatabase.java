@@ -47,9 +47,9 @@ class POJOToDatabase {
 
     private void insertInfusions(final long teaId, final List<InfusionPOJO> infusionList) {
         for (final InfusionPOJO infusionPOJO : infusionList) {
-            dataTransformViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionindex(),
-                    infusionPOJO.getTime(), infusionPOJO.getCooldowntime(),
-                    infusionPOJO.getTemperaturecelsius(), infusionPOJO.getTemperaturefahrenheit()));
+            dataTransformViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionIndex(),
+                    infusionPOJO.getTime(), infusionPOJO.getCoolDownTime(),
+                    infusionPOJO.getTemperatureCelsius(), infusionPOJO.getTemperatureFahrenheit()));
         }
     }
 
@@ -57,7 +57,7 @@ class POJOToDatabase {
         for (final CounterPOJO counterPOJO : counterList) {
             dataTransformViewModel.insertCounter(new Counter(teaId, counterPOJO.getDay(),
                     counterPOJO.getWeek(), counterPOJO.getMonth(), counterPOJO.getOverall(),
-                    counterPOJO.getDaydate(), counterPOJO.getWeekdate(), counterPOJO.getMonthdate()));
+                    counterPOJO.getDayDate(), counterPOJO.getWeekDate(), counterPOJO.getMonthDate()));
         }
     }
 

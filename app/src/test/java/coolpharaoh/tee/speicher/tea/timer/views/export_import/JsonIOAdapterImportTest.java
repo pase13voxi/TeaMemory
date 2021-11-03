@@ -48,18 +48,18 @@ public class JsonIOAdapterImportTest {
             "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
             "      {\n" +
-            "        \"infusionindex\": 0,\n" +
+            "        \"infusionIndex\": 0,\n" +
             "        \"time\": \"2:00\",\n" +
-            "        \"cooldowntime\": \"5:00\",\n" +
-            "        \"temperaturecelsius\": 100,\n" +
-            "        \"temperaturefahrenheit\": 212\n" +
+            "        \"coolDownTime\": \"5:00\",\n" +
+            "        \"temperatureCelsius\": 100,\n" +
+            "        \"temperatureFahrenheit\": 212\n" +
             "      },\n" +
             "      {\n" +
-            "        \"infusionindex\": 1,\n" +
+            "        \"infusionIndex\": 1,\n" +
             "        \"time\": \"5:00\",\n" +
-            "        \"cooldowntime\": \"3:00\",\n" +
-            "        \"temperaturecelsius\": 90,\n" +
-            "        \"temperaturefahrenheit\": 195\n" +
+            "        \"coolDownTime\": \"3:00\",\n" +
+            "        \"temperatureCelsius\": 90,\n" +
+            "        \"temperatureFahrenheit\": 195\n" +
             "      }\n" +
             "    ],\n" +
             "    \"counters\": [\n" +
@@ -68,9 +68,9 @@ public class JsonIOAdapterImportTest {
             "        \"week\": 2,\n" +
             "        \"month\": 3,\n" +
             "        \"overall\": 4,\n" +
-            "        \"daydate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"weekdate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"monthdate\": \"2020-09-15T10:09:01.789\"\n" +
+            "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"monthDate\": \"2020-09-15T10:09:01.789\"\n" +
             "      }\n" +
             "    ],\n" +
             "    \"notes\": [\n" +
@@ -93,18 +93,18 @@ public class JsonIOAdapterImportTest {
             "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
             "    \"infusions\": [\n" +
             "      {\n" +
-            "        \"infusionindex\": 0,\n" +
+            "        \"infusionIndex\": 0,\n" +
             "        \"time\": \"6:00\",\n" +
-            "        \"cooldowntime\": \"5:00\",\n" +
-            "        \"temperaturecelsius\": 100,\n" +
-            "        \"temperaturefahrenheit\": 212\n" +
+            "        \"coolDownTime\": \"5:00\",\n" +
+            "        \"temperatureCelsius\": 100,\n" +
+            "        \"temperatureFahrenheit\": 212\n" +
             "      },\n" +
             "      {\n" +
-            "        \"infusionindex\": 1,\n" +
+            "        \"infusionIndex\": 1,\n" +
             "        \"time\": \"7:00\",\n" +
-            "        \"cooldowntime\": \"3:00\",\n" +
-            "        \"temperaturecelsius\": 90,\n" +
-            "        \"temperaturefahrenheit\": 195\n" +
+            "        \"coolDownTime\": \"3:00\",\n" +
+            "        \"temperatureCelsius\": 90,\n" +
+            "        \"temperatureFahrenheit\": 195\n" +
             "      }\n" +
             "    ],\n" +
             "    \"counters\": [\n" +
@@ -113,9 +113,9 @@ public class JsonIOAdapterImportTest {
             "        \"week\": 6,\n" +
             "        \"month\": 7,\n" +
             "        \"overall\": 8,\n" +
-            "        \"daydate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"weekdate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"monthdate\": \"2020-09-15T10:09:01.789\"\n" +
+            "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
+            "        \"monthDate\": \"2020-09-15T10:09:01.789\"\n" +
             "      }\n" +
             "    ],\n" +
             "    \"notes\": [\n" +

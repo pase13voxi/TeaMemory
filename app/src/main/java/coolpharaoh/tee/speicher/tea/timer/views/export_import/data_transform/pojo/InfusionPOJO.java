@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 public class InfusionPOJO {
 
-    private int infusionindex;
+    private int infusionIndex;
     private String time;
-    private String cooldowntime;
-    private int temperaturecelsius;
-    private int temperaturefahrenheit;
+    private String coolDownTime;
+    private int temperatureCelsius;
+    private int temperatureFahrenheit;
 }

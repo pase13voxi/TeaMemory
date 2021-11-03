@@ -47,14 +47,14 @@ public class StatisticsViewModelTest {
         final List<StatisticsPOJO> counterOverallBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
-        statisticsPOJO1.teaname = "TEA1";
-        statisticsPOJO1.teacolor = 15;
+        statisticsPOJO1.teaName = "TEA1";
+        statisticsPOJO1.teaColor = 15;
         statisticsPOJO1.counter = 15;
         counterOverallBefore.add(statisticsPOJO1);
 
         final StatisticsPOJO statisticsPOJO2 = new StatisticsPOJO();
-        statisticsPOJO2.teaname = "TEA2";
-        statisticsPOJO2.teacolor = 18;
+        statisticsPOJO2.teaName = "TEA2";
+        statisticsPOJO2.teaColor = 18;
         statisticsPOJO2.counter = 18;
         counterOverallBefore.add(statisticsPOJO2);
 
@@ -70,14 +70,14 @@ public class StatisticsViewModelTest {
         final List<StatisticsPOJO> counterMonthBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
-        statisticsPOJO1.teaname = "TEA1";
-        statisticsPOJO1.teacolor = 15;
+        statisticsPOJO1.teaName = "TEA1";
+        statisticsPOJO1.teaColor = 15;
         statisticsPOJO1.counter = 15;
         counterMonthBefore.add(statisticsPOJO1);
 
         final StatisticsPOJO statisticsPOJO2 = new StatisticsPOJO();
-        statisticsPOJO2.teaname = "TEA2";
-        statisticsPOJO2.teacolor = 18;
+        statisticsPOJO2.teaName = "TEA2";
+        statisticsPOJO2.teaColor = 18;
         statisticsPOJO2.counter = 18;
         counterMonthBefore.add(statisticsPOJO2);
 
@@ -93,14 +93,14 @@ public class StatisticsViewModelTest {
         final List<StatisticsPOJO> counterWeekBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
-        statisticsPOJO1.teaname = "TEA1";
-        statisticsPOJO1.teacolor = 15;
+        statisticsPOJO1.teaName = "TEA1";
+        statisticsPOJO1.teaColor = 15;
         statisticsPOJO1.counter = 15;
         counterWeekBefore.add(statisticsPOJO1);
 
         final StatisticsPOJO statisticsPOJO2 = new StatisticsPOJO();
-        statisticsPOJO2.teaname = "TEA2";
-        statisticsPOJO2.teacolor = 18;
+        statisticsPOJO2.teaName = "TEA2";
+        statisticsPOJO2.teaColor = 18;
         statisticsPOJO2.counter = 18;
         counterWeekBefore.add(statisticsPOJO2);
 
@@ -116,14 +116,14 @@ public class StatisticsViewModelTest {
         final List<StatisticsPOJO> counterDayBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
-        statisticsPOJO1.teaname = "TEA1";
-        statisticsPOJO1.teacolor = 15;
+        statisticsPOJO1.teaName = "TEA1";
+        statisticsPOJO1.teaColor = 15;
         statisticsPOJO1.counter = 15;
         counterDayBefore.add(statisticsPOJO1);
 
         final StatisticsPOJO statisticsPOJO2 = new StatisticsPOJO();
-        statisticsPOJO2.teaname = "TEA2";
-        statisticsPOJO2.teacolor = 18;
+        statisticsPOJO2.teaName = "TEA2";
+        statisticsPOJO2.teaColor = 18;
         statisticsPOJO2.counter = 18;
         counterDayBefore.add(statisticsPOJO2);
 

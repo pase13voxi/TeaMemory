@@ -68,11 +68,11 @@ class DatabaseToPOJO {
 
     private InfusionPOJO createInfusionPOJO(final Infusion infusion) {
         final InfusionPOJO infusionPOJO = new InfusionPOJO();
-        infusionPOJO.setInfusionindex(infusion.getInfusionIndex());
+        infusionPOJO.setInfusionIndex(infusion.getInfusionIndex());
         infusionPOJO.setTime(infusion.getTime());
-        infusionPOJO.setCooldowntime(infusion.getCoolDownTime());
-        infusionPOJO.setTemperaturecelsius(infusion.getTemperatureCelsius());
-        infusionPOJO.setTemperaturefahrenheit(infusion.getTemperatureFahrenheit());
+        infusionPOJO.setCoolDownTime(infusion.getCoolDownTime());
+        infusionPOJO.setTemperatureCelsius(infusion.getTemperatureCelsius());
+        infusionPOJO.setTemperatureFahrenheit(infusion.getTemperatureFahrenheit());
         return infusionPOJO;
     }
 
@@ -94,9 +94,9 @@ class DatabaseToPOJO {
         counterPOJO.setWeek(counter.getWeek());
         counterPOJO.setMonth(counter.getMonth());
         counterPOJO.setOverall(counter.getOverall());
-        counterPOJO.setDaydate(counter.getDayDate());
-        counterPOJO.setWeekdate(counter.getWeekDate());
-        counterPOJO.setMonthdate(counter.getMonthDate());
+        counterPOJO.setDayDate(counter.getDayDate());
+        counterPOJO.setWeekDate(counter.getWeekDate());
+        counterPOJO.setMonthDate(counter.getMonthDate());
         return counterPOJO;
     }
 

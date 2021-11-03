@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 
 public class StatisticsPOJO {
     @ColumnInfo(name = "name")
-    public String teaname;
+    public String teaName;
 
     @ColumnInfo(name = "color")
-    public int teacolor;
+    public int teaColor;
 
     @ColumnInfo(name = "counter")
     public long counter;

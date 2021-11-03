@@ -157,8 +157,8 @@ public class StatisticsTest {
 
         for (int count = 1; count <= itemCount; count++) {
             final StatisticsPOJO statistic = new StatisticsPOJO();
-            statistic.teaname = name + count;
-            statistic.teacolor = count;
+            statistic.teaName = name + count;
+            statistic.teaColor = count;
             statistic.counter = count;
             statisticsPOJOS.add(statistic);
         }

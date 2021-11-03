@@ -14,7 +14,7 @@ public class CounterPOJO {
     private int week;
     private int month;
     private long overall;
-    private Date daydate;
-    private Date weekdate;
-    private Date monthdate;
+    private Date dayDate;
+    private Date weekDate;
+    private Date monthDate;
 }

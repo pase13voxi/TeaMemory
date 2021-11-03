@@ -108,7 +108,7 @@ public class HorizontalBarGraph {
 
         final ArrayList<String> values = new ArrayList<>();
         for (final StatisticsPOJO statistic : statistics) {
-            final String teaName = truncateLongText(statistic.teaname, 5);
+            final String teaName = truncateLongText(statistic.teaName, 5);
             values.add(teaName);
         }
 
@@ -161,7 +161,7 @@ public class HorizontalBarGraph {
     private List<Integer> setBarColors(final List<StatisticsPOJO> statistics, final BarDataSet barDataSet) {
         final List<Integer> colors = new ArrayList<>();
         for (int i = 0; i < statistics.size(); i++) {
-            colors.add(statistics.get(i).teacolor);
+            colors.add(statistics.get(i).teaColor);
         }
         barDataSet.setColors(colors);
         return colors;

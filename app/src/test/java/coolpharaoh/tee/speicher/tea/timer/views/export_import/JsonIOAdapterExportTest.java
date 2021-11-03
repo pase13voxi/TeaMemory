@@ -47,18 +47,18 @@ public class JsonIOAdapterExportTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1.5," +
             "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"inStock\":true,\"nextInfusion\":1," +
-            "\"date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"2:00\",\"cooldowntime\":" +
-            "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\"" +
-            ":1,\"time\":\"5:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
-            ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"daydate\":\"DATE\"," +
-            "\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
+            "\"date\":\"DATE\",\"infusions\":[{\"infusionIndex\":0,\"time\":\"2:00\",\"coolDownTime\":" +
+            "\"5:00\",\"temperatureCelsius\":100,\"temperatureFahrenheit\":212},{\"infusionIndex\"" +
+            ":1,\"time\":\"5:00\",\"coolDownTime\":\"3:00\",\"temperatureCelsius\":90,\"temperatureFahrenheit\"" +
+            ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"dayDate\":\"DATE\"," +
+            "\"weekDate\":\"DATE\",\"monthDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
             ",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\"" +
             ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"inStock\":false,\"nextInfusion\":2,\"" +
-            "date\":\"DATE\",\"infusions\":[{\"infusionindex\":0,\"time\":\"6:00\",\"cooldowntime\":" +
-            "\"5:00\",\"temperaturecelsius\":100,\"temperaturefahrenheit\":212},{\"infusionindex\":1," +
-            "\"time\":\"7:00\",\"cooldowntime\":\"3:00\",\"temperaturecelsius\":90,\"temperaturefahrenheit\"" +
-            ":195}],\"counters\":[{\"day\":5,\"week\":6,\"month\":7,\"overall\":8,\"daydate\":\"DATE\"," +
-            "\"weekdate\":\"DATE\",\"monthdate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"," +
+            "date\":\"DATE\",\"infusions\":[{\"infusionIndex\":0,\"time\":\"6:00\",\"coolDownTime\":" +
+            "\"5:00\",\"temperatureCelsius\":100,\"temperatureFahrenheit\":212},{\"infusionIndex\":1," +
+            "\"time\":\"7:00\",\"coolDownTime\":\"3:00\",\"temperatureCelsius\":90,\"temperatureFahrenheit\"" +
+            ":195}],\"counters\":[{\"day\":5,\"week\":6,\"month\":7,\"overall\":8,\"dayDate\":\"DATE\"," +
+            "\"weekDate\":\"DATE\",\"monthDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"," +
             "\"description\":\"Description\"}]}]";
 
     private String exportedDate;
