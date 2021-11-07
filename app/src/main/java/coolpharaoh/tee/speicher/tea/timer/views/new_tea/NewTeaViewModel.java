@@ -13,7 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
@@ -28,7 +28,7 @@ class NewTeaViewModel {
 
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
-    private final ActualSettingsRepository actualSettingsRepository;
+    private final SharedSettings sharedSettings;
 
     private MutableLiveData<Integer> infusionIndex;
     private Tea tea;
@@ -36,22 +36,22 @@ class NewTeaViewModel {
 
     NewTeaViewModel(final Application application) {
         this(null, application, new TeaRepository(application),
-                new InfusionRepository(application), new ActualSettingsRepository(application));
+                new InfusionRepository(application), new SharedSettings(application));
     }
 
     NewTeaViewModel(final long teaId, final Application application) {
         this(teaId, application, new TeaRepository(application),
-                new InfusionRepository(application), new ActualSettingsRepository(application));
+                new InfusionRepository(application), new SharedSettings(application));
     }
 
     @VisibleForTesting
     NewTeaViewModel(final Long teaId, final Application application, final TeaRepository teaRepository,
                     final InfusionRepository infusionRepository,
-                    final ActualSettingsRepository actualSettingsRepository) {
+                    final SharedSettings sharedSettings) {
         this.application = application;
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
-        this.actualSettingsRepository = actualSettingsRepository;
+        this.sharedSettings = sharedSettings;
 
         initializeTeaAndInfusions(teaId);
     }
@@ -213,7 +213,7 @@ class NewTeaViewModel {
 
     // Settings
     TemperatureUnit getTemperatureUnit() {
-        return TemperatureUnit.fromText(actualSettingsRepository.getSettings().getTemperatureUnit());
+        return sharedSettings.getTemperatureUnit();
     }
 
     // Overall

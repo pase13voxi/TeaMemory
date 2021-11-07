@@ -8,8 +8,7 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.Date;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
@@ -29,26 +28,26 @@ class ShowTeaViewModel {
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
     private final CounterRepository counterRepository;
-    private final ActualSettingsRepository actualSettingsRepository;
+    private final SharedSettings sharedSettings;
 
     private final long teaId;
     private int infusionIndex = 0;
 
     ShowTeaViewModel(final long teaId, final Application application) {
         this(teaId, application, new TeaRepository(application), new InfusionRepository(application),
-                new CounterRepository(application), new ActualSettingsRepository(application));
+                new CounterRepository(application), new SharedSettings(application));
     }
 
     @VisibleForTesting
     ShowTeaViewModel(final long teaId, final Application application, final TeaRepository teaRepository,
                      final InfusionRepository infusionRepository, final CounterRepository counterRepository,
-                     final ActualSettingsRepository actualSettingsRepository) {
+                     final SharedSettings sharedSettings) {
         this.teaId = teaId;
         this.application = application;
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.counterRepository = counterRepository;
-        this.actualSettingsRepository = actualSettingsRepository;
+        this.sharedSettings = sharedSettings;
     }
 
     // Tea
@@ -185,20 +184,18 @@ class ShowTeaViewModel {
 
     // Settings
     boolean isAnimation() {
-        return actualSettingsRepository.getSettings().isAnimation();
+        return sharedSettings.isAnimation();
     }
 
-    boolean isShowteaAlert() {
-        return actualSettingsRepository.getSettings().isShowTeaAlert();
+    boolean isShowTeaAlert() {
+        return sharedSettings.isShowTeaAlert();
     }
 
-    void setShowteaAlert(final boolean showteaalert) {
-        final ActualSettings actualSettings = actualSettingsRepository.getSettings();
-        actualSettings.setShowTeaAlert(showteaalert);
-        actualSettingsRepository.updateSettings(actualSettings);
+    void setShowTeaAlert(final boolean showTeaAlert) {
+        sharedSettings.setShowTeaAlert(showTeaAlert);
     }
 
     TemperatureUnit getTemperatureUnit() {
-        return TemperatureUnit.fromText(actualSettingsRepository.getSettings().getTemperatureUnit());
+        return sharedSettings.getTemperatureUnit();
     }
 }

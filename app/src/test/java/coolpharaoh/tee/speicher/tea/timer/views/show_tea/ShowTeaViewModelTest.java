@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
@@ -27,8 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
@@ -56,7 +56,7 @@ public class ShowTeaViewModelTest {
     @Mock
     CounterRepository counterRepository;
     @Mock
-    ActualSettingsRepository actualSettingsRepository;
+    SharedSettings sharedSettings;
     @Mock
     DateUtility dateUtility;
 
@@ -65,7 +65,7 @@ public class ShowTeaViewModelTest {
     @Before
     public void setUp() {
         showTeaViewModel = new ShowTeaViewModel(TEA_ID, application, teaRepository, infusionRepository,
-                counterRepository, actualSettingsRepository);
+                counterRepository, sharedSettings);
     }
 
     @Test
@@ -272,9 +272,7 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void navigateBetweenInfusions() {
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureUnit("Celsius");
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         final List<Infusion> infusions = new ArrayList<>();
         final Infusion infusion1 = new Infusion(1L, 1, "1", "2", 1, 32);
@@ -315,7 +313,7 @@ public class ShowTeaViewModelTest {
         assertThat(coolDownTime2.getSeconds()).isEqualTo(30);
         assertThat(temperature2).isEqualTo(infusions.get(1).getTemperatureCelsius());
 
-        actualSettings.setTemperatureUnit(FAHRENHEIT.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
         showTeaViewModel.setInfusionIndex(0);
         assertThat(showTeaViewModel.getInfusionIndex()).isZero();
 
@@ -381,44 +379,29 @@ public class ShowTeaViewModelTest {
 
     @Test
     public void isAnimation() {
-        final boolean animationBefore = true;
+        final boolean animation = true;
 
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setAnimation(animationBefore);
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        when(sharedSettings.isAnimation()).thenReturn(animation);
 
-        final boolean animationAfter = showTeaViewModel.isAnimation();
-
-        assertThat(animationAfter).isEqualTo(animationBefore);
+        assertThat(showTeaViewModel.isAnimation()).isEqualTo(animation);
     }
 
     @Test
     public void isShowTeaAlert() {
-        final boolean showTeaAlertBefore = true;
+        final boolean showTeaAlert = true;
 
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setShowTeaAlert(showTeaAlertBefore);
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        when(sharedSettings.isShowTeaAlert()).thenReturn(showTeaAlert);
 
-        final boolean showTeaAlertAfter = showTeaViewModel.isShowteaAlert();
-
-        assertThat(showTeaAlertAfter).isEqualTo(showTeaAlertBefore);
+        assertThat(showTeaViewModel.isShowTeaAlert()).isEqualTo(showTeaAlert);
     }
 
     @Test
     public void setShowTeaAlert() {
-        final boolean showTeaAlertBefore = true;
+        final boolean showTeaAlert = true;
 
-        final ActualSettings actualSettings = new ActualSettings();
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        showTeaViewModel.setShowTeaAlert(showTeaAlert);
 
-        showTeaViewModel.setShowteaAlert(showTeaAlertBefore);
-
-        final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
-        verify(actualSettingsRepository).updateSettings((captor.capture()));
-        final ActualSettings actualSettingsAfter = captor.getValue();
-
-        assertThat(actualSettingsAfter.isShowTeaAlert()).isEqualTo(showTeaAlertBefore);
+        verify(sharedSettings).setShowTeaAlert(showTeaAlert);
     }
 
     private Date mockFixedDate() {

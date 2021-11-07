@@ -9,18 +9,18 @@ public class SortModeTest {
     @Test
     public void getIndexVariety() {
         final SortMode sortMode = SortMode.BY_VARIETY;
-        assertThat(sortMode.getIndex()).isEqualTo(2);
+        assertThat(sortMode.getChoice()).isEqualTo(2);
     }
 
     @Test
     public void sortModeFromIndexTwo() {
-        final SortMode sortMode = SortMode.fromIndex(2);
+        final SortMode sortMode = SortMode.fromChoice(2);
         assertThat(sortMode).isEqualTo(SortMode.BY_VARIETY);
     }
 
     @Test
     public void temperatureUnitFromTextNotDefined() {
-        final SortMode sortMode = SortMode.fromIndex(5);
+        final SortMode sortMode = SortMode.fromChoice(5);
         assertThat(sortMode).isEqualTo(SortMode.LAST_USED);
     }
 }

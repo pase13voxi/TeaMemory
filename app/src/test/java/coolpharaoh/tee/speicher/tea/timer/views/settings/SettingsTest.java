@@ -5,7 +5,6 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -37,20 +36,16 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 
-import java.util.List;
-
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
@@ -71,6 +66,8 @@ public class SettingsTest {
     private static final int OPTION_OFF = 1;
     private static final String ON = "On";
     private static final String OFF = "Off";
+    private static final String CELSIUS_TEXT = "Celsius";
+    private static final String FAHRENHEIT_TEXT = "Fahrenheit";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -78,33 +75,30 @@ public class SettingsTest {
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     TeaDao teaDao;
-    @Mock
-    ActualSettingsDao actualSettingsDao;
 
-    ActualSettings actualSettings;
-
-    private final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
+    private SharedSettings sharedSettings;
 
     @Before
     public void setUp() {
         mockDB();
+        setSharedSettings();
     }
 
     private void mockDB() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
+    }
 
-        actualSettings = new ActualSettings();
-        actualSettings.setMusicChoice("musicChoice");
-        actualSettings.setMusicName("MusicName");
-        actualSettings.setVibration(true);
-        actualSettings.setAnimation(true);
-        actualSettings.setTemperatureUnit(CELSIUS.getText());
-        actualSettings.setMainRateAlert(false);
-        actualSettings.setShowTeaAlert(false);
-        actualSettings.setSettingsPermissionAlert(false);
-        when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
+    private void setSharedSettings() {
+        sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
+        sharedSettings.setMusicChoice("musicChoice");
+        sharedSettings.setMusicName("MusicName");
+        sharedSettings.setVibration(true);
+        sharedSettings.setAnimation(true);
+        sharedSettings.setTemperatureUnit(CELSIUS);
+        sharedSettings.setShowTeaAlert(false);
+        sharedSettings.setOverviewUpdateAlert(false);
+        sharedSettings.setSettingsPermissionAlert(false);
     }
 
     @Test
@@ -115,19 +109,19 @@ public class SettingsTest {
 
             scrollToPosition(settingsRecyclerView, ALARM);
             checkHeadingAtPosition(settingsRecyclerView, ALARM, settings.getString(R.string.settings_alarm));
-            checkDescriptionAtPosition(settingsRecyclerView, ALARM, actualSettings.getMusicName());
+            checkDescriptionAtPosition(settingsRecyclerView, ALARM, sharedSettings.getMusicName());
 
             scrollToPosition(settingsRecyclerView, VIBRATION);
             checkHeadingAtPosition(settingsRecyclerView, VIBRATION, settings.getString(R.string.settings_vibration));
-            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, actualSettings.isVibration() ? ON : OFF);
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, sharedSettings.isVibration() ? ON : OFF);
 
             scrollToPosition(settingsRecyclerView, ANIMATION);
             checkHeadingAtPosition(settingsRecyclerView, ANIMATION, settings.getString(R.string.settings_animation));
-            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, actualSettings.isAnimation() ? ON : OFF);
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, sharedSettings.isAnimation() ? ON : OFF);
 
             scrollToPosition(settingsRecyclerView, TEMPERATURE_UNIT);
             checkHeadingAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, settings.getString(R.string.settings_temperature_unit));
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, actualSettings.getTemperatureUnit());
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS_TEXT);
 
             scrollToPosition(settingsRecyclerView, OVERVIEW_HEADER);
             checkHeadingAtPosition(settingsRecyclerView, OVERVIEW_HEADER, settings.getString(R.string.settings_overview_header));
@@ -174,9 +168,7 @@ public class SettingsTest {
             shadowAlertDialog.clickOnItem(OPTION_OFF);
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.isVibration()).isFalse();
+            assertThat(sharedSettings.isVibration()).isFalse();
 
             checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, OFF);
         });
@@ -194,9 +186,7 @@ public class SettingsTest {
             shadowAlertDialog.clickOnItem(OPTION_ON);
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.isVibration()).isTrue();
+            assertThat(sharedSettings.isVibration()).isTrue();
 
             checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, ON);
         });
@@ -214,9 +204,7 @@ public class SettingsTest {
             shadowAlertDialog.clickOnItem(OPTION_OFF);
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.isAnimation()).isFalse();
+            assertThat(sharedSettings.isAnimation()).isFalse();
 
             checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, OFF);
         });
@@ -234,9 +222,7 @@ public class SettingsTest {
             shadowAlertDialog.clickOnItem(OPTION_ON);
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.isAnimation()).isTrue();
+            assertThat(sharedSettings.isAnimation()).isTrue();
 
             checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, ON);
         });
@@ -254,11 +240,9 @@ public class SettingsTest {
             shadowAlertDialog.clickOnItem(CELSIUS.getChoice());
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(CELSIUS.getText());
+            assertThat(sharedSettings.getTemperatureUnit()).isEqualTo(CELSIUS);
 
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS.getText());
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS_TEXT);
         });
     }
 
@@ -274,11 +258,9 @@ public class SettingsTest {
             shadowAlertDialog.clickOnItem(FAHRENHEIT.getChoice());
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT.getText());
+            assertThat(sharedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
 
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT.getText());
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT_TEXT);
         });
     }
 
@@ -416,12 +398,9 @@ public class SettingsTest {
             accept.performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao, times(3)).update(captor.capture());
-            final List<ActualSettings> updatedSettings = captor.getAllValues();
-
-            assertThat(updatedSettings.get(2).isMainUpdateAlert()).isTrue();
-            assertThat(updatedSettings.get(2).isShowTeaAlert()).isTrue();
-            assertThat(updatedSettings.get(2).isSettingsPermissionAlert()).isTrue();
+            assertThat(sharedSettings.isOverviewUpdateAlert()).isTrue();
+            assertThat(sharedSettings.isShowTeaAlert()).isTrue();
+            assertThat(sharedSettings.isSettingsPermissionAlert()).isTrue();
         });
     }
 
@@ -438,9 +417,7 @@ public class SettingsTest {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(captor.capture());
-            final ActualSettings updatedSettings = captor.getValue();
-            assertThat(updatedSettings.getMusicName()).isEqualTo("Default");
+            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
 
             verify(teaDao).deleteAll();
         });

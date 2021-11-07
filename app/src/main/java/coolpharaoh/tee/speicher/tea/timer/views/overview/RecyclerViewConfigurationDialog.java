@@ -97,7 +97,7 @@ public class RecyclerViewConfigurationDialog extends DialogFragment {
         final SortMode sortMode = overviewViewModel.getSort();
         final List<RadioButton> radioButtons = getRadioButtons(varietyRadioGroup);
 
-        radioButtons.get(sortMode.getIndex()).setChecked(true);
+        radioButtons.get(sortMode.getChoice()).setChecked(true);
     }
 
     private List<RadioButton> getRadioButtons(final RadioGroup radioGroup) {
@@ -129,7 +129,7 @@ public class RecyclerViewConfigurationDialog extends DialogFragment {
         SortMode sortMode = SortMode.LAST_USED;
         for (int i = 0; i < radioButtons.size(); i++) {
             if (radioButtons.get(i).isChecked()) {
-                sortMode = SortMode.fromIndex(i);
+                sortMode = SortMode.fromChoice(i);
             }
         }
         return sortMode;

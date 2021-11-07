@@ -14,11 +14,11 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ServiceController;
 import org.robolectric.annotation.Config;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
@@ -33,8 +33,6 @@ public class NotificationServiceTest {
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     TeaDao teaDao;
-    @Mock
-    ActualSettingsDao actualSettingsDao;
 
     @Test
     public void bind() {
@@ -65,13 +63,12 @@ public class NotificationServiceTest {
     private void mockDB() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
         final Tea tea = new Tea();
         tea.setName("Tea");
         when(teaDao.getTeaById(1L)).thenReturn(tea);
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setVibration(false);
-        actualSettings.setMusicChoice(null);
-        when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
+
+        final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
+        sharedSettings.setMusicChoice(null);
+        sharedSettings.setVibration(false);
     }
 }

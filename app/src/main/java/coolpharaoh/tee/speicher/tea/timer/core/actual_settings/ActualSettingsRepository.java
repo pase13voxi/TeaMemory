@@ -4,6 +4,7 @@ import android.app.Application;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
+// Could be removed after the successful migration (In half a year 1.6.2022)
 public class ActualSettingsRepository {
     private final ActualSettingsDao actualSettingsDao;
 

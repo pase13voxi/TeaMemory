@@ -19,6 +19,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -30,11 +31,9 @@ class OverviewViewModel extends ViewModel {
 
     private final TeaRepository teaRepository;
     private final InfusionRepository infusionRepository;
-    private final ActualSettingsRepository actualSettingsRepository;
     private final SharedSettings sharedSettings;
 
     private final MutableLiveData<List<Tea>> teas;
-    private final ActualSettings actualSettings;
     private boolean searchMode = false;
 
     OverviewViewModel(final Application application) {
@@ -47,18 +46,37 @@ class OverviewViewModel extends ViewModel {
                       final ActualSettingsRepository actualSettingsRepository, final SharedSettings sharedSettings) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
-        this.actualSettingsRepository = actualSettingsRepository;
         this.sharedSettings = sharedSettings;
 
-        if (actualSettingsRepository.getCountItems() == 0) {
+        migrateActualSettingsToSharedSettings(actualSettingsRepository);
+
+        if (sharedSettings.isFirstStart()) {
             createDefaultTeas(application);
-            createDefaultSettings();
+            sharedSettings.setFactorySettings();
         }
 
-        actualSettings = actualSettingsRepository.getSettings();
         teas = new MutableLiveData<>();
 
         refreshTeas();
+    }
+
+    // Could be removed after the successful migration (In half a year 1.6.2022)
+    private void migrateActualSettingsToSharedSettings(final ActualSettingsRepository actualSettingsRepository) {
+        if (!sharedSettings.isMigrated() && actualSettingsRepository.getCountItems() > 0) {
+            final ActualSettings settings = actualSettingsRepository.getSettings();
+
+            sharedSettings.setFirstStart(false);
+            sharedSettings.setMusicChoice(settings.getMusicChoice());
+            sharedSettings.setMusicName(settings.getMusicName());
+            sharedSettings.setVibration(settings.isVibration());
+            sharedSettings.setAnimation(settings.isAnimation());
+            sharedSettings.setTemperatureUnit(TemperatureUnit.fromText(settings.getTemperatureUnit()));
+            sharedSettings.setOverviewUpdateAlert(settings.isMainUpdateAlert());
+            sharedSettings.setShowTeaAlert(settings.isShowTeaAlert());
+            sharedSettings.setSettingsPermissionAlert(settings.isSettingsPermissionAlert());
+            sharedSettings.setSortMode(SortMode.fromChoice(settings.getSort()));
+            sharedSettings.setMigrated(true);
+        }
     }
 
     // Defaults
@@ -77,22 +95,6 @@ class OverviewViewModel extends ViewModel {
         final long teaId3 = teaRepository.insertTea(tea3);
         final Infusion infusion3 = new Infusion(teaId3, 0, "1:30", TemperatureConversation.celsiusToCoolDownTime(80), 80, TemperatureConversation.celsiusToFahrenheit(80));
         infusionRepository.insertInfusion(infusion3);
-    }
-
-    private void createDefaultSettings(){
-        final ActualSettings defaultSettings = new ActualSettings();
-        defaultSettings.setMusicChoice("content://settings/system/ringtone");
-        defaultSettings.setMusicName("Default");
-        defaultSettings.setVibration(true);
-        defaultSettings.setAnimation(true);
-        defaultSettings.setTemperatureUnit("Celsius");
-        defaultSettings.setMainRateAlert(true);
-        defaultSettings.setMainRateCounter(0);
-        defaultSettings.setMainUpdateAlert(false);
-        defaultSettings.setShowTeaAlert(true);
-        defaultSettings.setSettingsPermissionAlert(true);
-        defaultSettings.setSort(0);
-        actualSettingsRepository.insertSettings(defaultSettings);
     }
 
     // Teas
@@ -130,12 +132,11 @@ class OverviewViewModel extends ViewModel {
 
     // Settings
     SortMode getSort() {
-        return SortMode.fromIndex(actualSettings.getSort());
+        return sharedSettings.getSortMode();
     }
 
     void setSort(final SortMode sortMode) {
-        actualSettings.setSort(sortMode.getIndex());
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setSortMode(sortMode);
 
         refreshTeas();
     }
@@ -155,35 +156,34 @@ class OverviewViewModel extends ViewModel {
     }
 
     int getSortWithHeader() {
-        return isOverviewHeader() && !searchMode ? getSort().getIndex() : -1;
+        return isOverviewHeader() && !searchMode ? getSort().getChoice() : -1;
     }
 
-    boolean isMainUpdateAlert() {
-        return actualSettings.isMainUpdateAlert();
+    boolean isOverviewUpdateAlert() {
+        return sharedSettings.isOverviewUpdateAlert();
     }
 
-    void setMainUpdateAlert(final boolean updateAlert) {
-        actualSettings.setMainUpdateAlert(updateAlert);
-        actualSettingsRepository.updateSettings(actualSettings);
+    void setOverviewUpdateAlert(final boolean updateAlert) {
+        sharedSettings.setOverviewUpdateAlert(updateAlert);
     }
 
     void refreshTeas() {
         searchMode = false;
-        switch (actualSettings.getSort()) {
+        switch (sharedSettings.getSortMode()) {
             //activity
-            case 0:
+            case LAST_USED:
                 teas.setValue(teaRepository.getTeasOrderByActivity(isOverViewInStock()));
                 break;
             //alphabetic
-            case 1:
+            case ALPHABETICAL:
                 teas.setValue(teaRepository.getTeasOrderByAlphabetic(isOverViewInStock()));
                 break;
             //variety
-            case 2:
+            case BY_VARIETY:
                 teas.setValue(teaRepository.getTeasOrderByVariety(isOverViewInStock()));
                 break;
             //rating
-            case 3:
+            case RATING:
                 teas.setValue(teaRepository.getTeasOrderByRating(isOverViewInStock()));
                 break;
             default:

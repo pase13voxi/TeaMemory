@@ -41,6 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowAlertDialog;
@@ -53,8 +54,8 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -82,8 +83,6 @@ public class NewTeaTest {
     TeaDao teaDao;
     @Mock
     InfusionDao infusionDao;
-    @Mock
-    ActualSettingsDao actualSettingsDao;
 
     @Before
     public void setUp() {
@@ -94,12 +93,11 @@ public class NewTeaTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
     @Test
     public void showActivityAddModeAndExpectFilledDefaultValues() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextVariety = newTea.findViewById(R.id.edit_text_new_tea_variety);
@@ -121,7 +119,7 @@ public class NewTeaTest {
 
     @Test
     public void addNewTeaAndExpectSavedDefaultValues() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextName = newTea.findViewById(R.id.edit_text_new_tea_name);
@@ -158,7 +156,7 @@ public class NewTeaTest {
 
     @Test
     public void changeVarietyAndExpectUpdatedVariety() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextVariety = newTea.findViewById(R.id.edit_text_new_tea_variety);
@@ -181,7 +179,7 @@ public class NewTeaTest {
 
     @Test
     public void changeColorAndExpectUpdatedColor() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final Button buttonColor = newTea.findViewById(R.id.button_new_tea_color);
@@ -194,7 +192,7 @@ public class NewTeaTest {
 
     @Test
     public void changeAmountAndExpectUpdatedAmount() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextAmount = newTea.findViewById(R.id.edit_text_new_tea_amount);
@@ -218,7 +216,7 @@ public class NewTeaTest {
 
     @Test
     public void changeTemperatureAndExpectUpdatedTemperature() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
@@ -239,7 +237,7 @@ public class NewTeaTest {
 
     @Test
     public void showCoolDownTimeWhenTemperatureIsLessThan100Celsius() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
@@ -261,7 +259,7 @@ public class NewTeaTest {
 
     @Test
     public void hideCoolDownTimeWhenTemperatureIs100Celsius() {
-        mockSettings(FAHRENHEIT.getText());
+        mockSettings(FAHRENHEIT);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTemperature = newTea.findViewById(R.id.edit_text_new_tea_temperature);
@@ -283,7 +281,7 @@ public class NewTeaTest {
 
     @Test
     public void changeCoolDownTimeAndExpectUpdatedCoolDownTime() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextCoolDownTime = newTea.findViewById(R.id.edit_text_new_tea_cool_down_time);
@@ -307,7 +305,7 @@ public class NewTeaTest {
 
     @Test
     public void changeTimeAndExpectUpdatedTime() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final EditText editTextTime = newTea.findViewById(R.id.edit_text_new_tea_time);
@@ -331,7 +329,7 @@ public class NewTeaTest {
 
     @Test
     public void showActivityEditModeAndExpectFilledFields() {
-        mockSettings(FAHRENHEIT.getText());
+        mockSettings(FAHRENHEIT);
         final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -364,7 +362,7 @@ public class NewTeaTest {
 
     @Test
     public void editTeaAndExpectEditedTea() {
-        mockSettings(FAHRENHEIT.getText());
+        mockSettings(FAHRENHEIT);
         final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -395,7 +393,7 @@ public class NewTeaTest {
 
     @Test
     public void addInfusion() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final ActivityScenario<NewTea> newTeaActivityScenario = ActivityScenario.launch(NewTea.class);
         newTeaActivityScenario.onActivity(newTea -> {
             final ImageButton buttonLeft = newTea.findViewById(R.id.button_new_tea_previous_infusion);
@@ -419,7 +417,7 @@ public class NewTeaTest {
 
     @Test
     public void performNextAndPreviousInfusion() {
-        mockSettings(FAHRENHEIT.getText());
+        mockSettings(FAHRENHEIT);
         final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -468,7 +466,7 @@ public class NewTeaTest {
 
     @Test
     public void performDeleteInfusion() {
-        mockSettings(FAHRENHEIT.getText());
+        mockSettings(FAHRENHEIT);
         final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -503,7 +501,7 @@ public class NewTeaTest {
 
     @Test
     public void exitEditModeAndExpectShowTeaActivity() {
-        mockSettings(CELSIUS.getText());
+        mockSettings(CELSIUS);
         final Tea tea = new Tea("Tea", BLACK_TEA.getCode(), 1, GRAM.getText(), 1, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -531,7 +529,7 @@ public class NewTeaTest {
 
     @Test
     public void editTeaAndExpectShowTeaActivity() {
-        mockSettings(FAHRENHEIT.getText());
+        mockSettings(FAHRENHEIT);
         final Tea tea = new Tea("Tea", GREEN_TEA.getCode(), 1, TEA_SPOON.getText(), 234, 0, Date.from(getFixedDate()));
         tea.setId(1L);
         when(teaDao.getTeaById(1)).thenReturn(tea);
@@ -557,10 +555,9 @@ public class NewTeaTest {
         });
     }
 
-    private void mockSettings(final String temperatureUnit) {
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureUnit(temperatureUnit);
-        when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
+    private void mockSettings(final TemperatureUnit temperatureUnit) {
+        final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
+        sharedSettings.setTemperatureUnit(temperatureUnit);
     }
 
     private Instant getFixedDate() {

@@ -1,15 +1,15 @@
 package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Test;
 
 public class TemperatureUnitTest {
 
     @Test
     public void getTextFahrenheit() {
         final TemperatureUnit temperatureUnit = TemperatureUnit.FAHRENHEIT;
-        assertThat(temperatureUnit.getText()).isEqualTo("Fahrenheit");
+        assertThat(temperatureUnit.getText()).isEqualTo("fahrenheit");
     }
 
     @Test
@@ -20,7 +20,7 @@ public class TemperatureUnitTest {
 
     @Test
     public void temperatureUnitFromTextFahrenheit() {
-        final TemperatureUnit temperatureUnit = TemperatureUnit.fromText("Fahrenheit");
+        final TemperatureUnit temperatureUnit = TemperatureUnit.fromText("fahrenheit");
         assertThat(temperatureUnit).isEqualTo(TemperatureUnit.FAHRENHEIT);
     }
 

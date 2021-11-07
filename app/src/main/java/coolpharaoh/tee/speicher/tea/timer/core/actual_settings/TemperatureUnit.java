@@ -1,8 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
 public enum TemperatureUnit {
-    CELSIUS("Celsius", 0),
-    FAHRENHEIT("Fahrenheit", 1);
+    CELSIUS("celsius", 0),
+    FAHRENHEIT("fahrenheit", 1);
 
     private final String text;
     private final int choice;

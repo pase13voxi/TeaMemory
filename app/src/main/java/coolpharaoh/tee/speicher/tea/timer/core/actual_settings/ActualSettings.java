@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Could be removed after the successful migration (In half a year 1.6.2022)
 @Getter
 @Setter
 @NoArgsConstructor

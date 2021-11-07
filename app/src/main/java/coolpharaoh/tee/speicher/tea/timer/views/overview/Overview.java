@@ -177,19 +177,19 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void showUpdateDialog() {
-        if (overviewViewModel.isMainUpdateAlert()) {
+        if (overviewViewModel.isOverviewUpdateAlert()) {
             new AlertDialog.Builder(this, R.style.dialog_theme)
                     .setTitle(R.string.overview_dialog_update_header)
                     .setMessage(R.string.overview_dialog_update_description)
                     .setPositiveButton(R.string.overview_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
                     .setNeutralButton(R.string.overview_dialog_update_neutral, null)
-                    .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setMainUpdateAlert(false))
+                    .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setOverviewUpdateAlert(false))
                     .show();
         }
     }
 
     private void navigateToUpdateWindow() {
-        overviewViewModel.setMainUpdateAlert(false);
+        overviewViewModel.setOverviewUpdateAlert(false);
         final Intent intent = new Intent(Overview.this, UpdateDescription.class);
         startActivity(intent);
     }

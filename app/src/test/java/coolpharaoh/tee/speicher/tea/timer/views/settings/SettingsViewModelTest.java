@@ -1,19 +1,16 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
@@ -25,45 +22,50 @@ public class SettingsViewModelTest {
     @Mock
     TeaRepository teaRepository;
     @Mock
-    ActualSettingsRepository actualSettingsRepository;
-    @Mock
     SharedSettings sharedSettings;
 
     @Before
     public void setUp() {
-        when(actualSettingsRepository.getSettings()).thenReturn(new ActualSettings());
 
-        settingsViewModel = new SettingsViewModel(teaRepository, actualSettingsRepository, sharedSettings);
+        settingsViewModel = new SettingsViewModel(teaRepository, sharedSettings);
     }
 
     @Test
-    public void setMusicchoice() {
+    public void setMusicChoice() {
         final String musicChoice = "MUSIC_CHOICE";
         settingsViewModel.setMusicChoice(musicChoice);
 
-        final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
-        verify(actualSettingsRepository).updateSettings((captor.capture()));
-        final ActualSettings actualSettings = captor.getValue();
-
-        assertThat(actualSettings.getMusicChoice()).isEqualTo(musicChoice);
+        verify(sharedSettings).setMusicChoice(musicChoice);
     }
 
     @Test
-    public void setMusicName(){
+    public void setMusicName() {
         final String musicName = "MUSIC_NAME";
         settingsViewModel.setMusicName(musicName);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        verify(sharedSettings).setMusicName(musicName);
+    }
+
+    @Test
+    public void getMusicName() {
+        final String musicName = "MUSIC_NAME";
+        when(sharedSettings.getMusicName()).thenReturn(musicName);
 
         assertThat(settingsViewModel.getMusicName()).isEqualTo(musicName);
     }
 
     @Test
-    public void setVibration(){
+    public void setVibration() {
         final boolean vibration = true;
         settingsViewModel.setVibration(vibration);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        verify(sharedSettings).setVibration(vibration);
+    }
+
+    @Test
+    public void isVibration() {
+        final boolean vibration = true;
+        when(sharedSettings.isVibration()).thenReturn(vibration);
 
         assertThat(settingsViewModel.isVibration()).isEqualTo(vibration);
     }
@@ -73,19 +75,29 @@ public class SettingsViewModelTest {
         final boolean animation = true;
         settingsViewModel.setAnimation(animation);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        verify(sharedSettings).setAnimation(animation);
+    }
+
+    @Test
+    public void isAnimation() {
+        final boolean animation = true;
+        when(sharedSettings.isAnimation()).thenReturn(animation);
 
         assertThat(settingsViewModel.isAnimation()).isEqualTo(animation);
     }
 
     @Test
     public void setTemperatureUnit() {
-        final String temperatureUnit = "TEMPERATURE_UNIT";
-        settingsViewModel.setTemperatureUnit(temperatureUnit);
+        settingsViewModel.setTemperatureUnit(CELSIUS);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        verify(sharedSettings).setTemperatureUnit(CELSIUS);
+    }
 
-        assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(temperatureUnit);
+    @Test
+    public void getTemperatureUnit() {
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
+
+        assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(CELSIUS);
     }
 
     @Test
@@ -121,19 +133,31 @@ public class SettingsViewModelTest {
         final boolean showTeaAlert = true;
         settingsViewModel.setShowTeaAlert(showTeaAlert);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        verify(sharedSettings).setShowTeaAlert(showTeaAlert);
+    }
+
+    @Test
+    public void isShowTeaAlert() {
+        final boolean showTeaAlert = true;
+        when(sharedSettings.isShowTeaAlert()).thenReturn(showTeaAlert);
 
         assertThat(settingsViewModel.isShowTeaAlert()).isEqualTo(showTeaAlert);
     }
 
     @Test
     public void setMainUpdateAlert() {
-        final boolean mainUpdateAlert = true;
-        settingsViewModel.setMainUpdateAlert(mainUpdateAlert);
+        final boolean overviewUpdateAlert = true;
+        when(sharedSettings.isOverviewUpdateAlert()).thenReturn(overviewUpdateAlert);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        assertThat(settingsViewModel.isMainUpdateAlert()).isEqualTo(overviewUpdateAlert);
+    }
 
-        assertThat(settingsViewModel.isMainUpdateAlert()).isEqualTo(mainUpdateAlert);
+    @Test
+    public void isMainUpdateAlert() {
+        final boolean overviewUpdateAlert = true;
+        settingsViewModel.setOverviewUpdateAlert(overviewUpdateAlert);
+
+        verify(sharedSettings).setOverviewUpdateAlert(overviewUpdateAlert);
     }
 
     @Test
@@ -141,28 +165,22 @@ public class SettingsViewModelTest {
         final boolean settingsPermissionAlert = true;
         settingsViewModel.setSettingsPermissionAlert(settingsPermissionAlert);
 
-        verify(actualSettingsRepository).updateSettings(any());
+        verify(sharedSettings).setSettingsPermissionAlert(settingsPermissionAlert);
+    }
+
+    @Test
+    public void isSettingsPermissionAlert() {
+        final boolean settingsPermissionAlert = true;
+        when(sharedSettings.isSettingsPermissionAlert()).thenReturn(settingsPermissionAlert);
 
         assertThat(settingsViewModel.isSettingsPermissionAlert()).isEqualTo(settingsPermissionAlert);
     }
 
     @Test
-    public void setDefaultSettings(){
+    public void setDefaultSettings() {
         settingsViewModel.setDefaultSettings();
 
-        final ArgumentCaptor<ActualSettings> captor = ArgumentCaptor.forClass(ActualSettings.class);
-        verify(actualSettingsRepository).updateSettings(captor.capture());
-        final ActualSettings actualSettings = captor.getValue();
-
-        assertThat(actualSettings.getMusicChoice()).isEqualTo("content://settings/system/ringtone");
-        assertThat(actualSettings.getMusicName()).isEqualTo("Default");
-        assertThat(actualSettings.isVibration()).isTrue();
-        assertThat(actualSettings.isVibration()).isTrue();
-        assertThat(actualSettings.getTemperatureUnit()).isEqualTo("Celsius");
-        assertThat(actualSettings.isShowTeaAlert()).isTrue();
-        assertThat(actualSettings.isMainRateAlert()).isTrue();
-        assertThat(actualSettings.getMainRateCounter()).isZero();
-        assertThat(actualSettings.getSort()).isZero();
+        verify(sharedSettings).setFactorySettings();
     }
 
     @Test

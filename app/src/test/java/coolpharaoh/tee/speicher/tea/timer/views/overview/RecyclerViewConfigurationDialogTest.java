@@ -84,7 +84,7 @@ public class RecyclerViewConfigurationDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
 
-        assertThat(radioButtons.get(BY_VARIETY.getIndex()).isChecked()).isTrue();
+        assertThat(radioButtons.get(BY_VARIETY.getChoice()).isChecked()).isTrue();
     }
 
     @Test
@@ -97,7 +97,7 @@ public class RecyclerViewConfigurationDialogTest {
         final AlertDialog dialog = getLatestAlertDialog();
         final List<RadioButton> radioButtons = getRadioButtons(dialog);
 
-        radioButtons.get(ALPHABETICAL.getIndex()).performClick();
+        radioButtons.get(ALPHABETICAL.getChoice()).performClick();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
         shadowOf(getMainLooper()).idle();

@@ -1,5 +1,9 @@
 package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,11 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-
+// Could be removed after the successful migration (In half a year 1.6.2022)
 @RunWith(MockitoJUnitRunner.class)
 public class ActualSettingsRepositoryTest {
     @Mock

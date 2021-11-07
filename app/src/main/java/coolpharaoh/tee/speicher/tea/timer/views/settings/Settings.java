@@ -34,6 +34,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
@@ -115,8 +116,8 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         addTemperatureChoiceToSettingsList();
         addOverviewHeaderToSettingsList();
         addDarkModeChoiceToSettingsList();
-        addHintsDesciptionToSettingsList();
-        addFactorySettingsDesciptionToSettingsList();
+        addHintsDescriptionToSettingsList();
+        addFactorySettingsDescriptionToSettingsList();
     }
 
     private void addMusicChoiceToSettingsList() {
@@ -141,7 +142,9 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void addTemperatureChoiceToSettingsList() {
-        settingsList.add(new RecyclerItem(getString(R.string.settings_temperature_unit), settingsViewModel.getTemperatureUnit()));
+        final String[] itemTemperature = getResources().getStringArray(R.array.settings_temperature_units);
+
+        settingsList.add(new RecyclerItem(getString(R.string.settings_temperature_unit), itemTemperature[settingsViewModel.getTemperatureUnit().getChoice()]));
     }
 
     private void addOverviewHeaderToSettingsList() {
@@ -159,20 +162,20 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsList.add(new RecyclerItem(getString(R.string.settings_dark_mode), items[darkMode.getChoice()]));
     }
 
-    private void addHintsDesciptionToSettingsList() {
+    private void addHintsDescriptionToSettingsList() {
         settingsList.add(new RecyclerItem(getString(R.string.settings_show_hints), getString(R.string.settings_show_hints_description)));
     }
 
-    private void addFactorySettingsDesciptionToSettingsList() {
+    private void addFactorySettingsDescriptionToSettingsList() {
         settingsList.add(new RecyclerItem(getString(R.string.settings_factory_settings), getString(R.string.settings_factory_settings_description)));
     }
 
     @Override
-    public void onRecyclerItemClick(int position) {
+    public void onRecyclerItemClick(final int position) {
         applyOptionsSelection(position);
     }
 
-    private void applyOptionsSelection(int position) {
+    private void applyOptionsSelection(final int position) {
         final ListItems item = ListItems.values()[position];
         switch (item) {
             case ALARM:
@@ -230,9 +233,9 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void askPermissionAccepted(final View alertLayoutDialogProblem) {
-        final CheckBox dontShowAgain = alertLayoutDialogProblem.findViewById(R.id.check_box_settings_dialog_read_permission);
+        final CheckBox doNotShowAgain = alertLayoutDialogProblem.findViewById(R.id.check_box_settings_dialog_read_permission);
 
-        if (dontShowAgain.isChecked()) {
+        if (doNotShowAgain.isChecked()) {
             settingsViewModel.setSettingsPermissionAlert(false);
         }
         permissionResultLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -304,17 +307,17 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     private void settingTemperatureUnit() {
         final String[] items = getResources().getStringArray(R.array.settings_temperature_units);
 
-        final int checkedItem = settingsViewModel.getTemperatureUnit().equals(items[0]) ? 0 : 1;
+        final int checkedItem = settingsViewModel.getTemperatureUnit().getChoice();
 
         new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.settings_temperature_unit)
-                .setSingleChoiceItems(items, checkedItem, (dialog, item) -> temperatureUnitChanged(items[item], dialog))
+                .setSingleChoiceItems(items, checkedItem, this::temperatureUnitChanged)
                 .setNegativeButton(R.string.settings_cancel, null)
                 .show();
     }
 
-    private void temperatureUnitChanged(final String item, final DialogInterface dialog) {
-        settingsViewModel.setTemperatureUnit(item);
+    private void temperatureUnitChanged(final DialogInterface dialog, final int item) {
+        settingsViewModel.setTemperatureUnit(TemperatureUnit.fromChoice(item));
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();
         dialog.dismiss();
@@ -393,7 +396,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
     private void displayedHintsChanged(final CheckBox checkBoxUpdate, final CheckBox checkBoxDescription,
                                        final CheckBox checkBoxPermission) {
-        settingsViewModel.setMainUpdateAlert(checkBoxUpdate.isChecked());
+        settingsViewModel.setOverviewUpdateAlert(checkBoxUpdate.isChecked());
         settingsViewModel.setShowTeaAlert(checkBoxDescription.isChecked());
         settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
     }

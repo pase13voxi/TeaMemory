@@ -30,8 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -55,7 +54,7 @@ public class NewTeaViewModelTest {
     @Mock
     InfusionRepository infusionRepository;
     @Mock
-    ActualSettingsRepository actualSettingsRepository;
+    SharedSettings sharedSettings;
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
 
@@ -65,10 +64,10 @@ public class NewTeaViewModelTest {
     @Before
     public void setUp() {
         newTeaViewModelEmpty = new NewTeaViewModel(null, application, teaRepository,
-                infusionRepository, actualSettingsRepository);
+                infusionRepository, sharedSettings);
         mockStoredTea();
         newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, application, teaRepository,
-                infusionRepository, actualSettingsRepository);
+                infusionRepository, sharedSettings);
     }
 
     @Test
@@ -123,7 +122,7 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setTemperatureCelsiusAndExpectTemperature() {
-        mockTemperatureUnit(CELSIUS.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         newTeaViewModelEmpty.setInfusionTemperature(90);
 
@@ -133,18 +132,18 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setTemperatureCelsiusAndExpectFahrenheitTemperature() {
-        mockTemperatureUnit(CELSIUS.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         newTeaViewModelEmpty.setInfusionTemperature(90);
 
-        mockTemperatureUnit(FAHRENHEIT.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
         assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(194);
         assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
     }
 
     @Test
     public void setTemperatureFahrenheitAndExpectTemperature() {
-        mockTemperatureUnit(FAHRENHEIT.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
 
         newTeaViewModelEmpty.setInfusionTemperature(194);
 
@@ -154,18 +153,18 @@ public class NewTeaViewModelTest {
 
     @Test
     public void setTemperatureFahrenheitAndExpectCelsiusTemperature() {
-        mockTemperatureUnit(FAHRENHEIT.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
 
         newTeaViewModelEmpty.setInfusionTemperature(194);
 
-        mockTemperatureUnit(CELSIUS.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
         assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(90);
         assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(CELSIUS);
     }
 
     @Test
     public void setTemperatureFahrenheitAndExpectStoredTemperatureFahrenheitAndTemperature() {
-        mockTemperatureUnit(CELSIUS.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         newTeaViewModelEmpty.setInfusionTemperature(90);
 
@@ -196,7 +195,7 @@ public class NewTeaViewModelTest {
 
     @Test
     public void addInfusion() {
-        mockTemperatureUnit(CELSIUS.getText());
+        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
         assertThat(newTeaViewModelEmpty.getInfusionSize()).isEqualTo(1);
 
         newTeaViewModelEmpty.addInfusion();
@@ -280,12 +279,6 @@ public class NewTeaViewModelTest {
         assertThat(savedTea.getName()).isEqualTo("name");
         verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED);
         verify(infusionRepository, times(2)).insertInfusion(any());
-    }
-
-    private void mockTemperatureUnit(final String temperatureUnit) {
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureUnit(temperatureUnit);
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
     }
 
     private void mockStoredTea() {

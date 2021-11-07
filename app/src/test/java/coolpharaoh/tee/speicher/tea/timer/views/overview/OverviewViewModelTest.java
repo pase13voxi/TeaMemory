@@ -6,7 +6,10 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.ALPHABETICAL;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.BY_VARIETY;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.LAST_USED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.RATING;
 
 import android.app.Application;
 
@@ -23,7 +26,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
@@ -48,7 +50,6 @@ public class OverviewViewModelTest {
     public TestRule rule = new InstantTaskExecutorRule();
 
     private List<Tea> teas;
-    private ActualSettings actualSettings;
 
     @Before
     public void setUp() {
@@ -59,19 +60,8 @@ public class OverviewViewModelTest {
     }
 
     private void mockSettings() {
-        actualSettings = new ActualSettings();
-        actualSettings.setMusicChoice("content://settings/system/ringtone");
-        actualSettings.setMusicName("Default");
-        actualSettings.setVibration(true);
-        actualSettings.setAnimation(true);
-        actualSettings.setTemperatureUnit("Celsius");
-        actualSettings.setMainRateAlert(true);
-        actualSettings.setMainRateCounter(0);
-        actualSettings.setShowTeaAlert(true);
-        actualSettings.setSettingsPermissionAlert(true);
-        actualSettings.setSort(0);
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
-        when(actualSettingsRepository.getCountItems()).thenReturn(1);
+        when(sharedSettings.isFirstStart()).thenReturn(false);
+        when(sharedSettings.getSortMode()).thenReturn(LAST_USED);
     }
 
     private void mockTeas() {
@@ -126,7 +116,6 @@ public class OverviewViewModelTest {
 
     @Test
     public void showTeasByEmptySearchString() {
-        actualSettings.setSort(0);
         final String searchString = "";
 
         overviewViewModel.visualizeTeasBySearchString(searchString);
@@ -143,8 +132,8 @@ public class OverviewViewModelTest {
 
     @Test
     public void setSort() {
-        overviewViewModel.setSort(SortMode.BY_VARIETY);
-        verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
+        overviewViewModel.setSort(BY_VARIETY);
+        verify(sharedSettings).setSortMode(BY_VARIETY);
     }
 
     @Test
@@ -170,19 +159,22 @@ public class OverviewViewModelTest {
 
     @Test
     public void isMainUpdateAlert() {
-        assertThat(overviewViewModel.isMainUpdateAlert()).isEqualTo(actualSettings.isMainUpdateAlert());
+        final boolean isMainUpdateAlert = true;
+        when(sharedSettings.isOverviewUpdateAlert()).thenReturn(isMainUpdateAlert);
+
+        assertThat(overviewViewModel.isOverviewUpdateAlert()).isEqualTo(isMainUpdateAlert);
     }
 
     @Test
-    public void setMainUpdateAlert() {
+    public void setOverviewUpdateAlert() {
         final boolean alert = true;
-        overviewViewModel.setMainUpdateAlert(alert);
-        verify(actualSettingsRepository).updateSettings(any(ActualSettings.class));
+        overviewViewModel.setOverviewUpdateAlert(alert);
+        verify(sharedSettings).setOverviewUpdateAlert(alert);
     }
 
     @Test
     public void refreshTeasWithSort0() {
-        actualSettings.setSort(0);
+        when(sharedSettings.getSortMode()).thenReturn(LAST_USED);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByActivity(false);
     }
@@ -190,14 +182,14 @@ public class OverviewViewModelTest {
     @Test
     public void refreshTeasWithSort0OnlyFavorites() {
         when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        actualSettings.setSort(0);
+        when(sharedSettings.getSortMode()).thenReturn(LAST_USED);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByActivity(true);
     }
 
     @Test
     public void refreshTeasWithSort1() {
-        actualSettings.setSort(1);
+        when(sharedSettings.getSortMode()).thenReturn(ALPHABETICAL);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByAlphabetic(false);
     }
@@ -205,14 +197,14 @@ public class OverviewViewModelTest {
     @Test
     public void refreshTeasWithSort1OnlyFavorites() {
         when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        actualSettings.setSort(1);
+        when(sharedSettings.getSortMode()).thenReturn(ALPHABETICAL);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByAlphabetic(true);
     }
 
     @Test
     public void refreshTeasWithSort2() {
-        actualSettings.setSort(2);
+        when(sharedSettings.getSortMode()).thenReturn(BY_VARIETY);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByVariety(false);
     }
@@ -220,14 +212,14 @@ public class OverviewViewModelTest {
     @Test
     public void refreshTeasWithSort2OnlyFavorites() {
         when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        actualSettings.setSort(2);
+        when(sharedSettings.getSortMode()).thenReturn(BY_VARIETY);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByVariety(true);
     }
 
     @Test
     public void refreshTeasWithSort3() {
-        actualSettings.setSort(3);
+        when(sharedSettings.getSortMode()).thenReturn(RATING);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByRating(false);
     }
@@ -235,7 +227,7 @@ public class OverviewViewModelTest {
     @Test
     public void refreshTeasWithSort3OnlyFavorites() {
         when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        actualSettings.setSort(3);
+        when(sharedSettings.getSortMode()).thenReturn(RATING);
         overviewViewModel.refreshTeas();
         verify(teaRepository, atLeastOnce()).getTeasOrderByRating(true);
     }
@@ -243,7 +235,7 @@ public class OverviewViewModelTest {
     @Test
     public void getSortWithHeaderIsSort3() {
         when(sharedSettings.isOverviewHeader()).thenReturn(true);
-        actualSettings.setSort(3);
+        when(sharedSettings.getSortMode()).thenReturn(RATING);
         overviewViewModel.refreshTeas();
         assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(3);
     }
@@ -260,5 +252,4 @@ public class OverviewViewModelTest {
         overviewViewModel.visualizeTeasBySearchString(searchString);
         assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(-1);
     }
-
 }

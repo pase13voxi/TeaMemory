@@ -9,8 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
@@ -20,28 +19,25 @@ public class TimerViewModelTest {
     private TimerViewModel timerViewModel;
 
     @Mock
-    ActualSettingsRepository actualSettingsRepository;
+    SharedSettings sharedSettings;
     @Mock
     TeaRepository teaRepository;
 
 
     @Before
     public void setUp() {
-        timerViewModel = new TimerViewModel(teaRepository, actualSettingsRepository);
+        timerViewModel = new TimerViewModel(teaRepository, sharedSettings);
     }
 
 
 
     @Test
     public void isVibration(){
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setVibration(true);
-
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        when(sharedSettings.isVibration()).thenReturn(true);
 
         assertThat(timerViewModel.isVibration()).isTrue();
 
-        actualSettings.setVibration(false);
+        when(sharedSettings.isVibration()).thenReturn(false);
 
         assertThat(timerViewModel.isVibration()).isFalse();
 
@@ -51,10 +47,7 @@ public class TimerViewModelTest {
     public void getMusicChoice(){
         final String musicChoice = "MUSICPATH";
 
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setMusicChoice(musicChoice);
-
-        when(actualSettingsRepository.getSettings()).thenReturn(actualSettings);
+        when(sharedSettings.getMusicChoice()).thenReturn(musicChoice);
 
         assertThat(timerViewModel.getMusicChoice()).isEqualTo(musicChoice);
     }

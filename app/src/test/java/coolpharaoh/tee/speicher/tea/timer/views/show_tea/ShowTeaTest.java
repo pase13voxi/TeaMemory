@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
 
@@ -37,6 +36,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
@@ -48,8 +48,8 @@ import java.util.Collections;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
@@ -89,8 +89,6 @@ ShowTeaTest {
     InfusionDao infusionDao;
     @Mock
     CounterDao counterDao;
-    @Mock
-    ActualSettingsDao actualSettingsDao;
 
     @Test
     public void launchActivityWithNoTeaIdAndExpectFailingDialog() {
@@ -111,7 +109,8 @@ ShowTeaTest {
     @Test
     public void launchActivityWithNotExistingTeaIdExpectFailingDialog() {
         mockDB();
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, 5L);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -134,8 +133,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), true, false);
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        setSharedSettings(CELSIUS, true, false);
+
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -149,7 +149,8 @@ ShowTeaTest {
             dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(any(ActualSettings.class));
+            final SharedSettings sharedSettings = new SharedSettings(showTea.getApplication());
+            assertThat(sharedSettings.isShowTeaAlert()).isFalse();
 
             final Intent expected = new Intent(showTea, ShowTeaDescription.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -165,8 +166,9 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList("1:00", "2:00", "3:00"), Arrays.asList(new String[]{null, null, null}),
                 Arrays.asList(100, 100, 90), Arrays.asList(212, 212, 176));
-        mockActualSettings(CELSIUS.getText(), false, false);
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        setSharedSettings(CELSIUS, false, false);
+
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -196,8 +198,9 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList("1:00", "2:00", "3:00"), Arrays.asList(new String[]{null, null, null}),
                 Arrays.asList(100, 100, 90), Arrays.asList(212, 212, 176));
-        mockActualSettings(CELSIUS.getText(), false, false);
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        setSharedSettings(CELSIUS, false, false);
+
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -221,9 +224,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -256,9 +259,9 @@ ShowTeaTest {
         mockTea(null, -500, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
                 Collections.singletonList(-500), Collections.singletonList(-500));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -283,9 +286,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -322,9 +325,9 @@ ShowTeaTest {
         mockTea(VARIETY, 4, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -352,9 +355,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -375,9 +378,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -397,9 +400,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -420,9 +423,9 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList("1:00", "2:00", "3:00"), Arrays.asList(null, "5:00", null),
                 Arrays.asList(100, -500, 100), Arrays.asList(212, -500, 212));
-        mockActualSettings(CELSIUS.getText(), false, false);
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -465,10 +468,10 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList("1:00", "2:00"), Arrays.asList("1:00", "1:00"),
                 Arrays.asList(95, 95), Arrays.asList(203, 203));
-        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
+        setSharedSettings(CELSIUS, false, true);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -481,10 +484,10 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
+        setSharedSettings(CELSIUS, false, true);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -514,10 +517,10 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
+        setSharedSettings(CELSIUS, false, true);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -545,9 +548,9 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("1:00"),
                 Collections.singletonList(95), Collections.singletonList(203));
-        mockActualSettings(CELSIUS.getText(), false, true);
+        setSharedSettings(CELSIUS, false, true);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -583,10 +586,10 @@ ShowTeaTest {
         mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
         mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
                 Collections.singletonList(100), Collections.singletonList(212));
-        mockActualSettings(CELSIUS.getText(), false, false);
         mockCounter();
+        setSharedSettings(CELSIUS, false, false);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -620,10 +623,10 @@ ShowTeaTest {
         mockInfusions(
                 Arrays.asList("1:00", "2:00"), Arrays.asList("1:00", "1:00"),
                 Arrays.asList(95, 95), Arrays.asList(203, 203));
-        mockActualSettings(CELSIUS.getText(), false, true);
         mockCounter();
+        setSharedSettings(CELSIUS, false, true);
 
-        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), ShowTea.class);
+        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
@@ -674,7 +677,6 @@ ShowTeaTest {
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
     private void mockTea(final String variety, final int amount, final String amountKind, final int nextInfusion) {
@@ -700,12 +702,11 @@ ShowTeaTest {
         when(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter);
     }
 
-    private void mockActualSettings(final String temperatureUnit, final boolean dialog, final boolean animation) {
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setTemperatureUnit(temperatureUnit);
-        actualSettings.setShowTeaAlert(dialog);
-        actualSettings.setAnimation(animation);
-        when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
+    private void setSharedSettings(final TemperatureUnit temperatureUnit, final boolean dialog, final boolean animation) {
+        final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
+        sharedSettings.setTemperatureUnit(temperatureUnit);
+        sharedSettings.setShowTeaAlert(dialog);
+        sharedSettings.setAnimation(animation);
     }
 
     private void checkTitleAndMessageOfLatestDialog(final ShowTea showTea, final AlertDialog dialog, final int title) {

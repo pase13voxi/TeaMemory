@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-
+// Could be removed after the successful migration (In half a year 1.6.2022)
 @RunWith(AndroidJUnit4.class)
 public class ActualSettingsDaoTest {
     private ActualSettingsDao mActualSettingsDAO;

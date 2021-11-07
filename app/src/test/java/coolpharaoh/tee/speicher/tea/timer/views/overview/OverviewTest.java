@@ -3,7 +3,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview;
 import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -42,6 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
@@ -52,9 +52,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -98,7 +98,7 @@ public class OverviewTest {
 
     @Test
     public void launchActivityExpectTeaList() {
-        mockActualSettings(false, true, 10);
+        mockActualSettings();
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -108,7 +108,7 @@ public class OverviewTest {
 
     @Test
     public void launchActivityExpectUpdateDescription() {
-        mockActualSettings(true, false, 20);
+        mockActualSettings(LAST_USED, true);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -120,7 +120,7 @@ public class OverviewTest {
             dialogUpdate.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(any());
+            assertThat(new SharedSettings(RuntimeEnvironment.getApplication()).isOverviewUpdateAlert()).isFalse();
 
             final Intent expected = new Intent(overview, UpdateDescription.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
@@ -131,7 +131,7 @@ public class OverviewTest {
 
     @Test
     public void launchActivityExpectUpdateDescriptionClickNegative() {
-        mockActualSettings(true, false, 20);
+        mockActualSettings(LAST_USED, true);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -140,7 +140,7 @@ public class OverviewTest {
             getLatestAlertDialog().getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(actualSettingsDao).update(any());
+            assertThat(new SharedSettings(RuntimeEnvironment.getApplication()).isOverviewUpdateAlert()).isFalse();
         });
     }
 
@@ -211,7 +211,7 @@ public class OverviewTest {
 
     @Test
     public void changeSortModeToActivityExpectTeaList() {
-        mockActualSettings(1);
+        mockActualSettings(ALPHABETICAL, false);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -223,7 +223,7 @@ public class OverviewTest {
             final AlertDialog dialog = getLatestAlertDialog();
 
             final List<RadioButton> radioButtons = getRadioButtons(dialog);
-            radioButtons.get(LAST_USED.getIndex()).performClick();
+            radioButtons.get(LAST_USED.getChoice()).performClick();
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
@@ -270,7 +270,7 @@ public class OverviewTest {
             final AlertDialog dialog = getLatestAlertDialog();
 
             final List<RadioButton> radioButtons = getRadioButtons(dialog);
-            radioButtons.get(ALPHABETICAL.getIndex()).performClick();
+            radioButtons.get(ALPHABETICAL.getChoice()).performClick();
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
@@ -294,7 +294,7 @@ public class OverviewTest {
             final AlertDialog dialog = getLatestAlertDialog();
 
             final List<RadioButton> radioButtons = getRadioButtons(dialog);
-            radioButtons.get(BY_VARIETY.getIndex()).performClick();
+            radioButtons.get(BY_VARIETY.getChoice()).performClick();
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
@@ -318,7 +318,7 @@ public class OverviewTest {
             final AlertDialog dialog = getLatestAlertDialog();
 
             final List<RadioButton> radioButtons = getRadioButtons(dialog);
-            radioButtons.get(RATING.getIndex()).performClick();
+            radioButtons.get(RATING.getChoice()).performClick();
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
@@ -329,7 +329,7 @@ public class OverviewTest {
 
     @Test
     public void enableSortingHeaderExpectTeaListWithHeader() {
-        mockActualSettings(0);
+        mockActualSettings(LAST_USED, false);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -344,7 +344,7 @@ public class OverviewTest {
             final AlertDialog dialog = getLatestAlertDialog();
 
             final List<RadioButton> radioButtons = getRadioButtons(dialog);
-            radioButtons.get(LAST_USED.getIndex()).performClick();
+            radioButtons.get(LAST_USED.getChoice()).performClick();
 
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
@@ -437,26 +437,14 @@ public class OverviewTest {
     }
 
     private void mockActualSettings() {
-        mockActualSettings(0, false, 0, false);
+        mockActualSettings(LAST_USED, false);
     }
 
-    private void mockActualSettings(final int sort) {
-        mockActualSettings(sort, false, 0, false);
-    }
-
-    private void mockActualSettings(final boolean mainUpdateAlert, final boolean mainRateAlert, final int mainRateCounter) {
-        mockActualSettings(0, mainRateAlert, mainRateCounter, mainUpdateAlert);
-    }
-
-    private void mockActualSettings(final int sort, final boolean mainRateAlert,
-                                    final int mainRateCounter, final boolean mainUpdateAlert) {
-        final ActualSettings actualSettings = new ActualSettings();
-        actualSettings.setSort(sort);
-        actualSettings.setMainRateAlert(mainRateAlert);
-        actualSettings.setMainRateCounter(mainRateCounter);
-        actualSettings.setMainUpdateAlert(mainUpdateAlert);
-        when(actualSettingsDao.getSettings()).thenReturn(actualSettings);
-        when(actualSettingsDao.getCountItems()).thenReturn(1);
+    private void mockActualSettings(final SortMode sortMode, final boolean overviewUpdateAlert) {
+        final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
+        sharedSettings.setFirstStart(false);
+        sharedSettings.setOverviewUpdateAlert(overviewUpdateAlert);
+        sharedSettings.setSortMode(sortMode);
     }
 
     private List<Tea> generateTeaList(final String name) {

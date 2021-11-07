@@ -1,25 +1,40 @@
 package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
 public enum SortMode {
-    LAST_USED(0),
-    ALPHABETICAL(1),
-    BY_VARIETY(2),
-    RATING(3);
+    LAST_USED("last_used", 0),
+    ALPHABETICAL("alphabetical", 1),
+    BY_VARIETY("by_variety", 2),
+    RATING("rating", 3);
 
-    private final int index;
+    private final String text;
+    private final int choice;
 
-    SortMode(final int index) {
-        this.index = index;
+    SortMode(final String text, final int choice) {
+        this.text = text;
+        this.choice = choice;
     }
 
-    public int getIndex() {
-        return index;
+    public String getText() {
+        return text;
     }
 
-    public static SortMode fromIndex(final int index) {
-        for (final SortMode sortMode : SortMode.values()) {
-            if (sortMode.index == index) {
-                return sortMode;
+    public int getChoice() {
+        return choice;
+    }
+
+    public static SortMode fromText(final String text) {
+        for (final SortMode sortModeSetting : SortMode.values()) {
+            if (sortModeSetting.text.equalsIgnoreCase(text)) {
+                return sortModeSetting;
+            }
+        }
+        return LAST_USED;
+    }
+
+    public static SortMode fromChoice(final int choice) {
+        for (final SortMode sortModeSetting : SortMode.values()) {
+            if (sortModeSetting.choice == choice) {
+                return sortModeSetting;
             }
         }
         return LAST_USED;

@@ -4,22 +4,22 @@ import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class TimerViewModel {
 
     private final TeaRepository teaRepository;
-    private final ActualSettingsRepository actualSettingsRepository;
+    private final SharedSettings sharedSettings;
 
     TimerViewModel(final Application application) {
-        this(new TeaRepository(application), new ActualSettingsRepository(application));
+        this(new TeaRepository(application), new SharedSettings(application));
     }
 
     @VisibleForTesting
-    TimerViewModel(final TeaRepository teaRepository, final ActualSettingsRepository actualSettingsRepository) {
+    TimerViewModel(final TeaRepository teaRepository, final SharedSettings sharedSettings) {
         this.teaRepository = teaRepository;
-        this.actualSettingsRepository = actualSettingsRepository;
+        this.sharedSettings = sharedSettings;
     }
 
     //teaDAO
@@ -32,10 +32,10 @@ class TimerViewModel {
 
     //actualSettingsDAO
     boolean isVibration() {
-        return actualSettingsRepository.getSettings().isVibration();
+        return sharedSettings.isVibration();
     }
 
     String getMusicChoice() {
-        return actualSettingsRepository.getSettings().getMusicChoice();
+        return sharedSettings.getMusicChoice();
     }
 }

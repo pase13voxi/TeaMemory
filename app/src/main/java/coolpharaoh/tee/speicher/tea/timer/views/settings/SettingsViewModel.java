@@ -4,74 +4,62 @@ import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class SettingsViewModel {
 
-    private final ActualSettingsRepository actualSettingsRepository;
     private final TeaRepository teaRepository;
     private final SharedSettings sharedSettings;
 
-    private final ActualSettings actualSettings;
-
     public SettingsViewModel(final Application application) {
-        this(new TeaRepository(application), new ActualSettingsRepository(application),
-                new SharedSettings(application));
+        this(new TeaRepository(application), new SharedSettings(application));
     }
 
     @VisibleForTesting
-    public SettingsViewModel(final TeaRepository teaRepository, final ActualSettingsRepository actualSettingsRepository,
+    public SettingsViewModel(final TeaRepository teaRepository,
                              final SharedSettings sharedSettings) {
         this.teaRepository = teaRepository;
-        this.actualSettingsRepository = actualSettingsRepository;
         this.sharedSettings = sharedSettings;
-        actualSettings = actualSettingsRepository.getSettings();
     }
 
     //Settings
     void setMusicChoice(final String musicChoice) {
-        actualSettings.setMusicChoice(musicChoice);
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setMusicChoice(musicChoice);
     }
 
     String getMusicName() {
-        return actualSettings.getMusicName();
+        return sharedSettings.getMusicName();
     }
 
     void setMusicName(final String musicName) {
-        actualSettings.setMusicName(musicName);
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setMusicName(musicName);
     }
 
     boolean isVibration() {
-        return actualSettings.isVibration();
+        return sharedSettings.isVibration();
     }
 
     void setVibration(final boolean vibration) {
-        actualSettings.setVibration(vibration);
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setVibration(vibration);
     }
 
     boolean isAnimation() {
-        return actualSettings.isAnimation();
+        return sharedSettings.isAnimation();
     }
 
     void setAnimation(final boolean animation) {
-        actualSettings.setAnimation(animation);
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setAnimation(animation);
     }
 
-    String getTemperatureUnit() {
-        return actualSettings.getTemperatureUnit();
+    TemperatureUnit getTemperatureUnit() {
+        return sharedSettings.getTemperatureUnit();
     }
 
-    void setTemperatureUnit(final String temperatureUnit) {
-        actualSettings.setTemperatureUnit(temperatureUnit);
-        actualSettingsRepository.updateSettings(actualSettings);
+    void setTemperatureUnit(final TemperatureUnit temperatureUnit) {
+        sharedSettings.setTemperatureUnit(temperatureUnit);
     }
 
     void setOverviewHeader(final boolean overviewHeader) {
@@ -91,46 +79,31 @@ class SettingsViewModel {
     }
 
     boolean isShowTeaAlert() {
-        return actualSettings.isShowTeaAlert();
+        return sharedSettings.isShowTeaAlert();
     }
 
     void setShowTeaAlert(final boolean showTeaAlert) {
-        actualSettings.setShowTeaAlert(showTeaAlert);
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setShowTeaAlert(showTeaAlert);
     }
 
     boolean isMainUpdateAlert() {
-        return actualSettings.isMainUpdateAlert();
+        return sharedSettings.isOverviewUpdateAlert();
     }
 
-    void setMainUpdateAlert(final boolean mainUpdateAlert) {
-        actualSettings.setMainUpdateAlert(mainUpdateAlert);
-        actualSettingsRepository.updateSettings(actualSettings);
+    void setOverviewUpdateAlert(final boolean overviewUpdateAlert) {
+        sharedSettings.setOverviewUpdateAlert(overviewUpdateAlert);
     }
 
     boolean isSettingsPermissionAlert() {
-        return actualSettings.isSettingsPermissionAlert();
+        return sharedSettings.isSettingsPermissionAlert();
     }
 
     void setSettingsPermissionAlert(final boolean settingsPermissionAlert) {
-        actualSettings.setSettingsPermissionAlert(settingsPermissionAlert);
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setSettingsPermissionAlert(settingsPermissionAlert);
     }
 
     void setDefaultSettings() {
-        actualSettings.setMusicChoice("content://settings/system/ringtone");
-        actualSettings.setMusicName("Default");
-        actualSettings.setVibration(true);
-        actualSettings.setAnimation(true);
-        actualSettings.setTemperatureUnit("Celsius");
-        actualSettings.setMainRateAlert(true);
-        actualSettings.setMainRateCounter(0);
-        actualSettings.setMainUpdateAlert(false);
-        actualSettings.setShowTeaAlert(true);
-        actualSettings.setSettingsPermissionAlert(true);
-        actualSettings.setSort(0);
-
-        actualSettingsRepository.updateSettings(actualSettings);
+        sharedSettings.setFactorySettings();
     }
 
     //Tea

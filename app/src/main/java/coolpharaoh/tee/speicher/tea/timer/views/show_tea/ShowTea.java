@@ -284,7 +284,7 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void decideToDisplayDescription() {
-        if (showTeaViewModel.isShowteaAlert()) {
+        if (showTeaViewModel.isShowTeaAlert()) {
             dialogShowTeaDescription();
         }
     }
@@ -306,7 +306,7 @@ public class ShowTea extends AppCompatActivity {
 
     private void disableDescription(final CheckBox donNotShowAgain) {
         if (donNotShowAgain.isChecked()) {
-            showTeaViewModel.setShowteaAlert(false);
+            showTeaViewModel.setShowTeaAlert(false);
         }
     }
 
