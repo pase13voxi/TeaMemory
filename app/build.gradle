@@ -3,13 +3,13 @@ apply plugin: 'org.sonarqube'
 apply from: '../jacoco.gradle'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 153
+        targetSdkVersion 31
+        versionCode 154
         versionName "3.6"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

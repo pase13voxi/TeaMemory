@@ -3,6 +3,9 @@ package coolpharaoh.tee.speicher.tea.timer.views.information;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,7 +16,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,9 +50,8 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         final long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
-        fillToolbarTitle();
+        fillTexViewTeaName();
         fillRatingBar();
-        fillInStock();
         showDetailsList();
         fillLastUsed();
         fillCounter();
@@ -58,9 +59,6 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
-
-        final SwitchCompat switchInStock = findViewById(R.id.switch_information_in_stock);
-        switchInStock.setOnCheckedChangeListener((buttonView, isChecked) -> updateTeaInStock(isChecked));
 
         final ImageButton buttonAddDetail = findViewById(R.id.button_information_add_detail);
         buttonAddDetail.setOnClickListener(v -> addDetail());
@@ -77,19 +75,14 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void fillToolbarTitle() {
-        final TextView toolbarTitle = findViewById(R.id.tool_bar_title);
-        toolbarTitle.setText(informationViewModel.getTeaName());
+    private void fillTexViewTeaName() {
+        final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
+        texViewTeaName.setText(informationViewModel.getTeaName());
     }
 
     private void fillRatingBar() {
         final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setRating(informationViewModel.getTeaRating());
-    }
-
-    private void fillInStock() {
-        final SwitchCompat switchInStock = findViewById(R.id.switch_information_in_stock);
-        switchInStock.setChecked(informationViewModel.isInStock());
     }
 
     private void showDetailsList() {
@@ -156,10 +149,6 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         informationViewModel.updateTeaRating((int) rating);
     }
 
-    private void updateTeaInStock(final boolean isChecked) {
-        informationViewModel.updateTeaInStock(isChecked);
-    }
-
     private void storeDetail(final EditText editTextHeading, final EditText editTextDescription) {
         final String heading = editTextHeading.getText().toString();
         final String description = editTextDescription.getText().toString();
@@ -217,5 +206,41 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         final EditText editTextNotes = findViewById(R.id.edit_text_information_notes);
         informationViewModel.updateNotes(editTextNotes.getText().toString());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_information, menu);
+
+        fillInStock(menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void fillInStock(final Menu menu) {
+        final MenuItem item = menu.findItem(R.id.action_information_in_stock);
+        if (informationViewModel.isInStock()) {
+            item.setIcon(R.drawable.home_white);
+        } else {
+            item.setIcon(R.drawable.home_white_empty);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
+
+        if (id == R.id.action_information_in_stock) {
+            if (informationViewModel.isInStock()) {
+                item.setIcon(R.drawable.home_white_empty);
+                informationViewModel.updateTeaInStock(false);
+            } else {
+                item.setIcon(R.drawable.home_white);
+                informationViewModel.updateTeaInStock(true);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
