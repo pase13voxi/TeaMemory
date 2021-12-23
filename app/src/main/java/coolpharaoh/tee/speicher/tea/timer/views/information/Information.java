@@ -51,6 +51,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
         fillTexViewTeaName();
+        fillTexViewTeaVariety();
         fillRatingBar();
         showDetailsList();
         fillLastUsed();
@@ -78,6 +79,11 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private void fillTexViewTeaName() {
         final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
         texViewTeaName.setText(informationViewModel.getTeaName());
+    }
+
+    private void fillTexViewTeaVariety() {
+        final TextView texViewTeaVariety = findViewById(R.id.text_view_information_tea_variety);
+        texViewTeaVariety.setText(informationViewModel.getVarietyAsText());
     }
 
     private void fillRatingBar() {

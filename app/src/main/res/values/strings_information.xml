@@ -2,7 +2,9 @@
 <resources>
     <string name="information_details_heading">Information</string>
     <string name="information_rating">Rating</string>
-    <string name="information_in_stock">In stock</string>
+    <string name="information_tooltip_in_stock">In stock</string>
+    <string name="information_description_image">Image</string>
+    <string name="information_description_camera_button">Camera</string>
     <string name="information_detail_options">&#8942;</string>
     <string name="information_add_detail_button_description">Add detail</string>
     <string name="information_add_detail_dialog_heading">Add information</string>
