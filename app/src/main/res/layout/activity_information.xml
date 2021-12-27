@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@string/information_description_image"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tree"
+                    android:src="@drawable/whole_cup"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

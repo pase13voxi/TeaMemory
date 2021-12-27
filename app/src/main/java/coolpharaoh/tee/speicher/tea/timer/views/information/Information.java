@@ -11,15 +11,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +41,8 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
     private static final String DATE_FORMAT = "dd MMMM yyyy";
     private static final String TEA_ID_EXTRA = "teaId";
+
+    private static boolean noPicture = true;
 
     private InformationViewModel informationViewModel;
 
@@ -63,11 +69,17 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         final ImageButton buttonAddDetail = findViewById(R.id.button_information_add_detail);
         buttonAddDetail.setOnClickListener(v -> addDetail());
+
+        final FloatingActionButton buttonCamera = findViewById(R.id.button_information_camera);
+        buttonCamera.setOnClickListener(v -> makeImage());
     }
 
     private void defineToolbarAsActionbar() {
         final Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        if (noPicture) {
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
+        }
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
     }
 
@@ -78,6 +90,9 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
     private void fillTexViewTeaName() {
         final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
+        if (noPicture) {
+            texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_black));
+        }
         texViewTeaName.setText(informationViewModel.getTeaName());
     }
 
@@ -132,6 +147,10 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         editTextNotes.setText(note.getDescription());
     }
 
+    private void updateTeaRating(final float rating) {
+        informationViewModel.updateTeaRating((int) rating);
+    }
+
     private void addDetail() {
         final ViewGroup parent = findViewById(R.id.information_parent);
 
@@ -151,16 +170,31 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
                 .show();
     }
 
-    private void updateTeaRating(final float rating) {
-        informationViewModel.updateTeaRating((int) rating);
-    }
-
     private void storeDetail(final EditText editTextHeading, final EditText editTextDescription) {
         final String heading = editTextHeading.getText().toString();
         final String description = editTextDescription.getText().toString();
         if (!heading.trim().isEmpty() && !description.trim().isEmpty()) {
             informationViewModel.addDetail(editTextHeading.getText().toString(),
                     editTextDescription.getText().toString());
+        }
+    }
+
+    private void makeImage() {
+
+        noPicture = !noPicture;
+
+        final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
+
+        if (noPicture) {
+            imageViewImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.whole_cup));
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
+            texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_black));
+        } else {
+            imageViewImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.tree));
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+            texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_white));
         }
     }
 

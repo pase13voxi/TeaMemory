@@ -15,6 +15,7 @@
     <color name="text_grey">#797979</color>
     <color name="text_red">#FF0000</color>
     <color name="text_green">#329e5f</color>
+    <color name="transparent">@android:color/transparent</color>
     <!-- tea_colors -->
     <color name="blacktea">#141450</color>
     <color name="greentea">#9ACD32</color>
