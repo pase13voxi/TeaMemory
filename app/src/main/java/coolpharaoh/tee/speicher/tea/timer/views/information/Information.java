@@ -113,13 +113,15 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillImage() {
-        final Uri uri = imageIOAdapter.getImageUriByTeaId(informationViewModel.getTeaId());
-        if (uri != null) {
-            try {
-                final Bitmap bitmap = imageIOAdapter.loadBitmap(uri);
-                showImage(bitmap);
-            } catch (final IOException exception) {
-                Log.e(LOG_TAG, "Could not load Bitmap. Error message: " + exception.getMessage());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            final Uri uri = imageIOAdapter.getImageUriByTeaId(informationViewModel.getTeaId());
+            if (uri != null) {
+                try {
+                    final Bitmap bitmap = imageIOAdapter.loadBitmap(uri);
+                    showImage(bitmap);
+                } catch (final IOException exception) {
+                    Log.e(LOG_TAG, "Could not load Bitmap. Error message: " + exception.getMessage());
+                }
             }
         }
     }
