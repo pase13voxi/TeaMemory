@@ -1,7 +1,14 @@
 package coolpharaoh.tee.speicher.tea.timer.views.information;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +22,11 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -25,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +48,16 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 
 // This class has 9 Parent because of AppCompatActivity
+@RequiresApi(api = Build.VERSION_CODES.Q)
 @SuppressWarnings("java:S110")
 public class Information extends AppCompatActivity implements DetailRecyclerViewAdapter.OnClickListener {
+    private static final String LOG_TAG = Information.class.getSimpleName();
 
     private static final String DATE_FORMAT = "dd MMMM yyyy";
     private static final String TEA_ID_EXTRA = "teaId";
 
-    private static boolean noPicture = true;
-
     private InformationViewModel informationViewModel;
+    private ImageIOAdapter imageIOAdapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -53,11 +66,14 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
+        imageIOAdapter = new ImageIOAdapter(this);
+
         final long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
         fillTexViewTeaName();
         fillTexViewTeaVariety();
+        fillImage();
         fillRatingBar();
         showDetailsList();
         fillLastUsed();
@@ -77,9 +93,6 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private void defineToolbarAsActionbar() {
         final Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        if (noPicture) {
-            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
-        }
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
     }
 
@@ -90,15 +103,25 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
     private void fillTexViewTeaName() {
         final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
-        if (noPicture) {
-            texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_black));
-        }
+        texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_black));
         texViewTeaName.setText(informationViewModel.getTeaName());
     }
 
     private void fillTexViewTeaVariety() {
         final TextView texViewTeaVariety = findViewById(R.id.text_view_information_tea_variety);
         texViewTeaVariety.setText(informationViewModel.getVarietyAsText());
+    }
+
+    private void fillImage() {
+        final Uri uri = imageIOAdapter.getImageUriByTeaId(informationViewModel.getTeaId());
+        if (uri != null) {
+            try {
+                final Bitmap bitmap = imageIOAdapter.loadBitmap(uri);
+                showImage(bitmap);
+            } catch (final IOException exception) {
+                Log.e(LOG_TAG, "Could not load Bitmap. Error message: " + exception.getMessage());
+            }
+        }
     }
 
     private void fillRatingBar() {
@@ -179,23 +202,44 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         }
     }
 
+    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    final Bundle extras = result.getData().getExtras();
+                    final Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    try {
+                        imageIOAdapter.saveOrUpdateBitmap(imageBitmap, informationViewModel.getTeaId());
+                        showImage(imageBitmap);
+                    } catch (IOException exception) {
+                        Log.e(LOG_TAG, "Photo could not be stored. Error message: " + exception.getMessage());
+                        Toast.makeText(this, "Photo could not be stored.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.e(LOG_TAG, "Photo could not be taken.");
+                    Toast.makeText(this, "Photo could not be taken.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
     private void makeImage() {
-
-        noPicture = !noPicture;
-
-        final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
-        final Toolbar toolbar = findViewById(R.id.tool_bar);
-        final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
-
-        if (noPicture) {
-            imageViewImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.whole_cup));
-            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.color_primary));
-            texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_black));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            someActivityResultLauncher.launch(takePictureIntent);
         } else {
-            imageViewImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.tree));
-            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-            texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+            Log.i(LOG_TAG, "This Feature is only available with Android 10 and newer Versions.");
+            Toast.makeText(this, "This Feature is only available with Android 10 and newer Versions.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void showImage(final Bitmap imageBitmap) {
+        final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
+        imageViewImage.setImageBitmap(imageBitmap);
+
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+
+        final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
+        texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_white));
     }
 
     @Override

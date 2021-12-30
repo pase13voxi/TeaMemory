@@ -31,6 +31,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@string/information_description_image"
                     android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/whole_cup"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="8dp"
-                    android:textColor="@color/text_white"
+                    android:textColor="@color/text_black"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@id/text_view_information_tea_variety"
                     app:layout_constraintStart_toStartOf="@id/image_view_information_image" />

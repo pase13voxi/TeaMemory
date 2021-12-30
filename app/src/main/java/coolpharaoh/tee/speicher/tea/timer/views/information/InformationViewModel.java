@@ -49,6 +49,10 @@ class InformationViewModel extends ViewModel {
     }
 
     // Teas
+    public String getTeaId() {
+        return String.valueOf(teaId);
+    }
+
     String getTeaName() {
         final Tea tea = teaRepository.getTeaById(teaId);
         if (tea == null) {

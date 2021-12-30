@@ -111,9 +111,9 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void navigateToShowTea(final long teaId) {
-        final Intent showTeaScreen = new Intent(Overview.this, ShowTea.class);
-        showTeaScreen.putExtra("teaId", teaId);
-        startActivity(showTeaScreen);
+        final Intent showteaScreen = new Intent(Overview.this, ShowTea.class);
+        showteaScreen.putExtra("teaId", teaId);
+        startActivity(showteaScreen);
     }
 
     @Override
