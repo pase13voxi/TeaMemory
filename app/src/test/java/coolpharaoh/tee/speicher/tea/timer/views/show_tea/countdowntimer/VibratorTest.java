@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.VibrationEffect;
 
 import org.junit.Rule;
@@ -18,10 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class VibratorTest {
 

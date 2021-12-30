@@ -6,7 +6,6 @@ import static org.robolectric.Shadows.shadowOf;
 import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.BuildConfig;
 import coolpharaoh.tee.speicher.tea.timer.R;
@@ -26,8 +24,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.contact.Contact;
 import coolpharaoh.tee.speicher.tea.timer.views.software.Software;
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class AboutTest {
 

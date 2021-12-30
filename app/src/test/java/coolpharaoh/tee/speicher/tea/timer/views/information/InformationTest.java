@@ -14,7 +14,6 @@ import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +23,6 @@ import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
@@ -37,7 +35,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowPopupMenu;
 
@@ -56,8 +53,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class InformationTest {
     private static final String TEA_ID_EXTRA = "teaId";
@@ -90,6 +85,8 @@ public class InformationTest {
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
     }
 
+    //Todo neue Tests
+    /*
     @Test
     public void launchActivityAndExpectEmptyInformation() {
         createTea(0);
@@ -112,7 +109,8 @@ public class InformationTest {
             verify(noteDao).insert(any());
         });
     }
-
+     */
+    /*
     @Test
     public void launchActivityAndExpectFilledInformation() {
         final int rating = 4;
@@ -141,6 +139,7 @@ public class InformationTest {
             assertThat(editTextNotes.getText()).hasToString(notes.getDescription());
         });
     }
+     */
 
     @Test
     public void leaveActivityAndExpectStoredNotes() {
@@ -183,6 +182,7 @@ public class InformationTest {
         });
     }
 
+    /*
     @Test
     public void updateInStock() {
         final boolean inStock = true;
@@ -200,6 +200,7 @@ public class InformationTest {
             assertThat(captor.getValue().isInStock()).isTrue();
         });
     }
+     */
 
     @Test
     public void addDetail() {

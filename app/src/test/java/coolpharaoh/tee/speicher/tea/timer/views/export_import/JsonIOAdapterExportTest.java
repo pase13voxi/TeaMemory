@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -17,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.text.SimpleDateFormat;
 import java.time.Clock;
@@ -40,8 +38,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class JsonIOAdapterExportTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";

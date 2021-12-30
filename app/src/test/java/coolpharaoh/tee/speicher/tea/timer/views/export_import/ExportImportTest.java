@@ -13,7 +13,6 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.widget.Button;
 
 import androidx.test.core.app.ActivityScenario;
@@ -29,7 +28,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 
@@ -38,9 +36,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
-
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class ExportImportTest {
 

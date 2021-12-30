@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,10 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class TeaCompleteReceiverTest {
     public static final String TEA_ID = "teaId";
