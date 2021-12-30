@@ -7,10 +7,10 @@ android {
 
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
-        minSdkVersion 21
+        minSdkVersion 28
         targetSdkVersion 32
-        versionCode 160
-        versionName "3.7"
+        versionCode 163
+        versionName "4.0"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'

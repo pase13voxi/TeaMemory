@@ -1,14 +1,10 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.VibrationEffect;
 import android.util.Log;
-
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 
 class Vibrator {
     private static final String LOG_TAG = Vibrator.class.getSimpleName();
@@ -25,10 +21,7 @@ class Vibrator {
         this.timerViewModel = timerViewModel;
     }
 
-    //deprecated vibrate can be removed once the minimum sdk is greater that 25
-    @SuppressWarnings("java:S1874")
-    // The SDK is checked but android studio doesn't recognize it.
-    @SuppressLint("NewApi")
+    // TODO Deprecated
     void vibrate() {
         if (timerViewModel.isVibration() && !isSilent(application)) {
             final android.os.Vibrator vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
@@ -37,11 +30,7 @@ class Vibrator {
             } else {
                 // Vibrate for 1000 milliseconds
                 final long[] twice = {0, 500, 400, 500};
-                if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
-                } else {
-                    vibrator.vibrate(twice, -1);
-                }
+                vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
             }
         }
     }

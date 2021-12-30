@@ -21,7 +21,7 @@ import java.io.OutputStream;
 
 public class ImageIOAdapter {
     private static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
-    private static final int COMPRESS_QUALITY = 95;
+    private static final int COMPRESS_QUALITY = 100;
     private static final String MIME_TYPE = "image/jpeg";
     private static final String FOLDER = "tea_memory";
 

@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 
 public class TeaCompleteReceiver extends BroadcastReceiver {
 
@@ -17,10 +14,6 @@ public class TeaCompleteReceiver extends BroadcastReceiver {
         final long teaId = intent.getLongExtra("teaId", 0);
         final Intent notificationService = new Intent(context, NotificationService.class);
         notificationService.putExtra("teaId", teaId);
-        if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
-            context.startForegroundService(notificationService);
-        } else {
-            context.startService(notificationService);
-        }
+        context.startForegroundService(notificationService);
     }
 }
