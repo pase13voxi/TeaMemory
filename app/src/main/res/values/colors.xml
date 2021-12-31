@@ -5,14 +5,14 @@
     <color name="background">#ffffff</color>
     <color name="background_black">#000000</color>
     <color name="background_white">#ffffff</color>
-    <color name="background_grey">#939393</color>
+    <color name="background_grey">#808b98</color>
     <color name="background_green">#329e5f</color>
     <color name="background_green_dark">#277c4b</color>
     <color name="background_green_light">#5ab17e</color>
     <color name="background_pressed">#4f4e4e</color>
     <color name="text_black">#000000</color>
     <color name="text_white">#ffffff</color>
-    <color name="text_grey">#797979</color>
+    <color name="text_grey">#808b98</color>
     <color name="text_red">#FF0000</color>
     <color name="text_green">#329e5f</color>
     <color name="transparent">@android:color/transparent</color>
