@@ -1,11 +1,14 @@
 package coolpharaoh.tee.speicher.tea.timer.views.information;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.Q;
+import static android.view.View.GONE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,7 +29,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -48,7 +50,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 
 // This class has 9 Parent because of AppCompatActivity
-@RequiresApi(api = Build.VERSION_CODES.Q)
 @SuppressWarnings("java:S110")
 public class Information extends AppCompatActivity implements DetailRecyclerViewAdapter.OnClickListener {
     private static final String LOG_TAG = Information.class.getSimpleName();
@@ -71,6 +72,11 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         final long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
 
+        fillInformationView();
+        defineButtons();
+    }
+
+    private void fillInformationView() {
         fillTexViewTeaName();
         fillTexViewTeaVariety();
         fillImage();
@@ -79,15 +85,6 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         fillLastUsed();
         fillCounter();
         fillNotes();
-
-        final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
-        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
-
-        final ImageButton buttonAddDetail = findViewById(R.id.button_information_add_detail);
-        buttonAddDetail.setOnClickListener(v -> addDetail());
-
-        final FloatingActionButton buttonCamera = findViewById(R.id.button_information_camera);
-        buttonCamera.setOnClickListener(v -> makeImage());
     }
 
     private void defineToolbarAsActionbar() {
@@ -113,7 +110,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (SDK_INT >= Q) {
             final Uri uri = imageIOAdapter.getImageUriByTeaId(informationViewModel.getTeaId());
             if (uri != null) {
                 try {
@@ -172,6 +169,21 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         editTextNotes.setText(note.getDescription());
     }
 
+    private void defineButtons() {
+        final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> updateTeaRating(rating));
+
+        final ImageButton buttonAddDetail = findViewById(R.id.button_information_add_detail);
+        buttonAddDetail.setOnClickListener(v -> addDetail());
+
+        final FloatingActionButton buttonCamera = findViewById(R.id.button_information_camera);
+        if (SDK_INT >= Q) {
+            buttonCamera.setOnClickListener(v -> makeImage());
+        } else {
+            buttonCamera.setVisibility(GONE);
+        }
+    }
+
     private void updateTeaRating(final float rating) {
         informationViewModel.updateTeaRating((int) rating);
     }
@@ -204,10 +216,10 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         }
     }
 
-    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> takePictureActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && SDK_INT >= Q) {
                     final Bundle extras = result.getData().getExtras();
                     final Bitmap imageBitmap = (Bitmap) extras.get("data");
                     try {
@@ -224,13 +236,8 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
             });
 
     private void makeImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            someActivityResultLauncher.launch(takePictureIntent);
-        } else {
-            Log.i(LOG_TAG, "This Feature is only available with Android 10 and newer Versions.");
-            Toast.makeText(this, "This Feature is only available with Android 10 and newer Versions.", Toast.LENGTH_LONG).show();
-        }
+        final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureActivityResultLauncher.launch(takePictureIntent);
     }
 
     private void showImage(final Bitmap imageBitmap) {
