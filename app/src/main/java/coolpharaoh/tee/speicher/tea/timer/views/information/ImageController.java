@@ -19,12 +19,13 @@ import androidx.annotation.RequiresApi;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageIOAdapter {
+public class ImageController {
+    private static final String MIME_TYPE = "image/jpeg";
     private static final String FOLDER = "tea_memory";
 
     private final ContentResolver contentResolver;
 
-    public ImageIOAdapter(final Context context) {
+    public ImageController(final Context context) {
         contentResolver = context.getContentResolver();
     }
 
@@ -47,6 +48,7 @@ public class ImageIOAdapter {
     private Intent getImageIntent(final String teaId) throws IOException {
         final ContentValues values = new ContentValues();
         values.put(MediaStore.MediaColumns.DISPLAY_NAME, teaId);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, MIME_TYPE);
 
         values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + FOLDER);
 

@@ -57,7 +57,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private static final String TEA_ID_EXTRA = "teaId";
 
     private InformationViewModel informationViewModel;
-    private ImageIOAdapter imageIOAdapter;
+    private ImageController imageController;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        imageIOAdapter = new ImageIOAdapter(this);
+        imageController = new ImageController(this);
 
         final long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
@@ -110,10 +110,10 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
     private void fillImage() {
         if (SDK_INT >= Q) {
-            final Uri uri = imageIOAdapter.getImageUriByTeaId(informationViewModel.getTeaId());
+            final Uri uri = imageController.getImageUriByTeaId(informationViewModel.getTeaId());
             if (uri != null) {
                 try {
-                    final Bitmap bitmap = imageIOAdapter.loadBitmap(uri);
+                    final Bitmap bitmap = imageController.loadBitmap(uri);
                     showImage(bitmap);
                 } catch (final IOException exception) {
                     Log.e(LOG_TAG, "Could not load Bitmap. Error message: " + exception.getMessage());
@@ -240,7 +240,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private void makeImage() {
         if (SDK_INT >= Q) {
             try {
-                final Intent takePictureIntent = imageIOAdapter.saveOrUpdateImageIntent(informationViewModel.getTeaId());
+                final Intent takePictureIntent = imageController.saveOrUpdateImageIntent(informationViewModel.getTeaId());
                 takePictureActivityResultLauncher.launch(takePictureIntent);
             } catch (final IOException exception) {
                 Log.e(LOG_TAG, "Something went wrong while open photo application. Error message: " + exception.getMessage());
