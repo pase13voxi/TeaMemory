@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -123,6 +122,17 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         }
     }
 
+    private void showImage(final Bitmap imageBitmap) {
+        final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
+        imageViewImage.setImageBitmap(imageBitmap);
+
+        final Toolbar toolbar = findViewById(R.id.tool_bar);
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+
+        final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
+        texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+    }
+
     private void fillRatingBar() {
         final RatingBar ratingBar = findViewById(R.id.rating_bar_information);
         ratingBar.setRating(informationViewModel.getTeaRating());
@@ -219,16 +229,8 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     private final ActivityResultLauncher<Intent> takePictureActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && SDK_INT >= Q) {
-                    final Bundle extras = result.getData().getExtras();
-                    final Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    try {
-                        imageIOAdapter.saveOrUpdateBitmap(imageBitmap, informationViewModel.getTeaId());
-                        showImage(imageBitmap);
-                    } catch (IOException exception) {
-                        Log.e(LOG_TAG, "Photo could not be stored. Error message: " + exception.getMessage());
-                        Toast.makeText(this, "Photo could not be stored.", Toast.LENGTH_SHORT).show();
-                    }
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    fillImage();
                 } else {
                     Log.e(LOG_TAG, "Photo could not be taken.");
                     Toast.makeText(this, "Photo could not be taken.", Toast.LENGTH_SHORT).show();
@@ -236,19 +238,15 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
             });
 
     private void makeImage() {
-        final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePictureActivityResultLauncher.launch(takePictureIntent);
-    }
-
-    private void showImage(final Bitmap imageBitmap) {
-        final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
-        imageViewImage.setImageBitmap(imageBitmap);
-
-        final Toolbar toolbar = findViewById(R.id.tool_bar);
-        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-
-        final TextView texViewTeaName = findViewById(R.id.text_view_information_tea_name);
-        texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+        if (SDK_INT >= Q) {
+            try {
+                final Intent takePictureIntent = imageIOAdapter.saveOrUpdateImageIntent(informationViewModel.getTeaId());
+                takePictureActivityResultLauncher.launch(takePictureIntent);
+            } catch (final IOException exception) {
+                Log.e(LOG_TAG, "Something went wrong while open photo application. Error message: " + exception.getMessage());
+                Toast.makeText(this, "Something went wrong while open photo application.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
