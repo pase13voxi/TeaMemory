@@ -105,7 +105,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillTexViewTeaVariety() {
-        final TextView texViewTeaVariety = findViewById(R.id.text_view_information_tea_variety);
+        final TextView texViewTeaVariety = findViewById(R.id.text_view_information_variety);
         texViewTeaVariety.setText(informationViewModel.getVarietyAsText());
     }
 

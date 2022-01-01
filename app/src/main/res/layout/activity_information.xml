@@ -43,7 +43,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/text_view_information_tea_variety"
+                        android:id="@+id/text_view_information_variety"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -61,7 +61,7 @@
                         android:layout_marginBottom="8dp"
                         android:textColor="@color/text_black"
                         android:textSize="20sp"
-                        app:layout_constraintBottom_toTopOf="@id/text_view_information_tea_variety"
+                        app:layout_constraintBottom_toTopOf="@id/text_view_information_variety"
                         app:layout_constraintStart_toStartOf="@id/image_view_information_image" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
