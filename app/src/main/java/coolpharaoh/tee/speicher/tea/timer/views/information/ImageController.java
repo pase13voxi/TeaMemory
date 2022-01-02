@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class ImageController {
     private static final String MIME_TYPE = "image/jpeg";
-    private static final String FOLDER = "tea_memory";
+    private static final String FOLDER = "TeaMemory";
 
     private final ContentResolver contentResolver;
 

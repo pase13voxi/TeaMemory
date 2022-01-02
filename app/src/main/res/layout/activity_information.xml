@@ -35,34 +35,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
+                        android:background="@color/background"
                         android:contentDescription="@string/information_description_image"
                         android:minHeight="160dp"
                         android:scaleType="centerCrop"
-                        android:background="@color/background"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/text_view_information_variety"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="64dp"
                         android:layout_marginBottom="16dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textColor="@color/text_grey"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@id/image_view_information_image"
-                        app:layout_constraintStart_toStartOf="@id/image_view_information_image" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/text_view_information_tea_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="64dp"
                         android:layout_marginBottom="8dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textColor="@color/text_black"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toTopOf="@id/text_view_information_variety"
-                        app:layout_constraintStart_toStartOf="@id/image_view_information_image" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/button_information_camera"
