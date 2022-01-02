@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -324,10 +325,12 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
 
         if (id == R.id.action_information_in_stock) {
             if (informationViewModel.isInStock()) {
-                item.setIcon(R.drawable.home_white_empty);
+                final Drawable homeIconEmpty = ContextCompat.getDrawable(getApplication(), R.drawable.home_white_empty);
+                item.setIcon(homeIconEmpty);
                 informationViewModel.updateTeaInStock(false);
             } else {
-                item.setIcon(R.drawable.home_white);
+                final Drawable homeIcon = ContextCompat.getDrawable(getApplication(), R.drawable.home_white);
+                item.setIcon(homeIcon);
                 informationViewModel.updateTeaInStock(true);
             }
         }

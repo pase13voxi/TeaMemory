@@ -35,6 +35,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowPopupMenu;
 
@@ -60,6 +61,7 @@ public class InformationTest {
     private static final String HEADER = "header";
     private static final String DESCRIPTION = "description";
     private static final String TEA_NAME = "teaName";
+    private static final String TEA_VARIETY = "teaVariety";
     private static final String NOTES_HEADER = "01_notes";
 
     @Rule
@@ -85,8 +87,6 @@ public class InformationTest {
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
     }
 
-    //Todo neue Tests
-    /*
     @Test
     public void launchActivityAndExpectEmptyInformation() {
         createTea(0);
@@ -95,11 +95,14 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
+            final TextView textViewTeaName = information.findViewById(R.id.text_view_information_tea_name);
+            assertThat(textViewTeaName.getText()).isEqualTo(TEA_NAME);
+
+            final TextView textViewVariety = information.findViewById(R.id.text_view_information_variety);
+            assertThat(textViewVariety.getText()).isEqualTo(TEA_VARIETY);
+
             final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             assertThat(ratingBar.getRating()).isZero();
-
-            final SwitchCompat switchInStock = information.findViewById(R.id.switch_information_in_stock);
-            assertThat(switchInStock.isChecked()).isFalse();
 
             final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isZero();
@@ -109,8 +112,7 @@ public class InformationTest {
             verify(noteDao).insert(any());
         });
     }
-     */
-    /*
+
     @Test
     public void launchActivityAndExpectFilledInformation() {
         final int rating = 4;
@@ -123,14 +125,14 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final TextView toolbarTitle = information.findViewById(R.id.tool_bar_title);
-            assertThat(toolbarTitle.getText()).hasToString(TEA_NAME);
+            final TextView textViewTeaName = information.findViewById(R.id.text_view_information_tea_name);
+            assertThat(textViewTeaName.getText()).isEqualTo(TEA_NAME);
+
+            final TextView textViewVariety = information.findViewById(R.id.text_view_information_variety);
+            assertThat(textViewVariety.getText()).isEqualTo(TEA_VARIETY);
 
             final RatingBar ratingBar = information.findViewById(R.id.rating_bar_information);
             assertThat(ratingBar.getRating()).isEqualTo(4);
-
-            final SwitchCompat switchInStock = information.findViewById(R.id.switch_information_in_stock);
-            assertThat(switchInStock.isChecked()).isTrue();
 
             final RecyclerView recyclerView = information.findViewById(R.id.recycler_view_information_details);
             assertThat(recyclerView.getAdapter().getItemCount()).isEqualTo(3);
@@ -139,7 +141,8 @@ public class InformationTest {
             assertThat(editTextNotes.getText()).hasToString(notes.getDescription());
         });
     }
-     */
+
+    //ToDo add image show on start image?
 
     @Test
     public void leaveActivityAndExpectStoredNotes() {
@@ -182,25 +185,25 @@ public class InformationTest {
         });
     }
 
-    /*
     @Test
     public void updateInStock() {
-        final boolean inStock = true;
         createTea(0);
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
-            final SwitchCompat switchInStock = information.findViewById(R.id.switch_information_in_stock);
-            switchInStock.setChecked(inStock);
+            information.onOptionsItemSelected(new RoboMenuItem(R.id.action_information_in_stock));
 
             final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(captor.capture());
             assertThat(captor.getValue().isInStock()).isTrue();
+
+            information.onOptionsItemSelected(new RoboMenuItem(R.id.action_information_in_stock));
+
+            assertThat(captor.getValue().isInStock()).isFalse();
         });
     }
-     */
 
     @Test
     public void addDetail() {
@@ -367,7 +370,7 @@ public class InformationTest {
     }
 
     private void createTea(final int rating, final boolean inStock) {
-        final Tea tea = new Tea(TEA_NAME, null, 0, null, 0, 0, CurrentDate.getDate());
+        final Tea tea = new Tea(TEA_NAME, TEA_VARIETY, 0, null, 0, 0, CurrentDate.getDate());
         tea.setRating(rating);
         tea.setInStock(inStock);
         when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
