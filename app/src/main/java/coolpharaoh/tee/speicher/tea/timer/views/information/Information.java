@@ -7,7 +7,6 @@ import static android.view.View.GONE;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -113,19 +112,15 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         if (SDK_INT >= Q) {
             final Uri uri = imageController.getImageUriByTeaId(informationViewModel.getTeaId());
             if (uri != null) {
-                try {
-                    final Bitmap bitmap = imageController.loadBitmap(uri);
-                    showImage(bitmap);
-                } catch (final IOException exception) {
-                    Log.e(LOG_TAG, "Could not load Bitmap. Error message: " + exception.getMessage());
-                }
+                showImage(uri);
             }
         }
     }
 
-    private void showImage(final Bitmap imageBitmap) {
+    private void showImage(final Uri uri) {
         final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
-        imageViewImage.setImageBitmap(imageBitmap);
+        imageViewImage.setImageURI(null);
+        imageViewImage.setImageURI(uri);
 
         final Toolbar toolbar = findViewById(R.id.tool_bar);
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));

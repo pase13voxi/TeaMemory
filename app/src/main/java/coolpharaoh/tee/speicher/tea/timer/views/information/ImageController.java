@@ -31,40 +31,10 @@ public class ImageController {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     Intent saveOrUpdateImageIntent(final String teaId) throws IOException {
-        final Uri uri = getImageUriByTeaId(teaId);
+        Uri uri = getImageUriByTeaId(teaId);
 
-        if (uri != null) {
-            removeOldBitmap(uri);
-        }
-        return getImageIntent(teaId);
-    }
-
-    private void removeOldBitmap(final Uri uri) {
-        contentResolver.delete(uri, null, null);
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private Intent getImageIntent(final String teaId) throws IOException {
-        final ContentValues values = new ContentValues();
-        values.put(MediaStore.MediaColumns.DISPLAY_NAME, teaId);
-        values.put(MediaStore.MediaColumns.MIME_TYPE, MIME_TYPE);
-
-        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + FOLDER);
-
-        Uri uri = null;
-        try {
-            final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            uri = contentResolver.insert(contentUri, values);
-
-            if (uri == null)
-                throw new IOException("Failed to create new MediaStore record.");
-
-        } catch (final IOException exception) {
-            if (uri != null) {
-                contentResolver.delete(uri, null, null);
-            }
-            throw exception;
+        if (uri == null) {
+            uri = createNewImageUri(teaId);
         }
 
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -100,6 +70,41 @@ public class ImageController {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private Uri createNewImageUri(final String teaId) throws IOException {
+        final ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DISPLAY_NAME, teaId);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, MIME_TYPE);
+
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + FOLDER);
+
+        Uri uri = null;
+        try {
+            final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            uri = contentResolver.insert(contentUri, values);
+
+            if (uri == null)
+                throw new IOException("Failed to create new MediaStore record.");
+
+        } catch (final IOException exception) {
+            if (uri != null) {
+                contentResolver.delete(uri, null, null);
+            }
+            throw exception;
+        }
+
+        return uri;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    void removeImageByTeaId(final String teaId) {
+        final Uri imageUri = getImageUriByTeaId(teaId);
+        if (imageUri != null) {
+            contentResolver.delete(imageUri, null, null);
+        }
+    }
+
+    // TODO not used anymore
     @RequiresApi(api = Build.VERSION_CODES.P)
     Bitmap loadBitmap(final Uri uri) throws IOException {
         final ImageDecoder.Source source = ImageDecoder.createSource(contentResolver, uri);
