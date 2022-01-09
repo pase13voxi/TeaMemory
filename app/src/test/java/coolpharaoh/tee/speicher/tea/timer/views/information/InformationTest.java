@@ -4,6 +4,7 @@ import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -188,6 +189,8 @@ public class InformationTest {
 
             final FloatingActionButton buttonCamera = information.findViewById(R.id.button_information_camera);
             assertThat(buttonCamera.getVisibility()).isEqualTo(View.GONE);
+
+            verify(imageController, never()).getImageUriByTeaId(any());
         });
     }
 

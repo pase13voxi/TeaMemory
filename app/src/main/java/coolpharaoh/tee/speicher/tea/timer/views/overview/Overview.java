@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
+import static android.os.Build.VERSION_CODES.Q;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
@@ -37,6 +40,8 @@ import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerV
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.StickyHeaderItemDecoration;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -129,7 +134,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
                 navigateToNewOrEditTea(teaId);
                 return true;
             } else if (item.getItemId() == R.id.action_overview_tea_list_delete) {
-                overviewViewModel.deleteTea((int) teaId);
+                removeTeaByTeaId(teaId);
                 return true;
             }
             return false;
@@ -152,6 +157,15 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     private void updateTeaInStock(final long teaId, final DialogInterface dialog, final int item) {
         overviewViewModel.updateInStockOfTea(teaId, item == 0);
         dialog.dismiss();
+    }
+
+    private void removeTeaByTeaId(final long teaId) {
+        overviewViewModel.deleteTea((int) teaId);
+
+        if (CurrentSdk.getSdkVersion() >= Q) {
+            final ImageController imageController = ImageControllerFactory.getImageController(this);
+            imageController.removeImageByTeaId(String.valueOf(teaId));
+        }
     }
 
     private void initializeNewTeaButton() {
