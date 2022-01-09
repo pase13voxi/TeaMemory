@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+
 class BackgroundTimer {
     private static final int REQUEST_CODE = 4356;
 
@@ -43,7 +45,7 @@ class BackgroundTimer {
     }
 
     PendingIntent getSender(final Intent teaCompleteReceiver) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.S) {
             return PendingIntent.getBroadcast(application, REQUEST_CODE, teaCompleteReceiver, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         } else {
             return PendingIntent.getBroadcast(application, REQUEST_CODE, teaCompleteReceiver, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -2,6 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
 import static android.os.Looper.getMainLooper;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +21,7 @@ import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -45,6 +47,8 @@ import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
@@ -71,6 +75,8 @@ public class SettingsTest {
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     TeaDao teaDao;
+    @Mock
+    SystemUtility systemUtility;
 
     private SharedSettings sharedSettings;
 
@@ -78,6 +84,7 @@ public class SettingsTest {
     public void setUp() {
         mockDB();
         setSharedSettings();
+        mockSystemVersionCode();
     }
 
     private void mockDB() {
@@ -95,6 +102,11 @@ public class SettingsTest {
         sharedSettings.setShowTeaAlert(false);
         sharedSettings.setOverviewUpdateAlert(false);
         sharedSettings.setSettingsPermissionAlert(false);
+    }
+
+    private void mockSystemVersionCode() {
+        CurrentSdk.setFixedSystem(systemUtility);
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.R);
     }
 
     @Test
@@ -326,6 +338,30 @@ public class SettingsTest {
 
     @Test
     public void setDarkModeSystem() {
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
+
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
+            shadowOf(getMainLooper()).idle();
+
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
+
+            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
+
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_FOLLOW_SYSTEM);
+        });
+    }
+
+    @Test
+    public void setDarkModeSystemOnVersionCodeOlderAndroidQ() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);

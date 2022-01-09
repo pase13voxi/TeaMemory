@@ -1,6 +1,5 @@
 package coolpharaoh.tee.speicher.tea.timer.views.information;
 
-import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.Q;
 import static android.view.View.GONE;
 
@@ -46,6 +45,9 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -66,7 +68,8 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
-        imageController = new ImageController(this);
+
+        this.imageController = ImageControllerFactory.getImageController(this);
 
         final long teaId = this.getIntent().getLongExtra(TEA_ID_EXTRA, 0);
         informationViewModel = new InformationViewModel(teaId, getApplication());
@@ -109,7 +112,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillImage() {
-        if (SDK_INT >= Q) {
+        if (CurrentSdk.getSdkVersion() >= Q) {
             final Uri uri = imageController.getImageUriByTeaId(informationViewModel.getTeaId());
             if (uri != null) {
                 showImage(uri);
@@ -121,6 +124,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         final ImageView imageViewImage = findViewById(R.id.image_view_information_image);
         imageViewImage.setImageURI(null);
         imageViewImage.setImageURI(uri);
+        imageViewImage.setTag(uri.toString());
 
         final Toolbar toolbar = findViewById(R.id.tool_bar);
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
@@ -183,7 +187,7 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
         buttonAddDetail.setOnClickListener(v -> addDetail());
 
         final FloatingActionButton buttonCamera = findViewById(R.id.button_information_camera);
-        if (SDK_INT >= Q) {
+        if (CurrentSdk.getSdkVersion() >= Q) {
             buttonCamera.setOnClickListener(v -> makeImage());
         } else {
             buttonCamera.setVisibility(GONE);
@@ -234,9 +238,9 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
             });
 
     private void makeImage() {
-        if (SDK_INT >= Q) {
+        if (CurrentSdk.getSdkVersion() >= Q) {
             try {
-                final Intent takePictureIntent = imageController.saveOrUpdateImageIntent(informationViewModel.getTeaId());
+                final Intent takePictureIntent = imageController.getSaveOrUpdateImageIntent(informationViewModel.getTeaId());
                 takePictureActivityResultLauncher.launch(takePictureIntent);
             } catch (final IOException exception) {
                 Log.e(LOG_TAG, "Something went wrong while open photo application. Error message: " + exception.getMessage());

@@ -32,8 +32,8 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 @RunWith(RobolectricTestRunner.class)
@@ -44,11 +44,11 @@ public class ExportImportTest {
     @Mock
     DatabaseJsonTransformer databaseJsonTransformer;
     @Mock
-    DataIO dataIO;
+    DataIOAdapter dataIOAdapter;
 
     @Before
     public void setUp() {
-        DataIOFactory.setMockedDataIO(dataIO);
+        DataIOAdapterFactory.setMockedDataIO(dataIOAdapter);
         JsonIOAdapter.setMockedTransformer(databaseJsonTransformer);
     }
 
@@ -71,7 +71,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
-        when(dataIO.write(any())).thenReturn(true);
+        when(dataIOAdapter.write(any())).thenReturn(true);
 
         final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -88,7 +88,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
-        when(dataIO.write(any())).thenReturn(false);
+        when(dataIOAdapter.write(any())).thenReturn(false);
 
         final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {

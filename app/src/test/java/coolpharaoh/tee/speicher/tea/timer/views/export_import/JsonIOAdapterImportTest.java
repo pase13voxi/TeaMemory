@@ -31,7 +31,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JsonIOAdapterImportTest {
@@ -166,7 +166,7 @@ public class JsonIOAdapterImportTest {
     @Test
     public void importTeasAndKeepStoredTeas() {
         JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOFactory.getDataIO(application, System.out::println, Uri.EMPTY), true);
+        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), true);
 
         verifyImportedTeas();
     }
@@ -174,7 +174,7 @@ public class JsonIOAdapterImportTest {
     @Test
     public void importTeasAndDeleteStoredTeas() {
         JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
+        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
 
         verify(teaDao).deleteAll();
         verifyImportedTeas();

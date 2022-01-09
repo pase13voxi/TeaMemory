@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -112,7 +112,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void exportFile(final Uri folderPath) {
         JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.write(DataIOFactory.getDataIO(getApplication(), this, folderPath))) {
+        if (JsonIOAdapter.write(DataIOAdapterFactory.getDataIO(getApplication(), this, folderPath))) {
             dialogExportLocation();
         } else {
             dialogExportFailed();
@@ -121,7 +121,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void importFile(final Uri filePath) {
         JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.read(DataIOFactory.getDataIO(getApplication(), this, filePath), keepStoredTeas)) {
+        if (JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(getApplication(), this, filePath), keepStoredTeas)) {
             dialogImportComplete();
         } else {
             dialogImportFailed();

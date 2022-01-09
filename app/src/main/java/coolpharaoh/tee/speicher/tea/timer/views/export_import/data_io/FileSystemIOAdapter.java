@@ -16,14 +16,14 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
 
-class FileSystemIO implements DataIO {
-    private static final String LOG_TAG = FileSystemIO.class.getSimpleName();
+class FileSystemIOAdapter implements DataIOAdapter {
+    private static final String LOG_TAG = FileSystemIOAdapter.class.getSimpleName();
 
     final Application application;
     final Printer printer;
     final Uri uri;
 
-    FileSystemIO(final Application application, final Printer printer, final Uri uri) {
+    FileSystemIOAdapter(final Application application, final Printer printer, final Uri uri) {
         this.application = application;
         this.printer = printer;
         this.uri = uri;

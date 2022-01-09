@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.views.information;
+package coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -6,8 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -19,18 +17,19 @@ import androidx.annotation.RequiresApi;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageController {
+public class ContentResolverImageController implements ImageController {
     private static final String MIME_TYPE = "image/jpeg";
     private static final String FOLDER = "TeaMemory";
 
     private final ContentResolver contentResolver;
 
-    public ImageController(final Context context) {
+    public ContentResolverImageController(final Context context) {
         contentResolver = context.getContentResolver();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    Intent saveOrUpdateImageIntent(final String teaId) throws IOException {
+    @Override
+    public Intent getSaveOrUpdateImageIntent(final String teaId) throws IOException {
         Uri uri = getImageUriByTeaId(teaId);
 
         if (uri == null) {
@@ -44,7 +43,8 @@ public class ImageController {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    Uri getImageUriByTeaId(final String teaId) {
+    @Override
+    public Uri getImageUriByTeaId(final String teaId) {
         final String[] projection = {
                 BaseColumns._ID,
                 MediaStore.MediaColumns.DISPLAY_NAME,
@@ -75,39 +75,22 @@ public class ImageController {
         final ContentValues values = new ContentValues();
         values.put(MediaStore.MediaColumns.DISPLAY_NAME, teaId);
         values.put(MediaStore.MediaColumns.MIME_TYPE, MIME_TYPE);
-
         values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + FOLDER);
 
-        Uri uri = null;
-        try {
-            final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            uri = contentResolver.insert(contentUri, values);
+        final Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-            if (uri == null)
-                throw new IOException("Failed to create new MediaStore record.");
-
-        } catch (final IOException exception) {
-            if (uri != null) {
-                contentResolver.delete(uri, null, null);
-            }
-            throw exception;
-        }
+        if (uri == null)
+            throw new IOException("Failed to create new MediaStore record.");
 
         return uri;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    void removeImageByTeaId(final String teaId) {
+    @Override
+    public void removeImageByTeaId(final String teaId) {
         final Uri imageUri = getImageUriByTeaId(teaId);
         if (imageUri != null) {
             contentResolver.delete(imageUri, null, null);
         }
-    }
-
-    // TODO not used anymore
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    Bitmap loadBitmap(final Uri uri) throws IOException {
-        final ImageDecoder.Source source = ImageDecoder.createSource(contentResolver, uri);
-        return ImageDecoder.decodeBitmap(source);
     }
 }

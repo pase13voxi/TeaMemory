@@ -36,7 +36,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapter;
 
 @RunWith(RobolectricTestRunner.class)
 public class JsonIOAdapterExportTest {
@@ -74,7 +74,7 @@ public class JsonIOAdapterExportTest {
     @Mock
     DateUtility fixedDate;
     @Mock
-    DataIO dataIO;
+    DataIOAdapter dataIOAdapter;
 
     @Before
     public void setUp() {
@@ -153,8 +153,8 @@ public class JsonIOAdapterExportTest {
         final Context context = ApplicationProvider.getApplicationContext();
 
         JsonIOAdapter.init((Application) context, System.out::println);
-        JsonIOAdapter.write(dataIO);
+        JsonIOAdapter.write(dataIOAdapter);
 
-        verify(dataIO).write(DB_JSON_DUMP.replace("DATE", exportedDate));
+        verify(dataIOAdapter).write(DB_JSON_DUMP.replace("DATE", exportedDate));
     }
 }

@@ -11,20 +11,28 @@ import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
 import static org.robolectric.shadows.ShadowInstrumentation.getInstrumentation;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +43,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.fakes.RoboMenuItem;
+import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowPopupMenu;
 
@@ -50,9 +60,13 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class InformationTest {
@@ -74,10 +88,16 @@ public class InformationTest {
     NoteDao noteDao;
     @Mock
     CounterDao counterDao;
+    @Mock
+    ImageController imageController;
+    @Mock
+    SystemUtility systemUtility;
 
     @Before
     public void setUp() {
         mockDB();
+        mockSystemVersionCode();
+        ImageControllerFactory.setMockedImageController(imageController);
     }
 
     private void mockDB() {
@@ -85,6 +105,11 @@ public class InformationTest {
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
         when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
+    }
+
+    private void mockSystemVersionCode() {
+        CurrentSdk.setFixedSystem(systemUtility);
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.R);
     }
 
     @Test
@@ -97,6 +122,7 @@ public class InformationTest {
         informationActivityScenario.onActivity(information -> {
             final TextView textViewTeaName = information.findViewById(R.id.text_view_information_tea_name);
             assertThat(textViewTeaName.getText()).isEqualTo(TEA_NAME);
+            assertThat(textViewTeaName.getCurrentTextColor()).isEqualTo(ContextCompat.getColor(information, R.color.text_black));
 
             final TextView textViewVariety = information.findViewById(R.id.text_view_information_variety);
             assertThat(textViewVariety.getText()).isEqualTo(TEA_VARIETY);
@@ -115,6 +141,8 @@ public class InformationTest {
 
     @Test
     public void launchActivityAndExpectFilledInformation() {
+        final Uri uri = Uri.parse("Test");
+        when(imageController.getImageUriByTeaId(String.valueOf(TEA_ID))).thenReturn(uri);
         final int rating = 4;
         final boolean inStock = true;
         createTea(rating, inStock);
@@ -125,8 +153,12 @@ public class InformationTest {
 
         final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
         informationActivityScenario.onActivity(information -> {
+            final ImageView imageViewImage = information.findViewById(R.id.image_view_information_image);
+            assertThat(imageViewImage.getTag()).isEqualTo(uri.toString());
+
             final TextView textViewTeaName = information.findViewById(R.id.text_view_information_tea_name);
             assertThat(textViewTeaName.getText()).isEqualTo(TEA_NAME);
+            assertThat(textViewTeaName.getCurrentTextColor()).isEqualTo(ContextCompat.getColor(information, R.color.text_white));
 
             final TextView textViewVariety = information.findViewById(R.id.text_view_information_variety);
             assertThat(textViewVariety.getText()).isEqualTo(TEA_VARIETY);
@@ -142,7 +174,22 @@ public class InformationTest {
         });
     }
 
-    //ToDo add image show on start image?
+    @Test
+    public void launchActivityWithSystemOlderAndroidQAndExpectNoFilledImageAndCameraButtonGone() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+        createTea(0);
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            final TextView texViewTeaName = information.findViewById(R.id.text_view_information_tea_name);
+            assertThat(texViewTeaName.getCurrentTextColor()).isEqualTo(ContextCompat.getColor(information, R.color.text_black));
+
+            final FloatingActionButton buttonCamera = information.findViewById(R.id.button_information_camera);
+            assertThat(buttonCamera.getVisibility()).isEqualTo(View.GONE);
+        });
+    }
 
     @Test
     public void leaveActivityAndExpectStoredNotes() {
@@ -165,6 +212,30 @@ public class InformationTest {
         assertThat(captor.getValue())
                 .extracting(Note::getPosition, Note::getHeader, Note::getDescription)
                 .containsExactly(-1, NOTES_HEADER, notes);
+    }
+
+    @Test
+    public void updateImage() throws Exception {
+        createTea(0);
+        when(imageController.getSaveOrUpdateImageIntent(String.valueOf(TEA_ID))).thenReturn(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+        final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+
+        final ActivityScenario<Information> informationActivityScenario = ActivityScenario.launch(intent);
+        informationActivityScenario.onActivity(information -> {
+            final FloatingActionButton buttonCamera = information.findViewById(R.id.button_information_camera);
+            buttonCamera.performClick();
+
+            final Uri uri = Uri.parse("Test");
+            when(imageController.getImageUriByTeaId(String.valueOf(TEA_ID))).thenReturn(uri);
+            mockReturnActionActivityResult(information);
+
+            final ImageView imageViewImage = information.findViewById(R.id.image_view_information_image);
+            assertThat(imageViewImage.getTag()).isEqualTo(uri.toString());
+
+            final TextView texViewTeaName = information.findViewById(R.id.text_view_information_tea_name);
+            assertThat(texViewTeaName.getCurrentTextColor()).isEqualTo(ContextCompat.getColor(information, R.color.text_white));
+        });
     }
 
     @Test
@@ -423,5 +494,10 @@ public class InformationTest {
         assertThat(textViewWeek.getText()).hasToString(week);
         assertThat(textViewMonth.getText()).hasToString(month);
         assertThat(textViewOverall.getText()).hasToString(overall);
+    }
+
+    private void mockReturnActionActivityResult(final Information information) {
+        final ShadowActivity shadowActivity = Shadows.shadowOf(information);
+        shadowActivity.receiveResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), Activity.RESULT_OK, new Intent());
     }
 }
