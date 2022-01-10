@@ -20,6 +20,7 @@ public class SharedSettings {
     private static final String DARK_MODE = "dark_mode";
     private static final String OVERVIEW_UPDATE_ALERT = "overview_update_alert";
     private static final String SHOW_TEA_ALERT = "show_tea_alert";
+    //Could be removed! Not used anymore!
     private static final String SETTINGS_PERMISSION_ALERT = "settings_permission_alert";
     private static final String SORT_MODE = "sort_mode";
     private static final String OVERVIEW_HEADER = "overview_header";
@@ -123,10 +124,12 @@ public class SharedSettings {
         editor.apply();
     }
 
+    //Could be removed! Not used anymore!
     public boolean isSettingsPermissionAlert() {
         return sharedPreferences.getBoolean(SETTINGS_PERMISSION_ALERT, false);
     }
 
+    //Could be removed! Not used anymore!
     public void setSettingsPermissionAlert(final boolean settingsPermissionAlert) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(SETTINGS_PERMISSION_ALERT, settingsPermissionAlert);
@@ -174,6 +177,7 @@ public class SharedSettings {
         setDarkMode(SYSTEM);
         setOverviewUpdateAlert(false);
         setShowTeaAlert(true);
+        //Could be removed! Not used anymore!
         setSettingsPermissionAlert(true);
         setSortMode(LAST_USED);
         setOverviewHeader(false);

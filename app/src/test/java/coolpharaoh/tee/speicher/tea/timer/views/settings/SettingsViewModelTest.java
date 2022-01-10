@@ -26,7 +26,6 @@ public class SettingsViewModelTest {
 
     @Before
     public void setUp() {
-
         settingsViewModel = new SettingsViewModel(teaRepository, sharedSettings);
     }
 
@@ -158,22 +157,6 @@ public class SettingsViewModelTest {
         settingsViewModel.setOverviewUpdateAlert(overviewUpdateAlert);
 
         verify(sharedSettings).setOverviewUpdateAlert(overviewUpdateAlert);
-    }
-
-    @Test
-    public void setSettingsPermissionAlert() {
-        final boolean settingsPermissionAlert = true;
-        settingsViewModel.setSettingsPermissionAlert(settingsPermissionAlert);
-
-        verify(sharedSettings).setSettingsPermissionAlert(settingsPermissionAlert);
-    }
-
-    @Test
-    public void isSettingsPermissionAlert() {
-        final boolean settingsPermissionAlert = true;
-        when(sharedSettings.isSettingsPermissionAlert()).thenReturn(settingsPermissionAlert);
-
-        assertThat(settingsViewModel.isSettingsPermissionAlert()).isEqualTo(settingsPermissionAlert);
     }
 
     @Test

@@ -94,14 +94,6 @@ class SettingsViewModel {
         sharedSettings.setOverviewUpdateAlert(overviewUpdateAlert);
     }
 
-    boolean isSettingsPermissionAlert() {
-        return sharedSettings.isSettingsPermissionAlert();
-    }
-
-    void setSettingsPermissionAlert(final boolean settingsPermissionAlert) {
-        sharedSettings.setSettingsPermissionAlert(settingsPermissionAlert);
-    }
-
     void setDefaultSettings() {
         sharedSettings.setFactorySettings();
     }

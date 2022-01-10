@@ -416,15 +416,12 @@ public class SettingsTest {
 
             final CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.check_box_settings_dialog_update);
             final CheckBox checkBoxDescription = alertDialog.findViewById(R.id.check_box_settings_dialog_description);
-            final CheckBox checkBoxPermission = alertDialog.findViewById(R.id.check_box_settings_dialog_permission);
 
             assertThat(checkBoxUpdate.isChecked()).isFalse();
             assertThat(checkBoxDescription.isChecked()).isFalse();
-            assertThat(checkBoxPermission.isChecked()).isFalse();
 
             checkBoxUpdate.setChecked(true);
             checkBoxDescription.setChecked(true);
-            checkBoxPermission.setChecked(true);
 
             final Button accept = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             accept.performClick();
@@ -432,7 +429,6 @@ public class SettingsTest {
 
             assertThat(sharedSettings.isOverviewUpdateAlert()).isTrue();
             assertThat(sharedSettings.isShowTeaAlert()).isTrue();
-            assertThat(sharedSettings.isSettingsPermissionAlert()).isTrue();
         });
     }
 
