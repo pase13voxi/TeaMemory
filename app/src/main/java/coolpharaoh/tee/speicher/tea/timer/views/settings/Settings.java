@@ -215,7 +215,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
             settingsViewModel.setMusicName("-");
         }
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.ALARM.ordinal());
     }
 
     private void settingVibration() {
@@ -234,7 +234,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsViewModel.setVibration(item == 0);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.VIBRATION.ordinal());
         dialog.dismiss();
     }
 
@@ -254,7 +254,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsViewModel.setAnimation(item == 0);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.ANIMATION.ordinal());
         dialog.dismiss();
     }
 
@@ -273,7 +273,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     private void temperatureUnitChanged(final DialogInterface dialog, final int item) {
         settingsViewModel.setTemperatureUnit(TemperatureUnit.fromChoice(item));
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.TEMPERATURE_UNIT.ordinal());
         dialog.dismiss();
     }
 
@@ -293,7 +293,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsViewModel.setOverviewHeader(item == 0);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.OVERVIEW_HEADER.ordinal());
         dialog.dismiss();
     }
 
@@ -318,7 +318,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         ThemeManager.applyTheme(darkMode);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.DARK_MODE.ordinal());
         dialog.dismiss();
     }
 
@@ -359,8 +359,9 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void resetToFactorySettings() {
-        settingsViewModel.setDefaultSettings();
+        settingsViewModel.deleteAllTeaImages();
         settingsViewModel.deleteAllTeas();
+        settingsViewModel.setDefaultSettings();
 
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();

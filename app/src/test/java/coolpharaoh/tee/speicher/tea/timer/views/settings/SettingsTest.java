@@ -45,12 +45,18 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowAlertDialog;
 
+import java.util.Arrays;
+import java.util.List;
+
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class SettingsTest {
@@ -76,6 +82,8 @@ public class SettingsTest {
     @Mock
     TeaDao teaDao;
     @Mock
+    ImageController imageController;
+    @Mock
     SystemUtility systemUtility;
 
     private SharedSettings sharedSettings;
@@ -84,6 +92,7 @@ public class SettingsTest {
     public void setUp() {
         mockDB();
         setSharedSettings();
+        ImageControllerFactory.setMockedImageController(imageController);
         mockSystemVersionCode();
     }
 
@@ -434,20 +443,26 @@ public class SettingsTest {
 
     @Test
     public void setFactorySettingsAndExpectFactorySettings() {
+        final Tea tea1 = new Tea();
+        tea1.setId(1L);
+        final Tea tea2 = new Tea();
+        tea2.setId(2L);
+        final List<Tea> teas = Arrays.asList(tea1, tea2);
+        when(teaDao.getTeas()).thenReturn(teas);
+
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
-
             clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
-
             final AlertDialog alertDialog = getLatestAlertDialog();
 
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
-
+            verify(imageController).removeImageByTeaId("1");
+            verify(imageController).removeImageByTeaId("2");
             verify(teaDao).deleteAll();
+            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
         });
     }
 

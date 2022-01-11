@@ -11,9 +11,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SettingsViewModelTest {
@@ -23,10 +28,12 @@ public class SettingsViewModelTest {
     TeaRepository teaRepository;
     @Mock
     SharedSettings sharedSettings;
+    @Mock
+    ImageController imageController;
 
     @Before
     public void setUp() {
-        settingsViewModel = new SettingsViewModel(teaRepository, sharedSettings);
+        settingsViewModel = new SettingsViewModel(teaRepository, sharedSettings, imageController);
     }
 
     @Test
@@ -167,7 +174,22 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void deleteAllTeas(){
+    public void getAllTeas() {
+        final Tea tea1 = new Tea();
+        tea1.setId(1L);
+        final Tea tea2 = new Tea();
+        tea2.setId(2L);
+        final List<Tea> teas = Arrays.asList(tea1, tea2);
+        when(teaRepository.getTeas()).thenReturn(teas);
+
+        settingsViewModel.deleteAllTeaImages();
+
+        verify(imageController).removeImageByTeaId("1");
+        verify(imageController).removeImageByTeaId("2");
+    }
+
+    @Test
+    public void deleteAllTeas() {
         settingsViewModel.deleteAllTeas();
         verify(teaRepository).deleteAllTeas();
     }
