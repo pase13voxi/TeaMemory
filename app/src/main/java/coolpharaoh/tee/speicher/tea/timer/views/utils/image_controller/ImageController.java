@@ -6,9 +6,9 @@ import android.net.Uri;
 import java.io.IOException;
 
 public interface ImageController {
-    Intent getSaveOrUpdateImageIntent(String teaId) throws IOException;
+    Intent getSaveOrUpdateImageIntent(long teaId) throws IOException;
 
-    Uri getImageUriByTeaId(String teaId);
+    Uri getImageUriByTeaId(long teaId);
 
-    void removeImageByTeaId(String teaId);
+    void removeImageByTeaId(long teaId);
 }

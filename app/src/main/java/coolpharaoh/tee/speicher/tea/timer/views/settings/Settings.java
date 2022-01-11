@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
+import static android.os.Build.VERSION_CODES.Q;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -30,6 +32,7 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
@@ -359,7 +362,9 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void resetToFactorySettings() {
-        settingsViewModel.deleteAllTeaImages();
+        if (CurrentSdk.getSdkVersion() >= Q) {
+            settingsViewModel.deleteAllTeaImages();
+        }
         settingsViewModel.deleteAllTeas();
         settingsViewModel.setDefaultSettings();
 

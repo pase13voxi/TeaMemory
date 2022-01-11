@@ -164,7 +164,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
         if (CurrentSdk.getSdkVersion() >= Q) {
             final ImageController imageController = ImageControllerFactory.getImageController(this);
-            imageController.removeImageByTeaId(String.valueOf(teaId));
+            imageController.removeImageByTeaId(teaId);
         }
     }
 

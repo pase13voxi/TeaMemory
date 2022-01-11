@@ -29,7 +29,7 @@ public class ContentResolverImageController implements ImageController {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
-    public Intent getSaveOrUpdateImageIntent(final String teaId) throws IOException {
+    public Intent getSaveOrUpdateImageIntent(final long teaId) throws IOException {
         Uri uri = getImageUriByTeaId(teaId);
 
         if (uri == null) {
@@ -44,7 +44,7 @@ public class ContentResolverImageController implements ImageController {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
-    public Uri getImageUriByTeaId(final String teaId) {
+    public Uri getImageUriByTeaId(final long teaId) {
         final String[] projection = {
                 BaseColumns._ID,
                 MediaStore.MediaColumns.DISPLAY_NAME,
@@ -71,7 +71,7 @@ public class ContentResolverImageController implements ImageController {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    private Uri createNewImageUri(final String teaId) throws IOException {
+    private Uri createNewImageUri(final long teaId) throws IOException {
         final ContentValues values = new ContentValues();
         values.put(MediaStore.MediaColumns.DISPLAY_NAME, teaId);
         values.put(MediaStore.MediaColumns.MIME_TYPE, MIME_TYPE);
@@ -87,7 +87,7 @@ public class ContentResolverImageController implements ImageController {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
-    public void removeImageByTeaId(final String teaId) {
+    public void removeImageByTeaId(final long teaId) {
         final Uri imageUri = getImageUriByTeaId(teaId);
         if (imageUri != null) {
             contentResolver.delete(imageUri, null, null);

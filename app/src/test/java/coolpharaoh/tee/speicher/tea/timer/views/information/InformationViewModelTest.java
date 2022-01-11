@@ -54,7 +54,7 @@ public class InformationViewModelTest {
     public void getTeaId() {
         final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
 
-        assertThat(informationViewModel.getTeaId()).isEqualTo(String.valueOf(TEA_ID));
+        assertThat(informationViewModel.getTeaId()).isEqualTo(TEA_ID);
     }
 
     @Test

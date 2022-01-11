@@ -3,7 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview;
 import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -448,7 +448,7 @@ public class OverviewTest {
 
             verify(teaDao).deleteTeaById(1L);
 
-            verify(imageController).removeImageByTeaId(String.valueOf(1L));
+            verify(imageController).removeImageByTeaId(1L);
         });
     }
 
@@ -471,7 +471,7 @@ public class OverviewTest {
 
             verify(teaDao).deleteTeaById(1L);
 
-            verify(imageController, never()).removeImageByTeaId(any());
+            verify(imageController, never()).removeImageByTeaId(anyLong());
         });
     }
 

@@ -184,8 +184,8 @@ public class SettingsViewModelTest {
 
         settingsViewModel.deleteAllTeaImages();
 
-        verify(imageController).removeImageByTeaId("1");
-        verify(imageController).removeImageByTeaId("2");
+        verify(imageController).removeImageByTeaId(1L);
+        verify(imageController).removeImageByTeaId(2L);
     }
 
     @Test

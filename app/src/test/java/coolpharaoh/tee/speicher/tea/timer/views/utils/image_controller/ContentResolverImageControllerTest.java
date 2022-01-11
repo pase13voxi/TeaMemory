@@ -41,7 +41,7 @@ public class ContentResolverImageControllerTest {
     @Mock
     Cursor cursor;
 
-    public static final String TEA_ID = "2";
+    public static final long TEA_ID = 2L;
 
     @Before
     public void setUp() throws Exception {

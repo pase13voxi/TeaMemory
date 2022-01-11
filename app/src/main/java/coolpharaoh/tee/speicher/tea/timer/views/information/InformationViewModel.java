@@ -49,8 +49,8 @@ class InformationViewModel extends ViewModel {
     }
 
     // Teas
-    public String getTeaId() {
-        return String.valueOf(teaId);
+    public long getTeaId() {
+        return teaId;
     }
 
     String getTeaName() {

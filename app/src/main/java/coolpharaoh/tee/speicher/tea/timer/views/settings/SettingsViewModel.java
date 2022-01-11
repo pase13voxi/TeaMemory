@@ -110,7 +110,7 @@ class SettingsViewModel {
     //Tea
     void deleteAllTeaImages() {
         final List<Tea> teas = teaRepository.getTeas();
-        teas.forEach(tea -> imageController.removeImageByTeaId(String.valueOf(tea.getId())));
+        teas.forEach(tea -> imageController.removeImageByTeaId(tea.getId()));
     }
 
     void deleteAllTeas() {

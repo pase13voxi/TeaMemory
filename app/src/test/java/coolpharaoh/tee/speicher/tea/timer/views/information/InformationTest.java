@@ -4,6 +4,7 @@ import static android.os.Looper.getMainLooper;
 import static android.view.Menu.FLAG_ALWAYS_PERFORM_CLOSE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -143,7 +144,7 @@ public class InformationTest {
     @Test
     public void launchActivityAndExpectFilledInformation() {
         final Uri uri = Uri.parse("Test");
-        when(imageController.getImageUriByTeaId(String.valueOf(TEA_ID))).thenReturn(uri);
+        when(imageController.getImageUriByTeaId(TEA_ID)).thenReturn(uri);
         final int rating = 4;
         final boolean inStock = true;
         createTea(rating, inStock);
@@ -190,7 +191,7 @@ public class InformationTest {
             final FloatingActionButton buttonCamera = information.findViewById(R.id.button_information_camera);
             assertThat(buttonCamera.getVisibility()).isEqualTo(View.GONE);
 
-            verify(imageController, never()).getImageUriByTeaId(any());
+            verify(imageController, never()).getImageUriByTeaId(anyLong());
         });
     }
 
@@ -220,7 +221,7 @@ public class InformationTest {
     @Test
     public void updateImage() throws Exception {
         createTea(0);
-        when(imageController.getSaveOrUpdateImageIntent(String.valueOf(TEA_ID))).thenReturn(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+        when(imageController.getSaveOrUpdateImageIntent(TEA_ID)).thenReturn(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
         final Intent intent = new Intent(getInstrumentation().getTargetContext().getApplicationContext(), Information.class);
         intent.putExtra(TEA_ID_EXTRA, TEA_ID);
 
@@ -230,7 +231,7 @@ public class InformationTest {
             buttonCamera.performClick();
 
             final Uri uri = Uri.parse("Test");
-            when(imageController.getImageUriByTeaId(String.valueOf(TEA_ID))).thenReturn(uri);
+            when(imageController.getImageUriByTeaId(TEA_ID)).thenReturn(uri);
             mockReturnActionActivityResult(information);
 
             final ImageView imageViewImage = information.findViewById(R.id.image_view_information_image);

@@ -6,6 +6,8 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -459,8 +461,33 @@ public class SettingsTest {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            verify(imageController).removeImageByTeaId("1");
-            verify(imageController).removeImageByTeaId("2");
+            verify(imageController).removeImageByTeaId(1L);
+            verify(imageController).removeImageByTeaId(2L);
+            verify(teaDao).deleteAll();
+            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
+        });
+    }
+
+    @Test
+    public void setFactorySettingsOnVersionCodeOlderAndroidQ() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+        final Tea tea1 = new Tea();
+        tea1.setId(1L);
+        final Tea tea2 = new Tea();
+        tea2.setId(2L);
+        final List<Tea> teas = Arrays.asList(tea1, tea2);
+        when(teaDao.getTeas()).thenReturn(teas);
+
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
+            final AlertDialog alertDialog = getLatestAlertDialog();
+
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
+            verify(imageController, never()).removeImageByTeaId(anyLong());
             verify(teaDao).deleteAll();
             assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
         });
