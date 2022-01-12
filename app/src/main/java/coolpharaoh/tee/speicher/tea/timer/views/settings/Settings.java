@@ -222,7 +222,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void settingVibration() {
-        final String[] items = getResources().getStringArray(R.array.overview_dialog_tea_in_stock_options);
+        final String[] items = getResources().getStringArray(R.array.settings_options);
 
         final int checkedItem = settingsViewModel.isVibration() ? 0 : 1;
 

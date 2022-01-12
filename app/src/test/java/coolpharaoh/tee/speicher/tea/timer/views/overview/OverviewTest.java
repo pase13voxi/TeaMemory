@@ -53,7 +53,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
@@ -85,8 +84,6 @@ public class OverviewTest {
     @Mock
     InfusionDao infusionDao;
     @Mock
-    ActualSettingsDao actualSettingsDao;
-    @Mock
     ImageController imageController;
     @Mock
     SystemUtility systemUtility;
@@ -102,7 +99,6 @@ public class OverviewTest {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getActualSettingsDao()).thenReturn(actualSettingsDao);
     }
 
     private void mockSystemVersionCode() {
@@ -112,7 +108,7 @@ public class OverviewTest {
 
     @Test
     public void launchActivityExpectTeaList() {
-        mockActualSettings();
+        mockSharedSettings();
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -122,7 +118,7 @@ public class OverviewTest {
 
     @Test
     public void launchActivityExpectUpdateDescription() {
-        mockActualSettings(LAST_USED, true);
+        mockSharedSettings(LAST_USED, true);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -145,7 +141,7 @@ public class OverviewTest {
 
     @Test
     public void launchActivityExpectUpdateDescriptionClickNegative() {
-        mockActualSettings(LAST_USED, true);
+        mockSharedSettings(LAST_USED, true);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -160,7 +156,7 @@ public class OverviewTest {
 
     @Test
     public void navigateToSettingsExpectSettingsActivity() {
-        mockActualSettings();
+        mockSharedSettings();
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -175,7 +171,7 @@ public class OverviewTest {
 
     @Test
     public void navigateToExportImportExpectExportImportActivity() {
-        mockActualSettings();
+        mockSharedSettings();
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -190,7 +186,7 @@ public class OverviewTest {
 
     @Test
     public void navigateToAboutExpectAboutActivity() {
-        mockActualSettings();
+        mockSharedSettings();
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -205,7 +201,7 @@ public class OverviewTest {
 
     @Test
     public void searchStringExpectSearchList() {
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "SEARCH_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasBySearchString(teaName)).thenReturn(teaList);
@@ -225,7 +221,7 @@ public class OverviewTest {
 
     @Test
     public void changeSortModeToActivityExpectTeaList() {
-        mockActualSettings(ALPHABETICAL, false);
+        mockSharedSettings(ALPHABETICAL, false);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -248,7 +244,7 @@ public class OverviewTest {
 
     @Test
     public void enableShowTeasInStockExpectTeasInStock() {
-        mockActualSettings();
+        mockSharedSettings();
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(teaList);
 
@@ -271,7 +267,7 @@ public class OverviewTest {
 
     @Test
     public void changeSortModeToAlphabeticallyExpectTeaList() {
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "ALPHABETICALLY_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(teaList);
@@ -295,7 +291,7 @@ public class OverviewTest {
 
     @Test
     public void changeSortModeToVarietyExpectTeaList() {
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "VARIETY_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByVariety()).thenReturn(teaList);
@@ -319,7 +315,7 @@ public class OverviewTest {
 
     @Test
     public void changeSortModeToRatingExpectTeaList() {
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "RATING_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByRating()).thenReturn(teaList);
@@ -343,7 +339,7 @@ public class OverviewTest {
 
     @Test
     public void enableSortingHeaderExpectTeaListWithHeader() {
-        mockActualSettings(LAST_USED, false);
+        mockSharedSettings(LAST_USED, false);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
 
@@ -371,7 +367,7 @@ public class OverviewTest {
 
     @Test
     public void clickAddTeaExpectNewTeaActivity() {
-        mockActualSettings();
+        mockSharedSettings();
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -388,7 +384,7 @@ public class OverviewTest {
     @Test
     public void clickTeaExpectShowTeaActivity() {
         final int positionTea = 1;
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
@@ -409,7 +405,7 @@ public class OverviewTest {
     @Test
     public void editTeaExpectNewTeaActivity() {
         final int teaPosition = 1;
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
@@ -433,7 +429,7 @@ public class OverviewTest {
     @Test
     public void deleteTeaExpectDeletion() {
         final int teaPosition = 1;
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
@@ -455,7 +451,7 @@ public class OverviewTest {
     @Test
     public void deleteTeaVersionCodeOlderAndroidQExpectDeletion() {
         final int teaPosition = 1;
-        mockActualSettings();
+        mockSharedSettings();
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
@@ -475,11 +471,11 @@ public class OverviewTest {
         });
     }
 
-    private void mockActualSettings() {
-        mockActualSettings(LAST_USED, false);
+    private void mockSharedSettings() {
+        mockSharedSettings(LAST_USED, false);
     }
 
-    private void mockActualSettings(final SortMode sortMode, final boolean overviewUpdateAlert) {
+    private void mockSharedSettings(final SortMode sortMode, final boolean overviewUpdateAlert) {
         final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
         sharedSettings.setFirstStart(false);
         sharedSettings.setOverviewUpdateAlert(overviewUpdateAlert);

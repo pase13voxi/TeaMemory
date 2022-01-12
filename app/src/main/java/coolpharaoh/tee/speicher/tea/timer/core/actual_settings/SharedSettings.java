@@ -10,8 +10,10 @@ import android.content.SharedPreferences;
 
 public class SharedSettings {
 
-    private static final String TEA_MEMORY_SETTINGS = "tea_memory_settings";
+    static final String TEA_MEMORY_SETTINGS = "tea_memory_settings";
     private static final String FIRST_START = "first_start";
+    private static final String SETTINGS_VERSION = "settings_version";
+
     private static final String MUSIC_CHOICE = "music_choice";
     private static final String MUSIC_NAME = "music_name";
     private static final String VIBRATION = "vibration";
@@ -20,13 +22,11 @@ public class SharedSettings {
     private static final String DARK_MODE = "dark_mode";
     private static final String OVERVIEW_UPDATE_ALERT = "overview_update_alert";
     private static final String SHOW_TEA_ALERT = "show_tea_alert";
-    //Could be removed! Not used anymore!
-    private static final String SETTINGS_PERMISSION_ALERT = "settings_permission_alert";
     private static final String SORT_MODE = "sort_mode";
     private static final String OVERVIEW_HEADER = "overview_header";
     private static final String OVERVIEW_IN_STOCK = "overview_in_stock";
-    public static final String IS_MIGRATED = "IS_MIGRATED";
-    SharedPreferences sharedPreferences;
+
+    private final SharedPreferences sharedPreferences;
 
     public SharedSettings(final Application application) {
         sharedPreferences = application.getSharedPreferences(TEA_MEMORY_SETTINGS, Context.MODE_PRIVATE);
@@ -39,6 +39,16 @@ public class SharedSettings {
     public void setFirstStart(final boolean firstStart) {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(FIRST_START, firstStart);
+        editor.apply();
+    }
+
+    public int getSettingsVersion() {
+        return sharedPreferences.getInt(SETTINGS_VERSION, 0);
+    }
+
+    public void setSettingsVersion(final int settingsVersion) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SETTINGS_VERSION, settingsVersion);
         editor.apply();
     }
 
@@ -124,18 +134,6 @@ public class SharedSettings {
         editor.apply();
     }
 
-    //Could be removed! Not used anymore!
-    public boolean isSettingsPermissionAlert() {
-        return sharedPreferences.getBoolean(SETTINGS_PERMISSION_ALERT, false);
-    }
-
-    //Could be removed! Not used anymore!
-    public void setSettingsPermissionAlert(final boolean settingsPermissionAlert) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SETTINGS_PERMISSION_ALERT, settingsPermissionAlert);
-        editor.apply();
-    }
-
     public SortMode getSortMode() {
         final String sortModeText = sharedPreferences.getString(SORT_MODE, LAST_USED.getText());
         return SortMode.fromText(sortModeText);
@@ -168,7 +166,6 @@ public class SharedSettings {
     }
 
     public void setFactorySettings() {
-        setFirstStart(false);
         setMusicChoice("content://settings/system/ringtone");
         setMusicName("Default");
         setVibration(true);
@@ -177,24 +174,8 @@ public class SharedSettings {
         setDarkMode(SYSTEM);
         setOverviewUpdateAlert(false);
         setShowTeaAlert(true);
-        //Could be removed! Not used anymore!
-        setSettingsPermissionAlert(true);
         setSortMode(LAST_USED);
         setOverviewHeader(false);
         setOverviewInStock(false);
-        setMigrated(true);
-    }
-
-    // Could be removed after the successful migration (In half a year 1.6.2022)
-    public boolean isMigrated() {
-        return sharedPreferences.getBoolean(IS_MIGRATED, false);
-    }
-
-
-    // Could be removed after the successful migration (In half a year 1.6.2022)
-    public void setMigrated(final boolean migrated) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_MIGRATED, migrated);
-        editor.apply();
     }
 }

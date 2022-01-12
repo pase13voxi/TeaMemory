@@ -112,7 +112,6 @@ public class SettingsTest {
         sharedSettings.setTemperatureUnit(CELSIUS);
         sharedSettings.setShowTeaAlert(false);
         sharedSettings.setOverviewUpdateAlert(false);
-        sharedSettings.setSettingsPermissionAlert(false);
     }
 
     private void mockSystemVersionCode() {
