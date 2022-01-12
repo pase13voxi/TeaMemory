@@ -4,25 +4,34 @@ import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
 
+import java.util.List;
+
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 class SettingsViewModel {
 
     private final TeaRepository teaRepository;
     private final SharedSettings sharedSettings;
+    private final ImageController imageController;
 
     public SettingsViewModel(final Application application) {
-        this(new TeaRepository(application), new SharedSettings(application));
+        this(new TeaRepository(application), new SharedSettings(application),
+                ImageControllerFactory.getImageController(application));
     }
 
     @VisibleForTesting
     public SettingsViewModel(final TeaRepository teaRepository,
-                             final SharedSettings sharedSettings) {
+                             final SharedSettings sharedSettings,
+                             final ImageController imageController) {
         this.teaRepository = teaRepository;
         this.sharedSettings = sharedSettings;
+        this.imageController = imageController;
     }
 
     //Settings
@@ -94,19 +103,16 @@ class SettingsViewModel {
         sharedSettings.setOverviewUpdateAlert(overviewUpdateAlert);
     }
 
-    boolean isSettingsPermissionAlert() {
-        return sharedSettings.isSettingsPermissionAlert();
-    }
-
-    void setSettingsPermissionAlert(final boolean settingsPermissionAlert) {
-        sharedSettings.setSettingsPermissionAlert(settingsPermissionAlert);
-    }
-
     void setDefaultSettings() {
         sharedSettings.setFactorySettings();
     }
 
     //Tea
+    void deleteAllTeaImages() {
+        final List<Tea> teas = teaRepository.getTeas();
+        teas.forEach(tea -> imageController.removeImageByTeaId(tea.getId()));
+    }
+
     void deleteAllTeas() {
         teaRepository.deleteAllTeas();
     }

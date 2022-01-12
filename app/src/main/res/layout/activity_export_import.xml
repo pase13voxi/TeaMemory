@@ -140,19 +140,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/text_white"
                 android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/text_view_export_import_warning"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/button_export_import_import"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:gravity="center_horizontal"
-                android:text="@string/export_import_warning"
-                android:textColor="@color/text_red"
-                android:visibility="invisible" />
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

@@ -20,8 +20,6 @@
     <string name="settings_read_permission_denied">Erlaubnis verweigert.</string>
     <string name="settings_show_hints_update_checkbox">Updateinformationen</string>
     <string name="settings_show_hints_description_checkbox">Hilfe im Informationsfenster</string>
-    <string name="settings_show_hints_ignore_optimization_checkbox">Hintergrundprozessberechtigung</string>
-    <string name="settings_show_hints_permission_checkbox">Leseberechtigung</string>
     <string name="settings_factory_settings">Werkseinstellungen</string>
     <string name="settings_factory_settings_description">Zurücksetzen auf Werkseinstellungen</string>
     <string name="settings_factory_settings_text">Es werden alle Tees gelöscht und die Einstellungen zurückgesetzt.</string>

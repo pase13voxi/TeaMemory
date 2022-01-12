@@ -263,4 +263,11 @@ class Migrations {
             database.execSQL("CREATE INDEX IF NOT EXISTS index_infusion_tea_id ON infusion(tea_id)");
         }
     };
+
+    static final Migration MIGRATION_13_14 = new Migration(13, 14) {
+        @Override
+        public void migrate(final SupportSQLiteDatabase database) {
+            database.execSQL("DROP TABLE settings");
+        }
+    };
 }

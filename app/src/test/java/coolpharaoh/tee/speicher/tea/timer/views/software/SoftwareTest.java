@@ -1,6 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.software;
 
-import android.os.Build;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,14 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class SoftwareTest {
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 
 // This class has 9 Parent because of AppCompatActivity
 @SuppressWarnings("java:S110")
@@ -60,8 +58,6 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
         final Button buttonImport = findViewById(R.id.button_export_import_import);
         buttonImport.setOnClickListener(v -> dialogImportDecision());
-
-        showWarning();
     }
 
     private void defineToolbarAsActionbar() {
@@ -83,23 +79,21 @@ public class ExportImport extends AppCompatActivity implements Printer {
     }
 
     private void dialogImportDecision() {
-        if (CurrentSdk.getSdkVersion() >= Build.VERSION_CODES.O) {
-            final ViewGroup parent = findViewById(R.id.exportimport_parent);
+        final ViewGroup parent = findViewById(R.id.exportimport_parent);
 
-            final LayoutInflater inflater = getLayoutInflater();
-            final View layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false);
 
-            final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialog_theme).create();
-            alertDialog.setView(layoutDialogImport);
-            alertDialog.setTitle(R.string.export_import_import_dialog_header);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialog_theme).create();
+        alertDialog.setView(layoutDialogImport);
+        alertDialog.setTitle(R.string.export_import_import_dialog_header);
 
-            final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.button_export_import_import_delete);
-            buttonImportDelete.setOnClickListener(view -> chooseImportFile(alertDialog, false));
-            final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.button_export_import_import_keep);
-            buttonImportKeep.setOnClickListener(view -> chooseImportFile(alertDialog, true));
+        final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.button_export_import_import_delete);
+        buttonImportDelete.setOnClickListener(view -> chooseImportFile(alertDialog, false));
+        final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.button_export_import_import_keep);
+        buttonImportKeep.setOnClickListener(view -> chooseImportFile(alertDialog, true));
 
-            alertDialog.show();
-        }
+        alertDialog.show();
     }
 
     private void chooseImportFile(final AlertDialog alertDialog, final boolean keepTeas) {
@@ -118,7 +112,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void exportFile(final Uri folderPath) {
         JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.write(DataIOFactory.getDataIO(getApplication(), this, folderPath))) {
+        if (JsonIOAdapter.write(DataIOAdapterFactory.getDataIO(getApplication(), this, folderPath))) {
             dialogExportLocation();
         } else {
             dialogExportFailed();
@@ -127,7 +121,7 @@ public class ExportImport extends AppCompatActivity implements Printer {
 
     private void importFile(final Uri filePath) {
         JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.read(DataIOFactory.getDataIO(getApplication(), this, filePath), keepStoredTeas)) {
+        if (JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(getApplication(), this, filePath), keepStoredTeas)) {
             dialogImportComplete();
         } else {
             dialogImportFailed();
@@ -168,15 +162,8 @@ public class ExportImport extends AppCompatActivity implements Printer {
                 .show();
     }
 
-    private void showWarning() {
-        if (CurrentSdk.getSdkVersion() < Build.VERSION_CODES.O) {
-            final TextView textViewWarning = findViewById(R.id.text_view_export_import_warning);
-            textViewWarning.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
-    public void print(String message) {
+    public void print(final String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

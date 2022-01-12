@@ -1,13 +1,11 @@
 package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
-import static java.lang.Boolean.TRUE;
+import static android.os.Build.VERSION_CODES.Q;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,7 +21,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +32,7 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter;
@@ -51,16 +49,6 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
 
     private ArrayList<RecyclerItem> settingsList;
     private RecyclerViewAdapter adapter;
-
-    private final ActivityResultLauncher<String> permissionResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.RequestPermission(),
-            result -> {
-                if (TRUE.equals(result)) {
-                    createAlarmRequest();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.settings_read_permission_denied, Toast.LENGTH_LONG).show();
-                }
-            });
 
     private final ActivityResultLauncher<Intent> alarmRequestActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -207,38 +195,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void settingAlarm() {
-        if (!checkReadPermission() && settingsViewModel.isSettingsPermissionAlert()) {
-            readPermissionDialog();
-        } else {
-            createAlarmRequest();
-        }
-    }
-
-    private boolean checkReadPermission() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void readPermissionDialog() {
-        final ViewGroup parent = findViewById(R.id.overview_parent);
-
-        final LayoutInflater inflater = getLayoutInflater();
-        final View alertLayoutDialogProblem = inflater.inflate(R.layout.dialog_alarm_permission, parent, false);
-
-        new AlertDialog.Builder(this, R.style.dialog_theme)
-                .setView(alertLayoutDialogProblem)
-                .setTitle(R.string.settings_read_permission_dialog_header)
-                .setPositiveButton(R.string.settings_read_permission_dialog_ok, (dialog, which) -> askPermissionAccepted(alertLayoutDialogProblem))
-                .show();
-    }
-
-    private void askPermissionAccepted(final View alertLayoutDialogProblem) {
-        final CheckBox doNotShowAgain = alertLayoutDialogProblem.findViewById(R.id.check_box_settings_dialog_read_permission);
-
-        if (doNotShowAgain.isChecked()) {
-            settingsViewModel.setSettingsPermissionAlert(false);
-        }
-        permissionResultLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+        createAlarmRequest();
     }
 
     private void createAlarmRequest() {
@@ -261,11 +218,11 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
             settingsViewModel.setMusicName("-");
         }
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.ALARM.ordinal());
     }
 
     private void settingVibration() {
-        final String[] items = getResources().getStringArray(R.array.overview_dialog_tea_in_stock_options);
+        final String[] items = getResources().getStringArray(R.array.settings_options);
 
         final int checkedItem = settingsViewModel.isVibration() ? 0 : 1;
 
@@ -280,7 +237,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsViewModel.setVibration(item == 0);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.VIBRATION.ordinal());
         dialog.dismiss();
     }
 
@@ -300,7 +257,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsViewModel.setAnimation(item == 0);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.ANIMATION.ordinal());
         dialog.dismiss();
     }
 
@@ -319,7 +276,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     private void temperatureUnitChanged(final DialogInterface dialog, final int item) {
         settingsViewModel.setTemperatureUnit(TemperatureUnit.fromChoice(item));
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.TEMPERATURE_UNIT.ordinal());
         dialog.dismiss();
     }
 
@@ -339,7 +296,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         settingsViewModel.setOverviewHeader(item == 0);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.OVERVIEW_HEADER.ordinal());
         dialog.dismiss();
     }
 
@@ -364,7 +321,7 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         ThemeManager.applyTheme(darkMode);
 
         fillAndRefreshSettingsList();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(ListItems.DARK_MODE.ordinal());
         dialog.dismiss();
     }
 
@@ -380,25 +337,19 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
         final CheckBox checkBoxDescription = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_description);
         checkBoxDescription.setChecked(settingsViewModel.isShowTeaAlert());
 
-        final CheckBox checkBoxPermission = alertLayoutDialog.findViewById(R.id.check_box_settings_dialog_permission);
-        checkBoxPermission.setChecked(settingsViewModel.isSettingsPermissionAlert());
-
-
         new AlertDialog.Builder(this, R.style.dialog_theme)
                 .setView(alertLayoutDialog)
                 .setTitle(R.string.settings_show_hints_header)
                 .setPositiveButton(R.string.settings_show_hints_ok, (dialog, which) -> displayedHintsChanged(checkBoxUpdate,
-                        checkBoxDescription, checkBoxPermission))
+                        checkBoxDescription))
                 .setNegativeButton(R.string.settings_show_hints_cancel, null)
                 .show();
 
     }
 
-    private void displayedHintsChanged(final CheckBox checkBoxUpdate, final CheckBox checkBoxDescription,
-                                       final CheckBox checkBoxPermission) {
+    private void displayedHintsChanged(final CheckBox checkBoxUpdate, final CheckBox checkBoxDescription) {
         settingsViewModel.setOverviewUpdateAlert(checkBoxUpdate.isChecked());
         settingsViewModel.setShowTeaAlert(checkBoxDescription.isChecked());
-        settingsViewModel.setSettingsPermissionAlert(checkBoxPermission.isChecked());
     }
 
     private void settingFactorySettings() {
@@ -411,8 +362,11 @@ public class Settings extends AppCompatActivity implements RecyclerViewAdapter.O
     }
 
     private void resetToFactorySettings() {
-        settingsViewModel.setDefaultSettings();
+        if (CurrentSdk.getSdkVersion() >= Q) {
+            settingsViewModel.deleteAllTeaImages();
+        }
         settingsViewModel.deleteAllTeas();
+        settingsViewModel.setDefaultSettings();
 
         fillAndRefreshSettingsList();
         adapter.notifyDataSetChanged();

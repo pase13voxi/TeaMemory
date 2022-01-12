@@ -19,9 +19,11 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 class InformationViewModel extends ViewModel {
 
+    private final Application application;
     private final TeaRepository teaRepository;
     private final NoteRepository noteRepository;
     private final CounterRepository counterRepository;
@@ -30,12 +32,13 @@ class InformationViewModel extends ViewModel {
 
     InformationViewModel(final long teaId, final Application application) {
         this(teaId, new TeaRepository(application), new NoteRepository(application),
-                new CounterRepository(application));
+                new CounterRepository(application), application);
     }
 
     @VisibleForTesting
     InformationViewModel(final long teaId, final TeaRepository teaRepository, final NoteRepository noteRepository,
-                         final CounterRepository counterRepository) {
+                         final CounterRepository counterRepository, final Application application) {
+        this.application = application;
         this.teaRepository = teaRepository;
         this.noteRepository = noteRepository;
         this.counterRepository = counterRepository;
@@ -46,7 +49,11 @@ class InformationViewModel extends ViewModel {
     }
 
     // Teas
-    public String getTeaName() {
+    public long getTeaId() {
+        return teaId;
+    }
+
+    String getTeaName() {
         final Tea tea = teaRepository.getTeaById(teaId);
         if (tea == null) {
             throw new NoSuchElementException("No tea found for tea id " + teaId);
@@ -55,29 +62,34 @@ class InformationViewModel extends ViewModel {
         }
     }
 
-    public int getTeaRating() {
+    String getVarietyAsText() {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        return Variety.convertStoredVarietyToText(tea.getVariety(), application);
+    }
+
+    int getTeaRating() {
         final Tea tea = teaRepository.getTeaById(teaId);
         return tea.getRating();
     }
 
-    public void updateTeaRating(final int rating) {
+    void updateTeaRating(final int rating) {
         final Tea tea = teaRepository.getTeaById(teaId);
         tea.setRating(rating);
         teaRepository.updateTea(tea);
     }
 
-    public boolean isInStock() {
+    boolean isInStock() {
         final Tea tea = teaRepository.getTeaById(teaId);
         return tea.isInStock();
     }
 
-    public void updateTeaInStock(final boolean inStock) {
+    void updateTeaInStock(final boolean inStock) {
         final Tea tea = teaRepository.getTeaById(teaId);
         tea.setInStock(inStock);
         teaRepository.updateTea(tea);
     }
 
-    public Date getDate() {
+    Date getDate() {
         final Tea tea = teaRepository.getTeaById(teaId);
         return tea.getDate();
     }

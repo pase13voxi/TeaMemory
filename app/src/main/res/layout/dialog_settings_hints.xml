@@ -22,13 +22,4 @@
         android:text="@string/settings_show_hints_description_checkbox"
         android:textColor="@color/text_black"
         android:textSize="17sp" />
-
-    <CheckBox
-        android:id="@+id/check_box_settings_dialog_permission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/settings_show_hints_permission_checkbox"
-        android:textColor="@color/text_black"
-        android:textSize="17sp" />
 </LinearLayout>

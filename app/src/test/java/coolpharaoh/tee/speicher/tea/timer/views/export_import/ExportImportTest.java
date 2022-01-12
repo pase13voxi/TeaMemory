@@ -13,10 +13,7 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -31,20 +28,14 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapter;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
-
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class ExportImportTest {
 
@@ -53,16 +44,12 @@ public class ExportImportTest {
     @Mock
     DatabaseJsonTransformer databaseJsonTransformer;
     @Mock
-    DataIO dataIO;
-    @Mock
-    SystemUtility systemUtility;
+    DataIOAdapter dataIOAdapter;
 
     @Before
     public void setUp() {
-        DataIOFactory.setMockedDataIO(dataIO);
+        DataIOAdapterFactory.setMockedDataIO(dataIOAdapter);
         JsonIOAdapter.setMockedTransformer(databaseJsonTransformer);
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
-        CurrentSdk.setFixedSystem(systemUtility);
     }
 
     @After
@@ -84,7 +71,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
-        when(dataIO.write(any())).thenReturn(true);
+        when(dataIOAdapter.write(any())).thenReturn(true);
 
         final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -101,7 +88,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
-        when(dataIO.write(any())).thenReturn(false);
+        when(dataIOAdapter.write(any())).thenReturn(false);
 
         final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
         exportImportActivityScenario.onActivity(exportImport -> {
@@ -195,17 +182,6 @@ public class ExportImportTest {
             final ShadowAlertDialog shadowAlertDialogImportComplete = Shadows.shadowOf(getLatestAlertDialog());
             assertThat(shadowAlertDialogImportComplete.getTitle()).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_header));
             assertThat(shadowAlertDialogImportComplete.getMessage()).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_description));
-        });
-    }
-
-    @Test
-    public void launchActivityWithSdk25AndExpectWarning() {
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
-
-        final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
-        exportImportActivityScenario.onActivity(exportImport -> {
-            final TextView textViewWarning = exportImport.findViewById(R.id.text_view_export_import_warning);
-            assertThat(textViewWarning.getVisibility()).isEqualTo(View.VISIBLE);
         });
     }
 

@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.VisibleForTesting;
 
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIO;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapter;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.DatabaseJsonTransformer;
 
 public class JsonIOAdapter {
@@ -21,13 +21,13 @@ public class JsonIOAdapter {
         }
     }
 
-    public static boolean write(final DataIO dataIO) {
+    public static boolean write(final DataIOAdapter dataIOAdapter) {
         final String json = databaseJsonTransformer.databaseToJson();
-        return dataIO.write(json);
+        return dataIOAdapter.write(json);
     }
 
-    public static boolean read(final DataIO dataIO, final boolean keepStoredTeas) {
-        final String json = dataIO.read();
+    public static boolean read(final DataIOAdapter dataIOAdapter, final boolean keepStoredTeas) {
+        final String json = dataIOAdapter.read();
         return databaseJsonTransformer.jsonToDatabase(json, keepStoredTeas);
     }
 

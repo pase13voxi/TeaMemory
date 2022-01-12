@@ -5,7 +5,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
 import android.widget.Button;
 
 import androidx.test.core.app.ActivityScenario;
@@ -15,12 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class ContactTest {
 

@@ -10,7 +10,6 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.os.Build;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,10 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class BackgroundTimerTest {
     @Rule

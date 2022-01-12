@@ -2,9 +2,12 @@ package coolpharaoh.tee.speicher.tea.timer.views.settings;
 
 import static android.os.Looper.getMainLooper;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -42,16 +45,21 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
+
+import java.util.Arrays;
+import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class SettingsTest {
     private static final int ALARM = 0;
@@ -75,6 +83,10 @@ public class SettingsTest {
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
     TeaDao teaDao;
+    @Mock
+    ImageController imageController;
+    @Mock
+    SystemUtility systemUtility;
 
     private SharedSettings sharedSettings;
 
@@ -82,6 +94,8 @@ public class SettingsTest {
     public void setUp() {
         mockDB();
         setSharedSettings();
+        ImageControllerFactory.setMockedImageController(imageController);
+        mockSystemVersionCode();
     }
 
     private void mockDB() {
@@ -98,7 +112,11 @@ public class SettingsTest {
         sharedSettings.setTemperatureUnit(CELSIUS);
         sharedSettings.setShowTeaAlert(false);
         sharedSettings.setOverviewUpdateAlert(false);
-        sharedSettings.setSettingsPermissionAlert(false);
+    }
+
+    private void mockSystemVersionCode() {
+        CurrentSdk.setFixedSystem(systemUtility);
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.R);
     }
 
     @Test
@@ -346,6 +364,30 @@ public class SettingsTest {
             final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
             checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
 
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_FOLLOW_SYSTEM);
+        });
+    }
+
+    @Test
+    public void setDarkModeSystemOnVersionCodeOlderAndroidQ() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
+
+            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
+            shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
+            shadowOf(getMainLooper()).idle();
+
+            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
+            assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
+
+            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
+
             assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_AUTO_BATTERY);
         });
     }
@@ -384,15 +426,12 @@ public class SettingsTest {
 
             final CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.check_box_settings_dialog_update);
             final CheckBox checkBoxDescription = alertDialog.findViewById(R.id.check_box_settings_dialog_description);
-            final CheckBox checkBoxPermission = alertDialog.findViewById(R.id.check_box_settings_dialog_permission);
 
             assertThat(checkBoxUpdate.isChecked()).isFalse();
             assertThat(checkBoxDescription.isChecked()).isFalse();
-            assertThat(checkBoxPermission.isChecked()).isFalse();
 
             checkBoxUpdate.setChecked(true);
             checkBoxDescription.setChecked(true);
-            checkBoxPermission.setChecked(true);
 
             final Button accept = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             accept.performClick();
@@ -400,26 +439,56 @@ public class SettingsTest {
 
             assertThat(sharedSettings.isOverviewUpdateAlert()).isTrue();
             assertThat(sharedSettings.isShowTeaAlert()).isTrue();
-            assertThat(sharedSettings.isSettingsPermissionAlert()).isTrue();
         });
     }
 
     @Test
     public void setFactorySettingsAndExpectFactorySettings() {
+        final Tea tea1 = new Tea();
+        tea1.setId(1L);
+        final Tea tea2 = new Tea();
+        tea2.setId(2L);
+        final List<Tea> teas = Arrays.asList(tea1, tea2);
+        when(teaDao.getTeas()).thenReturn(teas);
+
         final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
         settingsActivityScenario.onActivity(settings -> {
             final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
-
             clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
-
             final AlertDialog alertDialog = getLatestAlertDialog();
 
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
             shadowOf(getMainLooper()).idle();
 
-            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
-
+            verify(imageController).removeImageByTeaId(1L);
+            verify(imageController).removeImageByTeaId(2L);
             verify(teaDao).deleteAll();
+            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
+        });
+    }
+
+    @Test
+    public void setFactorySettingsOnVersionCodeOlderAndroidQ() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+        final Tea tea1 = new Tea();
+        tea1.setId(1L);
+        final Tea tea2 = new Tea();
+        tea2.setId(2L);
+        final List<Tea> teas = Arrays.asList(tea1, tea2);
+        when(teaDao.getTeas()).thenReturn(teas);
+
+        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
+        settingsActivityScenario.onActivity(settings -> {
+            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
+            final AlertDialog alertDialog = getLatestAlertDialog();
+
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
+            verify(imageController, never()).removeImageByTeaId(anyLong());
+            verify(teaDao).deleteAll();
+            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
         });
     }
 

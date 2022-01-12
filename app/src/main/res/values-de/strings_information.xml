@@ -3,7 +3,9 @@
     <string name="information_rating">Bewertung</string>
     <string name="information_details_heading">Informationen</string>
     <string name="information_detail_options">&#8942;</string>
-    <string name="information_in_stock">Auf Lager</string>
+    <string name="information_tooltip_in_stock">Auf Lager</string>
+    <string name="information_description_image">Bild</string>
+    <string name="information_description_camera_button">Kamera</string>
     <string name="information_add_detail_button_description">Detail hinzufügen</string>
     <string name="information_add_detail_dialog_heading">Information hinzufügen</string>
     <string name="information_edit_detail_dialog_heading">Information ändern</string>

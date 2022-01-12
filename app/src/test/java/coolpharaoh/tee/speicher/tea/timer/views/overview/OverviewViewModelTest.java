@@ -26,7 +26,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -43,8 +42,6 @@ public class OverviewViewModelTest {
     @Mock
     InfusionRepository infusionRepository;
     @Mock
-    ActualSettingsRepository actualSettingsRepository;
-    @Mock
     SharedSettings sharedSettings;
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
@@ -56,7 +53,7 @@ public class OverviewViewModelTest {
         mockSettings();
         mockTeas();
         overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository,
-                actualSettingsRepository, sharedSettings);
+                sharedSettings);
     }
 
     private void mockSettings() {

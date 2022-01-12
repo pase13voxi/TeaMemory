@@ -1,7 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,7 +8,6 @@ import static org.mockito.Mockito.when;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.VibrationEffect;
 
 import org.junit.Rule;
@@ -19,13 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class VibratorTest {
 
@@ -39,8 +31,6 @@ public class VibratorTest {
     android.os.Vibrator systemVibrator;
     @Mock
     AudioManager audioManager;
-    @Mock
-    SystemUtility systemUtility;
 
     @Test
     public void whenSettingVibrationIsFalseDoNothing() {
@@ -76,12 +66,10 @@ public class VibratorTest {
     }
 
     @Test
-    public void vibrateAfterAndroidO() {
+    public void vibrate() {
         when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator);
         when(timerViewModel.isVibration()).thenReturn(true);
         mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
-        CurrentSdk.setFixedSystem(systemUtility);
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
 
         final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
@@ -94,27 +82,11 @@ public class VibratorTest {
         when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator);
         when(timerViewModel.isVibration()).thenReturn(true);
         mockAudioManager(null);
-        CurrentSdk.setFixedSystem(systemUtility);
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.O_MR1);
 
         final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();
 
         verify(systemVibrator).vibrate(any(VibrationEffect.class));
-    }
-
-    @Test
-    public void vibrateBeforeAndroidO() {
-        when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator);
-        when(timerViewModel.isVibration()).thenReturn(true);
-        mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
-        CurrentSdk.setFixedSystem(systemUtility);
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.N_MR1);
-
-        final Vibrator vibrator = new Vibrator(application, timerViewModel);
-        vibrator.vibrate();
-
-        verify(systemVibrator).vibrate(any(long[].class), eq(-1));
     }
 
     private void mockAudioManager(final Integer ringerMode) {

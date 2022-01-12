@@ -13,7 +13,6 @@ import static coolpharaoh.tee.speicher.tea.timer.views.overview.RecyclerViewConf
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
@@ -32,15 +31,12 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-//could be removed when Robolectric supports Java 8 for API 29
-@Config(sdk = Build.VERSION_CODES.O_MR1)
 @RunWith(RobolectricTestRunner.class)
 public class RecyclerViewConfigurationDialogTest {
 

@@ -15,11 +15,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -38,45 +35,24 @@ class OverviewViewModel extends ViewModel {
 
     OverviewViewModel(final Application application) {
         this(application, new TeaRepository(application), new InfusionRepository(application),
-                new ActualSettingsRepository(application), new SharedSettings(application));
+                new SharedSettings(application));
     }
 
     @VisibleForTesting
     OverviewViewModel(final Application application, final TeaRepository teaRepository, final InfusionRepository infusionRepository,
-                      final ActualSettingsRepository actualSettingsRepository, final SharedSettings sharedSettings) {
+                      final SharedSettings sharedSettings) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.sharedSettings = sharedSettings;
 
-        migrateActualSettingsToSharedSettings(actualSettingsRepository);
-
         if (sharedSettings.isFirstStart()) {
             createDefaultTeas(application);
-            sharedSettings.setFactorySettings();
+            sharedSettings.setFirstStart(false);
         }
 
         teas = new MutableLiveData<>();
 
         refreshTeas();
-    }
-
-    // Could be removed after the successful migration (In half a year 1.6.2022)
-    private void migrateActualSettingsToSharedSettings(final ActualSettingsRepository actualSettingsRepository) {
-        if (!sharedSettings.isMigrated() && actualSettingsRepository.getCountItems() > 0) {
-            final ActualSettings settings = actualSettingsRepository.getSettings();
-
-            sharedSettings.setFirstStart(false);
-            sharedSettings.setMusicChoice(settings.getMusicChoice());
-            sharedSettings.setMusicName(settings.getMusicName());
-            sharedSettings.setVibration(settings.isVibration());
-            sharedSettings.setAnimation(settings.isAnimation());
-            sharedSettings.setTemperatureUnit(TemperatureUnit.fromText(settings.getTemperatureUnit()));
-            sharedSettings.setOverviewUpdateAlert(settings.isMainUpdateAlert());
-            sharedSettings.setShowTeaAlert(settings.isShowTeaAlert());
-            sharedSettings.setSettingsPermissionAlert(settings.isSettingsPermissionAlert());
-            sharedSettings.setSortMode(SortMode.fromChoice(settings.getSort()));
-            sharedSettings.setMigrated(true);
-        }
     }
 
     // Defaults

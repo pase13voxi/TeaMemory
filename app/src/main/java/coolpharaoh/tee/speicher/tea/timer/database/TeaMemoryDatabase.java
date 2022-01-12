@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.database;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_10_11;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_11_12;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_12_13;
+import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_13_14;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_1_2;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_2_3;
 import static coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_3_4;
@@ -20,8 +21,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.ActualSettingsDao;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
@@ -31,7 +30,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 
-@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class, ActualSettings.class}, version = 13, exportSchema = false)
+@Database(entities = {Tea.class, Infusion.class, Counter.class, Note.class}, version = 14, exportSchema = false)
 public abstract class TeaMemoryDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "teamemory";
     private static TeaMemoryDatabase instance;
@@ -43,8 +42,6 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
     public abstract CounterDao getCounterDao();
 
     public abstract NoteDao getNoteDao();
-
-    public abstract ActualSettingsDao getActualSettingsDao();
 
     // Get a database instance
     public static synchronized TeaMemoryDatabase getDatabaseInstance(final Context context) {
@@ -72,6 +69,7 @@ public abstract class TeaMemoryDatabase extends RoomDatabase {
         builder.addMigrations(MIGRATION_10_11);
         builder.addMigrations(MIGRATION_11_12);
         builder.addMigrations(MIGRATION_12_13);
+        builder.addMigrations(MIGRATION_13_14);
 
         return builder.build();
     }

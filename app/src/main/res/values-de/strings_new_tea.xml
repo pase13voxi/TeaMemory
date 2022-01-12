@@ -63,16 +63,4 @@
         <item>Roibuschtee</item>
         <item>Sonstiges</item>
     </string-array>
-    <string-array name="new_tea_variety_codes">
-        <item>01_black</item>
-        <item>02_green</item>
-        <item>03_yellow</item>
-        <item>04_white</item>
-        <item>05_oolong</item>
-        <item>06_pu</item>
-        <item>07_herbal</item>
-        <item>08_fruit</item>
-        <item>09_rooibus</item>
-        <item>10_other</item>
-    </string-array>
 </resources>
