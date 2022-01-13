@@ -86,7 +86,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
-    androidTestUtil 'androidx.test:orchestrator:1.4.0'
+    androidTestUtil 'androidx.test:orchestrator:1.4.1'
     // extra UI
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
