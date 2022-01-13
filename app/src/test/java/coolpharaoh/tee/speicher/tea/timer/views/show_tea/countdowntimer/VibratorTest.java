@@ -8,8 +8,11 @@ import static org.mockito.Mockito.when;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.VibrationEffect;
+import android.os.VibratorManager;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 
 @RunWith(RobolectricTestRunner.class)
 public class VibratorTest {
@@ -28,9 +34,19 @@ public class VibratorTest {
     @Mock
     TimerViewModel timerViewModel;
     @Mock
+    VibratorManager vibratorManager;
+    @Mock
     android.os.Vibrator systemVibrator;
     @Mock
     AudioManager audioManager;
+    @Mock
+    SystemUtility systemUtility;
+
+    @Before
+    public void setUp() throws Exception {
+        CurrentSdk.setFixedSystem(systemUtility);
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.R);
+    }
 
     @Test
     public void whenSettingVibrationIsFalseDoNothing() {
@@ -68,6 +84,20 @@ public class VibratorTest {
     @Test
     public void vibrate() {
         when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator);
+        when(timerViewModel.isVibration()).thenReturn(true);
+        mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
+
+        final Vibrator vibrator = new Vibrator(application, timerViewModel);
+        vibrator.vibrate();
+
+        verify(systemVibrator).vibrate(any(VibrationEffect.class));
+    }
+
+    @Test
+    public void vibrateVersionAndroidSOrNewer() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.S);
+        when(application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE)).thenReturn(vibratorManager);
+        when(vibratorManager.getDefaultVibrator()).thenReturn(systemVibrator);
         when(timerViewModel.isVibration()).thenReturn(true);
         mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
 

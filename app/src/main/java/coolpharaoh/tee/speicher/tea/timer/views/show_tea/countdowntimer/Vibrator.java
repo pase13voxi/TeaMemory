@@ -1,10 +1,16 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
 
+import static android.os.Build.VERSION_CODES.S;
+
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.VibrationEffect;
+import android.os.VibratorManager;
 import android.util.Log;
+
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 
 class Vibrator {
     private static final String LOG_TAG = Vibrator.class.getSimpleName();
@@ -21,18 +27,35 @@ class Vibrator {
         this.timerViewModel = timerViewModel;
     }
 
-    // TODO Deprecated
     void vibrate() {
         if (timerViewModel.isVibration() && !isSilent(application)) {
-            final android.os.Vibrator vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
+            getVibrator();
+
+            final android.os.Vibrator vibrator = getVibrator();
             if (vibrator == null) {
                 throw new AssertionError("Vibrator is null.");
             } else {
                 // Vibrate for 1000 milliseconds
                 final long[] twice = {0, 500, 400, 500};
                 vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
+
+                Log.i(LOG_TAG, "Vibration is triggered.");
             }
         }
+    }
+
+    @SuppressLint("NewApi")
+    private android.os.Vibrator getVibrator() {
+        final android.os.Vibrator vibrator;
+        if (CurrentSdk.getSdkVersion() >= S) {
+            final VibratorManager vibratorManager = (VibratorManager) application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+
+            vibrator = vibratorManager.getDefaultVibrator();
+        } else {
+            vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
+        }
+
+        return vibrator;
     }
 
     private boolean isSilent(final Application application) {
