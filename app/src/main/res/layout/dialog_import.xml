@@ -14,7 +14,7 @@ android:layout_height="match_parent">
         android:layout_weight="1"
         android:padding="10dp"
         android:gravity="center_horizontal"
-        android:text="@string/export_import_import_dialog_delete_desciption"
+        android:text="@string/export_import_import_dialog_delete_description"
         android:textColor="@color/text_black" />
 
     <TextView
@@ -23,7 +23,7 @@ android:layout_height="match_parent">
         android:layout_weight="1"
         android:padding="10dp"
         android:gravity="center_horizontal"
-        android:text="@string/export_import_import_dialog_keep_desciption"
+        android:text="@string/export_import_import_dialog_keep_description"
         android:textColor="@color/text_black" />
 </LinearLayout>
 

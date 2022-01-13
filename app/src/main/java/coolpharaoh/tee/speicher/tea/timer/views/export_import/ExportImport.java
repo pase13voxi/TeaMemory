@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 
 // This class has 9 Parent because of AppCompatActivity
@@ -53,11 +55,23 @@ public class ExportImport extends AppCompatActivity implements Printer {
         defineToolbarAsActionbar();
         enableAndShowBackButton();
 
+        showWarning();
+
         final Button buttonExport = findViewById(R.id.button_export_import_export);
         buttonExport.setOnClickListener(v -> chooseExportFolder());
 
         final Button buttonImport = findViewById(R.id.button_export_import_import);
         buttonImport.setOnClickListener(v -> dialogImportDecision());
+    }
+
+    private void showWarning() {
+        if (CurrentSdk.getSdkVersion() < Build.VERSION_CODES.Q) {
+            final TextView textViewWarning = findViewById(R.id.text_view_export_import_warning);
+            textViewWarning.setVisibility(View.GONE);
+
+            final TextView textViewWarningText = findViewById(R.id.text_view_export_import_warning_text);
+            textViewWarningText.setVisibility(View.GONE);
+        }
     }
 
     private void defineToolbarAsActionbar() {

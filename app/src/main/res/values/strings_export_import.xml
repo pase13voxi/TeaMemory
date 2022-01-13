@@ -3,10 +3,11 @@
     <string name="export_import_info_top">By using the Import and Export, you can transfer your teas to another device.</string>
     <string name="export_import_procedure">Procedure:</string>
     <string name="export_import_dots">&#8226;</string>
+    <string name="export_import_warning">\u26A0</string>
     <string name="export_import_step1_text">Export your Tealist as a Jsonfile called tealist.json</string>
     <string name="export_import_step2_text">Transfer the file to the other device.</string>
     <string name="export_import_step3_text">Import the file into the Application on the other device.</string>
-    <string name="export_import_content_description_bulletpoint">bulletpoint</string>
+    <string name="export_import_warning_text">Images are not transferred with this file.</string>
     <string name="export_import_write_permission_dialog_header">Permission</string>
     <string name="export_import_write_permission_dialog_description">The application needs write permission to export the file.</string>
     <string name="export_import_write_permission_denied">Permission denied.</string>
@@ -22,14 +23,11 @@
     <string name="export_import_export_failed_dialog_header">Export failed</string>
     <string name="export_import_export_failed_dialog_description">Something goes wrong during the export.</string>
     <string name="export_import_export_failed_dialog_ok">OK</string>
-    <string name="export_import_read_permission_dialog_header">Permission</string>
-    <string name="export_import_read_permission_dialog_description">The application needs read permission to import the file.</string>
-    <string name="export_import_read_permission_denied">Permission denied.</string>
     <string name="export_import_import">Import</string>
     <string name="export_import_import_dialog_header">Import Teas</string>
-    <string name="export_import_import_dialog_delete_desciption">Delete all stored teas and take over only the new ones.</string>
+    <string name="export_import_import_dialog_delete_description">Delete all stored teas and take over only the new ones.</string>
     <string name="export_import_import_dialog_delete_button">Delete stored Teas</string>
-    <string name="export_import_import_dialog_keep_desciption">Keep the stored teas and add the new ones.</string>
+    <string name="export_import_import_dialog_keep_description">Keep the stored teas and add the new ones.</string>
     <string name="export_import_import_dialog_keep_button">Keep stored Teas</string>
     <string name="export_import_import_choose_file">Choose File to Import</string>
     <string name="export_import_import_parse_teas_failed">Could not parse tea list from file</string>
@@ -41,5 +39,4 @@
     <string name="export_import_import_failed_dialog_header">Import failed</string>
     <string name="export_import_import_failed_dialog_description">Something goes wrong during the import.</string>
     <string name="export_import_import_failed_dialog_ok">OK</string>
-    <string name="export_import_warning">Attention! The import function is currently not available for your Android version.</string>
 </resources>

@@ -3,10 +3,11 @@
     <string name="export_import_info_top">Durch die Benutzung des Imports und Exports kannst du deine gespeicherten Tees auf ein anderes Gerät übertragen.</string>
     <string name="export_import_procedure">Vorgehen:</string>
     <string name="export_import_dots">&#8226;</string>
+    <string name="export_import_warning">\u26A0</string>
     <string name="export_import_step1_text">Exportiere deine Teeliste als Json-Datei mit dem Namen tealist.json.</string>
     <string name="export_import_step2_text">Übertrage die Datei auf das andere Gerät.</string>
     <string name="export_import_step3_text">Importiere die Datei in die App auf dem anderen Gerät.</string>
-    <string name="export_import_content_description_bulletpoint">Aufzählungszeichen</string>
+    <string name="export_import_warning_text">Bilder werden mit dieser Datei nicht übertragen.</string>
     <string name="export_import_write_permission_dialog_header">Genehmigung</string>
     <string name="export_import_write_permission_dialog_description">Die Anwendung benötigt Schreibrechte, um die Datei zu exportieren.</string>
     <string name="export_import_write_permission_denied">Erlaubnis verweigert.</string>
@@ -22,14 +23,11 @@
     <string name="export_import_export_failed_dialog_header">Export fehlgeschlagen</string>
     <string name="export_import_export_failed_dialog_description">Während des Exports ist etwas schief gelaufen.</string>
     <string name="export_import_export_failed_dialog_ok">Ok</string>
-    <string name="export_import_read_permission_dialog_header">Genehmigung</string>
-    <string name="export_import_read_permission_dialog_description">Die Anwendung benötigt Leserechte, um die Datei zu importieren.</string>
-    <string name="export_import_read_permission_denied">Erlaubnis verweigert.</string>
     <string name="export_import_import">Importieren</string>
     <string name="export_import_import_dialog_header">Importiere Tees</string>
-    <string name="export_import_import_dialog_delete_desciption">Lösche alle gespeicherten Tees und übernehme nur die neuen.</string>
+    <string name="export_import_import_dialog_delete_description">Lösche alle gespeicherten Tees und übernehme nur die neuen.</string>
     <string name="export_import_import_dialog_delete_button">Lösche gespeicherte Tees</string>
-    <string name="export_import_import_dialog_keep_desciption">Behalte die gespeicherten Tees und füge die neuen hinzu.</string>
+    <string name="export_import_import_dialog_keep_description">Behalte die gespeicherten Tees und füge die neuen hinzu.</string>
     <string name="export_import_import_dialog_keep_button">Behalte gespeicherte Tees</string>
     <string name="export_import_import_choose_file">Wähle eine Datei für die Importierung aus</string>
     <string name="export_import_import_parse_teas_failed">Teeliste konnte nicht aus Datei gelesen werden</string>
@@ -41,5 +39,4 @@
     <string name="export_import_import_failed_dialog_header">Import fehlgeschlagen</string>
     <string name="export_import_import_failed_dialog_description">Während des Imports ist etwas schief gelaufen.</string>
     <string name="export_import_import_failed_dialog_ok">Ok</string>
-    <string name="export_import_warning">Vorsicht! Die Importfunktion ist derzeit für Ihre Android-Version nicht verfügbar.</string>
 </resources>
