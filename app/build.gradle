@@ -9,7 +9,7 @@ android {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 28
         targetSdkVersion 32
-        versionCode 170
+        versionCode 171
         versionName "4.0"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -63,10 +63,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     // room
-    implementation 'androidx.room:room-runtime:2.3.0'
-    annotationProcessor 'androidx.room:room-compiler:2.3.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.3.1'
+    implementation 'androidx.room:room-runtime:2.4.0'
+    annotationProcessor 'androidx.room:room-compiler:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // test
     testImplementation 'junit:junit:4.13.2'
