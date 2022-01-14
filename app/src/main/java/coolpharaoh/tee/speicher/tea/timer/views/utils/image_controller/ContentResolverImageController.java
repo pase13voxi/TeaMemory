@@ -59,11 +59,9 @@ public class ContentResolverImageController implements ImageController {
         final Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);
 
         if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    final long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
-                    return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                }
+            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                final long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+                return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
             }
             cursor.close();
         }
