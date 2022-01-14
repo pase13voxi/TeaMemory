@@ -48,6 +48,7 @@ class OverviewViewModel extends ViewModel {
         if (sharedSettings.isFirstStart()) {
             createDefaultTeas(application);
             sharedSettings.setFirstStart(false);
+            sharedSettings.setOverviewUpdateAlert(false);
         }
 
         teas = new MutableLiveData<>();
