@@ -74,18 +74,18 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'                         //needed for junit4 only
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'  //needed for junit4 only
     testImplementation 'org.assertj:assertj-core:3.20.2'
-    testImplementation 'android.arch.core:core-testing:1.1.1'
-    testImplementation 'org.mockito:mockito-core:3.11.2'            //needed for junit 4 only
+    testImplementation 'org.mockito:mockito-core:4.2.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:4.2.0'
     testImplementation 'org.robolectric:robolectric:4.6.1'
     testImplementation 'androidx.test:core:1.4.0'
+    testImplementation 'android.arch.core:core-testing:1.1.1'
     testImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     testImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     // androidTest
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'org.assertj:assertj-core:3.20.2'
-    androidTestImplementation 'androidx.test:core:1.4.0'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+    androidTestImplementation 'androidx.test:core:1.4.0'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
