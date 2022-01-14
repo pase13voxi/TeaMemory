@@ -5,12 +5,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -26,8 +26,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StatisticsViewModelTest {
+@ExtendWith(MockitoExtension.class)
+class StatisticsViewModelTest {
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
 
     private StatisticsViewModel statisticsViewModel;
@@ -37,13 +37,13 @@ public class StatisticsViewModelTest {
     @Mock
     DateUtility fixedDate;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         statisticsViewModel = new StatisticsViewModel(counterRepository);
     }
 
     @Test
-    public void getStatisticsOverall() {
+    void getStatisticsOverall() {
         final List<StatisticsPOJO> counterOverallBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
@@ -66,7 +66,7 @@ public class StatisticsViewModelTest {
     }
 
     @Test
-    public void getStatisticsMonth() {
+    void getStatisticsMonth() {
         final List<StatisticsPOJO> counterMonthBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
@@ -89,7 +89,7 @@ public class StatisticsViewModelTest {
     }
 
     @Test
-    public void getStatisticsWeek() {
+    void getStatisticsWeek() {
         final List<StatisticsPOJO> counterWeekBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
@@ -112,7 +112,7 @@ public class StatisticsViewModelTest {
     }
 
     @Test
-    public void getStatisticsDay() {
+    void getStatisticsDay() {
         final List<StatisticsPOJO> counterDayBefore = new ArrayList<>();
 
         final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
@@ -135,7 +135,7 @@ public class StatisticsViewModelTest {
     }
 
     @Test
-    public void refreshAllCounter() {
+    void refreshAllCounter() {
         final Instant now = getFixedDate();
         final Date today = Date.from(now);
         final Date dayBefore = Date.from(now.minus(Duration.ofDays(1)));

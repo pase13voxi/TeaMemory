@@ -7,15 +7,11 @@ import static org.mockito.Mockito.when;
 import android.app.Application;
 import android.content.res.Resources;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
@@ -31,8 +28,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
-@RunWith(MockitoJUnitRunner.class)
-public class InformationViewModelTest {
+@ExtendWith({MockitoExtension.class, TaskExecutorExtension.class})
+class InformationViewModelTest {
 
     private static final long TEA_ID = 1L;
     private static final String HEADER = "header";
@@ -47,18 +44,16 @@ public class InformationViewModelTest {
     Application application;
     @Mock
     Resources resources;
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
 
     @Test
-    public void getTeaId() {
+    void getTeaId() {
         final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
 
         assertThat(informationViewModel.getTeaId()).isEqualTo(TEA_ID);
     }
 
     @Test
-    public void getTeaName() {
+    void getTeaName() {
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
@@ -68,7 +63,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getTeaVariety() {
+    void getTeaVariety() {
         final String[] varieties = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
                 "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
         when(application.getResources()).thenReturn(resources);
@@ -83,7 +78,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getTeaRating() {
+    void getTeaRating() {
         final int rating = 3;
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         tea.setRating(rating);
@@ -95,7 +90,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void updateTeaRating() {
+    void updateTeaRating() {
         final int rating = 3;
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
@@ -110,7 +105,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void isTeaInStock() {
+    void isTeaInStock() {
         final boolean inStock = true;
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         tea.setInStock(inStock);
@@ -122,7 +117,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void updateTeaInStock() {
+    void updateTeaInStock() {
         final boolean inStock = true;
         final Tea tea = new Tea("name", null, 0, null, 0, 0, null);
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
@@ -137,7 +132,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getDate() {
+    void getDate() {
         final Tea tea = new Tea("name", null, 0, null, 0, 0, CurrentDate.getDate());
         when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
 
@@ -147,7 +142,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getDetails() {
+    void getDetails() {
         final List<Note> notes = Arrays.asList(new Note(TEA_ID, 0, HEADER, DESCRIPTION),
                 new Note(TEA_ID, 1, HEADER, DESCRIPTION));
 
@@ -159,7 +154,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getDetail() {
+    void getDetail() {
         final int position = 0;
 
         final List<Note> notes = Arrays.asList(new Note(TEA_ID, 0, HEADER, DESCRIPTION),
@@ -173,7 +168,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void addDetail() {
+    void addDetail() {
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(Collections.emptyList());
 
         final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
@@ -187,7 +182,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void updateDetail() {
+    void updateDetail() {
         final String anotherHeader = "AnotherHeader";
         final String anotherDescription = "AnotherDescription";
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID))
@@ -204,7 +199,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void deleteDetail() {
+    void deleteDetail() {
         final int index = 1;
         when(noteRepository.getNotesByTeaIdAndPositionBiggerZero(TEA_ID))
                 .thenReturn(Arrays.asList(new Note(TEA_ID, 0, HEADER, DESCRIPTION),
@@ -220,7 +215,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getNotes() {
+    void getNotes() {
         final Note note = new Note();
         when(noteRepository.getNoteByTeaIdAndPosition(TEA_ID, -1)).thenReturn(note);
 
@@ -230,7 +225,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getNotesAndNotesAreNull() {
+    void getNotesAndNotesAreNull() {
         final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
 
         assertThat(informationViewModel.getNotes())
@@ -242,7 +237,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void updateNotes() {
+    void updateNotes() {
         final String newNotes = "changed Notes";
 
         when(noteRepository.getNoteByTeaIdAndPosition(TEA_ID, -1)).thenReturn(new Note());
@@ -256,7 +251,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getCounter() {
+    void getCounter() {
         final Date currentDate = CurrentDate.getDate();
         final Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
         when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
@@ -268,7 +263,7 @@ public class InformationViewModelTest {
     }
 
     @Test
-    public void getCounterAndCounterIsNull() {
+    void getCounterAndCounterIsNull() {
         final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
         informationViewModel.getCounter();
 

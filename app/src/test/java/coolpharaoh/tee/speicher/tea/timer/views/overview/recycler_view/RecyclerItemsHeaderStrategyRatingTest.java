@@ -9,11 +9,11 @@ import static org.mockito.Mockito.when;
 import android.app.Application;
 import android.content.res.Resources;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RecyclerItemsHeaderStrategyRatingTest {
+@ExtendWith(MockitoExtension.class)
+class RecyclerItemsHeaderStrategyRatingTest {
     private static final String[] VARIETIES = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
 
     @Mock
@@ -30,15 +30,15 @@ public class RecyclerItemsHeaderStrategyRatingTest {
     @Mock
     Resources resources;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
         when(application.getString(eq(R.string.overview_sort_header_star), any())).thenReturn("3 \u2605");
         when(application.getResources()).thenReturn(resources);
     }
 
     @Test
-    public void generateRecyclerItemsHeader() {
+    void generateRecyclerItemsHeader() {
         final ArrayList<Tea> teas = createTeas();
 
         final RecyclerItemsHeaderStrategy recyclerItemsHeader = new RecyclerItemsHeaderStrategyRating(application);

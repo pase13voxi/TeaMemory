@@ -4,20 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-
-@RunWith(MockitoJUnitRunner.class)
-public class NoteRepositoryTest {
+@ExtendWith(MockitoExtension.class)
+class NoteRepositoryTest {
 
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
@@ -26,8 +25,8 @@ public class NoteRepositoryTest {
 
     private NoteRepository noteRepository;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
 
@@ -35,7 +34,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void insertNote() {
+    void insertNote() {
         final Note note = new Note();
 
         noteRepository.insertNote(note);
@@ -44,7 +43,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void updateNote() {
+    void updateNote() {
         final Note note = new Note();
 
         noteRepository.updateNote(note);
@@ -53,7 +52,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void getNotes() {
+    void getNotes() {
         when(noteDao.getNotes()).thenReturn(Arrays.asList(new Note(), new Note()));
 
         final List<Note> notes = noteRepository.getNotes();
@@ -63,7 +62,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void getNoteByTeaIdAndPosition() {
+    void getNoteByTeaIdAndPosition() {
         final long teaId = 2;
         final Note note = new Note();
         when(noteDao.getNoteByTeaIdAndPosition(teaId, 1)).thenReturn(note);
@@ -74,7 +73,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void getNotesByTeaIdAndPositionBiggerZero() {
+    void getNotesByTeaIdAndPositionBiggerZero() {
         final long teaId = 2;
         final List<Note> notes = Arrays.asList(new Note(), new Note());
         when(noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId)).thenReturn(notes);
@@ -85,7 +84,7 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void deleteNoteByTeaIdAndPosition() {
+    void deleteNoteByTeaIdAndPosition() {
         final long teaId = 2;
         final int position = 1;
 

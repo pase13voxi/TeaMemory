@@ -1,49 +1,49 @@
 package coolpharaoh.tee.speicher.tea.timer.core.tea;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AmountKindTest {
+import org.junit.jupiter.api.Test;
+
+class AmountKindTest {
 
     @Test
-    public void getTextGram() {
+    void getTextGram() {
         final AmountKind amountKind = AmountKind.GRAM;
         assertThat(amountKind.getText()).isEqualTo("Gr");
     }
 
     @Test
-    public void getChoiceGram() {
+    void getChoiceGram() {
         final AmountKind amountKind = AmountKind.TEA_SPOON;
         assertThat(amountKind.getChoice()).isZero();
     }
 
     @Test
-    public void amountKindFromTextGram() {
+    void amountKindFromTextGram() {
         final AmountKind amountKind = AmountKind.fromText("Gr");
         assertThat(amountKind).isEqualTo(AmountKind.GRAM);
     }
 
     @Test
-    public void amountKindFromTextNotDefined() {
+    void amountKindFromTextNotDefined() {
         final AmountKind amountKind = AmountKind.fromText("not defined");
         assertThat(amountKind).isEqualTo(AmountKind.TEA_SPOON);
     }
 
     @Test
-    public void amountKindFromTextNull() {
+    void amountKindFromTextNull() {
         final AmountKind amountKind = AmountKind.fromText(null);
         assertThat(amountKind).isEqualTo(AmountKind.TEA_SPOON);
     }
 
     @Test
-    public void amountKindFromChoiceZero() {
+    void amountKindFromChoiceZero() {
         final AmountKind amountKind = AmountKind.fromChoice(1);
         assertThat(amountKind).isEqualTo(AmountKind.GRAM);
     }
 
     @Test
-    public void amountKindFromChoiceMinusOne() {
+    void amountKindFromChoiceMinusOne() {
         final AmountKind amountKind = AmountKind.fromChoice(-1);
         assertThat(amountKind).isEqualTo(AmountKind.TEA_SPOON);
     }

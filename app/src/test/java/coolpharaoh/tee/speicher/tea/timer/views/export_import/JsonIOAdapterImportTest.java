@@ -11,12 +11,12 @@ import android.content.ContentResolver;
 import android.net.Uri;
 
 import org.assertj.core.groups.Tuple;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -33,8 +33,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
 
-@RunWith(MockitoJUnitRunner.class)
-public class JsonIOAdapterImportTest {
+@ExtendWith(MockitoExtension.class)
+class JsonIOAdapterImportTest {
     private static final String DB_JSON_DUMP = "[\n" +
             "  {\n" +
             "    \"name\": \"name1\",\n" +
@@ -143,8 +143,8 @@ public class JsonIOAdapterImportTest {
     @Mock
     ContentResolver contentResolver;
 
-    @Before
-    public void setUp() throws FileNotFoundException {
+    @BeforeEach
+    void setUp() throws FileNotFoundException {
         mockDB();
         mockFileReader();
     }
@@ -164,7 +164,7 @@ public class JsonIOAdapterImportTest {
     }
 
     @Test
-    public void importTeasAndKeepStoredTeas() {
+    void importTeasAndKeepStoredTeas() {
         JsonIOAdapter.init(application, System.out::println);
         JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), true);
 
@@ -172,7 +172,7 @@ public class JsonIOAdapterImportTest {
     }
 
     @Test
-    public void importTeasAndDeleteStoredTeas() {
+    void importTeasAndDeleteStoredTeas() {
         JsonIOAdapter.init(application, System.out::println);
         JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
 

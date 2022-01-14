@@ -6,57 +6,61 @@ import static org.mockito.Mockito.when;
 
 import android.app.Application;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class InputValidatorTest {
-
+@ExtendWith(MockitoExtension.class)
+class InputValidatorTest {
     @Mock
     private Application application;
 
     private InputValidator inputValidator;
 
-    @Before
-    public void setUp() {
-        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+    @BeforeEach
+    void setUp() {
         inputValidator = new InputValidator(application, System.out::println);
     }
 
     @Test
-    public void nameIsNotEmptyReturnsFalse() {
+    void nameIsNotEmptyReturnsFalse() {
+        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+
         assertThat(inputValidator.nameIsNotEmpty("")).isFalse();
     }
 
     @Test
-    public void nameIsNotEmptyReturnsTrue() {
+    void nameIsNotEmptyReturnsTrue() {
         assertThat(inputValidator.nameIsNotEmpty("Tea")).isTrue();
     }
 
     @Test
-    public void nameIsValidReturnsFalse() {
+    void nameIsValidReturnsFalse() {
+        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+
         final char[] data = new char[350];
         final String largeName = new String(data);
         assertThat(inputValidator.nameIsValid(largeName)).isFalse();
     }
 
     @Test
-    public void nameIsValidReturnsTrue() {
+    void nameIsValidReturnsTrue() {
         assertThat(inputValidator.nameIsValid("Tea")).isTrue();
     }
 
     @Test
-    public void varietyIsValidReturnsFalse() {
+    void varietyIsValidReturnsFalse() {
+        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+
         final char[] data = new char[50];
         final String largeVariety = new String(data);
         assertThat(inputValidator.varietyIsValid(largeVariety)).isFalse();
     }
 
     @Test
-    public void varietyIsValidReturnsTrue() {
+    void varietyIsValidReturnsTrue() {
         assertThat(inputValidator.varietyIsValid("Variety")).isTrue();
     }
 }

@@ -2,12 +2,12 @@ package coolpharaoh.tee.speicher.tea.timer.core.infusion;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TemperatureConversationTest {
+class TemperatureConversationTest {
 
     @Test
-    public void convertMinus500CelsiusToFahrenheitReturnMinus500() {
+    void convertMinus500CelsiusToFahrenheitReturnMinus500() {
         final int celsius = -500;
 
         final int fahrenheit = TemperatureConversation.celsiusToFahrenheit(celsius);
@@ -16,7 +16,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert0CelsiusToFahrenheitReturnMinus32() {
+    void convert0CelsiusToFahrenheitReturnMinus32() {
         final int celsius = 0;
 
         final int fahrenheit = TemperatureConversation.celsiusToFahrenheit(celsius);
@@ -25,7 +25,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert100CelsiusToFahrenheitReturnMinus212() {
+    void convert100CelsiusToFahrenheitReturnMinus212() {
         final int celsius = 100;
 
         final int fahrenheit = TemperatureConversation.celsiusToFahrenheit(celsius);
@@ -34,7 +34,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convertMinus500FahrenheitToCelsiusReturnMinus500() {
+    void convertMinus500FahrenheitToCelsiusReturnMinus500() {
         final int fahrenheit = -500;
 
         final int celsius = TemperatureConversation.fahrenheitToCelsius(fahrenheit);
@@ -43,7 +43,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert0FahrenheitToCelsiusReturnMinus32() {
+    void convert0FahrenheitToCelsiusReturnMinus32() {
         final int fahrenheit = 32;
 
         final int celsius = TemperatureConversation.fahrenheitToCelsius(fahrenheit);
@@ -52,7 +52,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert100FahrenheitToCelsiusReturnMinus212() {
+    void convert100FahrenheitToCelsiusReturnMinus212() {
         final int fahrenheit = 212;
 
         final int celsius = TemperatureConversation.fahrenheitToCelsius(fahrenheit);
@@ -61,7 +61,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convertMinus500CelsiusToCoolDownTimeReturnNull() {
+    void convertMinus500CelsiusToCoolDownTimeReturnNull() {
         final int celsius = -500;
 
         final String coolDownTime = TemperatureConversation.celsiusToCoolDownTime(celsius);
@@ -70,7 +70,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert100CelsiusToCoolDownTimeReturnNull() {
+    void convert100CelsiusToCoolDownTimeReturnNull() {
         final int celsius = 100;
 
         final String coolDownTime = TemperatureConversation.celsiusToCoolDownTime(celsius);
@@ -79,7 +79,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert80CelsiusToCoolDownTimeReturn10Min() {
+    void convert80CelsiusToCoolDownTimeReturn10Min() {
         final int celsius = 80;
 
         final String coolDownTime = TemperatureConversation.celsiusToCoolDownTime(celsius);
@@ -88,7 +88,7 @@ public class TemperatureConversationTest {
     }
 
     @Test
-    public void convert60CelsiusToCoolDownTimeReturn20Min() {
+    void convert60CelsiusToCoolDownTimeReturn20Min() {
         final int celsius = 60;
 
         final String coolDownTime = TemperatureConversation.celsiusToCoolDownTime(celsius);

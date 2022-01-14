@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
 
-@RunWith(MockitoJUnitRunner.class)
-public class InfusionRepositoryTest {
+@ExtendWith(MockitoExtension.class)
+class InfusionRepositoryTest {
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
@@ -25,8 +25,8 @@ public class InfusionRepositoryTest {
 
     private InfusionRepository infusionRepository;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
 
@@ -34,7 +34,7 @@ public class InfusionRepositoryTest {
     }
 
     @Test
-    public void insertInfusion() {
+    void insertInfusion() {
         final Infusion infusion = new Infusion();
 
         infusionRepository.insertInfusion(infusion);
@@ -43,7 +43,7 @@ public class InfusionRepositoryTest {
     }
 
     @Test
-    public void getInfusions() {
+    void getInfusions() {
         when(infusionDao.getInfusions()).thenReturn(Arrays.asList(new Infusion(), new Infusion()));
 
         final List<Infusion> infusions = infusionRepository.getInfusions();
@@ -53,7 +53,7 @@ public class InfusionRepositoryTest {
     }
 
     @Test
-    public void getInfusionsByTeaId() {
+    void getInfusionsByTeaId() {
         final long teaId = 2;
         when(infusionDao.getInfusionsByTeaId(teaId)).thenReturn(Arrays.asList(new Infusion(), new Infusion()));
 
@@ -63,7 +63,7 @@ public class InfusionRepositoryTest {
     }
 
     @Test
-    public void deleteInfusionsByTeaId() {
+    void deleteInfusionsByTeaId() {
         final long teaId = 2;
 
         infusionRepository.deleteInfusionsByTeaId(teaId);

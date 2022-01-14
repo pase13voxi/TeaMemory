@@ -2,31 +2,31 @@ package coolpharaoh.tee.speicher.tea.timer.core.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateConverter;
 
-public class DateConverterTest {
+class DateConverterTest {
     public static final long LONG_DATE = 214234L;
 
     @Test
-    public void convertLongToDate() {
+    void convertLongToDate() {
         final Date dateAfter = DateConverter.toDate(LONG_DATE);
 
         assertThat(dateAfter).isEqualTo(new Date(LONG_DATE));
     }
 
     @Test
-    public void convertNullToDateReturnNull() {
+    void convertNullToDateReturnNull() {
         final Date dateAfter = DateConverter.toDate(null);
 
         assertThat(dateAfter).isNull();
     }
 
     @Test
-    public void convertDateToLong() {
+    void convertDateToLong() {
         final Date date = new Date(LONG_DATE);
 
         final Long longAfter = DateConverter.fromDate(date);
@@ -35,7 +35,7 @@ public class DateConverterTest {
     }
 
     @Test
-    public void convertNullToLongReturnNull() {
+    void convertNullToLongReturnNull() {
         final Long longAfter = DateConverter.fromDate(null);
 
         assertThat(longAfter).isNull();

@@ -7,11 +7,11 @@ import static org.mockito.Mockito.when;
 import android.app.Application;
 import android.content.res.Resources;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -26,8 +26,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RecyclerItemsHeaderStrategyLastUsedTest {
+@ExtendWith(MockitoExtension.class)
+class RecyclerItemsHeaderStrategyLastUsedTest {
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
     private static final String[] VARIETIES = {"Black tea", "Green tea", "Yellow tea", "White tea",
             "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
@@ -41,8 +41,8 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
     @Mock
     DateUtility dateUtility;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
         when(resources.getStringArray(R.array.overview_sort_last_used_month)).thenReturn(MONTH_NAMES);
         when(application.getResources()).thenReturn(resources);
@@ -59,7 +59,7 @@ public class RecyclerItemsHeaderStrategyLastUsedTest {
     }
 
     @Test
-    public void generateRecyclerItemsHeader() {
+    void generateRecyclerItemsHeader() {
         final ArrayList<Tea> teas = createTeas();
 
         final RecyclerItemsHeaderStrategy recyclerItemsHeader = new RecyclerItemsHeaderStrategyLastUsed(application);

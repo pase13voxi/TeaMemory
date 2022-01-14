@@ -4,20 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 
-
-@RunWith(MockitoJUnitRunner.class)
-public class TeaRepositoryTest {
+@ExtendWith(MockitoExtension.class)
+class TeaRepositoryTest {
     @Mock
     TeaMemoryDatabase teaMemoryDatabase;
     @Mock
@@ -25,8 +24,8 @@ public class TeaRepositoryTest {
 
     private TeaRepository teaRepository;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
         when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
 
@@ -34,7 +33,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void insertTea() {
+    void insertTea() {
         final Tea tea = new Tea();
 
         teaRepository.insertTea(tea);
@@ -43,7 +42,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void updateTea() {
+    void updateTea() {
         final Tea tea = new Tea();
 
         teaRepository.updateTea(tea);
@@ -52,7 +51,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void deleteTeaById() {
+    void deleteTeaById() {
         final long teaId = 1;
 
         teaRepository.deleteTeaById(teaId);
@@ -61,14 +60,14 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void deleteAllTeas() {
+    void deleteAllTeas() {
         teaRepository.deleteAllTeas();
 
         verify(teaDao).deleteAll();
     }
 
     @Test
-    public void getTeas() {
+    void getTeas() {
         when(teaDao.getTeas()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeas();
@@ -77,7 +76,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getTeasOrderByActivity() {
+    void getTeasOrderByActivity() {
         when(teaDao.getTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByActivity(false);
@@ -86,7 +85,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getFavoriteTeasOrderByActivity() {
+    void getFavoriteTeasOrderByActivity() {
         when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByActivity(true);
@@ -95,7 +94,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getTeasOrderByAlphabetic() {
+    void getTeasOrderByAlphabetic() {
         when(teaDao.getTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(false);
@@ -104,7 +103,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getFavoriteTeasOrderByAlphabetic() {
+    void getFavoriteTeasOrderByAlphabetic() {
         when(teaDao.getFavoriteTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(true);
@@ -113,7 +112,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getTeasOrderByVariety() {
+    void getTeasOrderByVariety() {
         when(teaDao.getTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByVariety(false);
@@ -122,7 +121,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getFavoriteTeasOrderByVariety() {
+    void getFavoriteTeasOrderByVariety() {
         when(teaDao.getFavoriteTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByVariety(true);
@@ -131,7 +130,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getTeasOrderByRating() {
+    void getTeasOrderByRating() {
         when(teaDao.getTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByRating(false);
@@ -140,7 +139,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getFavoriteTeasOrderByRating() {
+    void getFavoriteTeasOrderByRating() {
         when(teaDao.getFavoriteTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByRating(true);
@@ -149,7 +148,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getTeaById() {
+    void getTeaById() {
         final long teaId = 1;
         final Tea tea = new Tea();
         when(teaDao.getTeaById(teaId)).thenReturn(tea);
@@ -160,7 +159,7 @@ public class TeaRepositoryTest {
     }
 
     @Test
-    public void getTeasBySearchString() {
+    void getTeasBySearchString() {
         final String searchString = "search";
         when(teaDao.getTeasBySearchString(searchString)).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
@@ -168,6 +167,4 @@ public class TeaRepositoryTest {
 
         assertThat(teas).hasSize(2);
     }
-
-
 }

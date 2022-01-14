@@ -13,16 +13,12 @@ import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
 import android.app.Application;
 import android.content.res.Resources;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -30,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension;
 import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
@@ -37,8 +34,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
-@RunWith(MockitoJUnitRunner.class)
-public class NewTeaViewModelTest {
+@ExtendWith({MockitoExtension.class, TaskExecutorExtension.class})
+class NewTeaViewModelTest {
     private static final String TIME_1 = "05:45";
     private static final String[] VARIETY_TEAS = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
             "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
@@ -55,14 +52,12 @@ public class NewTeaViewModelTest {
     InfusionRepository infusionRepository;
     @Mock
     SharedSettings sharedSettings;
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
 
     private static final long TEA_ID_FILLED = 1L;
     private Tea tea;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         newTeaViewModelEmpty = new NewTeaViewModel(null, application, teaRepository,
                 infusionRepository, sharedSettings);
         mockStoredTea();
@@ -71,17 +66,17 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void getTeaId() {
+    void getTeaId() {
         assertThat(newTeaViewModelFilled.getTeaId()).isEqualTo(tea.getId());
     }
 
     @Test
-    public void getName() {
+    void getName() {
         assertThat(newTeaViewModelFilled.getName()).isEqualTo(tea.getName());
     }
 
     @Test
-    public void getVarietyAsText() {
+    void getVarietyAsText() {
         mockStringResource();
 
         assertThat(newTeaViewModelFilled.getVarietyAsText())
@@ -89,15 +84,13 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void getVariety() {
-        mockStringResource();
-
+    void getVariety() {
         assertThat(newTeaViewModelFilled.getVariety())
                 .isEqualTo(Variety.fromStoredText(tea.getVariety()));
     }
 
     @Test
-    public void setVariety() {
+    void setVariety() {
         mockStringResource();
 
         newTeaViewModelEmpty.setVariety("VARIETY");
@@ -106,7 +99,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setAmountAndExpectAmountAndAmountKind() {
+    void setAmountAndExpectAmountAndAmountKind() {
         newTeaViewModelEmpty.setAmount(5.5, TEA_SPOON);
 
         assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(5.5);
@@ -114,14 +107,14 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setColorAndExpectColor() {
+    void setColorAndExpectColor() {
         newTeaViewModelEmpty.setColor(1234);
 
         assertThat(newTeaViewModelEmpty.getColor()).isEqualTo(1234);
     }
 
     @Test
-    public void setTemperatureCelsiusAndExpectTemperature() {
+    void setTemperatureCelsiusAndExpectTemperature() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         newTeaViewModelEmpty.setInfusionTemperature(90);
@@ -131,7 +124,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setTemperatureCelsiusAndExpectFahrenheitTemperature() {
+    void setTemperatureCelsiusAndExpectFahrenheitTemperature() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         newTeaViewModelEmpty.setInfusionTemperature(90);
@@ -142,7 +135,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setTemperatureFahrenheitAndExpectTemperature() {
+    void setTemperatureFahrenheitAndExpectTemperature() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
 
         newTeaViewModelEmpty.setInfusionTemperature(194);
@@ -152,7 +145,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setTemperatureFahrenheitAndExpectCelsiusTemperature() {
+    void setTemperatureFahrenheitAndExpectCelsiusTemperature() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
 
         newTeaViewModelEmpty.setInfusionTemperature(194);
@@ -163,7 +156,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setTemperatureFahrenheitAndExpectStoredTemperatureFahrenheitAndTemperature() {
+    void setTemperatureFahrenheitAndExpectStoredTemperatureFahrenheitAndTemperature() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         newTeaViewModelEmpty.setInfusionTemperature(90);
@@ -173,28 +166,28 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void setCoolDownTimeAndExpectCoolDownTime() {
+    void setCoolDownTimeAndExpectCoolDownTime() {
         newTeaViewModelEmpty.setInfusionCoolDownTime(TIME_1);
 
         assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isEqualTo(TIME_1);
     }
 
     @Test
-    public void resetCoolDownTimeAndExpectNull() {
+    void resetCoolDownTimeAndExpectNull() {
         newTeaViewModelEmpty.resetInfusionCoolDownTime();
 
         assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isNull();
     }
 
     @Test
-    public void setTimeAndExpectTime() {
+    void setTimeAndExpectTime() {
         newTeaViewModelEmpty.setInfusionTime(TIME_1);
 
         assertThat(newTeaViewModelEmpty.getInfusionTime()).isEqualTo(TIME_1);
     }
 
     @Test
-    public void addInfusion() {
+    void addInfusion() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
         assertThat(newTeaViewModelEmpty.getInfusionSize()).isEqualTo(1);
 
@@ -208,7 +201,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void deleteInfusionAndExpectTwoInfusions() {
+    void deleteInfusionAndExpectTwoInfusions() {
         assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(2);
 
         newTeaViewModelFilled.deleteInfusion();
@@ -217,14 +210,14 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void deleteFirstInfusionAndExpectIndexZero() {
+    void deleteFirstInfusionAndExpectIndexZero() {
         newTeaViewModelFilled.deleteInfusion();
 
         assertThat(newTeaViewModelFilled.dataChanges().getValue()).isZero();
     }
 
     @Test
-    public void deleteLastInfusionAndExpectIndexOne() {
+    void deleteLastInfusionAndExpectIndexOne() {
         newTeaViewModelFilled.nextInfusion();
 
         newTeaViewModelFilled.deleteInfusion();
@@ -233,7 +226,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void navigateToNextAndPreviousInfusion() {
+    void navigateToNextAndPreviousInfusion() {
         newTeaViewModelFilled.nextInfusion();
         assertThat(newTeaViewModelFilled.dataChanges().getValue()).isEqualTo(1);
 
@@ -243,22 +236,21 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void couldNotNavigateToNextInfusion() {
+    void couldNotNavigateToNextInfusion() {
         newTeaViewModelEmpty.nextInfusion();
 
         assertThat(newTeaViewModelFilled.dataChanges().getValue()).isZero();
     }
 
     @Test
-    public void couldNotNavigateToPreviousInfusion() {
+    void couldNotNavigateToPreviousInfusion() {
         newTeaViewModelEmpty.previousInfusion();
 
         assertThat(newTeaViewModelEmpty.dataChanges().getValue()).isZero();
     }
 
     @Test
-    public void saveTeaAndExpectNewTea() {
-        mockStringResource();
+    void saveTeaAndExpectNewTea() {
         newTeaViewModelEmpty.saveTea("name");
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
@@ -269,8 +261,7 @@ public class NewTeaViewModelTest {
     }
 
     @Test
-    public void saveTeaAndExpectEditedExistingTea() {
-        mockStringResource();
+    void saveTeaAndExpectEditedExistingTea() {
         newTeaViewModelFilled.saveTea("name");
 
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);

@@ -10,15 +10,15 @@ import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
 import android.app.Application;
 import android.content.res.Resources;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 
-@RunWith(MockitoJUnitRunner.class)
-public class VarietyTest {
+@ExtendWith(MockitoExtension.class)
+class VarietyTest {
     @Mock
     private Application application;
     @Mock
@@ -27,29 +27,29 @@ public class VarietyTest {
     private String[] varieties;
 
     @Test
-    public void getStoredTextFromGreenTea() {
+    void getStoredTextFromGreenTea() {
         assertThat(GREEN_TEA.getCode()).isEqualTo("02_green");
     }
 
     @Test
-    public void getColorFromGreenTea() {
+    void getColorFromGreenTea() {
         assertThat(GREEN_TEA.getColor()).isEqualTo(R.color.greentea);
     }
 
     @Test
-    public void getChoiceFromGreenTea() {
+    void getChoiceFromGreenTea() {
         assertThat(GREEN_TEA.getChoice()).isEqualTo(1);
     }
 
     @Test
-    public void varietyFromStoredTextGreenTea() {
+    void varietyFromStoredTextGreenTea() {
         final Variety variety = Variety.fromStoredText(GREEN_TEA.getCode());
 
         assertThat(variety).isEqualTo(GREEN_TEA);
     }
 
     @Test
-    public void varietyFromStoredTextNotDefined() {
+    void varietyFromStoredTextNotDefined() {
         final String notDefinedText = "not defined";
 
         final Variety variety = Variety.fromStoredText(notDefinedText);
@@ -58,28 +58,28 @@ public class VarietyTest {
     }
 
     @Test
-    public void varietyFromStoredTextNull() {
+    void varietyFromStoredTextNull() {
         final Variety variety = Variety.fromStoredText(null);
 
         assertThat(variety).isEqualTo(OTHER);
     }
 
     @Test
-    public void varietyFromChoiceGreenTea() {
+    void varietyFromChoiceGreenTea() {
         final Variety variety = Variety.fromChoice(GREEN_TEA.getChoice());
 
         assertThat(variety).isEqualTo(GREEN_TEA);
     }
 
     @Test
-    public void varietyFromChoiceMinusValue() {
+    void varietyFromChoiceMinusValue() {
         final Variety variety = Variety.fromChoice(-1);
 
         assertThat(variety).isEqualTo(OTHER);
     }
 
     @Test
-    public void convertBlackTeaVarietyToCode() {
+    void convertBlackTeaVarietyToCode() {
         mockVarietyStrings();
         final String code = Variety.convertTextToStoredVariety(varieties[0], application);
 
@@ -88,7 +88,7 @@ public class VarietyTest {
     }
 
     @Test
-    public void convertOolongTeaVarietyToCode() {
+    void convertOolongTeaVarietyToCode() {
         mockVarietyStrings();
         final String code = Variety.convertTextToStoredVariety(varieties[4], application);
 
@@ -97,7 +97,7 @@ public class VarietyTest {
     }
 
     @Test
-    public void convertVarietyToCodeReturnInputBecauseVarietyNotExist() {
+    void convertVarietyToCodeReturnInputBecauseVarietyNotExist() {
         mockVarietyStrings();
         final String otherVariety = "Other Variety";
         final String code = Variety.convertTextToStoredVariety(otherVariety, application);
@@ -106,7 +106,7 @@ public class VarietyTest {
     }
 
     @Test
-    public void convertBlackTeaCodeToVariety() {
+    void convertBlackTeaCodeToVariety() {
         mockVarietyStrings();
         final String variety = Variety.convertStoredVarietyToText(BLACK_TEA.getCode(), application);
 
@@ -114,7 +114,7 @@ public class VarietyTest {
     }
 
     @Test
-    public void convertOolongTeaCodeToVariety() {
+    void convertOolongTeaCodeToVariety() {
         mockVarietyStrings();
         final String variety = Variety.convertStoredVarietyToText(OOLONG_TEA.getCode(), application);
 
@@ -122,7 +122,7 @@ public class VarietyTest {
     }
 
     @Test
-    public void convertCodeToVarietyReturnInputBecauseCodeNotExist() {
+    void convertCodeToVarietyReturnInputBecauseCodeNotExist() {
         mockVarietyStrings();
         final String otherCode = "Other Code";
         final String variety = Variety.convertStoredVarietyToText(otherCode, application);

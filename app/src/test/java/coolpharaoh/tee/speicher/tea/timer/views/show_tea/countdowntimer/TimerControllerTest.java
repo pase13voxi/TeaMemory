@@ -8,18 +8,18 @@ import static org.mockito.Mockito.when;
 
 import android.app.Application;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Calendar;
 
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 
-@RunWith(MockitoJUnitRunner.class)
-public class TimerControllerTest {
+@ExtendWith(MockitoExtension.class)
+class TimerControllerTest {
     @Mock
     Application application;
     @Mock
@@ -32,7 +32,7 @@ public class TimerControllerTest {
     DateUtility dateUtility;
 
     @Test
-    public void startForegroundTimer() {
+    void startForegroundTimer() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
         when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
@@ -44,7 +44,7 @@ public class TimerControllerTest {
     }
 
     @Test
-    public void startBackgroundTimer() {
+    void startBackgroundTimer() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
         when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
@@ -57,7 +57,7 @@ public class TimerControllerTest {
     }
 
     @Test
-    public void resumeForegroundTimer() {
+    void resumeForegroundTimer() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
@@ -76,7 +76,7 @@ public class TimerControllerTest {
     }
 
     @Test
-    public void resumeFinishedForegroundTimer() {
+    void resumeFinishedForegroundTimer() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
@@ -94,7 +94,7 @@ public class TimerControllerTest {
     }
 
     @Test
-    public void reset() {
+    void reset() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
@@ -107,7 +107,7 @@ public class TimerControllerTest {
     }
 
     @Test
-    public void onTimerTick() {
+    void onTimerTick() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 
@@ -117,7 +117,7 @@ public class TimerControllerTest {
     }
 
     @Test
-    public void onTimerFinish() {
+    void onTimerFinish() {
         final TimerController timerController = new TimerController(application, foregroundTimer,
                 sharedTimerPreferences, backgroundTimer);
 

@@ -1,46 +1,46 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoSuggestionsTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class NoSuggestionsTest {
 
     private Suggestions noSuggestions;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         noSuggestions = new NoSuggestions();
     }
 
     @Test
-    public void getAmountTsSuggestion() {
+    void getAmountTsSuggestion() {
         assertThat(noSuggestions.getAmountTsSuggestions()).isEmpty();
     }
 
     @Test
-    public void getAmountGrSuggestion() {
+    void getAmountGrSuggestion() {
         assertThat(noSuggestions.getAmountGrSuggestions()).isEmpty();
     }
 
     @Test
-    public void getAmountTbSuggestion() {
+    void getAmountTbSuggestion() {
         assertThat(noSuggestions.getAmountTbSuggestions()).isEmpty();
     }
 
     @Test
-    public void getTemperatureCelsiusSuggestion() {
+    void getTemperatureCelsiusSuggestion() {
         assertThat(noSuggestions.getTemperatureCelsiusSuggestions()).isEmpty();
     }
 
     @Test
-    public void getTemperatureFahrenheitSuggestion() {
+    void getTemperatureFahrenheitSuggestion() {
         assertThat(noSuggestions.getTemperatureFahrenheitSuggestions()).isEmpty();
     }
 
     @Test
-    public void getSteepingTimeSuggestion() {
+    void getSteepingTimeSuggestion() {
         assertThat(noSuggestions.getTimeSuggestions()).isEmpty();
     }
 }

@@ -4,12 +4,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,8 +25,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DataTransformViewModelTest {
+@ExtendWith(MockitoExtension.class)
+class DataTransformViewModelTest {
 
     private DataTransformViewModel dataTransformViewModel;
 
@@ -39,14 +39,14 @@ public class DataTransformViewModelTest {
     @Mock
     NoteRepository noteRepository;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         dataTransformViewModel = new DataTransformViewModel(teaRepository, infusionRepository,
                 counterRepository, noteRepository);
     }
 
     @Test
-    public void getTeaList() {
+    void getTeaList() {
         final Date date = new GregorianCalendar(2020, 1, 18).getTime();
 
         final List<Tea> teasBefore = new ArrayList<>();
@@ -62,7 +62,7 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void insertTea() {
+    void insertTea() {
         final Date date = new GregorianCalendar(2020, 1, 18).getTime();
 
         final Tea teaBefore = new Tea("Tea", "Variety", 1, "Kind", 1, 1, date);
@@ -77,13 +77,13 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void deleteAll() {
+    void deleteAll() {
         dataTransformViewModel.deleteAllTeas();
         verify(teaRepository).deleteAllTeas();
     }
 
     @Test
-    public void getInfusionList() {
+    void getInfusionList() {
         final List<Infusion> infusionsBefore = new ArrayList<>();
         final Infusion infusion1 = new Infusion(1L, 1, "1", "1", 1, 1);
         infusionsBefore.add(infusion1);
@@ -98,7 +98,7 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void insertInfusion() {
+    void insertInfusion() {
         final Infusion infusionBefore = new Infusion(1L, 1, "1", "1", 1, 1);
 
         dataTransformViewModel.insertInfusion(infusionBefore);
@@ -111,7 +111,7 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void getCounterList() {
+    void getCounterList() {
         final Date date = new GregorianCalendar(2020, 1, 18).getTime();
 
         final List<Counter> countersBefore = new ArrayList<>();
@@ -128,7 +128,7 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void insertCounter() {
+    void insertCounter() {
         final Date date = new GregorianCalendar(2020, 1, 18).getTime();
         final Counter counterBefore = new Counter(1L, 1, 1, 1, 1L, date, date, date);
 
@@ -142,7 +142,7 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void getNoteList() {
+    void getNoteList() {
         final List<Note> notesBefore = new ArrayList<>();
         final Note note1 = new Note(1L, 1, "Header1", "Description1");
         notesBefore.add(note1);
@@ -157,7 +157,7 @@ public class DataTransformViewModelTest {
     }
 
     @Test
-    public void insertNote() {
+    void insertNote() {
         final Note noteBefore = new Note(1L, 1, "Header", "Description");
 
         dataTransformViewModel.insertNote(noteBefore);

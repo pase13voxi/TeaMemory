@@ -5,11 +5,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +20,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SettingsViewModelTest {
+@ExtendWith(MockitoExtension.class)
+class SettingsViewModelTest {
     private SettingsViewModel settingsViewModel;
 
     @Mock
@@ -31,13 +31,13 @@ public class SettingsViewModelTest {
     @Mock
     ImageController imageController;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         settingsViewModel = new SettingsViewModel(teaRepository, sharedSettings, imageController);
     }
 
     @Test
-    public void setMusicChoice() {
+    void setMusicChoice() {
         final String musicChoice = "MUSIC_CHOICE";
         settingsViewModel.setMusicChoice(musicChoice);
 
@@ -45,7 +45,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setMusicName() {
+    void setMusicName() {
         final String musicName = "MUSIC_NAME";
         settingsViewModel.setMusicName(musicName);
 
@@ -53,7 +53,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void getMusicName() {
+    void getMusicName() {
         final String musicName = "MUSIC_NAME";
         when(sharedSettings.getMusicName()).thenReturn(musicName);
 
@@ -61,7 +61,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setVibration() {
+    void setVibration() {
         final boolean vibration = true;
         settingsViewModel.setVibration(vibration);
 
@@ -69,7 +69,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void isVibration() {
+    void isVibration() {
         final boolean vibration = true;
         when(sharedSettings.isVibration()).thenReturn(vibration);
 
@@ -77,7 +77,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setAnimation() {
+    void setAnimation() {
         final boolean animation = true;
         settingsViewModel.setAnimation(animation);
 
@@ -85,7 +85,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void isAnimation() {
+    void isAnimation() {
         final boolean animation = true;
         when(sharedSettings.isAnimation()).thenReturn(animation);
 
@@ -93,49 +93,49 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setTemperatureUnit() {
+    void setTemperatureUnit() {
         settingsViewModel.setTemperatureUnit(CELSIUS);
 
         verify(sharedSettings).setTemperatureUnit(CELSIUS);
     }
 
     @Test
-    public void getTemperatureUnit() {
+    void getTemperatureUnit() {
         when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
 
         assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(CELSIUS);
     }
 
     @Test
-    public void setOverviewHeader() {
+    void setOverviewHeader() {
         final boolean overviewHeader = true;
         settingsViewModel.setOverviewHeader(overviewHeader);
         verify(sharedSettings).setOverviewHeader(overviewHeader);
     }
 
     @Test
-    public void isOverviewHeader() {
+    void isOverviewHeader() {
         when(sharedSettings.isOverviewHeader()).thenReturn(false);
         final boolean isOverviewHeader = settingsViewModel.isOverviewHeader();
         assertThat(isOverviewHeader).isFalse();
     }
 
     @Test
-    public void setDarkMode() {
+    void setDarkMode() {
         final DarkMode darkMode = DarkMode.ENABLED;
         settingsViewModel.setDarkMode(darkMode);
         verify(sharedSettings).setDarkMode(darkMode);
     }
 
     @Test
-    public void getDarkMode() {
+    void getDarkMode() {
         when(sharedSettings.getDarkMode()).thenReturn(DarkMode.ENABLED);
         final DarkMode darkMode = settingsViewModel.getDarkMode();
         assertThat(darkMode).isEqualTo(DarkMode.ENABLED);
     }
 
     @Test
-    public void setShowTeaAlert() {
+    void setShowTeaAlert() {
         final boolean showTeaAlert = true;
         settingsViewModel.setShowTeaAlert(showTeaAlert);
 
@@ -143,7 +143,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void isShowTeaAlert() {
+    void isShowTeaAlert() {
         final boolean showTeaAlert = true;
         when(sharedSettings.isShowTeaAlert()).thenReturn(showTeaAlert);
 
@@ -151,7 +151,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setMainUpdateAlert() {
+    void setMainUpdateAlert() {
         final boolean overviewUpdateAlert = true;
         when(sharedSettings.isOverviewUpdateAlert()).thenReturn(overviewUpdateAlert);
 
@@ -159,7 +159,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void isMainUpdateAlert() {
+    void isMainUpdateAlert() {
         final boolean overviewUpdateAlert = true;
         settingsViewModel.setOverviewUpdateAlert(overviewUpdateAlert);
 
@@ -167,14 +167,14 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void setDefaultSettings() {
+    void setDefaultSettings() {
         settingsViewModel.setDefaultSettings();
 
         verify(sharedSettings).setFactorySettings();
     }
 
     @Test
-    public void getAllTeas() {
+    void getAllTeas() {
         final Tea tea1 = new Tea();
         tea1.setId(1L);
         final Tea tea2 = new Tea();
@@ -189,7 +189,7 @@ public class SettingsViewModelTest {
     }
 
     @Test
-    public void deleteAllTeas() {
+    void deleteAllTeas() {
         settingsViewModel.deleteAllTeas();
         verify(teaRepository).deleteAllTeas();
     }
