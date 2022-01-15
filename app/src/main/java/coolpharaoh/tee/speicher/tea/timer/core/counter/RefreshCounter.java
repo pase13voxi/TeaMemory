@@ -20,9 +20,24 @@ public class RefreshCounter {
 
     public static void refreshCounter(final Counter counter) {
         final Date currentDate = CurrentDate.getDate();
-        refreshDay(counter, currentDate);
-        refreshWeek(counter, currentDate);
-        refreshMonth(counter, currentDate);
+
+        if (counter.hasEmptyFields()) {
+            resetCounter(counter, currentDate);
+        } else {
+            refreshDay(counter, currentDate);
+            refreshWeek(counter, currentDate);
+            refreshMonth(counter, currentDate);
+        }
+    }
+
+    private static void resetCounter(final Counter counter, final Date currentDate) {
+        counter.setDay(0);
+        counter.setWeek(0);
+        counter.setMonth(0);
+        counter.setOverall(0);
+        counter.setDayDate(currentDate);
+        counter.setWeekDate(currentDate);
+        counter.setMonthDate(currentDate);
     }
 
     private static void refreshDay(final Counter counter, final Date currentDate) {

@@ -56,6 +56,32 @@ class RefreshCounterTest {
     }
 
     @Test
+    void resetIncompleteCounter() {
+        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, null, today, today);
+
+        RefreshCounter.refreshCounter(counter);
+
+        assertThat(counter)
+                .extracting(
+                        Counter::getDay,
+                        Counter::getWeek,
+                        Counter::getMonth,
+                        Counter::getOverall,
+                        Counter::getDayDate,
+                        Counter::getWeekDate,
+                        Counter::getMonthDate)
+                .containsExactly(
+                        0,
+                        0,
+                        0,
+                        0L,
+                        today,
+                        today,
+                        today
+                );
+    }
+
+    @Test
     void refreshCounterNothingChanged() {
         final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
 

@@ -3,7 +3,7 @@
     <string name="contact_content_description_photo">Foto</string>
     <string name="contact_about_me">Hallo, ich bin Pascal und ich habe den Tee Speicher in meiner Freizeit entwickelt. Für Fragen oder Anregungen schreib mir eine E-mail.</string>
     <string name="contact_email">Sende mir eine E-mail.</string>
-    <string name="contact_email_address">pase.b@outlook.com</string>
+    <string name="contact_email_address">tea.memory.feedback@gmail.com</string>
     <string name="contact_email_subject">Tee Speicher Feedback</string>
     <string name="contact_email_chooser">Sende eine E-mail&#8230;</string>
     <string name="contact_email_open_failed">Beim Öffnen des E-Mail Programms ist ein Fehler aufgetreten. Bitte sende deine E-Mail an pase.b@outlook.com.</string>

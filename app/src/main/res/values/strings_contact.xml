@@ -2,7 +2,7 @@
     <string name="contact_heading">Contact</string>
     <string name="contact_about_me">Hello, I am Pascal and I have developed the Tea Memory in my spare time. For questions or suggestions write me an email.</string>
     <string name="contact_email">Send me an email.</string>
-    <string name="contact_email_address">pase.b@outlook.com</string>
+    <string name="contact_email_address">tea.memory.feedback@gmail.com</string>
     <string name="contact_email_subject">Tea Memory Feedback</string>
     <string name="contact_email_chooser">Send email&#8230;</string>
     <string name="contact_content_description_photo">photo</string>

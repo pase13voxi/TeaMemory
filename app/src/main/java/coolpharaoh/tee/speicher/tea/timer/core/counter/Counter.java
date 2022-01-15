@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateConverter;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -65,5 +67,9 @@ public class Counter {
         this.dayDate = dayDate;
         this.weekDate = weekDate;
         this.monthDate = monthDate;
+    }
+
+    public boolean hasEmptyFields() {
+        return Stream.of(dayDate, weekDate, monthDate).anyMatch(Objects::isNull);
     }
 }
