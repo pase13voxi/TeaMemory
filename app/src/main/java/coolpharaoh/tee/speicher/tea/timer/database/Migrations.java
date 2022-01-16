@@ -270,4 +270,12 @@ class Migrations {
             database.execSQL("DROP TABLE settings");
         }
     };
+
+    static final Migration MIGRATION_14_15 = new Migration(14, 15) {
+        @Override
+        public void migrate(final SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE tea "
+                    + " ADD COLUMN image_uri TEXT");
+        }
+    };
 }

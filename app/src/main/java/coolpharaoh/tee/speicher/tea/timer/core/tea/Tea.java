@@ -43,6 +43,9 @@ public class Tea {
     @ColumnInfo(name = "in_stock")
     private boolean inStock;
 
+    @ColumnInfo(name = "image_uri")
+    private String imageUri;
+
     @ColumnInfo(name = "next_infusion")
     private int nextInfusion;
 
@@ -62,5 +65,6 @@ public class Tea {
         this.date = date;
         rating = 0;
         inStock = false;
+        imageUri = null;
     }
 }

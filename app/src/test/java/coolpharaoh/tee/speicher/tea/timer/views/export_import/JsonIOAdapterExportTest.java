@@ -42,14 +42,14 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdap
 public class JsonIOAdapterExportTest {
     public static final String CURRENT_DATE = "2020-09-15T08:09:01.789Z";
     private static final String DB_JSON_DUMP = "[{\"name\":\"name1\",\"variety\":\"variety1\",\"amount\":1.5," +
-            "\"amountKind\":\"Gr\",\"color\":1,\"rating\":5,\"inStock\":true,\"nextInfusion\":1," +
+            "\"amountKind\":\"Gr\",\"color\":1,\"rating\":3,\"inStock\":true,\"imageUri\":\"image/uri\",\"nextInfusion\":1," +
             "\"date\":\"DATE\",\"infusions\":[{\"infusionIndex\":0,\"time\":\"2:00\",\"coolDownTime\":" +
             "\"5:00\",\"temperatureCelsius\":100,\"temperatureFahrenheit\":212},{\"infusionIndex\"" +
             ":1,\"time\":\"5:00\",\"coolDownTime\":\"3:00\",\"temperatureCelsius\":90,\"temperatureFahrenheit\"" +
             ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"dayDate\":\"DATE\"," +
             "\"weekDate\":\"DATE\",\"monthDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
             ",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\"" +
-            ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"inStock\":false,\"nextInfusion\":2,\"" +
+            ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":5,\"inStock\":false,\"imageUri\":\"image/uri\",\"nextInfusion\":2,\"" +
             "date\":\"DATE\",\"infusions\":[{\"infusionIndex\":0,\"time\":\"6:00\",\"coolDownTime\":" +
             "\"5:00\",\"temperatureCelsius\":100,\"temperatureFahrenheit\":212},{\"infusionIndex\":1," +
             "\"time\":\"7:00\",\"coolDownTime\":\"3:00\",\"temperatureCelsius\":90,\"temperatureFahrenheit\"" +
@@ -107,10 +107,12 @@ public class JsonIOAdapterExportTest {
         tea0.setId(0L);
         tea0.setRating(3);
         tea0.setInStock(true);
+        tea0.setImageUri("image/uri");
         teas.add(tea0);
         final Tea tea1 = new Tea("name2", "variety2", 2.0, "Ts", 2, 2, CurrentDate.getDate());
         tea1.setId(1L);
-        tea0.setRating(5);
+        tea1.setRating(5);
+        tea1.setImageUri("image/uri");
         teas.add(tea1);
         when(teaDao.getTeas()).thenReturn(teas);
 

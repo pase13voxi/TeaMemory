@@ -94,6 +94,17 @@ class InformationViewModel extends ViewModel {
         return tea.getDate();
     }
 
+    public String getImageUri() {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        return tea.getImageUri();
+    }
+
+    public void updateImageUri(final String imageUri) {
+        final Tea tea = teaRepository.getTeaById(teaId);
+        tea.setImageUri(imageUri);
+        teaRepository.updateTea(tea);
+    }
+
     // Notes
     LiveData<List<Note>> getDetails() {
         return details;

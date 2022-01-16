@@ -1,6 +1,6 @@
-package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings.TEA_MEMORY_SETTINGS;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings.TEA_MEMORY_SETTINGS;
 
 import android.app.Application;
 import android.content.Context;

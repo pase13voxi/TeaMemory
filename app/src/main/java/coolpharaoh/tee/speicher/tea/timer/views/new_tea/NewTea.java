@@ -1,7 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +26,8 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;

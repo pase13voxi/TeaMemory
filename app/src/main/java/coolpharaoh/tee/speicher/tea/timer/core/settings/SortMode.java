@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings;
 
 public enum SortMode {
     LAST_USED("last_used", 0),

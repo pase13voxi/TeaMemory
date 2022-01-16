@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode;
 
 public class RecyclerViewConfigurationDialog extends DialogFragment {
     public static final String TAG = "RecyclerViewConfigurationDialog";
