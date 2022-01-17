@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -24,6 +25,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
 
 @ExtendWith(MockitoExtension.class)
 class DataTransformViewModelTest {
@@ -38,11 +40,13 @@ class DataTransformViewModelTest {
     CounterRepository counterRepository;
     @Mock
     NoteRepository noteRepository;
+    @Mock
+    ImageController imageController;
 
     @BeforeEach
     void setUp() {
         dataTransformViewModel = new DataTransformViewModel(teaRepository, infusionRepository,
-                counterRepository, noteRepository);
+                counterRepository, noteRepository, imageController);
     }
 
     @Test
@@ -80,6 +84,21 @@ class DataTransformViewModelTest {
     void deleteAll() {
         dataTransformViewModel.deleteAllTeas();
         verify(teaRepository).deleteAllTeas();
+    }
+
+    @Test
+    void deleteAllTeaImages() {
+        final Tea tea1 = new Tea();
+        tea1.setId(1L);
+        final Tea tea2 = new Tea();
+        tea2.setId(2L);
+        final List<Tea> teas = Arrays.asList(tea1, tea2);
+        when(teaRepository.getTeas()).thenReturn(teas);
+
+        dataTransformViewModel.deleteAllTeaImages();
+
+        verify(imageController).removeImageByTeaId(1L);
+        verify(imageController).removeImageByTeaId(2L);
     }
 
     @Test

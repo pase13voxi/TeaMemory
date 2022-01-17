@@ -7,7 +7,7 @@
     <string name="export_import_step1_text">Export your Tealist as a Jsonfile called tealist.json</string>
     <string name="export_import_step2_text">Transfer the file to the other device.</string>
     <string name="export_import_step3_text">Import the file into the Application on the other device.</string>
-    <string name="export_import_warning_text">Images are not transferred with this file.</string>
+    <string name="export_import_warning_text">Images cannot be transferred.</string>
     <string name="export_import_write_permission_dialog_header">Permission</string>
     <string name="export_import_write_permission_dialog_description">The application needs write permission to export the file.</string>
     <string name="export_import_write_permission_denied">Permission denied.</string>

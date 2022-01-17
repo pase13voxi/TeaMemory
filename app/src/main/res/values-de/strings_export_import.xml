@@ -7,7 +7,7 @@
     <string name="export_import_step1_text">Exportiere deine Teeliste als Json-Datei mit dem Namen tealist.json.</string>
     <string name="export_import_step2_text">Übertrage die Datei auf das andere Gerät.</string>
     <string name="export_import_step3_text">Importiere die Datei in die App auf dem anderen Gerät.</string>
-    <string name="export_import_warning_text">Bilder werden mit dieser Datei nicht übertragen.</string>
+    <string name="export_import_warning_text">Bilder können nicht übertragen werden.</string>
     <string name="export_import_write_permission_dialog_header">Genehmigung</string>
     <string name="export_import_write_permission_dialog_description">Die Anwendung benötigt Schreibrechte, um die Datei zu exportieren.</string>
     <string name="export_import_write_permission_denied">Erlaubnis verweigert.</string>

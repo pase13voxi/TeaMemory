@@ -1,10 +1,15 @@
 package coolpharaoh.tee.speicher.tea.timer.views.export_import;
 
+import static android.os.Build.VERSION_CODES.P;
+import static android.os.Build.VERSION_CODES.R;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static java.util.Collections.singletonList;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -28,10 +33,14 @@ import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 @ExtendWith(MockitoExtension.class)
 class JsonIOAdapterImportTest {
@@ -142,10 +151,16 @@ class JsonIOAdapterImportTest {
     Application application;
     @Mock
     ContentResolver contentResolver;
+    @Mock
+    ImageController imageController;
+    @Mock
+    SystemUtility systemUtility;
 
     @BeforeEach
     void setUp() throws FileNotFoundException {
         mockDB();
+        ImageControllerFactory.setMockedImageController(imageController);
+        CurrentSdk.setFixedSystem(systemUtility);
         mockFileReader();
     }
 
@@ -173,11 +188,27 @@ class JsonIOAdapterImportTest {
 
     @Test
     void importTeasAndDeleteStoredTeas() {
+        when(systemUtility.getSdkVersion()).thenReturn(R);
+        final Tea tea = new Tea();
+        tea.setId(1L);
+        when(teaDao.getTeas()).thenReturn(singletonList(tea));
+
         JsonIOAdapter.init(application, System.out::println);
         JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
 
+        verify(imageController).removeImageByTeaId(anyLong());
         verify(teaDao).deleteAll();
         verifyImportedTeas();
+    }
+
+    @Test
+    void importTeasAndDeleteStoredTeasButNotDeleteImagesForVersionsOlderAndroidQ() {
+        when(systemUtility.getSdkVersion()).thenReturn(P);
+
+        JsonIOAdapter.init(application, System.out::println);
+        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
+
+        verify(imageController, never()).removeImageByTeaId(anyLong());
     }
 
     private void verifyImportedTeas() {

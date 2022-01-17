@@ -1,10 +1,13 @@
 package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
 
+import static android.os.Build.VERSION_CODES.Q;
+
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.CounterPOJO;
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.InfusionPOJO;
@@ -32,6 +35,10 @@ class POJOToDatabase {
     }
 
     private void deleteStoredTeas() {
+        if (CurrentSdk.getSdkVersion() >= Q) {
+            dataTransformViewModel.deleteAllTeaImages();
+        }
+
         dataTransformViewModel.deleteAllTeas();
     }
 

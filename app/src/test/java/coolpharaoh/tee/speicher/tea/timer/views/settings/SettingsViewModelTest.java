@@ -174,7 +174,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    void getAllTeas() {
+    void deleteAllTeaImages() {
         final Tea tea1 = new Tea();
         tea1.setId(1L);
         final Tea tea2 = new Tea();

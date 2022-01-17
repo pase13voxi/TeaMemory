@@ -140,6 +140,19 @@ public class OverviewTest {
     }
 
     @Test
+    public void launchActivityDoNotExpectUpdateDescriptionForVersionOlderAndroidQ() {
+        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+        mockSharedSettings(LAST_USED, true);
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            assertThat(getLatestAlertDialog()).isNull();
+        });
+    }
+
+    @Test
     public void launchActivityExpectUpdateDescriptionClickNegative() {
         mockSharedSettings(LAST_USED, true);
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);

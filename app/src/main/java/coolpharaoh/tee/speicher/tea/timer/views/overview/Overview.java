@@ -116,9 +116,9 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void navigateToShowTea(final long teaId) {
-        final Intent showteaScreen = new Intent(Overview.this, ShowTea.class);
-        showteaScreen.putExtra("teaId", teaId);
-        startActivity(showteaScreen);
+        final Intent showTeaScreen = new Intent(Overview.this, ShowTea.class);
+        showTeaScreen.putExtra("teaId", teaId);
+        startActivity(showTeaScreen);
     }
 
     @Override
@@ -191,14 +191,16 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void showUpdateDialog() {
-        if (overviewViewModel.isOverviewUpdateAlert()) {
-            new AlertDialog.Builder(this, R.style.dialog_theme)
-                    .setTitle(R.string.overview_dialog_update_header)
-                    .setMessage(R.string.overview_dialog_update_description)
-                    .setPositiveButton(R.string.overview_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
-                    .setNeutralButton(R.string.overview_dialog_update_neutral, null)
-                    .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setOverviewUpdateAlert(false))
-                    .show();
+        if (CurrentSdk.getSdkVersion() >= Q) {
+            if (overviewViewModel.isOverviewUpdateAlert()) {
+                new AlertDialog.Builder(this, R.style.dialog_theme)
+                        .setTitle(R.string.overview_dialog_update_header)
+                        .setMessage(R.string.overview_dialog_update_description)
+                        .setPositiveButton(R.string.overview_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
+                        .setNeutralButton(R.string.overview_dialog_update_neutral, null)
+                        .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setOverviewUpdateAlert(false))
+                        .show();
+            }
         }
     }
 

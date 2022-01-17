@@ -14,6 +14,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 class DataTransformViewModel extends ViewModel {
 
@@ -21,18 +23,22 @@ class DataTransformViewModel extends ViewModel {
     private final InfusionRepository infusionRepository;
     private final CounterRepository counterRepository;
     private final NoteRepository noteRepository;
+    private final ImageController imageController;
 
     DataTransformViewModel(final Application application) {
         this(new TeaRepository(application), new InfusionRepository(application),
-                new CounterRepository(application), new NoteRepository(application));
+                new CounterRepository(application), new NoteRepository(application),
+                ImageControllerFactory.getImageController(application));
     }
 
     DataTransformViewModel(final TeaRepository teaRepository, final InfusionRepository infusionRepository,
-                           final CounterRepository counterRepository, final NoteRepository noteRepository) {
+                           final CounterRepository counterRepository, final NoteRepository noteRepository,
+                           final ImageController imageController) {
         this.teaRepository = teaRepository;
         this.infusionRepository = infusionRepository;
         this.counterRepository = counterRepository;
         this.noteRepository = noteRepository;
+        this.imageController = imageController;
     }
 
     //Teas
@@ -46,6 +52,11 @@ class DataTransformViewModel extends ViewModel {
 
     void deleteAllTeas() {
         teaRepository.deleteAllTeas();
+    }
+
+    void deleteAllTeaImages() {
+        final List<Tea> teas = teaRepository.getTeas();
+        teas.forEach(tea -> imageController.removeImageByTeaId(tea.getId()));
     }
 
     //Infusions

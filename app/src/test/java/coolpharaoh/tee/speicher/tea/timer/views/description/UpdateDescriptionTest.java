@@ -17,12 +17,12 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 public class UpdateDescriptionTest {
 
     @Test
-    public void launchActivityExpectThreeImages() {
+    public void launchActivityExpectOneImages() {
         final ActivityScenario<UpdateDescription> updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription.class);
         updateDescriptionActivityScenario.onActivity(updateDescription -> {
             final ViewPager viewPager = updateDescription.findViewById(R.id.slide_view_description_pager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
-            assertThat(slideAdapter.getCount()).isEqualTo(4);
+            assertThat(slideAdapter.getCount()).isEqualTo(1);
         });
     }
 
