@@ -15,12 +15,12 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 

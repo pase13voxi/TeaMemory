@@ -6,9 +6,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.ALPHABETICAL;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.BY_VARIETY;
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.LAST_USED;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.ALPHABETICAL;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.BY_VARIETY;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.LAST_USED;
 import static coolpharaoh.tee.speicher.tea.timer.views.overview.RecyclerViewConfigurationDialog.TAG;
 
 import android.app.AlertDialog;

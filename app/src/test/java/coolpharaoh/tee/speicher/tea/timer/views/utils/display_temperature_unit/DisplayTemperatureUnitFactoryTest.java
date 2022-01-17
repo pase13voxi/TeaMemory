@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 
 class DisplayTemperatureUnitFactoryTest {
 

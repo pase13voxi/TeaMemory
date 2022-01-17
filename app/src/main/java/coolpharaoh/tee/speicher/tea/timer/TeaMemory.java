@@ -2,8 +2,8 @@ package coolpharaoh.tee.speicher.tea.timer;
 
 import android.app.Application;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettingsMigration;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettingsMigration;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import lombok.Getter;
 import lombok.Setter;

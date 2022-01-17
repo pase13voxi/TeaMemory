@@ -30,8 +30,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem;

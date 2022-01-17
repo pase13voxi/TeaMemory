@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
 
 import android.app.Application;
 
@@ -8,14 +8,14 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.Date;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;

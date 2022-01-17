@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.VisibleForTesting;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 
 class TimerViewModel {

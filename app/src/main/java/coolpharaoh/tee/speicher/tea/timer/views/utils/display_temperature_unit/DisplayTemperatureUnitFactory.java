@@ -2,7 +2,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit;
 
 import android.app.Application;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 
 public class DisplayTemperatureUnitFactory {
 

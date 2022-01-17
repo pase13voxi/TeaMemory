@@ -6,9 +6,9 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.List;
 
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
