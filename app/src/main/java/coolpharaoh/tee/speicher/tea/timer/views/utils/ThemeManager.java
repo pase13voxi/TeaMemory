@@ -5,7 +5,7 @@ import static android.os.Build.VERSION_CODES.Q;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 
 public class ThemeManager {

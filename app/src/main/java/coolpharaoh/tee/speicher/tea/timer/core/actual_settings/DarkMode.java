@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
 public enum DarkMode {
     SYSTEM("system", 0),

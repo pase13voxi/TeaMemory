@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -41,7 +41,6 @@ class POJOToDatabase {
                 teaPOJO.getNextInfusion(), teaPOJO.getDate());
         tea.setRating(teaPOJO.getRating());
         tea.setInStock(teaPOJO.isInStock());
-        tea.setImageUri(teaPOJO.getImageUri());
 
         return dataTransformViewModel.insertTea(tea);
     }

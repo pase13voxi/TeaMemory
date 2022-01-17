@@ -1,4 +1,4 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

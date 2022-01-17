@@ -1,12 +1,12 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.actual_settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.DISABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.SYSTEM;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.ALPHABETICAL;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.LAST_USED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.DISABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.SYSTEM;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.ALPHABETICAL;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SortMode.LAST_USED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

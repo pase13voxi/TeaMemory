@@ -1,6 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
 
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
 
 public class CoolDownTimePickerDialog extends DialogFragment {
     public static final String TAG = "CoolDownTimePickerDialog";

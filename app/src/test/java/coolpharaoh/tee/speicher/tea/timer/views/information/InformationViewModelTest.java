@@ -142,32 +142,6 @@ class InformationViewModelTest {
     }
 
     @Test
-    void getImageUri() {
-        final Tea tea = new Tea("name", null, 0, null, 0, 0, CurrentDate.getDate());
-        tea.setImageUri("imageUri");
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
-
-        final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
-
-        assertThat(informationViewModel.getImageUri()).isEqualTo(tea.getImageUri());
-    }
-
-    @Test
-    void updateImageUri() {
-        final String imageUri = "imageUri";
-        final Tea tea = new Tea("name", null, 0, null, 0, 0, CurrentDate.getDate());
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
-
-        final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
-        informationViewModel.updateImageUri(imageUri);
-
-        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea(captor.capture());
-
-        assertThat(captor.getValue().getImageUri()).isEqualTo(imageUri);
-    }
-
-    @Test
     void getDetails() {
         final List<Note> notes = Arrays.asList(new Note(TEA_ID, 0, HEADER, DESCRIPTION),
                 new Note(TEA_ID, 1, HEADER, DESCRIPTION));

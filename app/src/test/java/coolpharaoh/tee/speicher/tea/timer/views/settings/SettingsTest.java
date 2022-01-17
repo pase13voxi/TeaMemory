@@ -12,11 +12,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.DISABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.ENABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.SYSTEM;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.DISABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.ENABLED;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.DarkMode.SYSTEM;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.CELSIUS;
+import static coolpharaoh.tee.speicher.tea.timer.core.actual_settings.TemperatureUnit.FAHRENHEIT;
 
 import android.app.AlertDialog;
 import android.app.Application;
@@ -51,7 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
+import coolpharaoh.tee.speicher.tea.timer.core.actual_settings.SharedSettings;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
