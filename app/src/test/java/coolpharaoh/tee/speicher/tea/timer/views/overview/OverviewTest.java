@@ -18,10 +18,12 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -275,6 +277,39 @@ public class OverviewTest {
             shadowOf(getMainLooper()).idle();
 
             checkExpectedTeas(TEA_NAME_ACTIVITY, overview);
+        });
+    }
+
+    @Test
+    public void showTeaListWithStoredImageAndFilledImageText() {
+        final String imageUri = "uri";
+
+        mockSharedSettings();
+        final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
+        when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(teaList);
+        when(imageController.getImageUriByTeaId(0L)).thenReturn(Uri.parse(imageUri));
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_sort));
+            shadowOf(getMainLooper()).idle();
+
+            final AlertDialog dialog = getLatestAlertDialog();
+
+            final CheckBox checkBoxInStock = dialog.findViewById(R.id.checkbox_overview_in_stock);
+            checkBoxInStock.setChecked(true);
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
+            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
+            final View itemView0 = recyclerView.findViewHolderForAdapterPosition(0).itemView;
+            final ImageView image = itemView0.findViewById(R.id.image_view_recycler_view_image);
+            assertThat(image.getTag()).isEqualTo(imageUri);
+
+            final View itemView1 = recyclerView.findViewHolderForAdapterPosition(1).itemView;
+            final TextView textView = itemView1.findViewById(R.id.text_view_recycler_view_image);
+            assertThat(textView.getText()).isEqualTo("A");
         });
     }
 

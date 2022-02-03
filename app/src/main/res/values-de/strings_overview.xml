@@ -25,7 +25,7 @@
     <string name="overview_tea_list_menu_edit">Bearbeiten</string>
     <string name="overview_tea_list_menu_delete">Löschen</string>
     <string name="overview_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
-    <string name="overview_tooltip_newtea">Tee hinzufügen</string>
+    <string name="overview_tooltip_new_tea">Tee hinzufügen</string>
     <string name="overview_dialog_update_header">Neue Funktionen</string>
     <string name="overview_dialog_update_description">Mit dem Update sind neue Funktionalitäten dazu gekommen.</string>
     <string name="overview_dialog_update_positive">Anzeigen</string>
@@ -48,4 +48,6 @@
         <item>November</item>
         <item>Dezember</item>
     </string-array>
+    <string name="overview_image_description_image">Bild</string>
+    <string name="overview_image_description_in_stock">Auf Lager</string>
 </resources>

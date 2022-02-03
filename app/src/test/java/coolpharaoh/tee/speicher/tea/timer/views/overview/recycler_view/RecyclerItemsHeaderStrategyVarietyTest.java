@@ -29,7 +29,7 @@ class RecyclerItemsHeaderStrategyVarietyTest {
     Resources resources;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
         when(application.getResources()).thenReturn(resources);
     }
@@ -46,15 +46,16 @@ class RecyclerItemsHeaderStrategyVarietyTest {
                         RecyclerItemOverview::getTeaId,
                         RecyclerItemOverview::getTeaName,
                         RecyclerItemOverview::getVariety,
+                        RecyclerItemOverview::getColor,
                         RecyclerItemOverview::isFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
-                tuple(null, null, null, false, "- " + teas.get(0).getVariety() + " -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), true, null),
-                tuple(null, null, null, false, "- " + teas.get(1).getVariety() + " -"),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), true, null),
-                tuple(null, null, null, false, "- " + teas.get(2).getVariety() + " -"),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), true, null)
+                tuple(null, null, null, null, false, "- " + teas.get(0).getVariety() + " -"),
+                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),
+                tuple(null, null, null, null, false, "- " + teas.get(1).getVariety() + " -"),
+                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), teas.get(1).getColor(), true, null),
+                tuple(null, null, null, null, false, "- " + teas.get(2).getVariety() + " -"),
+                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), teas.get(2).getColor(), true, null)
         );
     }
 
@@ -65,6 +66,7 @@ class RecyclerItemsHeaderStrategyVarietyTest {
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
             tea.setVariety("VARIETY" + i + 1);
+            tea.setColor(i);
             tea.setInStock(true);
             teas.add(tea);
         }

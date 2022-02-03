@@ -1,6 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
 
 public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
     private static final String LOG_TAG = ShowTea.class.getSimpleName();
@@ -111,6 +114,8 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
 
     static class ViewHolderTea extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final View view;
+        private final ImageView image;
+        private final TextView imageText;
         private final TextView header;
         private final TextView description;
         private final ImageView inStock;
@@ -123,6 +128,8 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             this.view = view;
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
+            image = view.findViewById(R.id.image_view_recycler_view_image);
+            imageText = view.findViewById(R.id.text_view_recycler_view_image);
             header = view.findViewById(R.id.text_view_recycler_view_heading);
             description = view.findViewById(R.id.text_view_recycler_view_description);
             inStock = view.findViewById(R.id.button_overview_in_stock);
@@ -132,12 +139,51 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
 
         void bindData(final RecyclerItemOverview item) {
             this.item = item;
+
+            fillRoundImage();
+            fillTeaName();
+            fillVariety();
+            showInStock();
+        }
+
+        private void fillRoundImage() {
+            image.setImageURI(null);
+            image.setTag(null);
+
+            final ImageController imageController = ImageControllerFactory.getImageController(view.getContext());
+            final Uri imageUri = imageController.getImageUriByTeaId(item.getTeaId());
+            if (imageUri != null) {
+                setImage(imageUri);
+            } else {
+                setImageText();
+            }
+        }
+
+        private void setImage(final Uri imageUri) {
+            image.setImageURI(imageUri);
+            image.setTag(imageUri.toString());
+            imageText.setVisibility(View.INVISIBLE);
+        }
+
+        private void setImageText() {
+            image.setBackgroundColor(item.getColor());
+            imageText.setVisibility(View.VISIBLE);
+            imageText.setText(item.getImageText());
+        }
+
+        private void fillTeaName() {
             header.setText(item.getTeaName());
+        }
+
+        private void fillVariety() {
             if (item.getVariety().equals("")) {
                 description.setText("-");
             } else {
                 description.setText(item.getVariety());
             }
+        }
+
+        private void showInStock() {
             inStock.setVisibility(isInStock(item));
         }
 

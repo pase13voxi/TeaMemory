@@ -24,11 +24,11 @@ public class RecyclerItemsHeaderStrategyAlphabetical implements RecyclerItemsHea
         for (final Tea tea : teaList) {
             final String firstLetter = tea.getName().substring(0, 1).toUpperCase();
             if (!lastFirstLetter.equals(firstLetter)) {
-                recyclerItems.add(new RecyclerItemOverview("- " + firstLetter + " -", null, null, null, false));
+                recyclerItems.add(new RecyclerItemOverview("- " + firstLetter + " -", null, null, null, null, false));
                 lastFirstLetter = firstLetter;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.isInStock()));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.isInStock()));
         }
         return recyclerItems;
     }

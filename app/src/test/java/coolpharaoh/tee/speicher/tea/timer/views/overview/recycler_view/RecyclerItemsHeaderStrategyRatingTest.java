@@ -31,7 +31,7 @@ class RecyclerItemsHeaderStrategyRatingTest {
     Resources resources;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
         when(application.getString(eq(R.string.overview_sort_header_star), any())).thenReturn("3 \u2605");
         when(application.getResources()).thenReturn(resources);
@@ -49,15 +49,16 @@ class RecyclerItemsHeaderStrategyRatingTest {
                         RecyclerItemOverview::getTeaId,
                         RecyclerItemOverview::getTeaName,
                         RecyclerItemOverview::getVariety,
+                        RecyclerItemOverview::getColor,
                         RecyclerItemOverview::isFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
-                tuple(null, null, null, false, "- 3 \u2605 -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), true, null),
-                tuple(null, null, null, false, "- 3 \u2605 -"),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), true, null),
-                tuple(null, null, null, false, "- 3 \u2605 -"),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), true, null)
+                tuple(null, null, null, null, false, "- 3 \u2605 -"),
+                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),
+                tuple(null, null, null, null, false, "- 3 \u2605 -"),
+                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), teas.get(1).getColor(), true, null),
+                tuple(null, null, null, null, false, "- 3 \u2605 -"),
+                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), teas.get(2).getColor(), true, null)
         );
     }
 
@@ -68,6 +69,7 @@ class RecyclerItemsHeaderStrategyRatingTest {
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
             tea.setVariety("VARIETY" + i + 1);
+            tea.setColor(i);
             tea.setInStock(true);
             tea.setRating(i + 1);
             teas.add(tea);
