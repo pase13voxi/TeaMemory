@@ -1,7 +1,6 @@
 <resources>
     <string name="overview_action_settings">Einstellungen</string>
-    <string name="overview_action_about">Über den Tee Speicher</string>
-    <string name="overview_action_export">Export/Import Tees</string>
+    <string name="overview_action_more">Mehr</string>
     <string name="overview_action_sort">Sortiermodus</string>
     <string name="overview_action_search">Suche</string>
     <string name="overview_dialog_sort_title">Sortiermodus</string>

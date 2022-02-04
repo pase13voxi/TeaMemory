@@ -64,9 +64,8 @@ import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
+import coolpharaoh.tee.speicher.tea.timer.views.more.More;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
@@ -185,29 +184,14 @@ public class OverviewTest {
     }
 
     @Test
-    public void navigateToExportImportExpectExportImportActivity() {
+    public void navigateToMoreExpectMoreActivity() {
         mockSharedSettings();
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
-            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_export_import));
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_more));
 
-            final Intent expected = new Intent(overview, ExportImport.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
-
-            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        });
-    }
-
-    @Test
-    public void navigateToAboutExpectAboutActivity() {
-        mockSharedSettings();
-
-        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
-        overviewActivityScenario.onActivity(overview -> {
-            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_about));
-
-            final Intent expected = new Intent(overview, About.class);
+            final Intent expected = new Intent(overview, More.class);
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());

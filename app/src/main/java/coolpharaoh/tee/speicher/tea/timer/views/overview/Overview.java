@@ -29,9 +29,8 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.views.about.About;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.ExportImport;
+import coolpharaoh.tee.speicher.tea.timer.views.more.More;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemOverview;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemsHeaderStrategy;
@@ -226,10 +225,8 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
         if (id == R.id.action_overview_settings) {
             navigateToSettings();
-        } else if (id == R.id.action_overview_export_import) {
-            navigateToExportImport();
-        } else if (id == R.id.action_overview_about) {
-            navigateToAbout();
+        } else if (id == R.id.action_overview_more) {
+            navigateToMore();
         } else if (id == R.id.action_overview_sort) {
             dialogSortOption();
         }
@@ -242,14 +239,9 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         startActivity(settingScreen);
     }
 
-    private void navigateToExportImport() {
-        final Intent exportImportScreen = new Intent(Overview.this, ExportImport.class);
-        startActivity(exportImportScreen);
-    }
-
-    private void navigateToAbout() {
-        final Intent aboutScreen = new Intent(Overview.this, About.class);
-        startActivity(aboutScreen);
+    private void navigateToMore() {
+        final Intent moreScreen = new Intent(Overview.this, More.class);
+        startActivity(moreScreen);
     }
 
     @Override

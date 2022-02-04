@@ -98,12 +98,12 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.overview.Overview" />
+                android:value=".views.more.More" />
         </activity>
         <activity
-            android:name=".views.about.About"
+            android:name=".views.more.More"
             android:exported="false"
-            android:label="About"
+            android:label="More"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -116,7 +116,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.about.About" />
+                android:value=".views.more.More" />
         </activity>
         <activity
             android:name=".views.statistics.Statistics"
@@ -125,7 +125,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.about.About" />
+                android:value=".views.more.More" />
         </activity>
         <activity
             android:name=".views.software.Software"
@@ -134,7 +134,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.about.About" />
+                android:value=".views.more.More" />
         </activity>
 
         <receiver android:name=".views.show_tea.countdowntimer.TeaCompleteReceiver" />
