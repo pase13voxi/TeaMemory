@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview;
 
+import static android.os.Build.VERSION_CODES.Q;
 import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.convertStoredVarietyToText;
 
 import android.app.Activity;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemOverview;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
@@ -98,16 +100,28 @@ public class RandomChoiceDialog extends DialogFragment {
 
         final TextView textViewImageText = dialogView.findViewById(R.id.text_view_random_choice_dialog_image);
 
-        final Uri imageUri = imageController.getImageUriByTeaId(randomChoiceItem.getTeaId());
-        if (imageUri != null) {
-            imageViewImage.setImageURI(imageUri);
-            imageViewImage.setTag(imageUri.toString());
-            textViewImageText.setVisibility(View.INVISIBLE);
-        } else {
-            imageViewImage.setBackgroundColor(randomChoiceItem.getColor());
-            textViewImageText.setVisibility(View.VISIBLE);
-            textViewImageText.setText(randomChoiceItem.getImageText());
+        Uri imageUri = null;
+        if (CurrentSdk.getSdkVersion() >= Q) {
+            imageUri = imageController.getImageUriByTeaId(item.getTeaId());
         }
+
+        if (imageUri != null) {
+            fillImage(imageViewImage, textViewImageText, imageUri);
+        } else {
+            fillImageText(imageViewImage, textViewImageText);
+        }
+    }
+
+    private void fillImage(final ImageView imageViewImage, final TextView textViewImageText, final Uri imageUri) {
+        imageViewImage.setImageURI(imageUri);
+        imageViewImage.setTag(imageUri.toString());
+        textViewImageText.setVisibility(View.INVISIBLE);
+    }
+
+    private void fillImageText(final ImageView imageViewImage, final TextView textViewImageText) {
+        imageViewImage.setBackgroundColor(randomChoiceItem.getColor());
+        textViewImageText.setVisibility(View.VISIBLE);
+        textViewImageText.setText(randomChoiceItem.getImageText());
     }
 
     private void noRandomChoiceAvailable() {

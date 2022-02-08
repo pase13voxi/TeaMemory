@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
+import static android.os.Build.VERSION_CODES.Q;
+
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
@@ -150,8 +153,12 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             image.setImageURI(null);
             image.setTag(null);
 
-            final ImageController imageController = ImageControllerFactory.getImageController(view.getContext());
-            final Uri imageUri = imageController.getImageUriByTeaId(item.getTeaId());
+            Uri imageUri = null;
+            if (CurrentSdk.getSdkVersion() >= Q) {
+                final ImageController imageController = ImageControllerFactory.getImageController(view.getContext());
+                imageUri = imageController.getImageUriByTeaId(item.getTeaId());
+            }
+
             if (imageUri != null) {
                 setImage(imageUri);
             } else {
