@@ -85,8 +85,8 @@ class TeaRepositoryTest {
     }
 
     @Test
-    void getFavoriteTeasOrderByActivity() {
-        when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    void getTeasInStockOrderByActivity() {
+        when(teaDao.getTeasInStockOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByActivity(true);
 
@@ -103,8 +103,8 @@ class TeaRepositoryTest {
     }
 
     @Test
-    void getFavoriteTeasOrderByAlphabetic() {
-        when(teaDao.getFavoriteTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    void getTeasInStockOrderByAlphabetic() {
+        when(teaDao.getTeasInStockOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(true);
 
@@ -121,8 +121,8 @@ class TeaRepositoryTest {
     }
 
     @Test
-    void getFavoriteTeasOrderByVariety() {
-        when(teaDao.getFavoriteTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    void getTeasStockOrderByVariety() {
+        when(teaDao.getTeasInStockOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByVariety(true);
 
@@ -139,8 +139,8 @@ class TeaRepositoryTest {
     }
 
     @Test
-    void getFavoriteTeasOrderByRating() {
-        when(teaDao.getFavoriteTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    void getTeasInStockOrderByRating() {
+        when(teaDao.getTeasInStockOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
 
         final List<Tea> teas = teaRepository.getTeasOrderByRating(true);
 
@@ -155,7 +155,17 @@ class TeaRepositoryTest {
 
         final Tea teaById = teaRepository.getTeaById(teaId);
 
-        assertThat(tea).isEqualTo(teaById);
+        assertThat(teaById).isEqualTo(tea);
+    }
+
+    @Test
+    void getRandomTeaInStock() {
+        final Tea tea = new Tea();
+        when(teaDao.getRandomTeaInStock()).thenReturn(tea);
+
+        final Tea randomTea = teaRepository.getRandomTeaInStock();
+
+        assertThat(randomTea).isEqualTo(tea);
     }
 
     @Test

@@ -34,33 +34,33 @@ public class TeaRepository {
         return teaDao.getTeas();
     }
 
-    public List<Tea> getTeasOrderByActivity(final boolean favorite) {
-        if (favorite) {
-            return teaDao.getFavoriteTeasOrderByActivity();
+    public List<Tea> getTeasOrderByActivity(final boolean inStock) {
+        if (inStock) {
+            return teaDao.getTeasInStockOrderByActivity();
         } else {
             return teaDao.getTeasOrderByActivity();
         }
     }
 
-    public List<Tea> getTeasOrderByAlphabetic(final boolean favorite) {
-        if (favorite) {
-            return teaDao.getFavoriteTeasOrderByAlphabetic();
+    public List<Tea> getTeasOrderByAlphabetic(final boolean inStock) {
+        if (inStock) {
+            return teaDao.getTeasInStockOrderByAlphabetic();
         } else {
             return teaDao.getTeasOrderByAlphabetic();
         }
     }
 
-    public List<Tea> getTeasOrderByVariety(final boolean favorite) {
-        if (favorite) {
-            return teaDao.getFavoriteTeasOrderByVariety();
+    public List<Tea> getTeasOrderByVariety(final boolean inStock) {
+        if (inStock) {
+            return teaDao.getTeasInStockOrderByVariety();
         } else {
             return teaDao.getTeasOrderByVariety();
         }
     }
 
-    public List<Tea> getTeasOrderByRating(final boolean favorite) {
-        if (favorite) {
-            return teaDao.getFavoriteTeasOrderByRating();
+    public List<Tea> getTeasOrderByRating(final boolean inStock) {
+        if (inStock) {
+            return teaDao.getTeasInStockOrderByRating();
         } else {
             return teaDao.getTeasOrderByRating();
         }
@@ -68,6 +68,10 @@ public class TeaRepository {
 
     public Tea getTeaById(final long id) {
         return teaDao.getTeaById(id);
+    }
+
+    public Tea getRandomTeaInStock() {
+        return teaDao.getRandomTeaInStock();
     }
 
     public List<Tea> getTeasBySearchString(final String searchString) {

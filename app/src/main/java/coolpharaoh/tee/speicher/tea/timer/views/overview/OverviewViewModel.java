@@ -98,6 +98,10 @@ class OverviewViewModel extends ViewModel {
         refreshTeas();
     }
 
+    Tea getRandomTeaInStock() {
+        return teaRepository.getRandomTeaInStock();
+    }
+
     void visualizeTeasBySearchString(final String searchString) {
         if ("".equals(searchString)) {
             refreshTeas();

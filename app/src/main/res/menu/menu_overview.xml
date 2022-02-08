@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.overview.Overview">
     <item
-        android:id="@+id/action_overview_settings"
+        android:id="@+id/action_overview_random_choice"
         android:orderInCategory="1"
+        android:title="@string/overview_action_random_choice"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_overview_settings"
+        android:orderInCategory="2"
         android:title="@string/overview_action_settings"
         app:showAsAction="never" />
     <item
@@ -16,14 +21,14 @@
 
     <item
         android:id="@+id/action_overview_sort"
-        android:orderInCategory="5"
+        android:orderInCategory="4"
         android:icon="@drawable/sort_white"
         android:title="@string/overview_action_sort"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_overview_search"
-        android:orderInCategory="6"
+        android:orderInCategory="5"
         android:icon="@drawable/search_white"
         android:title="@string/overview_action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"

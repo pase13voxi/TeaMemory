@@ -72,11 +72,6 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         Objects.requireNonNull(getSupportActionBar()).setTitle(null);
     }
 
-    private void dialogSortOption() {
-        final RecyclerViewConfigurationDialog recyclerViewConfigurationDialog = new RecyclerViewConfigurationDialog(overviewViewModel);
-        recyclerViewConfigurationDialog.show(getSupportFragmentManager(), RecyclerViewConfigurationDialog.TAG);
-    }
-
     private void initializeTeaList() {
         final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_overview_tea_list);
         recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
@@ -223,7 +218,9 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     public boolean onOptionsItemSelected(final MenuItem item) {
         final int id = item.getItemId();
 
-        if (id == R.id.action_overview_settings) {
+        if (id == R.id.action_overview_random_choice) {
+            dialogRandomChoice();
+        } else if (id == R.id.action_overview_settings) {
             navigateToSettings();
         } else if (id == R.id.action_overview_more) {
             navigateToMore();
@@ -234,6 +231,12 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         return super.onOptionsItemSelected(item);
     }
 
+    private void dialogRandomChoice() {
+        final RandomChoiceDialog randomChoiceDialog = new RandomChoiceDialog(overviewViewModel,
+                ImageControllerFactory.getImageController(this));
+        randomChoiceDialog.show(getSupportFragmentManager(), RandomChoiceDialog.TAG);
+    }
+
     private void navigateToSettings() {
         final Intent settingScreen = new Intent(Overview.this, Settings.class);
         startActivity(settingScreen);
@@ -242,6 +245,11 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     private void navigateToMore() {
         final Intent moreScreen = new Intent(Overview.this, More.class);
         startActivity(moreScreen);
+    }
+
+    private void dialogSortOption() {
+        final RecyclerViewConfigurationDialog recyclerViewConfigurationDialog = new RecyclerViewConfigurationDialog(overviewViewModel);
+        recyclerViewConfigurationDialog.show(getSupportFragmentManager(), RecyclerViewConfigurationDialog.TAG);
     }
 
     @Override

@@ -281,6 +281,17 @@ class OverviewViewModelTest {
     }
 
     @Test
+    void getRandomTeaInStock() {
+        final Tea tea = new Tea();
+        when(teaRepository.getRandomTeaInStock()).thenReturn(tea);
+
+        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
+        final Tea randomTea = overviewViewModel.getRandomTeaInStock();
+
+        assertThat(randomTea).isEqualTo(tea);
+    }
+
+    @Test
     void getSortWithHeaderIsInSearchMode() {
         final String searchString = "search";
 

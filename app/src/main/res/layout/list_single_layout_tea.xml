@@ -8,8 +8,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_recycler_view_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_centerVertical="true"
         android:layout_margin="10dp"
         app:cardCornerRadius="250dp">

@@ -26,28 +26,31 @@ public interface TeaDao {
     List<Tea> getTeasOrderByActivity();
 
     @Query("SELECT * FROM tea WHERE in_stock = 1 ORDER BY LOWER(date) DESC")
-    List<Tea> getFavoriteTeasOrderByActivity();
+    List<Tea> getTeasInStockOrderByActivity();
 
     @Query("SELECT * FROM tea ORDER BY LOWER(name)")
     List<Tea> getTeasOrderByAlphabetic();
 
     @Query("SELECT * FROM tea WHERE in_stock = 1 ORDER BY LOWER(name)")
-    List<Tea> getFavoriteTeasOrderByAlphabetic();
+    List<Tea> getTeasInStockOrderByAlphabetic();
 
     @Query("SELECT * FROM tea ORDER BY variety, LOWER(name)")
     List<Tea> getTeasOrderByVariety();
 
     @Query("SELECT * FROM tea WHERE in_stock = 1 ORDER BY variety, LOWER(name)")
-    List<Tea> getFavoriteTeasOrderByVariety();
+    List<Tea> getTeasInStockOrderByVariety();
 
     @Query("SELECT * FROM tea ORDER BY rating DESC, LOWER(name)")
     List<Tea> getTeasOrderByRating();
 
     @Query("SELECT * FROM tea WHERE in_stock = 1 ORDER BY rating DESC, LOWER(name)")
-    List<Tea> getFavoriteTeasOrderByRating();
+    List<Tea> getTeasInStockOrderByRating();
 
     @Query("SELECT * FROM tea WHERE tea_id = :id")
     Tea getTeaById(long id);
+
+    @Query("SELECT * FROM tea WHERE in_stock = 1 ORDER BY RANDOM() LIMIT 1")
+    Tea getRandomTeaInStock();
 
     @Query("DELETE FROM tea WHERE tea_id = :id")
     void deleteTeaById(long id);

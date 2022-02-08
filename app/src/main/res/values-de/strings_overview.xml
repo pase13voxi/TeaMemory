@@ -1,4 +1,5 @@
 <resources>
+    <string name="overview_action_random_choice">Zufällige Wahl</string>
     <string name="overview_action_settings">Einstellungen</string>
     <string name="overview_action_more">Mehr</string>
     <string name="overview_action_sort">Sortiermodus</string>
@@ -30,6 +31,11 @@
     <string name="overview_dialog_update_positive">Anzeigen</string>
     <string name="overview_dialog_update_neutral">Später</string>
     <string name="overview_dialog_update_negative">Nein, danke</string>
+    <string name="overview_dialog_random_choice_title">Zufällige Auswahl</string>
+    <string name="overview_dialog_random_choice_hint">*nur Tees auf Lager</string>
+    <string name="overview_dialog_random_choice_no_choice">Es gibt keine Tees auf Lager</string>
+    <string name="overview_dialog_random_choice_positive">Auswählen</string>
+    <string name="overview_dialog_random_choice_negative">Abbrechen</string>
     <string name="overview_sort_header_star">%1$d \u2605</string>
     <string name="overview_sort_last_used_this_week">Diese Woche</string>
     <string name="overview_sort_last_used_this_month">Dieser Monat</string>
@@ -49,4 +55,5 @@
     </string-array>
     <string name="overview_image_description_image">Bild</string>
     <string name="overview_image_description_in_stock">Auf Lager</string>
+    <string name="overview_image_description_random_choice_refresh">Aktualisieren</string>
 </resources>

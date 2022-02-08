@@ -169,6 +169,22 @@ public class OverviewTest {
     }
 
     @Test
+    public void clickToRandomChoiceExpectRandomChoiceDialog() {
+        mockSharedSettings();
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_random_choice));
+            shadowOf(getMainLooper()).idle();
+
+            final AlertDialog dialog = getLatestAlertDialog();
+            final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
+
+            assertThat(shadowDialog.getTitle()).isEqualTo(overview.getString(R.string.overview_dialog_random_choice_title));
+        });
+    }
+
+    @Test
     public void navigateToSettingsExpectSettingsActivity() {
         mockSharedSettings();
 
@@ -245,7 +261,7 @@ public class OverviewTest {
     public void enableShowTeasInStockExpectTeasInStock() {
         mockSharedSettings();
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
-        when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeasInStockOrderByActivity()).thenReturn(teaList);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -270,7 +286,7 @@ public class OverviewTest {
 
         mockSharedSettings();
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
-        when(teaDao.getFavoriteTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeasInStockOrderByActivity()).thenReturn(teaList);
         when(imageController.getImageUriByTeaId(0L)).thenReturn(Uri.parse(imageUri));
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
