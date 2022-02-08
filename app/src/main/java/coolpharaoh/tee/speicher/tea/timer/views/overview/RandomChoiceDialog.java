@@ -102,7 +102,7 @@ public class RandomChoiceDialog extends DialogFragment {
 
         Uri imageUri = null;
         if (CurrentSdk.getSdkVersion() >= Q) {
-            imageUri = imageController.getImageUriByTeaId(item.getTeaId());
+            imageUri = imageController.getImageUriByTeaId(randomChoiceItem.getTeaId());
         }
 
         if (imageUri != null) {
