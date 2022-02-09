@@ -3,6 +3,7 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Locale;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class RecyclerItemOverview {
             final String firstCharLastWord = String.valueOf(split.get(split.size() - 1).charAt(0));
             imageText = firstCharFirstWord + firstCharLastWord;
         }
+        imageText = imageText.toUpperCase(Locale.ROOT);
         return imageText;
     }
 }

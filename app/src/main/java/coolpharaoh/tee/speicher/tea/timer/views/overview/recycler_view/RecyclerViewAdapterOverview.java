@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
@@ -151,33 +153,42 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         }
 
         private void fillRoundImage() {
-            image.setImageURI(null);
-            image.setTag(null);
+            resetImage();
 
-            Uri imageUri = null;
-            if (CurrentSdk.getSdkVersion() >= Q) {
-                final ImageController imageController = ImageControllerFactory.getImageController(view.getContext());
-                imageUri = imageController.getImageUriByTeaId(item.getTeaId());
-            }
-
+            final Uri imageUri = getImageUri();
             if (imageUri != null) {
-                final Uri imageUriFinal = imageUri;
-                CompletableFuture.runAsync(() -> setImage(imageUriFinal));
+                CompletableFuture.runAsync(() -> setImage(imageUri));
             } else {
                 setImageText();
             }
         }
 
+        private void resetImage() {
+            image.setImageURI(null);
+            image.setTag(null);
+            imageText.setVisibility(View.INVISIBLE);
+        }
+
+        @Nullable
+        private Uri getImageUri() {
+            Uri imageUri = null;
+            if (CurrentSdk.getSdkVersion() >= Q) {
+                final ImageController imageController = ImageControllerFactory.getImageController(view.getContext());
+                imageUri = imageController.getImageUriByTeaId(item.getTeaId());
+            }
+            return imageUri;
+        }
+
         private void setImage(final Uri imageUri) {
             image.setImageURI(imageUri);
             image.setTag(imageUri.toString());
-            imageText.setVisibility(View.INVISIBLE);
         }
 
         private void setImageText() {
             image.setBackgroundColor(item.getColor());
             imageText.setVisibility(View.VISIBLE);
             imageText.setText(item.getImageText());
+            imageText.setTextColor(ColorConversation.discoverForegroundColor(item.getColor()));
         }
 
         private void fillTeaName() {

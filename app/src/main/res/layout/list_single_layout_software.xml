@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dip">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/text_view_recycler_view_heading"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="17sp"
         android:textColor="@color/text_green" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="17sp"
         android:textColor="@color/text_grey" />
 
 </LinearLayout>
