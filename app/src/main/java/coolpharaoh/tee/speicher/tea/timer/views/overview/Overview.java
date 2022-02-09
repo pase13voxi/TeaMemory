@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -75,7 +74,6 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     private void initializeTeaList() {
         final RecyclerView recyclerViewTeaList = findViewById(R.id.recycler_view_overview_tea_list);
         recyclerViewTeaList.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewTeaList.addItemDecoration(new DividerItemDecoration(recyclerViewTeaList.getContext(), DividerItemDecoration.VERTICAL));
         teaListAdapter = new RecyclerViewAdapterOverview(teaListData, this);
         recyclerViewTeaList.setAdapter(teaListAdapter);
 

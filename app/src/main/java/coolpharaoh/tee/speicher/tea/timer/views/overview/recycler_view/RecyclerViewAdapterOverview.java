@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
@@ -160,7 +161,8 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             }
 
             if (imageUri != null) {
-                setImage(imageUri);
+                final Uri imageUriFinal = imageUri;
+                CompletableFuture.runAsync(() -> setImage(imageUriFinal));
             } else {
                 setImageText();
             }
