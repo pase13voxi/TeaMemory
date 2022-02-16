@@ -34,11 +34,11 @@ public class SoftwareTest {
 
             softwareRecyclerView.scrollToPosition(0);
             checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 0,
-                    software.getString(R.string.software_colorpicker_heading), software.getString(R.string.software_colorpicker_description));
+                    software.getString(R.string.software_color_picker_heading), software.getString(R.string.software_color_picker_description));
 
             softwareRecyclerView.scrollToPosition(1);
             checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 1,
-                    software.getString(R.string.software_statistic_heading), software.getString(R.string.software_statistic_description));
+                    software.getString(R.string.software_chart_heading), software.getString(R.string.software_chart_description));
         });
     }
 

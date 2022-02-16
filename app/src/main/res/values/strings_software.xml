@@ -1,7 +1,13 @@
 <resources>
     <string name="software_heading">Software Licenses</string>
-    <string name="software_colorpicker_heading">Color Picker</string>
-    <string name="software_colorpicker_description">The Color Picker is an open source software, which allows the selection of a color.</string>
-    <string name="software_statistic_heading">MPAndroidChart</string>
-    <string name="software_statistic_description">MPAndroidChart is an open source software that can be used to display charts.</string>
+    <string name="software_color_picker_heading">Color Picker</string>
+    <string name="software_color_picker_description">The Color Picker is a Java library that allows the selection of a color.</string>
+    <string name="software_chart_heading">MPAndroidChart</string>
+    <string name="software_chart_description">MPAndroidChart is a Java library that can be used to display charts.</string>
+    <string name="software_glide_heading">Glide</string>
+    <string name="software_glide_description">Glide is a Java library that supports fetching, decoding, and displaying images.</string>
+    <string name="software_junit5_heading">Android-JUnit5</string>
+    <string name="software_junit5_description">Android-JUnit5 is a Java library that enables JUnit5 for Android projects.</string>
+    <string name="software_gson_heading">Gson</string>
+    <string name="software_gson_description">Gson is a Java library that can be used to convert Java Objects into their JSON representation.</string>
 </resources>

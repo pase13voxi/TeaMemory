@@ -10,7 +10,7 @@ android {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 28
         targetSdkVersion 32
-        versionCode 180
+        versionCode 184
         versionName "4.1"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -94,6 +94,8 @@ dependencies {
     // extra UI
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
     // gson
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation 'org.apache.commons:commons-lang3:3.12.0'

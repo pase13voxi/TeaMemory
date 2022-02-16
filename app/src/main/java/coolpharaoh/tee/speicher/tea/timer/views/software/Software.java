@@ -58,10 +58,16 @@ public class Software extends AppCompatActivity {
 
     private List<RecyclerItem> generateListItems() {
         final List<RecyclerItem> softwareList = new ArrayList<>();
-        final RecyclerItem itemPicker = new RecyclerItem(getString(R.string.software_colorpicker_heading), getString(R.string.software_colorpicker_description));
-        softwareList.add(itemPicker);
-        final RecyclerItem itemStatistic = new RecyclerItem(getString(R.string.software_statistic_heading), getString(R.string.software_statistic_description));
-        softwareList.add(itemStatistic);
+        final RecyclerItem itemColorPicker = new RecyclerItem(getString(R.string.software_color_picker_heading), getString(R.string.software_color_picker_description));
+        softwareList.add(itemColorPicker);
+        final RecyclerItem itemChart = new RecyclerItem(getString(R.string.software_chart_heading), getString(R.string.software_chart_description));
+        softwareList.add(itemChart);
+        final RecyclerItem itemGlide = new RecyclerItem(getString(R.string.software_glide_heading), getString(R.string.software_glide_description));
+        softwareList.add(itemGlide);
+        final RecyclerItem itemJUnit = new RecyclerItem(getString(R.string.software_junit5_heading), getString(R.string.software_junit5_description));
+        softwareList.add(itemJUnit);
+        final RecyclerItem itemGson = new RecyclerItem(getString(R.string.software_gson_heading), getString(R.string.software_gson_description));
+        softwareList.add(itemGson);
         return softwareList;
     }
 }

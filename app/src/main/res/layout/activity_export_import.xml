@@ -29,7 +29,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:text="@string/export_import_info_top"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="17sp"
                 android:textColor="@color/text_black" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/export_import_procedure"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="17sp"
                 android:textColor="@color/text_black" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/text_view_export_import_1_bullet_point"
                 android:text="@string/export_import_step1_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="17sp"
                 android:textColor="@color/text_black" />
 
             <TextView
@@ -88,7 +88,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/text_view_export_import_2_bullet_point"
                 android:text="@string/export_import_step2_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="17sp"
                 android:textColor="@color/text_black" />
 
             <TextView
@@ -112,7 +112,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/text_view_export_import_3_bullet_point"
                 android:text="@string/export_import_step3_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="17sp"
                 android:textColor="@color/text_black" />
 
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/text_view_export_import_3_bullet_point"
                 android:text="@string/export_import_warning_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="17sp"
                 android:textColor="@color/text_black" />
 
             <Button

@@ -15,8 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
@@ -157,14 +158,14 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
 
             final Uri imageUri = getImageUri();
             if (imageUri != null) {
-                CompletableFuture.runAsync(() -> setImage(imageUri));
+                setImage(imageUri);
             } else {
                 setImageText();
             }
         }
 
         private void resetImage() {
-            image.setImageURI(null);
+            Glide.with(view.getContext()).clear(image);
             image.setTag(null);
             imageText.setVisibility(View.INVISIBLE);
         }
@@ -180,7 +181,11 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         }
 
         private void setImage(final Uri imageUri) {
-            image.setImageURI(imageUri);
+            Glide.with(view.getContext())
+                    .load(imageUri)
+                    .override(100, 100)
+                    .centerCrop()
+                    .into(image);
             image.setTag(imageUri.toString());
         }
 

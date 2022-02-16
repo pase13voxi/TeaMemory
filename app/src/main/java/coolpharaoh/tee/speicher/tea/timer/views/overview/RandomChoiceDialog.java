@@ -20,6 +20,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
+
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
@@ -95,7 +97,7 @@ public class RandomChoiceDialog extends DialogFragment {
 
     private void updateImage() {
         final ImageView imageViewImage = dialogView.findViewById(R.id.image_view_random_tea_choice_image);
-        imageViewImage.setImageURI(null);
+        Glide.with(dialogView.getContext()).clear(imageViewImage);
         imageViewImage.setTag(null);
 
         final TextView textViewImageText = dialogView.findViewById(R.id.text_view_random_choice_dialog_image);
@@ -113,7 +115,11 @@ public class RandomChoiceDialog extends DialogFragment {
     }
 
     private void fillImage(final ImageView imageViewImage, final TextView textViewImageText, final Uri imageUri) {
-        imageViewImage.setImageURI(imageUri);
+        Glide.with(dialogView.getContext())
+                .load(imageUri)
+                .override(100, 100)
+                .centerCrop()
+                .into(imageViewImage);
         imageViewImage.setTag(imageUri.toString());
         textViewImageText.setVisibility(View.INVISIBLE);
     }
