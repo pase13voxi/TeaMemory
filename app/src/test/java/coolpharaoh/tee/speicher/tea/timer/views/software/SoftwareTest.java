@@ -1,6 +1,8 @@
 package coolpharaoh.tee.speicher.tea.timer.views.software;
 
+import static android.os.Looper.getMainLooper;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.view.View;
 import android.widget.TextView;
@@ -30,15 +32,32 @@ public class SoftwareTest {
         softwareActivityScenario.onActivity(software -> {
             final RecyclerView softwareRecyclerView = software.findViewById(R.id.recycler_view_software);
 
-            assertThat(softwareRecyclerView.getAdapter().getItemCount()).isEqualTo(2);
+            assertThat(softwareRecyclerView.getAdapter().getItemCount()).isEqualTo(5);
 
             softwareRecyclerView.scrollToPosition(0);
+            shadowOf(getMainLooper()).idle();
             checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 0,
                     software.getString(R.string.software_color_picker_heading), software.getString(R.string.software_color_picker_description));
 
             softwareRecyclerView.scrollToPosition(1);
+            shadowOf(getMainLooper()).idle();
             checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 1,
                     software.getString(R.string.software_chart_heading), software.getString(R.string.software_chart_description));
+
+            softwareRecyclerView.scrollToPosition(2);
+            shadowOf(getMainLooper()).idle();
+            checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 2,
+                    software.getString(R.string.software_glide_heading), software.getString(R.string.software_glide_description));
+
+            softwareRecyclerView.scrollToPosition(3);
+            shadowOf(getMainLooper()).idle();
+            checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 3,
+                    software.getString(R.string.software_junit5_heading), software.getString(R.string.software_junit5_description));
+
+            softwareRecyclerView.scrollToPosition(4);
+            shadowOf(getMainLooper()).idle();
+            checkHeaderAndPositionAtPositionInRecyclerView(softwareRecyclerView, 4,
+                    software.getString(R.string.software_gson_heading), software.getString(R.string.software_gson_description));
         });
     }
 
