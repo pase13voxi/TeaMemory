@@ -93,12 +93,16 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void updateStickyHeaderOnRecyclerView(final RecyclerView teaList, final RecyclerViewAdapterOverview adapter) {
+        if (overviewViewModel.getSortWithHeader() != -1) {
+            teaList.addItemDecoration(new StickyHeaderItemDecoration(adapter));
+        }
+
         if (teaList.getItemDecorationCount() > 1) {
             teaList.removeItemDecorationAt(1);
         }
 
-        if (overviewViewModel.getSortWithHeader() != -1) {
-            teaList.addItemDecoration(new StickyHeaderItemDecoration(adapter));
+        if (teaList.getItemDecorationCount() > 0 && overviewViewModel.getSortWithHeader() == -1) {
+            teaList.removeItemDecorationAt(0);
         }
     }
 

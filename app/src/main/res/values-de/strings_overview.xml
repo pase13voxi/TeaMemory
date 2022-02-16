@@ -1,5 +1,5 @@
 <resources>
-    <string name="overview_action_random_choice">Zufällige Wahl</string>
+    <string name="overview_action_random_choice">Zufällige Auswahl</string>
     <string name="overview_action_settings">Einstellungen</string>
     <string name="overview_action_more">Mehr</string>
     <string name="overview_action_sort">Sortiermodus</string>
