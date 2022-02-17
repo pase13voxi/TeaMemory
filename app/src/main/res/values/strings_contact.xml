@@ -1,6 +1,6 @@
 <resources>
     <string name="contact_heading">Contact</string>
-    <string name="contact_me">Hello, I am Pascal and I have developed the Tea Memory in my spare time. For questions or suggestions write me an email.</string>
+    <string name="contact_me">Hello, I my name is Pascal and I have developed the Tea Memory in my spare time. For questions or suggestions write me an email.</string>
     <string name="contact_email">Send me an email.</string>
     <string name="contact_email_address">tea.memory.feedback@gmail.com</string>
     <string name="contact_email_subject">Tea Memory Feedback</string>

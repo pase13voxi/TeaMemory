@@ -1,7 +1,7 @@
 <resources>
     <string name="contact_heading">Kontakt</string>
     <string name="contact_content_description_photo">Foto</string>
-    <string name="contact_me">Hallo, ich bin Pascal und ich habe den Tee Speicher in meiner Freizeit entwickelt. Für Fragen oder Anregungen schreib mir eine E-mail.</string>
+    <string name="contact_me">Hallo, ich heiße Pascal und ich habe den Tee Speicher in meiner Freizeit entwickelt. Für Fragen oder Anregungen schreibe mir eine E-mail.</string>
     <string name="contact_email">Sende mir eine E-mail.</string>
     <string name="contact_email_address">tea.memory.feedback@gmail.com</string>
     <string name="contact_email_subject">Tee Speicher Feedback</string>
