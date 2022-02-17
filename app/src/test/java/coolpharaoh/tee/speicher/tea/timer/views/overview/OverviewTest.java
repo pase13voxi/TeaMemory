@@ -41,6 +41,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -174,7 +175,8 @@ public class OverviewTest {
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
-            overview.onOptionsItemSelected(new RoboMenuItem(R.id.action_overview_random_choice));
+            final FloatingActionButton buttonRandomChoice = overview.findViewById(R.id.floating_button_overview_random_choice);
+            buttonRandomChoice.performClick();
             shadowOf(getMainLooper()).idle();
 
             final AlertDialog dialog = getLatestAlertDialog();
@@ -451,12 +453,38 @@ public class OverviewTest {
     }
 
     @Test
+    public void setTeaInStockExpectTeaInStock() {
+        final int teaPosition = 1;
+        mockSharedSettings();
+        final String teaName = "TEA_";
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeaById(teaPosition)).thenReturn(teaList.get(teaPosition));
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
+            final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
+            itemViewRecyclerItem.performLongClick();
+
+            selectItemPopUpMenu(R.id.action_overview_tea_list_in_stock);
+
+            final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
+            verify(teaDao).update(captor.capture());
+            final Tea tea = captor.getValue();
+
+            assertThat(tea.isInStock()).isFalse();
+        });
+    }
+
+    @Test
     public void editTeaExpectNewTeaActivity() {
         final int teaPosition = 1;
         mockSharedSettings();
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeaById(teaPosition)).thenReturn(teaList.get(teaPosition));
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {

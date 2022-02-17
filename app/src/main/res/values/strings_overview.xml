@@ -1,5 +1,4 @@
 <resources>
-    <string name="overview_action_random_choice">Random choice</string>
     <string name="overview_action_settings">Settings</string>
     <string name="overview_action_more">More</string>
     <string name="overview_action_sort">Sort mode</string>
@@ -16,12 +15,7 @@
         <item>Rating</item>
     </string-array>
     <string name="overview_tea_list_menu_in_stock">In stock</string>
-    <string name="overview_dialog_tea_in_stock">In Stock</string>
-    <array name="overview_dialog_tea_in_stock_options">
-        <item>Yes</item>
-        <item>No</item>
-    </array>
-    <string name="overview_dialog_tea_in_stock_negative">Cancel</string>
+    <string name="overview_tea_list_menu_not_in_stock">Not in stock</string>
     <string name="overview_tea_list_menu_edit">Edit</string>
     <string name="overview_tea_list_menu_delete">Delete</string>
     <string name="overview_dialog_delete_tea_title">Delete %1$s</string>
@@ -35,6 +29,7 @@
     <string name="overview_dialog_update_positive">Show</string>
     <string name="overview_dialog_update_neutral">Later</string>
     <string name="overview_dialog_update_negative">No, thanks</string>
+    <string name="overview_tooltip_random_choice">Random choice</string>
     <string name="overview_dialog_random_choice_title">Random choice</string>
     <string name="overview_dialog_random_choice_hint">*only teas in stock</string>
     <string name="overview_dialog_random_choice_no_choice">There are no teas in stock</string>

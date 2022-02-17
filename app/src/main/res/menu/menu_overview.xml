@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.overview.Overview">
     <item
-        android:id="@+id/action_overview_random_choice"
-        android:orderInCategory="1"
-        android:title="@string/overview_action_random_choice"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_overview_settings"
         android:orderInCategory="2"
         android:title="@string/overview_action_settings"

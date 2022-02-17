@@ -3,7 +3,6 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview;
 import static android.os.Build.VERSION_CODES.Q;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -60,6 +59,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
         initializeTeaList();
         initializeNewTeaButton();
+        initializeRandomTeaButton();
         showUpdateDialogOnStart();
     }
 
@@ -123,9 +123,14 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         final PopupMenu popup = new PopupMenu(getApplication(), itemView, Gravity.END);
         popup.inflate(R.menu.menu_overview_tea_list);
 
+        final Tea tea = overviewViewModel.getTeaBy(teaId);
+        final int inStockTitle = tea.isInStock() ?
+                R.string.overview_tea_list_menu_not_in_stock : R.string.overview_tea_list_menu_in_stock;
+        popup.getMenu().findItem(R.id.action_overview_tea_list_in_stock).setTitle(inStockTitle);
+
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_overview_tea_list_in_stock) {
-                dialogUpdateTeaInStock(teaId);
+                updateTeaInStock(teaId, !tea.isInStock());
                 return true;
             } else if (item.getItemId() == R.id.action_overview_tea_list_edit) {
                 navigateToNewOrEditTea(teaId);
@@ -139,21 +144,8 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         popup.show();
     }
 
-    private void dialogUpdateTeaInStock(final long teaId) {
-        final String[] items = getResources().getStringArray(R.array.overview_dialog_tea_in_stock_options);
-
-        final int checkedItem = overviewViewModel.isTeaInStock(teaId) ? 0 : 1;
-
-        new AlertDialog.Builder(this, R.style.dialog_theme)
-                .setTitle(R.string.overview_dialog_tea_in_stock)
-                .setSingleChoiceItems(items, checkedItem, (DialogInterface dialog, int item) -> updateTeaInStock(teaId, dialog, item))
-                .setNegativeButton(R.string.overview_dialog_tea_in_stock_negative, null)
-                .show();
-    }
-
-    private void updateTeaInStock(final long teaId, final DialogInterface dialog, final int item) {
-        overviewViewModel.updateInStockOfTea(teaId, item == 0);
-        dialog.dismiss();
+    private void updateTeaInStock(final long teaId, final boolean inStock) {
+        overviewViewModel.updateInStockOfTea(teaId, inStock);
     }
 
     private void removeTeaDialog(final long teaId) {
@@ -186,6 +178,17 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
             newTeaScreen.putExtra("teaId", teaId);
         }
         startActivity(newTeaScreen);
+    }
+
+    private void initializeRandomTeaButton() {
+        final FloatingActionButton randomChoice = findViewById(R.id.floating_button_overview_random_choice);
+        randomChoice.setOnClickListener(v -> dialogRandomChoice());
+    }
+
+    private void dialogRandomChoice() {
+        final RandomChoiceDialog randomChoiceDialog = new RandomChoiceDialog(overviewViewModel,
+                ImageControllerFactory.getImageController(this));
+        randomChoiceDialog.show(getSupportFragmentManager(), RandomChoiceDialog.TAG);
     }
 
     private void showUpdateDialogOnStart() {
@@ -231,9 +234,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     public boolean onOptionsItemSelected(final MenuItem item) {
         final int id = item.getItemId();
 
-        if (id == R.id.action_overview_random_choice) {
-            dialogRandomChoice();
-        } else if (id == R.id.action_overview_settings) {
+        if (id == R.id.action_overview_settings) {
             navigateToSettings();
         } else if (id == R.id.action_overview_more) {
             navigateToMore();
@@ -242,12 +243,6 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void dialogRandomChoice() {
-        final RandomChoiceDialog randomChoiceDialog = new RandomChoiceDialog(overviewViewModel,
-                ImageControllerFactory.getImageController(this));
-        randomChoiceDialog.show(getSupportFragmentManager(), RandomChoiceDialog.TAG);
     }
 
     private void navigateToSettings() {

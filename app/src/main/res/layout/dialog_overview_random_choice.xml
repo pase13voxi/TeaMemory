@@ -91,6 +91,6 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/overview_image_description_random_choice_refresh"
             android:scaleType="fitXY"
-            android:src="@drawable/generate_black" />
+            android:src="@drawable/refresh_grey" />
     </RelativeLayout>
 </RelativeLayout>
