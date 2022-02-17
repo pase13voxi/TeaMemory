@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemOverview;
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
@@ -128,6 +129,7 @@ public class RandomChoiceDialog extends DialogFragment {
         imageViewImage.setBackgroundColor(randomChoiceItem.getColor());
         textViewImageText.setVisibility(View.VISIBLE);
         textViewImageText.setText(randomChoiceItem.getImageText());
+        textViewImageText.setTextColor(ColorConversation.discoverForegroundColor(randomChoiceItem.getColor()));
     }
 
     private void noRandomChoiceAvailable() {

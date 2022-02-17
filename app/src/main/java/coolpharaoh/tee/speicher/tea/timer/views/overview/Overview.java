@@ -28,6 +28,7 @@ import java.util.Objects;
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.TeaMemory;
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
 import coolpharaoh.tee.speicher.tea.timer.views.description.UpdateDescription;
 import coolpharaoh.tee.speicher.tea.timer.views.more.More;
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
@@ -130,7 +131,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
                 navigateToNewOrEditTea(teaId);
                 return true;
             } else if (item.getItemId() == R.id.action_overview_tea_list_delete) {
-                removeTeaByTeaId(teaId);
+                removeTeaDialog(teaId);
                 return true;
             }
             return false;
@@ -153,6 +154,16 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     private void updateTeaInStock(final long teaId, final DialogInterface dialog, final int item) {
         overviewViewModel.updateInStockOfTea(teaId, item == 0);
         dialog.dismiss();
+    }
+
+    private void removeTeaDialog(final long teaId) {
+        final Tea tea = overviewViewModel.getTeaBy(teaId);
+        new AlertDialog.Builder(this, R.style.dialog_theme)
+                .setTitle(getString(R.string.overview_dialog_delete_tea_title, tea.getName()))
+                .setMessage(R.string.overview_dialog_delete_tea_message)
+                .setPositiveButton(R.string.overview_dialog_delete_tea_positive, (dialogInterface, i) -> removeTeaByTeaId(teaId))
+                .setNegativeButton(R.string.overview_dialog_delete_tea_negative, null)
+                .show();
     }
 
     private void removeTeaByTeaId(final long teaId) {

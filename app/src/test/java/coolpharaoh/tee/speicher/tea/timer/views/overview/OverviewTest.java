@@ -481,6 +481,7 @@ public class OverviewTest {
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeaById(teaPosition)).thenReturn(teaList.get(teaPosition));
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {
@@ -490,9 +491,38 @@ public class OverviewTest {
 
             selectItemPopUpMenu(R.id.action_overview_tea_list_delete);
 
+            final AlertDialog dialogDelete = getLatestAlertDialog();
+            dialogDelete.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
             verify(teaDao).deleteTeaById(1L);
 
             verify(imageController).removeImageByTeaId(1L);
+        });
+    }
+
+    @Test
+    public void cancelDeleteTeaExpectCanceledDeletion() {
+        final int teaPosition = 1;
+        mockSharedSettings();
+        final String teaName = "TEA_";
+        final List<Tea> teaList = generateTeaList(teaName);
+        when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeaById(teaPosition)).thenReturn(teaList.get(teaPosition));
+
+        final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
+        overviewActivityScenario.onActivity(overview -> {
+            final RecyclerView recyclerView = overview.findViewById(R.id.recycler_view_overview_tea_list);
+            final View itemViewRecyclerItem = recyclerView.findViewHolderForAdapterPosition(teaPosition).itemView;
+            itemViewRecyclerItem.performLongClick();
+
+            selectItemPopUpMenu(R.id.action_overview_tea_list_delete);
+
+            final AlertDialog dialogDelete = getLatestAlertDialog();
+            dialogDelete.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
+            shadowOf(getMainLooper()).idle();
+
+            verify(teaDao, never()).deleteTeaById(1L);
         });
     }
 
@@ -503,6 +533,7 @@ public class OverviewTest {
         final String teaName = "TEA_";
         final List<Tea> teaList = generateTeaList(teaName);
         when(teaDao.getTeasOrderByActivity()).thenReturn(teaList);
+        when(teaDao.getTeaById(teaPosition)).thenReturn(teaList.get(teaPosition));
         when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
@@ -512,6 +543,10 @@ public class OverviewTest {
             itemViewRecyclerItem.performLongClick();
 
             selectItemPopUpMenu(R.id.action_overview_tea_list_delete);
+
+            final AlertDialog dialogDelete = getLatestAlertDialog();
+            dialogDelete.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            shadowOf(getMainLooper()).idle();
 
             verify(teaDao).deleteTeaById(1L);
 

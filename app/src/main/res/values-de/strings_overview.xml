@@ -24,6 +24,10 @@
     <string name="overview_dialog_tea_in_stock_negative">Abbrechen</string>
     <string name="overview_tea_list_menu_edit">Bearbeiten</string>
     <string name="overview_tea_list_menu_delete">Löschen</string>
+    <string name="overview_dialog_delete_tea_title">%1$s löschen</string>
+    <string name="overview_dialog_delete_tea_message">Möchten sie diesen Tee löschen?</string>
+    <string name="overview_dialog_delete_tea_positive">Ja</string>
+    <string name="overview_dialog_delete_tea_negative">Nein</string>
     <string name="overview_error_deletion">Löschung konnte nicht durchgeführt werden.</string>
     <string name="overview_tooltip_new_tea">Tee hinzufügen</string>
     <string name="overview_dialog_update_header">Neue Funktionen</string>

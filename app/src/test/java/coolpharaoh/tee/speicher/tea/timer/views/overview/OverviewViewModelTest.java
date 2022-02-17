@@ -61,6 +61,15 @@ class OverviewViewModelTest {
     }
 
     @Test
+    void getTeaById() {
+        final long teaId = 1;
+
+        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
+        overviewViewModel.getTeaBy(teaId);
+        verify(teaRepository).getTeaById(teaId);
+    }
+
+    @Test
     void deleteTea() {
         final long teaId = 1;
 

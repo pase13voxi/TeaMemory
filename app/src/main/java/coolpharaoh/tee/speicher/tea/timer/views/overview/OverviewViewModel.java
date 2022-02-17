@@ -79,6 +79,10 @@ class OverviewViewModel extends ViewModel {
         return teas;
     }
 
+    Tea getTeaBy(final long id) {
+        return teaRepository.getTeaById(id);
+    }
+
     void deleteTea(final long id) {
         teaRepository.deleteTeaById(id);
 
