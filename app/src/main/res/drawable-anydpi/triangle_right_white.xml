@@ -2,7 +2,6 @@
     android:width="92dp"
     android:height="92dp"
     android:autoMirrored="true"
-    android:tint="@color/background_white"
     android:viewportWidth="24"
     android:viewportHeight="24">
 
