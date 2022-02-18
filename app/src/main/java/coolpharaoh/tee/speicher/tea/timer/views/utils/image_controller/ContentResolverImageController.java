@@ -1,5 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller;
 
+import static android.provider.MediaStore.MediaColumns.DATE_MODIFIED;
+
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -49,7 +51,7 @@ public class ContentResolverImageController implements ImageController {
                 BaseColumns._ID,
                 MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.RELATIVE_PATH,
-                MediaStore.MediaColumns.DATE_MODIFIED
+                DATE_MODIFIED
         };
 
         final String selection = MediaStore.MediaColumns.RELATIVE_PATH + "='" +
@@ -90,5 +92,18 @@ public class ContentResolverImageController implements ImageController {
         if (imageUri != null) {
             contentResolver.delete(imageUri, null, null);
         }
+    }
+
+    @Override
+    public String getLastModified(final Uri uri) {
+        final Cursor cursor = contentResolver.query(uri, null, null, null, null);
+        if (cursor != null) {
+            final int dateIndex = cursor.getColumnIndex(DATE_MODIFIED);
+            cursor.moveToFirst();
+            final String dateModified = cursor.getString(dateIndex);
+            cursor.close();
+            return dateModified;
+        }
+        return "";
     }
 }

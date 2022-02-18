@@ -290,6 +290,7 @@ public class OverviewTest {
         final List<Tea> teaList = generateTeaList(TEA_NAME_ACTIVITY);
         when(teaDao.getTeasInStockOrderByActivity()).thenReturn(teaList);
         when(imageController.getImageUriByTeaId(0L)).thenReturn(Uri.parse(imageUri));
+        when(imageController.getLastModified(Uri.parse(imageUri))).thenReturn("date");
 
         final ActivityScenario<Overview> overviewActivityScenario = ActivityScenario.launch(Overview.class);
         overviewActivityScenario.onActivity(overview -> {

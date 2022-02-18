@@ -1,5 +1,6 @@
 package coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller;
 
+import static android.provider.MediaStore.MediaColumns.DATE_MODIFIED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -121,6 +122,28 @@ public class ContentResolverImageControllerTest {
         contentResolverImageController.removeImageByTeaId(TEA_ID);
 
         verify(contentResolver, never()).delete(any(), eq(null), eq(null));
+    }
+
+    @Test
+    public void getLastModified() {
+        final Uri uri = Uri.parse("Uri");
+        final String modificationDate = "1234";
+        when(contentResolver.query(uri, null, null, null, null)).thenReturn(cursor);
+        when(cursor.getColumnIndex(DATE_MODIFIED)).thenReturn(2);
+        when(cursor.getString(2)).thenReturn(modificationDate);
+
+        final ContentResolverImageController contentResolverImageController = new ContentResolverImageController(context);
+        final String lastModified = contentResolverImageController.getLastModified(uri);
+
+        assertThat(lastModified).isEqualTo(modificationDate);
+    }
+
+    @Test
+    public void getLastModifiedReturnEmpty() {
+        final ContentResolverImageController contentResolverImageController = new ContentResolverImageController(context);
+        final String lastModified = contentResolverImageController.getLastModified(Uri.parse("Uri"));
+
+        assertThat(lastModified).isEmpty();
     }
 
     private void mockImageAvailable() {

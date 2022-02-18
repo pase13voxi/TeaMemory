@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 
 import java.util.List;
 
@@ -127,6 +128,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         private final TextView description;
         private final ImageView inStock;
         private final OnClickListener onClickListener;
+        private final ImageController imageController;
         private RecyclerItemOverview item;
 
         public ViewHolderTea(final View view, final OnClickListener onClickListener) {
@@ -142,6 +144,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
             inStock = view.findViewById(R.id.button_overview_in_stock);
 
             this.onClickListener = onClickListener;
+            imageController = ImageControllerFactory.getImageController(view.getContext());
         }
 
         void bindData(final RecyclerItemOverview item) {
@@ -174,7 +177,6 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         private Uri getImageUri() {
             Uri imageUri = null;
             if (CurrentSdk.getSdkVersion() >= Q) {
-                final ImageController imageController = ImageControllerFactory.getImageController(view.getContext());
                 imageUri = imageController.getImageUriByTeaId(item.getTeaId());
             }
             return imageUri;
@@ -183,6 +185,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         private void setImage(final Uri imageUri) {
             Glide.with(view.getContext())
                     .load(imageUri)
+                    .signature(new ObjectKey(imageController.getLastModified(imageUri)))
                     .override(100, 100)
                     .centerCrop()
                     .into(image);

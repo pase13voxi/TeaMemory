@@ -11,4 +11,6 @@ public interface ImageController {
     Uri getImageUriByTeaId(long teaId);
 
     void removeImageByTeaId(long teaId);
+
+    String getLastModified(Uri uri);
 }
