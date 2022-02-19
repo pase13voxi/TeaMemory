@@ -19,17 +19,16 @@
 
     <application
         android:name=".TeaMemory"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/app_theme"
-        android:fullBackupContent="true">
+        android:usesCleartextTraffic="false">
         <activity
             android:name=".views.overview.Overview"
+            android:exported="true"
             android:permission=""
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
