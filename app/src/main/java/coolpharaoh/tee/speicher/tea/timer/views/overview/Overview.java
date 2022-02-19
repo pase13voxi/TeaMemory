@@ -201,16 +201,14 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
     }
 
     private void showUpdateDialog() {
-        if (CurrentSdk.getSdkVersion() >= Q) {
-            if (overviewViewModel.isOverviewUpdateAlert()) {
-                new AlertDialog.Builder(this, R.style.dialog_theme)
-                        .setTitle(R.string.overview_dialog_update_header)
-                        .setMessage(R.string.overview_dialog_update_description)
-                        .setPositiveButton(R.string.overview_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
-                        .setNeutralButton(R.string.overview_dialog_update_neutral, null)
-                        .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setOverviewUpdateAlert(false))
-                        .show();
-            }
+        if (overviewViewModel.isOverviewUpdateAlert()) {
+            new AlertDialog.Builder(this, R.style.dialog_theme)
+                    .setTitle(R.string.overview_dialog_update_header)
+                    .setMessage(R.string.overview_dialog_update_description)
+                    .setPositiveButton(R.string.overview_dialog_update_positive, (dialog, which) -> navigateToUpdateWindow())
+                    .setNeutralButton(R.string.overview_dialog_update_neutral, null)
+                    .setNegativeButton(R.string.overview_dialog_update_negative, (dialog, which) -> overviewViewModel.setOverviewUpdateAlert(false))
+                    .show();
         }
     }
 

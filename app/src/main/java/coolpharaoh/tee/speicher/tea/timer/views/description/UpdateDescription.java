@@ -15,7 +15,8 @@ import coolpharaoh.tee.speicher.tea.timer.R;
 @SuppressWarnings("java:S110")
 public class UpdateDescription extends AppCompatActivity {
     private static final int[] slideImages = {
-            R.drawable.description_update_take_image
+            R.drawable.description_update_random_choice_1,
+            R.drawable.description_update_random_choice_2
     };
 
     private LinearLayout dotLayout;

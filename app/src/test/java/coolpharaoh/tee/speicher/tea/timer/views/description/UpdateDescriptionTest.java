@@ -22,7 +22,7 @@ public class UpdateDescriptionTest {
         updateDescriptionActivityScenario.onActivity(updateDescription -> {
             final ViewPager viewPager = updateDescription.findViewById(R.id.slide_view_description_pager);
             final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
-            assertThat(slideAdapter.getCount()).isEqualTo(1);
+            assertThat(slideAdapter.getCount()).isEqualTo(2);
         });
     }
 

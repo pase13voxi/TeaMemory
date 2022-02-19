@@ -4,7 +4,8 @@
     <string name="description_close_button">Exit Button</string>
     <string name="description_dots">&#8226;</string>
     <string-array name="description_update_slide_description">
-        <item>Take a picture</item>
+        <item>Randomly choose a Tea</item>
+        <item>…</item>
     </string-array>
     <string-array name="description_showtea_slide_description">
         <item>Show the cooling time</item>
