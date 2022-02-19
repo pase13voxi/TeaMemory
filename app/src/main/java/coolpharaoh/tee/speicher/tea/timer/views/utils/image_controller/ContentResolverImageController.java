@@ -97,13 +97,19 @@ public class ContentResolverImageController implements ImageController {
     @Override
     public String getLastModified(final Uri uri) {
         final Cursor cursor = contentResolver.query(uri, null, null, null, null);
+
+        String dateModified = null;
         if (cursor != null) {
             final int dateIndex = cursor.getColumnIndex(DATE_MODIFIED);
             cursor.moveToFirst();
-            final String dateModified = cursor.getString(dateIndex);
+            dateModified = cursor.getString(dateIndex);
             cursor.close();
+        }
+
+        if (dateModified == null) {
+            return "";
+        } else {
             return dateModified;
         }
-        return "";
     }
 }
