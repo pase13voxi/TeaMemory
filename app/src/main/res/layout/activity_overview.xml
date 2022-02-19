@@ -27,27 +27,16 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="@style/overview_floating_button_random_choice"
         android:id="@+id/floating_button_overview_random_choice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="90dp"
         android:contentDescription="@string/overview_tooltip_new_tea"
-        android:src="@drawable/dice_black"
-        android:tooltipText="@string/overview_tooltip_random_choice"
-        app:backgroundTint="@color/background"
+        app:backgroundTint="@color/background_floating"
         app:maxImageSize="32dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="@style/overview_floating_button_new_tea"
         android:id="@+id/floating_button_overview_new_tea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
         android:contentDescription="@string/overview_tooltip_new_tea"
-        android:src="@drawable/add_white"
-        android:tooltipText="@string/overview_tooltip_new_tea"
         app:maxImageSize="36dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

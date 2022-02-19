@@ -4,5 +4,6 @@
     <color name="color_primary_dark">#272734</color>
     <color name="background">#272734</color>
     <color name="background_black">#ffffff</color>
+    <color name="background_floating">#3c3c48</color>
     <color name="text_black">#ffffff</color>
 </resources>

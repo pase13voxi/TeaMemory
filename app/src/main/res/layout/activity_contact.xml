@@ -39,7 +39,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:text="@string/contact_me"
-                android:textSize="17sp"
+                android:textSize="@dimen/textSizeNormal"
                 android:textColor="@color/text_black" />
 
             <Button

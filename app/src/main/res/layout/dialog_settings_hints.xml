@@ -12,7 +12,7 @@
         android:layout_margin="10dp"
         android:text="@string/settings_show_hints_update_checkbox"
         android:textColor="@color/text_black"
-        android:textSize="17sp" />
+        android:textSize="@dimen/textSizeNormal" />
 
     <CheckBox
         android:id="@+id/check_box_settings_dialog_description"
@@ -21,5 +21,5 @@
         android:layout_margin="10dp"
         android:text="@string/settings_show_hints_description_checkbox"
         android:textColor="@color/text_black"
-        android:textSize="17sp" />
+        android:textSize="@dimen/textSizeNormal" />
 </LinearLayout>

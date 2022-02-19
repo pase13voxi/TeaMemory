@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            style="@style/overview_linear_layout_heading"
+            style="@style/overview_list_configuration_linear_layout_heading"
             android:orientation="horizontal">
 
             <ImageView
@@ -21,7 +21,7 @@
                 android:src="@drawable/sort_black" />
 
             <TextView
-                style="@style/overview_text_view_heading"
+                style="@style/overview_list_configuration_text_view_heading"
                 android:id="@+id/text_view_overview_sort_mode_configuration_title"
                 android:text="@string/overview_dialog_sort_title" />
         </LinearLayout>
@@ -33,7 +33,7 @@
             android:orientation="vertical" />
 
         <LinearLayout
-            style="@style/overview_linear_layout_heading"
+            style="@style/overview_list_configuration_linear_layout_heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -43,14 +43,14 @@
                 android:src="@drawable/sort_black" />
 
             <TextView
-                style="@style/overview_text_view_heading"
+                style="@style/overview_list_configuration_text_view_heading"
                 android:id="@+id/text_view_overview_filter_configuration_title"
                 android:text="@string/overview_dialog_filter_title" />
         </LinearLayout>
 
         <CheckBox
             android:id="@+id/checkbox_overview_in_stock"
-            style="@style/overview_checkbox_in_stock"
+            style="@style/overview_list_configuration_checkbox_in_stock"
             android:text="@string/overview_dialog_show_teas_in_stock"
             android:theme="@style/check_box_style" />
 

@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="overview_linear_layout_heading">
+    <style name="overview_floating_button_new_tea">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:src">@drawable/add_white</item>
+        <item name="android:tooltipText">@string/overview_tooltip_new_tea</item>
+    </style>
+
+    <style name="overview_floating_button_random_choice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">90dp</item>
+        <item name="android:src">@drawable/dice_black</item>
+        <item name="android:tooltipText">@string/overview_tooltip_random_choice</item>
+    </style>
+
+    <style name="overview_list_configuration_linear_layout_heading">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingStart">24dp</item>
@@ -11,7 +30,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="overview_text_view_heading">
+    <style name="overview_list_configuration_text_view_heading">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingStart">11dp</item>
@@ -21,7 +40,7 @@
         <item name="android:textSize">22sp</item>
     </style>
 
-    <style name="overview_checkbox_in_stock">
+    <style name="overview_list_configuration_checkbox_in_stock">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingStart">15dp</item>
@@ -31,6 +50,85 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:textColor">@color/text_black</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">@dimen/textSizeNormal</item>
     </style>
+
+    <style name="overview_tea_list_card_view">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="overview_tea_list_image_view_image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="overview_tea_list_text_view_image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="overview_tea_list_linear_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="overview_tea_list_text_view_tea">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSizeNormal</item>
+    </style>
+
+    <style name="overview_tea_list_image_view_in_stock">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:src">@drawable/home_grey</item>
+    </style>
+
+    <style name="overview_random_choice_text_view_hint">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">25dp</item>
+        <item name="android:text">@string/overview_dialog_random_choice_hint</item>
+        <item name="android:textColor">@color/text_grey</item>
+        <item name="android:textSize">@dimen/textSizeVerySmall</item>
+    </style>
+
+    <style name="overview_random_choice_text_view_no_tea">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">25dp</item>
+        <item name="android:layout_marginVertical">20dp</item>
+        <item name="android:text">@string/overview_dialog_random_choice_no_choice</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">@dimen/textSizeNormal</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="overview_random_choice_relative_layout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">20dp</item>
+    </style>
+
+    <style name="overview_random_choice_image_button_refresh">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginHorizontal">20dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/dice_black</item>
+    </style>
+
 </resources>

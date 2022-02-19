@@ -6,91 +6,54 @@
 
     <TextView
         android:id="@+id/text_view_random_choice_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:text="@string/overview_dialog_random_choice_hint"
-        android:textColor="@color/text_grey"
-        android:textSize="14sp" />
+        style="@style/overview_random_choice_text_view_hint" />
 
     <TextView
         android:id="@+id/text_view_random_choice_no_tea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginVertical="20dp"
-        android:text="@string/overview_dialog_random_choice_no_choice"
-        android:textColor="@color/text_black"
-        android:textSize="17sp"
-        android:visibility="gone" />
+        style="@style/overview_random_choice_text_view_no_tea" />
 
     <RelativeLayout
         android:id="@+id/layout_random_choice_tea_available"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_random_choice_hint"
-        android:layout_marginVertical="20dp">
+        style="@style/overview_random_choice_relative_layout"
+        android:layout_below="@id/text_view_random_choice_hint">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_random_choice_dialog_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            style="@style/overview_tea_list_card_view"
             android:layout_marginStart="25dp"
             app:cardCornerRadius="250dp">
 
             <ImageView
                 android:id="@+id/image_view_random_tea_choice_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:background="@color/background_green"
-                android:contentDescription="@string/overview_image_description_image"
-                android:scaleType="centerCrop" />
+                style="@style/overview_tea_list_image_view_image"
+                android:contentDescription="@string/overview_image_description_image" />
 
             <TextView
                 android:id="@+id/text_view_random_choice_dialog_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                style="@style/overview_tea_list_text_view_image" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            style="@style/overview_tea_list_linear_layout"
             android:layout_marginHorizontal="10dp"
             android:layout_toStartOf="@id/button_random_choice_dialog_refresh"
-            android:layout_toEndOf="@id/card_view_random_choice_dialog_image"
-            android:orientation="vertical">
+            android:layout_toEndOf="@id/card_view_random_choice_dialog_image">
 
             <TextView
                 android:id="@+id/text_view_random_choice_dialog_tea_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_black"
-                android:textSize="17sp" />
+                style="@style/overview_tea_list_text_view_tea"
+                android:textColor="@color/text_black" />
 
             <TextView
                 android:id="@+id/text_view_random_choice_dialog_variety"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_grey"
-                android:textSize="17sp" />
+                style="@style/overview_tea_list_text_view_tea"
+                android:textColor="@color/text_grey" />
 
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/button_random_choice_dialog_refresh"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginHorizontal="20dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/overview_image_description_random_choice_refresh"
-            android:scaleType="fitXY"
-            android:src="@drawable/dice_black" />
+            style="@style/overview_random_choice_image_button_refresh"
+            android:contentDescription="@string/overview_image_description_random_choice_refresh" />
     </RelativeLayout>
 </RelativeLayout>
