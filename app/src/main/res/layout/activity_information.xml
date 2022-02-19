@@ -62,7 +62,8 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/information_description_camera_button"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_information_tea_name" />
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_information_tea_name"
+                        android:tooltipText="@string/information_description_camera_button" />
 
                     <LinearLayout
                         style="@style/information_linear_layout_style"
@@ -119,7 +120,8 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/information_add_detail_button_description"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/add_black" />
+                        android:src="@drawable/add_black"
+                        android:tooltipText="@string/information_add_detail_button_description" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

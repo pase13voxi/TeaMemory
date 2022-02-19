@@ -55,8 +55,7 @@
                     android:layout_height="30dip"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/button_color"
-                    android:tooltipText="@string/new_tea_tooltip_choose_color"
-                    tools:targetApi="o" />
+                    android:tooltipText="@string/new_tea_tooltip_choose_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -108,8 +107,7 @@
                 android:contentDescription="@string/new_tea_tooltip_add_infusion"
                 android:scaleType="fitXY"
                 android:src="@drawable/add_black"
-                android:tooltipText="@string/new_tea_tooltip_add_infusion"
-                tools:targetApi="o" />
+                android:tooltipText="@string/new_tea_tooltip_add_infusion" />
 
             <ImageButton
                 android:id="@+id/button_new_tea_delete_infusion"
@@ -125,9 +123,8 @@
                 android:contentDescription="@string/new_tea_tooltip_delete_infusion"
                 android:scaleType="fitXY"
                 android:src="@drawable/delete_black"
-                android:visibility="gone"
                 android:tooltipText="@string/new_tea_tooltip_delete_infusion"
-                tools:targetApi="o" />
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/linear_layout_new_tea_infusions"
@@ -148,8 +145,7 @@
                     android:contentDescription="@string/new_tea_tooltip_previous_infusion"
                     android:scaleType="fitXY"
                     android:src="@drawable/button_arrowleft"
-                    android:tooltipText="@string/new_tea_tooltip_previous_infusion"
-                    tools:targetApi="o" />
+                    android:tooltipText="@string/new_tea_tooltip_previous_infusion" />
 
                 <TextView
                     android:id="@+id/text_view_new_tea_count_infusion"
@@ -169,8 +165,7 @@
                     android:contentDescription="@string/new_tea_tooltip_next_infusion"
                     android:scaleType="fitXY"
                     android:src="@drawable/button_arrowright"
-                    android:tooltipText="@string/new_tea_tooltip_next_infusion"
-                    tools:targetApi="o" />
+                    android:tooltipText="@string/new_tea_tooltip_next_infusion" />
 
             </RelativeLayout>
 

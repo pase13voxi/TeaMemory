@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/toolbar_general_style"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
@@ -45,8 +44,7 @@
             android:contentDescription="@string/show_tea_tooltip_infusion"
             android:scaleType="fitXY"
             android:src="@drawable/infusion_white"
-            android:tooltipText="@string/show_tea_tooltip_infusion"
-            tools:targetApi="o" />
+            android:tooltipText="@string/show_tea_tooltip_infusion" />
 
         <ImageButton
             android:id="@+id/show_tea_tool_bar_next_infusion"
@@ -60,8 +58,7 @@
             android:contentDescription="@string/show_tea_tooltip_next_infusion"
             android:scaleType="fitXY"
             android:src="@drawable/triangle_right_white"
-            android:tooltipText="@string/show_tea_tooltip_next_infusion"
-            tools:targetApi="o" />
+            android:tooltipText="@string/show_tea_tooltip_next_infusion" />
     </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>

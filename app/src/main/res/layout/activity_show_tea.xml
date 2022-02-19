@@ -85,8 +85,7 @@
         android:contentDescription="@string/show_tea_tooltip_temperature"
         android:scaleType="fitXY"
         android:src="@drawable/temperature_black"
-        android:tooltipText="@string/show_tea_tooltip_temperature"
-        tools:targetApi="o" />
+        android:tooltipText="@string/show_tea_tooltip_temperature" />
 
     <TextView
         android:id="@+id/text_view_show_tea_temperature"
@@ -109,8 +108,7 @@
         android:contentDescription="@string/show_tea_tooltip_temperature"
         android:scaleType="fitXY"
         android:src="@drawable/spoon_black"
-        android:tooltipText="@string/show_tea_tooltip_calculate_amount"
-        tools:targetApi="o" />
+        android:tooltipText="@string/show_tea_tooltip_calculate_amount" />
 
     <TextView
         android:id="@+id/text_view_show_tea_amount"
