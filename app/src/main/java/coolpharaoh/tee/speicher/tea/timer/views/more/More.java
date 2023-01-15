@@ -29,7 +29,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewA
 public class More extends AppCompatActivity implements RecyclerViewAdapter.OnClickListener {
 
     private enum ListItems {
-        CONTACT, RATING, STATISTICS, EXPORT_IMPORT, SOFTWARE
+        CONTACT, RATING, STATISTICS, EXPORT_IMPORT, SOFTWARE, PRIVACY
     }
 
     @Override
@@ -70,16 +70,18 @@ public class More extends AppCompatActivity implements RecyclerViewAdapter.OnCli
     private List<RecyclerItem> generateListItems() {
         //write into listView
         final List<RecyclerItem> moreList = new ArrayList<>();
-        final RecyclerItem itemContact = new RecyclerItem(getResources().getString(R.string.more_contact_heading), getResources().getString(R.string.more_contact_description));
+        final RecyclerItem itemContact = new RecyclerItem(getString(R.string.more_contact_heading), getString(R.string.more_contact_description));
         moreList.add(itemContact);
-        final RecyclerItem itemRating = new RecyclerItem(getResources().getString(R.string.more_rating_heading), getResources().getString(R.string.more_rating_description));
+        final RecyclerItem itemRating = new RecyclerItem(getString(R.string.more_rating_heading), getString(R.string.more_rating_description));
         moreList.add(itemRating);
-        final RecyclerItem itemStatistics = new RecyclerItem(getResources().getString(R.string.more_statistics_heading), getResources().getString(R.string.more_statistics_description));
+        final RecyclerItem itemStatistics = new RecyclerItem(getString(R.string.more_statistics_heading), getString(R.string.more_statistics_description));
         moreList.add(itemStatistics);
-        final RecyclerItem itemExportImport = new RecyclerItem(getResources().getString(R.string.more_export_import_heading), getResources().getString(R.string.more_export_import_description));
+        final RecyclerItem itemExportImport = new RecyclerItem(getString(R.string.more_export_import_heading), getString(R.string.more_export_import_description));
         moreList.add(itemExportImport);
-        final RecyclerItem itemSoftware = new RecyclerItem(getResources().getString(R.string.more_software_heading), getResources().getString(R.string.more_software_description));
+        final RecyclerItem itemSoftware = new RecyclerItem(getString(R.string.more_software_heading), getString(R.string.more_software_description));
         moreList.add(itemSoftware);
+        final RecyclerItem itemPrivacy = new RecyclerItem(getString(R.string.more_privacy_heading), getString(R.string.more_privacy_description));
+        moreList.add(itemPrivacy);
         return moreList;
     }
 
@@ -107,6 +109,9 @@ public class More extends AppCompatActivity implements RecyclerViewAdapter.OnCli
                 break;
             case SOFTWARE:
                 navigateToSoftware();
+                break;
+            case PRIVACY:
+                navigateToPrivacyPolicy();
                 break;
             default:
         }
@@ -139,5 +144,10 @@ public class More extends AppCompatActivity implements RecyclerViewAdapter.OnCli
     private void navigateToSoftware() {
         final Intent softwareScreen = new Intent(More.this, Software.class);
         startActivity(softwareScreen);
+    }
+
+    private void navigateToPrivacyPolicy() {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.more_privacy_policy_url)));
+        startActivity(intent);
     }
 }

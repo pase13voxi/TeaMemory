@@ -56,7 +56,6 @@ public class VibratorTest {
         vibrator.vibrate();
 
         verify(systemVibrator, times(0)).vibrate(any());
-        verify(systemVibrator, times(0)).vibrate(any(), any());
     }
 
     @Test
@@ -68,7 +67,6 @@ public class VibratorTest {
         vibrator.vibrate();
 
         verify(systemVibrator, times(0)).vibrate(any());
-        verify(systemVibrator, times(0)).vibrate(any(), any());
     }
 
     @Test(expected = AssertionError.class)

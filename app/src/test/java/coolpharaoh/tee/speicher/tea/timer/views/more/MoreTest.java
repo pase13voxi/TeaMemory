@@ -41,7 +41,7 @@ public class MoreTest {
         moreActivityScenario.onActivity(more -> {
             final RecyclerView moreRecyclerView = more.findViewById(R.id.recycler_view_more);
 
-            assertThat(moreRecyclerView.getAdapter().getItemCount()).isEqualTo(5);
+            assertThat(moreRecyclerView.getAdapter().getItemCount()).isEqualTo(6);
 
             moreRecyclerView.scrollToPosition(0);
             shadowOf(getMainLooper()).idle();
@@ -67,6 +67,11 @@ public class MoreTest {
             shadowOf(getMainLooper()).idle();
             checkHeaderAndPositionAtPositionInRecyclerView(moreRecyclerView, 4,
                     more.getString(R.string.more_software_heading), more.getString(R.string.more_software_description));
+
+            moreRecyclerView.scrollToPosition(5);
+            shadowOf(getMainLooper()).idle();
+            checkHeaderAndPositionAtPositionInRecyclerView(moreRecyclerView, 5,
+                    more.getString(R.string.more_privacy_heading), more.getString(R.string.more_privacy_description));
 
 
             final TextView textViewVersion = more.findViewById(R.id.text_view_more_version);
@@ -151,6 +156,22 @@ public class MoreTest {
             final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
 
             assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
+        });
+    }
+
+    @Test
+    public void navigateToPrivacyPolicy() {
+        final int positionPrivacy = 5;
+
+        moreActivityScenario.onActivity(more -> {
+            final RecyclerView moreRecyclerView = more.findViewById(R.id.recycler_view_more);
+
+            clickAtPositionRecyclerView(moreRecyclerView, positionPrivacy);
+
+            final Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse(more.getString(R.string.more_privacy_policy_url)));
+            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+
+            assertThat(actual.getData()).isEqualTo(expected.getData());
         });
     }
 
