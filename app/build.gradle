@@ -10,8 +10,8 @@ android {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 28
         targetSdkVersion 33
-        versionCode 193
-        versionName "4.1"
+        versionCode 194
+        versionName "4.2"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'

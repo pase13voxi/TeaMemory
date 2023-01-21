@@ -33,6 +33,8 @@ class RecyclerItemsHeaderStrategyLastUsedTest {
             "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
     private static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"};
+    private static final String[] MONTH_NAMES_SHORT = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+            "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
     @Mock
     Application application;
@@ -42,9 +44,10 @@ class RecyclerItemsHeaderStrategyLastUsedTest {
     DateUtility dateUtility;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
         when(resources.getStringArray(R.array.overview_sort_last_used_month)).thenReturn(MONTH_NAMES);
+        when(resources.getStringArray(R.array.overview_sort_last_used_month_short)).thenReturn(MONTH_NAMES_SHORT);
         when(application.getResources()).thenReturn(resources);
         when(application.getString(R.string.overview_sort_last_used_this_week)).thenReturn("This week");
         when(application.getString(R.string.overview_sort_last_used_this_month)).thenReturn("This month");
@@ -74,22 +77,24 @@ class RecyclerItemsHeaderStrategyLastUsedTest {
                         RecyclerItemOverview::isFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
-                tuple(null, null, null, null, false, "- This week -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),
-                tuple(null, null, null, null, false, "- This month -"),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), teas.get(1).getColor(), true, null),
-                tuple(null, null, null, null, false, "- June -"),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), teas.get(2).getColor(), true, null),
-                tuple(null, null, null, null, false, "- 2019 -"),
-                tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), teas.get(3).getColor(), true, null)
-        );
+                        tuple(null, null, null, null, false, "- This week -"),
+                        tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),
+                        tuple(null, null, null, null, false, "- This month -"),
+                        tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), teas.get(1).getColor(), true, null),
+                        tuple(null, null, null, null, false, "- June -"),
+                        tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), teas.get(2).getColor(), true, null),
+                        tuple(null, null, null, null, false, "- Oct. 2019 -"),
+                        tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), teas.get(3).getColor(), true, null),
+                        tuple(null, null, null, null, false, "- 2019 -"),
+                        tuple(teas.get(4).getId(), teas.get(4).getName(), teas.get(4).getVariety(), teas.get(4).getColor(), true, null)
+                );
     }
 
     private ArrayList<Tea> createTeas() {
         final List<Date> dates = generateDifferentDates();
 
         final ArrayList<Tea> teas = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < dates.size(); i++) {
             final Tea tea = new Tea();
             tea.setId((long) i);
             tea.setName("TEA" + i + 1);
@@ -113,6 +118,8 @@ class RecyclerItemsHeaderStrategyLastUsedTest {
         dates.add(thisMonth);
         final Date thisYear = Date.from(now.minus(Duration.ofDays(50)));
         dates.add(thisYear);
+        final Date lastYearBetweenLastTwelveMonth = Date.from(now.minus(Duration.ofDays(300)));
+        dates.add(lastYearBetweenLastTwelveMonth);
         final Date lastYear = Date.from(now.minus(Duration.ofDays(500)));
         dates.add(lastYear);
 
