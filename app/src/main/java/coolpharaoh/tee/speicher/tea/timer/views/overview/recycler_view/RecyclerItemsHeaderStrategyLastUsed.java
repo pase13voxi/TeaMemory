@@ -2,12 +2,10 @@ package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
 
 import android.app.Application;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import coolpharaoh.tee.speicher.tea.timer.R;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
@@ -16,7 +14,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
 
 class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy {
 
-    private static final int YEAR_IN_DAYS = 365;
+    public static final int COUNT_MONTH_IN_YEAR = 12;
     private final Application application;
 
     RecyclerItemsHeaderStrategyLastUsed(final Application application) {
@@ -76,9 +74,9 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
         final int currentWeek = cal.get(Calendar.WEEK_OF_YEAR);
         final int currentYear = cal.get(Calendar.YEAR);
         cal.setTime(lastUsed);
-        final int countWeek = cal.get(Calendar.WEEK_OF_YEAR);
-        final int countYear = cal.get(Calendar.YEAR);
-        return (currentWeek == countWeek && currentYear == countYear);
+        final int lastUsedWeek = cal.get(Calendar.WEEK_OF_YEAR);
+        final int lastUsedYear = cal.get(Calendar.YEAR);
+        return (currentWeek == lastUsedWeek && currentYear == lastUsedYear);
     }
 
     private static boolean isCurrentMonth(final Date lastUsed, final Date currentDate) {
@@ -87,9 +85,9 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
         final int currentMonth = cal.get(Calendar.MONTH);
         final int currentYear = cal.get(Calendar.YEAR);
         cal.setTime(lastUsed);
-        final int countMonth = cal.get(Calendar.MONTH);
-        final int countYear = cal.get(Calendar.YEAR);
-        return (currentMonth == countMonth && currentYear == countYear);
+        final int lastUsedMonth = cal.get(Calendar.MONTH);
+        final int lastUsedYear = cal.get(Calendar.YEAR);
+        return (currentMonth == lastUsedMonth && currentYear == lastUsedYear);
     }
 
     private static boolean isCurrentYear(final Date lastUsed, final Date currentDate) {
@@ -97,13 +95,22 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
         cal.setTime(currentDate);
         final int currentYear = cal.get(Calendar.YEAR);
         cal.setTime(lastUsed);
-        final int countYear = cal.get(Calendar.YEAR);
-        return currentYear == countYear;
+        final int lastUsedYear = cal.get(Calendar.YEAR);
+        return currentYear == lastUsedYear;
     }
 
     private static boolean betweenLastTwelveMonth(final Date lastUsed, final Date currentDate) {
-        final long diff = currentDate.getTime() - lastUsed.getTime();
-        final long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        return YEAR_IN_DAYS > diffDays;
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+        final int currentMonth = cal.get(Calendar.MONTH);
+        final int currentYear = cal.get(Calendar.YEAR);
+        cal.setTime(lastUsed);
+        final int lastUsedMonth = cal.get(Calendar.MONTH);
+        final int lastUsedYear = cal.get(Calendar.YEAR);
+
+        final int differenceYear = currentYear - lastUsedYear;
+        final int differenceMonth = lastUsedMonth + differenceYear * COUNT_MONTH_IN_YEAR - currentMonth;
+
+        return COUNT_MONTH_IN_YEAR < differenceMonth;
     }
 }
