@@ -109,8 +109,8 @@ class RecyclerItemsHeaderStrategyLastUsed implements RecyclerItemsHeaderStrategy
         final int lastUsedYear = cal.get(Calendar.YEAR);
 
         final int differenceYear = currentYear - lastUsedYear;
-        final int differenceMonth = lastUsedMonth + differenceYear * COUNT_MONTH_IN_YEAR - currentMonth;
+        final int differenceMonth = currentMonth + differenceYear * COUNT_MONTH_IN_YEAR - lastUsedMonth;
 
-        return COUNT_MONTH_IN_YEAR < differenceMonth;
+        return COUNT_MONTH_IN_YEAR > differenceMonth;
     }
 }
