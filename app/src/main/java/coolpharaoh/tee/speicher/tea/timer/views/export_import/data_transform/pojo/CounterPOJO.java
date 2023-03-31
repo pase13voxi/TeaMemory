@@ -10,11 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CounterPOJO {
-    private int day;
     private int week;
     private int month;
+    private int year;
     private long overall;
-    private Date dayDate;
     private Date weekDate;
     private Date monthDate;
+    private Date yearDate;
 }

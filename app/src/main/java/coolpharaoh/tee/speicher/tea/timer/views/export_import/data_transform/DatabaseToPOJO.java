@@ -90,13 +90,13 @@ class DatabaseToPOJO {
 
     private CounterPOJO createCounterPOJO(final Counter counter) {
         final CounterPOJO counterPOJO = new CounterPOJO();
-        counterPOJO.setDay(counter.getDay());
         counterPOJO.setWeek(counter.getWeek());
         counterPOJO.setMonth(counter.getMonth());
+        counterPOJO.setYear(counter.getYear());
         counterPOJO.setOverall(counter.getOverall());
-        counterPOJO.setDayDate(counter.getDayDate());
         counterPOJO.setWeekDate(counter.getWeekDate());
         counterPOJO.setMonthDate(counter.getMonthDate());
+        counterPOJO.setYearDate(counter.getYearDate());
         return counterPOJO;
     }
 

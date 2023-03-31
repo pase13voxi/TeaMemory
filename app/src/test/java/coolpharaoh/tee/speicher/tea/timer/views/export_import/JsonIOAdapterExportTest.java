@@ -46,15 +46,15 @@ public class JsonIOAdapterExportTest {
             "\"date\":\"DATE\",\"infusions\":[{\"infusionIndex\":0,\"time\":\"2:00\",\"coolDownTime\":" +
             "\"5:00\",\"temperatureCelsius\":100,\"temperatureFahrenheit\":212},{\"infusionIndex\"" +
             ":1,\"time\":\"5:00\",\"coolDownTime\":\"3:00\",\"temperatureCelsius\":90,\"temperatureFahrenheit\"" +
-            ":195}],\"counters\":[{\"day\":1,\"week\":2,\"month\":3,\"overall\":4,\"dayDate\":\"DATE\"," +
-            "\"weekDate\":\"DATE\",\"monthDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
+            ":195}],\"counters\":[{\"week\":1,\"month\":2,\"year\":3,\"overall\":4,\"weekDate\":\"DATE\"," +
+            "\"monthDate\":\"DATE\",\"yearDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"" +
             ",\"description\":\"Description\"}]},{\"name\":\"name2\",\"variety\":\"variety2\",\"amount\"" +
             ":2.0,\"amountKind\":\"Ts\",\"color\":2,\"rating\":0,\"inStock\":false,\"nextInfusion\":2,\"" +
             "date\":\"DATE\",\"infusions\":[{\"infusionIndex\":0,\"time\":\"6:00\",\"coolDownTime\":" +
             "\"5:00\",\"temperatureCelsius\":100,\"temperatureFahrenheit\":212},{\"infusionIndex\":1," +
             "\"time\":\"7:00\",\"coolDownTime\":\"3:00\",\"temperatureCelsius\":90,\"temperatureFahrenheit\"" +
-            ":195}],\"counters\":[{\"day\":5,\"week\":6,\"month\":7,\"overall\":8,\"dayDate\":\"DATE\"," +
-            "\"weekDate\":\"DATE\",\"monthDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"," +
+            ":195}],\"counters\":[{\"week\":5,\"month\":6,\"year\":7,\"overall\":8,\"weekDate\":\"DATE\"," +
+            "\"monthDate\":\"DATE\",\"yearDate\":\"DATE\"}],\"notes\":[{\"position\":0,\"header\":\"Header\"," +
             "\"description\":\"Description\"}]}]";
 
     private String exportedDate;

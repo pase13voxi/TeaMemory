@@ -84,6 +84,16 @@ class CounterRepositoryTest {
     }
 
     @Test
+    void getTeaCounterYear() {
+        when(counterDao.getTeaCounterYear()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
+
+        final List<StatisticsPOJO> counters = counterRepository.getTeaCounterYear();
+
+        verify(counterDao).getTeaCounterYear();
+        assertThat(counters).hasSize(2);
+    }
+
+    @Test
     void getTeaCounterMonth() {
         when(counterDao.getTeaCounterMonth()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
 
@@ -100,16 +110,6 @@ class CounterRepositoryTest {
         final List<StatisticsPOJO> counters = counterRepository.getTeaCounterWeek();
 
         verify(counterDao).getTeaCounterWeek();
-        assertThat(counters).hasSize(2);
-    }
-
-    @Test
-    void getTeaCounterDay() {
-        when(counterDao.getTeaCounterDay()).thenReturn(Arrays.asList(new StatisticsPOJO(), new StatisticsPOJO()));
-
-        final List<StatisticsPOJO> counters = counterRepository.getTeaCounterDay();
-
-        verify(counterDao).getTeaCounterDay();
         assertThat(counters).hasSize(2);
     }
 }

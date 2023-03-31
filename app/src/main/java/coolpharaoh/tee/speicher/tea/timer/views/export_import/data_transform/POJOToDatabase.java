@@ -62,9 +62,9 @@ class POJOToDatabase {
 
     private void insertCounters(final long teaId, final List<CounterPOJO> counterList) {
         for (final CounterPOJO counterPOJO : counterList) {
-            dataTransformViewModel.insertCounter(new Counter(teaId, counterPOJO.getDay(),
-                    counterPOJO.getWeek(), counterPOJO.getMonth(), counterPOJO.getOverall(),
-                    counterPOJO.getDayDate(), counterPOJO.getWeekDate(), counterPOJO.getMonthDate()));
+            dataTransformViewModel.insertCounter(new Counter(teaId,
+                    counterPOJO.getWeek(), counterPOJO.getMonth(), counterPOJO.getYear(), counterPOJO.getOverall(),
+                    counterPOJO.getWeekDate(), counterPOJO.getMonthDate(), counterPOJO.getYearDate()));
         }
     }
 

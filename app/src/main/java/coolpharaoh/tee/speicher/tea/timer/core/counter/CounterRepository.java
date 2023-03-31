@@ -35,15 +35,15 @@ public class CounterRepository {
         return counterDao.getTeaCounterOverall();
     }
 
+    public List<StatisticsPOJO> getTeaCounterYear() {
+        return counterDao.getTeaCounterYear();
+    }
+
     public List<StatisticsPOJO> getTeaCounterMonth() {
         return counterDao.getTeaCounterMonth();
     }
 
     public List<StatisticsPOJO> getTeaCounterWeek() {
         return counterDao.getTeaCounterWeek();
-    }
-
-    public List<StatisticsPOJO> getTeaCounterDay() {
-        return counterDao.getTeaCounterDay();
     }
 }

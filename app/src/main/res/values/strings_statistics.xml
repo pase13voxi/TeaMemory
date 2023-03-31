@@ -3,10 +3,10 @@
     <string name="statistics_dialog_title">Select period</string>
     <string name="statistics_dialog_negative">Cancel</string>
     <string-array name="statistics_category">
-        <item>Overall</item>
-        <item>This month</item>
         <item>This week</item>
-        <item>Today</item>
+        <item>This month</item>
+        <item>This year</item>
+        <item>Overall</item>
     </string-array>
     <string name="statistics_action_period">Select period</string>
 </resources>

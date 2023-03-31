@@ -161,15 +161,15 @@ public class Information extends AppCompatActivity implements DetailRecyclerView
     }
 
     private void fillCounter() {
-        final TextView textViewToday = findViewById(R.id.text_view_information_counter_today);
         final TextView textViewWeek = findViewById(R.id.text_view_information_counter_week);
         final TextView textViewMonth = findViewById(R.id.text_view_information_counter_month);
+        final TextView textViewYear = findViewById(R.id.text_view_information_counter_year);
         final TextView textViewOverall = findViewById(R.id.text_view_information_counter_overall);
 
         final Counter counter = informationViewModel.getCounter();
-        textViewToday.setText(String.valueOf(counter.getDay()));
         textViewWeek.setText(String.valueOf(counter.getWeek()));
         textViewMonth.setText(String.valueOf(counter.getMonth()));
+        textViewYear.setText(String.valueOf(counter.getYear()));
         textViewOverall.setText(String.valueOf(counter.getOverall()));
     }
 

@@ -487,16 +487,16 @@ public class InformationTest {
         editTextAddHeader.setText(newContent);
     }
 
-    private void checkCounter(final Information information, final String today, final String week,
-                              final String month, final String overall) {
-        final TextView textViewToday = information.findViewById(R.id.text_view_information_counter_today);
+    private void checkCounter(final Information information, final String week,
+                              final String month, final String year, final String overall) {
         final TextView textViewWeek = information.findViewById(R.id.text_view_information_counter_week);
         final TextView textViewMonth = information.findViewById(R.id.text_view_information_counter_month);
+        final TextView textViewYear = information.findViewById(R.id.text_view_information_counter_year);
         final TextView textViewOverall = information.findViewById(R.id.text_view_information_counter_overall);
 
-        assertThat(textViewToday.getText()).hasToString(today);
         assertThat(textViewWeek.getText()).hasToString(week);
         assertThat(textViewMonth.getText()).hasToString(month);
+        assertThat(textViewYear.getText()).hasToString(year);
         assertThat(textViewOverall.getText()).hasToString(overall);
     }
 

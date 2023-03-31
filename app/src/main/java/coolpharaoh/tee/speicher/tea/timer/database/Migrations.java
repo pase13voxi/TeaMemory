@@ -270,4 +270,30 @@ class Migrations {
             database.execSQL("DROP TABLE settings");
         }
     };
+
+    static final Migration MIGRATION_14_15 = new Migration(14, 15) {
+        @Override
+        public void migrate(final SupportSQLiteDatabase database) {
+            // Create the new counter table
+            database.execSQL(
+                    "CREATE TABLE backup_counter (counter_id INTEGER PRIMARY KEY, " +
+                            "tea_id INTEGER NOT NULL, week INTEGER NOT NULL, " +
+                            "month INTEGER NOT NULL, year INTEGER NOT NULL, overall INTEGER NOT NULL, " +
+                            "week_date INTEGER, month_date INTEGER, year_date INTEGER, " +
+                            "FOREIGN KEY(tea_id) REFERENCES tea(tea_id) ON UPDATE NO ACTION ON DELETE CASCADE )"
+            );
+            // Copy the data
+            database.execSQL(
+                    "INSERT INTO backup_counter (counter_id, tea_id, week, month, year, overall, " +
+                            "week_date, month_date, year_date) " +
+                            "SELECT counter_id, tea_id, week, month, month, overall, " +
+                            "week_date, month_date, month_date FROM counter");
+            // Remove the old table
+            database.execSQL("DROP TABLE counter");
+            // Change the table name to the correct one
+            database.execSQL("ALTER TABLE backup_counter RENAME TO counter");
+            // Create Index
+            database.execSQL("CREATE INDEX IF NOT EXISTS index_counter_tea_id ON counter(tea_id)");
+        }
+    };
 }

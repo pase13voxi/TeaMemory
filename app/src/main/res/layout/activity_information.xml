@@ -162,10 +162,10 @@
                                 style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/information_counter_today" />
+                                android:text="@string/information_counter_week" />
 
                             <TextView
-                                android:id="@+id/text_view_information_counter_today"
+                                android:id="@+id/text_view_information_counter_week"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
@@ -185,10 +185,10 @@
                                 style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/information_counter_week" />
+                                android:text="@string/information_counter_month" />
 
                             <TextView
-                                android:id="@+id/text_view_information_counter_week"
+                                android:id="@+id/text_view_information_counter_month"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
@@ -214,10 +214,10 @@
                                 style="@style/information_text_view_counter_header_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/information_counter_month" />
+                                android:text="@string/information_counter_year" />
 
                             <TextView
-                                android:id="@+id/text_view_information_counter_month"
+                                android:id="@+id/text_view_information_counter_year"
                                 style="@style/information_text_view_counter_counting_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />

@@ -20,19 +20,18 @@ import java.util.List;
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
 
-
 @ExtendWith(MockitoExtension.class)
 class RefreshCounterTest {
     public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
-    public static final int DAY = 1;
-    public static final int WEEK = 2;
-    public static final int MONTH = 3;
+    public static final int WEEK = 1;
+    public static final int MONTH = 2;
+    public static final int YEAR = 3;
     public static final long OVERALL = 4L;
 
-    Date today;
-    Date dayBefore;
     Date weekBefore;
     Date monthBefore;
+    Date yearBefore;
+    Date today;
 
     @Mock
     DateUtility fixedDate;
@@ -42,9 +41,9 @@ class RefreshCounterTest {
         final Instant now = getFixedDate();
 
         today = Date.from(now);
-        dayBefore = Date.from(now.minus(Duration.ofDays(1)));
         weekBefore = Date.from(now.minus(Duration.ofDays(7)));
         monthBefore = Date.from(now.minus(Duration.ofDays(31)));
+        yearBefore = Date.from(now.minus(Duration.ofDays(370)));
 
         when(fixedDate.getDate()).thenReturn(today);
         CurrentDate.setFixedDate(fixedDate);
@@ -57,19 +56,19 @@ class RefreshCounterTest {
 
     @Test
     void resetIncompleteCounter() {
-        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, null, today, today);
+        final Counter counter = new Counter(0, WEEK, MONTH, YEAR, OVERALL, null, today, today);
 
         RefreshCounter.refreshCounter(counter);
 
         assertThat(counter)
                 .extracting(
-                        Counter::getDay,
                         Counter::getWeek,
                         Counter::getMonth,
+                        Counter::getYear,
                         Counter::getOverall,
-                        Counter::getDayDate,
                         Counter::getWeekDate,
-                        Counter::getMonthDate)
+                        Counter::getMonthDate,
+                        Counter::getYearDate)
                 .containsExactly(
                         0,
                         0,
@@ -83,75 +82,75 @@ class RefreshCounterTest {
 
     @Test
     void refreshCounterNothingChanged() {
-        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
+        final Counter counter = new Counter(0, WEEK, MONTH, YEAR, OVERALL, today, today, today);
 
         RefreshCounter.refreshCounter(counter);
 
         assertThat(counter)
                 .extracting(
-                        Counter::getDay,
                         Counter::getWeek,
                         Counter::getMonth,
+                        Counter::getYear,
                         Counter::getOverall)
                 .containsExactly(
-                        DAY,
                         WEEK,
                         MONTH,
-                        OVERALL
-                );
-    }
-
-    @Test
-    void refreshCounterDayRefreshed() {
-        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, dayBefore, dayBefore, dayBefore);
-
-        RefreshCounter.refreshCounter(counter);
-
-        assertThat(counter)
-                .extracting(
-                        Counter::getDay,
-                        Counter::getWeek,
-                        Counter::getMonth,
-                        Counter::getOverall)
-                .containsExactly(
-                        0,
-                        WEEK,
-                        MONTH,
+                        YEAR,
                         OVERALL
                 );
     }
 
     @Test
     void refreshCounterDayWeekRefreshed() {
-        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, weekBefore, weekBefore, weekBefore);
+        final Counter counter = new Counter(0, WEEK, MONTH, YEAR, OVERALL, weekBefore, weekBefore, weekBefore);
 
         RefreshCounter.refreshCounter(counter);
 
         assertThat(counter)
                 .extracting(
-                        Counter::getDay,
                         Counter::getWeek,
                         Counter::getMonth,
+                        Counter::getYear,
                         Counter::getOverall)
                 .containsExactly(
                         0,
-                        0,
                         MONTH,
+                        YEAR,
                         OVERALL
                 );
     }
 
     @Test
     void refreshCounterDayWeekMonthRefreshed() {
-        final Counter counter = new Counter(0, DAY, WEEK, MONTH, OVERALL, monthBefore, monthBefore, monthBefore);
+        final Counter counter = new Counter(0, WEEK, MONTH, YEAR, OVERALL, monthBefore, monthBefore, monthBefore);
 
         RefreshCounter.refreshCounter(counter);
 
         assertThat(counter)
                 .extracting(
-                        Counter::getDay,
                         Counter::getWeek,
                         Counter::getMonth,
+                        Counter::getYear,
+                        Counter::getOverall)
+                .containsExactly(
+                        0,
+                        0,
+                        YEAR,
+                        OVERALL
+                );
+    }
+
+    @Test
+    void refreshCounterYearRefreshed() {
+        final Counter counter = new Counter(0, WEEK, MONTH, YEAR, OVERALL, yearBefore, yearBefore, yearBefore);
+
+        RefreshCounter.refreshCounter(counter);
+
+        assertThat(counter)
+                .extracting(
+                        Counter::getWeek,
+                        Counter::getMonth,
+                        Counter::getYear,
                         Counter::getOverall)
                 .containsExactly(
                         0,
@@ -163,8 +162,8 @@ class RefreshCounterTest {
 
     @Test
     void refreshCounters() {
-        final Counter counter1 = new Counter(0, DAY, WEEK, MONTH, OVERALL, today, today, today);
-        final Counter counter2 = new Counter(0, DAY, WEEK, MONTH, OVERALL, monthBefore, monthBefore, monthBefore);
+        final Counter counter1 = new Counter(0, WEEK, MONTH, YEAR, OVERALL, today, today, today);
+        final Counter counter2 = new Counter(0, WEEK, MONTH, YEAR, OVERALL, yearBefore, yearBefore, yearBefore);
 
         final List<Counter> counters = Arrays.asList(counter1, counter2);
 
@@ -172,22 +171,22 @@ class RefreshCounterTest {
 
         assertThat(counter1)
                 .extracting(
-                        Counter::getDay,
                         Counter::getWeek,
                         Counter::getMonth,
+                        Counter::getYear,
                         Counter::getOverall)
                 .containsExactly(
-                        DAY,
                         WEEK,
                         MONTH,
+                        YEAR,
                         OVERALL
                 );
 
         assertThat(counter2)
                 .extracting(
-                        Counter::getDay,
                         Counter::getWeek,
                         Counter::getMonth,
+                        Counter::getYear,
                         Counter::getOverall)
                 .containsExactly(
                         0,

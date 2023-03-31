@@ -73,9 +73,9 @@ class JsonIOAdapterImportTest {
             "    ],\n" +
             "    \"counters\": [\n" +
             "      {\n" +
-            "        \"day\": 1,\n" +
-            "        \"week\": 2,\n" +
-            "        \"month\": 3,\n" +
+            "        \"week\": 1,\n" +
+            "        \"month\": 2,\n" +
+            "        \"year\": 3,\n" +
             "        \"overall\": 4,\n" +
             "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
             "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
@@ -118,9 +118,9 @@ class JsonIOAdapterImportTest {
             "    ],\n" +
             "    \"counters\": [\n" +
             "      {\n" +
-            "        \"day\": 5,\n" +
-            "        \"week\": 6,\n" +
-            "        \"month\": 7,\n" +
+            "        \"week\": 5,\n" +
+            "        \"month\": 6,\n" +
+            "        \"year\": 7,\n" +
             "        \"overall\": 8,\n" +
             "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
             "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
@@ -251,9 +251,9 @@ class JsonIOAdapterImportTest {
         final List<Counter> counters = captorCounter.getAllValues();
         assertThat(counters).extracting(
                 Counter::getTeaId,
-                Counter::getDay,
                 Counter::getWeek,
                 Counter::getMonth,
+                Counter::getYear,
                 Counter::getOverall
         ).containsExactly(
                 Tuple.tuple(0L, 1, 2, 3, 4L),

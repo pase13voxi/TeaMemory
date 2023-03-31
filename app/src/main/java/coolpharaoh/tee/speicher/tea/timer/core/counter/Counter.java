@@ -30,21 +30,17 @@ public class Counter {
     @ColumnInfo(name = "tea_id")
     private long teaId;
 
-    @ColumnInfo(name = "day")
-    private int day;
-
     @ColumnInfo(name = "week")
     private int week;
 
     @ColumnInfo(name = "month")
     private int month;
 
+    @ColumnInfo(name = "year")
+    private int year;
+
     @ColumnInfo(name = "overall")
     private long overall;
-
-    @TypeConverters(DateConverter.class)
-    @ColumnInfo(name = "day_date")
-    private Date dayDate;
 
     @TypeConverters(DateConverter.class)
     @ColumnInfo(name = "week_date")
@@ -54,22 +50,26 @@ public class Counter {
     @ColumnInfo(name = "month_date")
     private Date monthDate;
 
+    @TypeConverters(DateConverter.class)
+    @ColumnInfo(name = "year_date")
+    private Date yearDate;
+
     // the constructor needs these parameters
     @SuppressWarnings("java:S107")
     @Ignore
-    public Counter(final long teaId, final int day, final int week, final int month, final long overall,
-                   final Date dayDate, final Date weekDate, final Date monthDate) {
+    public Counter(final long teaId, final int week, final int month, final  int year, final long overall,
+                   final Date weekDate, final Date monthDate, final Date yearDate) {
         this.teaId = teaId;
-        this.day = day;
         this.week = week;
         this.month = month;
+        this.year = year;
         this.overall = overall;
-        this.dayDate = dayDate;
         this.weekDate = weekDate;
         this.monthDate = monthDate;
+        this.yearDate = yearDate;
     }
 
     public boolean hasEmptyFields() {
-        return Stream.of(dayDate, weekDate, monthDate).anyMatch(Objects::isNull);
+        return Stream.of(weekDate, monthDate, yearDate).anyMatch(Objects::isNull);
     }
 }

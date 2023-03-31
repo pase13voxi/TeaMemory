@@ -66,9 +66,9 @@ public class CounterDaoTest {
         assertThat(counterDao.getCounters()).hasSize(1);
 
         final Counter counterUpdate = counterDao.getCounterByTeaId(teaId);
-        counterUpdate.setDay(5);
         counterUpdate.setWeek(4);
         counterUpdate.setMonth(3);
+        counterUpdate.setYear(5);
         counterDao.update(counterUpdate);
 
         final Counter counterAfter = counterDao.getCounterByTeaId(teaId);
@@ -119,7 +119,7 @@ public class CounterDaoTest {
     }
 
     @Test
-    public void getTeaCounterMonth() {
+    public void getTeaCounterYear() {
         final List<Tea> teas = insertTeas();
 
         final Counter counterA = new Counter(teas.get(0).getId(), 4, 4, 1, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
@@ -133,26 +133,26 @@ public class CounterDaoTest {
         final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        final List<StatisticsPOJO> counterMonth = counterDao.getTeaCounterMonth();
+        final List<StatisticsPOJO> counterMonth = counterDao.getTeaCounterYear();
 
         assertThat(counterMonth).hasSize(4);
 
-        assertThat(counterMonth.get(3).counter).isEqualTo(counterD.getMonth());
+        assertThat(counterMonth.get(3).counter).isEqualTo(counterD.getYear());
         assertThat(counterMonth.get(3).teaName).isEqualTo(teas.get(3).getName());
         assertThat(counterMonth.get(3).teaColor).isEqualTo(teas.get(3).getColor());
-        assertThat(counterMonth.get(2).counter).isEqualTo(counterB.getMonth());
+        assertThat(counterMonth.get(2).counter).isEqualTo(counterB.getYear());
         assertThat(counterMonth.get(2).teaName).isEqualTo(teas.get(1).getName());
         assertThat(counterMonth.get(2).teaColor).isEqualTo(teas.get(1).getColor());
-        assertThat(counterMonth.get(1).counter).isEqualTo(counterC.getMonth());
+        assertThat(counterMonth.get(1).counter).isEqualTo(counterC.getYear());
         assertThat(counterMonth.get(1).teaName).isEqualTo(teas.get(2).getName());
         assertThat(counterMonth.get(1).teaColor).isEqualTo(teas.get(2).getColor());
-        assertThat(counterMonth.get(0).counter).isEqualTo(counterA.getMonth());
+        assertThat(counterMonth.get(0).counter).isEqualTo(counterA.getYear());
         assertThat(counterMonth.get(0).teaName).isEqualTo(teas.get(0).getName());
         assertThat(counterMonth.get(0).teaColor).isEqualTo(teas.get(0).getColor());
     }
 
     @Test
-    public void getTeaCounterWeek() {
+    public void getTeaCounterMonth() {
         final List<Tea> teas = insertTeas();
 
         final Counter counterA = new Counter(teas.get(0).getId(), 4, 3, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
@@ -166,26 +166,26 @@ public class CounterDaoTest {
         final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        final List<StatisticsPOJO> counterWeek = counterDao.getTeaCounterWeek();
+        final List<StatisticsPOJO> counterWeek = counterDao.getTeaCounterMonth();
 
         assertThat(counterWeek).hasSize(4);
 
-        assertThat(counterWeek.get(3).counter).isEqualTo(counterD.getWeek());
+        assertThat(counterWeek.get(3).counter).isEqualTo(counterD.getMonth());
         assertThat(counterWeek.get(3).teaName).isEqualTo(teas.get(3).getName());
         assertThat(counterWeek.get(3).teaColor).isEqualTo(teas.get(3).getColor());
-        assertThat(counterWeek.get(2).counter).isEqualTo(counterA.getWeek());
+        assertThat(counterWeek.get(2).counter).isEqualTo(counterA.getMonth());
         assertThat(counterWeek.get(2).teaName).isEqualTo(teas.get(0).getName());
         assertThat(counterWeek.get(2).teaColor).isEqualTo(teas.get(0).getColor());
-        assertThat(counterWeek.get(1).counter).isEqualTo(counterB.getWeek());
+        assertThat(counterWeek.get(1).counter).isEqualTo(counterB.getMonth());
         assertThat(counterWeek.get(1).teaName).isEqualTo(teas.get(1).getName());
         assertThat(counterWeek.get(1).teaColor).isEqualTo(teas.get(1).getColor());
-        assertThat(counterWeek.get(0).counter).isEqualTo(counterC.getWeek());
+        assertThat(counterWeek.get(0).counter).isEqualTo(counterC.getMonth());
         assertThat(counterWeek.get(0).teaName).isEqualTo(teas.get(2).getName());
         assertThat(counterWeek.get(0).teaColor).isEqualTo(teas.get(2).getColor());
     }
 
     @Test
-    public void getTeaCounterDay() {
+    public void getTeaCounterWeek() {
         final List<Tea> teas = insertTeas();
 
         final Counter counterA = new Counter(teas.get(0).getId(), 2, 4, 4, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
@@ -199,20 +199,20 @@ public class CounterDaoTest {
         final Counter counterE = new Counter(teas.get(4).getId(), 0, 0, 0, 0, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
         counterDao.insert(counterE);
 
-        final List<StatisticsPOJO> counterDay = counterDao.getTeaCounterDay();
+        final List<StatisticsPOJO> counterDay = counterDao.getTeaCounterWeek();
 
         assertThat(counterDay).hasSize(4);
 
-        assertThat(counterDay.get(3).counter).isEqualTo(counterB.getDay());
+        assertThat(counterDay.get(3).counter).isEqualTo(counterB.getWeek());
         assertThat(counterDay.get(3).teaName).isEqualTo(teas.get(1).getName());
         assertThat(counterDay.get(3).teaColor).isEqualTo(teas.get(1).getColor());
-        assertThat(counterDay.get(2).counter).isEqualTo(counterC.getDay());
+        assertThat(counterDay.get(2).counter).isEqualTo(counterC.getWeek());
         assertThat(counterDay.get(2).teaName).isEqualTo(teas.get(2).getName());
         assertThat(counterDay.get(2).teaColor).isEqualTo(teas.get(2).getColor());
-        assertThat(counterDay.get(1).counter).isEqualTo(counterA.getDay());
+        assertThat(counterDay.get(1).counter).isEqualTo(counterA.getWeek());
         assertThat(counterDay.get(1).teaName).isEqualTo(teas.get(0).getName());
         assertThat(counterDay.get(1).teaColor).isEqualTo(teas.get(0).getColor());
-        assertThat(counterDay.get(0).counter).isEqualTo(counterD.getDay());
+        assertThat(counterDay.get(0).counter).isEqualTo(counterD.getWeek());
         assertThat(counterDay.get(0).teaName).isEqualTo(teas.get(3).getName());
         assertThat(counterDay.get(0).teaColor).isEqualTo(teas.get(3).getColor());
     }

@@ -32,7 +32,7 @@ public class Statistics extends AppCompatActivity {
         statisticsViewModel = new StatisticsViewModel(getApplication());
 
         horizontalBarGraph = new HorizontalBarGraph(findViewById(R.id.horizontal_graph_statistics), this);
-        horizontalBarGraph.display(statisticsViewModel.getStatisticsOverall());
+        horizontalBarGraph.display(statisticsViewModel.getStatisticsWeek());
     }
 
     private void defineToolbarAsActionbar() {
@@ -79,7 +79,7 @@ public class Statistics extends AppCompatActivity {
             switch (checkedItem) {
                 case 0:
                     horizontalBarGraph.reset();
-                    horizontalBarGraph.display(statisticsViewModel.getStatisticsOverall());
+                    horizontalBarGraph.display(statisticsViewModel.getStatisticsWeek());
                     break;
                 case 1:
                     horizontalBarGraph.reset();
@@ -87,11 +87,11 @@ public class Statistics extends AppCompatActivity {
                     break;
                 case 2:
                     horizontalBarGraph.reset();
-                    horizontalBarGraph.display(statisticsViewModel.getStatisticsWeek());
+                    horizontalBarGraph.display(statisticsViewModel.getStatisticsYear());
                     break;
                 case 3:
                     horizontalBarGraph.reset();
-                    horizontalBarGraph.display(statisticsViewModel.getStatisticsDay());
+                    horizontalBarGraph.display(statisticsViewModel.getStatisticsOverall());
                     break;
                 default:
             }

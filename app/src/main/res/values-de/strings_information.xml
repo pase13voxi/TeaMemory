@@ -17,9 +17,9 @@
     <string name="information_detail_menu_delete">Löschen</string>
     <string name="information_counter_heading">Benutzung</string>
     <string name="information_counter_last_used">zuletzt verwendet: %1$s</string>
-    <string name="information_counter_today">Heute</string>
     <string name="information_counter_week">Diese Woche</string>
     <string name="information_counter_month">Dieser Monat</string>
+    <string name="information_counter_year">Dieses Jahr</string>
     <string name="information_counter_overall">Insgesamt</string>
     <string name="information_notes_heading">Notizen</string>
     <string name="information_notes_hint">Gib deine Notizen hier ein.</string>

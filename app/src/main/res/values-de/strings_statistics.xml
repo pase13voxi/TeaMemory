@@ -3,10 +3,10 @@
     <string name="statistics_dialog_title">Zeitraum wählen</string>
     <string name="statistics_dialog_negative">Abbrechen</string>
     <string-array name="statistics_category">
-        <item>Insgesamt</item>
-        <item>Dieser Monat</item>
         <item>Diese Woche</item>
-        <item>Heute</item>
+        <item>Dieser Monat</item>
+        <item>Dieses Jahr</item>
+        <item>Insgesamt</item>
     </string-array>
     <string name="statistics_action_period">Zeitraum wählen</string>
 </resources>

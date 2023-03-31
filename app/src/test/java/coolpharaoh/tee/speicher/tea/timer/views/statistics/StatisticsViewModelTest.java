@@ -66,6 +66,29 @@ class StatisticsViewModelTest {
     }
 
     @Test
+    void getStatisticsYear() {
+        final List<StatisticsPOJO> counterYearBefore = new ArrayList<>();
+
+        final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
+        statisticsPOJO1.teaName = "TEA1";
+        statisticsPOJO1.teaColor = 15;
+        statisticsPOJO1.counter = 15;
+        counterYearBefore.add(statisticsPOJO1);
+
+        final StatisticsPOJO statisticsPOJO2 = new StatisticsPOJO();
+        statisticsPOJO2.teaName = "TEA2";
+        statisticsPOJO2.teaColor = 18;
+        statisticsPOJO2.counter = 18;
+        counterYearBefore.add(statisticsPOJO2);
+
+        when(counterRepository.getTeaCounterYear()).thenReturn(counterYearBefore);
+
+        final List<StatisticsPOJO> counterDayAfter = statisticsViewModel.getStatisticsYear();
+
+        assertThat(counterDayAfter).isEqualTo(counterYearBefore);
+    }
+
+    @Test
     void getStatisticsMonth() {
         final List<StatisticsPOJO> counterMonthBefore = new ArrayList<>();
 
@@ -112,35 +135,12 @@ class StatisticsViewModelTest {
     }
 
     @Test
-    void getStatisticsDay() {
-        final List<StatisticsPOJO> counterDayBefore = new ArrayList<>();
-
-        final StatisticsPOJO statisticsPOJO1 = new StatisticsPOJO();
-        statisticsPOJO1.teaName = "TEA1";
-        statisticsPOJO1.teaColor = 15;
-        statisticsPOJO1.counter = 15;
-        counterDayBefore.add(statisticsPOJO1);
-
-        final StatisticsPOJO statisticsPOJO2 = new StatisticsPOJO();
-        statisticsPOJO2.teaName = "TEA2";
-        statisticsPOJO2.teaColor = 18;
-        statisticsPOJO2.counter = 18;
-        counterDayBefore.add(statisticsPOJO2);
-
-        when(counterRepository.getTeaCounterDay()).thenReturn(counterDayBefore);
-
-        final List<StatisticsPOJO> counterDayAfter = statisticsViewModel.getStatisticsDay();
-
-        assertThat(counterDayAfter).isEqualTo(counterDayBefore);
-    }
-
-    @Test
     void refreshAllCounter() {
         final Instant now = getFixedDate();
         final Date today = Date.from(now);
-        final Date dayBefore = Date.from(now.minus(Duration.ofDays(1)));
         final Date weekBefore = Date.from(now.minus(Duration.ofDays(7)));
         final Date monthBefore = Date.from(now.minus(Duration.ofDays(31)));
+        final Date yearBefore = Date.from(now.minus(Duration.ofDays(370)));
 
         when(fixedDate.getDate()).thenReturn(today);
         CurrentDate.setFixedDate(fixedDate);
@@ -149,13 +149,13 @@ class StatisticsViewModelTest {
 
         final Counter noRefresh = new Counter(1L, 4, 7, 9, 15L, today, today, today);
         countersBefore.add(noRefresh);
-        final Counter refreshDay = new Counter(1L, 4, 7, 9, 15L, dayBefore, today, today);
-        countersBefore.add(refreshDay);
-        final Counter refreshWeek = new Counter(1L, 4, 7, 9, 15L, today, weekBefore, today);
+        final Counter refreshWeek = new Counter(1L, 4, 7, 9, 15L, weekBefore, today, today);
         countersBefore.add(refreshWeek);
-        final Counter refreshMonth = new Counter(1L, 4, 7, 9, 15L, today, today, monthBefore);
+        final Counter refreshMonth = new Counter(1L, 4, 7, 9, 15L, today, monthBefore, today);
         countersBefore.add(refreshMonth);
-        final Counter refreshAll = new Counter(1L, 4, 7, 9, 15L, monthBefore, monthBefore, monthBefore);
+        final Counter refreshDay = new Counter(1L, 4, 7, 9, 15L, today, today, yearBefore);
+        countersBefore.add(refreshDay);
+        final Counter refreshAll = new Counter(1L, 4, 7, 9, 15L, yearBefore, yearBefore, yearBefore);
         countersBefore.add(refreshAll);
 
         when(counterRepository.getCounters()).thenReturn(countersBefore);
@@ -169,24 +169,24 @@ class StatisticsViewModelTest {
 
         assertThat(counterAfter.get(0)).isEqualTo(noRefresh);
 
-        assertThat(counterAfter.get(1).getDay()).isZero();
-        assertThat(counterAfter.get(1).getWeek()).isEqualTo(7);
-        assertThat(counterAfter.get(1).getMonth()).isEqualTo(9);
+        assertThat(counterAfter.get(1).getWeek()).isZero();
+        assertThat(counterAfter.get(1).getMonth()).isEqualTo(7);
+        assertThat(counterAfter.get(1).getYear()).isEqualTo(9);
         assertThat(counterAfter.get(1).getOverall()).isEqualTo(15L);
 
-        assertThat(counterAfter.get(2).getDay()).isEqualTo(4);
-        assertThat(counterAfter.get(2).getWeek()).isZero();
-        assertThat(counterAfter.get(2).getMonth()).isEqualTo(9);
+        assertThat(counterAfter.get(2).getWeek()).isEqualTo(4);
+        assertThat(counterAfter.get(2).getMonth()).isZero();
+        assertThat(counterAfter.get(2).getYear()).isEqualTo(9);
         assertThat(counterAfter.get(2).getOverall()).isEqualTo(15L);
 
-        assertThat(counterAfter.get(3).getDay()).isEqualTo(4);
-        assertThat(counterAfter.get(3).getWeek()).isEqualTo(7);
-        assertThat(counterAfter.get(3).getMonth()).isZero();
+        assertThat(counterAfter.get(3).getWeek()).isEqualTo(4);
+        assertThat(counterAfter.get(3).getMonth()).isEqualTo(7);
+        assertThat(counterAfter.get(3).getYear()).isZero();
         assertThat(counterAfter.get(3).getOverall()).isEqualTo(15L);
 
-        assertThat(counterAfter.get(4).getDay()).isZero();
         assertThat(counterAfter.get(4).getWeek()).isZero();
         assertThat(counterAfter.get(4).getMonth()).isZero();
+        assertThat(counterAfter.get(4).getYear()).isZero();
         assertThat(counterAfter.get(4).getOverall()).isEqualTo(15L);
     }
 

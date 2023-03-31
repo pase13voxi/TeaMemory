@@ -31,10 +31,10 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.poj
 
 @RunWith(RobolectricTestRunner.class)
 public class StatisticsTest {
-    private static final int OVERALL_ITEM = 0;
+    private static final int WEEK_ITEM = 0;
     private static final int MONTH_ITEM = 1;
-    private static final int WEEK_ITEM = 2;
-    private static final int DAY_ITEM = 3;
+    private static final int YEAR_ITEM = 2;
+    private static final int OVERALL_ITEM = 3;
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -54,10 +54,10 @@ public class StatisticsTest {
     }
 
     @Test
-    public void launchActivityAndExpectListOverall() {
+    public void launchActivityAndExpectListWeek() {
         final int countSize = 2;
         final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("LAUNCH", countSize);
-        when(counterDao.getTeaCounterOverall()).thenReturn(statisticsPOJOs);
+        when(counterDao.getTeaCounterWeek()).thenReturn(statisticsPOJOs);
 
         final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
@@ -65,10 +65,10 @@ public class StatisticsTest {
     }
 
     @Test
-    public void setPeriodOverallAndExpectListOverall() {
-        final int countSize = 3;
-        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("OVERALL", countSize);
-        when(counterDao.getTeaCounterOverall()).thenReturn(statisticsPOJOs);
+    public void setPeriodWeekAndExpectListWeek() {
+        final int countSize = 5;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("WEEK", countSize);
+        when(counterDao.getTeaCounterWeek()).thenReturn(statisticsPOJOs);
 
         final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
@@ -76,7 +76,7 @@ public class StatisticsTest {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OVERALL_ITEM);
+            shadowAlertDialog.clickOnItem(WEEK_ITEM);
 
             checkExpectedItems(statistics, countSize);
         });
@@ -101,10 +101,10 @@ public class StatisticsTest {
     }
 
     @Test
-    public void setPeriodWeekAndExpectListWeek() {
-        final int countSize = 5;
-        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("WEEK", countSize);
-        when(counterDao.getTeaCounterWeek()).thenReturn(statisticsPOJOs);
+    public void setPeriodDayAndExpectListYear() {
+        final int countSize = 6;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("YEAR", countSize);
+        when(counterDao.getTeaCounterYear()).thenReturn(statisticsPOJOs);
 
         final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
@@ -112,17 +112,17 @@ public class StatisticsTest {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(WEEK_ITEM);
+            shadowAlertDialog.clickOnItem(YEAR_ITEM);
 
             checkExpectedItems(statistics, countSize);
         });
     }
 
     @Test
-    public void setPeriodDayAndExpectListDay() {
-        final int countSize = 6;
-        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("DAY", countSize);
-        when(counterDao.getTeaCounterDay()).thenReturn(statisticsPOJOs);
+    public void setPeriodOverallAndExpectListOverall() {
+        final int countSize = 3;
+        final List<StatisticsPOJO> statisticsPOJOs = getStatisticsPOJOs("OVERALL", countSize);
+        when(counterDao.getTeaCounterOverall()).thenReturn(statisticsPOJOs);
 
         final ActivityScenario<Statistics> statisticsActivityScenario = ActivityScenario.launch(Statistics.class);
 
@@ -130,7 +130,7 @@ public class StatisticsTest {
             statistics.onOptionsItemSelected(new RoboMenuItem(R.id.action_statistics_period));
 
             final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(DAY_ITEM);
+            shadowAlertDialog.clickOnItem(OVERALL_ITEM);
 
             checkExpectedItems(statistics, countSize);
         });

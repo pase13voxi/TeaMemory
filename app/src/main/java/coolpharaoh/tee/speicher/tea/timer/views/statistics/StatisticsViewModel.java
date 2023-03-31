@@ -28,16 +28,16 @@ public class StatisticsViewModel {
         return counterRepository.getTeaCounterOverall();
     }
 
+    public List<StatisticsPOJO> getStatisticsYear() {
+        return counterRepository.getTeaCounterYear();
+    }
+
     public List<StatisticsPOJO> getStatisticsMonth() {
         return counterRepository.getTeaCounterMonth();
     }
 
     public List<StatisticsPOJO> getStatisticsWeek() {
         return counterRepository.getTeaCounterWeek();
-    }
-
-    public List<StatisticsPOJO> getStatisticsDay() {
-        return counterRepository.getTeaCounterDay();
     }
 
     void refreshAllCounter() {

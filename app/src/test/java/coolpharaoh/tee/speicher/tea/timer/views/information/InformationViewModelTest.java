@@ -272,7 +272,7 @@ class InformationViewModelTest {
         final Counter counterAfter = captor.getValue();
 
         assertThat(counterAfter)
-                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .extracting(Counter::getWeek, Counter::getMonth, Counter::getYear, Counter::getOverall)
                 .containsExactly(0, 0, 0, 0L);
     }
 }

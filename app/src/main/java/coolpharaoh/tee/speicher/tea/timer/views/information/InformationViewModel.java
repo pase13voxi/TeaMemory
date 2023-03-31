@@ -161,13 +161,13 @@ class InformationViewModel extends ViewModel {
         if (counter == null) {
             counter = new Counter();
             counter.setTeaId(teaId);
-            counter.setDay(0);
             counter.setWeek(0);
             counter.setMonth(0);
+            counter.setYear(0);
             counter.setOverall(0);
-            counter.setDayDate(CurrentDate.getDate());
             counter.setWeekDate(CurrentDate.getDate());
             counter.setMonthDate(CurrentDate.getDate());
+            counter.setYearDate(CurrentDate.getDate());
             counter.setId(counterRepository.insertCounter(counter));
         }
 

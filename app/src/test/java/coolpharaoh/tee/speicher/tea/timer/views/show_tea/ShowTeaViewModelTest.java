@@ -349,7 +349,7 @@ class ShowTeaViewModelTest {
         final Counter counterAfter = captor.getValue();
 
         assertThat(counterAfter)
-                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .extracting(Counter::getWeek, Counter::getMonth, Counter::getYear, Counter::getOverall)
                 .containsExactly(2, 2, 2, 2L);
     }
 
@@ -362,7 +362,7 @@ class ShowTeaViewModelTest {
         final Counter counterAfter = captor.getValue();
 
         assertThat(counterAfter)
-                .extracting(Counter::getDay, Counter::getWeek, Counter::getMonth, Counter::getOverall)
+                .extracting(Counter::getWeek, Counter::getMonth, Counter::getYear, Counter::getOverall)
                 .containsExactly(1, 1, 1, 1L);
     }
 
