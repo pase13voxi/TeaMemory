@@ -11,6 +11,8 @@
     <string name="show_tea_dialog_description_checkbox">Bitte nicht mehr zeigen!</string>
     <string name="show_tea_dialog_description_show">Anzeigen</string>
     <string name="show_tea_dialog_description_cancel">Abbrechen</string>
+    <string name="show_tea_snack_bar_notification_description">Erlaube das Anzeigen von Benachrichtigungen.</string>
+    <string name="show_tea_snack_bar_notification_button">Einstellung</string>
     <string name="show_tea_dialog_following_infusion_header">Nächster Aufguss</string>
     <string name="show_tea_dialog_following_infusion_description">Du hast diesen Tee zuletzt %1$d-mal aufgegossen. Möchtest du mit dem %2$d. Aufguss fortfahren?</string>
     <string name="show_tea_dialog_following_infusion_yes">Ja</string>

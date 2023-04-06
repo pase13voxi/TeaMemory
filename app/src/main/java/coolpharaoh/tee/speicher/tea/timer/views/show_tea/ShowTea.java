@@ -3,13 +3,18 @@ package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
 
 import static org.apache.commons.lang3.StringUtils.rightPad;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,9 +31,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
@@ -156,6 +165,7 @@ public class ShowTea extends AppCompatActivity {
         buttonInfo.setOnClickListener(v -> showDialogCoolingPeriod());
 
         buttonCalculateAmount.setOnClickListener(view -> decideToShowDialogAmount());
+
     }
 
     private void defineToolbarAsActionbar() {
@@ -367,6 +377,8 @@ public class ShowTea extends AppCompatActivity {
     }
 
     private void startTimer() {
+        askNotificationPermission();
+
         buttonStartTimer.setText(R.string.show_tea_timer_reset);
 
         collectDrinkingBehaviorInformation();
@@ -378,6 +390,27 @@ public class ShowTea extends AppCompatActivity {
         visualizeTeaCup();
 
         calculateInfusionTimeAndStartTimer();
+    }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    Snackbar.make(findViewById(R.id.show_tea_parent), R.string.show_tea_snack_bar_notification_description, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.show_tea_snack_bar_notification_button, v -> {
+                                final Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                final Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+                            }).show();
+                }
+            });
+
+    private void askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
     }
 
     private void collectDrinkingBehaviorInformation() {

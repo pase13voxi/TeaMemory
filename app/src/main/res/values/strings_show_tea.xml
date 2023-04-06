@@ -11,6 +11,8 @@
     <string name="show_tea_dialog_description_checkbox">Do not show me again!</string>
     <string name="show_tea_dialog_description_show">Show</string>
     <string name="show_tea_dialog_description_cancel">Cancel</string>
+    <string name="show_tea_snack_bar_notification_description">Allow notifications to be displayed.</string>
+    <string name="show_tea_snack_bar_notification_button">Setting</string>
     <string name="show_tea_dialog_following_infusion_header">Next infusion</string>
     <string name="show_tea_dialog_following_infusion_description">You last poured the tea %1$d time(s). Do you want to continue with the %2$d. infusion?</string>
     <string name="show_tea_dialog_following_infusion_yes">Yes</string>
