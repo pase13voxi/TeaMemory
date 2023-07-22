@@ -1,39 +1,33 @@
-package coolpharaoh.tee.speicher.tea.timer.views.description;
+package coolpharaoh.tee.speicher.tea.timer.views.description
 
-import static org.assertj.core.api.Assertions.assertThat;
+import android.widget.ImageButton
+import androidx.test.core.app.ActivityScenario
+import androidx.viewpager.widget.ViewPager
+import coolpharaoh.tee.speicher.tea.timer.R
+import org.assertj.core.api.Assertions
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-import android.widget.ImageButton;
-
-import androidx.test.core.app.ActivityScenario;
-import androidx.viewpager.widget.ViewPager;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-
-@RunWith(RobolectricTestRunner.class)
-public class UpdateDescriptionTest {
-
+@RunWith(RobolectricTestRunner::class)
+class UpdateDescriptionTest {
     @Test
-    public void launchActivityExpectOneImages() {
-        final ActivityScenario<UpdateDescription> updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription.class);
-        updateDescriptionActivityScenario.onActivity(updateDescription -> {
-            final ViewPager viewPager = updateDescription.findViewById(R.id.slide_view_description_pager);
-            final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
-            assertThat(slideAdapter.getCount()).isEqualTo(2);
-        });
+    fun launchActivityExpectOneImages() {
+        val updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription::class.java)
+        updateDescriptionActivityScenario.onActivity { updateDescription: UpdateDescription ->
+            val viewPager = updateDescription.findViewById<ViewPager>(R.id.slide_view_description_pager)
+            val slideAdapter = viewPager.adapter as SlideAdapter?
+            Assertions.assertThat(slideAdapter!!.count).isEqualTo(2)
+        }
     }
 
     @Test
-    public void exitActivity() {
-        final ActivityScenario<UpdateDescription> updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription.class);
-        updateDescriptionActivityScenario.onActivity(updateDescription -> {
-            ImageButton buttonClose = updateDescription.findViewById(R.id.button_description_close);
-            buttonClose.performClick();
-
-            assertThat(updateDescription.isFinishing()).isTrue();
-        });
+    fun exitActivity() {
+        val updateDescriptionActivityScenario = ActivityScenario.launch(UpdateDescription::class.java)
+        updateDescriptionActivityScenario.onActivity { updateDescription: UpdateDescription ->
+            val buttonClose = updateDescription.findViewById<ImageButton>(R.id.button_description_close)
+            buttonClose.performClick()
+            Assertions.assertThat(updateDescription.isFinishing).isTrue()
+        }
     }
 }

@@ -1,68 +1,67 @@
-package coolpharaoh.tee.speicher.tea.timer.views.contact;
+package coolpharaoh.tee.speicher.tea.timer.views.contact
 
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.pm.PackageInfoCompat;
-
-import java.util.Objects;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.pm.PackageInfoCompat
+import coolpharaoh.tee.speicher.tea.timer.R
+import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
-@SuppressWarnings("java:S110")
-public class Contact extends AppCompatActivity {
-    private static final String LOG_TAG = Contact.class.getSimpleName();
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact);
-        defineToolbarAsActionbar();
-        enableAndShowBackButton();
-
-        final Button buttonEmail = findViewById(R.id.button_contact_send_email);
-        buttonEmail.setOnClickListener(v -> writeEmail());
+class Contact : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_contact)
+        defineToolbarAsActionbar()
+        enableAndShowBackButton()
+        val buttonEmail = findViewById<Button>(R.id.button_contact_send_email)
+        buttonEmail.setOnClickListener { v: View? -> writeEmail() }
     }
 
-    private void defineToolbarAsActionbar() {
-        final Toolbar toolbar = findViewById(R.id.tool_bar);
-        final TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
-        mToolbarCustomTitle.setText(R.string.contact_heading);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+    private fun defineToolbarAsActionbar() {
+        val toolbar = findViewById<Toolbar>(R.id.tool_bar)
+        val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
+        mToolbarCustomTitle.setText(R.string.contact_heading)
+        setSupportActionBar(toolbar)
+        Objects.requireNonNull(supportActionBar)?.title = null
     }
 
-    private void enableAndShowBackButton() {
-        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private fun enableAndShowBackButton() {
+        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    private void writeEmail() {
+    private fun writeEmail() {
         try {
-            final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            final String versionName = packageInfo.versionName;
-            final long longVersionCode = PackageInfoCompat.getLongVersionCode(packageInfo);
-            final int versionCode = (int) longVersionCode;
-
-            final Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", getResources().getString(R.string.contact_email_address), null));
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.contact_email_subject));
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Release: " + versionCode
-                    + "\nApp: " + versionName + "\n\n");
-            startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.contact_email_chooser)));
-        } catch (final PackageManager.NameNotFoundException e) {
-            Toast.makeText(getApplication(), R.string.contact_email_open_failed, Toast.LENGTH_LONG).show();
-            Log.e(LOG_TAG, "The package manager was not found while sending an email.");
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val versionName = packageInfo.versionName
+            val longVersionCode = PackageInfoCompat.getLongVersionCode(packageInfo)
+            val versionCode = longVersionCode.toInt()
+            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", resources.getString(R.string.contact_email_address), null))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.contact_email_subject))
+            emailIntent.putExtra(Intent.EXTRA_TEXT, """
+     Release: $versionCode
+     App: $versionName
+     
+     
+     """.trimIndent())
+            startActivity(Intent.createChooser(emailIntent, resources.getString(R.string.contact_email_chooser)))
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(application, R.string.contact_email_open_failed, Toast.LENGTH_LONG).show()
+            Log.e(LOG_TAG, "The package manager was not found while sending an email.")
         }
+    }
+
+    companion object {
+        private val LOG_TAG = Contact::class.java.simpleName
     }
 }

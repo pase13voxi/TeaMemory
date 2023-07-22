@@ -1,76 +1,66 @@
-package coolpharaoh.tee.speicher.tea.timer.views.description;
+package coolpharaoh.tee.speicher.tea.timer.views.description
 
-import android.os.Bundle;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
+import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import coolpharaoh.tee.speicher.tea.timer.R
 
 // This class has 9 Parent because of AppCompatActivity
-@SuppressWarnings("java:S110")
-public class ShowTeaDescription extends AppCompatActivity {
-    private static final int[] slideImages = {
-            R.drawable.description_showtea_temperature,
-            R.drawable.description_showtea_amount,
-            R.drawable.description_showtea_infusions,
-            R.drawable.description_showtea_information
-    };
-
-    private LinearLayout dotLayout;
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_description);
-
-        final String[] slideDescription = getResources().getStringArray(R.array.description_showtea_slide_description);
-        final SlideAdapter slideAdapter = new SlideAdapter(getApplication(), slideImages, slideDescription);
-        final ViewPager slideViewPager = findViewById(R.id.slide_view_description_pager);
-        slideViewPager.setAdapter(slideAdapter);
-
-        dotLayout = findViewById(R.id.layout_description_dots);
-        addDotsIndicator(0, slideImages.length);
-        slideViewPager.addOnPageChangeListener(viewListener);
-
-        final ImageButton buttonClose = findViewById(R.id.button_description_close);
-        buttonClose.setOnClickListener(view -> finish());
+class ShowTeaDescription : AppCompatActivity() {
+    private var dotLayout: LinearLayout? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_description)
+        val slideDescription = resources.getStringArray(R.array.description_showtea_slide_description)
+        val slideAdapter = SlideAdapter(application, slideImages, slideDescription)
+        val slideViewPager = findViewById<ViewPager>(R.id.slide_view_description_pager)
+        slideViewPager.adapter = slideAdapter
+        dotLayout = findViewById(R.id.layout_description_dots)
+        addDotsIndicator(0, slideImages.size)
+        slideViewPager.addOnPageChangeListener(viewListener)
+        val buttonClose = findViewById<ImageButton>(R.id.button_description_close)
+        buttonClose.setOnClickListener { view: View? -> finish() }
     }
 
-    public void addDotsIndicator(final int position, final int size) {
-        final TextView[] dots = new TextView[size];
-        dotLayout.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new TextView(this);
-            dots[i].setText(R.string.description_dots);
-            dots[i].setTextSize(35);
-            dots[i].setTextColor(ContextCompat.getColor(getApplication(), R.color.background_green));
-
-            dotLayout.addView(dots[i]);
+    fun addDotsIndicator(position: Int, size: Int) {
+        val dots = arrayOfNulls<TextView>(size)
+        dotLayout!!.removeAllViews()
+        for (i in dots.indices) {
+            dots[i] = TextView(this)
+            dots[i]!!.setText(R.string.description_dots)
+            dots[i]!!.textSize = 35f
+            dots[i]!!.setTextColor(ContextCompat.getColor(application, R.color.background_green))
+            dotLayout!!.addView(dots[i])
         }
-
-        dots[position].setTextColor(ContextCompat.getColor(getApplication(), R.color.background_green_dark));
+        dots[position]!!.setTextColor(ContextCompat.getColor(application, R.color.background_green_dark))
     }
 
-
-    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(final int i, final float v, final int i1) {
+    var viewListener: OnPageChangeListener = object : OnPageChangeListener {
+        override fun onPageScrolled(i: Int, v: Float, i1: Int) {
             // this functionality is not needed, but needs to be override
         }
 
-        @Override
-        public void onPageSelected(final int i) {
-            addDotsIndicator(i, slideImages.length);
+        override fun onPageSelected(i: Int) {
+            addDotsIndicator(i, slideImages.size)
         }
 
-        @Override
-        public void onPageScrollStateChanged(final int i) {
+        override fun onPageScrollStateChanged(i: Int) {
             // this functionality is not needed, but needs to be override
         }
-    };
+    }
+
+    companion object {
+        private val slideImages = intArrayOf(
+                R.drawable.description_showtea_temperature,
+                R.drawable.description_showtea_amount,
+                R.drawable.description_showtea_infusions,
+                R.drawable.description_showtea_information
+        )
+    }
 }

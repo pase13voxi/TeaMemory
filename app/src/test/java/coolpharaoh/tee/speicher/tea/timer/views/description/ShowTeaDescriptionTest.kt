@@ -1,39 +1,33 @@
-package coolpharaoh.tee.speicher.tea.timer.views.description;
+package coolpharaoh.tee.speicher.tea.timer.views.description
 
-import static org.assertj.core.api.Assertions.assertThat;
+import android.widget.ImageButton
+import androidx.test.core.app.ActivityScenario
+import androidx.viewpager.widget.ViewPager
+import coolpharaoh.tee.speicher.tea.timer.R
+import org.assertj.core.api.Assertions
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-import android.widget.ImageButton;
-
-import androidx.test.core.app.ActivityScenario;
-import androidx.viewpager.widget.ViewPager;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-
-@RunWith(RobolectricTestRunner.class)
-public class ShowTeaDescriptionTest {
-
+@RunWith(RobolectricTestRunner::class)
+class ShowTeaDescriptionTest {
     @Test
-    public void launchActivityExpectThreeImages() {
-        final ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
-        showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
-            final ViewPager viewPager = showTeaDescription.findViewById(R.id.slide_view_description_pager);
-            final SlideAdapter slideAdapter = (SlideAdapter) viewPager.getAdapter();
-            assertThat(slideAdapter.getCount()).isEqualTo(4);
-        });
+    fun launchActivityExpectThreeImages() {
+        val showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription::class.java)
+        showTeaDescriptionActivityScenario.onActivity { showTeaDescription: ShowTeaDescription ->
+            val viewPager = showTeaDescription.findViewById<ViewPager>(R.id.slide_view_description_pager)
+            val slideAdapter = viewPager.adapter as SlideAdapter?
+            Assertions.assertThat(slideAdapter!!.count).isEqualTo(4)
+        }
     }
 
     @Test
-    public void exitActivity() {
-        final ActivityScenario<ShowTeaDescription> showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription.class);
-        showTeaDescriptionActivityScenario.onActivity(showTeaDescription -> {
-            final ImageButton buttonClose = showTeaDescription.findViewById(R.id.button_description_close);
-            buttonClose.performClick();
-
-            assertThat(showTeaDescription.isFinishing()).isTrue();
-        });
+    fun exitActivity() {
+        val showTeaDescriptionActivityScenario = ActivityScenario.launch(ShowTeaDescription::class.java)
+        showTeaDescriptionActivityScenario.onActivity { showTeaDescription: ShowTeaDescription ->
+            val buttonClose = showTeaDescription.findViewById<ImageButton>(R.id.button_description_close)
+            buttonClose.performClick()
+            Assertions.assertThat(showTeaDescription.isFinishing).isTrue()
+        }
     }
 }
