@@ -2,9 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'de.mannodermaus.android-junit5'
 apply plugin: 'org.sonarqube'
 apply from: '../jacoco.gradle'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
@@ -60,6 +61,12 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'com.google.android.play:core:1.10.3'
+    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
