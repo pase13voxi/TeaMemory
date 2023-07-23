@@ -30,7 +30,7 @@ class RecyclerItemsHeaderStrategyRating implements RecyclerItemsHeaderStrategy {
                 lastRating = rating;
             }
             final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.isInStock()));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.getInStock()));
         }
         return recyclerItems;
     }

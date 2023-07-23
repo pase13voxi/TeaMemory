@@ -461,7 +461,7 @@ public class OverviewTest {
             verify(teaDao).update(captor.capture());
             final Tea tea = captor.getValue();
 
-            assertThat(tea.isInStock()).isFalse();
+            assertThat(tea.getInStock()).isFalse();
         });
     }
 

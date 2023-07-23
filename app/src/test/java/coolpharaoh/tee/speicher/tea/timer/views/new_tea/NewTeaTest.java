@@ -127,7 +127,7 @@ public class NewTeaTest {
                     Tea::getAmount,
                     Tea::getAmountKind,
                     Tea::getRating,
-                    Tea::isInStock
+                    Tea::getInStock
             ).containsExactly(
                     "Name", BLACK_TEA.getCode(), -15461296, -500.0, TEA_SPOON.getText(), 0, true
             );

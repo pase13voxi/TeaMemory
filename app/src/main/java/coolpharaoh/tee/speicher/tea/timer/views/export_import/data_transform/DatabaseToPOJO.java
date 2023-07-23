@@ -48,7 +48,7 @@ class DatabaseToPOJO {
         teaPOJO.setAmountKind(tea.getAmountKind());
         teaPOJO.setColor(tea.getColor());
         teaPOJO.setRating(tea.getRating());
-        teaPOJO.setInStock(tea.isInStock());
+        teaPOJO.setInStock(tea.getInStock());
         teaPOJO.setNextInfusion(tea.getNextInfusion());
         teaPOJO.setDate(tea.getDate());
         return teaPOJO;

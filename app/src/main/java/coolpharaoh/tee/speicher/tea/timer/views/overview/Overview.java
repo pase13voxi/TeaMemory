@@ -124,13 +124,13 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
         popup.inflate(R.menu.menu_overview_tea_list);
 
         final Tea tea = overviewViewModel.getTeaBy(teaId);
-        final int inStockTitle = tea.isInStock() ?
+        final int inStockTitle = tea.getInStock() ?
                 R.string.overview_tea_list_menu_not_in_stock : R.string.overview_tea_list_menu_in_stock;
         popup.getMenu().findItem(R.id.action_overview_tea_list_in_stock).setTitle(inStockTitle);
 
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_overview_tea_list_in_stock) {
-                updateTeaInStock(teaId, !tea.isInStock());
+                updateTeaInStock(teaId, !tea.getInStock());
                 return true;
             } else if (item.getItemId() == R.id.action_overview_tea_list_edit) {
                 navigateToNewOrEditTea(teaId);

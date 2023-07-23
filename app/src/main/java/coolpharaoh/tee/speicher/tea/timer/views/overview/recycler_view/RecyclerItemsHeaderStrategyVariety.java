@@ -27,7 +27,7 @@ class RecyclerItemsHeaderStrategyVariety implements RecyclerItemsHeaderStrategy 
                 recyclerItems.add(new RecyclerItemOverview("- " + variety + " -", null, null, null, null, false));
                 lastVariety = variety;
             }
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.isInStock()));
+            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.getInStock()));
         }
         return recyclerItems;
     }

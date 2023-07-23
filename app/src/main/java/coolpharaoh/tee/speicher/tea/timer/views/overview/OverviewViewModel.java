@@ -91,7 +91,7 @@ class OverviewViewModel extends ViewModel {
 
     boolean isTeaInStock(final long id) {
         final Tea tea = teaRepository.getTeaById(id);
-        return tea.isInStock();
+        return tea.getInStock();
     }
 
     void updateInStockOfTea(final long id, final boolean inStock) {

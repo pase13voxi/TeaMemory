@@ -222,7 +222,7 @@ class JsonIOAdapterImportTest {
                 Tea::getAmountKind,
                 Tea::getColor,
                 Tea::getRating,
-                Tea::isInStock,
+                Tea::getInStock,
                 Tea::getNextInfusion
         ).containsExactly(
                 Tuple.tuple("name1", "variety1", 1.0, "Gr", 1, 3, true, 1),

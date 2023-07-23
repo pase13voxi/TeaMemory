@@ -333,7 +333,7 @@ public class TeaDaoTest {
 
         final Tea randomTea = teaDao.getRandomTeaInStock();
 
-        assertThat(randomTea.isInStock()).isTrue();
+        assertThat(randomTea.getInStock()).isTrue();
         assertThat(randomTea.getName())
                 .satisfiesAnyOf(
                         s -> assertThat(s).isEqualTo(tea2.getName()),

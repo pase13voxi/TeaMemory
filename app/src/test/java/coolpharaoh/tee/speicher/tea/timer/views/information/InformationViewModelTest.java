@@ -113,7 +113,7 @@ class InformationViewModelTest {
 
         final InformationViewModel informationViewModel = new InformationViewModel(TEA_ID, teaRepository, noteRepository, counterRepository, application);
 
-        assertThat(informationViewModel.isInStock()).isEqualTo(tea.isInStock());
+        assertThat(informationViewModel.isInStock()).isEqualTo(tea.getInStock());
     }
 
     @Test
@@ -128,7 +128,7 @@ class InformationViewModelTest {
         final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
         verify(teaRepository).updateTea(captor.capture());
 
-        assertThat(captor.getValue().isInStock()).isEqualTo(inStock);
+        assertThat(captor.getValue().getInStock()).isEqualTo(inStock);
     }
 
     @Test

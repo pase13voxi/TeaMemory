@@ -83,7 +83,7 @@ public class RandomChoiceDialog extends DialogFragment {
     private RecyclerItemOverview generateRecyclerViewItem(final Tea tea) {
         final String variety = convertStoredVarietyToText(tea.getVariety(), getActivity().getApplication());
         return new RecyclerItemOverview(null, tea.getId(), tea.getName(),
-                variety, tea.getColor(), tea.isInStock());
+                variety, tea.getColor(), tea.getInStock());
     }
 
     private void fillRandomChoice() {

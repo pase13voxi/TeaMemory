@@ -296,4 +296,13 @@ class Migrations {
             database.execSQL("CREATE INDEX IF NOT EXISTS index_counter_tea_id ON counter(tea_id)");
         }
     };
+/*
+    static final Migration MIGRATION_15_16 = new Migration(15, 16) {
+        @Override
+        public void migrate(final SupportSQLiteDatabase database) {
+            // TODO me
+        }
+    };
+
+ */
 }

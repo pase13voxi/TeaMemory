@@ -272,11 +272,11 @@ public class InformationTest {
 
             final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
             verify(teaDao).update(captor.capture());
-            assertThat(captor.getValue().isInStock()).isTrue();
+            assertThat(captor.getValue().getInStock()).isTrue();
 
             information.onOptionsItemSelected(new RoboMenuItem(R.id.action_information_in_stock));
 
-            assertThat(captor.getValue().isInStock()).isFalse();
+            assertThat(captor.getValue().getInStock()).isFalse();
         });
     }
 

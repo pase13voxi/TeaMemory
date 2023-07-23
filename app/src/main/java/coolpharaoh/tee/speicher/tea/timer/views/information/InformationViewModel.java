@@ -80,7 +80,7 @@ class InformationViewModel extends ViewModel {
 
     boolean isInStock() {
         final Tea tea = teaRepository.getTeaById(teaId);
-        return tea.isInStock();
+        return tea.getInStock();
     }
 
     void updateTeaInStock(final boolean inStock) {
