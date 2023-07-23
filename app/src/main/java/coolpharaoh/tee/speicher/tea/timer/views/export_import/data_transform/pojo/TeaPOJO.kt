@@ -1,26 +1,18 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo
 
-import java.util.Date;
-import java.util.List;
+import java.util.Date
 
-import lombok.Getter;
-import lombok.Setter;
-
-// sonar does not recognize the usage because of lombok
-@SuppressWarnings("java:S1068")
-@Getter
-@Setter
-public class TeaPOJO {
-    private String name;
-    private String variety;
-    private double amount;
-    private String amountKind;
-    private int color;
-    private int rating;
-    private boolean inStock;
-    private int nextInfusion;
-    private Date date;
-    private List<InfusionPOJO> infusions;
-    private List<CounterPOJO> counters;
-    private List<NotePOJO> notes;
+class TeaPOJO {
+    var name: String? = null
+    var variety: String? = null
+    var amount: Double = 0.0
+    var amountKind: String? = null
+    var color: Int = 0
+    var rating: Int = 0
+    var inStock: Boolean = false
+    var nextInfusion: Int = 0
+    var date: Date? = null
+    var infusions: List<InfusionPOJO>? = null
+    var counters: List<CounterPOJO>? = null
+    var notes: List<NotePOJO>? = null
 }

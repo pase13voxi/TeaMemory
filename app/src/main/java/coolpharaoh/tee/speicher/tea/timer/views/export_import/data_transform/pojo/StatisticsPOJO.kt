@@ -1,14 +1,17 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo
 
-import androidx.room.ColumnInfo;
+import androidx.room.ColumnInfo
 
-public class StatisticsPOJO {
+class StatisticsPOJO {
+    @JvmField
     @ColumnInfo(name = "name")
-    public String teaName;
+    var teaName: String? = null
 
+    @JvmField
     @ColumnInfo(name = "color")
-    public int teaColor;
+    var teaColor: Int = 0
 
+    @JvmField
     @ColumnInfo(name = "counter")
-    public long counter;
+    var counter: Long = 0
 }
