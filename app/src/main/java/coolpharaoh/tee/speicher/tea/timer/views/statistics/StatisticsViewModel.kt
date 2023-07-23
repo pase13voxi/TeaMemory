@@ -1,32 +1,48 @@
-package coolpharaoh.tee.speicher.tea.timer.views.statistics
+package coolpharaoh.tee.speicher.tea.timer.views.statistics;
 
-import android.app.Application
-import androidx.annotation.VisibleForTesting
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
-import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO
+import android.app.Application;
 
-class StatisticsViewModel @VisibleForTesting constructor(private val counterRepository: CounterRepository) {
-    constructor(application: Application?) : this(CounterRepository(application)) {}
+import androidx.annotation.VisibleForTesting;
 
-    init {
-        refreshAllCounter()
+import java.util.List;
+
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
+
+public class StatisticsViewModel {
+    private final CounterRepository counterRepository;
+
+    public StatisticsViewModel(final Application application) {
+        this(new CounterRepository(application));
     }
 
-    val statisticsOverall: List<StatisticsPOJO>
-        get() = counterRepository.teaCounterOverall
-    val statisticsYear: List<StatisticsPOJO>
-        get() = counterRepository.teaCounterYear
-    val statisticsMonth: List<StatisticsPOJO>
-        get() = counterRepository.teaCounterMonth
-    val statisticsWeek: List<StatisticsPOJO>
-        get() = counterRepository.teaCounterWeek
+    @VisibleForTesting
+    public StatisticsViewModel(final CounterRepository counterRepository) {
+        this.counterRepository = counterRepository;
+        refreshAllCounter();
+    }
 
-    fun refreshAllCounter() {
-        for (counter in RefreshCounter.refreshCounters(
-            counterRepository.counters
-        )) {
-            counterRepository.updateCounter(counter)
+    public List<StatisticsPOJO> getStatisticsOverall() {
+        return counterRepository.getTeaCounterOverall();
+    }
+
+    public List<StatisticsPOJO> getStatisticsYear() {
+        return counterRepository.getTeaCounterYear();
+    }
+
+    public List<StatisticsPOJO> getStatisticsMonth() {
+        return counterRepository.getTeaCounterMonth();
+    }
+
+    public List<StatisticsPOJO> getStatisticsWeek() {
+        return counterRepository.getTeaCounterWeek();
+    }
+
+    void refreshAllCounter() {
+        for (final Counter counter : RefreshCounter.refreshCounters(counterRepository.getCounters())) {
+            counterRepository.updateCounter(counter);
         }
     }
 }
