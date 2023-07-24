@@ -35,7 +35,7 @@ object RefreshCounter {
         counter.yearDate = currentDate
     }
 
-    private fun refreshWeek(counter: Counter, currentDate: Date?) {
+    private fun refreshWeek(counter: Counter, currentDate: Date) {
         val cal = Calendar.getInstance()
         cal.time = currentDate
         val currentWeek = cal[Calendar.WEEK_OF_YEAR]
@@ -49,7 +49,7 @@ object RefreshCounter {
         }
     }
 
-    private fun refreshMonth(counter: Counter, currentDate: Date?) {
+    private fun refreshMonth(counter: Counter, currentDate: Date) {
         val cal = Calendar.getInstance()
         cal.time = currentDate
         val currentMonth = cal[Calendar.MONTH]
@@ -63,7 +63,7 @@ object RefreshCounter {
         }
     }
 
-    private fun refreshYear(counter: Counter, currentDate: Date?) {
+    private fun refreshYear(counter: Counter, currentDate: Date) {
         val cal = Calendar.getInstance()
         cal.time = currentDate
         val currentYear = cal[Calendar.YEAR]

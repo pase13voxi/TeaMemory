@@ -13,7 +13,7 @@ object CurrentDate {
     }
 
     @JvmStatic
-    fun getDate(): Date? {
-        return dateUtility.getDate()
+    fun getDate(): Date {
+        return dateUtility.date
     }
 }
