@@ -1,9 +1,8 @@
-package coolpharaoh.tee.speicher.tea.timer.core.system;
+package coolpharaoh.tee.speicher.tea.timer.core.system
 
-import android.os.Build;
+import android.os.Build
 
-public class SystemUtility {
-    public int getSdkVersion() {
-        return Build.VERSION.SDK_INT;
-    }
+class SystemUtility {
+    val sdkVersion: Int
+        get() = Build.VERSION.SDK_INT
 }

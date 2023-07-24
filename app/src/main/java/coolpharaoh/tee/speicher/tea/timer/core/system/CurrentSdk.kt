@@ -1,20 +1,16 @@
-package coolpharaoh.tee.speicher.tea.timer.core.system;
+package coolpharaoh.tee.speicher.tea.timer.core.system
 
-import androidx.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting
 
-public class CurrentSdk {
-
-    private CurrentSdk() {
-    }
-
-    private static SystemUtility systemUtility = new SystemUtility();
-
+object CurrentSdk {
+    private var systemUtility = SystemUtility()
+    @JvmStatic
     @VisibleForTesting
-    public static void setFixedSystem(final SystemUtility fixedSystem) {
-        systemUtility = fixedSystem;
+    fun setFixedSystem(fixedSystem: SystemUtility) {
+        systemUtility = fixedSystem
     }
 
-    public static int getSdkVersion() {
-        return systemUtility.getSdkVersion();
-    }
+    @JvmStatic
+    val sdkVersion: Int
+        get() = systemUtility.sdkVersion
 }

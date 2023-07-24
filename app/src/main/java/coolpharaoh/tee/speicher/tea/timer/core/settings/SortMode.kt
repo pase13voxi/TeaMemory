@@ -1,42 +1,30 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings
 
-public enum SortMode {
+enum class SortMode(val text: String, val choice: Int) {
     LAST_USED("last_used", 0),
     ALPHABETICAL("alphabetical", 1),
     BY_VARIETY("by_variety", 2),
     RATING("rating", 3);
 
-    private final String text;
-    private final int choice;
-
-    SortMode(final String text, final int choice) {
-        this.text = text;
-        this.choice = choice;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public int getChoice() {
-        return choice;
-    }
-
-    public static SortMode fromText(final String text) {
-        for (final SortMode sortModeSetting : SortMode.values()) {
-            if (sortModeSetting.text.equalsIgnoreCase(text)) {
-                return sortModeSetting;
+    companion object {
+        @JvmStatic
+        fun fromText(text: String?): SortMode {
+            for (sortModeSetting in values()) {
+                if (sortModeSetting.text.equals(text, ignoreCase = true)) {
+                    return sortModeSetting
+                }
             }
+            return LAST_USED
         }
-        return LAST_USED;
-    }
 
-    public static SortMode fromChoice(final int choice) {
-        for (final SortMode sortModeSetting : SortMode.values()) {
-            if (sortModeSetting.choice == choice) {
-                return sortModeSetting;
+        @JvmStatic
+        fun fromChoice(choice: Int): SortMode {
+            for (sortModeSetting in values()) {
+                if (sortModeSetting.choice == choice) {
+                    return sortModeSetting
+                }
             }
+            return LAST_USED
         }
-        return LAST_USED;
     }
 }

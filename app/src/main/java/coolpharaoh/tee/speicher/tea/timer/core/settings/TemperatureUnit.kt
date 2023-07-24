@@ -1,40 +1,28 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings
 
-public enum TemperatureUnit {
+enum class TemperatureUnit(val text: String, val choice: Int) {
     CELSIUS("celsius", 0),
     FAHRENHEIT("fahrenheit", 1);
 
-    private final String text;
-    private final int choice;
-
-    TemperatureUnit(final String text, final int choice) {
-        this.text = text;
-        this.choice = choice;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public int getChoice() {
-        return choice;
-    }
-
-    public static TemperatureUnit fromText(final String text) {
-        for (final TemperatureUnit temperatureUnitSetting : TemperatureUnit.values()) {
-            if (temperatureUnitSetting.text.equalsIgnoreCase(text)) {
-                return temperatureUnitSetting;
+    companion object {
+        @JvmStatic
+        fun fromText(text: String?): TemperatureUnit {
+            for (temperatureUnitSetting in values()) {
+                if (temperatureUnitSetting.text.equals(text, ignoreCase = true)) {
+                    return temperatureUnitSetting
+                }
             }
+            return CELSIUS
         }
-        return CELSIUS;
-    }
 
-    public static TemperatureUnit fromChoice(final int choice) {
-        for (final TemperatureUnit temperatureUnitSetting : TemperatureUnit.values()) {
-            if (temperatureUnitSetting.choice == choice) {
-                return temperatureUnitSetting;
+        @JvmStatic
+        fun fromChoice(choice: Int): TemperatureUnit {
+            for (temperatureUnitSetting in values()) {
+                if (temperatureUnitSetting.choice == choice) {
+                    return temperatureUnitSetting
+                }
             }
+            return CELSIUS
         }
-        return CELSIUS;
     }
 }

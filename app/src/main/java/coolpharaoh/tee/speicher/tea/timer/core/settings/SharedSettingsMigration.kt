@@ -1,68 +1,59 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings
 
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings.TEA_MEMORY_SETTINGS;
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
+class SharedSettingsMigration(application: Application) {
+    private val sharedPreferences: SharedPreferences
+    private val sharedSettings: SharedSettings
 
-public class SharedSettingsMigration {
-    private static final int NEW_VERSION = 3;
-
-    private final SharedPreferences sharedPreferences;
-    private final SharedSettings sharedSettings;
-
-    public SharedSettingsMigration(final Application application) {
-        sharedPreferences = application.getSharedPreferences(TEA_MEMORY_SETTINGS, Context.MODE_PRIVATE);
-        sharedSettings = new SharedSettings(application);
+    init {
+        sharedPreferences = application.getSharedPreferences(
+            SharedSettings.TEA_MEMORY_SETTINGS,
+            Context.MODE_PRIVATE
+        )
+        sharedSettings = SharedSettings(application)
     }
 
-    public void migrate() {
-        final int oldVersion = sharedSettings.getSettingsVersion();
-
-        for (int nextVersion = oldVersion + 1; nextVersion <= NEW_VERSION; nextVersion++) {
-            delegateMigrations(nextVersion);
+    fun migrate() {
+        val oldVersion = sharedSettings.settingsVersion
+        for (nextVersion in oldVersion + 1..NEW_VERSION) {
+            delegateMigrations(nextVersion)
         }
-
-        sharedSettings.setSettingsVersion(NEW_VERSION);
+        sharedSettings.settingsVersion = NEW_VERSION
     }
 
-    private void delegateMigrations(final int nextVersion) {
-        switch (nextVersion) {
-            case 1:
-                migration0T1();
-                break;
-            case 2:
-                migration1T2();
-                break;
-            case 3:
-                migration2T3();
-                break;
-            default:
+    private fun delegateMigrations(nextVersion: Int) {
+        when (nextVersion) {
+            1 -> migration0T1()
+            2 -> migration1T2()
+            3 -> migration2T3()
+            else -> {}
         }
     }
 
-    private void migration0T1() {
-        if (sharedSettings.isFirstStart()) {
-            sharedSettings.setFactorySettings();
+    private fun migration0T1() {
+        if (sharedSettings.isFirstStart) {
+            sharedSettings.setFactorySettings()
         }
     }
 
-    private void migration1T2() {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.remove("IS_MIGRATED");
-        editor.remove("settings_permission_alert");
-        editor.putBoolean("overview_update_alert", true);
-
-        editor.apply();
+    private fun migration1T2() {
+        val editor = sharedPreferences.edit()
+        editor.remove("IS_MIGRATED")
+        editor.remove("settings_permission_alert")
+        editor.putBoolean("overview_update_alert", true)
+        editor.apply()
     }
 
-    private void migration2T3() {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
+    private fun migration2T3() {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("overview_update_alert", true)
+        editor.apply()
+    }
 
-        editor.putBoolean("overview_update_alert", true);
-
-        editor.apply();
+    companion object {
+        private const val NEW_VERSION = 3
     }
 }

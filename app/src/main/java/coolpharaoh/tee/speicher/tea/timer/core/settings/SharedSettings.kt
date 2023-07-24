@@ -1,181 +1,147 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings
 
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.SYSTEM;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.LAST_USED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
+class SharedSettings(application: Application) {
+    private val sharedPreferences: SharedPreferences
 
-public class SharedSettings {
-
-    static final String TEA_MEMORY_SETTINGS = "tea_memory_settings";
-    private static final String FIRST_START = "first_start";
-    private static final String SETTINGS_VERSION = "settings_version";
-
-    private static final String MUSIC_CHOICE = "music_choice";
-    private static final String MUSIC_NAME = "music_name";
-    private static final String VIBRATION = "vibration";
-    private static final String ANIMATION = "animation";
-    private static final String TEMPERATURE_UNIT = "temperature_unit";
-    private static final String DARK_MODE = "dark_mode";
-    private static final String OVERVIEW_UPDATE_ALERT = "overview_update_alert";
-    private static final String SHOW_TEA_ALERT = "show_tea_alert";
-    private static final String SORT_MODE = "sort_mode";
-    private static final String OVERVIEW_HEADER = "overview_header";
-    private static final String OVERVIEW_IN_STOCK = "overview_in_stock";
-
-    private final SharedPreferences sharedPreferences;
-
-    public SharedSettings(final Application application) {
-        sharedPreferences = application.getSharedPreferences(TEA_MEMORY_SETTINGS, Context.MODE_PRIVATE);
+    init {
+        sharedPreferences =
+            application.getSharedPreferences(TEA_MEMORY_SETTINGS, Context.MODE_PRIVATE)
     }
 
-    public boolean isFirstStart() {
-        return sharedPreferences.getBoolean(FIRST_START, true);
+    var isFirstStart: Boolean
+        get() = sharedPreferences.getBoolean(FIRST_START, true)
+        set(firstStart) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(FIRST_START, firstStart)
+            editor.apply()
+        }
+    var settingsVersion: Int
+        get() = sharedPreferences.getInt(SETTINGS_VERSION, 0)
+        set(settingsVersion) {
+            val editor = sharedPreferences.edit()
+            editor.putInt(SETTINGS_VERSION, settingsVersion)
+            editor.apply()
+        }
+    var musicChoice: String?
+        get() = sharedPreferences.getString(MUSIC_CHOICE, null)
+        set(musicChoice) {
+            val editor = sharedPreferences.edit()
+            editor.putString(MUSIC_CHOICE, musicChoice)
+            editor.apply()
+        }
+    var musicName: String?
+        get() = sharedPreferences.getString(MUSIC_NAME, null)
+        set(musicName) {
+            val editor = sharedPreferences.edit()
+            editor.putString(MUSIC_NAME, musicName)
+            editor.apply()
+        }
+    var isVibration: Boolean
+        get() = sharedPreferences.getBoolean(VIBRATION, true)
+        set(vibration) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(VIBRATION, vibration)
+            editor.apply()
+        }
+    var isAnimation: Boolean
+        get() = sharedPreferences.getBoolean(ANIMATION, true)
+        set(animation) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(ANIMATION, animation)
+            editor.apply()
+        }
+    var temperatureUnit: TemperatureUnit
+        get() {
+            val temperatureUnitString =
+                sharedPreferences.getString(TEMPERATURE_UNIT, TemperatureUnit.CELSIUS.text)
+            return TemperatureUnit.fromText(temperatureUnitString)
+        }
+        set(temperatureUnit) {
+            val editor = sharedPreferences.edit()
+            editor.putString(TEMPERATURE_UNIT, temperatureUnit.text)
+            editor.apply()
+        }
+    var darkMode: DarkMode
+        get() {
+            val darkModeString = sharedPreferences.getString(DARK_MODE, DarkMode.SYSTEM.text)
+            return DarkMode.fromText(darkModeString)
+        }
+        set(darkMode) {
+            val editor = sharedPreferences.edit()
+            editor.putString(DARK_MODE, darkMode.text)
+            editor.apply()
+        }
+    var isOverviewUpdateAlert: Boolean
+        get() = sharedPreferences.getBoolean(OVERVIEW_UPDATE_ALERT, false)
+        set(overviewUpdateAlert) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(OVERVIEW_UPDATE_ALERT, overviewUpdateAlert)
+            editor.apply()
+        }
+    var isShowTeaAlert: Boolean
+        get() = sharedPreferences.getBoolean(SHOW_TEA_ALERT, false)
+        set(showTeaAlert) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(SHOW_TEA_ALERT, showTeaAlert)
+            editor.apply()
+        }
+    var sortMode: SortMode
+        get() {
+            val sortModeText = sharedPreferences.getString(SORT_MODE, SortMode.LAST_USED.text)
+            return SortMode.fromText(sortModeText)
+        }
+        set(sortMode) {
+            val editor = sharedPreferences.edit()
+            editor.putString(SORT_MODE, sortMode.text)
+            editor.apply()
+        }
+    var isOverviewHeader: Boolean
+        get() = sharedPreferences.getBoolean(OVERVIEW_HEADER, false)
+        set(overviewHeader) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(OVERVIEW_HEADER, overviewHeader)
+            editor.apply()
+        }
+    var isOverviewInStock: Boolean
+        get() = sharedPreferences.getBoolean(OVERVIEW_IN_STOCK, false)
+        set(overviewInStock) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(OVERVIEW_IN_STOCK, overviewInStock)
+            editor.apply()
+        }
+
+    fun setFactorySettings() {
+        musicChoice = "content://settings/system/ringtone"
+        musicName = "Default"
+        isVibration = true
+        isAnimation = true
+        temperatureUnit = TemperatureUnit.CELSIUS
+        darkMode = DarkMode.SYSTEM
+        isOverviewUpdateAlert = false
+        isShowTeaAlert = true
+        sortMode = SortMode.LAST_USED
+        isOverviewHeader = false
+        isOverviewInStock = false
     }
 
-    public void setFirstStart(final boolean firstStart) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(FIRST_START, firstStart);
-        editor.apply();
-    }
-
-    public int getSettingsVersion() {
-        return sharedPreferences.getInt(SETTINGS_VERSION, 0);
-    }
-
-    public void setSettingsVersion(final int settingsVersion) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(SETTINGS_VERSION, settingsVersion);
-        editor.apply();
-    }
-
-    public String getMusicChoice() {
-        return sharedPreferences.getString(MUSIC_CHOICE, null);
-    }
-
-    public void setMusicChoice(final String musicChoice) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(MUSIC_CHOICE, musicChoice);
-        editor.apply();
-    }
-
-    public String getMusicName() {
-        return sharedPreferences.getString(MUSIC_NAME, null);
-    }
-
-    public void setMusicName(final String musicName) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(MUSIC_NAME, musicName);
-        editor.apply();
-    }
-
-    public boolean isVibration() {
-        return sharedPreferences.getBoolean(VIBRATION, true);
-    }
-
-    public void setVibration(final boolean vibration) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(VIBRATION, vibration);
-        editor.apply();
-    }
-
-    public boolean isAnimation() {
-        return sharedPreferences.getBoolean(ANIMATION, true);
-    }
-
-    public void setAnimation(final boolean animation) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(ANIMATION, animation);
-        editor.apply();
-    }
-
-    public TemperatureUnit getTemperatureUnit() {
-        final String temperatureUnitString = sharedPreferences.getString(TEMPERATURE_UNIT, CELSIUS.getText());
-        return TemperatureUnit.fromText(temperatureUnitString);
-    }
-
-    public void setTemperatureUnit(final TemperatureUnit temperatureUnit) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TEMPERATURE_UNIT, temperatureUnit.getText());
-        editor.apply();
-    }
-
-    public DarkMode getDarkMode() {
-        final String darkModeString = sharedPreferences.getString(DARK_MODE, SYSTEM.getText());
-        return DarkMode.fromText(darkModeString);
-    }
-
-    public void setDarkMode(final DarkMode darkMode) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(DARK_MODE, darkMode.getText());
-        editor.apply();
-    }
-
-    public boolean isOverviewUpdateAlert() {
-        return sharedPreferences.getBoolean(OVERVIEW_UPDATE_ALERT, false);
-    }
-
-    public void setOverviewUpdateAlert(final boolean overviewUpdateAlert) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(OVERVIEW_UPDATE_ALERT, overviewUpdateAlert);
-        editor.apply();
-    }
-
-    public boolean isShowTeaAlert() {
-        return sharedPreferences.getBoolean(SHOW_TEA_ALERT, false);
-    }
-
-    public void setShowTeaAlert(final boolean showTeaAlert) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SHOW_TEA_ALERT, showTeaAlert);
-        editor.apply();
-    }
-
-    public SortMode getSortMode() {
-        final String sortModeText = sharedPreferences.getString(SORT_MODE, LAST_USED.getText());
-        return SortMode.fromText(sortModeText);
-    }
-
-    public void setSortMode(final SortMode sortMode) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SORT_MODE, sortMode.getText());
-        editor.apply();
-    }
-
-    public boolean isOverviewHeader() {
-        return sharedPreferences.getBoolean(OVERVIEW_HEADER, false);
-    }
-
-    public void setOverviewHeader(final boolean overviewHeader) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(OVERVIEW_HEADER, overviewHeader);
-        editor.apply();
-    }
-
-    public boolean isOverviewInStock() {
-        return sharedPreferences.getBoolean(OVERVIEW_IN_STOCK, false);
-    }
-
-    public void setOverviewInStock(final boolean overviewInStock) {
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(OVERVIEW_IN_STOCK, overviewInStock);
-        editor.apply();
-    }
-
-    public void setFactorySettings() {
-        setMusicChoice("content://settings/system/ringtone");
-        setMusicName("Default");
-        setVibration(true);
-        setAnimation(true);
-        setTemperatureUnit(CELSIUS);
-        setDarkMode(SYSTEM);
-        setOverviewUpdateAlert(false);
-        setShowTeaAlert(true);
-        setSortMode(LAST_USED);
-        setOverviewHeader(false);
-        setOverviewInStock(false);
+    companion object {
+        const val TEA_MEMORY_SETTINGS = "tea_memory_settings"
+        private const val FIRST_START = "first_start"
+        private const val SETTINGS_VERSION = "settings_version"
+        private const val MUSIC_CHOICE = "music_choice"
+        private const val MUSIC_NAME = "music_name"
+        private const val VIBRATION = "vibration"
+        private const val ANIMATION = "animation"
+        private const val TEMPERATURE_UNIT = "temperature_unit"
+        private const val DARK_MODE = "dark_mode"
+        private const val OVERVIEW_UPDATE_ALERT = "overview_update_alert"
+        private const val SHOW_TEA_ALERT = "show_tea_alert"
+        private const val SORT_MODE = "sort_mode"
+        private const val OVERVIEW_HEADER = "overview_header"
+        private const val OVERVIEW_IN_STOCK = "overview_in_stock"
     }
 }
