@@ -53,5 +53,5 @@ interface TeaDao {
     fun deleteTeaById(id: Long)
 
     @Query("SELECT * FROM tea WHERE name LIKE ('%' || :searchString || '%') ORDER BY LOWER(name)")
-    fun getTeasBySearchString(searchString: String?): List<Tea?>?
+    fun getTeasBySearchString(searchString: String): List<Tea>
 }

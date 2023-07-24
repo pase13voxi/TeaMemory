@@ -1,80 +1,75 @@
-package coolpharaoh.tee.speicher.tea.timer.core.tea;
+package coolpharaoh.tee.speicher.tea.timer.core.tea
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 
-import java.util.List;
+class TeaRepository(application: Application?) {
+    private val teaDao: TeaDao
 
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-public class TeaRepository {
-    private final TeaDao teaDao;
-
-    public TeaRepository(final Application application) {
-        final TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
-        teaDao = teaMemoryDatabase.getTeaDao();
+    init {
+        val teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application)
+        teaDao = teaMemoryDatabase.teaDao
     }
 
-    public long insertTea(final Tea tea) {
-        return teaDao.insert(tea);
+    fun insertTea(tea: Tea): Long {
+        return teaDao.insert(tea)
     }
 
-    public void updateTea(final Tea tea) {
-        teaDao.update(tea);
+    fun updateTea(tea: Tea) {
+        teaDao.update(tea)
     }
 
-    public void deleteTeaById(final long id) {
-        teaDao.deleteTeaById(id);
+    fun deleteTeaById(id: Long) {
+        teaDao.deleteTeaById(id)
     }
 
-    public void deleteAllTeas() {
-        teaDao.deleteAll();
+    fun deleteAllTeas() {
+        teaDao.deleteAll()
     }
 
-    public List<Tea> getTeas() {
-        return teaDao.getTeas();
-    }
+    val teas: List<Tea>
+        get() = teaDao.getTeas()
 
-    public List<Tea> getTeasOrderByActivity(final boolean inStock) {
-        if (inStock) {
-            return teaDao.getTeasInStockOrderByActivity();
+    fun getTeasOrderByActivity(inStock: Boolean): List<Tea> {
+        return if (inStock) {
+            teaDao.getTeasInStockOrderByActivity()
         } else {
-            return teaDao.getTeasOrderByActivity();
+            teaDao.getTeasOrderByActivity()
         }
     }
 
-    public List<Tea> getTeasOrderByAlphabetic(final boolean inStock) {
-        if (inStock) {
-            return teaDao.getTeasInStockOrderByAlphabetic();
+    fun getTeasOrderByAlphabetic(inStock: Boolean): List<Tea> {
+        return if (inStock) {
+            teaDao.getTeasInStockOrderByAlphabetic()
         } else {
-            return teaDao.getTeasOrderByAlphabetic();
+            teaDao.getTeasOrderByAlphabetic()
         }
     }
 
-    public List<Tea> getTeasOrderByVariety(final boolean inStock) {
-        if (inStock) {
-            return teaDao.getTeasInStockOrderByVariety();
+    fun getTeasOrderByVariety(inStock: Boolean): List<Tea> {
+        return if (inStock) {
+            teaDao.getTeasInStockOrderByVariety()
         } else {
-            return teaDao.getTeasOrderByVariety();
+            teaDao.getTeasOrderByVariety()
         }
     }
 
-    public List<Tea> getTeasOrderByRating(final boolean inStock) {
-        if (inStock) {
-            return teaDao.getTeasInStockOrderByRating();
+    fun getTeasOrderByRating(inStock: Boolean): List<Tea> {
+        return if (inStock) {
+            teaDao.getTeasInStockOrderByRating()
         } else {
-            return teaDao.getTeasOrderByRating();
+            teaDao.getTeasOrderByRating()
         }
     }
 
-    public Tea getTeaById(final long id) {
-        return teaDao.getTeaById(id);
+    fun getTeaById(id: Long): Tea? {
+        return teaDao.getTeaById(id)
     }
 
-    public Tea getRandomTeaInStock() {
-        return teaDao.getRandomTeaInStock();
-    }
+    val randomTeaInStock: Tea?
+        get() = teaDao.getRandomTeaInStock()
 
-    public List<Tea> getTeasBySearchString(final String searchString) {
-        return teaDao.getTeasBySearchString(searchString);
+    fun getTeasBySearchString(searchString: String): List<Tea> {
+        return teaDao.getTeasBySearchString(searchString)
     }
 }

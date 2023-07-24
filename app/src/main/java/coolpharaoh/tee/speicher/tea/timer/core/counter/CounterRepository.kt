@@ -1,49 +1,41 @@
-package coolpharaoh.tee.speicher.tea.timer.core.counter;
+package coolpharaoh.tee.speicher.tea.timer.core.counter
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO
 
-import java.util.List;
+class CounterRepository(application: Application?) {
+    private val counterDao: CounterDao
 
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO;
-
-public class CounterRepository {
-    private final CounterDao counterDao;
-
-    public CounterRepository(final Application application) {
-        final TeaMemoryDatabase teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application);
-        counterDao = teaMemoryDatabase.getCounterDao();
+    init {
+        val teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application)
+        counterDao = teaMemoryDatabase.counterDao
     }
 
-    public Long insertCounter(final Counter counter) {
-        return counterDao.insert(counter);
+    fun insertCounter(counter: Counter): Long {
+        return counterDao.insert(counter)
     }
 
-    public void updateCounter(final Counter counter) {
-        counterDao.update(counter);
+    fun updateCounter(counter: Counter) {
+        counterDao.update(counter)
     }
 
-    public List<Counter> getCounters() {
-        return counterDao.getCounters();
+    val counters: List<Counter>
+        get() = counterDao.getCounters()
+
+    fun getCounterByTeaId(id: Long): Counter? {
+        return counterDao.getCounterByTeaId(id)
     }
 
-    public Counter getCounterByTeaId(final long id) {
-        return counterDao.getCounterByTeaId(id);
-    }
+    val teaCounterOverall: List<StatisticsPOJO>
+        get() = counterDao.getTeaCounterOverall()
 
-    public List<StatisticsPOJO> getTeaCounterOverall() {
-        return counterDao.getTeaCounterOverall();
-    }
+    val teaCounterYear: List<StatisticsPOJO>
+        get() = counterDao.getTeaCounterYear()
 
-    public List<StatisticsPOJO> getTeaCounterYear() {
-        return counterDao.getTeaCounterYear();
-    }
+    val teaCounterMonth: List<StatisticsPOJO>
+        get() = counterDao.getTeaCounterMonth()
 
-    public List<StatisticsPOJO> getTeaCounterMonth() {
-        return counterDao.getTeaCounterMonth();
-    }
-
-    public List<StatisticsPOJO> getTeaCounterWeek() {
-        return counterDao.getTeaCounterWeek();
-    }
+    val teaCounterWeek: List<StatisticsPOJO>
+        get() = counterDao.getTeaCounterWeek()
 }

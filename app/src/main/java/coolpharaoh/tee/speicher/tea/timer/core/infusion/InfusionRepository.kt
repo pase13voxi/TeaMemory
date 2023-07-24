@@ -1,33 +1,28 @@
-package coolpharaoh.tee.speicher.tea.timer.core.infusion;
+package coolpharaoh.tee.speicher.tea.timer.core.infusion
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 
-import java.util.List;
+class InfusionRepository(application: Application?) {
+    private val infusionDao: InfusionDao
 
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-public class InfusionRepository {
-
-    private final InfusionDao infusionDao;
-
-    public InfusionRepository(final Application application) {
-        final TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
-        infusionDao = database.getInfusionDao();
+    init {
+        val database = TeaMemoryDatabase.getDatabaseInstance(application)
+        infusionDao = database.infusionDao
     }
 
-    public void insertInfusion(final Infusion infusion) {
-        infusionDao.insert(infusion);
+    fun insertInfusion(infusion: Infusion) {
+        infusionDao.insert(infusion)
     }
 
-    public List<Infusion> getInfusions() {
-        return infusionDao.getInfusions();
+    val infusions: List<Infusion>
+        get() = infusionDao.getInfusions()
+
+    fun getInfusionsByTeaId(id: Long): List<Infusion> {
+        return infusionDao.getInfusionsByTeaId(id)
     }
 
-    public List<Infusion> getInfusionsByTeaId(final long id) {
-        return infusionDao.getInfusionsByTeaId(id);
-    }
-
-    public void deleteInfusionsByTeaId(final long id) {
-        infusionDao.deleteInfusionsByTeaId(id);
+    fun deleteInfusionsByTeaId(id: Long) {
+        infusionDao.deleteInfusionsByTeaId(id)
     }
 }

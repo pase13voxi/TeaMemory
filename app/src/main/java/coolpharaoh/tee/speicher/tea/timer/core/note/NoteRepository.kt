@@ -1,41 +1,36 @@
-package coolpharaoh.tee.speicher.tea.timer.core.note;
+package coolpharaoh.tee.speicher.tea.timer.core.note
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 
-import java.util.List;
+class NoteRepository(application: Application?) {
+    private val noteDao: NoteDao
 
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-public class NoteRepository {
-
-    private final NoteDao noteDao;
-
-    public NoteRepository(final Application application) {
-        final TeaMemoryDatabase database = TeaMemoryDatabase.getDatabaseInstance(application);
-        noteDao = database.getNoteDao();
+    init {
+        val database = TeaMemoryDatabase.getDatabaseInstance(application)
+        noteDao = database.noteDao
     }
 
-    public void insertNote(final Note note) {
-        noteDao.insert(note);
+    fun insertNote(note: Note) {
+        noteDao.insert(note)
     }
 
-    public void updateNote(final Note note) {
-        noteDao.update(note);
+    fun updateNote(note: Note) {
+        noteDao.update(note)
     }
 
-    public List<Note> getNotes() {
-        return noteDao.getNotes();
+    val notes: List<Note>
+        get() = noteDao.notes
+
+    fun getNoteByTeaIdAndPosition(teaId: Long, position: Int): Note? {
+        return noteDao.getNoteByTeaIdAndPosition(teaId, position)
     }
 
-    public Note getNoteByTeaIdAndPosition(final long teaId, final int position) {
-        return noteDao.getNoteByTeaIdAndPosition(teaId, position);
+    fun getNotesByTeaIdAndPositionBiggerZero(teaId: Long): List<Note> {
+        return noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId)
     }
 
-    public List<Note> getNotesByTeaIdAndPositionBiggerZero(final long teaId) {
-        return noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId);
-    }
-
-    public void deleteNoteByTeaIdAndPosition(final long teaId, final int position) {
-        noteDao.deleteNoteByTeaIdAndPosition(teaId, position);
+    fun deleteNoteByTeaIdAndPosition(teaId: Long, position: Int) {
+        noteDao.deleteNoteByTeaIdAndPosition(teaId, position)
     }
 }
