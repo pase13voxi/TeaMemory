@@ -1,21 +1,19 @@
-package coolpharaoh.tee.speicher.tea.timer.core.date;
+package coolpharaoh.tee.speicher.tea.timer.core.date
 
-import androidx.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting
+import java.util.Date
 
-import java.util.Date;
+object CurrentDate {
+    private var dateUtility = DateUtility()
 
-public class CurrentDate {
-
-    private CurrentDate() { }
-
-    private static DateUtility dateUtility = new DateUtility();
-
+    @JvmStatic
     @VisibleForTesting
-    public static void setFixedDate(final DateUtility fixedDate) {
-        dateUtility = fixedDate;
+    fun setFixedDate(fixedDate: DateUtility) {
+        dateUtility = fixedDate
     }
 
-    public static Date getDate() {
-        return dateUtility.getDate();
+    @JvmStatic
+    fun getDate(): Date? {
+        return dateUtility.getDate()
     }
 }

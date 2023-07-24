@@ -1,39 +1,38 @@
-package coolpharaoh.tee.speicher.tea.timer.core.infusion;
+package coolpharaoh.tee.speicher.tea.timer.core.infusion
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat
 
-public class TemperatureConversation {
-
-    private TemperatureConversation() {
-    }
-
-    public static int celsiusToFahrenheit(final int celsius) {
-        if (celsius == -500) {
-            return -500;
+object TemperatureConversation {
+    @JvmStatic
+    fun celsiusToFahrenheit(celsius: Int): Int {
+        return if (celsius == -500) {
+            -500
         } else {
-            final float tmp = (float) (9.0 / 5.0 * celsius + 32.0);
-            return Math.round(tmp);
+            val tmp = (9.0 / 5.0 * celsius + 32.0).toFloat()
+            Math.round(tmp)
         }
     }
 
-    public static int fahrenheitToCelsius(final int fahrenheit) {
-        if (fahrenheit == -500) {
-            return -500;
+    @JvmStatic
+    fun fahrenheitToCelsius(fahrenheit: Int): Int {
+        return if (fahrenheit == -500) {
+            -500
         } else {
-            final float tmp = (float) ((5.0 / 9.0) * (fahrenheit - 32.0));
-            return Math.round(tmp);
+            val tmp = (5.0 / 9.0 * (fahrenheit - 32.0)).toFloat()
+            Math.round(tmp)
         }
     }
 
-    public static String celsiusToCoolDownTime(int celsius){
-        if(celsius != 100 && celsius != -500) {
-            float tmpTime = (100 - (float) celsius) / 2;
-            int minute = (int) tmpTime;
-            int sek = (int) ((tmpTime - minute) * 60);
-            DecimalFormat df = new DecimalFormat("00");
-            return minute + ":" + df.format(sek);
-        }else{
-            return null;
+    @JvmStatic
+    fun celsiusToCoolDownTime(celsius: Int): String? {
+        return if (celsius != 100 && celsius != -500) {
+            val tmpTime = (100 - celsius.toFloat()) / 2
+            val minutes = tmpTime.toInt()
+            val seconds = ((tmpTime - minutes) * 60).toInt()
+            val decimalFormat = DecimalFormat("00")
+            minutes.toString() + ":" + decimalFormat.format(seconds.toLong())
+        } else {
+            null
         }
     }
 }
