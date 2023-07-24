@@ -1,16 +1,12 @@
-package coolpharaoh.tee.speicher.tea.timer.core.tea;
+package coolpharaoh.tee.speicher.tea.timer.core.tea
 
-public class ColorConversation {
-
-    private ColorConversation() {
-    }
-
-    public static int discoverForegroundColor(final int color) {
-        final int red = (color >> 16) & 0x000000FF;
-        final int green = (color >> 8) & 0x000000FF;
-        final int blue = (color) & 0x000000FF;
-        final double lum = ((0.299 * red) + ((0.587 * green) + (0.114 * blue)));
-        return lum > 186 ? 0xFF000000 : 0xFFFFFFFF;
-
+object ColorConversation {
+    @JvmStatic
+    fun discoverForegroundColor(color: Int): Int {
+        val red = color shr 16 and 0x000000FF
+        val green = color shr 8 and 0x000000FF
+        val blue = color and 0x000000FF
+        val lum = 0.299 * red + 0.587 * green + 0.114 * blue
+        return if (lum > 186) -0x1000000 else -0x1
     }
 }

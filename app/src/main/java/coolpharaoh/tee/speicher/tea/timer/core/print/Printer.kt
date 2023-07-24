@@ -1,6 +1,5 @@
-package coolpharaoh.tee.speicher.tea.timer.core.print;
+package coolpharaoh.tee.speicher.tea.timer.core.print
 
-public interface Printer {
-
-    void print(String message);
+interface Printer {
+    fun print(message: String?)
 }
