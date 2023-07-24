@@ -1,23 +1,20 @@
-package coolpharaoh.tee.speicher.tea.timer.core.infusion;
+package coolpharaoh.tee.speicher.tea.timer.core.infusion
 
-
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-
-import java.util.List;
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 
 @Dao
-public interface InfusionDao {
+interface InfusionDao {
     @Insert
-    void insert(Infusion items);
+    fun insert(items: Infusion)
 
     @Query("SELECT * FROM infusion")
-    List<Infusion> getInfusions();
+    fun getInfusions(): List<Infusion>
 
     @Query("SELECT * FROM infusion WHERE tea_id = :id")
-    List<Infusion> getInfusionsByTeaId(long id);
+    fun getInfusionsByTeaId(id: Long): List<Infusion>
 
     @Query("DELETE FROM infusion WHERE tea_id = :id")
-    void deleteInfusionsByTeaId(long id);
+    fun deleteInfusionsByTeaId(id: Long)
 }

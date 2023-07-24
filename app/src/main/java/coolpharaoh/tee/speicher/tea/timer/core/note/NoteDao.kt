@@ -1,31 +1,27 @@
-package coolpharaoh.tee.speicher.tea.timer.core.note;
+package coolpharaoh.tee.speicher.tea.timer.core.note
 
-
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import java.util.List;
-
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 
 @Dao
-public interface NoteDao {
+interface NoteDao {
     @Insert
-    void insert(Note items);
+    fun insert(items: Note)
 
     @Update
-    void update(Note items);
+    fun update(items: Note)
 
-    @Query("SELECT * FROM note")
-    List<Note> getNotes();
+    @get:Query("SELECT * FROM note")
+    val notes: List<Note>
 
     @Query("SELECT * FROM note WHERE tea_id = :teaId AND position = :position")
-    Note getNoteByTeaIdAndPosition(long teaId, int position);
+    fun getNoteByTeaIdAndPosition(teaId: Long, position: Int): Note?
 
     @Query("SELECT * FROM note WHERE tea_id = :teaId AND position >= 0 ORDER BY position")
-    List<Note> getNotesByTeaIdAndPositionBiggerZero(long teaId);
+    fun getNotesByTeaIdAndPositionBiggerZero(teaId: Long): List<Note>
 
     @Query("DELETE FROM note WHERE tea_id = :teaId AND position = :position")
-    void deleteNoteByTeaIdAndPosition(long teaId, int position);
+    fun deleteNoteByTeaIdAndPosition(teaId: Long, position: Int)
 }
