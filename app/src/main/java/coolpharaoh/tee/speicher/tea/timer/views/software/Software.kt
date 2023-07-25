@@ -12,7 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
 import java.util.Objects
 
-class Software : AppCompatActivity() {
+class Software : AppCompatActivity(), RecyclerViewAdapter.OnClickListener  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_software)
@@ -38,15 +38,16 @@ class Software : AppCompatActivity() {
     private fun configureAndShowListView() {
         val softwareList = generateListItems()
 
-        val adapter = RecyclerViewAdapter(R.layout.list_single_layout_software, softwareList)
-        { position: Int -> /*this functionality is not needed, but needs to be override*/}
+        val adapter = RecyclerViewAdapter(R.layout.list_single_layout_software, softwareList, this)
 
-        val recyclerViewDetails = findViewById<RecyclerView>(R.id.recycler_view_software)
-        recyclerViewDetails.addItemDecoration(DividerItemDecoration
-            (recyclerViewDetails.context, DividerItemDecoration.VERTICAL))
-        recyclerViewDetails.layoutManager = LinearLayoutManager(this)
-        recyclerViewDetails.adapter = adapter
-    }
+                val recyclerViewDetails = findViewById<RecyclerView>(R.id.recycler_view_software)
+                recyclerViewDetails.addItemDecoration(
+                    DividerItemDecoration
+                        (recyclerViewDetails.context, DividerItemDecoration.VERTICAL)
+                )
+                recyclerViewDetails.layoutManager = LinearLayoutManager(this)
+                recyclerViewDetails.adapter = adapter
+            }
 
     private fun generateListItems(): List<RecyclerItem> {
         val softwareList: MutableList<RecyclerItem> = ArrayList()
@@ -61,5 +62,9 @@ class Software : AppCompatActivity() {
         val itemGson = RecyclerItem(getString(R.string.software_gson_heading), getString(R.string.software_gson_description))
         softwareList.add(itemGson)
         return softwareList
+    }
+
+    override fun onRecyclerItemClick(position: Int) {
+        /*this functionality is not needed, but needs to be overwritten*/
     }
 }

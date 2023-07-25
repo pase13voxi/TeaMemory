@@ -1,79 +1,60 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview;
+package coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import coolpharaoh.tee.speicher.tea.timer.R
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class RecyclerViewAdapter(
+    private val viewId: Int,
+    private val listRowItems: List<RecyclerItem>,
+    private val onClickListener: OnClickListener
+) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
-import java.util.List;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val context = parent.context
+        val inflater = LayoutInflater.from(context)
 
-import coolpharaoh.tee.speicher.tea.timer.R;
+        val view = inflater.inflate(viewId, parent, false)
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
-    private final int viewId;
-    private final List<RecyclerItem> listRowItems;
-    private final OnClickListener onClickListener;
-
-    public RecyclerViewAdapter(final int resource, final List<RecyclerItem> listRowItems, final OnClickListener onClickListener) {
-        this.viewId = resource;
-        this.listRowItems = listRowItems;
-        this.onClickListener = onClickListener;
+        return ViewHolder(view, onClickListener)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        final Context context = parent.getContext();
-        final LayoutInflater inflater = LayoutInflater.from(context);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val listRowItem = listRowItems[position]
 
-        final View view = inflater.inflate(viewId, parent, false);
-
-        return new ViewHolder(view, onClickListener);
+        val header = holder.header
+        header.text = listRowItem.heading
+        val description = holder.description
+        description.text = listRowItem.description
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final RecyclerItem listRowItem = listRowItems.get(position);
-
-        final TextView header = holder.header;
-        header.setText(listRowItem.getHeading());
-        final TextView description = holder.description;
-        description.setText(listRowItem.getDescription());
+    override fun getItemCount(): Int {
+        return listRowItems.size
     }
 
-    @Override
-    public int getItemCount() {
-        return listRowItems.size();
-    }
+    class ViewHolder(itemView: View, onClickListener: OnClickListener) :
+        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        val header: TextView
+        val description: TextView
+        val onClickListener: OnClickListener
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView header;
-        private final TextView description;
-        final OnClickListener onClickListener;
+        init {
+            header = itemView.findViewById(R.id.text_view_recycler_view_heading)
+            description = itemView.findViewById(R.id.text_view_recycler_view_description)
+            itemView.setOnClickListener(this)
 
-        public ViewHolder(final View itemView, final OnClickListener onClickListener) {
-            super(itemView);
-
-            header = itemView.findViewById(R.id.text_view_recycler_view_heading);
-            description = itemView.findViewById(R.id.text_view_recycler_view_description);
-            itemView.setOnClickListener(this);
-
-            this.onClickListener = onClickListener;
+            this.onClickListener = onClickListener
         }
 
-
-        @Override
-        public void onClick(final View view) {
-            onClickListener.onRecyclerItemClick(getAdapterPosition());
+        override fun onClick(view: View) {
+            onClickListener.onRecyclerItemClick(adapterPosition)
         }
     }
 
-    public interface OnClickListener {
-        void onRecyclerItemClick(int position);
+    interface OnClickListener {
+        fun onRecyclerItemClick(position: Int)
     }
 }
