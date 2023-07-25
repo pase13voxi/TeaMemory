@@ -1,26 +1,25 @@
-package coolpharaoh.tee.speicher.tea.timer.core.settings;
+package coolpharaoh.tee.speicher.tea.timer.core.settings
 
-import static org.assertj.core.api.Assertions.assertThat;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.Companion.fromChoice
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Test;
-
-class SortModeTest {
-
+internal class SortModeTest {
     @Test
-    void getIndexVariety() {
-        final SortMode sortMode = SortMode.BY_VARIETY;
-        assertThat(sortMode.getChoice()).isEqualTo(2);
+    fun getIndexVariety() {
+        val sortMode = SortMode.BY_VARIETY
+        assertThat(sortMode.choice).isEqualTo(2)
     }
 
     @Test
-    void sortModeFromIndexTwo() {
-        final SortMode sortMode = SortMode.fromChoice(2);
-        assertThat(sortMode).isEqualTo(SortMode.BY_VARIETY);
+    fun sortModeFromIndexTwo() {
+        val sortMode = fromChoice(2)
+        assertThat(sortMode).isEqualTo(SortMode.BY_VARIETY)
     }
 
     @Test
-    void temperatureUnitFromTextNotDefined() {
-        final SortMode sortMode = SortMode.fromChoice(5);
-        assertThat(sortMode).isEqualTo(SortMode.LAST_USED);
+    fun temperatureUnitFromTextNotDefined() {
+        val sortMode = fromChoice(5)
+        assertThat(sortMode).isEqualTo(SortMode.LAST_USED)
     }
 }

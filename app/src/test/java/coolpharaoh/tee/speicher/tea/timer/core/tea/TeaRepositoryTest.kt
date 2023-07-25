@@ -1,182 +1,179 @@
-package coolpharaoh.tee.speicher.tea.timer.core.tea;
+package coolpharaoh.tee.speicher.tea.timer.core.tea
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
+import org.mockito.junit.jupiter.MockitoExtension
 
-import android.app.Application;
+@ExtendWith(MockitoExtension::class)
+internal class TeaRepositoryTest {
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Arrays;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-@ExtendWith(MockitoExtension.class)
-class TeaRepositoryTest {
     @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
-    @Mock
-    TeaDao teaDao;
+    var teaMemoryDatabase: TeaMemoryDatabase? = null
 
-    private TeaRepository teaRepository;
+    @Mock
+
+    var teaDao: TeaDao? = null
+    private var teaRepository: TeaRepository? = null
 
     @BeforeEach
-    void setUp() {
-        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
+    fun setUp() {
+        setMockedDatabase(teaMemoryDatabase)
+        `when`(teaMemoryDatabase!!.teaDao).thenReturn(teaDao)
 
-        teaRepository = new TeaRepository(new Application());
+        teaRepository = TeaRepository(Application())
     }
 
     @Test
-    void insertTea() {
-        final Tea tea = new Tea();
+    fun insertTea() {
+        val tea = Tea()
 
-        teaRepository.insertTea(tea);
+        teaRepository!!.insertTea(tea)
 
-        verify(teaDao).insert(tea);
+        verify(teaDao)?.insert(tea)
     }
 
     @Test
-    void updateTea() {
-        final Tea tea = new Tea();
+    fun updateTea() {
+        val tea = Tea()
 
-        teaRepository.updateTea(tea);
+        teaRepository!!.updateTea(tea)
 
-        verify(teaDao).update(tea);
+        verify(teaDao)?.update(tea)
     }
 
     @Test
-    void deleteTeaById() {
-        final long teaId = 1;
+    fun deleteTeaById() {
+        val teaId: Long = 1
 
-        teaRepository.deleteTeaById(teaId);
+        teaRepository!!.deleteTeaById(teaId)
 
-        verify(teaDao).deleteTeaById(teaId);
+        verify(teaDao)?.deleteTeaById(teaId)
     }
 
     @Test
-    void deleteAllTeas() {
-        teaRepository.deleteAllTeas();
+    fun deleteAllTeas() {
+        teaRepository!!.deleteAllTeas()
 
-        verify(teaDao).deleteAll();
+        verify(teaDao)?.deleteAll()
     }
 
     @Test
-    void getTeas() {
-        when(teaDao.getTeas()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeas() {
+        `when`(teaDao!!.getTeas()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeas();
+        val teas = teaRepository!!.teas
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasOrderByActivity() {
-        when(teaDao.getTeasOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasOrderByActivity() {
+        `when`(teaDao!!.getTeasOrderByActivity()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByActivity(false);
+        val teas = teaRepository!!.getTeasOrderByActivity(false)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasInStockOrderByActivity() {
-        when(teaDao.getTeasInStockOrderByActivity()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasInStockOrderByActivity() {
+        `when`(teaDao!!.getTeasInStockOrderByActivity()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByActivity(true);
+        val teas = teaRepository!!.getTeasOrderByActivity(true)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasOrderByAlphabetic() {
-        when(teaDao.getTeasOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasOrderByAlphabetic() {
+        `when`(teaDao!!.getTeasOrderByAlphabetic()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(false);
+        val teas = teaRepository!!.getTeasOrderByAlphabetic(false)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasInStockOrderByAlphabetic() {
-        when(teaDao.getTeasInStockOrderByAlphabetic()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasInStockOrderByAlphabetic() {
+        `when`(teaDao!!.getTeasInStockOrderByAlphabetic()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByAlphabetic(true);
+        val teas = teaRepository!!.getTeasOrderByAlphabetic(true)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasOrderByVariety() {
-        when(teaDao.getTeasOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasOrderByVariety() {
+        `when`(teaDao!!.getTeasOrderByVariety()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByVariety(false);
+        val teas = teaRepository!!.getTeasOrderByVariety(false)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasStockOrderByVariety() {
-        when(teaDao.getTeasInStockOrderByVariety()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasStockOrderByVariety() {
+        `when`(teaDao!!.getTeasInStockOrderByVariety()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByVariety(true);
+        val teas = teaRepository!!.getTeasOrderByVariety(true)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasOrderByRating() {
-        when(teaDao.getTeasOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasOrderByRating() {
+        `when`(teaDao!!.getTeasOrderByRating()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByRating(false);
+        val teas = teaRepository!!.getTeasOrderByRating(false)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeasInStockOrderByRating() {
-        when(teaDao.getTeasInStockOrderByRating()).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasInStockOrderByRating() {
+        `when`(teaDao!!.getTeasInStockOrderByRating()).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasOrderByRating(true);
+        val teas = teaRepository!!.getTeasOrderByRating(true)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 
     @Test
-    void getTeaById() {
-        final long teaId = 1;
-        final Tea tea = new Tea();
-        when(teaDao.getTeaById(teaId)).thenReturn(tea);
+    fun getTeaById() {
+        val teaId: Long = 1
+        val tea = Tea()
+        `when`(teaDao!!.getTeaById(teaId)).thenReturn(tea)
 
-        final Tea teaById = teaRepository.getTeaById(teaId);
+        val teaById = teaRepository!!.getTeaById(teaId)
 
-        assertThat(teaById).isEqualTo(tea);
+        assertThat(teaById).isEqualTo(tea)
     }
 
     @Test
-    void getRandomTeaInStock() {
-        final Tea tea = new Tea();
-        when(teaDao.getRandomTeaInStock()).thenReturn(tea);
+    fun getRandomTeaInStock() {
+        val tea = Tea()
+        `when`(teaDao!!.getRandomTeaInStock()).thenReturn(tea)
 
-        final Tea randomTea = teaRepository.getRandomTeaInStock();
+        val randomTea = teaRepository!!.randomTeaInStock
 
-        assertThat(randomTea).isEqualTo(tea);
+        assertThat(randomTea).isEqualTo(tea)
     }
 
     @Test
-    void getTeasBySearchString() {
-        final String searchString = "search";
-        when(teaDao.getTeasBySearchString(searchString)).thenReturn(Arrays.asList(new Tea(), new Tea()));
+    fun getTeasBySearchString() {
+        val searchString = "search"
+        `when`(teaDao!!.getTeasBySearchString(searchString)).thenReturn(listOf(Tea(), Tea()))
 
-        final List<Tea> teas = teaRepository.getTeasBySearchString(searchString);
+        val teas = teaRepository!!.getTeasBySearchString(searchString)
 
-        assertThat(teas).hasSize(2);
+        assertThat(teas).hasSize(2)
     }
 }

@@ -1,22 +1,21 @@
-package coolpharaoh.tee.speicher.tea.timer.core.tea;
+package coolpharaoh.tee.speicher.tea.timer.core.tea
 
-import static org.assertj.core.api.Assertions.assertThat;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation.discoverForegroundColor
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Test;
-
-class ColorConversationTest {
-
+internal class ColorConversationTest {
     @Test
-    void discoverForegroundColorLight() {
-        final int colorBlackTea = -15461296;
-        final int colorForeground = ColorConversation.discoverForegroundColor(colorBlackTea);
-        assertThat(colorForeground).isEqualTo(-1);
+    fun discoverForegroundColorLight() {
+        val colorBlackTea = -15461296
+        val colorForeground = discoverForegroundColor(colorBlackTea)
+        assertThat(colorForeground).isEqualTo(-1)
     }
 
     @Test
-    void discoverForegroundColorDark() {
-        final int colorWhiteTea = -1642;
-        final int colorForeground = ColorConversation.discoverForegroundColor(colorWhiteTea);
-        assertThat(colorForeground).isEqualTo(-16777216);
+    fun discoverForegroundColorDark() {
+        val colorWhiteTea = -1642
+        val colorForeground = discoverForegroundColor(colorWhiteTea)
+        assertThat(colorForeground).isEqualTo(-16777216)
     }
 }
