@@ -3,11 +3,11 @@ package coolpharaoh.tee.speicher.tea.timer.core.infusion
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 
-class InfusionRepository(application: Application?) {
+class InfusionRepository(application: Application) {
     private val infusionDao: InfusionDao
 
     init {
-        val database = TeaMemoryDatabase.getDatabaseInstance(application)
+        val database = TeaMemoryDatabase.getDatabase(application)
         infusionDao = database.infusionDao
     }
 

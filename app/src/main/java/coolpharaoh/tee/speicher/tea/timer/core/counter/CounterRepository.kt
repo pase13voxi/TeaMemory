@@ -4,11 +4,11 @@ import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO
 
-class CounterRepository(application: Application?) {
+class CounterRepository(application: Application) {
     private val counterDao: CounterDao
 
     init {
-        val teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application)
+        val teaMemoryDatabase = TeaMemoryDatabase.getDatabase(application)
         counterDao = teaMemoryDatabase.counterDao
     }
 

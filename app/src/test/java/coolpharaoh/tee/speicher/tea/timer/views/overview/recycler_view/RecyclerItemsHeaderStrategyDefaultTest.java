@@ -47,7 +47,7 @@ class RecyclerItemsHeaderStrategyDefaultTest {
                         RecyclerItemOverview::getTeaName,
                         RecyclerItemOverview::getVariety,
                         RecyclerItemOverview::getColor,
-                        RecyclerItemOverview::isFavorite,
+                        RecyclerItemOverview::getFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
                 tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),

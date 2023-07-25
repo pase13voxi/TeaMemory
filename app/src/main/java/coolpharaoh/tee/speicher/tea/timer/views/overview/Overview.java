@@ -193,7 +193,7 @@ public class Overview extends AppCompatActivity implements RecyclerViewAdapterOv
 
     private void showUpdateDialogOnStart() {
         final TeaMemory application = (TeaMemory) getApplication();
-        if (application != null && !application.isOverviewDialogsShown()) {
+        if (application != null && !application.getOverviewDialogsShown()) {
             application.setOverviewDialogsShown(true);
 
             showUpdateDialog();

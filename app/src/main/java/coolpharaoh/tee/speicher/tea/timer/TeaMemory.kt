@@ -1,26 +1,19 @@
-package coolpharaoh.tee.speicher.tea.timer;
+package coolpharaoh.tee.speicher.tea.timer
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettingsMigration
+import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager
 
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettingsMigration;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager;
-import lombok.Getter;
-import lombok.Setter;
+class TeaMemory : Application() {
 
-@Getter
-@Setter
-public class TeaMemory extends Application {
-    boolean overviewDialogsShown = false;
+    var overviewDialogsShown = false
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        final SharedSettingsMigration sharedSettingsMigration = new SharedSettingsMigration(this);
-        sharedSettingsMigration.migrate();
-
-        final SharedSettings sharedSettings = new SharedSettings(this);
-        ThemeManager.applyTheme(sharedSettings.getDarkMode());
+    override fun onCreate() {
+        super.onCreate()
+        val sharedSettingsMigration = SharedSettingsMigration(this)
+        sharedSettingsMigration.migrate()
+        val sharedSettings = SharedSettings(this)
+        ThemeManager.applyTheme(sharedSettings.darkMode)
     }
 }

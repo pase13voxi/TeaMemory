@@ -74,7 +74,7 @@ class RecyclerItemsHeaderStrategyLastUsedTest {
                         RecyclerItemOverview::getTeaName,
                         RecyclerItemOverview::getVariety,
                         RecyclerItemOverview::getColor,
-                        RecyclerItemOverview::isFavorite,
+                        RecyclerItemOverview::getFavorite,
                         RecyclerItemOverview::getCategory
                 ).contains(
                         tuple(null, null, null, null, false, "- This week -"),

@@ -3,11 +3,11 @@ package coolpharaoh.tee.speicher.tea.timer.core.tea
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 
-class TeaRepository(application: Application?) {
+class TeaRepository(application: Application) {
     private val teaDao: TeaDao
 
     init {
-        val teaMemoryDatabase = TeaMemoryDatabase.getDatabaseInstance(application)
+        val teaMemoryDatabase = TeaMemoryDatabase.getDatabase(application)
         teaDao = teaMemoryDatabase.teaDao
     }
 

@@ -56,7 +56,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         final RecyclerItemOverview item = recyclerItems.get(position);
-        if (item.category != null) {
+        if (item.getCategory() != null) {
             ((ViewHolderCategory) holder).bindData(item);
         } else {
             ((ViewHolderTea) holder).bindData(item);
@@ -65,7 +65,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemViewType(final int position) {
-        return recyclerItems.get(position).category != null ? 1 : 0;
+        return recyclerItems.get(position).getCategory() != null ? 1 : 0;
     }
 
     @Override
@@ -94,14 +94,14 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void bindHeaderData(final View header, final int headerPosition) {
         final TextView textViewHeading = header.findViewById(R.id.text_view_recycler_view_heading);
-        textViewHeading.setText(recyclerItems.get(headerPosition).category);
+        textViewHeading.setText(recyclerItems.get(headerPosition).getCategory());
     }
 
     @Override
     public boolean isHeader(final int itemPosition) {
         boolean isHeader = false;
         if (itemPosition < recyclerItems.size()) {
-            isHeader = recyclerItems.get(itemPosition).category != null;
+            isHeader = recyclerItems.get(itemPosition).getCategory() != null;
         }
         return isHeader;
     }
@@ -216,12 +216,12 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
         }
 
         private int isInStock(final RecyclerItemOverview item) {
-            return item.isFavorite() ? View.VISIBLE : View.GONE;
+            return item.getFavorite() ? View.VISIBLE : View.GONE;
         }
 
         @Override
         public void onClick(final View view) {
-            if (item.teaId != null) {
+            if (item.getTeaId() != null) {
                 onClickListener.onRecyclerItemClick(item.getTeaId());
             } else {
                 Log.e(LOG_TAG, "Recycler item does not contain tea id");
@@ -230,7 +230,7 @@ public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerVi
 
         @Override
         public boolean onLongClick(final View view) {
-            if (item.teaId != null) {
+            if (item.getTeaId() != null) {
                 onClickListener.onRecyclerItemLongClick(this.view, item.getTeaId());
             } else {
                 Log.e(LOG_TAG, "Recycler item does not contain tea id");

@@ -3,11 +3,11 @@ package coolpharaoh.tee.speicher.tea.timer.core.note
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 
-class NoteRepository(application: Application?) {
+class NoteRepository(application: Application) {
     private val noteDao: NoteDao
 
     init {
-        val database = TeaMemoryDatabase.getDatabaseInstance(application)
+        val database = TeaMemoryDatabase.getDatabase(application)
         noteDao = database.noteDao
     }
 
