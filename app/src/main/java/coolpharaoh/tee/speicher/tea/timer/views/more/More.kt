@@ -20,7 +20,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
 import java.util.Objects
 
-// This class has 9 Parent because of AppCompatActivity
 class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     private enum class ListItems {
         CONTACT, RATING, STATISTICS, EXPORT_IMPORT, SOFTWARE, PRIVACY
@@ -31,6 +30,7 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         setContentView(R.layout.activity_more)
         defineToolbarAsActionbar()
         enableAndShowBackButton()
+
         configureAndShowListView()
         displayVersion()
     }
@@ -50,14 +50,12 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
 
     private fun configureAndShowListView() {
         val moreList = generateListItems()
+
         val adapter = RecyclerViewAdapter(R.layout.list_single_layout_more, moreList, this)
+
         val recyclerViewMore = findViewById<RecyclerView>(R.id.recycler_view_more)
-        recyclerViewMore.addItemDecoration(
-            DividerItemDecoration(
-                recyclerViewMore.context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        recyclerViewMore.addItemDecoration(DividerItemDecoration(recyclerViewMore.context,
+            DividerItemDecoration.VERTICAL))
         recyclerViewMore.layoutManager = LinearLayoutManager(this)
         recyclerViewMore.adapter = adapter
     }
@@ -65,35 +63,23 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     private fun generateListItems(): List<RecyclerItem> {
         //write into listView
         val moreList: MutableList<RecyclerItem> = ArrayList()
-        val itemContact = RecyclerItem(
-            getString(R.string.more_contact_heading),
-            getString(R.string.more_contact_description)
-        )
+        val itemContact = RecyclerItem(getString(R.string.more_contact_heading),
+            getString(R.string.more_contact_description))
         moreList.add(itemContact)
-        val itemRating = RecyclerItem(
-            getString(R.string.more_rating_heading),
-            getString(R.string.more_rating_description)
-        )
+        val itemRating = RecyclerItem(getString(R.string.more_rating_heading),
+            getString(R.string.more_rating_description))
         moreList.add(itemRating)
-        val itemStatistics = RecyclerItem(
-            getString(R.string.more_statistics_heading),
-            getString(R.string.more_statistics_description)
-        )
+        val itemStatistics = RecyclerItem(getString(R.string.more_statistics_heading),
+            getString(R.string.more_statistics_description))
         moreList.add(itemStatistics)
-        val itemExportImport = RecyclerItem(
-            getString(R.string.more_export_import_heading),
-            getString(R.string.more_export_import_description)
-        )
+        val itemExportImport = RecyclerItem(getString(R.string.more_export_import_heading),
+            getString(R.string.more_export_import_description))
         moreList.add(itemExportImport)
-        val itemSoftware = RecyclerItem(
-            getString(R.string.more_software_heading),
-            getString(R.string.more_software_description)
-        )
+        val itemSoftware = RecyclerItem(getString(R.string.more_software_heading),
+            getString(R.string.more_software_description))
         moreList.add(itemSoftware)
-        val itemPrivacy = RecyclerItem(
-            getString(R.string.more_privacy_heading),
-            getString(R.string.more_privacy_description)
-        )
+        val itemPrivacy = RecyclerItem(getString(R.string.more_privacy_heading),
+            getString(R.string.more_privacy_description))
         moreList.add(itemPrivacy)
         return moreList
     }
@@ -124,19 +110,11 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     private fun navigateToStore() {
         val appPackageName = packageName
         try {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=$appPackageName")
-                )
-            )
+            startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=$appPackageName")))
         } catch (activityNotFoundException: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
-                )
-            )
+            startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
         }
     }
 
@@ -156,8 +134,7 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun navigateToPrivacyPolicy() {
-        val intent =
-            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.more_privacy_policy_url)))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.more_privacy_policy_url)))
         startActivity(intent)
     }
 }

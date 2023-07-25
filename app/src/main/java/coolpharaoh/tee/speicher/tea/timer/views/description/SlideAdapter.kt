@@ -24,11 +24,15 @@ class SlideAdapter(val application: Application, val slideImages: IntArray, val 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val layoutInflater = application.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = Objects.requireNonNull(layoutInflater).inflate(R.layout.slide_layout, container, false)
+
         val slideTextViewDescription = view.findViewById<TextView>(R.id.text_view_description)
         slideTextViewDescription.text = slideDescription[position]
+
         val slideImageView = view.findViewById<ImageView>(R.id.image_view_description_slide_image)
         slideImageView.setImageResource(slideImages[position])
+
         container.addView(view)
+
         return view
     }
 

@@ -12,13 +12,13 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
 import java.util.Objects
 
-// This class has 9 Parent because of AppCompatActivity
 class Software : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_software)
         defineToolbarAsActionbar()
         enableAndShowBackButton()
+
         configureAndShowListView()
     }
 
@@ -37,46 +37,28 @@ class Software : AppCompatActivity() {
 
     private fun configureAndShowListView() {
         val softwareList = generateListItems()
-        val adapter = RecyclerViewAdapter(
-            R.layout.list_single_layout_software, softwareList
-        ) { position: Int -> }
+
+        val adapter = RecyclerViewAdapter(R.layout.list_single_layout_software, softwareList)
+        { position: Int -> /*this functionality is not needed, but needs to be override*/}
+
         val recyclerViewDetails = findViewById<RecyclerView>(R.id.recycler_view_software)
-        recyclerViewDetails.addItemDecoration(
-            DividerItemDecoration(
-                recyclerViewDetails.context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        recyclerViewDetails.addItemDecoration(DividerItemDecoration
+            (recyclerViewDetails.context, DividerItemDecoration.VERTICAL))
         recyclerViewDetails.layoutManager = LinearLayoutManager(this)
         recyclerViewDetails.adapter = adapter
     }
 
     private fun generateListItems(): List<RecyclerItem> {
         val softwareList: MutableList<RecyclerItem> = ArrayList()
-        val itemColorPicker = RecyclerItem(
-            getString(R.string.software_color_picker_heading),
-            getString(R.string.software_color_picker_description)
-        )
+        val itemColorPicker = RecyclerItem(getString(R.string.software_color_picker_heading), getString(R.string.software_color_picker_description))
         softwareList.add(itemColorPicker)
-        val itemChart = RecyclerItem(
-            getString(R.string.software_chart_heading),
-            getString(R.string.software_chart_description)
-        )
+        val itemChart = RecyclerItem(getString(R.string.software_chart_heading), getString(R.string.software_chart_description))
         softwareList.add(itemChart)
-        val itemGlide = RecyclerItem(
-            getString(R.string.software_glide_heading),
-            getString(R.string.software_glide_description)
-        )
+        val itemGlide = RecyclerItem(getString(R.string.software_glide_heading), getString(R.string.software_glide_description))
         softwareList.add(itemGlide)
-        val itemJUnit = RecyclerItem(
-            getString(R.string.software_junit5_heading),
-            getString(R.string.software_junit5_description)
-        )
+        val itemJUnit = RecyclerItem(getString(R.string.software_junit5_heading), getString(R.string.software_junit5_description))
         softwareList.add(itemJUnit)
-        val itemGson = RecyclerItem(
-            getString(R.string.software_gson_heading),
-            getString(R.string.software_gson_description)
-        )
+        val itemGson = RecyclerItem(getString(R.string.software_gson_heading), getString(R.string.software_gson_description))
         softwareList.add(itemGson)
         return softwareList
     }

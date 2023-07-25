@@ -4,7 +4,7 @@ import android.widget.ImageButton
 import androidx.test.core.app.ActivityScenario
 import androidx.viewpager.widget.ViewPager
 import coolpharaoh.tee.speicher.tea.timer.R
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -17,7 +17,7 @@ class UpdateDescriptionTest {
         updateDescriptionActivityScenario.onActivity { updateDescription: UpdateDescription ->
             val viewPager = updateDescription.findViewById<ViewPager>(R.id.slide_view_description_pager)
             val slideAdapter = viewPager.adapter as SlideAdapter?
-            Assertions.assertThat(slideAdapter!!.count).isEqualTo(2)
+            assertThat(slideAdapter!!.count).isEqualTo(2)
         }
     }
 
@@ -27,7 +27,8 @@ class UpdateDescriptionTest {
         updateDescriptionActivityScenario.onActivity { updateDescription: UpdateDescription ->
             val buttonClose = updateDescription.findViewById<ImageButton>(R.id.button_description_close)
             buttonClose.performClick()
-            Assertions.assertThat(updateDescription.isFinishing).isTrue()
+
+            assertThat(updateDescription.isFinishing).isTrue()
         }
     }
 }
