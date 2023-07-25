@@ -1,397 +1,407 @@
-package coolpharaoh.tee.speicher.tea.timer.core.tea;
+package coolpharaoh.tee.speicher.tea.timer.core.tea
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import android.content.Context
+import androidx.room.Room.inMemoryDatabaseBuilder
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.runner.AndroidJUnit4
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.ThrowingConsumer
+import org.assertj.core.groups.Tuple
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 
-import android.content.Context;
-
-import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.runner.AndroidJUnit4;
-
-import org.assertj.core.groups.Tuple;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-@RunWith(AndroidJUnit4.class)
-public class TeaDaoTest {
-    private static final String VARIETY = "variety";
-
-    private TeaDao teaDao;
-    private TeaMemoryDatabase db;
+@RunWith(AndroidJUnit4::class)
+class TeaDaoTest {
+    private var teaDao: TeaDao? = null
+    private var db: TeaMemoryDatabase? = null
 
     @Before
-    public void createDb() {
-        final Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        teaDao = db.getTeaDao();
+    fun createDb() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = inMemoryDatabaseBuilder(context, TeaMemoryDatabase::class.java).build()
+        teaDao = db!!.teaDao
     }
 
     @After
-    public void closeDb() {
-        db.close();
+    fun closeDb() {
+        db!!.close()
     }
 
     @Test
-    public void insertTea() {
-        assertThat(teaDao.getTeas()).isEmpty();
+    fun insertTea() {
+        assertThat(teaDao!!.getTeas()).isEmpty()
 
-        final Tea teaBefore = createTea("name", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaBefore);
+        val teaBefore = createTea("name", VARIETY, getDate())
+        teaDao!!.insert(teaBefore)
 
-        assertThat(teaDao.getTeas()).hasSize(1);
+        assertThat(teaDao!!.getTeas()).hasSize(1)
 
-        final Tea teaAfter = teaDao.getTeas().get(0);
-        assertThat(teaAfter).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore);
+        val teaAfter = teaDao!!.getTeas()[0]
+        assertThat(teaAfter).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore)
     }
 
     @Test
-    public void updateTea() {
-        assertThat(teaDao.getTeas()).isEmpty();
+    fun updateTea() {
+        assertThat(teaDao!!.getTeas()).isEmpty()
 
-        final Tea teaBefore = createTea("name", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaBefore);
+        val teaBefore = createTea("name", VARIETY, getDate())
+        teaDao!!.insert(teaBefore)
 
-        assertThat(teaDao.getTeas()).hasSize(1);
+        assertThat(teaDao!!.getTeas()).hasSize(1)
 
-        final Tea teaUpdate = teaDao.getTeas().get(0);
-        teaUpdate.setName("NameChanged");
-        teaUpdate.setName("VarietyChanged");
-        teaDao.update(teaUpdate);
+        val teaUpdate = teaDao!!.getTeas()[0]
+        teaUpdate.name = "NameChanged"
+        teaUpdate.name = "VarietyChanged"
+        teaDao!!.update(teaUpdate)
 
-        final Tea teaAfter = teaDao.getTeas().get(0);
-        assertThat(teaAfter).usingRecursiveComparison().isEqualTo(teaUpdate);
+        val teaAfter = teaDao!!.getTeas()[0]
+        assertThat(teaAfter).usingRecursiveComparison().isEqualTo(teaUpdate)
     }
 
     @Test
-    public void deleteTeaById() {
-        assertThat(teaDao.getTeas()).isEmpty();
+    fun deleteTeaById() {
+        assertThat(teaDao!!.getTeas()).isEmpty()
 
-        final Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaBefore1);
+        val teaBefore1 = createTea("name1", VARIETY, getDate())
+        teaDao!!.insert(teaBefore1)
 
-        final Tea teaBefore2 = createTea("name2", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaBefore2);
+        val teaBefore2 = createTea("name2", VARIETY, getDate())
+        teaDao!!.insert(teaBefore2)
 
-        assertThat(teaDao.getTeas()).hasSize(2);
+        assertThat(teaDao!!.getTeas()).hasSize(2)
 
-        teaDao.deleteTeaById(teaDao.getTeas().get(0).getId());
+        teaDao!!.deleteTeaById(teaDao!!.getTeas()[0].id!!)
 
-        assertThat(teaDao.getTeas()).hasSize(1);
+        assertThat(teaDao!!.getTeas()).hasSize(1)
 
-        final Tea teaAfter2 = teaDao.getTeas().get(0);
-        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
+        val teaAfter2 = teaDao!!.getTeas()[0]
+        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2)
     }
 
     @Test
-    public void deleteAllTeas() {
-        assertThat(teaDao.getTeas()).isEmpty();
+    fun deleteAllTeas() {
+        assertThat(teaDao!!.getTeas()).isEmpty()
 
-        final Tea teaBefore1 = createTea("name1", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaBefore1);
+        val teaBefore1 = createTea("name1", VARIETY, getDate())
+        teaDao!!.insert(teaBefore1)
 
-        final Tea teaBefore2 = createTea("name2", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaBefore2);
+        val teaBefore2 = createTea("name2", VARIETY, getDate())
+        teaDao!!.insert(teaBefore2)
 
-        assertThat(teaDao.getTeas()).hasSize(2);
+        assertThat(teaDao!!.getTeas()).hasSize(2)
 
-        teaDao.deleteAll();
+        teaDao!!.deleteAll()
 
-        assertThat(teaDao.getTeas()).isEmpty();
+        assertThat(teaDao!!.getTeas()).isEmpty()
     }
 
     @Test
-    public void getTeaById() {
-        final Tea teaBefore1 = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
-        final long teaId1 = teaDao.insert(teaBefore1);
+    fun getTeaById() {
+        val teaBefore1 = createTea("nameOld", VARIETY,
+            GregorianCalendar(2016, Calendar.FEBRUARY, 22).time)
+        val teaId1 = teaDao!!.insert(teaBefore1)
 
-        final Tea teaBefore2 = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        final long teaId2 = teaDao.insert(teaBefore2);
+        val teaBefore2 = createTea("nameMiddle", VARIETY,
+            GregorianCalendar(2018, Calendar.FEBRUARY, 11).time)
+        val teaId2 = teaDao!!.insert(teaBefore2)
 
-        final Tea teaAfter1 = teaDao.getTeaById(teaId1);
-        assertThat(teaAfter1).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore1);
+        val teaAfter1 = teaDao!!.getTeaById(teaId1)
+        assertThat(teaAfter1).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore1)
 
-        final Tea teaAfter2 = teaDao.getTeaById(teaId2);
-        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2);
+        val teaAfter2 = teaDao!!.getTeaById(teaId2)
+        assertThat(teaAfter2).usingRecursiveComparison().ignoringFields("id").isEqualTo(teaBefore2)
     }
 
     @Test
-    public void getTeasOrderByActivity() {
-        final Tea teaOld = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
-        teaDao.insert(teaOld);
-        final Tea teaMiddle = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        teaDao.insert(teaMiddle);
-        final Tea teaNew = createTea("nameNew", VARIETY, new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
-        teaDao.insert(teaNew);
+    fun getTeasOrderByActivity() {
+        val teaOld = createTea("nameOld", VARIETY,
+            GregorianCalendar(2016, Calendar.FEBRUARY, 22).time)
+        teaDao!!.insert(teaOld)
+        val teaMiddle = createTea("nameMiddle", VARIETY,
+            GregorianCalendar(2018, Calendar.FEBRUARY, 11).time)
+        teaDao!!.insert(teaMiddle)
+        val teaNew = createTea("nameNew", VARIETY,
+            GregorianCalendar(2018, Calendar.DECEMBER, 15).time)
+        teaDao!!.insert(teaNew)
 
-        final List<Tea> teaList = teaDao.getTeasOrderByActivity();
+        val teaList = teaDao!!.getTeasOrderByActivity()
 
         assertThat(teaList)
-                .extracting(
-                        Tea::getName,
-                        Tea::getVariety,
-                        Tea::getDate)
-                .containsSequence(
-                        Tuple.tuple(
-                                teaNew.getName(),
-                                teaNew.getVariety(),
-                                teaNew.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaMiddle.getName(),
-                                teaMiddle.getVariety(),
-                                teaMiddle.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaOld.getName(),
-                                teaOld.getVariety(),
-                                teaOld.getDate()
-                        )
-                );
+            .extracting(
+                Tea::name,
+                Tea::variety,
+                Tea::date
+            )
+            .containsSequence(
+                Tuple.tuple(
+                    teaNew.name,
+                    teaNew.variety,
+                    teaNew.date
+                ),
+                Tuple.tuple(
+                    teaMiddle.name,
+                    teaMiddle.variety,
+                    teaMiddle.date
+                ),
+                Tuple.tuple(
+                    teaOld.name,
+                    teaOld.variety,
+                    teaOld.date
+                )
+            )
     }
 
     @Test
-    public void getTeasStockOrderByActivity() {
-        final Tea teaOld = createTea("nameOld", VARIETY, new GregorianCalendar(2016, Calendar.FEBRUARY, 22).getTime());
-        teaDao.insert(teaOld);
-        final Tea teaMiddle = createTea("nameMiddle", VARIETY, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime());
-        teaMiddle.setInStock(true);
-        teaDao.insert(teaMiddle);
-        final Tea teaNew = createTea("nameNew", VARIETY, new GregorianCalendar(2018, Calendar.DECEMBER, 15).getTime());
-        teaDao.insert(teaNew);
+    fun getTeasStockOrderByActivity() {
+        val teaOld = createTea("nameOld", VARIETY,
+            GregorianCalendar(2016, Calendar.FEBRUARY, 22).time)
+        teaDao!!.insert(teaOld)
+        val teaMiddle = createTea("nameMiddle", VARIETY,
+            GregorianCalendar(2018, Calendar.FEBRUARY, 11).time)
+        teaMiddle.inStock = true
+        teaDao!!.insert(teaMiddle)
+        val teaNew = createTea("nameNew", VARIETY,
+            GregorianCalendar(2018, Calendar.DECEMBER, 15).time)
+        teaDao!!.insert(teaNew)
 
-        final List<Tea> teaList = teaDao.getTeasInStockOrderByActivity();
+        val teaList = teaDao!!.getTeasInStockOrderByActivity()
 
-        assertThat(teaList).hasSize(1);
+        assertThat(teaList).hasSize(1)
     }
 
     @Test
-    public void getTeasOrderByAlphabetic() {
-        final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaC);
-        final Tea teaA = createTea("nameA", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaA);
-        final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaB);
+    fun getTeasOrderByAlphabetic() {
+        val teaC = createTea("nameC", VARIETY, getDate())
+        teaDao!!.insert(teaC)
+        val teaA = createTea("nameA", VARIETY, getDate())
+        teaDao!!.insert(teaA)
+        val teaB = createTea("nameB", VARIETY, getDate())
+        teaDao!!.insert(teaB)
 
-        final List<Tea> teaList = teaDao.getTeasOrderByAlphabetic();
+        val teaList = teaDao!!.getTeasOrderByAlphabetic()
 
         assertThat(teaList)
-                .extracting(
-                        Tea::getName,
-                        Tea::getVariety,
-                        Tea::getDate)
-                .containsSequence(
-                        Tuple.tuple(
-                                teaA.getName(),
-                                teaA.getVariety(),
-                                teaA.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaB.getName(),
-                                teaB.getVariety(),
-                                teaB.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaC.getName(),
-                                teaC.getVariety(),
-                                teaC.getDate()
-                        )
-                );
+            .extracting(
+                Tea::name,
+                Tea::variety,
+                Tea::date
+            )
+            .containsSequence(
+                Tuple.tuple(
+                    teaA.name,
+                    teaA.variety,
+                    teaA.date
+                ),
+                Tuple.tuple(
+                    teaB.name,
+                    teaB.variety,
+                    teaB.date
+                ),
+                Tuple.tuple(
+                    teaC.name,
+                    teaC.variety,
+                    teaC.date
+                )
+            )
     }
 
     @Test
-    public void getTeasInStockOrderByAlphabetic() {
-        final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaC);
-        final Tea teaA = createTea("nameA", VARIETY, CurrentDate.getDate());
-        teaA.setInStock(true);
-        teaDao.insert(teaA);
-        final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaB);
+    fun getTeasInStockOrderByAlphabetic() {
+        val teaC = createTea("nameC", VARIETY, getDate())
+        teaDao!!.insert(teaC)
+        val teaA = createTea("nameA", VARIETY, getDate())
+        teaA.inStock = true
+        teaDao!!.insert(teaA)
+        val teaB = createTea("nameB", VARIETY, getDate())
+        teaDao!!.insert(teaB)
 
-        final List<Tea> teaList = teaDao.getTeasInStockOrderByAlphabetic();
+        val teaList = teaDao!!.getTeasInStockOrderByAlphabetic()
 
-        assertThat(teaList).hasSize(1);
+        assertThat(teaList).hasSize(1)
     }
 
     @Test
-    public void getTeasOrderByVariety() {
-        final Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
-        teaDao.insert(teaC);
-        final Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
-        teaDao.insert(teaA);
-        final Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
-        teaDao.insert(teaB);
+    fun getTeasOrderByVariety() {
+        val teaC = createTea("name", "varietyC", getDate())
+        teaDao!!.insert(teaC)
+        val teaA = createTea("name", "varietyA", getDate())
+        teaDao!!.insert(teaA)
+        val teaB = createTea("name", "varietyB", getDate())
+        teaDao!!.insert(teaB)
 
-        final List<Tea> teaList = teaDao.getTeasOrderByVariety();
+        val teaList = teaDao!!.getTeasOrderByVariety()
 
         assertThat(teaList)
-                .extracting(
-                        Tea::getName,
-                        Tea::getVariety,
-                        Tea::getDate)
-                .containsSequence(
-                        Tuple.tuple(
-                                teaA.getName(),
-                                teaA.getVariety(),
-                                teaA.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaB.getName(),
-                                teaB.getVariety(),
-                                teaB.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaC.getName(),
-                                teaC.getVariety(),
-                                teaC.getDate()
-                        )
-                );
+            .extracting(
+                Tea::name,
+                Tea::variety,
+                Tea::date
+            )
+            .containsSequence(
+                Tuple.tuple(
+                    teaA.name,
+                    teaA.variety,
+                    teaA.date
+                ),
+                Tuple.tuple(
+                    teaB.name,
+                    teaB.variety,
+                    teaB.date
+                ),
+                Tuple.tuple(
+                    teaC.name,
+                    teaC.variety,
+                    teaC.date
+                )
+            )
     }
 
     @Test
-    public void getTeasInStockOrderByVariety() {
-        final Tea teaC = createTea("name", "varietyC", CurrentDate.getDate());
-        teaDao.insert(teaC);
-        final Tea teaA = createTea("name", "varietyA", CurrentDate.getDate());
-        teaA.setInStock(true);
-        teaDao.insert(teaA);
-        final Tea teaB = createTea("name", "varietyB", CurrentDate.getDate());
-        teaDao.insert(teaB);
+    fun getTeasInStockOrderByVariety() {
+        val teaC = createTea("name", "varietyC", getDate())
+        teaDao!!.insert(teaC)
+        val teaA = createTea("name", "varietyA", getDate())
+        teaA.inStock = true
+        teaDao!!.insert(teaA)
+        val teaB = createTea("name", "varietyB", getDate())
+        teaDao!!.insert(teaB)
 
-        final List<Tea> teaList = teaDao.getTeasInStockOrderByVariety();
+        val teaList = teaDao!!.getTeasInStockOrderByVariety()
 
-        assertThat(teaList).hasSize(1);
+        assertThat(teaList).hasSize(1)
     }
 
     @Test
-    public void getTeasOrderByRating() {
-        final Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
-        teaDao.insert(tea3);
-        final Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
-        teaDao.insert(tea5);
-        final Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
-        teaDao.insert(tea1);
+    fun getTeasOrderByRating() {
+        val tea3 = createTea("rating3", VARIETY, getDate(), 4)
+        teaDao!!.insert(tea3)
+        val tea5 = createTea("rating5", VARIETY, getDate(), 5)
+        teaDao!!.insert(tea5)
+        val tea1 = createTea("rating1", VARIETY, getDate(), 1)
+        teaDao!!.insert(tea1)
 
-        final List<Tea> teaList = teaDao.getTeasOrderByRating();
+        val teaList = teaDao!!.getTeasOrderByRating()
 
         assertThat(teaList)
-                .extracting(
-                        Tea::getName,
-                        Tea::getRating)
-                .containsSequence(
-                        Tuple.tuple(
-                                tea5.getName(),
-                                tea5.getRating()
-                        ),
-                        Tuple.tuple(
-                                tea3.getName(),
-                                tea3.getRating()
-                        ),
-                        Tuple.tuple(
-                                tea1.getName(),
-                                tea1.getRating()
-                        )
-                );
+            .extracting(
+                Tea::name,
+                Tea::rating
+            )
+            .containsSequence(
+                Tuple.tuple(
+                    tea5.name,
+                    tea5.rating
+                ),
+                Tuple.tuple(
+                    tea3.name,
+                    tea3.rating
+                ),
+                Tuple.tuple(
+                    tea1.name,
+                    tea1.rating
+                )
+            )
     }
 
     @Test
-    public void getTeasInStockOrderByRating() {
-        final Tea tea3 = createTea("rating3", VARIETY, CurrentDate.getDate(), 4);
-        teaDao.insert(tea3);
-        final Tea tea5 = createTea("rating5", VARIETY, CurrentDate.getDate(), 5);
-        tea5.setInStock(true);
-        teaDao.insert(tea5);
-        final Tea tea1 = createTea("rating1", VARIETY, CurrentDate.getDate(), 1);
-        teaDao.insert(tea1);
+    fun getTeasInStockOrderByRating() {
+        val tea3 = createTea("rating3", VARIETY, getDate(), 4)
+        teaDao!!.insert(tea3)
+        val tea5 = createTea("rating5", VARIETY, getDate(), 5)
+        tea5.inStock = true
+        teaDao!!.insert(tea5)
+        val tea1 = createTea("rating1", VARIETY, getDate(), 1)
+        teaDao!!.insert(tea1)
 
-        final List<Tea> teaList = teaDao.getTeasInStockOrderByRating();
+        val teaList = teaDao!!.getTeasInStockOrderByRating()
 
-        assertThat(teaList).hasSize(1);
+        assertThat(teaList).hasSize(1)
     }
 
     @Test
-    public void getRandomTeaInStock() {
-        final Tea tea1 = createTea("tea1", VARIETY, CurrentDate.getDate());
-        teaDao.insert(tea1);
-        final Tea tea2 = createTea("tea2", VARIETY, CurrentDate.getDate());
-        tea2.setInStock(true);
-        teaDao.insert(tea2);
-        final Tea tea3 = createTea("tea3", VARIETY, CurrentDate.getDate());
-        tea3.setInStock(true);
-        teaDao.insert(tea3);
+    fun getRandomTeaInStock() {
+        val tea1 = createTea("tea1", VARIETY, getDate())
+        teaDao!!.insert(tea1)
+        val tea2 = createTea("tea2", VARIETY, getDate())
+        tea2.inStock = true
+        teaDao!!.insert(tea2)
+        val tea3 = createTea("tea3", VARIETY, getDate())
+        tea3.inStock = true
+        teaDao!!.insert(tea3)
 
-        final Tea randomTea = teaDao.getRandomTeaInStock();
+        val randomTea = teaDao!!.getRandomTeaInStock()
 
-        assertThat(randomTea.getInStock()).isTrue();
-        assertThat(randomTea.getName())
-                .satisfiesAnyOf(
-                        s -> assertThat(s).isEqualTo(tea2.getName()),
-                        s -> assertThat(s).isEqualTo(tea3.getName())
-                );
+        assertThat(randomTea!!.inStock).isTrue
+        assertThat(randomTea.name)
+            .satisfiesAnyOf(
+                ThrowingConsumer { s: String? ->
+                    assertThat(s).isEqualTo(tea2.name)
+                },
+                ThrowingConsumer { s: String? ->
+                    assertThat(s).isEqualTo(tea3.name)
+                }
+            )
     }
 
     @Test
-    public void getNoRandomTeaInStock() {
-        final Tea tea1 = createTea("tea1", VARIETY, CurrentDate.getDate());
-        teaDao.insert(tea1);
-        final Tea tea2 = createTea("tea2", VARIETY, CurrentDate.getDate());
-        teaDao.insert(tea2);
-        final Tea tea3 = createTea("tea3", VARIETY, CurrentDate.getDate());
-        teaDao.insert(tea3);
+    fun getNoRandomTeaInStock() {
+        val tea1 = createTea("tea1", VARIETY, getDate())
+        teaDao!!.insert(tea1)
+        val tea2 = createTea("tea2", VARIETY, getDate())
+        teaDao!!.insert(tea2)
+        val tea3 = createTea("tea3", VARIETY, getDate())
+        teaDao!!.insert(tea3)
 
-        final Tea randomTea = teaDao.getRandomTeaInStock();
+        val randomTea = teaDao!!.getRandomTeaInStock()
 
-        assertThat(randomTea).isNull();
+        assertThat(randomTea).isNull()
     }
 
     @Test
-    public void getTeasBySearchString() {
-        final Tea teaA = createTea("A", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaA);
-        final Tea teaC = createTea("nameC", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaC);
-        final Tea teaB = createTea("nameB", VARIETY, CurrentDate.getDate());
-        teaDao.insert(teaB);
+    fun getTeasBySearchString() {
+        val teaA = createTea("A", VARIETY, getDate())
+        teaDao!!.insert(teaA)
+        val teaC = createTea("nameC", VARIETY, getDate())
+        teaDao!!.insert(teaC)
+        val teaB = createTea("nameB", VARIETY, getDate())
+        teaDao!!.insert(teaB)
 
-        final List<Tea> teaList = teaDao.getTeasBySearchString("name");
+        val teaList = teaDao!!.getTeasBySearchString("name")
 
         assertThat(teaList)
-                .extracting(
-                        Tea::getName,
-                        Tea::getVariety,
-                        Tea::getDate)
-                .containsSequence(
-                        Tuple.tuple(
-                                teaB.getName(),
-                                teaB.getVariety(),
-                                teaB.getDate()
-                        ),
-                        Tuple.tuple(
-                                teaC.getName(),
-                                teaC.getVariety(),
-                                teaC.getDate()
-                        )
-                );
+            .extracting(
+                Tea::name,
+                Tea::variety,
+                Tea::date
+            )
+            .containsSequence(
+                Tuple.tuple(
+                    teaB.name,
+                    teaB.variety,
+                    teaB.date
+                ),
+                Tuple.tuple(
+                    teaC.name,
+                    teaC.variety,
+                    teaC.date
+                )
+            )
     }
 
-    private Tea createTea(final String name, final String variety, final Date date) {
-        return createTea(name, variety, date, 0);
+    private fun createTea(name: String, variety: String, date: Date, rating: Int = 0): Tea {
+        val tea = Tea(name, variety, 3.0, "ts", 15, 0, date)
+        tea.rating = rating
+        return tea
     }
 
-    private Tea createTea(final String name, final String variety, final Date date, final int rating) {
-        final Tea tea = new Tea(name, variety, 3, "ts", 15, 0, date);
-        tea.setRating(rating);
-        return tea;
+    companion object {
+        private const val VARIETY = "variety"
     }
 }

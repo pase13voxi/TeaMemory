@@ -1,123 +1,122 @@
-package coolpharaoh.tee.speicher.tea.timer.core.infusion;
+package coolpharaoh.tee.speicher.tea.timer.core.infusion
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import android.content.Context
+import androidx.room.Room.inMemoryDatabaseBuilder
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.runner.AndroidJUnit4
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 
-import android.content.Context;
+@RunWith(AndroidJUnit4::class)
+class InfusionDaoTest {
 
-import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.runner.AndroidJUnit4;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-@RunWith(AndroidJUnit4.class)
-public class InfusionDaoTest {
-    private InfusionDao mInfusionDAO;
-    private TeaDao mTeaDAO;
-    private TeaMemoryDatabase db;
+    private var mInfusionDAO: InfusionDao? = null
+    private var mTeaDAO: TeaDao? = null
+    private var db: TeaMemoryDatabase? = null
 
     @Before
-    public void createDb() {
-        final Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mInfusionDAO = db.getInfusionDao();
-        mTeaDAO = db.getTeaDao();
+    fun createDb() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = inMemoryDatabaseBuilder(context, TeaMemoryDatabase::class.java).build()
+        mInfusionDAO = db!!.infusionDao
+        mTeaDAO = db!!.teaDao
     }
 
     @After
-    public void closeDb() {
-        db.close();
+    fun closeDb() {
+        db!!.close()
     }
 
     @Test
-    public void insertInfusion() {
-        assertThat(mInfusionDAO.getInfusions()).isEmpty();
+    fun insertInfusion() {
+        assertThat(mInfusionDAO!!.getInfusions()).isEmpty()
 
-        final long teaId = insertTea();
+        val teaId = insertTea()
 
-        final List<Infusion> infusionBefore = insertInfusions(teaId, 1);
+        val infusionBefore = insertInfusions(teaId, 1)
 
-        assertThat(mInfusionDAO.getInfusions()).hasSize(1);
+        assertThat(mInfusionDAO!!.getInfusions()).hasSize(1)
 
-        final Infusion infusionAfter = mInfusionDAO.getInfusions().get(0);
-        assertThat(infusionAfter).isEqualToIgnoringGivenFields(infusionBefore.get(0), "id");
+        val infusionAfter = mInfusionDAO!!.getInfusions()[0]
+        assertThat(infusionAfter).usingRecursiveComparison().ignoringFields("id")
+            .isEqualTo(infusionBefore[0])
     }
 
     @Test
-    public void getInfusionsByTeaId() {
-        assertThat(mInfusionDAO.getInfusions()).isEmpty();
+    fun getInfusionsByTeaId() {
+        assertThat(mInfusionDAO!!.getInfusions()).isEmpty()
 
-        final long teaId1 = insertTea();
+        val teaId1 = insertTea()
 
-        final List<Infusion> infusionsBefore1 = insertInfusions(teaId1, 2);
+        val infusionsBefore1 = insertInfusions(teaId1, 2)
 
-        assertThat(mInfusionDAO.getInfusions()).hasSize(2);
+        assertThat(mInfusionDAO!!.getInfusions()).hasSize(2)
 
-        final long teaId2 = insertTea();
+        val teaId2 = insertTea()
 
-        final List<Infusion> infusionBefore2 = insertInfusions(teaId2, 1);
+        val infusionBefore2 = insertInfusions(teaId2, 1)
 
-        assertThat(mInfusionDAO.getInfusions()).hasSize(3);
+        assertThat(mInfusionDAO!!.getInfusions()).hasSize(3)
 
-        final List<Infusion> infusionAfter1 = mInfusionDAO.getInfusionsByTeaId(teaId1);
-        assertThat(infusionAfter1).hasSize(2);
+        val infusionAfter1 = mInfusionDAO!!.getInfusionsByTeaId(teaId1)
+        assertThat(infusionAfter1).hasSize(2)
 
-        assertThat(infusionAfter1.get(0)).isEqualToIgnoringGivenFields(infusionsBefore1.get(0), "id");
+        assertThat(infusionAfter1[0]).usingRecursiveComparison().ignoringFields("id")
+            .isEqualTo(infusionsBefore1[0])
 
-        assertThat(infusionAfter1.get(1)).isEqualToIgnoringGivenFields(infusionsBefore1.get(1), "id");
+        assertThat(infusionAfter1[1]).usingRecursiveComparison().ignoringFields("id")
+            .isEqualTo(infusionsBefore1[1])
 
-        final List<Infusion> infusionAfter2 = mInfusionDAO.getInfusionsByTeaId(teaId2);
-        assertThat(infusionAfter2).hasSize(1);
+        val infusionAfter2 = mInfusionDAO!!.getInfusionsByTeaId(teaId2)
+        assertThat(infusionAfter2).hasSize(1)
 
-        assertThat(infusionAfter2.get(0)).isEqualToIgnoringGivenFields(infusionBefore2.get(0), "id");
+        assertThat(infusionAfter2[0]).usingRecursiveComparison().ignoringFields("id")
+            .isEqualTo(infusionBefore2[0])
     }
 
     @Test
-    public void deleteInfusionsByTeaId() {
-        assertThat(mInfusionDAO.getInfusions()).isEmpty();
+    fun deleteInfusionsByTeaId() {
+        assertThat(mInfusionDAO!!.getInfusions()).isEmpty()
 
-        final long teaId1 = insertTea();
+        val teaId1 = insertTea()
 
-        insertInfusions(teaId1, 2);
+        insertInfusions(teaId1, 2)
 
-        assertThat(mInfusionDAO.getInfusions()).hasSize(2);
+        assertThat(mInfusionDAO!!.getInfusions()).hasSize(2)
 
-        final long teaId2 = insertTea();
+        val teaId2 = insertTea()
 
-        final List<Infusion> infusionBefore2 = insertInfusions(teaId2, 1);
+        val infusionBefore2 = insertInfusions(teaId2, 1)
 
-        assertThat(mInfusionDAO.getInfusions()).hasSize(3);
+        assertThat(mInfusionDAO!!.getInfusions()).hasSize(3)
 
-        mInfusionDAO.deleteInfusionsByTeaId(teaId1);
+        mInfusionDAO!!.deleteInfusionsByTeaId(teaId1)
 
-        assertThat(mInfusionDAO.getInfusions()).hasSize(1);
+        assertThat(mInfusionDAO!!.getInfusions()).hasSize(1)
 
-        final List<Infusion> infusionAfter = mInfusionDAO.getInfusions();
+        val infusionAfter = mInfusionDAO!!.getInfusions()
 
-        assertThat(infusionAfter.get(0)).isEqualToIgnoringGivenFields(infusionBefore2.get(0), "id");
+        assertThat(infusionAfter[0]).usingRecursiveComparison().ignoringFields("id")
+            .isEqualTo(infusionBefore2[0])
     }
 
-    private long insertTea() {
-        return mTeaDAO.insert(new Tea("name", "variety", 3, "ts", 15, 0, CurrentDate.getDate()));
+    private fun insertTea(): Long {
+        return mTeaDAO!!.insert(Tea("name", "variety", 3.0, "ts", 15, 0, getDate()))
     }
 
-    private List<Infusion> insertInfusions(final long teaId1, final int count) {
-        final List<Infusion> infusionBefore1 = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            infusionBefore1.add(new Infusion(teaId1, i + 1, "03:00", "10:00", 70, 158));
-            mInfusionDAO.insert(infusionBefore1.get(i));
+    private fun insertInfusions(teaId1: Long, count: Int): List<Infusion> {
+        val infusionBefore1: MutableList<Infusion> = ArrayList()
+        for (i in 0 until count) {
+            infusionBefore1.add(Infusion(teaId1, i + 1, "03:00", "10:00", 70, 158))
+            mInfusionDAO!!.insert(infusionBefore1[i])
         }
-        return infusionBefore1;
+        return infusionBefore1
     }
 }

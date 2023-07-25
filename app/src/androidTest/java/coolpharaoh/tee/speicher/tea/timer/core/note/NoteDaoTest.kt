@@ -1,141 +1,135 @@
-package coolpharaoh.tee.speicher.tea.timer.core.note;
+package coolpharaoh.tee.speicher.tea.timer.core.note
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import android.content.Context
+import androidx.room.Room.inMemoryDatabaseBuilder
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.runner.AndroidJUnit4
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 
-import android.content.Context;
-
-import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.runner.AndroidJUnit4;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-@RunWith(AndroidJUnit4.class)
-public class NoteDaoTest {
-    private static final String HEADER = "header";
-    private static final String DESCRIPTION = "description";
-    private NoteDao mNoteDao;
-    private TeaDao mTeaDao;
-    private TeaMemoryDatabase db;
-
+@RunWith(AndroidJUnit4::class)
+class NoteDaoTest {
+    private var mNoteDao: NoteDao? = null
+    private var mTeaDao: TeaDao? = null
+    private var db: TeaMemoryDatabase? = null
     @Before
-    public void createDb() {
-        final Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, TeaMemoryDatabase.class).build();
-        mNoteDao = db.getNoteDao();
-        mTeaDao = db.getTeaDao();
+    fun createDb() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = inMemoryDatabaseBuilder(context, TeaMemoryDatabase::class.java).build()
+        mNoteDao = db!!.noteDao
+        mTeaDao = db!!.teaDao
     }
 
     @After
-    public void closeDb() {
-        db.close();
+    fun closeDb() {
+        db!!.close()
     }
 
     @Test
-    public void insertNote(){
-        assertThat(mNoteDao.getNotes()).hasSize(0);
+    fun insertNote() {
+        assertThat(mNoteDao!!.notes).hasSize(0)
 
-        final long teaId = mTeaDao.insert(createTea());
+        val teaId = mTeaDao!!.insert(createTea())
 
-        final Note noteBefore = new Note(teaId, 1, HEADER, DESCRIPTION);
-        mNoteDao.insert(noteBefore);
+        val noteBefore = Note(teaId, 1, HEADER, DESCRIPTION)
+        mNoteDao!!.insert(noteBefore)
 
-        assertThat(mNoteDao.getNotes()).hasSize(1);
+        assertThat(mNoteDao!!.notes).hasSize(1)
 
-        final Note noteAfter = mNoteDao.getNotes().get(0);
-        assertThat(noteAfter).isEqualToIgnoringGivenFields(noteBefore, "id");
+        val noteAfter = mNoteDao!!.notes[0]
+        assertThat(noteAfter).usingRecursiveComparison().ignoringFields("id").isEqualTo(noteBefore)
     }
 
     @Test
-    public void updateNote(){
-        assertThat(mNoteDao.getNotes()).hasSize(0);
+    fun updateNote() {
+        assertThat(mNoteDao!!.notes).hasSize(0)
 
-        final long teaId = mTeaDao.insert(createTea());
+        val teaId = mTeaDao!!.insert(createTea())
 
-        final Note noteBefore = new Note(teaId, 1, HEADER, DESCRIPTION);
-        mNoteDao.insert(noteBefore);
+        val noteBefore = Note(teaId, 1, HEADER, DESCRIPTION)
+        mNoteDao!!.insert(noteBefore)
 
-        assertThat(mNoteDao.getNotes()).hasSize(1);
+        assertThat(mNoteDao!!.notes).hasSize(1)
 
-        final Note noteUpdate = mNoteDao.getNotes().get(0);
-        noteUpdate.setPosition(2);
-        noteUpdate.setHeader("HeaderChanged");
-        noteUpdate.setDescription("DesciptionChanged");
-        mNoteDao.update(noteUpdate);
+        val noteUpdate = mNoteDao!!.notes[0]
+        noteUpdate.position = 2
+        noteUpdate.header = "HeaderChanged"
+        noteUpdate.description = "DescriptionChanged"
+        mNoteDao!!.update(noteUpdate)
 
-        final Note noteAfter = mNoteDao.getNotes().get(0);
-        assertThat(noteAfter).isEqualToComparingFieldByField(noteUpdate);
+        val noteAfter = mNoteDao!!.notes[0]
+        assertThat(noteAfter).usingRecursiveComparison().isEqualTo(noteUpdate)
     }
 
     @Test
-    public void getNoteByTeaIdAndPosition() {
-        assertThat(mNoteDao.getNotes()).hasSize(0);
+    fun getNoteByTeaIdAndPosition() {
+        assertThat(mNoteDao!!.notes).hasSize(0)
 
-        final long teaId = mTeaDao.insert(createTea());
+        val teaId = mTeaDao!!.insert(createTea())
 
-        final List<Note> notesBefore = new ArrayList<>();
-        notesBefore.add(new Note(teaId, 1, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(0));
-        notesBefore.add(new Note(teaId, 2, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(1));
+        val notesBefore: MutableList<Note> = ArrayList()
+        notesBefore.add(Note(teaId, 1, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[0])
+        notesBefore.add(Note(teaId, 2, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[1])
 
-        final Note noteAfter = mNoteDao.getNoteByTeaIdAndPosition(teaId, 2);
-        assertThat(noteAfter).isEqualToIgnoringGivenFields(notesBefore.get(1), "id");
+        val noteAfter = mNoteDao!!.getNoteByTeaIdAndPosition(teaId, 2)
+        assertThat(noteAfter).usingRecursiveComparison().ignoringFields("id").isEqualTo(notesBefore[1])
     }
 
     @Test
-    public void getNotesByTeaIdAndPositionBiggerZero() {
-        assertThat(mNoteDao.getNotes()).hasSize(0);
+    fun getNotesByTeaIdAndPositionBiggerZero() {
+        assertThat(mNoteDao!!.notes).hasSize(0)
 
-        final long teaId = mTeaDao.insert(createTea());
+        val teaId = mTeaDao!!.insert(createTea())
 
-        final List<Note> notesBefore = new ArrayList<>();
-        notesBefore.add(new Note(teaId, -1, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(0));
-        notesBefore.add(new Note(teaId, 1, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(1));
-        notesBefore.add(new Note(teaId, 2, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(2));
+        val notesBefore: MutableList<Note> = ArrayList()
+        notesBefore.add(Note(teaId, -1, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[0])
+        notesBefore.add(Note(teaId, 1, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[1])
+        notesBefore.add(Note(teaId, 2, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[2])
 
-        final List<Note> notesAfter = mNoteDao.getNotesByTeaIdAndPositionBiggerZero(teaId);
-        assertThat(notesAfter).hasSize(2);
-        assertThat(notesAfter.get(0)).isEqualToIgnoringGivenFields(notesBefore.get(1), "id");
-        assertThat(notesAfter.get(1)).isEqualToIgnoringGivenFields(notesBefore.get(2), "id");
+        val notesAfter = mNoteDao!!.getNotesByTeaIdAndPositionBiggerZero(teaId)
+        assertThat(notesAfter).hasSize(2)
+        assertThat(notesAfter[0]).usingRecursiveComparison().ignoringFields("id").isEqualTo(notesBefore[1])
+        assertThat(notesAfter[1]).usingRecursiveComparison().ignoringFields("id").isEqualTo(notesBefore[2])
     }
 
     @Test
-    public void deleteNoteByPosition() {
-        final long teaId = mTeaDao.insert(createTea());
+    fun deleteNoteByPosition() {
+        val teaId = mTeaDao!!.insert(createTea())
 
-        final List<Note> notesBefore = new ArrayList<>();
-        notesBefore.add(new Note(teaId, 0, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(0));
-        notesBefore.add(new Note(teaId, 1, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(1));
-        notesBefore.add(new Note(teaId, 2, HEADER, DESCRIPTION));
-        mNoteDao.insert(notesBefore.get(2));
+        val notesBefore: MutableList<Note> = ArrayList()
+        notesBefore.add(Note(teaId, 0, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[0])
+        notesBefore.add(Note(teaId, 1, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[1])
+        notesBefore.add(Note(teaId, 2, HEADER, DESCRIPTION))
+        mNoteDao!!.insert(notesBefore[2])
 
-        mNoteDao.deleteNoteByTeaIdAndPosition(teaId, 1);
+        mNoteDao!!.deleteNoteByTeaIdAndPosition(teaId, 1)
 
-        final List<Note> notesAfter = mNoteDao.getNotes();
-        assertThat(notesAfter).hasSize(2);
-        assertThat(notesAfter.get(0)).isEqualToIgnoringGivenFields(notesBefore.get(0), "id");
-        assertThat(notesAfter.get(1)).isEqualToIgnoringGivenFields(notesBefore.get(2), "id");
-
+        val notesAfter = mNoteDao!!.notes
+        assertThat(notesAfter).hasSize(2)
+        assertThat(notesAfter[0]).usingRecursiveComparison().ignoringFields("id").isEqualTo(notesBefore[0])
+        assertThat(notesAfter[1]).usingRecursiveComparison().ignoringFields("id").isEqualTo(notesBefore[2])
     }
 
-    private Tea createTea() {
-        return new Tea("name", "variety", 3, "ts", 15, 0, CurrentDate.getDate());
+    private fun createTea(): Tea {
+        return Tea("name", "variety", 3.0, "ts", 15, 0, getDate())
+    }
+
+    companion object {
+        private const val HEADER = "header"
+        private const val DESCRIPTION = "description"
     }
 }
