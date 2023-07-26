@@ -1,34 +1,37 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
+package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat
 
-public interface DisplayAmountKindStrategy {
-    String getTextShowTea(double amount);
+interface DisplayAmountKindStrategy {
 
-    int getImageResourceIdShowTea();
+    fun getTextShowTea(amount: Double): String
 
-    String getTextCalculatorShowTea(float amountPerLiter, float liter);
+    fun getImageResourceIdShowTea(): Int
 
-    String getTextNewTea(double amount);
+    fun getTextCalculatorShowTea(amountPerLiter: Float, liter: Float): String
 
-    static String getFormattedAmount(final double amount) {
-        String text = "-";
-        if (exist(amount)) {
-            text = removeZerosFromAmount(amount);
+    fun getTextNewTea(amount: Double): String
+
+    companion object {
+        @JvmStatic
+        fun getFormattedAmount(amount: Double): String {
+            var text = "-"
+            if (exist(amount)) {
+                text = removeZerosFromAmount(amount)
+            }
+            return text
         }
-        return text;
-    }
 
-    static String removeZerosFromAmount(final double amount) {
-        if (amount == (int) amount)
-            return String.valueOf((int) amount);
-        else {
-            final DecimalFormat df = new DecimalFormat("#.#");
-            return df.format(amount);
+        fun removeZerosFromAmount(amount: Double): String {
+            return if (amount == amount.toInt().toDouble()) amount.toInt().toString()
+            else {
+                val df = DecimalFormat("#.#")
+                df.format(amount)
+            }
         }
-    }
 
-    static boolean exist(final double amount) {
-        return amount != -500;
+        fun exist(amount: Double): Boolean {
+            return amount != -500.0
+        }
     }
 }

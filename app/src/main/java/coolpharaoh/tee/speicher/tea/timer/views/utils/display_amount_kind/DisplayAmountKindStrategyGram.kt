@@ -1,36 +1,28 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
+package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindStrategy.Companion.getFormattedAmount
 
-import coolpharaoh.tee.speicher.tea.timer.R;
+class DisplayAmountKindStrategyGram(private val application: Application) :
+    DisplayAmountKindStrategy {
 
-class DisplayAmountKindStrategyGram implements DisplayAmountKindStrategy {
-
-    private final Application application;
-
-    public DisplayAmountKindStrategyGram(final Application application) {
-        this.application = application;
+    override fun getTextShowTea(amount: Double): String {
+        val text = getFormattedAmount(amount)
+        return application.getString(R.string.show_tea_display_gr, text)
     }
 
-    @Override
-    public String getTextShowTea(final double amount) {
-        final String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
-        return application.getString(R.string.show_tea_display_gr, text);
+    override fun getImageResourceIdShowTea(): Int {
+        return R.drawable.gram_black
     }
 
-    @Override
-    public int getImageResourceIdShowTea() {
-        return R.drawable.gram_black;
+    override fun getTextCalculatorShowTea(amountPerLiter: Float, liter: Float): String {
+        return application.getString(R.string.show_tea_dialog_amount_per_amount_gr,
+            amountPerLiter, liter)
     }
 
-    @Override
-    public String getTextCalculatorShowTea(final float amountPerLiter, final float liter) {
-        return application.getString(R.string.show_tea_dialog_amount_per_amount_gr, amountPerLiter, liter);
-    }
-
-    @Override
-    public String getTextNewTea(final double amount) {
-        final String text = DisplayAmountKindStrategy.getFormattedAmount(amount);
-        return application.getString(R.string.new_tea_edit_text_amount_text_gr, text);
+    override fun getTextNewTea(amount: Double): String {
+        val text = getFormattedAmount(amount)
+        return application.getString(R.string.new_tea_edit_text_amount_text_gr, text)
     }
 }

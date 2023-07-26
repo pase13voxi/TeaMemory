@@ -1,22 +1,15 @@
-package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind;
+package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
 
-import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
-
-public class DisplayAmountKindFactory {
-
-    private DisplayAmountKindFactory() {
-    }
-
-    public static DisplayAmountKindStrategy get(final AmountKind amountKind, final Application application) {
-        switch (amountKind) {
-            case GRAM:
-                return new DisplayAmountKindStrategyGram(application);
-            case TEA_BAG:
-                return new DisplayAmountKindStrategyTeaBag(application);
-            default:
-                return new DisplayAmountKindStrategyTeaSpoon(application);
+object DisplayAmountKindFactory {
+    @JvmStatic
+    operator fun get(amountKind: AmountKind, application: Application): DisplayAmountKindStrategy {
+        return when (amountKind) {
+            AmountKind.GRAM -> DisplayAmountKindStrategyGram(application)
+            AmountKind.TEA_BAG -> DisplayAmountKindStrategyTeaBag(application)
+            else -> DisplayAmountKindStrategyTeaSpoon(application)
         }
     }
 }
