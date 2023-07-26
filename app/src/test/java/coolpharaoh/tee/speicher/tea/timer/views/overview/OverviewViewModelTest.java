@@ -168,11 +168,11 @@ class OverviewViewModelTest {
 
     @Test
     void isMainUpdateAlert() {
-        final boolean isMainUpdateAlert = true;
-        when(sharedSettings.isOverviewUpdateAlert()).thenReturn(isMainUpdateAlert);
+        final boolean overviewUpdateAlert = true;
+        when(sharedSettings.isOverviewUpdateAlert()).thenReturn(overviewUpdateAlert);
 
         overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        assertThat(overviewViewModel.isOverviewUpdateAlert()).isEqualTo(isMainUpdateAlert);
+        assertThat(overviewViewModel.isOverviewUpdateAlert()).isEqualTo(overviewUpdateAlert);
     }
 
     @Test

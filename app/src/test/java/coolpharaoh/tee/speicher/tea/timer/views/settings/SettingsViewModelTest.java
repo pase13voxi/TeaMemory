@@ -155,7 +155,7 @@ class SettingsViewModelTest {
         final boolean overviewUpdateAlert = true;
         when(sharedSettings.isOverviewUpdateAlert()).thenReturn(overviewUpdateAlert);
 
-        assertThat(settingsViewModel.isMainUpdateAlert()).isEqualTo(overviewUpdateAlert);
+        assertThat(settingsViewModel.getOverviewUpdateAlert()).isEqualTo(overviewUpdateAlert);
     }
 
     @Test
