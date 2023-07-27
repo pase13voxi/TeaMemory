@@ -1,176 +1,165 @@
-package coolpharaoh.tee.speicher.tea.timer.views.information;
+package coolpharaoh.tee.speicher.tea.timer.views.information
 
-import android.app.Application;
+import android.app.Application
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
+import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter.refreshCounter
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note
+import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
+import java.util.Date
 
-import androidx.annotation.VisibleForTesting;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-
-class InformationViewModel extends ViewModel {
-
-    private final Application application;
-    private final TeaRepository teaRepository;
-    private final NoteRepository noteRepository;
-    private final CounterRepository counterRepository;
-    private final long teaId;
-    private final MutableLiveData<List<Note>> details;
-
-    InformationViewModel(final long teaId, final Application application) {
-        this(teaId, new TeaRepository(application), new NoteRepository(application),
-                new CounterRepository(application), application);
-    }
-
+internal class InformationViewModel
     @VisibleForTesting
-    InformationViewModel(final long teaId, final TeaRepository teaRepository, final NoteRepository noteRepository,
-                         final CounterRepository counterRepository, final Application application) {
-        this.application = application;
-        this.teaRepository = teaRepository;
-        this.noteRepository = noteRepository;
-        this.counterRepository = counterRepository;
-        this.teaId = teaId;
-        details = new MutableLiveData<>();
+    constructor(val teaId: Long, private val teaRepository: TeaRepository,
+                private val noteRepository: NoteRepository,
+                private val counterRepository: CounterRepository,
+                private val application: Application?) : ViewModel() {
+
+    constructor(teaId: Long, application: Application?) :
+            this(teaId, TeaRepository(application!!), NoteRepository(application), CounterRepository(application), application)
+
+    private val details: MutableLiveData<List<Note>>
+
+    init {
+        details = MutableLiveData()
         // Notes with position over 0 contains tea information
-        updateDetails(teaId, noteRepository);
+        updateDetails(teaId, noteRepository)
     }
 
-    // Teas
-    public long getTeaId() {
-        return teaId;
+    val teaName: String?
+        get() {
+            val tea = teaRepository.getTeaById(teaId)
+            return if (tea == null) {
+                throw NoSuchElementException("No tea found for tea id $teaId")
+            } else {
+                tea.name
+            }
+        }
+
+    val varietyAsText: String?
+        get() {
+            val tea = teaRepository.getTeaById(teaId)
+            return convertStoredVarietyToText(tea!!.variety, application!!)
+        }
+
+    val teaRating: Int
+        get() {
+            val tea = teaRepository.getTeaById(teaId)
+            return tea!!.rating
+        }
+
+    fun updateTeaRating(rating: Int) {
+        val tea = teaRepository.getTeaById(teaId)
+        tea!!.rating = rating
+        teaRepository.updateTea(tea)
     }
 
-    String getTeaName() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        if (tea == null) {
-            throw new NoSuchElementException("No tea found for tea id " + teaId);
-        } else {
-            return tea.getName();
+    val isInStock: Boolean
+        get() {
+            val tea = teaRepository.getTeaById(teaId)
+            return tea!!.inStock
+        }
+
+    fun updateTeaInStock(inStock: Boolean) {
+        val tea = teaRepository.getTeaById(teaId)
+        tea!!.inStock = inStock
+        teaRepository.updateTea(tea)
+    }
+
+    val date: Date?
+        get() {
+            val tea = teaRepository.getTeaById(teaId)
+            return tea!!.date
+        }
+
+    fun getDetails(): LiveData<List<Note>> {
+        return details
+    }
+
+    fun getDetail(position: Int): Note {
+        return details.value!![position]
+    }
+
+    fun addDetail(header: String?, description: String?) {
+        val note = Note(
+            teaId, details.value!!.size, header, description
+        )
+        noteRepository.insertNote(note)
+        updateDetails(teaId, noteRepository)
+    }
+
+    fun updateDetail(position: Int, header: String?, description: String?) {
+        val note = details.value!![position]
+        note.header = header
+        note.description = description
+        noteRepository.updateNote(note)
+        updateDetails(teaId, noteRepository)
+    }
+
+    fun deleteDetail(index: Int) {
+        noteRepository.deleteNoteByTeaIdAndPosition(teaId, index)
+        updateDetails(teaId, noteRepository)
+        for (i in index until details.value!!.size) {
+            details.value!![i].position = i
+            noteRepository.updateNote(details.value!![i])
         }
     }
 
-    String getVarietyAsText() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        return Variety.convertStoredVarietyToText(tea.getVariety(), application);
-    }
-
-    int getTeaRating() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        return tea.getRating();
-    }
-
-    void updateTeaRating(final int rating) {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        tea.setRating(rating);
-        teaRepository.updateTea(tea);
-    }
-
-    boolean isInStock() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        return tea.getInStock();
-    }
-
-    void updateTeaInStock(final boolean inStock) {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        tea.setInStock(inStock);
-        teaRepository.updateTea(tea);
-    }
-
-    Date getDate() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        return tea.getDate();
-    }
-
-    // Notes
-    LiveData<List<Note>> getDetails() {
-        return details;
-    }
-
-    Note getDetail(final int position) {
-        return details.getValue().get(position);
-    }
-
-    void addDetail(final String header, final String description) {
-        final Note note = new Note(teaId, details.getValue().size(), header, description);
-        noteRepository.insertNote(note);
-        updateDetails(teaId, noteRepository);
-    }
-
-    void updateDetail(final int position, final String header, final String description) {
-        final Note note = details.getValue().get(position);
-        note.setHeader(header);
-        note.setDescription(description);
-        noteRepository.updateNote(note);
-        updateDetails(teaId, noteRepository);
-    }
-
-    void deleteDetail(final int index) {
-        noteRepository.deleteNoteByTeaIdAndPosition(teaId, index);
-        updateDetails(teaId, noteRepository);
-        for (int i = index; i < details.getValue().size(); i++) {
-            details.getValue().get(i).setPosition(i);
-            noteRepository.updateNote(details.getValue().get(i));
+    val notes: Note
+        get() {
+            // Note with position -1 contains notes
+            var notes = noteRepository.getNoteByTeaIdAndPosition(teaId, -1)
+            if (notes == null) {
+                notes = Note(teaId, -1, "01_notes", "")
+                noteRepository.insertNote(notes)
+            }
+            return notes
         }
-    }
 
-    Note getNotes() {
+    fun updateNotes(insertedNotes: String?) {
         // Note with position -1 contains notes
-        Note notes = noteRepository.getNoteByTeaIdAndPosition(teaId, -1);
-        if (notes == null) {
-            notes = new Note(teaId, -1, "01_notes", "");
-            noteRepository.insertNote(notes);
-        }
-        return notes;
+        val notes = noteRepository.getNoteByTeaIdAndPosition(teaId, -1)
+        notes!!.description = insertedNotes
+
+        noteRepository.updateNote(notes)
     }
 
-    void updateNotes(final String insertedNotes) {
-        // Note with position -1 contains notes
-        final Note notes = noteRepository.getNoteByTeaIdAndPosition(teaId, -1);
-        notes.setDescription(insertedNotes);
-
-        noteRepository.updateNote(notes);
-    }
-
-    private void updateDetails(final long teaId, final NoteRepository noteRepository) {
-        details.setValue(noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId));
+    private fun updateDetails(teaId: Long, noteRepository: NoteRepository) {
+        details.value = noteRepository.getNotesByTeaIdAndPositionBiggerZero(teaId)
     }
 
     // Counter
-    public Counter getCounter() {
-        final Counter counter = getOrCreateCounter();
-        RefreshCounter.refreshCounter(counter);
-        counterRepository.updateCounter(counter);
-        return counter;
-    }
-
-    private Counter getOrCreateCounter() {
-        Counter counter = counterRepository.getCounterByTeaId(teaId);
-        if (counter == null) {
-            counter = new Counter();
-            counter.setTeaId(teaId);
-            counter.setWeek(0);
-            counter.setMonth(0);
-            counter.setYear(0);
-            counter.setOverall(0);
-            counter.setWeekDate(CurrentDate.getDate());
-            counter.setMonthDate(CurrentDate.getDate());
-            counter.setYearDate(CurrentDate.getDate());
-            counter.setId(counterRepository.insertCounter(counter));
+    val counter: Counter
+        get() {
+            val counter = orCreateCounter
+            refreshCounter(counter)
+            counterRepository.updateCounter(counter)
+            return counter
         }
 
-        return counter;
-    }
+    private val orCreateCounter: Counter
+        get() {
+            var counter = counterRepository.getCounterByTeaId(teaId)
+            if (counter == null) {
+                counter = Counter()
+                counter.teaId = teaId
+                counter.week = 0
+                counter.month = 0
+                counter.year = 0
+                counter.overall = 0
+                counter.weekDate = getDate()
+                counter.monthDate = getDate()
+                counter.yearDate = getDate()
+                counter.id = counterRepository.insertCounter(counter)
+            }
+
+            return counter
+        }
 }
