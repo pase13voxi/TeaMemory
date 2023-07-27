@@ -1,183 +1,176 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import java.util.Objects;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.init
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.read
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.write
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory.getDataIO
+import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
-@SuppressWarnings("java:S110")
-public class ExportImport extends AppCompatActivity implements Printer {
-    private boolean keepStoredTeas = true;
+class ExportImport : AppCompatActivity(), Printer {
 
-    private final ActivityResultLauncher<Intent> exportActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null
-                        && result.getData().getData() != null) {
-                    exportFile(result.getData().getData());
-                }
-            });
+    private var keepStoredTeas = true
 
-    private final ActivityResultLauncher<Intent> importActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null
-                        && result.getData().getData() != null) {
-                    importFile(result.getData().getData());
-                }
-            });
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_export_import);
-        defineToolbarAsActionbar();
-        enableAndShowBackButton();
-
-        showWarning();
-
-        final Button buttonExport = findViewById(R.id.button_export_import_export);
-        buttonExport.setOnClickListener(v -> chooseExportFolder());
-
-        final Button buttonImport = findViewById(R.id.button_export_import_import);
-        buttonImport.setOnClickListener(v -> dialogImportDecision());
-    }
-
-    private void showWarning() {
-        if (CurrentSdk.getSdkVersion() < Build.VERSION_CODES.Q) {
-            final TextView textViewWarning = findViewById(R.id.text_view_export_import_warning);
-            textViewWarning.setVisibility(View.GONE);
-
-            final TextView textViewWarningText = findViewById(R.id.text_view_export_import_warning_text);
-            textViewWarningText.setVisibility(View.GONE);
+    private val exportActivityResultLauncher = registerForActivityResult(StartActivityForResult())
+    { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK && result.data != null && result.data!!.data != null) {
+            exportFile(result.data!!.data)
         }
     }
 
-    private void defineToolbarAsActionbar() {
-        final Toolbar toolbar = findViewById(R.id.tool_bar);
-        final TextView mToolbarCustomTitle = findViewById(R.id.tool_bar_title);
-        mToolbarCustomTitle.setText(R.string.export_import_heading);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
+    private val importActivityResultLauncher = registerForActivityResult(StartActivityForResult())
+    { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK && result.data != null && result.data!!.data != null) {
+            importFile(result.data!!.data)
+        }
     }
 
-    private void enableAndShowBackButton() {
-        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_export_import)
+        defineToolbarAsActionbar()
+        enableAndShowBackButton()
+
+        showWarning()
+
+        val buttonExport = findViewById<Button>(R.id.button_export_import_export)
+        buttonExport.setOnClickListener { chooseExportFolder() }
+
+        val buttonImport = findViewById<Button>(R.id.button_export_import_import)
+        buttonImport.setOnClickListener { dialogImportDecision() }
     }
 
-    private void chooseExportFolder() {
-        final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        exportActivityResultLauncher.launch(intent);
+    private fun showWarning() {
+        if (sdkVersion < Build.VERSION_CODES.Q) {
+            val textViewWarning = findViewById<TextView>(R.id.text_view_export_import_warning)
+            textViewWarning.visibility = View.GONE
+
+            val textViewWarningText = findViewById<TextView>(R.id.text_view_export_import_warning_text)
+            textViewWarningText.visibility = View.GONE
+        }
     }
 
-    private void dialogImportDecision() {
-        final ViewGroup parent = findViewById(R.id.exportimport_parent);
-
-        final LayoutInflater inflater = getLayoutInflater();
-        final View layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false);
-
-        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialog_theme).create();
-        alertDialog.setView(layoutDialogImport);
-        alertDialog.setTitle(R.string.export_import_import_dialog_header);
-
-        final Button buttonImportDelete = layoutDialogImport.findViewById(R.id.button_export_import_import_delete);
-        buttonImportDelete.setOnClickListener(view -> chooseImportFile(alertDialog, false));
-        final Button buttonImportKeep = layoutDialogImport.findViewById(R.id.button_export_import_import_keep);
-        buttonImportKeep.setOnClickListener(view -> chooseImportFile(alertDialog, true));
-
-        alertDialog.show();
+    private fun defineToolbarAsActionbar() {
+        val toolbar = findViewById<Toolbar>(R.id.tool_bar)
+        val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
+        mToolbarCustomTitle.setText(R.string.export_import_heading)
+        setSupportActionBar(toolbar)
+        Objects.requireNonNull(supportActionBar)?.title = null
     }
 
-    private void chooseImportFile(final AlertDialog alertDialog, final boolean keepTeas) {
-        dialogChooseImportFile();
-        keepStoredTeas = keepTeas;
-        alertDialog.cancel();
+    private fun enableAndShowBackButton() {
+        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    private void dialogChooseImportFile() {
-        final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
+    private fun chooseExportFolder() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        exportActivityResultLauncher.launch(intent)
+    }
+
+    private fun dialogImportDecision() {
+        val parent = findViewById<ViewGroup>(R.id.exportimport_parent)
+
+        val inflater = layoutInflater
+        val layoutDialogImport = inflater.inflate(R.layout.dialog_import, parent, false)
+
+        val alertDialog = AlertDialog.Builder(this, R.style.dialog_theme).create()
+        alertDialog.setView(layoutDialogImport)
+        alertDialog.setTitle(R.string.export_import_import_dialog_header)
+
+        val buttonImportDelete = layoutDialogImport.findViewById<Button>(R.id.button_export_import_import_delete)
+        buttonImportDelete.setOnClickListener { chooseImportFile(alertDialog, false) }
+        val buttonImportKeep = layoutDialogImport.findViewById<Button>(R.id.button_export_import_import_keep)
+        buttonImportKeep.setOnClickListener { chooseImportFile(alertDialog, true) }
+
+        alertDialog.show()
+    }
+
+    private fun chooseImportFile(alertDialog: AlertDialog, keepTeas: Boolean) {
+        dialogChooseImportFile()
+        keepStoredTeas = keepTeas
+        alertDialog.cancel()
+    }
+
+    private fun dialogChooseImportFile() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
         importActivityResultLauncher.launch(Intent.createChooser(intent,
-                getApplicationContext().getResources().getString(R.string.export_import_import_choose_file)));
+            applicationContext.resources.getString(R.string.export_import_import_choose_file)))
     }
 
-    private void exportFile(final Uri folderPath) {
-        JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.write(DataIOAdapterFactory.getDataIO(getApplication(), this, folderPath))) {
-            dialogExportLocation();
+    private fun exportFile(folderPath: Uri?) {
+        init(application, this)
+        if (write(getDataIO(application, this, folderPath!!))) {
+            dialogExportLocation()
         } else {
-            dialogExportFailed();
+            dialogExportFailed()
         }
     }
 
-    private void importFile(final Uri filePath) {
-        JsonIOAdapter.init(getApplication(), this);
-        if (JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(getApplication(), this, filePath), keepStoredTeas)) {
-            dialogImportComplete();
+    private fun importFile(filePath: Uri?) {
+        init(application, this)
+        if (read(getDataIO(application, this, filePath!!), keepStoredTeas)) {
+            dialogImportComplete()
         } else {
-            dialogImportFailed();
+            dialogImportFailed()
         }
     }
 
-    private void dialogExportLocation() {
-        new AlertDialog.Builder(this, R.style.dialog_theme)
-                .setTitle(R.string.export_import_location_dialog_header)
-                .setMessage(getString(R.string.export_import_location_dialog_description))
-                .setPositiveButton(R.string.export_import_location_dialog_ok, null)
-                .show();
+    private fun dialogExportLocation() {
+        AlertDialog.Builder(this, R.style.dialog_theme)
+            .setTitle(R.string.export_import_location_dialog_header)
+            .setMessage(getString(R.string.export_import_location_dialog_description))
+            .setPositiveButton(R.string.export_import_location_dialog_ok, null)
+            .show()
     }
 
-    private void dialogExportFailed() {
-        new AlertDialog.Builder(this, R.style.dialog_theme)
-                .setTitle(R.string.export_import_export_failed_dialog_header)
-                .setMessage(R.string.export_import_export_failed_dialog_description)
-                .setPositiveButton(R.string.export_import_export_failed_dialog_ok, null)
-                .show();
+    private fun dialogExportFailed() {
+        AlertDialog.Builder(this, R.style.dialog_theme)
+            .setTitle(R.string.export_import_export_failed_dialog_header)
+            .setMessage(R.string.export_import_export_failed_dialog_description)
+            .setPositiveButton(R.string.export_import_export_failed_dialog_ok, null)
+            .show()
     }
 
-    private void dialogImportComplete() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_theme)
-                .setTitle(R.string.export_import_import_complete_dialog_header);
+    private fun dialogImportComplete() {
+        val builder = AlertDialog.Builder(this, R.style.dialog_theme).setTitle(R.string.export_import_import_complete_dialog_header)
         if (keepStoredTeas) {
-            builder.setMessage(R.string.export_import_import_complete_keep_dialog_description).setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show();
+            builder.setMessage(R.string.export_import_import_complete_keep_dialog_description)
+                .setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show()
         } else {
-            builder.setMessage(R.string.export_import_import_complete_delete_dialog_description).setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show();
+            builder.setMessage(R.string.export_import_import_complete_delete_dialog_description)
+                .setPositiveButton(R.string.export_import_import_complete_dialog_ok, null).show()
         }
     }
 
-    private void dialogImportFailed() {
-        new AlertDialog.Builder(this, R.style.dialog_theme)
-                .setTitle(R.string.export_import_import_failed_dialog_header)
-                .setMessage(R.string.export_import_import_failed_dialog_description)
-                .setPositiveButton(R.string.export_import_import_failed_dialog_ok, null)
-                .show();
+    private fun dialogImportFailed() {
+        AlertDialog.Builder(this, R.style.dialog_theme)
+            .setTitle(R.string.export_import_import_failed_dialog_header)
+            .setMessage(R.string.export_import_import_failed_dialog_description)
+            .setPositiveButton(R.string.export_import_import_failed_dialog_ok, null)
+            .show()
     }
 
-    @Override
-    public void print(final String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    override fun print(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

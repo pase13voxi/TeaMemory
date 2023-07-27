@@ -1,73 +1,56 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform
 
-import android.app.Application;
+import android.app.Application
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
-
-public class DatabaseJsonTransformer {
-    private final Application application;
-    private final Printer printer;
-
-    public DatabaseJsonTransformer(final Application application, final Printer printer) {
-        this.application = application;
-        this.printer = printer;
+class DatabaseJsonTransformer(private val application: Application, private val printer: Printer) {
+    fun databaseToJson(): String {
+        return generateJson()
     }
 
-    public String databaseToJson() {
-        return generateJson();
+    private fun generateJson(): String {
+        val dataTransformViewModel = DataTransformViewModel(application)
+
+        val databaseToPojo = DatabaseToPOJO(dataTransformViewModel.teas,
+            dataTransformViewModel.infusions, dataTransformViewModel.counters,
+            dataTransformViewModel.notes)
+
+        val teaList = databaseToPojo.createTeaList()
+        return createJsonFromTeaList(teaList)
     }
 
-    private String generateJson() {
-        final DataTransformViewModel dataTransformViewModel = new DataTransformViewModel(application);
+    private fun createJsonFromTeaList(teaList: List<TeaPOJO>): String {
+        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create()
 
-        final DatabaseToPOJO databaseToPojo = new DatabaseToPOJO(dataTransformViewModel.getTeaList(),
-                dataTransformViewModel.getInfusionList(), dataTransformViewModel.getCounterList(),
-                dataTransformViewModel.getNoteList());
-
-        final List<TeaPOJO> teaList = databaseToPojo.createTeaList();
-        return createJsonFromTeaList(teaList);
+        return gson.toJson(teaList)
     }
 
-    private String createJsonFromTeaList(final List<TeaPOJO> teaList) {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
-
-        return gson.toJson(teaList);
-    }
-
-    public boolean jsonToDatabase(final String json, final boolean keepStoredTeas) {
-        final List<TeaPOJO> teaList = createTeaListFromJson(json);
+    fun jsonToDatabase(json: String, keepStoredTeas: Boolean): Boolean {
+        val teaList = createTeaListFromJson(json)
         if (teaList.isEmpty()) {
-            return false;
+            return false
         }
-        final POJOToDatabase pojoToDatabase = new POJOToDatabase(new DataTransformViewModel(application));
-        pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas);
-        printer.print(application.getString(R.string.export_import_teas_imported));
-        return true;
+        val pojoToDatabase = POJOToDatabase(DataTransformViewModel(application))
+        pojoToDatabase.fillDatabaseWithTeaList(teaList, keepStoredTeas)
+        printer.print(application.getString(R.string.export_import_teas_imported))
+        return true
     }
 
-    private List<TeaPOJO> createTeaListFromJson(final String json) {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+    private fun createTeaListFromJson(json: String): List<TeaPOJO> {
+        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create()
 
-        final Type listType = new TypeToken<ArrayList<TeaPOJO>>() {
-        }.getType();
+        val listType = object : TypeToken<ArrayList<TeaPOJO?>?>() {}.type
 
-        try {
-            return gson.fromJson(json, listType);
-        } catch (final JsonSyntaxException e) {
-            printer.print(application.getString(R.string.export_import_import_parse_teas_failed));
-            return Collections.emptyList();
+        return try {
+            gson.fromJson(json, listType)
+        } catch (e: JsonSyntaxException) {
+            printer.print(application.getString(R.string.export_import_import_parse_teas_failed))
+            emptyList()
         }
     }
 }

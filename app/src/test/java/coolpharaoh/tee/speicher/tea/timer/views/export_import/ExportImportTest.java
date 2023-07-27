@@ -84,6 +84,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasAndExpectDialogFileLocation(){
+        when(databaseJsonTransformer.databaseToJson()).thenReturn("json");
         when(dataIOAdapter.write(any())).thenReturn(true);
 
         final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);
@@ -101,6 +102,7 @@ public class ExportImportTest {
 
     @Test
     public void exportTeasFailedAndExpectDialogExportFailed(){
+        when(databaseJsonTransformer.databaseToJson()).thenReturn("json");
         when(dataIOAdapter.write(any())).thenReturn(false);
 
         final ActivityScenario<ExportImport> exportImportActivityScenario = ActivityScenario.launch(ExportImport.class);

@@ -1,7 +1,7 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io
 
-public interface DataIOAdapter {
-    boolean write(String json);
+interface DataIOAdapter {
+    fun write(json: String): Boolean
 
-    String read();
+    fun read(): String
 }

@@ -60,7 +60,7 @@ class DataTransformViewModelTest {
         teasBefore.add(tea2);
         when(teaRepository.getTeas()).thenReturn(teasBefore);
 
-        final List<Tea> teasAfter = dataTransformViewModel.getTeaList();
+        final List<Tea> teasAfter = dataTransformViewModel.getTeas();
 
         assertThat(teasAfter).isEqualTo(teasBefore);
     }
@@ -111,7 +111,7 @@ class DataTransformViewModelTest {
 
         when(infusionRepository.getInfusions()).thenReturn(infusionsBefore);
 
-        final List<Infusion> infusionsAfter = dataTransformViewModel.getInfusionList();
+        final List<Infusion> infusionsAfter = dataTransformViewModel.getInfusions();
 
         assertThat(infusionsAfter).isEqualTo(infusionsBefore);
     }
@@ -141,7 +141,7 @@ class DataTransformViewModelTest {
 
         when(counterRepository.getCounters()).thenReturn(countersBefore);
 
-        final List<Counter> countersAfter = dataTransformViewModel.getCounterList();
+        final List<Counter> countersAfter = dataTransformViewModel.getCounters();
 
         assertThat(countersAfter).isEqualTo(countersBefore);
     }
@@ -170,7 +170,7 @@ class DataTransformViewModelTest {
 
         when(noteRepository.getNotes()).thenReturn(notesBefore);
 
-        final List<Note> notesAfter = dataTransformViewModel.getNoteList();
+        final List<Note> notesAfter = dataTransformViewModel.getNotes();
 
         assertThat(notesAfter).isEqualTo(notesBefore);
     }

@@ -7,12 +7,8 @@ object ImageControllerFactory {
     private var mockedImageController: ImageController? = null
 
     @JvmStatic
-    fun getImageController(context: Context): ImageController? {
-        return if (mockedImageController != null) {
-            mockedImageController
-        } else {
-            ContentResolverImageController(context)
-        }
+    fun getImageController(context: Context): ImageController {
+        return mockedImageController ?: ContentResolverImageController(context)
     }
 
     @JvmStatic

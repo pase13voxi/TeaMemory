@@ -1,122 +1,108 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform
 
-import java.util.ArrayList;
-import java.util.List;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.CounterPOJO
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.InfusionPOJO
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.NotePOJO
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO
 
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.CounterPOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.InfusionPOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.NotePOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
+internal class DatabaseToPOJO(private val teas: List<Tea>, private val infusions: List<Infusion>,
+                              private val counters: List<Counter>, private val notes: List<Note>) {
 
-class DatabaseToPOJO {
-    private final List<Tea> teas;
-    private final List<Infusion> infusions;
-    private final List<Counter> counters;
-    private final List<Note> notes;
+    fun createTeaList(): List<TeaPOJO> {
+        val teaList: MutableList<TeaPOJO> = ArrayList()
 
-    DatabaseToPOJO(final List<Tea> teas, final List<Infusion> infusions, final List<Counter> counters,
-                   final List<Note> notes) {
-        this.teas = teas;
-        this.infusions = infusions;
-        this.counters = counters;
-        this.notes = notes;
-    }
-
-    List<TeaPOJO> createTeaList() {
-        final List<TeaPOJO> teaList = new ArrayList<>();
-
-        for (final Tea tea : teas) {
-            final TeaPOJO teaPOJO = createTeaPOJO(tea);
-            teaPOJO.setInfusions(createInfusionList(tea.getId()));
-            teaPOJO.setCounters(createCounterList(tea.getId()));
-            teaPOJO.setNotes(createNoteList(tea.getId()));
-            teaList.add(teaPOJO);
+        for (tea in teas) {
+            val teaPOJO = createTeaPOJO(tea)
+            teaPOJO.infusions = createInfusionList(tea.id!!)
+            teaPOJO.counters = createCounterList(tea.id!!)
+            teaPOJO.notes = createNoteList(tea.id!!)
+            teaList.add(teaPOJO)
         }
 
-        return teaList;
+        return teaList
     }
 
-    private TeaPOJO createTeaPOJO(final Tea tea) {
-        final TeaPOJO teaPOJO = new TeaPOJO();
-        teaPOJO.setName(tea.getName());
-        teaPOJO.setVariety(tea.getVariety());
-        teaPOJO.setAmount(tea.getAmount());
-        teaPOJO.setAmountKind(tea.getAmountKind());
-        teaPOJO.setColor(tea.getColor());
-        teaPOJO.setRating(tea.getRating());
-        teaPOJO.setInStock(tea.getInStock());
-        teaPOJO.setNextInfusion(tea.getNextInfusion());
-        teaPOJO.setDate(tea.getDate());
-        return teaPOJO;
+    private fun createTeaPOJO(tea: Tea): TeaPOJO {
+        val teaPOJO = TeaPOJO()
+        teaPOJO.name = tea.name
+        teaPOJO.variety = tea.variety
+        teaPOJO.amount = tea.amount
+        teaPOJO.amountKind = tea.amountKind
+        teaPOJO.color = tea.color
+        teaPOJO.rating = tea.rating
+        teaPOJO.inStock = tea.inStock
+        teaPOJO.nextInfusion = tea.nextInfusion
+        teaPOJO.date = tea.date
+        return teaPOJO
     }
 
-    private List<InfusionPOJO> createInfusionList(final long teaId) {
-        final List<InfusionPOJO> infusionPOJOList = new ArrayList<>();
+    private fun createInfusionList(teaId: Long): List<InfusionPOJO> {
+        val infusionPOJOList: MutableList<InfusionPOJO> = ArrayList()
 
-        for (final Infusion infusion : infusions) {
-            if (infusion.getTeaId() == teaId) {
-                final InfusionPOJO infusionPOJO = createInfusionPOJO(infusion);
-                infusionPOJOList.add(infusionPOJO);
+        for (infusion in infusions) {
+            if (infusion.teaId == teaId) {
+                val infusionPOJO = createInfusionPOJO(infusion)
+                infusionPOJOList.add(infusionPOJO)
             }
         }
-        return infusionPOJOList;
+        return infusionPOJOList
     }
 
-    private InfusionPOJO createInfusionPOJO(final Infusion infusion) {
-        final InfusionPOJO infusionPOJO = new InfusionPOJO();
-        infusionPOJO.setInfusionIndex(infusion.getInfusionIndex());
-        infusionPOJO.setTime(infusion.getTime());
-        infusionPOJO.setCoolDownTime(infusion.getCoolDownTime());
-        infusionPOJO.setTemperatureCelsius(infusion.getTemperatureCelsius());
-        infusionPOJO.setTemperatureFahrenheit(infusion.getTemperatureFahrenheit());
-        return infusionPOJO;
+    private fun createInfusionPOJO(infusion: Infusion): InfusionPOJO {
+        val infusionPOJO = InfusionPOJO()
+        infusionPOJO.infusionIndex = infusion.infusionIndex
+        infusionPOJO.time = infusion.time
+        infusionPOJO.coolDownTime = infusion.coolDownTime
+        infusionPOJO.temperatureCelsius = infusion.temperatureCelsius
+        infusionPOJO.temperatureFahrenheit = infusion.temperatureFahrenheit
+        return infusionPOJO
     }
 
-    private List<CounterPOJO> createCounterList(final long teaId) {
-        final List<CounterPOJO> counterPOJOList = new ArrayList<>();
+    private fun createCounterList(teaId: Long): List<CounterPOJO> {
+        val counterPOJOList: MutableList<CounterPOJO> = ArrayList()
 
-        for (final Counter counter : counters) {
-            if (counter.getTeaId() == teaId) {
-                final CounterPOJO counterPOJO = createCounterPOJO(counter);
-                counterPOJOList.add(counterPOJO);
+        for (counter in counters) {
+            if (counter.teaId == teaId) {
+                val counterPOJO = createCounterPOJO(counter)
+                counterPOJOList.add(counterPOJO)
             }
         }
-        return counterPOJOList;
+        return counterPOJOList
     }
 
-    private CounterPOJO createCounterPOJO(final Counter counter) {
-        final CounterPOJO counterPOJO = new CounterPOJO();
-        counterPOJO.setWeek(counter.getWeek());
-        counterPOJO.setMonth(counter.getMonth());
-        counterPOJO.setYear(counter.getYear());
-        counterPOJO.setOverall(counter.getOverall());
-        counterPOJO.setWeekDate(counter.getWeekDate());
-        counterPOJO.setMonthDate(counter.getMonthDate());
-        counterPOJO.setYearDate(counter.getYearDate());
-        return counterPOJO;
+    private fun createCounterPOJO(counter: Counter): CounterPOJO {
+        val counterPOJO = CounterPOJO()
+        counterPOJO.week = counter.week
+        counterPOJO.month = counter.month
+        counterPOJO.year = counter.year
+        counterPOJO.overall = counter.overall
+        counterPOJO.weekDate = counter.weekDate
+        counterPOJO.monthDate = counter.monthDate
+        counterPOJO.yearDate = counter.yearDate
+        return counterPOJO
     }
 
-    private List<NotePOJO> createNoteList(final long teaId) {
-        final List<NotePOJO> notePOJOList = new ArrayList<>();
+    private fun createNoteList(teaId: Long): List<NotePOJO> {
+        val notePOJOList: MutableList<NotePOJO> = ArrayList()
 
-        for (final Note note : notes) {
-            if (note.getTeaId() == teaId) {
-                final NotePOJO notePOJO = createNotePOJO(note);
-                notePOJOList.add(notePOJO);
+        for (note in notes) {
+            if (note.teaId == teaId) {
+                val notePOJO = createNotePOJO(note)
+                notePOJOList.add(notePOJO)
             }
         }
-        return notePOJOList;
+        return notePOJOList
     }
 
-    private NotePOJO createNotePOJO(final Note note) {
-        final NotePOJO notePOJO = new NotePOJO();
-        notePOJO.setPosition(note.getPosition());
-        notePOJO.setHeader(note.getHeader());
-        notePOJO.setDescription(note.getDescription());
-        return notePOJO;
+    private fun createNotePOJO(note: Note): NotePOJO {
+        val notePOJO = NotePOJO()
+        notePOJO.position = note.position
+        notePOJO.header = note.header
+        notePOJO.description = note.description
+        return notePOJO
     }
 }

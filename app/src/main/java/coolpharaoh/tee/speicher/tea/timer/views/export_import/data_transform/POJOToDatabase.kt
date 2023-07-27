@@ -1,77 +1,73 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform
 
-import static android.os.Build.VERSION_CODES.Q;
+import android.os.Build.VERSION_CODES
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.CounterPOJO
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.InfusionPOJO
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.NotePOJO
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO
 
-import java.util.List;
+internal class POJOToDatabase(private val dataTransformViewModel: DataTransformViewModel) {
 
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.CounterPOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.InfusionPOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.NotePOJO;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.TeaPOJO;
-
-class POJOToDatabase {
-    private final DataTransformViewModel dataTransformViewModel;
-
-    POJOToDatabase(final DataTransformViewModel dataTransformViewModel) {
-        this.dataTransformViewModel = dataTransformViewModel;
-    }
-
-    void fillDatabaseWithTeaList(final List<TeaPOJO> teaList, final boolean keepStoredTeas) {
+    fun fillDatabaseWithTeaList(teaList: List<TeaPOJO>, keepStoredTeas: Boolean) {
         if (!keepStoredTeas) {
-            deleteStoredTeas();
+            deleteStoredTeas()
         }
-        for (final TeaPOJO teaPOJO : teaList) {
+        for (teaPOJO in teaList) {
             // insert Tea first
-            final long teaId = insertTea(teaPOJO);
-            insertInfusions(teaId, teaPOJO.getInfusions());
-            insertCounters(teaId, teaPOJO.getCounters());
-            insertNotes(teaId, teaPOJO.getNotes());
+            val teaId = insertTea(teaPOJO)
+            insertInfusions(teaId, teaPOJO.infusions)
+            insertCounters(teaId, teaPOJO.counters)
+            insertNotes(teaId, teaPOJO.notes)
         }
     }
 
-    private void deleteStoredTeas() {
-        if (CurrentSdk.getSdkVersion() >= Q) {
-            dataTransformViewModel.deleteAllTeaImages();
+    private fun deleteStoredTeas() {
+        if (sdkVersion >= VERSION_CODES.Q) {
+            dataTransformViewModel.deleteAllTeaImages()
         }
 
-        dataTransformViewModel.deleteAllTeas();
+        dataTransformViewModel.deleteAllTeas()
     }
 
-    private long insertTea(final TeaPOJO teaPOJO) {
-        final Tea tea = new Tea(teaPOJO.getName(), teaPOJO.getVariety(),
-                teaPOJO.getAmount(), teaPOJO.getAmountKind(), teaPOJO.getColor(),
-                teaPOJO.getNextInfusion(), teaPOJO.getDate());
-        tea.setRating(teaPOJO.getRating());
-        tea.setInStock(teaPOJO.getInStock());
+    private fun insertTea(teaPOJO: TeaPOJO): Long {
+        val tea = Tea(teaPOJO.name, teaPOJO.variety, teaPOJO.amount, teaPOJO.amountKind,
+            teaPOJO.color, teaPOJO.nextInfusion, teaPOJO.date)
+        tea.rating = teaPOJO.rating
+        tea.inStock = teaPOJO.inStock
 
-        return dataTransformViewModel.insertTea(tea);
+        return dataTransformViewModel.insertTea(tea)
     }
 
-    private void insertInfusions(final long teaId, final List<InfusionPOJO> infusionList) {
-        for (final InfusionPOJO infusionPOJO : infusionList) {
-            dataTransformViewModel.insertInfusion(new Infusion(teaId, infusionPOJO.getInfusionIndex(),
-                    infusionPOJO.getTime(), infusionPOJO.getCoolDownTime(),
-                    infusionPOJO.getTemperatureCelsius(), infusionPOJO.getTemperatureFahrenheit()));
-        }
-    }
-
-    private void insertCounters(final long teaId, final List<CounterPOJO> counterList) {
-        for (final CounterPOJO counterPOJO : counterList) {
-            dataTransformViewModel.insertCounter(new Counter(teaId,
-                    counterPOJO.getWeek(), counterPOJO.getMonth(), counterPOJO.getYear(), counterPOJO.getOverall(),
-                    counterPOJO.getWeekDate(), counterPOJO.getMonthDate(), counterPOJO.getYearDate()));
+    private fun insertInfusions(teaId: Long, infusionList: List<InfusionPOJO>?) {
+        for (infusionPOJO in infusionList!!) {
+            dataTransformViewModel.insertInfusion(
+                Infusion(teaId, infusionPOJO.infusionIndex, infusionPOJO.time,
+                    infusionPOJO.coolDownTime, infusionPOJO.temperatureCelsius,
+                    infusionPOJO.temperatureFahrenheit)
+            )
         }
     }
 
-    private void insertNotes(final long teaId, final List<NotePOJO> noteList) {
-        for (final NotePOJO notePOJO : noteList) {
-            dataTransformViewModel.insertNote(new Note(teaId, notePOJO.getPosition(),
-                    notePOJO.getHeader(), notePOJO.getDescription()));
+    private fun insertCounters(teaId: Long, counterList: List<CounterPOJO>?) {
+        for (counterPOJO in counterList!!) {
+            dataTransformViewModel.insertCounter(
+                Counter(teaId, counterPOJO.week, counterPOJO.month, counterPOJO.year,
+                    counterPOJO.overall, counterPOJO.weekDate, counterPOJO.monthDate,
+                    counterPOJO.yearDate)
+            )
+        }
+    }
+
+    private fun insertNotes(teaId: Long, noteList: List<NotePOJO>?) {
+        for (notePOJO in noteList!!) {
+            dataTransformViewModel.insertNote(
+                Note(teaId, notePOJO.position, notePOJO.header, notePOJO.description)
+            )
         }
     }
 }

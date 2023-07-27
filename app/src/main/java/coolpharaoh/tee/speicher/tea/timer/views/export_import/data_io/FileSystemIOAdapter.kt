@@ -1,72 +1,61 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io
 
-import android.app.Application;
-import android.net.Uri;
-import android.util.Log;
+import android.app.Application
+import android.net.Uri
+import android.util.Log
+import androidx.documentfile.provider.DocumentFile
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.Objects
 
-import androidx.documentfile.provider.DocumentFile;
+internal class FileSystemIOAdapter(val application: Application, val printer: Printer, val uri: Uri) :
+    DataIOAdapter {
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.Objects;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.print.Printer;
-
-class FileSystemIOAdapter implements DataIOAdapter {
-    private static final String LOG_TAG = FileSystemIOAdapter.class.getSimpleName();
-
-    final Application application;
-    final Printer printer;
-    final Uri uri;
-
-    FileSystemIOAdapter(final Application application, final Printer printer, final Uri uri) {
-        this.application = application;
-        this.printer = printer;
-        this.uri = uri;
-    }
-
-    @Override
-    public boolean write(final String json) {
-        final DocumentFile pickedFolder = DocumentFile.fromTreeUri(application, uri);
+    override fun write(json: String): Boolean {
+        val pickedFolder = DocumentFile.fromTreeUri(application, uri)
         if (pickedFolder == null) {
-            printer.print(application.getString(R.string.export_import_save_failed));
-            return false;
+            printer.print(application.getString(R.string.export_import_save_failed))
+            return false
         }
-        final DocumentFile file = pickedFolder.createFile("application/json", "tealist.json");
+        val file = pickedFolder.createFile("application/json", "tealist.json")
         if (file == null) {
-            printer.print(application.getString(R.string.export_import_save_failed));
-            return false;
+            printer.print(application.getString(R.string.export_import_save_failed))
+            return false
         }
 
-        try (final OutputStream out = application.getContentResolver().openOutputStream(file.getUri())) {
-            out.write(json.getBytes());
-        } catch (final IOException e) {
-            printer.print(application.getString(R.string.export_import_save_failed));
-            return false;
+        try {
+            application.contentResolver.openOutputStream(file.uri)
+                .use { out -> out!!.write(json.toByteArray()) }
+        } catch (e: IOException) {
+            printer.print(application.getString(R.string.export_import_save_failed))
+            return false
         }
-        printer.print(application.getString(R.string.export_import_saved));
+        printer.print(application.getString(R.string.export_import_saved))
 
-        return true;
+        return true
     }
 
-    @Override
-    public String read() {
-        final StringBuilder stringBuilder = new StringBuilder();
-        try (final InputStream inputStream =
-                     application.getContentResolver().openInputStream(uri);
-             final BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(Objects.requireNonNull(inputStream)))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
+    override fun read(): String {
+        val stringBuilder = StringBuilder()
+        try {
+            application.contentResolver.openInputStream(uri).use { inputStream ->
+                BufferedReader(InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        stringBuilder.append(line)
+                    }
+                }
             }
-        } catch (final IOException e) {
-            Log.e(LOG_TAG, "Cannot read from file uri", e);
+        } catch (e: IOException) {
+            Log.e(LOG_TAG, "Cannot read from file uri", e)
         }
-        return stringBuilder.toString();
+        return stringBuilder.toString()
+    }
+
+    companion object {
+        private val LOG_TAG = FileSystemIOAdapter::class.java.simpleName
     }
 }

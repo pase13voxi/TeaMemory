@@ -155,6 +155,8 @@ class JsonIOAdapterImportTest {
     ImageController imageController;
     @Mock
     SystemUtility systemUtility;
+    @Mock
+    Uri uri;
 
     @BeforeEach
     void setUp() throws FileNotFoundException {
@@ -181,7 +183,7 @@ class JsonIOAdapterImportTest {
     @Test
     void importTeasAndKeepStoredTeas() {
         JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), true);
+        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, uri), true);
 
         verifyImportedTeas();
     }
@@ -194,7 +196,7 @@ class JsonIOAdapterImportTest {
         when(teaDao.getTeas()).thenReturn(singletonList(tea));
 
         JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
+        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, uri), false);
 
         verify(imageController).removeImageByTeaId(anyLong());
         verify(teaDao).deleteAll();
@@ -206,7 +208,7 @@ class JsonIOAdapterImportTest {
         when(systemUtility.getSdkVersion()).thenReturn(P);
 
         JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, Uri.EMPTY), false);
+        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, uri), false);
 
         verify(imageController, never()).removeImageByTeaId(anyLong());
     }
