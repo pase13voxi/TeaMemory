@@ -1,247 +1,222 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import static android.os.Build.VERSION_CODES.Q;
+import android.net.Uri
+import android.os.Build.VERSION_CODES
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLongClickListener
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.signature.ObjectKey
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation.discoverForegroundColor
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.StickyHeaderItemDecoration.StickyHeaderInterface
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.getImageController
 
-import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+class RecyclerViewAdapterOverview(private val recyclerItems: List<RecyclerItemOverview>,
+                                  private val onClickListener: OnClickListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder?>(), StickyHeaderInterface {
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val context = parent.context
+        val inflater = LayoutInflater.from(context)
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.ObjectKey;
-
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
-
-public class RecyclerViewAdapterOverview extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
-    private static final String LOG_TAG = ShowTea.class.getSimpleName();
-
-    private final List<RecyclerItemOverview> recyclerItems;
-    private final OnClickListener onClickListener;
-
-    public RecyclerViewAdapterOverview(final List<RecyclerItemOverview> recyclerItems, final OnClickListener onClickListener) {
-        this.recyclerItems = recyclerItems;
-        this.onClickListener = onClickListener;
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        final Context context = parent.getContext();
-        final LayoutInflater inflater = LayoutInflater.from(context);
-
-        if (viewType == 0) {
-            final View recyclerView = inflater.inflate(R.layout.list_single_layout_tea, parent, false);
-            return new ViewHolderTea(recyclerView, onClickListener);
+        return if (viewType == 0) {
+            val recyclerView = inflater.inflate(R.layout.list_single_layout_tea, parent, false)
+            ViewHolderTea(recyclerView, onClickListener)
         } else {
-            final View recyclerView = inflater.inflate(R.layout.list_single_layout_tea_heading, parent, false);
-            return new ViewHolderCategory(recyclerView);
+            val recyclerView =
+                inflater.inflate(R.layout.list_single_layout_tea_heading, parent, false)
+            ViewHolderCategory(recyclerView)
         }
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        final RecyclerItemOverview item = recyclerItems.get(position);
-        if (item.getCategory() != null) {
-            ((ViewHolderCategory) holder).bindData(item);
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = recyclerItems[position]
+        if (item.category != null) {
+            (holder as ViewHolderCategory).bindData(item)
         } else {
-            ((ViewHolderTea) holder).bindData(item);
+            (holder as ViewHolderTea).bindData(item)
         }
     }
 
-    @Override
-    public int getItemViewType(final int position) {
-        return recyclerItems.get(position).getCategory() != null ? 1 : 0;
+    override fun getItemViewType(position: Int): Int {
+        return if (recyclerItems[position].category != null) 1 else 0
     }
 
-    @Override
-    public int getItemCount() {
-        return recyclerItems.size();
+    override fun getItemCount(): Int {
+        return recyclerItems.size
     }
 
-    @Override
-    public int getHeaderPositionForItem(int itemPosition) {
-        int headerPosition = 0;
+    override fun getHeaderPositionForItem(itemPosition: Int): Int {
+        var itemPosition = itemPosition
+        var headerPosition = 0
         do {
             if (isHeader(itemPosition)) {
-                headerPosition = itemPosition;
-                break;
+                headerPosition = itemPosition
+                break
             }
-            itemPosition -= 1;
-        } while (itemPosition >= 0);
-        return headerPosition;
+            itemPosition -= 1
+        } while (itemPosition >= 0)
+        return headerPosition
     }
 
-    @Override
-    public int getHeaderLayout(final int headerPosition) {
-        return R.layout.list_single_layout_tea_heading;
+    override fun getHeaderLayout(headerPosition: Int): Int {
+        return R.layout.list_single_layout_tea_heading
     }
 
-    @Override
-    public void bindHeaderData(final View header, final int headerPosition) {
-        final TextView textViewHeading = header.findViewById(R.id.text_view_recycler_view_heading);
-        textViewHeading.setText(recyclerItems.get(headerPosition).getCategory());
+    override fun bindHeaderData(header: View, headerPosition: Int) {
+        val textViewHeading = header.findViewById<TextView>(R.id.text_view_recycler_view_heading)
+        textViewHeading.text = recyclerItems[headerPosition].category
     }
 
-    @Override
-    public boolean isHeader(final int itemPosition) {
-        boolean isHeader = false;
-        if (itemPosition < recyclerItems.size()) {
-            isHeader = recyclerItems.get(itemPosition).getCategory() != null;
+    override fun isHeader(itemPosition: Int): Boolean {
+        var isHeader = false
+        if (itemPosition < recyclerItems.size) {
+            isHeader = recyclerItems[itemPosition].category != null
         }
-        return isHeader;
+        return isHeader
     }
 
-    static class ViewHolderCategory extends RecyclerView.ViewHolder {
-        private final TextView header;
+    internal class ViewHolderCategory(item: View) : RecyclerView.ViewHolder(item) {
+        private val header: TextView
 
-        public ViewHolderCategory(final View item) {
-            super(item);
-
-            header = item.findViewById(R.id.text_view_recycler_view_heading);
+        init {
+            header = item.findViewById(R.id.text_view_recycler_view_heading)
         }
 
-        void bindData(final RecyclerItemOverview item) {
-            header.setText(item.getCategory());
+        fun bindData(item: RecyclerItemOverview) {
+            header.text = item.category
         }
     }
 
-    static class ViewHolderTea extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private final View view;
-        private final ImageView image;
-        private final TextView imageText;
-        private final TextView header;
-        private final TextView description;
-        private final ImageView inStock;
-        private final OnClickListener onClickListener;
-        private final ImageController imageController;
-        private RecyclerItemOverview item;
+    internal class ViewHolderTea(private val view: View, onClickListener: OnClickListener) :
+        RecyclerView.ViewHolder(view), View.OnClickListener, OnLongClickListener {
 
-        public ViewHolderTea(final View view, final OnClickListener onClickListener) {
-            super(view);
+        private val image: ImageView
+        private val imageText: TextView
+        private val header: TextView
+        private val description: TextView
+        private val inStock: ImageView
+        private val onClickListener: OnClickListener
+        private val imageController: ImageController
+        private var item: RecyclerItemOverview? = null
 
-            this.view = view;
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
-            image = view.findViewById(R.id.image_view_recycler_view_image);
-            imageText = view.findViewById(R.id.text_view_recycler_view_image);
-            header = view.findViewById(R.id.text_view_recycler_view_heading);
-            description = view.findViewById(R.id.text_view_recycler_view_description);
-            inStock = view.findViewById(R.id.button_overview_in_stock);
-
-            this.onClickListener = onClickListener;
-            imageController = ImageControllerFactory.getImageController(view.getContext());
+        init {
+            view.setOnClickListener(this)
+            view.setOnLongClickListener(this)
+            image = view.findViewById(R.id.image_view_recycler_view_image)
+            imageText = view.findViewById(R.id.text_view_recycler_view_image)
+            header = view.findViewById(R.id.text_view_recycler_view_heading)
+            description = view.findViewById(R.id.text_view_recycler_view_description)
+            inStock = view.findViewById(R.id.button_overview_in_stock)
+            this.onClickListener = onClickListener
+            imageController = getImageController(view.context)
         }
 
-        void bindData(final RecyclerItemOverview item) {
-            this.item = item;
+        fun bindData(item: RecyclerItemOverview?) {
+            this.item = item
 
-            fillRoundImage();
-            fillTeaName();
-            fillVariety();
-            showInStock();
+            fillRoundImage()
+            fillTeaName()
+            fillVariety()
+            showInStock()
         }
 
-        private void fillRoundImage() {
-            resetImage();
+        private fun fillRoundImage() {
+            resetImage()
 
-            final Uri imageUri = getImageUri();
+            val imageUri = imageUri
             if (imageUri != null) {
-                setImage(imageUri);
+                setImage(imageUri)
             } else {
-                setImageText();
+                setImageText()
             }
         }
 
-        private void resetImage() {
-            Glide.with(view.getContext()).clear(image);
-            image.setTag(null);
-            imageText.setVisibility(View.INVISIBLE);
+        private fun resetImage() {
+            Glide.with(view.context).clear(image)
+            image.tag = null
+            imageText.visibility = View.INVISIBLE
         }
 
-        @Nullable
-        private Uri getImageUri() {
-            Uri imageUri = null;
-            if (CurrentSdk.getSdkVersion() >= Q) {
-                imageUri = imageController.getImageUriByTeaId(item.getTeaId());
+        private val imageUri: Uri?
+            get() {
+                var imageUri: Uri? = null
+                if (sdkVersion >= VERSION_CODES.Q) {
+                    imageUri = imageController.getImageUriByTeaId(item!!.teaId!!)
+                }
+                return imageUri
             }
-            return imageUri;
+
+        private fun setImage(imageUri: Uri) {
+            Glide.with(view.context)
+                .load(imageUri)
+                .signature(ObjectKey(imageController.getLastModified(imageUri)))
+                .override(100, 100)
+                .centerCrop()
+                .into(image)
+            image.tag = imageUri.toString()
         }
 
-        private void setImage(final Uri imageUri) {
-            Glide.with(view.getContext())
-                    .load(imageUri)
-                    .signature(new ObjectKey(imageController.getLastModified(imageUri)))
-                    .override(100, 100)
-                    .centerCrop()
-                    .into(image);
-            image.setTag(imageUri.toString());
+        private fun setImageText() {
+            image.setBackgroundColor(item!!.color!!)
+            imageText.visibility = View.VISIBLE
+            imageText.text = item!!.imageText
+            imageText.setTextColor(discoverForegroundColor(item!!.color!!))
         }
 
-        private void setImageText() {
-            image.setBackgroundColor(item.getColor());
-            imageText.setVisibility(View.VISIBLE);
-            imageText.setText(item.getImageText());
-            imageText.setTextColor(ColorConversation.discoverForegroundColor(item.getColor()));
+        private fun fillTeaName() {
+            header.text = item!!.teaName
         }
 
-        private void fillTeaName() {
-            header.setText(item.getTeaName());
-        }
-
-        private void fillVariety() {
-            if (item.getVariety().equals("")) {
-                description.setText("-");
+        private fun fillVariety() {
+            if (item!!.variety == "") {
+                description.text = "-"
             } else {
-                description.setText(item.getVariety());
+                description.text = item!!.variety
             }
         }
 
-        private void showInStock() {
-            inStock.setVisibility(isInStock(item));
+        private fun showInStock() {
+            inStock.visibility = isInStock(item)
         }
 
-        private int isInStock(final RecyclerItemOverview item) {
-            return item.getFavorite() ? View.VISIBLE : View.GONE;
+        private fun isInStock(item: RecyclerItemOverview?): Int {
+            return if (item!!.favorite) View.VISIBLE else View.GONE
         }
 
-        @Override
-        public void onClick(final View view) {
-            if (item.getTeaId() != null) {
-                onClickListener.onRecyclerItemClick(item.getTeaId());
+        override fun onClick(view: View) {
+            if (item!!.teaId != null) {
+                onClickListener.onRecyclerItemClick(item!!.teaId!!)
             } else {
-                Log.e(LOG_TAG, "Recycler item does not contain tea id");
+                Log.e(LOG_TAG, "Recycler item does not contain tea id")
             }
         }
 
-        @Override
-        public boolean onLongClick(final View view) {
-            if (item.getTeaId() != null) {
-                onClickListener.onRecyclerItemLongClick(this.view, item.getTeaId());
+        override fun onLongClick(view: View): Boolean {
+            if (item!!.teaId != null) {
+                onClickListener.onRecyclerItemLongClick(this.view, item!!.teaId!!)
             } else {
-                Log.e(LOG_TAG, "Recycler item does not contain tea id");
+                Log.e(LOG_TAG, "Recycler item does not contain tea id")
             }
-            return false;
+            return false
         }
     }
 
-    public interface OnClickListener {
-        void onRecyclerItemClick(long teaId);
+    interface OnClickListener {
+        fun onRecyclerItemClick(teaId: Long)
+        fun onRecyclerItemLongClick(itemView: View?, teaId: Long)
+    }
 
-        void onRecyclerItemLongClick(View itemView, long teaId);
+    companion object {
+        private val LOG_TAG = ShowTea::class.java.simpleName
     }
 }

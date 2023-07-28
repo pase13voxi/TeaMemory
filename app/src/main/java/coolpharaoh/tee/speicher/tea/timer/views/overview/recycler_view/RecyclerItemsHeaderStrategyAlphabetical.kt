@@ -1,35 +1,28 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
+import java.util.Locale
 
-import java.util.ArrayList;
-import java.util.List;
+class RecyclerItemsHeaderStrategyAlphabetical(private val application: Application) :
+    RecyclerItemsHeaderStrategy {
 
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
+    override fun generateFrom(teaList: List<Tea>): List<RecyclerItemOverview> {
 
-public class RecyclerItemsHeaderStrategyAlphabetical implements RecyclerItemsHeaderStrategy {
-
-    private final Application application;
-
-    RecyclerItemsHeaderStrategyAlphabetical(final Application application) {
-        this.application = application;
-    }
-
-    @Override
-    public List<RecyclerItemOverview> generateFrom(final List<Tea> teaList) {
-
-        final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
-        String lastFirstLetter = "";
-        for (final Tea tea : teaList) {
-            final String firstLetter = tea.getName().substring(0, 1).toUpperCase();
-            if (!lastFirstLetter.equals(firstLetter)) {
-                recyclerItems.add(new RecyclerItemOverview("- " + firstLetter + " -", null, null, null, null, false));
-                lastFirstLetter = firstLetter;
+        val recyclerItems = ArrayList<RecyclerItemOverview>()
+        var lastFirstLetter = ""
+        for ((id, name, variety1, _, _, color, _, inStock) in teaList) {
+            val firstLetter = name!!.substring(0, 1).uppercase(Locale.getDefault())
+            if (lastFirstLetter != firstLetter) {
+                recyclerItems.add(
+                    RecyclerItemOverview("- $firstLetter -", null, null, null, null, false)
+                )
+                lastFirstLetter = firstLetter
             }
-            final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.getInStock()));
+            val variety = convertStoredVarietyToText(variety1, application)
+            recyclerItems.add(RecyclerItemOverview(null, id, name, variety, color, inStock))
         }
-        return recyclerItems;
+        return recyclerItems
     }
 }

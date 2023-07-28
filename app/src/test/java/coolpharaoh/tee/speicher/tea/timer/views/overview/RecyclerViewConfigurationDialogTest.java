@@ -104,7 +104,7 @@ public class RecyclerViewConfigurationDialogTest {
     @Test
     public void showDialogAndExpectFilterInStock() {
         when(overviewViewModel.getSort()).thenReturn(LAST_USED);
-        when(overviewViewModel.isOverViewInStock()).thenReturn(true);
+        when(overviewViewModel.isOverviewInStock()).thenReturn(true);
 
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();

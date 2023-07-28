@@ -1,10 +1,7 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import java.util.List;
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-
-public interface RecyclerItemsHeaderStrategy {
-
-    public List<RecyclerItemOverview> generateFrom(final List<Tea> teaList);
+interface RecyclerItemsHeaderStrategy {
+    fun generateFrom(teaList: List<Tea>): List<RecyclerItemOverview>
 }

@@ -1,37 +1,28 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
 
-import java.util.ArrayList;
-import java.util.List;
+class RecyclerItemsHeaderStrategyRating(private val application: Application) :
+    RecyclerItemsHeaderStrategy {
 
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
+    override fun generateFrom(teaList: List<Tea>): List<RecyclerItemOverview> {
 
-class RecyclerItemsHeaderStrategyRating implements RecyclerItemsHeaderStrategy {
-
-    private final Application application;
-
-    RecyclerItemsHeaderStrategyRating(final Application application) {
-        this.application = application;
-    }
-
-    @Override
-    public List<RecyclerItemOverview> generateFrom(final List<Tea> teaList) {
-
-        final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
-        int lastRating = -1;
-        for (final Tea tea : teaList) {
-            final int rating = tea.getRating();
+        val recyclerItems = ArrayList<RecyclerItemOverview>()
+        var lastRating = -1
+        for ((id, name, variety1, _, _, color, rating, inStock) in teaList) {
             if (rating != lastRating) {
-                final String ratingHeader = application.getString(R.string.overview_sort_header_star, rating);
-                recyclerItems.add(new RecyclerItemOverview("- " + ratingHeader + " -", null, null, null, null, false));
-                lastRating = rating;
+                val ratingHeader = application.getString(R.string.overview_sort_header_star, rating)
+                recyclerItems.add(
+                    RecyclerItemOverview("- $ratingHeader -", null, null, null, null, false)
+                )
+                lastRating = rating
             }
-            final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.getInStock()));
+            val variety = convertStoredVarietyToText(variety1, application)
+            recyclerItems.add(RecyclerItemOverview(null, id, name, variety, color, inStock))
         }
-        return recyclerItems;
+        return recyclerItems
     }
 }

@@ -1,65 +1,58 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview;
+package coolpharaoh.tee.speicher.tea.timer.views.overview
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.View.OnAttachStateChangeListener
+import androidx.appcompat.widget.SearchView
+import coolpharaoh.tee.speicher.tea.timer.R
 
-import coolpharaoh.tee.speicher.tea.timer.R;
+internal object SearchView {
 
-class SearchView {
+    @JvmStatic
+    fun configureSearchView(menu: Menu, overviewViewModel: OverviewViewModel) {
+        val searchItem = menu.findItem(R.id.action_overview_search)
 
-    private SearchView() {
+        val searchView = searchItem.actionView as SearchView
+
+        searchOpenedOrClosed(menu, overviewViewModel, searchItem, searchView)
+
+        textChanged(overviewViewModel, searchView)
     }
 
-    static void configureSearchView(final Menu menu, final OverviewViewModel overviewViewModel) {
-        final MenuItem searchItem = menu.findItem(R.id.action_overview_search);
+    private fun searchOpenedOrClosed(menu: Menu, overviewViewModel: OverviewViewModel,
+                                     searchItem: MenuItem, searchView: SearchView) {
+        searchView.addOnAttachStateChangeListener(object : OnAttachStateChangeListener {
 
-        final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+            override fun onViewDetachedFromWindow(view: View) {
+                setItemsVisibility(menu, searchItem, true)
+                overviewViewModel.refreshTeas()
+            }
 
-        searchOpenedOrClosed(menu, overviewViewModel, searchItem, searchView);
-
-        textChanged(overviewViewModel, searchView);
+            override fun onViewAttachedToWindow(view: View) {
+                setItemsVisibility(menu, searchItem, false)
+            }
+        })
     }
 
-    private static void searchOpenedOrClosed(final Menu menu, final OverviewViewModel overviewViewModel,
-                                             final MenuItem searchItem, final androidx.appcompat.widget.SearchView searchView) {
-        searchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+    private fun textChanged(overviewViewModel: OverviewViewModel, searchView: SearchView) {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-            @Override
-            public void onViewDetachedFromWindow(final View view) {
-                setItemsVisibility(menu, searchItem, true);
-                overviewViewModel.refreshTeas();
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
             }
 
-            @Override
-            public void onViewAttachedToWindow(final View view) {
-                setItemsVisibility(menu, searchItem, false);
+            override fun onQueryTextChange(searchString: String): Boolean {
+                overviewViewModel.visualizeTeasBySearchString(searchString)
+                return false
             }
-        });
+        })
     }
 
-    private static void textChanged(final OverviewViewModel overviewViewModel, final androidx.appcompat.widget.SearchView searchView) {
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(final String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(final String searchString) {
-                overviewViewModel.visualizeTeasBySearchString(searchString);
-                return false;
-            }
-
-
-        });
-    }
-
-    private static void setItemsVisibility(final Menu menu, final MenuItem exception, final boolean visible) {
-        for (int i = 0; i < menu.size(); ++i) {
-            final MenuItem item = menu.getItem(i);
-            if (item != exception) item.setVisible(visible);
+    private fun setItemsVisibility(menu: Menu, exception: MenuItem, visible: Boolean) {
+        for (i in 0 until menu.size()) {
+            val item = menu.getItem(i)
+            if (item !== exception) item.isVisible = visible
         }
     }
 }

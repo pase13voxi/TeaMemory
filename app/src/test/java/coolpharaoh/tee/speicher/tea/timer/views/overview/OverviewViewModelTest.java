@@ -161,7 +161,7 @@ class OverviewViewModelTest {
         when(sharedSettings.isOverviewInStock()).thenReturn(false);
 
         overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        final boolean overViewFavorites = overviewViewModel.isOverViewInStock();
+        final boolean overViewFavorites = overviewViewModel.isOverviewInStock();
 
         assertThat(overViewFavorites).isFalse();
     }

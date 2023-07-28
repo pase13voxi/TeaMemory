@@ -1,24 +1,16 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import android.app.Application;
+import android.app.Application
 
-public class RecyclerItemsHeaderStrategyFactory {
-
-    private RecyclerItemsHeaderStrategyFactory() {
-    }
-
-    public static RecyclerItemsHeaderStrategy getStrategy(final int sorting, final Application application) {
-        switch (sorting) {
-            case 0:
-                return new RecyclerItemsHeaderStrategyLastUsed(application);
-            case 1:
-                return new RecyclerItemsHeaderStrategyAlphabetical(application);
-            case 2:
-                return new RecyclerItemsHeaderStrategyVariety(application);
-            case 3:
-                return new RecyclerItemsHeaderStrategyRating(application);
-            default:
-                return new RecyclerItemsHeaderStrategyDefault(application);
+object RecyclerItemsHeaderStrategyFactory {
+    @JvmStatic
+    fun getStrategy(sorting: Int, application: Application): RecyclerItemsHeaderStrategy {
+        return when (sorting) {
+            0 -> RecyclerItemsHeaderStrategyLastUsed(application)
+            1 -> RecyclerItemsHeaderStrategyAlphabetical(application)
+            2 -> RecyclerItemsHeaderStrategyVariety(application)
+            3 -> RecyclerItemsHeaderStrategyRating(application)
+            else -> RecyclerItemsHeaderStrategyDefault(application)
         }
     }
 }

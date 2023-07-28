@@ -1,151 +1,140 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview;
+package coolpharaoh.tee.speicher.tea.timer.views.overview
 
-import static android.os.Build.VERSION_CODES.Q;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.convertStoredVarietyToText;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
+import android.os.Build.VERSION_CODES
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
+import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation.discoverForegroundColor
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
+import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemOverview
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+class RandomChoiceDialog(private val overviewViewModel: OverviewViewModel, private val imageController: ImageController) :
+    DialogFragment() {
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
+    private var dialogView: View? = null
+    private var randomChoiceItem: RecyclerItemOverview? = null
 
-import com.bumptech.glide.Glide;
+    override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
+        val activity: Activity = requireActivity()
+        val parent = activity.findViewById<ViewGroup>(R.id.overview_parent)
+        val inflater = activity.layoutInflater
+        dialogView = inflater.inflate(R.layout.dialog_overview_random_choice, parent, false)
 
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.ColorConversation;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.RecyclerItemOverview;
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
+        refreshRandomChoice()
 
-public class RandomChoiceDialog extends DialogFragment {
-    public static final String TAG = "RandomChoiceDialog";
+        val buttonRefreshRandomChoice = dialogView!!.findViewById<ImageButton>(R.id.button_random_choice_dialog_refresh)
+        buttonRefreshRandomChoice.setOnClickListener { refreshRandomChoice() }
 
-    private final OverviewViewModel overviewViewModel;
-    private final ImageController imageController;
-    private View dialogView;
-    private RecyclerItemOverview randomChoiceItem;
-
-    public RandomChoiceDialog(final OverviewViewModel overviewViewModel,
-                              final ImageController imageController) {
-        this.overviewViewModel = overviewViewModel;
-        this.imageController = imageController;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        final Activity activity = requireActivity();
-        final ViewGroup parent = activity.findViewById(R.id.overview_parent);
-        final LayoutInflater inflater = activity.getLayoutInflater();
-        dialogView = inflater.inflate(R.layout.dialog_overview_random_choice, parent, false);
-
-        refreshRandomChoice();
-
-        final ImageButton buttonRefreshRandomChoice = dialogView.findViewById(R.id.button_random_choice_dialog_refresh);
-        buttonRefreshRandomChoice.setOnClickListener(view -> refreshRandomChoice());
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.dialog_theme)
-                .setTitle(R.string.overview_dialog_random_choice_title)
-                .setView(dialogView)
-                .setNegativeButton(R.string.overview_dialog_random_choice_negative, null);
+        val builder = AlertDialog.Builder(activity, R.style.dialog_theme)
+            .setTitle(R.string.overview_dialog_random_choice_title)
+            .setView(dialogView)
+            .setNegativeButton(R.string.overview_dialog_random_choice_negative, null)
 
         if (randomChoiceItem != null) {
-            builder.setPositiveButton(R.string.overview_dialog_random_choice_positive, (dialogInterface, i) -> navigateToRandomTea());
+            builder.setPositiveButton(R.string.overview_dialog_random_choice_positive) { dialogInterface: DialogInterface?, i: Int -> navigateToRandomTea() }
         }
 
-        return builder.create();
+        return builder.create()
     }
 
-    private void refreshRandomChoice() {
-        final Tea randomTea = overviewViewModel.getRandomTeaInStock();
+    private fun refreshRandomChoice() {
+        val randomTea = overviewViewModel.randomTeaInStock
         if (randomTea != null) {
-            randomChoiceItem = generateRecyclerViewItem(randomTea);
+            randomChoiceItem = generateRecyclerViewItem(randomTea)
 
-            fillRandomChoice();
+            fillRandomChoice()
         } else {
-            noRandomChoiceAvailable();
+            noRandomChoiceAvailable()
         }
     }
 
-    private RecyclerItemOverview generateRecyclerViewItem(final Tea tea) {
-        final String variety = convertStoredVarietyToText(tea.getVariety(), getActivity().getApplication());
-        return new RecyclerItemOverview(null, tea.getId(), tea.getName(),
-                variety, tea.getColor(), tea.getInStock());
+    private fun generateRecyclerViewItem(tea: Tea): RecyclerItemOverview {
+        val variety = convertStoredVarietyToText(tea.variety, requireActivity().application)
+        return RecyclerItemOverview(null, tea.id, tea.name, variety, tea.color, tea.inStock
+        )
     }
 
-    private void fillRandomChoice() {
-        final TextView textViewTeaName = dialogView.findViewById(R.id.text_view_random_choice_dialog_tea_name);
-        textViewTeaName.setText(randomChoiceItem.getTeaName());
+    private fun fillRandomChoice() {
+        val textViewTeaName = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_dialog_tea_name)
+        textViewTeaName.text = randomChoiceItem!!.teaName
 
-        final TextView textViewTeaVariety = dialogView.findViewById(R.id.text_view_random_choice_dialog_variety);
-        textViewTeaVariety.setText(randomChoiceItem.getVariety());
+        val textViewTeaVariety = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_dialog_variety)
+        textViewTeaVariety.text = randomChoiceItem!!.variety
 
-        updateImage();
+        updateImage()
     }
 
-    private void updateImage() {
-        final ImageView imageViewImage = dialogView.findViewById(R.id.image_view_random_tea_choice_image);
-        Glide.with(dialogView.getContext()).clear(imageViewImage);
-        imageViewImage.setTag(null);
+    private fun updateImage() {
+        val imageViewImage = dialogView!!.findViewById<ImageView>(R.id.image_view_random_tea_choice_image)
+        Glide.with(dialogView!!.context).clear(imageViewImage)
+        imageViewImage.tag = null
 
-        final TextView textViewImageText = dialogView.findViewById(R.id.text_view_random_choice_dialog_image);
+        val textViewImageText = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_dialog_image)
 
-        Uri imageUri = null;
-        if (CurrentSdk.getSdkVersion() >= Q) {
-            imageUri = imageController.getImageUriByTeaId(randomChoiceItem.getTeaId());
+        var imageUri: Uri? = null
+        if (sdkVersion >= VERSION_CODES.Q) {
+            imageUri = imageController.getImageUriByTeaId(randomChoiceItem!!.teaId!!)
         }
 
         if (imageUri != null) {
-            fillImage(imageViewImage, textViewImageText, imageUri);
+            fillImage(imageViewImage, textViewImageText, imageUri)
         } else {
-            fillImageText(imageViewImage, textViewImageText);
+            fillImageText(imageViewImage, textViewImageText)
         }
     }
 
-    private void fillImage(final ImageView imageViewImage, final TextView textViewImageText, final Uri imageUri) {
-        Glide.with(dialogView.getContext())
-                .load(imageUri)
-                .override(100, 100)
-                .centerCrop()
-                .into(imageViewImage);
-        imageViewImage.setTag(imageUri.toString());
-        textViewImageText.setVisibility(View.INVISIBLE);
+    private fun fillImage(imageViewImage: ImageView, textViewImageText: TextView, imageUri: Uri) {
+        Glide.with(dialogView!!.context)
+            .load(imageUri)
+            .override(100, 100)
+            .centerCrop()
+            .into(imageViewImage)
+        imageViewImage.tag = imageUri.toString()
+        textViewImageText.visibility = View.INVISIBLE
     }
 
-    private void fillImageText(final ImageView imageViewImage, final TextView textViewImageText) {
-        imageViewImage.setBackgroundColor(randomChoiceItem.getColor());
-        textViewImageText.setVisibility(View.VISIBLE);
-        textViewImageText.setText(randomChoiceItem.getImageText());
-        textViewImageText.setTextColor(ColorConversation.discoverForegroundColor(randomChoiceItem.getColor()));
+    private fun fillImageText(imageViewImage: ImageView, textViewImageText: TextView) {
+        imageViewImage.setBackgroundColor(randomChoiceItem!!.color!!)
+        textViewImageText.visibility = View.VISIBLE
+        textViewImageText.text = randomChoiceItem!!.imageText
+        textViewImageText.setTextColor(discoverForegroundColor(randomChoiceItem!!.color!!))
     }
 
-    private void noRandomChoiceAvailable() {
-        final TextView textViewNoTea = dialogView.findViewById(R.id.text_view_random_choice_no_tea);
-        textViewNoTea.setVisibility(View.VISIBLE);
+    private fun noRandomChoiceAvailable() {
+        val textViewNoTea = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_no_tea)
+        textViewNoTea.visibility = View.VISIBLE
 
-        final RelativeLayout layoutTeaAvailable = dialogView.findViewById(R.id.layout_random_choice_tea_available);
-        layoutTeaAvailable.setVisibility(View.GONE);
+        val layoutTeaAvailable = dialogView!!.findViewById<RelativeLayout>(R.id.layout_random_choice_tea_available)
+        layoutTeaAvailable.visibility = View.GONE
 
-        final TextView textViewHint = dialogView.findViewById(R.id.text_view_random_choice_hint);
-        textViewHint.setVisibility(View.GONE);
+        val textViewHint = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_hint)
+        textViewHint.visibility = View.GONE
     }
 
-    private void navigateToRandomTea() {
-        final Intent showTeaScreen = new Intent(dialogView.getContext(), ShowTea.class);
-        showTeaScreen.putExtra("teaId", randomChoiceItem.getTeaId());
-        startActivity(showTeaScreen);
+    private fun navigateToRandomTea() {
+        val showTeaScreen = Intent(dialogView!!.context, ShowTea::class.java)
+        showTeaScreen.putExtra("teaId", randomChoiceItem!!.teaId)
+        startActivity(showTeaScreen)
+    }
+
+    companion object {
+        const val TAG = "RandomChoiceDialog"
     }
 }

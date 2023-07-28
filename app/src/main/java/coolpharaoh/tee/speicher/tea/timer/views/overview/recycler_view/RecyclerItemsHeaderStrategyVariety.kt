@@ -1,34 +1,26 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
 
-import java.util.ArrayList;
-import java.util.List;
+class RecyclerItemsHeaderStrategyVariety(private val application: Application) :
+    RecyclerItemsHeaderStrategy {
 
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
+    override fun generateFrom(teaList: List<Tea>): List<RecyclerItemOverview> {
 
-class RecyclerItemsHeaderStrategyVariety implements RecyclerItemsHeaderStrategy {
-
-    private final Application application;
-
-    RecyclerItemsHeaderStrategyVariety(final Application application) {
-        this.application = application;
-    }
-
-    @Override
-    public List<RecyclerItemOverview> generateFrom(final List<Tea> teaList) {
-
-        final ArrayList<RecyclerItemOverview> recyclerItems = new ArrayList<>();
-        String lastVariety = "";
-        for (final Tea tea : teaList) {
-            final String variety = Variety.convertStoredVarietyToText(tea.getVariety(), application);
-            if (!variety.equals(lastVariety)) {
-                recyclerItems.add(new RecyclerItemOverview("- " + variety + " -", null, null, null, null, false));
-                lastVariety = variety;
+        val recyclerItems = ArrayList<RecyclerItemOverview>()
+        var lastVariety: String? = ""
+        for ((id, name, variety1, _, _, color, _, inStock) in teaList) {
+            val variety = convertStoredVarietyToText(variety1, application)
+            if (variety != lastVariety) {
+                recyclerItems.add(
+                    RecyclerItemOverview("- $variety -", null, null, null, null, false)
+                )
+                lastVariety = variety
             }
-            recyclerItems.add(new RecyclerItemOverview(null, tea.getId(), tea.getName(), variety, tea.getColor(), tea.getInStock()));
+            recyclerItems.add(RecyclerItemOverview(null, id, name, variety, color, inStock))
         }
-        return recyclerItems;
+        return recyclerItems
     }
 }
