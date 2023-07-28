@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.Application;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -32,15 +33,16 @@ public class AudioPlayerTest {
 
     @Test
     public void startAudioPlayer() throws IOException {
+        final Application application = new Application();
         final String musicChoice = "/music/choice";
         final Uri uri = Uri.parse(musicChoice);
         when(timerViewModel.getMusicChoice()).thenReturn(musicChoice);
 
-        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(application, timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer).setAudioAttributes(any(AudioAttributes.class));
-        verify(mediaPlayer).setDataSource(null, uri);
+        verify(mediaPlayer).setDataSource(application, uri);
         verify(mediaPlayer).prepare();
         verify(mediaPlayer).start();
     }
@@ -49,7 +51,7 @@ public class AudioPlayerTest {
     public void startAudioPlayerButDoNothingWhenMusicChoiceIsNull() {
         when(timerViewModel.getMusicChoice()).thenReturn(null);
 
-        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(new Application(), timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer, times(0)).start();
@@ -62,15 +64,15 @@ public class AudioPlayerTest {
 
         doThrow(IOException.class).when(mediaPlayer).setDataSource(any(), any());
 
-        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+        final AudioPlayer audioPlayer = new AudioPlayer(new Application(), timerViewModel, mediaPlayer);
         audioPlayer.start();
 
         verify(mediaPlayer, times(0)).start();
     }
 
     @Test
-    public void restAudioPlayer() throws Exception {
-        final AudioPlayer audioPlayer = new AudioPlayer(null, timerViewModel, mediaPlayer);
+    public void restAudioPlayer() {
+        final AudioPlayer audioPlayer = new AudioPlayer(new Application(), timerViewModel, mediaPlayer);
 
         audioPlayer.reset();
 

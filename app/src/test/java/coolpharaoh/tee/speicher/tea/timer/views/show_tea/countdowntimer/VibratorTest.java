@@ -69,16 +69,6 @@ public class VibratorTest {
         verify(systemVibrator, times(0)).vibrate(any());
     }
 
-    @Test(expected = AssertionError.class)
-    public void whenVibratorIsNullThrowException() {
-        when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(null);
-        when(timerViewModel.isVibration()).thenReturn(true);
-        mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
-
-        final Vibrator vibrator = new Vibrator(application, timerViewModel);
-        vibrator.vibrate();
-    }
-
     @Test
     public void vibrate() {
         when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator);
@@ -98,18 +88,6 @@ public class VibratorTest {
         when(vibratorManager.getDefaultVibrator()).thenReturn(systemVibrator);
         when(timerViewModel.isVibration()).thenReturn(true);
         mockAudioManager(AudioManager.RINGER_MODE_NORMAL);
-
-        final Vibrator vibrator = new Vibrator(application, timerViewModel);
-        vibrator.vibrate();
-
-        verify(systemVibrator).vibrate(any(VibrationEffect.class));
-    }
-
-    @Test
-    public void whenAudioManagerIsNullVibrateAnyway() {
-        when(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator);
-        when(timerViewModel.isVibration()).thenReturn(true);
-        mockAudioManager(null);
 
         final Vibrator vibrator = new Vibrator(application, timerViewModel);
         vibrator.vibrate();

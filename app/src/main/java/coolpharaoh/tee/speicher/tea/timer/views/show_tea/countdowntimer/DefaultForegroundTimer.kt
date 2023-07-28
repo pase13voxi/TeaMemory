@@ -1,30 +1,25 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import android.os.CountDownTimer;
+import android.os.CountDownTimer
 
-class DefaultForegroundTimer implements ForegroundTimer {
+class DefaultForegroundTimer : ForegroundTimer {
 
-    private CountDownTimer countDownTimer;
+    private var countDownTimer: CountDownTimer? = null
 
-    @Override
-    public void start(final TimerController timerController, final long millisUntilFinished) {
-        countDownTimer = new CountDownTimer(millisUntilFinished, 1000) {
+    override fun start(timerController: TimerController, millisUntilFinished: Long) {
+        countDownTimer = object : CountDownTimer(millisUntilFinished, 1000) {
 
-            @Override
-            public void onTick(final long millisUntilFinished) {
-                timerController.onTimerTick(millisUntilFinished);
+            override fun onTick(millisUntilFinished: Long) {
+                timerController.onTimerTick(millisUntilFinished)
             }
 
-            @Override
-            public void onFinish() {
-                timerController.onTimerFinish();
+            override fun onFinish() {
+                timerController.onTimerFinish()
             }
-        }.start();
+        }.start()
     }
 
-    @Override
-    public void cancel() {
-        if (countDownTimer != null)
-            countDownTimer.cancel();
+    override fun cancel() {
+        if (countDownTimer != null) countDownTimer!!.cancel()
     }
 }

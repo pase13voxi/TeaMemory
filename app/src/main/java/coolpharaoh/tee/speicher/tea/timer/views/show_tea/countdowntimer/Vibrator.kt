@@ -1,70 +1,50 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import static android.os.Build.VERSION_CODES.S;
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
+import android.media.AudioManager
+import android.os.Build.VERSION_CODES
+import android.os.VibrationEffect
+import android.os.VibratorManager
+import android.util.Log
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
 
-import android.annotation.SuppressLint;
-import android.app.Application;
-import android.content.Context;
-import android.media.AudioManager;
-import android.os.VibrationEffect;
-import android.os.VibratorManager;
-import android.util.Log;
+class Vibrator
+@JvmOverloads
+constructor(
+    private val application: Application,
+    private val timerViewModel: TimerViewModel = TimerViewModel(application)
+) {
 
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-
-class Vibrator {
-    private static final String LOG_TAG = Vibrator.class.getSimpleName();
-
-    private final Application application;
-    private final TimerViewModel timerViewModel;
-
-    Vibrator(final Application application) {
-        this(application, new TimerViewModel(application));
+    fun vibrate() {
+        if (timerViewModel.isVibration && !isSilent(application)) {
+            val vibrator = vibrator
+            // Vibrate for 1000 milliseconds
+            val twice = longArrayOf(0, 500, 400, 500)
+            vibrator.vibrate(VibrationEffect.createWaveform(twice, -1))
+            Log.i(LOG_TAG, "Vibration is triggered.")
+        }
     }
 
-    Vibrator(final Application application, final TimerViewModel timerViewModel) {
-        this.application = application;
-        this.timerViewModel = timerViewModel;
-    }
-
-    void vibrate() {
-        if (timerViewModel.isVibration() && !isSilent(application)) {
-            getVibrator();
-
-            final android.os.Vibrator vibrator = getVibrator();
-            if (vibrator == null) {
-                throw new AssertionError("Vibrator is null.");
+    @get:SuppressLint("NewApi")
+    private val vibrator: android.os.Vibrator
+        get() {
+            val vibrator: android.os.Vibrator = if (sdkVersion >= VERSION_CODES.S) {
+                val vibratorManager = application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                vibratorManager.defaultVibrator
             } else {
-                // Vibrate for 1000 milliseconds
-                final long[] twice = {0, 500, 400, 500};
-                vibrator.vibrate(VibrationEffect.createWaveform(twice, -1));
-
-                Log.i(LOG_TAG, "Vibration is triggered.");
+                application.getSystemService(Context.VIBRATOR_SERVICE) as android.os.Vibrator
             }
+            return vibrator
         }
+
+    private fun isSilent(application: Application): Boolean {
+        val audio = application.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        return audio.ringerMode == AudioManager.RINGER_MODE_SILENT
     }
 
-    @SuppressLint("NewApi")
-    private android.os.Vibrator getVibrator() {
-        final android.os.Vibrator vibrator;
-        if (CurrentSdk.getSdkVersion() >= S) {
-            final VibratorManager vibratorManager = (VibratorManager) application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
-
-            vibrator = vibratorManager.getDefaultVibrator();
-        } else {
-            vibrator = (android.os.Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
-        }
-
-        return vibrator;
-    }
-
-    private boolean isSilent(final Application application) {
-        final AudioManager audio = (AudioManager) application.getSystemService(Context.AUDIO_SERVICE);
-        if (audio == null) {
-            Log.w(LOG_TAG, "Cannot discover ringer mode because audio manager is not available");
-            return false;
-        } else {
-            return audio.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
-        }
+    companion object {
+        private val LOG_TAG = Vibrator::class.java.simpleName
     }
 }

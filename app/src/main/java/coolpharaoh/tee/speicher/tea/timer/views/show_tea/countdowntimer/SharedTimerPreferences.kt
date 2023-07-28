@@ -1,28 +1,27 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
+import android.app.Application
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 
-import android.app.Application;
-import android.content.SharedPreferences;
+class SharedTimerPreferences(application: Application) {
 
-import androidx.preference.PreferenceManager;
+    private val preferences: SharedPreferences
 
-public class SharedTimerPreferences {
+    var startedTime: Long
+        get() = preferences.getLong(START_TIME, 0)
+        set(startedTime) {
+            val editor = preferences.edit()
+            editor.putLong(START_TIME, startedTime)
+            editor.apply()
+        }
 
-    private static final String START_TIME = "countdown_timer";
-    private final SharedPreferences preferences;
-
-    public SharedTimerPreferences(final Application application) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(application);
-        setStartedTime(0);
+    init {
+        preferences = PreferenceManager.getDefaultSharedPreferences(application)
+        startedTime = 0
     }
 
-    long getStartedTime() {
-        return preferences.getLong(START_TIME, 0);
-    }
-
-    void setStartedTime(final long startedTime) {
-        final SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(START_TIME, startedTime);
-        editor.apply();
+    companion object {
+        private const val START_TIME = "countdown_timer"
     }
 }

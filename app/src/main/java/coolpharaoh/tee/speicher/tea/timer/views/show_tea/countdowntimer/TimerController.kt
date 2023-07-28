@@ -1,119 +1,109 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import android.app.Application;
-import android.content.Intent;
+import android.app.Application
+import android.content.Intent
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
 
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
+class TimerController(
+    private val application: Application, private val foregroundTimer: ForegroundTimer,
+    private val sharedPreferences: SharedTimerPreferences, private val backgroundTimer: BackgroundTimer
+) {
 
-public class TimerController {
-    public static final String COUNTDOWN_BR = "paseb.teeapp.teespeicher.countdown_br";
-    private final Intent broadcastIntent = new Intent(COUNTDOWN_BR);
-
-    //general
-    private final Application application;
-    private final ForegroundTimer foregroundTimer;
-    private final SharedTimerPreferences sharedPreferences;
-    private final BackgroundTimer backgroundTimer;
+    private val broadcastIntent = Intent(COUNTDOWN_BR)
 
     //helper
-    private long teaId;
-    private long time = 0;
-    private long timeToStart;
-    private TimerState timerState = TimerState.STOPPED;
+    private var teaId: Long = 0
+    private var time: Long = 0
+    private var timeToStart: Long = 0
+    private var timerState = TimerState.STOPPED
 
-    public TimerController(final Application application, final SharedTimerPreferences sharedPreferences) {
-        this(application, new DefaultForegroundTimer(), sharedPreferences,
-                new BackgroundTimer(application, sharedPreferences));
+    constructor(application: Application, sharedPreferences: SharedTimerPreferences) : this(
+        application, DefaultForegroundTimer(), sharedPreferences,
+        BackgroundTimer(application, sharedPreferences)
+    )
+
+    fun startForegroundTimer(time: Long, teaId: Long) {
+        this.teaId = teaId
+        this.time = time
+        initTimer()
+        startTimer()
+        sharedPreferences.startedTime = now
     }
 
-    public TimerController(final Application application, final ForegroundTimer foregroundTimer,
-                           final SharedTimerPreferences sharedPreferences, final BackgroundTimer backgroundTimer) {
-        this.application = application;
-        this.foregroundTimer = foregroundTimer;
-        this.sharedPreferences = sharedPreferences;
-        this.backgroundTimer = backgroundTimer;
-    }
-
-    public void startForegroundTimer(final long time, final long teaId) {
-        this.teaId = teaId;
-        this.time = time;
-        initTimer();
-        startTimer();
-        sharedPreferences.setStartedTime(getNow());
-    }
-
-    public void startBackgroundTimer() {
+    fun startBackgroundTimer() {
         if (timerState == TimerState.RUNNING) {
-            foregroundTimer.cancel();
-            backgroundTimer.setAlarmManager(teaId, time);
+            foregroundTimer.cancel()
+            backgroundTimer.setAlarmManager(teaId, time)
         }
     }
 
-    public void resumeForegroundTimer() {
-        initTimer();
-        backgroundTimer.removeAlarmManager();
+    fun resumeForegroundTimer() {
+        initTimer()
+        backgroundTimer.removeAlarmManager()
     }
 
-    public void reset() {
+    fun reset() {
         //cancel foregroundtimer
-        foregroundTimer.cancel();
-        sharedPreferences.setStartedTime(0);
-        timerState = TimerState.STOPPED;
+        foregroundTimer.cancel()
+        sharedPreferences.startedTime = 0
+        timerState = TimerState.STOPPED
         //cancel Backgroundtimer
-        backgroundTimer.removeAlarmManager();
+        backgroundTimer.removeAlarmManager()
         //stop music
-        application.stopService(new Intent(application, NotificationService.class));
+        application.stopService(Intent(application, NotificationService::class.java))
     }
 
-    private void initTimer() {
-        final long startTime = sharedPreferences.getStartedTime();
+    private fun initTimer() {
+        val startTime = sharedPreferences.startedTime
         if (startTime > 0) {
-            timeToStart = (time - (getNow() - startTime));
+            timeToStart = time - (now - startTime)
             if (timeToStart <= 0) {
-                showTimerFinished();
+                showTimerFinished()
             } else {
-                startTimer();
+                startTimer()
             }
         } else {
-            timeToStart = time;
+            timeToStart = time
         }
     }
 
-    private void startTimer() {
-        foregroundTimer.start(this, timeToStart);
-        timerState = TimerState.RUNNING;
+    private fun startTimer() {
+        foregroundTimer.start(this, timeToStart)
+        timerState = TimerState.RUNNING
     }
 
-    void onTimerTick(final long millisUntilFinished) {
-        broadcastIntent.putExtra("countdown", millisUntilFinished);
-        broadcastIntent.putExtra("ready", false);
-        application.sendBroadcast(broadcastIntent);
+    fun onTimerTick(millisUntilFinished: Long) {
+        broadcastIntent.putExtra("countdown", millisUntilFinished)
+        broadcastIntent.putExtra("ready", false)
+        application.sendBroadcast(broadcastIntent)
     }
 
-    void onTimerFinish() {
-        final Intent intent = new Intent();
-        intent.putExtra("teaId", teaId);
+    fun onTimerFinish() {
+        val intent = Intent()
+        intent.putExtra("teaId", teaId)
 
-        final TeaCompleteReceiver receiver = new TeaCompleteReceiver();
-        receiver.onReceive(application, intent);
+        val receiver = TeaCompleteReceiver()
+        receiver.onReceive(application, intent)
 
-        showTimerFinished();
+        showTimerFinished()
     }
 
-    private void showTimerFinished() {
-        timerState = TimerState.STOPPED;
-        sharedPreferences.setStartedTime(0);
+    private fun showTimerFinished() {
+        timerState = TimerState.STOPPED
+        sharedPreferences.startedTime = 0
 
-        broadcastIntent.putExtra("ready", true);
-        application.sendBroadcast(broadcastIntent);
+        broadcastIntent.putExtra("ready", true)
+        application.sendBroadcast(broadcastIntent)
     }
 
-    private long getNow() {
-        return CurrentDate.getDate().getTime();
+    private val now: Long
+        get() = getDate().time
+
+    private enum class TimerState {
+        STOPPED, RUNNING
     }
 
-    private enum TimerState {
-        STOPPED,
-        RUNNING
+    companion object {
+        const val COUNTDOWN_BR = "paseb.teeapp.teespeicher.countdown_br"
     }
 }
