@@ -1,66 +1,57 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-
-@ExtendWith(MockitoExtension.class)
-class TimerViewModelTest {
-    private TimerViewModel timerViewModel;
+@ExtendWith(MockitoExtension::class)
+internal class TimerViewModelTest {
+    @Mock
+    lateinit var sharedSettings: SharedSettings
 
     @Mock
-    SharedSettings sharedSettings;
-    @Mock
-    TeaRepository teaRepository;
+    lateinit var teaRepository: TeaRepository
 
-
-    @BeforeEach
-    void setUp() {
-        timerViewModel = new TimerViewModel(teaRepository, sharedSettings);
-    }
-
+    @InjectMocks
+    lateinit var timerViewModel: TimerViewModel
 
     @Test
-    void isVibration() {
-        when(sharedSettings.isVibration()).thenReturn(true);
+    fun isVibration() {
+        `when`(sharedSettings.isVibration).thenReturn(true)
 
-        assertThat(timerViewModel.isVibration()).isTrue();
+        assertThat(timerViewModel.isVibration).isTrue
 
-        when(sharedSettings.isVibration()).thenReturn(false);
+        `when`(sharedSettings.isVibration).thenReturn(false)
 
-        assertThat(timerViewModel.isVibration()).isFalse();
-
+        assertThat(timerViewModel.isVibration).isFalse
     }
 
     @Test
-    void getMusicChoice() {
-        final String musicChoice = "MUSICPATH";
+    fun getMusicChoice() {
+        val musicChoice = "MUSICPATH"
 
-        when(sharedSettings.getMusicChoice()).thenReturn(musicChoice);
+        `when`(sharedSettings.musicChoice).thenReturn(musicChoice)
 
-        assertThat(timerViewModel.getMusicChoice()).isEqualTo(musicChoice);
+        assertThat(timerViewModel.musicChoice).isEqualTo(musicChoice)
     }
 
     @Test
-    void getName() {
-        final String teaName = "TEANAME";
+    fun getName() {
+        val teaName = "TEANAME"
 
-        final Tea tea = new Tea();
-        tea.setName(teaName);
+        val tea = Tea()
+        tea.name = teaName
 
-        when(teaRepository.getTeaById(1L)).thenReturn(tea);
+        `when`(teaRepository.getTeaById(1L)).thenReturn(tea)
 
-        assertThat(timerViewModel.getName(0L)).isEqualTo("Default Tea");
-        assertThat(timerViewModel.getName(1L)).isEqualTo(teaName);
+        assertThat(timerViewModel.getName(0L)).isEqualTo("Default Tea")
+        assertThat(timerViewModel.getName(1L)).isEqualTo(teaName)
     }
-
 }

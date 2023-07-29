@@ -1,137 +1,120 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
+import java.util.Calendar
 
-import android.app.Application;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Calendar;
-
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
-
-@ExtendWith(MockitoExtension.class)
-class TimerControllerTest {
+@ExtendWith(MockitoExtension::class)
+internal class TimerControllerTest {
     @Mock
-    Application application;
+    lateinit var application: Application
+
     @Mock
-    SharedTimerPreferences sharedTimerPreferences;
+    lateinit var sharedTimerPreferences: SharedTimerPreferences
+
     @Mock
-    BackgroundTimer backgroundTimer;
+    lateinit var backgroundTimer: BackgroundTimer
+
     @Mock
-    ForegroundTimer foregroundTimer;
+    lateinit var foregroundTimer: ForegroundTimer
+
     @Mock
-    DateUtility dateUtility;
+    lateinit var dateUtility: DateUtility
+
+    @InjectMocks
+    lateinit var timerController: TimerController
 
     @Test
-    void startForegroundTimer() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
-        when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
+    fun startForegroundTimer() {
+        `when`(sharedTimerPreferences.startedTime).thenReturn(0L)
 
-        timerController.startForegroundTimer(6000L, 1L);
+        timerController.startForegroundTimer(6000L, 1L)
 
-        verify(foregroundTimer).start(any(TimerController.class), eq(6000L));
-        verify(sharedTimerPreferences).setStartedTime(anyLong());
+        verify(foregroundTimer).start(any(), ArgumentMatchers.eq(6000L))
+        verify(sharedTimerPreferences).startedTime = ArgumentMatchers.anyLong()
     }
 
     @Test
-    void startBackgroundTimer() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
-        when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
+    fun startBackgroundTimer() {
+        `when`(sharedTimerPreferences.startedTime).thenReturn(0L)
 
-        timerController.startForegroundTimer(6000L, 1L);
-        timerController.startBackgroundTimer();
+        timerController.startForegroundTimer(6000L, 1L)
+        timerController.startBackgroundTimer()
 
-        verify(foregroundTimer).cancel();
-        verify(backgroundTimer).setAlarmManager(1L, 6000L);
+        verify(foregroundTimer).cancel()
+        verify(backgroundTimer).setAlarmManager(1L, 6000L)
     }
 
     @Test
-    void resumeForegroundTimer() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
+    fun resumeForegroundTimer() {
+        `when`(sharedTimerPreferences.startedTime).thenReturn(0L)
+        timerController.startForegroundTimer(6000L, 1L)
 
-        when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
-        timerController.startForegroundTimer(6000L, 1L);
+        timerController.startBackgroundTimer()
 
-        timerController.startBackgroundTimer();
+        `when`(sharedTimerPreferences.startedTime).thenReturn(1000L)
+        mockCurrentDate(2000L)
+        timerController.resumeForegroundTimer()
 
-        when(sharedTimerPreferences.getStartedTime()).thenReturn(1000L);
-        mockCurrentDate(2000L);
-        timerController.resumeForegroundTimer();
-
-        verify(backgroundTimer).removeAlarmManager();
-        verify(foregroundTimer).start(any(TimerController.class), eq(5000L));
-        verify(sharedTimerPreferences).setStartedTime(anyLong());
+        verify(backgroundTimer).removeAlarmManager()
+        verify(foregroundTimer).start(any(), ArgumentMatchers.eq(5000L))
+        verify(sharedTimerPreferences).startedTime = ArgumentMatchers.anyLong()
     }
 
     @Test
-    void resumeFinishedForegroundTimer() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
+    fun resumeFinishedForegroundTimer() {
+        `when`(sharedTimerPreferences.startedTime).thenReturn(0L)
+        timerController.startForegroundTimer(6000L, 1L)
 
-        when(sharedTimerPreferences.getStartedTime()).thenReturn(0L);
-        timerController.startForegroundTimer(6000L, 1L);
+        timerController.startBackgroundTimer()
 
-        timerController.startBackgroundTimer();
+        `when`(sharedTimerPreferences.startedTime).thenReturn(1000L)
+        mockCurrentDate(8000L)
+        timerController.resumeForegroundTimer()
 
-        when(sharedTimerPreferences.getStartedTime()).thenReturn(1000L);
-        mockCurrentDate(8000L);
-        timerController.resumeForegroundTimer();
-
-        verify(sharedTimerPreferences).setStartedTime(0L);
-        verify(application).sendBroadcast(any());
+        verify(sharedTimerPreferences).startedTime = 0L
+        verify(application).sendBroadcast(any())
     }
 
     @Test
-    void reset() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
+    fun reset() {
+        timerController.reset()
 
-        timerController.reset();
-
-        verify(foregroundTimer).cancel();
-        verify(sharedTimerPreferences).setStartedTime(0L);
-        verify(backgroundTimer).removeAlarmManager();
-        verify(application).stopService(any());
+        verify(foregroundTimer).cancel()
+        verify(sharedTimerPreferences).startedTime = 0L
+        verify(backgroundTimer).removeAlarmManager()
+        verify(application).stopService(any())
     }
 
     @Test
-    void onTimerTick() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
+    fun onTimerTick() {
+        timerController.onTimerTick(6000L)
 
-        timerController.onTimerTick(6000L);
-
-        verify(application).sendBroadcast(any());
+        verify(application).sendBroadcast(any())
     }
 
     @Test
-    void onTimerFinish() {
-        final TimerController timerController = new TimerController(application, foregroundTimer,
-                sharedTimerPreferences, backgroundTimer);
+    fun onTimerFinish() {
+        timerController.onTimerFinish()
 
-        timerController.onTimerFinish();
-
-        verify(sharedTimerPreferences).setStartedTime(0L);
-        verify(application).sendBroadcast(any());
+        verify(sharedTimerPreferences).startedTime = 0L
+        verify(application).sendBroadcast(any())
     }
 
-    private void mockCurrentDate(final long millis) {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(millis);
-        when(dateUtility.getDate()).thenReturn(calendar.getTime());
+    private fun mockCurrentDate(millis: Long) {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+        `when`(dateUtility.date).thenReturn(calendar.time)
 
-        CurrentDate.setFixedDate(dateUtility);
+        setFixedDate(dateUtility)
     }
 }

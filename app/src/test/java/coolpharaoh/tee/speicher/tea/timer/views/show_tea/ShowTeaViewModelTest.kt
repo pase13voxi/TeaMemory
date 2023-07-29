@@ -1,416 +1,420 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OOLONG_TEA;
+import android.app.Application
+import android.content.res.Resources
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.argumentCaptor
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Date
 
-import android.app.Application;
-import android.content.res.Resources;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-
-@ExtendWith(MockitoExtension.class)
-class ShowTeaViewModelTest {
-    public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
-    private ShowTeaViewModel showTeaViewModel;
+@ExtendWith(MockitoExtension::class)
+internal class showTeaViewModelTest {
+    private var showTeaViewModel: ShowTeaViewModel? = null
 
     @Mock
-    Application application;
-    @Mock
-    Resources resources;
-    @Mock
-    TeaRepository teaRepository;
-    @Mock
-    InfusionRepository infusionRepository;
-    @Mock
-    CounterRepository counterRepository;
-    @Mock
-    SharedSettings sharedSettings;
-    @Mock
-    DateUtility dateUtility;
+    lateinit var application: Application
 
-    private static final long TEA_ID = 1L;
+    @Mock
+    lateinit var resources: Resources
+
+    @Mock
+    lateinit var teaRepository: TeaRepository
+
+    @Mock
+    lateinit var infusionRepository: InfusionRepository
+
+    @Mock
+    lateinit var counterRepository: CounterRepository
+
+    @Mock
+    lateinit var sharedSettings: SharedSettings
+
+    @Mock
+    lateinit var dateUtility: DateUtility
 
     @BeforeEach
-    void setUp() {
-        showTeaViewModel = new ShowTeaViewModel(TEA_ID, application, teaRepository, infusionRepository,
-                counterRepository, sharedSettings);
+    internal fun setUp() {
+        showTeaViewModel = ShowTeaViewModel(TEA_ID, application, teaRepository, infusionRepository,
+            counterRepository, sharedSettings)
     }
 
     @Test
-    void teaExist() {
-        final Tea tea = new Tea();
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+    fun teaExist() {
+        val tea = Tea()
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        assertThat(showTeaViewModel.teaExists()).isTrue();
+        assertThat(showTeaViewModel!!.teaExists()).isTrue
     }
 
     @Test
-    void teaDoesNotExist() {
-        assertThat(showTeaViewModel.teaExists()).isFalse();
+    fun teaDoesNotExist() {
+        assertThat(showTeaViewModel!!.teaExists()).isFalse
     }
 
     @Test
-    void getTeaId() {
-        final long teaIdBefore = 1L;
+    fun getTeaId() {
+        val teaIdBefore = 1L
 
-        final Tea tea = new Tea();
-        tea.setId(teaIdBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.id = teaIdBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final long teaIdAfter = showTeaViewModel.getTeaId();
+        val teaIdAfter = showTeaViewModel!!.getTeaId()
 
-        assertThat(teaIdAfter).isEqualTo(teaIdBefore);
+        assertThat(teaIdAfter).isEqualTo(teaIdBefore)
     }
 
     @Test
-    void getName() {
-        final String teaNameBefore = "TEA";
+    fun getName() {
+        val teaNameBefore = "TEA"
 
-        final Tea tea = new Tea();
-        tea.setName(teaNameBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.name = teaNameBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final String teaNameAfter = showTeaViewModel.getName();
+        val teaNameAfter = showTeaViewModel!!.name
 
-        assertThat(teaNameAfter).isEqualTo(teaNameBefore);
+        assertThat(teaNameAfter).isEqualTo(teaNameBefore)
     }
 
     @Test
-    void getVariety() {
-        final String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
-                "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
+    fun getVariety() {
+        val varietyTeas = arrayOf(
+            "Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
+            "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"
+        )
 
-        final Tea tea = new Tea();
-        tea.setVariety(OOLONG_TEA.getCode());
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.variety = Variety.OOLONG_TEA.code
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
+        `when`(application.resources).thenReturn(resources)
+        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas)
 
-        final String varietyAfter = showTeaViewModel.getVariety();
+        val varietyAfter = showTeaViewModel!!.variety
 
-        assertThat(varietyAfter).isEqualTo(varietyTeas[OOLONG_TEA.getChoice()]);
+        assertThat(varietyAfter).isEqualTo(varietyTeas[Variety.OOLONG_TEA.choice])
     }
 
     @Test
-    void getUnknownVariety() {
-        final String[] varietyTeas = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
-                "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
+    fun getUnknownVariety() {
+        val varietyTeas = arrayOf(
+            "Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
+            "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"
+        )
 
-        final String varietyBefore = "VARIETY";
+        val varietyBefore = "VARIETY"
 
-        final Tea tea = new Tea();
-        tea.setVariety(varietyBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.variety = varietyBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas);
+        `when`(application.resources).thenReturn(resources)
+        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas)
 
-        final String varietyAfter = showTeaViewModel.getVariety();
+        val varietyAfter = showTeaViewModel!!.variety
 
-        assertThat(varietyAfter).isEqualTo(varietyBefore);
+        assertThat(varietyAfter).isEqualTo(varietyBefore)
     }
 
     @Test
-    void getEmptyVariety() {
-        final String varietyBefore = "";
+    fun getEmptyVariety() {
+        val varietyBefore = ""
 
-        final Tea tea = new Tea();
-        tea.setVariety(varietyBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.variety = varietyBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final String varietyAfter = showTeaViewModel.getVariety();
+        val varietyAfter = showTeaViewModel!!.variety
 
-        assertThat(varietyAfter).isEqualTo("-");
+        assertThat(varietyAfter).isEqualTo("-")
     }
 
     @Test
-    void getAmount() {
-        final double amountBefore = 1;
+    fun getAmount() {
+        val amountBefore = 1.0
 
-        final Tea tea = new Tea();
-        tea.setAmount(amountBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.amount = amountBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final double amountAfter = showTeaViewModel.getAmount();
+        val amountAfter = showTeaViewModel!!.amount
 
-        assertThat(amountAfter).isEqualTo(amountBefore);
+        assertThat(amountAfter).isEqualTo(amountBefore)
     }
 
     @Test
-    void getAmountKind() {
-        final Tea tea = new Tea();
-        tea.setAmountKind(TEA_SPOON.getText());
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+    fun getAmountKind() {
+        val tea = Tea()
+        tea.amountKind = AmountKind.TEA_SPOON.text
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final AmountKind amountKind = showTeaViewModel.getAmountKind();
+        val amountKind = showTeaViewModel!!.amountKind
 
-        assertThat(amountKind).isEqualTo(TEA_SPOON);
+        assertThat(amountKind).isEqualTo(AmountKind.TEA_SPOON)
     }
 
     @Test
-    void getColor() {
-        final int colorBefore = 1;
+    fun getColor() {
+        val colorBefore = 1
 
-        final Tea tea = new Tea();
-        tea.setColor(colorBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.color = colorBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final int colorAfter = showTeaViewModel.getColor();
+        val colorAfter = showTeaViewModel!!.color
 
-        assertThat(colorAfter).isEqualTo(colorBefore);
+        assertThat(colorAfter).isEqualTo(colorBefore)
     }
 
     @Test
-    void setCurrentDate() {
-        final Date fixedDate = mockFixedDate();
-        final Tea teaBefore = new Tea();
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(teaBefore);
+    fun setCurrentDate() {
+        val fixedDate = mockFixedDate()
+        val teaBefore = Tea()
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(teaBefore)
 
-        showTeaViewModel.setCurrentDate();
+        showTeaViewModel!!.setCurrentDate()
 
-        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea((captor.capture()));
-        final Tea teaAfter = captor.getValue();
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).updateTea(capture())
+            val (_, _, _, _, _, _, _, _, _, date) = lastValue
 
-        assertThat(teaAfter.getDate()).isEqualTo(fixedDate);
+            assertThat(date).isEqualTo(fixedDate)
+        }
     }
 
     @Test
-    void getNextInfusion() {
-        final int nextInfusionBefore = 0;
+    fun getNextInfusion() {
+        val nextInfusionBefore = 0
 
-        final Tea tea = new Tea();
-        tea.setNextInfusion(nextInfusionBefore);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+        val tea = Tea()
+        tea.nextInfusion = nextInfusionBefore
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        final int nextInfusionAfter = showTeaViewModel.getNextInfusion();
+        val nextInfusionAfter = showTeaViewModel!!.nextInfusion
 
-        assertThat(nextInfusionAfter).isEqualTo(nextInfusionBefore);
+        assertThat(nextInfusionAfter).isEqualTo(nextInfusionBefore)
     }
 
     @Test
-    void updateNextInfusion() {
-        final Tea tea = new Tea();
-        tea.setNextInfusion(0);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+    fun updateNextInfusion() {
+        val tea = Tea()
+        tea.nextInfusion = 0
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(Arrays.asList(new Infusion(), new Infusion()));
+        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(listOf(Infusion(), Infusion()))
 
-        showTeaViewModel.updateNextInfusion();
+        showTeaViewModel!!.updateNextInfusion()
 
-        final ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea((teaCaptor.capture()));
-        final Tea updatedTea = teaCaptor.getValue();
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).updateTea(capture())
+            val (_, _, _, _, _, _, _, _, nextInfusion1) = lastValue
 
-        assertThat(updatedTea.getNextInfusion()).isEqualTo(1);
+            assertThat(nextInfusion1).isEqualTo(1)
+        }
     }
 
     @Test
-    void resetNextInfusion() {
-        final Tea tea = new Tea();
-        tea.setNextInfusion(2);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+    fun resetNextInfusion() {
+        val tea = Tea()
+        tea.nextInfusion = 2
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        showTeaViewModel.resetNextInfusion();
+        showTeaViewModel!!.resetNextInfusion()
 
-        final ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea((teaCaptor.capture()));
-        final Tea updatedTea = teaCaptor.getValue();
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).updateTea(capture())
+            val (_, _, _, _, _, _, _, _, nextInfusion1) = lastValue
 
-        assertThat(updatedTea.getNextInfusion()).isZero();
+            assertThat(nextInfusion1).isZero
+        }
     }
 
     @Test
-    void updateLastInfusionBiggerOrEqual() {
-        final Tea tea = new Tea();
-        tea.setNextInfusion(0);
-        when(teaRepository.getTeaById(TEA_ID)).thenReturn(tea);
+    fun updateLastInfusionBiggerOrEqual() {
+        val tea = Tea()
+        tea.nextInfusion = 0
+        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
 
-        when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(Collections.singletonList(new Infusion()));
+        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(listOf(Infusion()))
 
-        showTeaViewModel.updateNextInfusion();
+        showTeaViewModel!!.updateNextInfusion()
 
-        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea((captor.capture()));
-        final Tea lastInfusionAfter = captor.getValue();
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).updateTea(capture())
+            val (_, _, _, _, _, _, _, _, nextInfusion1) = lastValue
 
-        assertThat(lastInfusionAfter.getNextInfusion()).isZero();
+            assertThat(nextInfusion1).isZero
+        }
     }
 
     @Test
-    void navigateBetweenInfusions() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun navigateBetweenInfusions() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
 
-        final List<Infusion> infusions = new ArrayList<>();
-        final Infusion infusion1 = new Infusion(1L, 1, "1", "2", 1, 32);
-        infusions.add(infusion1);
+        val infusions: MutableList<Infusion> = ArrayList()
+        val infusion1 = Infusion(1L, 1, "1", "2", 1, 32)
+        infusions.add(infusion1)
 
-        final Infusion infusion2 = new Infusion(1L, 2, "2:30", "5:30", 2, 33);
-        infusions.add(infusion2);
+        val infusion2 = Infusion(1L, 2, "2:30", "5:30", 2, 33)
+        infusions.add(infusion2)
 
-        when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
+        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions)
 
-        assertThat(showTeaViewModel.getInfusionSize()).isEqualTo(infusions.size());
-        assertThat(showTeaViewModel.getInfusionIndex()).isZero();
+        assertThat(showTeaViewModel!!.getInfusionSize()).isEqualTo(infusions.size)
+        assertThat(showTeaViewModel!!.infusionIndex).isZero
 
-        final TimeConverter time1 = showTeaViewModel.getTime();
-        final TimeConverter cooldownTime1 = showTeaViewModel.getCoolDownTime();
-        final int temperature1 = showTeaViewModel.getTemperature();
+        val time1 = showTeaViewModel!!.time
+        val cooldownTime1 = showTeaViewModel!!.coolDownTime
+        val temperature1 = showTeaViewModel!!.temperature
 
-        assertThat(time1.getTime()).isEqualTo(infusions.get(0).getTime());
-        assertThat(time1.getMinutes()).isEqualTo(1);
-        assertThat(time1.getSeconds()).isZero();
-        assertThat(cooldownTime1.getTime()).isEqualTo(infusions.get(0).getCoolDownTime());
-        assertThat(cooldownTime1.getMinutes()).isEqualTo(2);
-        assertThat(cooldownTime1.getSeconds()).isZero();
-        assertThat(temperature1).isEqualTo(infusions.get(0).getTemperatureCelsius());
+        assertThat(time1.time).isEqualTo(infusions[0].time)
+        assertThat(time1.minutes).isEqualTo(1)
+        assertThat(time1.seconds).isZero
+        assertThat(cooldownTime1.time).isEqualTo(infusions[0].coolDownTime)
+        assertThat(cooldownTime1.minutes).isEqualTo(2)
+        assertThat(cooldownTime1.seconds).isZero
+        assertThat(temperature1).isEqualTo(infusions[0].temperatureCelsius)
 
-        showTeaViewModel.incrementInfusionIndex();
-        assertThat(showTeaViewModel.getInfusionIndex()).isEqualTo(1);
+        showTeaViewModel!!.incrementInfusionIndex()
+        assertThat(showTeaViewModel!!.infusionIndex).isEqualTo(1)
 
-        final TimeConverter time2 = showTeaViewModel.getTime();
-        final TimeConverter coolDownTime2 = showTeaViewModel.getCoolDownTime();
-        final int temperature2 = showTeaViewModel.getTemperature();
+        val time2 = showTeaViewModel!!.time
+        val coolDownTime2 = showTeaViewModel!!.coolDownTime
+        val temperature2 = showTeaViewModel!!.temperature
 
-        assertThat(time2.getTime()).isEqualTo(infusions.get(1).getTime());
-        assertThat(time2.getMinutes()).isEqualTo(2);
-        assertThat(time2.getSeconds()).isEqualTo(30);
-        assertThat(coolDownTime2.getTime()).isEqualTo(infusions.get(1).getCoolDownTime());
-        assertThat(coolDownTime2.getMinutes()).isEqualTo(5);
-        assertThat(coolDownTime2.getSeconds()).isEqualTo(30);
-        assertThat(temperature2).isEqualTo(infusions.get(1).getTemperatureCelsius());
+        assertThat(time2.time).isEqualTo(infusions[1].time)
+        assertThat(time2.minutes).isEqualTo(2)
+        assertThat(time2.seconds).isEqualTo(30)
+        assertThat(coolDownTime2.time).isEqualTo(infusions[1].coolDownTime)
+        assertThat(coolDownTime2.minutes).isEqualTo(5)
+        assertThat(coolDownTime2.seconds).isEqualTo(30)
+        assertThat(temperature2).isEqualTo(infusions[1].temperatureCelsius)
 
-        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
-        showTeaViewModel.setInfusionIndex(0);
-        assertThat(showTeaViewModel.getInfusionIndex()).isZero();
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
+        showTeaViewModel!!.infusionIndex = 0
+        assertThat(showTeaViewModel!!.infusionIndex).isZero
 
-        final int temperature3 = showTeaViewModel.getTemperature();
-        assertThat(temperature3).isEqualTo(infusions.get(0).getTemperatureFahrenheit());
+        val temperature3 = showTeaViewModel!!.temperature
+        assertThat(temperature3).isEqualTo(infusions[0].temperatureFahrenheit)
     }
 
     @Test
-    void getEmptyTime() {
-        final List<Infusion> infusions = new ArrayList<>();
-        final Infusion infusion1 = new Infusion(1L, 1, null, null, 1, 1);
-        infusions.add(infusion1);
+    fun getEmptyTime() {
+        val infusions: MutableList<Infusion> = ArrayList()
+        val infusion1 = Infusion(1L, 1, null, null, 1, 1)
+        infusions.add(infusion1)
 
-        when(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
+        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions)
 
-        final TimeConverter timeAfter = showTeaViewModel.getTime();
+        val timeAfter = showTeaViewModel!!.time
 
-        assertThat(timeAfter.getTime()).isNull();
-        assertThat(timeAfter.getMinutes()).isZero();
-        assertThat(timeAfter.getSeconds()).isZero();
+        assertThat(timeAfter.time).isNull()
+        assertThat(timeAfter.minutes).isZero
+        assertThat(timeAfter.seconds).isZero
     }
 
     @Test
-    void countCounter() {
-        final Date currentDate = mockFixedDate();
-        final Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
-        when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
+    fun countCounter() {
+        val currentDate = mockFixedDate()
+        val counterBefore = Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate)
+        `when`(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore)
 
-        showTeaViewModel.countCounter();
+        showTeaViewModel!!.countCounter()
 
-        final ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
-        verify(counterRepository).updateCounter((captor.capture()));
-        final Counter counterAfter = captor.getValue();
+        argumentCaptor<Counter>().apply {
+            verify(counterRepository).updateCounter(capture())
 
-        assertThat(counterAfter)
-                .extracting(Counter::getWeek, Counter::getMonth, Counter::getYear, Counter::getOverall)
-                .containsExactly(2, 2, 2, 2L);
+            assertThat(lastValue)
+                .extracting(Counter::week, Counter::month, Counter::year, Counter::overall)
+                .containsExactly(2, 2, 2, 2L)
+        }
     }
 
     @Test
-    void countCounterAndCounterIsNull() {
-        showTeaViewModel.countCounter();
+    fun countCounterAndCounterIsNull() {
+        showTeaViewModel!!.countCounter()
 
-        final ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
-        verify(counterRepository).updateCounter((captor.capture()));
-        final Counter counterAfter = captor.getValue();
+        argumentCaptor<Counter>().apply {
+            verify(counterRepository).updateCounter(capture())
 
-        assertThat(counterAfter)
-                .extracting(Counter::getWeek, Counter::getMonth, Counter::getYear, Counter::getOverall)
-                .containsExactly(1, 1, 1, 1L);
+            assertThat(lastValue)
+                .extracting(Counter::week, Counter::month, Counter::year, Counter::overall)
+                .containsExactly(1, 1, 1, 1L)
+        }
     }
 
     @Test
-    void getOverallCounter() {
-        final Date currentDate = Date.from(Instant.now());
-        final Counter counterBefore = new Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate);
-        when(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore);
+    fun getOverallCounter() {
+        val currentDate = Date.from(Instant.now())
+        val counterBefore = Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate)
+        `when`(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore)
 
-        final long overallCounter = showTeaViewModel.getOverallCounter();
+        val overallCounter = showTeaViewModel!!.getOverallCounter()
 
-        assertThat(overallCounter).isEqualTo(1L);
+        assertThat(overallCounter).isEqualTo(1L)
     }
 
     @Test
-    void isAnimation() {
-        final boolean animation = true;
+    fun isAnimation() {
+        val animation = true
 
-        when(sharedSettings.isAnimation()).thenReturn(animation);
+        `when`(sharedSettings.isAnimation).thenReturn(animation)
 
-        assertThat(showTeaViewModel.isAnimation()).isEqualTo(animation);
+        assertThat(showTeaViewModel!!.isAnimation()).isEqualTo(animation)
     }
 
     @Test
-    void isShowTeaAlert() {
-        final boolean showTeaAlert = true;
+    fun isShowTeaAlert() {
+        val showTeaAlert = true
 
-        when(sharedSettings.isShowTeaAlert()).thenReturn(showTeaAlert);
+        `when`(sharedSettings.isShowTeaAlert).thenReturn(showTeaAlert)
 
-        assertThat(showTeaViewModel.isShowTeaAlert()).isEqualTo(showTeaAlert);
+        assertThat(showTeaViewModel!!.isShowTeaAlert()).isEqualTo(showTeaAlert)
     }
 
     @Test
-    void setShowTeaAlert() {
-        final boolean showTeaAlert = true;
+    fun setShowTeaAlert() {
+        val showTeaAlert = true
 
-        showTeaViewModel.setShowTeaAlert(showTeaAlert);
+        showTeaViewModel!!.setShowTeaAlert(showTeaAlert)
 
-        verify(sharedSettings).setShowTeaAlert(showTeaAlert);
+        verify(sharedSettings).isShowTeaAlert = showTeaAlert
     }
 
-    private Date mockFixedDate() {
-        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
-        final Instant now = Instant.now(clock);
-        final Date fixedDate = Date.from(now);
+    private fun mockFixedDate(): Date {
+        val clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"))
+        val now = Instant.now(clock)
+        val fixedDate = Date.from(now)
 
-        CurrentDate.setFixedDate(dateUtility);
-        when(dateUtility.getDate()).thenReturn(fixedDate);
-        return fixedDate;
+        setFixedDate(dateUtility)
+        `when`(dateUtility.date).thenReturn(fixedDate)
+        return fixedDate
+    }
+
+    companion object {
+        const val CURRENT_DATE = "2020-08-19T10:15:30Z"
+        private const val TEA_ID = 1L
     }
 }

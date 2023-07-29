@@ -1,41 +1,42 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
+import android.app.Application
+import android.content.Intent
+import org.assertj.core.api.Assertions.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.RobolectricTestRunner
 
-import android.app.Application;
-import android.content.Intent;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.RobolectricTestRunner;
-
-@RunWith(RobolectricTestRunner.class)
-public class TeaCompleteReceiverTest {
-    public static final String TEA_ID = "teaId";
+@RunWith(RobolectricTestRunner::class)
+class TeaCompleteReceiverTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    Application application;
+    var rule = MockitoJUnit.rule()
 
+    @Mock
+    lateinit var application: Application
 
     @Test
-    public void onReceiveAfterAndroidO() {
-        final TeaCompleteReceiver teaCompleteReceiver = new TeaCompleteReceiver();
+    fun onReceiveAfterAndroidO() {
+        val teaCompleteReceiver = TeaCompleteReceiver()
 
-        final Intent intent = new Intent();
-        intent.putExtra(TEA_ID, 1L);
-        teaCompleteReceiver.onReceive(application, intent);
+        val intent = Intent()
+        intent.putExtra(TEA_ID, 1L)
+        teaCompleteReceiver.onReceive(application, intent)
 
-        final ArgumentCaptor<Intent> serviceCaptor = ArgumentCaptor.forClass(Intent.class);
-        verify(application).startForegroundService(serviceCaptor.capture());
-        final Intent service = serviceCaptor.getValue();
+        val serviceCaptor = ArgumentCaptor.forClass(Intent::class.java)
+        verify(application).startForegroundService(serviceCaptor.capture())
+        val service = serviceCaptor.value
 
-        assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L);
+        assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L)
+    }
+
+    companion object {
+        const val TEA_ID = "teaId"
     }
 }

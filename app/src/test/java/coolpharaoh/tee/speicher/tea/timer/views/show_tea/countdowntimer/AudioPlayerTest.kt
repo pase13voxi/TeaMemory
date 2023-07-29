@@ -1,81 +1,78 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.net.Uri
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.RobolectricTestRunner
+import java.io.IOException
 
-import android.app.Application;
-import android.media.AudioAttributes;
-import android.media.MediaPlayer;
-import android.net.Uri;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.RobolectricTestRunner;
-
-import java.io.IOException;
-
-@RunWith(RobolectricTestRunner.class)
-public class AudioPlayerTest {
-
+@RunWith(RobolectricTestRunner::class)
+class AudioPlayerTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+    var rule = MockitoJUnit.rule()
+
     @Mock
-    TimerViewModel timerViewModel;
+    lateinit var timerViewModel: TimerViewModel
+
     @Mock
-    MediaPlayer mediaPlayer;
+    lateinit var mediaPlayer: MediaPlayer
 
     @Test
-    public void startAudioPlayer() throws IOException {
-        final Application application = new Application();
-        final String musicChoice = "/music/choice";
-        final Uri uri = Uri.parse(musicChoice);
-        when(timerViewModel.getMusicChoice()).thenReturn(musicChoice);
+    @Throws(IOException::class)
+    fun startAudioPlayer() {
+        val application = Application()
+        val musicChoice = "/music/choice"
+        val uri = Uri.parse(musicChoice)
+        `when`(timerViewModel.musicChoice).thenReturn(musicChoice)
 
-        final AudioPlayer audioPlayer = new AudioPlayer(application, timerViewModel, mediaPlayer);
-        audioPlayer.start();
+        val audioPlayer = AudioPlayer(application, timerViewModel, mediaPlayer)
+        audioPlayer.start()
 
-        verify(mediaPlayer).setAudioAttributes(any(AudioAttributes.class));
-        verify(mediaPlayer).setDataSource(application, uri);
-        verify(mediaPlayer).prepare();
-        verify(mediaPlayer).start();
+        verify(mediaPlayer).setAudioAttributes(ArgumentMatchers.any(AudioAttributes::class.java))
+        verify(mediaPlayer).setDataSource(application, uri)
+        verify(mediaPlayer).prepare()
+        verify(mediaPlayer).start()
     }
 
     @Test
-    public void startAudioPlayerButDoNothingWhenMusicChoiceIsNull() {
-        when(timerViewModel.getMusicChoice()).thenReturn(null);
+    fun startAudioPlayerButDoNothingWhenMusicChoiceIsNull() {
+        `when`(timerViewModel.musicChoice).thenReturn(null)
 
-        final AudioPlayer audioPlayer = new AudioPlayer(new Application(), timerViewModel, mediaPlayer);
-        audioPlayer.start();
+        val audioPlayer = AudioPlayer(Application(), timerViewModel, mediaPlayer)
+        audioPlayer.start()
 
-        verify(mediaPlayer, times(0)).start();
+        verify(mediaPlayer, times(0)).start()
     }
 
     @Test
-    public void startAudioPlayerButDoNothingWhenIOExceptionIsThrown() throws IOException {
-        final String musicChoice = "/music/choice";
-        when(timerViewModel.getMusicChoice()).thenReturn(musicChoice);
+    @Throws(IOException::class)
+    fun startAudioPlayerButDoNothingWhenIOExceptionIsThrown() {
+        val musicChoice = "/music/choice"
+        `when`(timerViewModel.musicChoice).thenReturn(musicChoice)
 
-        doThrow(IOException.class).when(mediaPlayer).setDataSource(any(), any());
+        doThrow(IOException::class.java).`when`(mediaPlayer).setDataSource(ArgumentMatchers.any(), ArgumentMatchers.any())
 
-        final AudioPlayer audioPlayer = new AudioPlayer(new Application(), timerViewModel, mediaPlayer);
-        audioPlayer.start();
+        val audioPlayer = AudioPlayer(Application(), timerViewModel, mediaPlayer)
+        audioPlayer.start()
 
-        verify(mediaPlayer, times(0)).start();
+        verify(mediaPlayer, times(0)).start()
     }
 
     @Test
-    public void restAudioPlayer() {
-        final AudioPlayer audioPlayer = new AudioPlayer(new Application(), timerViewModel, mediaPlayer);
+    fun restAudioPlayer() {
+        val audioPlayer = AudioPlayer(Application(), timerViewModel, mediaPlayer)
 
-        audioPlayer.reset();
+        audioPlayer.reset()
 
-        verify(mediaPlayer).release();
+        verify(mediaPlayer).release()
     }
 }

@@ -1,70 +1,70 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import android.content.Intent
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.NotificationService
+import org.assertj.core.api.Assertions.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
-import android.content.Intent;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.android.controller.ServiceController;
-
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-
-@RunWith(RobolectricTestRunner.class)
-public class NotificationServiceTest {
+@RunWith(RobolectricTestRunner::class)
+class NotificationServiceTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+    var rule = MockitoJUnit.rule()
+
     @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+
     @Mock
-    TeaDao teaDao;
+    lateinit var teaDao: TeaDao
 
     @Test
-    public void bind() {
-        final ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class);
-        final NotificationService notificationService = controller.create().bind().get();
-        assertThat(notificationService).isNotNull();
+    fun bind() {
+        val controller = Robolectric.buildService(NotificationService::class.java)
+        val notificationService = controller.create().bind().get()
+        assertThat(notificationService).isNotNull
     }
 
     @Test
-    public void startAndDestroy() {
-        mockDB();
+    fun startAndDestroy() {
+        mockDB()
 
-        final Intent intent = new Intent();
-        intent.putExtra("teaId", 1L);
-        final ServiceController<NotificationService> controller = Robolectric.buildService(NotificationService.class, intent);
+        val intent = Intent()
+        intent.putExtra("teaId", 1L)
+        val controller = Robolectric.buildService(NotificationService::class.java, intent)
 
-        controller.startCommand(0, 0);
+        controller.startCommand(0, 0)
 
-        final NotificationService notificationService = controller.get();
-        assertThat(notificationService.audioPlayer).isNotNull();
-        assertThat(notificationService.notifier).isNotNull();
-        assertThat(notificationService.vibrator).isNotNull();
+        val notificationService = controller.get()
+        assertThat(notificationService.audioPlayer).isNotNull
+        assertThat(notificationService.notifier).isNotNull
+        assertThat(notificationService.vibrator).isNotNull
 
-        controller.destroy();
+        controller.destroy()
         // Bad style cannot verify this comman
     }
 
-    private void mockDB() {
-        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
-        final Tea tea = new Tea();
-        tea.setName("Tea");
-        when(teaDao.getTeaById(1L)).thenReturn(tea);
+    private fun mockDB() {
+        setMockedDatabase(teaMemoryDatabase)
+        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
+        val tea = Tea()
+        tea.name = "Tea"
+        `when`(teaDao.getTeaById(1L)).thenReturn(tea)
 
-        final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
-        sharedSettings.setMusicChoice(null);
-        sharedSettings.setVibration(false);
+        val sharedSettings = SharedSettings(RuntimeEnvironment.getApplication())
+        sharedSettings.musicChoice = null
+        sharedSettings.isVibration = false
     }
 }
