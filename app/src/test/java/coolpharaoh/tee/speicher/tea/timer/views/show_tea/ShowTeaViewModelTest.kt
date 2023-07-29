@@ -29,7 +29,7 @@ import java.time.ZoneId
 import java.util.Date
 
 @ExtendWith(MockitoExtension::class)
-internal class showTeaViewModelTest {
+internal class ShowTeaViewModelTest {
     private var showTeaViewModel: ShowTeaViewModel? = null
 
     @Mock

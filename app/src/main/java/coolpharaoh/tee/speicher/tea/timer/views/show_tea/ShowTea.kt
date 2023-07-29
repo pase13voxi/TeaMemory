@@ -297,8 +297,8 @@ class ShowTea : AppCompatActivity() {
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setView(alertLayoutDialogDescription)
             .setTitle(R.string.show_tea_dialog_description_header)
-            .setNegativeButton(R.string.show_tea_dialog_description_cancel) { dialog: DialogInterface?, which: Int -> disableDescription(donNotShowAgain) }
-            .setPositiveButton(R.string.show_tea_dialog_description_show) { dialog: DialogInterface?, which: Int -> navigateToShowTeaDescription(donNotShowAgain) }
+            .setNegativeButton(R.string.show_tea_dialog_description_cancel) { _, _ -> disableDescription(donNotShowAgain) }
+            .setPositiveButton(R.string.show_tea_dialog_description_show) { _, _ -> navigateToShowTeaDescription(donNotShowAgain) }
             .show()
     }
 
