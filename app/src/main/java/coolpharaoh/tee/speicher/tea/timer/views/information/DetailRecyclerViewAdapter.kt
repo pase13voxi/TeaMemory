@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 
-/**
- * Created by paseb on 03.11.2016.
- */
 internal class DetailRecyclerViewAdapter(private val listRowItems: List<RecyclerItem>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<DetailRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

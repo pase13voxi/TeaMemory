@@ -199,7 +199,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
     private fun storeDetail(editTextHeading: EditText, editTextDescription: EditText) {
         val heading = editTextHeading.text.toString()
         val description = editTextDescription.text.toString()
-        if (!heading.trim { it <= ' ' }.isEmpty() && !description.trim { it <= ' ' }.isEmpty()) {
+        if (heading.trim { it <= ' ' }.isNotEmpty() && description.trim { it <= ' ' }.isNotEmpty()) {
             informationViewModel!!.addDetail(editTextHeading.text.toString(),
                 editTextDescription.text.toString())
         }

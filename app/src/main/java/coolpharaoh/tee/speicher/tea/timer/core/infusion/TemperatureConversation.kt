@@ -1,6 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.core.infusion
 
 import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 object TemperatureConversation {
     @JvmStatic
@@ -9,7 +10,7 @@ object TemperatureConversation {
             -500
         } else {
             val tmp = (9.0 / 5.0 * celsius + 32.0).toFloat()
-            Math.round(tmp)
+            tmp.roundToInt()
         }
     }
 
@@ -19,7 +20,7 @@ object TemperatureConversation {
             -500
         } else {
             val tmp = (5.0 / 9.0 * (fahrenheit - 32.0)).toFloat()
-            Math.round(tmp)
+            tmp.roundToInt()
         }
     }
 

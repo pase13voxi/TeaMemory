@@ -91,8 +91,7 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     override fun onRecyclerItemClick(position: Int) {
-        val item = ListItems.values()[position]
-        when (item) {
+        when (ListItems.values()[position]) {
             ListItems.CONTACT -> navigateToContact()
             ListItems.RATING -> navigateToStore()
             ListItems.STATISTICS -> navigateToStatistics()

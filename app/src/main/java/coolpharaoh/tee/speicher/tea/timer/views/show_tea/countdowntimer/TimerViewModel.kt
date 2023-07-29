@@ -6,7 +6,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
 
 class TimerViewModel @VisibleForTesting constructor(private val teaRepository: TeaRepository, private val sharedSettings: SharedSettings) {
-    constructor(application: Application) : this(TeaRepository(application), SharedSettings(application)) {}
+    constructor(application: Application) : this(TeaRepository(application), SharedSettings(application))
 
     //teaDAO
     fun getName(teaId: Long): String? {

@@ -25,7 +25,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager.applyTheme
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
-import java.util.Arrays
 import java.util.Objects
 
 class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
@@ -288,7 +287,7 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
 
     private fun darkModeChanged(item: String, dialog: DialogInterface) {
         val items = resources.getStringArray(R.array.settings_dark_mode)
-        val choice = Arrays.asList(*items).indexOf(item)
+        val choice = listOf(*items).indexOf(item)
         val darkMode = DarkMode.fromChoice(choice)
 
         settingsViewModel!!.darkMode = darkMode

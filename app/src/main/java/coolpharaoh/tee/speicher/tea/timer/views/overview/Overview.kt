@@ -117,17 +117,21 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
         popup.menu.findItem(R.id.action_overview_tea_list_in_stock).setTitle(inStockTitle)
 
         popup.setOnMenuItemClickListener { item: MenuItem ->
-            if (item.itemId == R.id.action_overview_tea_list_in_stock) {
-                updateTeaInStock(teaId, !tea.inStock)
-                return@setOnMenuItemClickListener true
-            } else if (item.itemId == R.id.action_overview_tea_list_edit) {
-                navigateToNewOrEditTea(teaId)
-                return@setOnMenuItemClickListener true
-            } else if (item.itemId == R.id.action_overview_tea_list_delete) {
-                removeTeaDialog(teaId)
-                return@setOnMenuItemClickListener true
+            when (item.itemId) {
+                R.id.action_overview_tea_list_in_stock -> {
+                    updateTeaInStock(teaId, !tea.inStock)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.action_overview_tea_list_edit -> {
+                    navigateToNewOrEditTea(teaId)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.action_overview_tea_list_delete -> {
+                    removeTeaDialog(teaId)
+                    return@setOnMenuItemClickListener true
+                }
+                else -> false
             }
-            false
         }
         popup.show()
     }
@@ -219,12 +223,10 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if (id == R.id.action_overview_settings) {
-            navigateToSettings()
-        } else if (id == R.id.action_overview_more) {
-            navigateToMore()
-        } else if (id == R.id.action_overview_sort) {
-            dialogSortOption()
+        when (id) {
+            R.id.action_overview_settings -> { navigateToSettings() }
+            R.id.action_overview_more -> { navigateToMore() }
+            R.id.action_overview_sort -> { dialogSortOption() }
         }
 
         return super.onOptionsItemSelected(item)
