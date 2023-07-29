@@ -1,80 +1,78 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import android.content.res.Resources
+import coolpharaoh.tee.speicher.tea.timer.R
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
 
-import android.app.Application;
-import android.content.res.Resources;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-
-@ExtendWith(MockitoExtension.class)
-class RooibusTeaSuggestionsTest {
-
-    private Suggestions rooibusTeaSuggestions;
+@ExtendWith(MockitoExtension::class)
+internal class RooibusTeaSuggestionsTest {
+    @Mock
+    lateinit var application: Application
 
     @Mock
-    Application application;
-    @Mock
-    Resources resources;
+    lateinit var resources: Resources
+
+    @InjectMocks
+    lateinit var rooibusTeaSuggestions: RooibusTeaSuggestions
 
     @BeforeEach
-    void setUp() {
-        when(application.getResources()).thenReturn(resources);
-        rooibusTeaSuggestions = new RooibusTeaSuggestions(application);
+    fun setUp() {
+        `when`(application.resources).thenReturn(resources)
     }
 
     @Test
-    void getAmountTsSuggestion() {
-        final int[] arrayTs = new int[]{1, 2};
-        when(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_amount_ts)).thenReturn(arrayTs);
+    fun getAmountTsSuggestion() {
+        val arrayTs = intArrayOf(1, 2)
+        `when`(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_amount_ts)).thenReturn(arrayTs)
 
-        assertThat(rooibusTeaSuggestions.getAmountTsSuggestions()).isEqualTo(arrayTs);
+        assertThat(rooibusTeaSuggestions.amountTsSuggestions).isEqualTo(arrayTs)
     }
 
     @Test
-    void getAmountGrSuggestion() {
-        final int[] arrayGr = new int[]{1, 2};
-        when(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_amount_gr)).thenReturn(arrayGr);
+    fun getAmountGrSuggestion() {
+        val arrayGr = intArrayOf(1, 2)
+        `when`(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_amount_gr)).thenReturn(arrayGr)
 
-        assertThat(rooibusTeaSuggestions.getAmountGrSuggestions()).isEqualTo(arrayGr);
+        assertThat(rooibusTeaSuggestions.amountGrSuggestions).isEqualTo(arrayGr)
     }
 
     @Test
-    void getAmountTbSuggestion() {
-        final int[] arrayTb = new int[]{1, 2};
-        when(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_amount_tb)).thenReturn(arrayTb);
+    fun getAmountTbSuggestion() {
+        val arrayTb = intArrayOf(1, 2)
+        `when`(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_amount_tb)).thenReturn(arrayTb)
 
-        assertThat(rooibusTeaSuggestions.getAmountTbSuggestions()).isEqualTo(arrayTb);
+        assertThat(rooibusTeaSuggestions.amountTbSuggestions).isEqualTo(arrayTb)
     }
 
     @Test
-    void getTemperatureCelsiusSuggestion() {
-        final int[] arrayCelsius = new int[]{1, 2};
-        when(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_temperature_celsius)).thenReturn(arrayCelsius);
+    fun getTemperatureCelsiusSuggestion() {
+        val arrayCelsius = intArrayOf(1, 2)
+        `when`(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_temperature_celsius)).thenReturn(arrayCelsius)
 
-        assertThat(rooibusTeaSuggestions.getTemperatureCelsiusSuggestions()).isEqualTo(arrayCelsius);
+        assertThat(rooibusTeaSuggestions.temperatureCelsiusSuggestions).isEqualTo(arrayCelsius)
     }
 
     @Test
-    void getTemperatureFahrenheitSuggestion() {
-        final int[] arrayFahrenheit = new int[]{1, 2};
-        when(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_temperature_fahrenheit)).thenReturn(arrayFahrenheit);
+    fun getTemperatureFahrenheitSuggestion() {
+        val arrayFahrenheit = intArrayOf(1, 2)
+        `when`(resources.getIntArray(R.array.new_tea_suggestions_rooibus_tea_temperature_fahrenheit)).thenReturn(arrayFahrenheit)
 
-        assertThat(rooibusTeaSuggestions.getTemperatureFahrenheitSuggestions()).isEqualTo(arrayFahrenheit);
+        assertThat(rooibusTeaSuggestions.temperatureFahrenheitSuggestions).isEqualTo(arrayFahrenheit)
     }
 
     @Test
-    void getSteepingTimeSuggestion() {
-        final String[] arrayTime = new String[]{"1:00", "2:30"};
-        when(resources.getStringArray(R.array.new_tea_suggestions_rooibus_tea_time)).thenReturn(arrayTime);
+    fun getSteepingTimeSuggestion() {
+        val arrayTime = arrayOf("1:00", "2:30")
+        `when`(resources.getStringArray(R.array.new_tea_suggestions_rooibus_tea_time)).thenReturn(arrayTime)
 
-        assertThat(rooibusTeaSuggestions.getTimeSuggestions()).isEqualTo(arrayTime);
+        assertThat(rooibusTeaSuggestions.timeSuggestions).isEqualTo(arrayTime)
     }
 }

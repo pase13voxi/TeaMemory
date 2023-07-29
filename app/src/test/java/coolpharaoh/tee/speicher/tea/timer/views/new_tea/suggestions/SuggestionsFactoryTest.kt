@@ -1,70 +1,68 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-import static org.assertj.core.api.Assertions.assertThat;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsFactory.getSuggestions
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
-import android.app.Application;
-
-import org.junit.jupiter.api.Test;
-
-class SuggestionsFactoryTest {
-
+internal class SuggestionsFactoryTest {
     @Test
-    void getBlackTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(0, new Application());
-        assertThat(suggestions).isInstanceOf(BlackTeaSuggestions.class);
+    fun getBlackTeaSuggestions() {
+        val suggestions = getSuggestions(0, Application())
+        assertThat(suggestions).isInstanceOf(BlackTeaSuggestions::class.java)
     }
 
     @Test
-    void getGreenTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(1, new Application());
-        assertThat(suggestions).isInstanceOf(GreenTeaSuggestions.class);
+    fun getGreenTeaSuggestions() {
+        val suggestions = getSuggestions(1, Application())
+        assertThat(suggestions).isInstanceOf(GreenTeaSuggestions::class.java)
     }
 
     @Test
-    void getYellowTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(2, new Application());
-        assertThat(suggestions).isInstanceOf(YellowTeaSuggestions.class);
+    fun getYellowTeaSuggestions() {
+        val suggestions = getSuggestions(2, Application())
+        assertThat(suggestions).isInstanceOf(YellowTeaSuggestions::class.java)
     }
 
     @Test
-    void getWhiteTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(3, new Application());
-        assertThat(suggestions).isInstanceOf(WhiteTeaSuggestions.class);
+    fun getWhiteTeaSuggestions() {
+        val suggestions = getSuggestions(3, Application())
+        assertThat(suggestions).isInstanceOf(WhiteTeaSuggestions::class.java)
     }
 
     @Test
-    void getOolongTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(4, new Application());
-        assertThat(suggestions).isInstanceOf(OolongTeaSuggestions.class);
+    fun getOolongTeaSuggestions() {
+        val suggestions = getSuggestions(4, Application())
+        assertThat(suggestions).isInstanceOf(OolongTeaSuggestions::class.java)
     }
 
     @Test
-    void getPuerhTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(5, new Application());
-        assertThat(suggestions).isInstanceOf(PuerhTeaSuggestions.class);
+    fun getPuerhTeaSuggestions() {
+        val suggestions = getSuggestions(5, Application())
+        assertThat(suggestions).isInstanceOf(PuerhTeaSuggestions::class.java)
     }
 
     @Test
-    void getHerbalTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(6, new Application());
-        assertThat(suggestions).isInstanceOf(HerbalTeaSuggestions.class);
+    fun getHerbalTeaSuggestions() {
+        val suggestions = getSuggestions(6, Application())
+        assertThat(suggestions).isInstanceOf(HerbalTeaSuggestions::class.java)
     }
 
     @Test
-    void getFruitTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(7, new Application());
-        assertThat(suggestions).isInstanceOf(FruitTeaSuggestions.class);
+    fun getFruitTeaSuggestions() {
+        val suggestions = getSuggestions(7, Application())
+        assertThat(suggestions).isInstanceOf(FruitTeaSuggestions::class.java)
     }
 
     @Test
-    void getRooibusTeaSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(8, new Application());
-        assertThat(suggestions).isInstanceOf(RooibusTeaSuggestions.class);
+    fun getRooibusTeaSuggestions() {
+        val suggestions = getSuggestions(8, Application())
+        assertThat(suggestions).isInstanceOf(RooibusTeaSuggestions::class.java)
     }
 
     @Test
-    void getNoSuggestions() {
-        final Suggestions suggestions = SuggestionsFactory.getSuggestions(9, new Application());
-        assertThat(suggestions).isInstanceOf(NoSuggestions.class);
+    fun getNoSuggestions() {
+        val suggestions = getSuggestions(9, Application())
+        assertThat(suggestions).isInstanceOf(NoSuggestions::class.java)
     }
 }

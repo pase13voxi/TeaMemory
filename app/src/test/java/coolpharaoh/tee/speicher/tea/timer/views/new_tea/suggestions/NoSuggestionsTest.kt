@@ -1,46 +1,38 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+internal class NoSuggestionsTest {
+    private var noSuggestions: NoSuggestions = NoSuggestions()
 
-class NoSuggestionsTest {
-
-    private Suggestions noSuggestions;
-
-    @BeforeEach
-    void setUp() {
-        noSuggestions = new NoSuggestions();
+    @Test
+    fun getAmountTsSuggestion() {
+        assertThat(noSuggestions.amountTsSuggestions).isEmpty()
     }
 
     @Test
-    void getAmountTsSuggestion() {
-        assertThat(noSuggestions.getAmountTsSuggestions()).isEmpty();
+    fun getAmountGrSuggestion() {
+        assertThat(noSuggestions.amountGrSuggestions).isEmpty()
     }
 
     @Test
-    void getAmountGrSuggestion() {
-        assertThat(noSuggestions.getAmountGrSuggestions()).isEmpty();
+    fun getAmountTbSuggestion() {
+        assertThat(noSuggestions.amountTbSuggestions).isEmpty()
     }
 
     @Test
-    void getAmountTbSuggestion() {
-        assertThat(noSuggestions.getAmountTbSuggestions()).isEmpty();
+    fun getTemperatureCelsiusSuggestion() {
+        assertThat(noSuggestions.temperatureCelsiusSuggestions).isEmpty()
     }
 
     @Test
-    void getTemperatureCelsiusSuggestion() {
-        assertThat(noSuggestions.getTemperatureCelsiusSuggestions()).isEmpty();
+    fun getTemperatureFahrenheitSuggestion() {
+        assertThat(noSuggestions.temperatureFahrenheitSuggestions).isEmpty()
     }
 
     @Test
-    void getTemperatureFahrenheitSuggestion() {
-        assertThat(noSuggestions.getTemperatureFahrenheitSuggestions()).isEmpty();
-    }
-
-    @Test
-    void getSteepingTimeSuggestion() {
-        assertThat(noSuggestions.getTimeSuggestions()).isEmpty();
+    fun getSteepingTimeSuggestion() {
+        assertThat(noSuggestions.timeSuggestions).isEmpty()
     }
 }

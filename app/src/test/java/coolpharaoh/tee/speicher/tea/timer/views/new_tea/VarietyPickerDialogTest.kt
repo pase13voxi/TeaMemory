@@ -1,183 +1,176 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static android.os.Looper.getMainLooper;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.VarietyPickerDialog.TAG;
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.os.Looper
+import android.view.View
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import org.assertj.core.api.Assertions.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows
+import org.robolectric.shadows.ShadowAlertDialog
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowAlertDialog;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-
-@RunWith(RobolectricTestRunner.class)
-public class VarietyPickerDialogTest {
-    private static final String YELLOW_TEA_TEXT = "Yellow tea";
-    private static final String CUSTOM_VARIETY = "Custom Variety";
-
+@RunWith(RobolectricTestRunner::class)
+class VarietyPickerDialogTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    NewTeaViewModel newTeaViewModel;
+    var rule = MockitoJUnit.rule()
 
-    private VarietyPickerDialog dialogFragment;
-    private FragmentManager fragmentManager;
+    @Mock
+    lateinit var newTeaViewModel: NewTeaViewModel
+
+    @InjectMocks
+    lateinit var dialogFragment: VarietyPickerDialog
+
+    private var fragmentManager: FragmentManager? = null
 
     @Before
-    public void setUp() {
-        final FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
-        fragmentManager = activity.getSupportFragmentManager();
-        dialogFragment = new VarietyPickerDialog(newTeaViewModel);
+    fun setUp() {
+        val activity = Robolectric.buildActivity(FragmentActivity::class.java).create().start().resume().get()
+        fragmentManager = activity.supportFragmentManager
     }
 
     @Test
-    public void showDialogAndExpectTitle() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun showDialogAndExpectTitle() {
+        dialogFragment.show(fragmentManager!!, VarietyPickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_variety_header));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val shadowDialog = Shadows.shadowOf(dialog)
+        assertThat(shadowDialog.title).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_variety_header))
     }
 
     @Test
-    public void selectYellowTeaAndExpectSavedYellowTea() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun selectYellowTeaAndExpectSavedYellowTea() {
+        dialogFragment.show(fragmentManager!!, VarietyPickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final List<RadioButton> radioButtons = getRadioButtons(dialog);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val radioButtons = getRadioButtons(dialog)
 
-        radioButtons.get(YELLOW_TEA.getChoice()).performClick();
+        radioButtons[Variety.YELLOW_TEA.choice].performClick()
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setVariety(YELLOW_TEA_TEXT);
+        verify(newTeaViewModel).setVariety(YELLOW_TEA_TEXT)
     }
 
     @Test
-    public void selectYellowTeaAndExpectSavedColorForYellowTea() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun selectYellowTeaAndExpectSavedColorForYellowTea() {
+        dialogFragment.show(fragmentManager!!, VarietyPickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final List<RadioButton> radioButtons = getRadioButtons(dialog);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val radioButtons = getRadioButtons(dialog)
 
-        radioButtons.get(YELLOW_TEA.getChoice()).performClick();
+        radioButtons[Variety.YELLOW_TEA.choice].performClick()
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setColor(-15797);
+        verify(newTeaViewModel).color = -15797
     }
 
     @Test
-    public void showAndHideCustomVarityInputField() {
-        when(newTeaViewModel.getVarietyAsText()).thenReturn(YELLOW_TEA_TEXT);
-        when(newTeaViewModel.getVariety()).thenReturn(YELLOW_TEA);
+    fun showAndHideCustomVarityInputField() {
+        `when`(newTeaViewModel.varietyAsText).thenReturn(YELLOW_TEA_TEXT)
+        `when`(newTeaViewModel.variety).thenReturn(Variety.YELLOW_TEA)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, VarietyPickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
-        assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.GONE);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val editTextCustomVariety = dialog.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+        assertThat(editTextCustomVariety.visibility).isEqualTo(View.GONE)
 
-        final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        radioButtons.get(OTHER.getChoice()).performClick();
-        assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.VISIBLE);
+        val radioButtons = getRadioButtons(dialog)
+        radioButtons[Variety.OTHER.choice].performClick()
+        assertThat(editTextCustomVariety.visibility).isEqualTo(View.VISIBLE)
 
-        radioButtons.get(YELLOW_TEA.getChoice()).performClick();
-        assertThat(editTextCustomVariety.getVisibility()).isEqualTo(View.GONE);
+        radioButtons[Variety.YELLOW_TEA.choice].performClick()
+        assertThat(editTextCustomVariety.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void inputCustomVarietyAndExpectSavedCustomVariety() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun inputCustomVarietyAndExpectSavedCustomVariety() {
+        dialogFragment.show(fragmentManager!!, VarietyPickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final List<RadioButton> radioButtons = getRadioButtons(dialog);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val radioButtons = getRadioButtons(dialog)
 
-        radioButtons.get(OTHER.getChoice()).performClick();
+        radioButtons[Variety.OTHER.choice].performClick()
 
-        final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
-        editTextCustomVariety.setText(CUSTOM_VARIETY);
+        val editTextCustomVariety = dialog.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+        editTextCustomVariety.setText(CUSTOM_VARIETY)
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setVariety(CUSTOM_VARIETY);
+        verify(newTeaViewModel).setVariety(CUSTOM_VARIETY)
     }
 
     @Test
-    public void showExistingVarietyConfiguration() {
-        when(newTeaViewModel.getVarietyAsText()).thenReturn(YELLOW_TEA_TEXT);
-        when(newTeaViewModel.getVariety()).thenReturn(YELLOW_TEA);
+    fun showExistingVarietyConfiguration() {
+        `when`(newTeaViewModel.varietyAsText).thenReturn(YELLOW_TEA_TEXT)
+        `when`(newTeaViewModel.variety).thenReturn(Variety.YELLOW_TEA)
 
-        dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        assertThat(radioButtons.get(YELLOW_TEA.getChoice()).isChecked()).isTrue();
+        val radioButtons = getRadioButtons(dialog)
+        assertThat(radioButtons[Variety.YELLOW_TEA.choice].isChecked).isTrue
     }
 
     @Test
-    public void showExistingCustomVarietyConfiguration() {
-        when(newTeaViewModel.getVariety()).thenReturn(OTHER);
-        when(newTeaViewModel.getVarietyAsText()).thenReturn(CUSTOM_VARIETY);
+    fun showExistingCustomVarietyConfiguration() {
+        `when`(newTeaViewModel.variety).thenReturn(Variety.OTHER)
+        `when`(newTeaViewModel.varietyAsText).thenReturn(CUSTOM_VARIETY)
 
-        dialogFragment.show(fragmentManager, TemperaturePickerDialog.TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final List<RadioButton> radioButtons = getRadioButtons(dialog);
-        assertThat(radioButtons.get(OTHER.getChoice()).isChecked()).isTrue();
+        val radioButtons = getRadioButtons(dialog)
+        assertThat(radioButtons[Variety.OTHER.choice].isChecked).isTrue
 
-        final EditText editTextCustomVariety = dialog.findViewById(R.id.edit_text_new_tea_custom_variety);
-        assertThat(editTextCustomVariety.getText()).hasToString(CUSTOM_VARIETY);
+        val editTextCustomVariety = dialog.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+        assertThat(editTextCustomVariety.text).hasToString(CUSTOM_VARIETY)
     }
 
-    private List<RadioButton> getRadioButtons(final AlertDialog dialog) {
-        final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_new_tea_variety_input);
-        final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            final View o = radioGroup.getChildAt(i);
-            if (o instanceof RadioButton) {
-                listRadioButtons.add((RadioButton) o);
+    private fun getRadioButtons(dialog: AlertDialog): List<RadioButton> {
+        val radioGroup = dialog.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
+        val listRadioButtons = ArrayList<RadioButton>()
+        for (i in 0 until radioGroup.childCount) {
+            val o = radioGroup.getChildAt(i)
+            if (o is RadioButton) {
+                listRadioButtons.add(o)
             }
         }
-        return listRadioButtons;
+        return listRadioButtons
+    }
+
+    companion object {
+        private const val YELLOW_TEA_TEXT = "Yellow tea"
+        private const val CUSTOM_VARIETY = "Custom Variety"
     }
 }
