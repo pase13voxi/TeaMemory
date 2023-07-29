@@ -1,15 +1,10 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-public interface Suggestions {
-    int[] getAmountTsSuggestions();
-
-    int[] getAmountGrSuggestions();
-
-    int[] getAmountTbSuggestions();
-
-    int[] getTemperatureCelsiusSuggestions();
-
-    int[] getTemperatureFahrenheitSuggestions();
-
-    String[] getTimeSuggestions();
+interface Suggestions {
+    val amountTsSuggestions: IntArray
+    val amountGrSuggestions: IntArray
+    val amountTbSuggestions: IntArray
+    val temperatureCelsiusSuggestions: IntArray
+    val temperatureFahrenheitSuggestions: IntArray
+    val timeSuggestions: Array<String>
 }

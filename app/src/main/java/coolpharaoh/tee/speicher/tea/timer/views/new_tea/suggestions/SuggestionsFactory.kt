@@ -1,34 +1,21 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-import android.app.Application;
+import android.app.Application
 
-public class SuggestionsFactory {
-
-    private SuggestionsFactory() {
-    }
-
-    public static Suggestions getSuggestions(final int variety, final Application application) {
-        switch (variety) {
-            case 0:
-                return new BlackTeaSuggestions(application);
-            case 1:
-                return new GreenTeaSuggestions(application);
-            case 2:
-                return new YellowTeaSuggestions(application);
-            case 3:
-                return new WhiteTeaSuggestions(application);
-            case 4:
-                return new OolongTeaSuggestions(application);
-            case 5:
-                return new PuerhTeaSuggestions(application);
-            case 6:
-                return new HerbalTeaSuggestions(application);
-            case 7:
-                return new FruitTeaSuggestions(application);
-            case 8:
-                return new RooibusTeaSuggestions(application);
-            default:
-                return new NoSuggestions();
+object SuggestionsFactory {
+    @JvmStatic
+    fun getSuggestions(variety: Int, application: Application): Suggestions {
+        return when (variety) {
+            0 -> BlackTeaSuggestions(application)
+            1 -> GreenTeaSuggestions(application)
+            2 -> YellowTeaSuggestions(application)
+            3 -> WhiteTeaSuggestions(application)
+            4 -> OolongTeaSuggestions(application)
+            5 -> PuerhTeaSuggestions(application)
+            6 -> HerbalTeaSuggestions(application)
+            7 -> FruitTeaSuggestions(application)
+            8 -> RooibusTeaSuggestions(application)
+            else -> NoSuggestions()
         }
     }
 }

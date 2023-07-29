@@ -1,44 +1,25 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-import android.app.Application;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.R
 
-import coolpharaoh.tee.speicher.tea.timer.R;
+class FruitTeaSuggestions(private val application: Application) : Suggestions {
 
-class FruitTeaSuggestions implements Suggestions {
+    override val amountTsSuggestions: IntArray
+        get() = application.resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_ts)
 
-    private final Application application;
+    override val amountGrSuggestions: IntArray
+        get() = application.resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_gr)
 
-    FruitTeaSuggestions(final Application application) {
-        this.application = application;
-    }
+    override val amountTbSuggestions: IntArray
+        get() = application.resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_tb)
 
-    @Override
-    public int[] getAmountTsSuggestions() {
-        return application.getResources().getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_ts);
-    }
+    override val temperatureCelsiusSuggestions: IntArray
+        get() = application.resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_celsius)
 
-    @Override
-    public int[] getAmountGrSuggestions() {
-        return application.getResources().getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_gr);
-    }
+    override val temperatureFahrenheitSuggestions: IntArray
+        get() = application.resources.getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_fahrenheit)
 
-    @Override
-    public int[] getAmountTbSuggestions() {
-        return application.getResources().getIntArray(R.array.new_tea_suggestions_fruit_tea_amount_tb);
-    }
-
-    @Override
-    public int[] getTemperatureCelsiusSuggestions() {
-        return application.getResources().getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_celsius);
-    }
-
-    @Override
-    public int[] getTemperatureFahrenheitSuggestions() {
-        return application.getResources().getIntArray(R.array.new_tea_suggestions_fruit_tea_temperature_fahrenheit);
-    }
-
-    @Override
-    public String[] getTimeSuggestions() {
-        return application.getResources().getStringArray(R.array.new_tea_suggestions_fruit_tea_time);
-    }
+    override val timeSuggestions: Array<String>
+        get() = application.resources.getStringArray(R.array.new_tea_suggestions_fruit_tea_time)
 }

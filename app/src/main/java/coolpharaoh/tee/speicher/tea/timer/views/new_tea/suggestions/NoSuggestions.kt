@@ -1,34 +1,22 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 
-class NoSuggestions implements Suggestions {
+class NoSuggestions : Suggestions {
 
-    @Override
-    public int[] getAmountTsSuggestions() {
-        return new int[]{};
-    }
+    override val amountTsSuggestions: IntArray
+        get() = intArrayOf()
 
-    @Override
-    public int[] getAmountGrSuggestions() {
-        return new int[]{};
-    }
+    override val amountGrSuggestions: IntArray
+        get() = intArrayOf()
 
-    @Override
-    public int[] getAmountTbSuggestions() {
-        return new int[]{};
-    }
+    override val amountTbSuggestions: IntArray
+        get() = intArrayOf()
 
-    @Override
-    public int[] getTemperatureCelsiusSuggestions() {
-        return new int[]{};
-    }
+    override val temperatureCelsiusSuggestions: IntArray
+        get() = intArrayOf()
 
-    @Override
-    public int[] getTemperatureFahrenheitSuggestions() {
-        return new int[]{};
-    }
+    override val temperatureFahrenheitSuggestions: IntArray
+        get() = intArrayOf()
 
-    @Override
-    public String[] getTimeSuggestions() {
-        return new String[]{};
-    }
+    override val timeSuggestions: Array<String>
+        get() = arrayOf()
 }

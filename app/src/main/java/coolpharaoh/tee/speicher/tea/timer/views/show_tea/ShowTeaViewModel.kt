@@ -1,201 +1,167 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea
 
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import android.app.Application
+import androidx.annotation.VisibleForTesting
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
+import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter.refreshCounter
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.Companion.fromText
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
 
-import android.app.Application;
+internal class ShowTeaViewModel
+@VisibleForTesting constructor(
+    private val teaId: Long, private val application: Application, private val teaRepository: TeaRepository,
+    private val infusionRepository: InfusionRepository, private val counterRepository: CounterRepository,
+    private val sharedSettings: SharedSettings
+) {
 
-import androidx.annotation.VisibleForTesting;
+    constructor(teaId: Long, application: Application) : this(
+        teaId, application, TeaRepository(application), InfusionRepository(application),
+        CounterRepository(application), SharedSettings(application)
+    )
 
-import java.util.Date;
-
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter;
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-
-class ShowTeaViewModel {
-
-    private final Application application;
-
-    private final TeaRepository teaRepository;
-    private final InfusionRepository infusionRepository;
-    private final CounterRepository counterRepository;
-    private final SharedSettings sharedSettings;
-
-    private final long teaId;
-    private int infusionIndex = 0;
-
-    ShowTeaViewModel(final long teaId, final Application application) {
-        this(teaId, application, new TeaRepository(application), new InfusionRepository(application),
-                new CounterRepository(application), new SharedSettings(application));
-    }
-
-    @VisibleForTesting
-    ShowTeaViewModel(final long teaId, final Application application, final TeaRepository teaRepository,
-                     final InfusionRepository infusionRepository, final CounterRepository counterRepository,
-                     final SharedSettings sharedSettings) {
-        this.teaId = teaId;
-        this.application = application;
-        this.teaRepository = teaRepository;
-        this.infusionRepository = infusionRepository;
-        this.counterRepository = counterRepository;
-        this.sharedSettings = sharedSettings;
-    }
+    var infusionIndex = 0
 
     // Tea
-    boolean teaExists() {
-        return teaRepository.getTeaById(teaId) != null;
+    fun teaExists(): Boolean {
+        return teaRepository.getTeaById(teaId) != null
     }
 
-    long getTeaId() {
-        return teaRepository.getTeaById(teaId).getId();
+    fun getTeaId(): Long {
+        return teaRepository.getTeaById(teaId)!!.id!!
     }
 
-    String getName() {
-        return teaRepository.getTeaById(teaId).getName();
-    }
+    val name: String?
+        get() = teaRepository.getTeaById(teaId)!!.name
 
-    String getVariety() {
-        final String variety = teaRepository.getTeaById(teaId).getVariety();
-        if (variety == null || "".equals(variety)) {
-            return "-";
-        } else {
-            return Variety.convertStoredVarietyToText(variety, application);
+    val variety: String?
+        get() {
+            val variety = teaRepository.getTeaById(teaId)!!.variety
+            return if (variety == null || "" == variety) {
+                "-"
+            } else {
+                convertStoredVarietyToText(variety, application)
+            }
         }
-    }
 
-    double getAmount() {
-        return teaRepository.getTeaById(teaId).getAmount();
-    }
+    val amount: Double
+        get() = teaRepository.getTeaById(teaId)!!.amount
 
-    AmountKind getAmountKind() {
-        final String amountKind = teaRepository.getTeaById(teaId).getAmountKind();
-        return AmountKind.fromText(amountKind);
-    }
-
-    int getColor() {
-        return teaRepository.getTeaById(teaId).getColor();
-    }
-
-    void setCurrentDate() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        tea.setDate(CurrentDate.getDate());
-        teaRepository.updateTea(tea);
-    }
-
-    int getNextInfusion() {
-        return teaRepository.getTeaById(teaId).getNextInfusion();
-    }
-
-    void updateNextInfusion() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        if ((infusionIndex + 1) >= getInfusionSize()) {
-            tea.setNextInfusion(0);
-        } else {
-            tea.setNextInfusion(infusionIndex + 1);
+    val amountKind: AmountKind
+        get() {
+            val amountKind = teaRepository.getTeaById(teaId)!!.amountKind
+            return fromText(amountKind)
         }
-        teaRepository.updateTea(tea);
+
+    val color: Int
+        get() = teaRepository.getTeaById(teaId)!!.color
+
+    fun setCurrentDate() {
+        val tea = teaRepository.getTeaById(teaId)
+        tea!!.date = getDate()
+        teaRepository.updateTea(tea)
     }
 
-    void resetNextInfusion() {
-        final Tea tea = teaRepository.getTeaById(teaId);
-        tea.setNextInfusion(0);
-        teaRepository.updateTea(tea);
+    val nextInfusion: Int
+        get() = teaRepository.getTeaById(teaId)!!.nextInfusion
+
+    fun updateNextInfusion() {
+        val tea = teaRepository.getTeaById(teaId)
+        if (infusionIndex + 1 >= getInfusionSize()) {
+            tea!!.nextInfusion = 0
+        } else {
+            tea!!.nextInfusion = infusionIndex + 1
+        }
+        teaRepository.updateTea(tea)
+    }
+
+    fun resetNextInfusion() {
+        val tea = teaRepository.getTeaById(teaId)
+        tea!!.nextInfusion = 0
+        teaRepository.updateTea(tea)
     }
 
     // Infusion
-    TimeConverter getTime() {
-        return new TimeConverter(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTime());
-    }
+    val time: TimeConverter
+        get() = TimeConverter(infusionRepository.getInfusionsByTeaId(teaId)[infusionIndex].time)
 
-    TimeConverter getCoolDownTime() {
-        return new TimeConverter(infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getCoolDownTime());
-    }
+    val coolDownTime: TimeConverter
+        get() = TimeConverter(infusionRepository.getInfusionsByTeaId(teaId)[infusionIndex].coolDownTime)
 
-    int getTemperature() {
-        if (FAHRENHEIT.equals(getTemperatureUnit())) {
-            return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureFahrenheit();
+    val temperature: Int
+        get() = if (TemperatureUnit.FAHRENHEIT == getTemperatureUnit()) {
+            infusionRepository.getInfusionsByTeaId(teaId)[infusionIndex].temperatureFahrenheit
         } else {
-            return infusionRepository.getInfusionsByTeaId(teaId).get(infusionIndex).getTemperatureCelsius();
+            infusionRepository.getInfusionsByTeaId(teaId)[infusionIndex].temperatureCelsius
         }
+
+    fun getInfusionSize(): Int {
+        return infusionRepository.getInfusionsByTeaId(teaId).size
     }
 
-    int getInfusionSize() {
-        return infusionRepository.getInfusionsByTeaId(teaId).size();
-    }
-
-    int getInfusionIndex() {
-        return infusionIndex;
-    }
-
-    void setInfusionIndex(final int infusionIndex) {
-        this.infusionIndex = infusionIndex;
-    }
-
-    void incrementInfusionIndex() {
-        infusionIndex++;
+    fun incrementInfusionIndex() {
+        infusionIndex++
     }
 
     //Counter
-    void countCounter() {
-        final Counter counter = getOrCreateCounter();
-        RefreshCounter.refreshCounter(counter);
-        final Date currentDate = CurrentDate.getDate();
-        counter.setYearDate(currentDate);
-        counter.setMonthDate(currentDate);
-        counter.setWeekDate(currentDate);
-        counter.setOverall(counter.getOverall() + 1);
-        counter.setYear(counter.getYear() + 1);
-        counter.setMonth(counter.getMonth() + 1);
-        counter.setWeek(counter.getWeek() + 1);
-        counterRepository.updateCounter(counter);
+    fun countCounter() {
+        val counter = getOrCreateCounter()
+        refreshCounter(counter)
+        val currentDate = getDate()
+        counter.yearDate = currentDate
+        counter.monthDate = currentDate
+        counter.weekDate = currentDate
+        counter.overall = counter.overall + 1
+        counter.year = counter.year + 1
+        counter.month = counter.month + 1
+        counter.week = counter.week + 1
+        counterRepository.updateCounter(counter)
     }
 
-    long getOverallCounter() {
-        final Counter counter = getOrCreateCounter();
-        return counter.getOverall();
+    fun getOverallCounter(): Long {
+        val (_, _, _, _, _, overall) = getOrCreateCounter()
+        return overall
     }
 
-    private Counter getOrCreateCounter() {
-        Counter counter = counterRepository.getCounterByTeaId(teaId);
+    private fun getOrCreateCounter(): Counter {
+        var counter = counterRepository.getCounterByTeaId(teaId)
         if (counter == null) {
-            counter = new Counter();
-            counter.setTeaId(teaId);
-            counter.setWeek(0);
-            counter.setMonth(0);
-            counter.setYear(0);
-            counter.setOverall(0);
-            counter.setWeekDate(CurrentDate.getDate());
-            counter.setMonthDate(CurrentDate.getDate());
-            counter.setYearDate(CurrentDate.getDate());
-            counter.setId(counterRepository.insertCounter(counter));
+            counter = Counter()
+            counter.teaId = teaId
+            counter.week = 0
+            counter.month = 0
+            counter.year = 0
+            counter.overall = 0
+            counter.weekDate = getDate()
+            counter.monthDate = getDate()
+            counter.yearDate = getDate()
+            counter.id = counterRepository.insertCounter(counter)
         }
 
-        return counter;
+        return counter
     }
 
     // Settings
-    boolean isAnimation() {
-        return sharedSettings.isAnimation();
+    fun isAnimation(): Boolean {
+        return sharedSettings.isAnimation
     }
 
-    boolean isShowTeaAlert() {
-        return sharedSettings.isShowTeaAlert();
+    fun isShowTeaAlert(): Boolean {
+        return sharedSettings.isShowTeaAlert
     }
 
-    void setShowTeaAlert(final boolean showTeaAlert) {
-        sharedSettings.setShowTeaAlert(showTeaAlert);
+    fun setShowTeaAlert(showTeaAlert: Boolean) {
+        sharedSettings.isShowTeaAlert = showTeaAlert
     }
 
-    TemperatureUnit getTemperatureUnit() {
-        return sharedSettings.getTemperatureUnit();
+    fun getTemperatureUnit(): TemperatureUnit {
+        return sharedSettings.temperatureUnit
     }
 }
