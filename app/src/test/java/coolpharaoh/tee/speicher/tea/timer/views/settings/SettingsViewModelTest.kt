@@ -1,196 +1,193 @@
-package coolpharaoh.tee.speicher.tea.timer.views.settings;
+package coolpharaoh.tee.speicher.tea.timer.views.settings
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
+import coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
+import java.util.Arrays
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Arrays;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
-
-@ExtendWith(MockitoExtension.class)
-class SettingsViewModelTest {
-    private SettingsViewModel settingsViewModel;
+@ExtendWith(MockitoExtension::class)
+internal class SettingsViewModelTest {
+    @Mock
+    lateinit var teaRepository: TeaRepository
 
     @Mock
-    TeaRepository teaRepository;
+    lateinit var sharedSettings: SharedSettings
+
     @Mock
-    SharedSettings sharedSettings;
-    @Mock
-    ImageController imageController;
+    lateinit var imageController: ImageController
 
-    @BeforeEach
-    void setUp() {
-        settingsViewModel = new SettingsViewModel(teaRepository, sharedSettings, imageController);
+    @InjectMocks
+    lateinit var settingsViewModel: SettingsViewModel
+
+    @Test
+    fun setMusicChoice() {
+        val musicChoice = "MUSIC_CHOICE"
+        settingsViewModel.setMusicChoice(musicChoice)
+
+        verify(sharedSettings).musicChoice = musicChoice
     }
 
     @Test
-    void setMusicChoice() {
-        final String musicChoice = "MUSIC_CHOICE";
-        settingsViewModel.setMusicChoice(musicChoice);
+    fun setMusicName() {
+        val musicName = "MUSIC_NAME"
+        settingsViewModel.musicName = musicName
 
-        verify(sharedSettings).setMusicChoice(musicChoice);
+        verify(sharedSettings).musicName = musicName
     }
 
     @Test
-    void setMusicName() {
-        final String musicName = "MUSIC_NAME";
-        settingsViewModel.setMusicName(musicName);
+    fun getMusicName() {
+        val musicName = "MUSIC_NAME"
+        `when`(sharedSettings.musicName).thenReturn(musicName)
 
-        verify(sharedSettings).setMusicName(musicName);
+        assertThat(settingsViewModel.musicName).isEqualTo(musicName)
     }
 
     @Test
-    void getMusicName() {
-        final String musicName = "MUSIC_NAME";
-        when(sharedSettings.getMusicName()).thenReturn(musicName);
+    fun setVibration() {
+        val vibration = true
+        settingsViewModel.isVibration = vibration
 
-        assertThat(settingsViewModel.getMusicName()).isEqualTo(musicName);
+        verify(sharedSettings).isVibration = vibration
     }
 
     @Test
-    void setVibration() {
-        final boolean vibration = true;
-        settingsViewModel.setVibration(vibration);
+    fun isVibration() {
+        val vibration = true
+        `when`(sharedSettings.isVibration).thenReturn(vibration)
 
-        verify(sharedSettings).setVibration(vibration);
+        assertThat(settingsViewModel.isVibration).isEqualTo(vibration)
     }
 
     @Test
-    void isVibration() {
-        final boolean vibration = true;
-        when(sharedSettings.isVibration()).thenReturn(vibration);
+    fun setAnimation() {
+        val animation = true
+        settingsViewModel.isAnimation = animation
 
-        assertThat(settingsViewModel.isVibration()).isEqualTo(vibration);
+        verify(sharedSettings).isAnimation = animation
     }
 
     @Test
-    void setAnimation() {
-        final boolean animation = true;
-        settingsViewModel.setAnimation(animation);
+    fun isAnimation() {
+        val animation = true
+        `when`(sharedSettings.isAnimation).thenReturn(animation)
 
-        verify(sharedSettings).setAnimation(animation);
+        assertThat(settingsViewModel.isAnimation).isEqualTo(animation)
     }
 
     @Test
-    void isAnimation() {
-        final boolean animation = true;
-        when(sharedSettings.isAnimation()).thenReturn(animation);
+    fun setTemperatureUnit() {
+        settingsViewModel.temperatureUnit = TemperatureUnit.CELSIUS
 
-        assertThat(settingsViewModel.isAnimation()).isEqualTo(animation);
+        verify(sharedSettings).temperatureUnit = TemperatureUnit.CELSIUS
     }
 
     @Test
-    void setTemperatureUnit() {
-        settingsViewModel.setTemperatureUnit(CELSIUS);
+    fun getTemperatureUnit() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
 
-        verify(sharedSettings).setTemperatureUnit(CELSIUS);
+        assertThat(settingsViewModel.temperatureUnit).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
-    void getTemperatureUnit() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun setOverviewHeader() {
+        val overviewHeader = true
+        settingsViewModel.isOverviewHeader = overviewHeader
 
-        assertThat(settingsViewModel.getTemperatureUnit()).isEqualTo(CELSIUS);
+        verify(sharedSettings).isOverviewHeader = overviewHeader
     }
 
     @Test
-    void setOverviewHeader() {
-        final boolean overviewHeader = true;
-        settingsViewModel.setOverviewHeader(overviewHeader);
-        verify(sharedSettings).setOverviewHeader(overviewHeader);
+    fun isOverviewHeader() {
+        `when`(sharedSettings.isOverviewHeader).thenReturn(false)
+        val isOverviewHeader = settingsViewModel.isOverviewHeader
+
+        assertThat(isOverviewHeader).isFalse
     }
 
     @Test
-    void isOverviewHeader() {
-        when(sharedSettings.isOverviewHeader()).thenReturn(false);
-        final boolean isOverviewHeader = settingsViewModel.isOverviewHeader();
-        assertThat(isOverviewHeader).isFalse();
+    fun setDarkMode() {
+        val darkMode = DarkMode.ENABLED
+        settingsViewModel.darkMode = darkMode
+
+        verify(sharedSettings).darkMode = darkMode
     }
 
     @Test
-    void setDarkMode() {
-        final DarkMode darkMode = DarkMode.ENABLED;
-        settingsViewModel.setDarkMode(darkMode);
-        verify(sharedSettings).setDarkMode(darkMode);
+    fun getDarkMode() {
+        `when`(sharedSettings.darkMode).thenReturn(DarkMode.ENABLED)
+        val darkMode = settingsViewModel.darkMode
+
+        assertThat(darkMode).isEqualTo(DarkMode.ENABLED)
     }
 
     @Test
-    void getDarkMode() {
-        when(sharedSettings.getDarkMode()).thenReturn(DarkMode.ENABLED);
-        final DarkMode darkMode = settingsViewModel.getDarkMode();
-        assertThat(darkMode).isEqualTo(DarkMode.ENABLED);
+    fun setShowTeaAlert() {
+        val showTeaAlert = true
+        settingsViewModel.isShowTeaAlert = showTeaAlert
+
+        verify(sharedSettings).isShowTeaAlert = showTeaAlert
     }
 
     @Test
-    void setShowTeaAlert() {
-        final boolean showTeaAlert = true;
-        settingsViewModel.setShowTeaAlert(showTeaAlert);
+    fun isShowTeaAlert() {
+        val showTeaAlert = true
+        `when`(sharedSettings.isShowTeaAlert).thenReturn(showTeaAlert)
 
-        verify(sharedSettings).setShowTeaAlert(showTeaAlert);
+        assertThat(settingsViewModel.isShowTeaAlert).isEqualTo(showTeaAlert)
     }
 
     @Test
-    void isShowTeaAlert() {
-        final boolean showTeaAlert = true;
-        when(sharedSettings.isShowTeaAlert()).thenReturn(showTeaAlert);
+    fun setMainUpdateAlert() {
+        val overviewUpdateAlert = true
+        `when`(sharedSettings.isOverviewUpdateAlert).thenReturn(overviewUpdateAlert)
 
-        assertThat(settingsViewModel.isShowTeaAlert()).isEqualTo(showTeaAlert);
+        assertThat(settingsViewModel.overviewUpdateAlert).isEqualTo(overviewUpdateAlert)
     }
 
     @Test
-    void setMainUpdateAlert() {
-        final boolean overviewUpdateAlert = true;
-        when(sharedSettings.isOverviewUpdateAlert()).thenReturn(overviewUpdateAlert);
+    fun isMainUpdateAlert() {
+        val overviewUpdateAlert = true
+        settingsViewModel.overviewUpdateAlert = overviewUpdateAlert
 
-        assertThat(settingsViewModel.getOverviewUpdateAlert()).isEqualTo(overviewUpdateAlert);
+        verify(sharedSettings).isOverviewUpdateAlert = overviewUpdateAlert
     }
 
     @Test
-    void isMainUpdateAlert() {
-        final boolean overviewUpdateAlert = true;
-        settingsViewModel.setOverviewUpdateAlert(overviewUpdateAlert);
+    fun setDefaultSettings() {
+        settingsViewModel.setDefaultSettings()
 
-        verify(sharedSettings).setOverviewUpdateAlert(overviewUpdateAlert);
+        verify(sharedSettings).setFactorySettings()
     }
 
     @Test
-    void setDefaultSettings() {
-        settingsViewModel.setDefaultSettings();
+    fun deleteAllTeaImages() {
+        val tea1 = Tea()
+        tea1.id = 1L
+        val tea2 = Tea()
+        tea2.id = 2L
+        val teas = Arrays.asList(tea1, tea2)
+        `when`(teaRepository.teas).thenReturn(teas)
 
-        verify(sharedSettings).setFactorySettings();
+        settingsViewModel.deleteAllTeaImages()
+
+        verify(imageController).removeImageByTeaId(1L)
+        verify(imageController).removeImageByTeaId(2L)
     }
 
     @Test
-    void deleteAllTeaImages() {
-        final Tea tea1 = new Tea();
-        tea1.setId(1L);
-        final Tea tea2 = new Tea();
-        tea2.setId(2L);
-        final List<Tea> teas = Arrays.asList(tea1, tea2);
-        when(teaRepository.getTeas()).thenReturn(teas);
-
-        settingsViewModel.deleteAllTeaImages();
-
-        verify(imageController).removeImageByTeaId(1L);
-        verify(imageController).removeImageByTeaId(2L);
-    }
-
-    @Test
-    void deleteAllTeas() {
-        settingsViewModel.deleteAllTeas();
-        verify(teaRepository).deleteAllTeas();
+    fun deleteAllTeas() {
+        settingsViewModel.deleteAllTeas()
+        verify(teaRepository).deleteAllTeas()
     }
 }

@@ -1,520 +1,506 @@
-package coolpharaoh.tee.speicher.tea.timer.views.settings;
+package coolpharaoh.tee.speicher.tea.timer.views.settings
 
-import static android.os.Looper.getMainLooper;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.DISABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.ENABLED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode.SYSTEM;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import android.app.Application
+import android.content.Context
+import android.content.DialogInterface
+import android.media.RingtoneManager
+import android.os.Build
+import android.os.Looper
+import android.widget.CheckBox
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.settings.DarkMode
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.setFixedSystem
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.setMockedImageController
+import org.assertj.core.api.Assertions.*
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.Shadows
+import org.robolectric.shadows.ShadowAlertDialog
 
-import android.app.AlertDialog;
-import android.app.Application;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.os.Build;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowAlertDialog;
-
-import java.util.Arrays;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
-
-@RunWith(RobolectricTestRunner.class)
-public class SettingsTest {
-    private static final int ALARM = 0;
-    private static final int VIBRATION = 1;
-    private static final int ANIMATION = 2;
-    private static final int TEMPERATURE_UNIT = 3;
-    private static final int OVERVIEW_HEADER = 4;
-    private static final int DARK_MODE = 5;
-    private static final int HINTS = 6;
-    private static final int FACTORY_SETTINGS = 7;
-    private static final int OPTION_ON = 0;
-    private static final int OPTION_OFF = 1;
-    private static final String ON = "On";
-    private static final String OFF = "Off";
-    private static final String CELSIUS_TEXT = "Celsius";
-    private static final String FAHRENHEIT_TEXT = "Fahrenheit";
-
+@RunWith(RobolectricTestRunner::class)
+class SettingsTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
-    @Mock
-    TeaDao teaDao;
-    @Mock
-    ImageController imageController;
-    @Mock
-    SystemUtility systemUtility;
+    var rule = MockitoJUnit.rule()
 
-    private SharedSettings sharedSettings;
+    @Mock
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+
+    @Mock
+    lateinit var teaDao: TeaDao
+
+    @Mock
+    lateinit var imageController: ImageController
+
+    @Mock
+    lateinit var systemUtility: SystemUtility
+
+    private var sharedSettings: SharedSettings? = null
 
     @Before
-    public void setUp() {
-        mockDB();
-        setSharedSettings();
-        ImageControllerFactory.setMockedImageController(imageController);
-        mockSystemVersionCode();
+    fun setUp() {
+        mockDB()
+        setSharedSettings()
+        setMockedImageController(imageController)
+        mockSystemVersionCode()
     }
 
-    private void mockDB() {
-        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
+    private fun mockDB() {
+        setMockedDatabase(teaMemoryDatabase)
+        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
     }
 
-    private void setSharedSettings() {
-        sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
-        sharedSettings.setMusicChoice("musicChoice");
-        sharedSettings.setMusicName("MusicName");
-        sharedSettings.setVibration(true);
-        sharedSettings.setAnimation(true);
-        sharedSettings.setTemperatureUnit(CELSIUS);
-        sharedSettings.setShowTeaAlert(false);
-        sharedSettings.setOverviewUpdateAlert(false);
+    private fun setSharedSettings() {
+        sharedSettings = SharedSettings(RuntimeEnvironment.getApplication())
+        sharedSettings!!.musicChoice = "musicChoice"
+        sharedSettings!!.musicName = "MusicName"
+        sharedSettings!!.isVibration = true
+        sharedSettings!!.isAnimation = true
+        sharedSettings!!.temperatureUnit = TemperatureUnit.CELSIUS
+        sharedSettings!!.isShowTeaAlert = false
+        sharedSettings!!.isOverviewUpdateAlert = false
     }
 
-    private void mockSystemVersionCode() {
-        CurrentSdk.setFixedSystem(systemUtility);
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.R);
-    }
-
-    @Test
-    public void launchActivityAndExpectFilledListView() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
-
-            scrollToPosition(settingsRecyclerView, ALARM);
-            checkHeadingAtPosition(settingsRecyclerView, ALARM, settings.getString(R.string.settings_alarm));
-            checkDescriptionAtPosition(settingsRecyclerView, ALARM, sharedSettings.getMusicName());
-
-            scrollToPosition(settingsRecyclerView, VIBRATION);
-            checkHeadingAtPosition(settingsRecyclerView, VIBRATION, settings.getString(R.string.settings_vibration));
-            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, sharedSettings.isVibration() ? ON : OFF);
-
-            scrollToPosition(settingsRecyclerView, ANIMATION);
-            checkHeadingAtPosition(settingsRecyclerView, ANIMATION, settings.getString(R.string.settings_animation));
-            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, sharedSettings.isAnimation() ? ON : OFF);
-
-            scrollToPosition(settingsRecyclerView, TEMPERATURE_UNIT);
-            checkHeadingAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, settings.getString(R.string.settings_temperature_unit));
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS_TEXT);
-
-            scrollToPosition(settingsRecyclerView, OVERVIEW_HEADER);
-            checkHeadingAtPosition(settingsRecyclerView, OVERVIEW_HEADER, settings.getString(R.string.settings_overview_header));
-            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, OFF);
-
-            scrollToPosition(settingsRecyclerView, DARK_MODE);
-            final String[] darkModes = settings.getResources().getStringArray(R.array.settings_dark_mode);
-            checkHeadingAtPosition(settingsRecyclerView, DARK_MODE, settings.getString(R.string.settings_dark_mode));
-            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, darkModes[SYSTEM.getChoice()]);
-
-            scrollToPosition(settingsRecyclerView, HINTS);
-            checkHeadingAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints));
-            checkDescriptionAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints_description));
-
-            scrollToPosition(settingsRecyclerView, FACTORY_SETTINGS);
-            checkHeadingAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings));
-            checkDescriptionAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings_description));
-        });
+    private fun mockSystemVersionCode() {
+        setFixedSystem(systemUtility)
+        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.R)
     }
 
     @Test
-    public void clickAlarmAndExpectAlarmPicker() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun launchActivityAndExpectFilledListView() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, ALARM);
+            scrollToPosition(settingsRecyclerView, ALARM)
+            checkHeadingAtPosition(settingsRecyclerView, ALARM, settings.getString(R.string.settings_alarm))
+            checkDescriptionAtPosition(settingsRecyclerView, ALARM, sharedSettings!!.musicName)
 
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            scrollToPosition(settingsRecyclerView, VIBRATION)
+            checkHeadingAtPosition(settingsRecyclerView, VIBRATION, settings.getString(R.string.settings_vibration))
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, if (sharedSettings!!.isVibration) ON else OFF)
 
-            assertThat(actual.getAction()).isEqualTo(RingtoneManager.ACTION_RINGTONE_PICKER);
-        });
+            scrollToPosition(settingsRecyclerView, ANIMATION)
+            checkHeadingAtPosition(settingsRecyclerView, ANIMATION, settings.getString(R.string.settings_animation))
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, if (sharedSettings!!.isAnimation) ON else OFF)
+
+            scrollToPosition(settingsRecyclerView, TEMPERATURE_UNIT)
+            checkHeadingAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, settings.getString(R.string.settings_temperature_unit))
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS_TEXT)
+
+            scrollToPosition(settingsRecyclerView, OVERVIEW_HEADER)
+            checkHeadingAtPosition(settingsRecyclerView, OVERVIEW_HEADER, settings.getString(R.string.settings_overview_header))
+            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, OFF)
+
+            scrollToPosition(settingsRecyclerView, DARK_MODE)
+            val darkModes = settings.resources.getStringArray(R.array.settings_dark_mode)
+            checkHeadingAtPosition(settingsRecyclerView, DARK_MODE, settings.getString(R.string.settings_dark_mode))
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, darkModes[DarkMode.SYSTEM.choice])
+
+            scrollToPosition(settingsRecyclerView, HINTS)
+            checkHeadingAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints))
+            checkDescriptionAtPosition(settingsRecyclerView, HINTS, settings.getString(R.string.settings_show_hints_description))
+
+            scrollToPosition(settingsRecyclerView, FACTORY_SETTINGS)
+            checkHeadingAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings))
+            checkDescriptionAtPosition(settingsRecyclerView, FACTORY_SETTINGS, settings.getString(R.string.settings_factory_settings_description))
+        }
     }
 
     @Test
-    public void setVibrationFalseAndExpectVibrationFalse() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun clickAlarmAndExpectAlarmPicker() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION);
+            clickAtPositionRecyclerView(settingsRecyclerView, ALARM)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OPTION_OFF);
-            shadowOf(getMainLooper()).idle();
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(sharedSettings.isVibration()).isFalse();
-
-            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, OFF);
-        });
+            assertThat(actual.action).isEqualTo(RingtoneManager.ACTION_RINGTONE_PICKER)
+        }
     }
 
     @Test
-    public void setVibrationTrueAndExpectVibrationTrue() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setVibrationFalseAndExpectVibrationFalse() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION);
+            clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OPTION_ON);
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(OPTION_OFF)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.isVibration()).isTrue();
+            assertThat(sharedSettings!!.isVibration).isFalse
 
-            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, ON);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, OFF)
+        }
     }
 
     @Test
-    public void setAnimationFalseAndExpectAnimationFalse() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setVibrationTrueAndExpectVibrationTrue() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION);
+            clickAtPositionRecyclerView(settingsRecyclerView, VIBRATION)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OPTION_OFF);
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(OPTION_ON)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.isAnimation()).isFalse();
+            assertThat(sharedSettings!!.isVibration).isTrue
 
-            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, OFF);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, VIBRATION, ON)
+        }
     }
 
     @Test
-    public void setAnimationTrueAndExpectAnimationTrue() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setAnimationFalseAndExpectAnimationFalse() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION);
+            clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OPTION_ON);
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(OPTION_OFF)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.isAnimation()).isTrue();
+            assertThat(sharedSettings!!.isAnimation).isFalse
 
-            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, ON);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, OFF)
+        }
     }
 
     @Test
-    public void setTemperatureUnitCelsiusAndExpectCelsius() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setAnimationTrueAndExpectAnimationTrue() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
+            clickAtPositionRecyclerView(settingsRecyclerView, ANIMATION)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(CELSIUS.getChoice());
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(OPTION_ON)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.getTemperatureUnit()).isEqualTo(CELSIUS);
+            assertThat(sharedSettings!!.isAnimation).isTrue
 
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS_TEXT);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, ANIMATION, ON)
+        }
     }
 
     @Test
-    public void setTemperatureUnitFahrenheitAndExpectFahrenheit() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setTemperatureUnitCelsiusAndExpectCelsius() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT);
+            clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(FAHRENHEIT.getChoice());
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(TemperatureUnit.CELSIUS.choice)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
+            assertThat(sharedSettings!!.temperatureUnit).isEqualTo(TemperatureUnit.CELSIUS)
 
-            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT_TEXT);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, CELSIUS_TEXT)
+        }
     }
 
     @Test
-    public void setOverviewHeaderFalseAndExpectOverviewHeaderFalse() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
-            sharedSettings.setOverviewHeader(true);
+    fun setTemperatureUnitFahrenheitAndExpectFahrenheit() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+            clickAtPositionRecyclerView(settingsRecyclerView, TEMPERATURE_UNIT)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, OVERVIEW_HEADER);
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(TemperatureUnit.FAHRENHEIT.choice)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OPTION_OFF);
-            shadowOf(getMainLooper()).idle();
+            assertThat(sharedSettings!!.temperatureUnit).isEqualTo(TemperatureUnit.FAHRENHEIT)
 
-            assertThat(sharedSettings.isOverviewHeader()).isFalse();
-
-            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, OFF);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, TEMPERATURE_UNIT, FAHRENHEIT_TEXT)
+        }
     }
 
     @Test
-    public void setOverviewHeaderTrueAndExpectOverviewHeaderTrue() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
-            sharedSettings.setOverviewHeader(false);
+    fun setOverviewHeaderFalseAndExpectOverviewHeaderFalse() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val sharedSettings = SharedSettings(settings.application)
+            sharedSettings.isOverviewHeader = true
 
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, OVERVIEW_HEADER);
+            clickAtPositionRecyclerView(settingsRecyclerView, OVERVIEW_HEADER)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(OPTION_ON);
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(OPTION_OFF)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.isOverviewHeader()).isTrue();
+            assertThat(sharedSettings.isOverviewHeader).isFalse
 
-            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, ON);
-        });
+            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, OFF)
+        }
+    }
+
+    @Test
+    fun setOverviewHeaderTrueAndExpectOverviewHeaderTrue() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val sharedSettings = SharedSettings(settings.application)
+            sharedSettings.isOverviewHeader = false
+
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
+
+            clickAtPositionRecyclerView(settingsRecyclerView, OVERVIEW_HEADER)
+
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(OPTION_ON)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
+
+            assertThat(sharedSettings.isOverviewHeader).isTrue
+
+            checkDescriptionAtPosition(settingsRecyclerView, OVERVIEW_HEADER, ON)
+        }
     }
 
     @Ignore("Leads to a null pointer exception I don't know why!")
     @Test
-    public void setDarkModeEnabled() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setDarkModeEnabled() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(ENABLED.getChoice());
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(DarkMode.ENABLED.choice)
 
-            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
-            assertThat(sharedSettings.getDarkMode()).isEqualTo(ENABLED);
+            val sharedSettings = SharedSettings(settings.application)
+            assertThat(sharedSettings.darkMode).isEqualTo(DarkMode.ENABLED)
 
-            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[ENABLED.getChoice()];
-            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
+            val expectedChoice = settings.resources.getStringArray(R.array.settings_dark_mode)[DarkMode.ENABLED.choice]
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice)
 
-            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_YES);
-        });
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     @Test
-    public void setDarkModeSystem() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setDarkModeSystem() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(DarkMode.SYSTEM.choice)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
-            assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
+            val sharedSettings = SharedSettings(settings.application)
+            assertThat(sharedSettings.darkMode).isEqualTo(DarkMode.SYSTEM)
 
-            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
-            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
+            val expectedChoice = settings.resources.getStringArray(R.array.settings_dark_mode)[DarkMode.SYSTEM.choice]
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice)
 
-            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_FOLLOW_SYSTEM);
-        });
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
     }
 
     @Test
-    public void setDarkModeSystemOnVersionCodeOlderAndroidQ() {
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
+    fun setDarkModeSystemOnVersionCodeOlderAndroidQ() {
+        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.P)
 
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(SYSTEM.getChoice());
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(DarkMode.SYSTEM.choice)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
-            assertThat(sharedSettings.getDarkMode()).isEqualTo(SYSTEM);
+            val sharedSettings = SharedSettings(settings.application)
+            assertThat(sharedSettings.darkMode).isEqualTo(DarkMode.SYSTEM)
 
-            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[SYSTEM.getChoice()];
-            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
+            val expectedChoice = settings.resources.getStringArray(R.array.settings_dark_mode)[DarkMode.SYSTEM.choice]
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice)
 
-            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_AUTO_BATTERY);
-        });
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+        }
     }
 
     @Test
-    public void setDarkModeDisabled() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setDarkModeDisabled() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE);
+            clickAtPositionRecyclerView(settingsRecyclerView, DARK_MODE)
 
-            final ShadowAlertDialog shadowAlertDialog = Shadows.shadowOf(getLatestAlertDialog());
-            shadowAlertDialog.clickOnItem(DISABLED.getChoice());
-            shadowOf(getMainLooper()).idle();
+            val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
+            shadowAlertDialog.clickOnItem(DarkMode.DISABLED.choice)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final SharedSettings sharedSettings = new SharedSettings(settings.getApplication());
-            assertThat(sharedSettings.getDarkMode()).isEqualTo(DISABLED);
+            val sharedSettings = SharedSettings(settings.application)
+            assertThat(sharedSettings.darkMode).isEqualTo(DarkMode.DISABLED)
 
-            final String expectedChoice = settings.getResources().getStringArray(R.array.settings_dark_mode)[DISABLED.getChoice()];
-            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice);
+            val expectedChoice = settings.resources.getStringArray(R.array.settings_dark_mode)[DarkMode.DISABLED.choice]
+            checkDescriptionAtPosition(settingsRecyclerView, DARK_MODE, expectedChoice)
 
-            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(MODE_NIGHT_NO);
-        });
+            assertThat(AppCompatDelegate.getDefaultNightMode()).isEqualTo(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     @Test
-    public void setAllHintsAndExpectAllHints() {
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
+    fun setAllHintsAndExpectAllHints() {
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
 
-            clickAtPositionRecyclerView(settingsRecyclerView, HINTS);
+            clickAtPositionRecyclerView(settingsRecyclerView, HINTS)
 
-            final AlertDialog alertDialog = getLatestAlertDialog();
+            val alertDialog = ShadowAlertDialog.getLatestAlertDialog()
 
-            final CheckBox checkBoxUpdate = alertDialog.findViewById(R.id.check_box_settings_dialog_update);
-            final CheckBox checkBoxDescription = alertDialog.findViewById(R.id.check_box_settings_dialog_description);
+            val checkBoxUpdate = alertDialog.findViewById<CheckBox>(R.id.check_box_settings_dialog_update)
+            val checkBoxDescription = alertDialog.findViewById<CheckBox>(R.id.check_box_settings_dialog_description)
 
-            assertThat(checkBoxUpdate.isChecked()).isFalse();
-            assertThat(checkBoxDescription.isChecked()).isFalse();
+            assertThat(checkBoxUpdate.isChecked).isFalse
+            assertThat(checkBoxDescription.isChecked).isFalse
 
-            checkBoxUpdate.setChecked(true);
-            checkBoxDescription.setChecked(true);
+            checkBoxUpdate.isChecked = true
+            checkBoxDescription.isChecked = true
 
-            final Button accept = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-            accept.performClick();
-            shadowOf(getMainLooper()).idle();
+            val accept = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            accept.performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(sharedSettings.isOverviewUpdateAlert()).isTrue();
-            assertThat(sharedSettings.isShowTeaAlert()).isTrue();
-        });
+            assertThat(sharedSettings!!.isOverviewUpdateAlert).isTrue
+            assertThat(sharedSettings!!.isShowTeaAlert).isTrue()
+        }
     }
 
     @Test
-    public void setFactorySettingsAndExpectFactorySettings() {
-        final Tea tea1 = new Tea();
-        tea1.setId(1L);
-        final Tea tea2 = new Tea();
-        tea2.setId(2L);
-        final List<Tea> teas = Arrays.asList(tea1, tea2);
-        when(teaDao.getTeas()).thenReturn(teas);
+    fun setFactorySettingsAndExpectFactorySettings() {
+        val tea1 = Tea()
+        tea1.id = 1L
+        val tea2 = Tea()
+        tea2.id = 2L
+        val teas = listOf(tea1, tea2)
+        `when`(teaDao.getTeas()).thenReturn(teas)
 
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
-            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
-            final AlertDialog alertDialog = getLatestAlertDialog();
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
+            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS)
+            val alertDialog = ShadowAlertDialog.getLatestAlertDialog()
 
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            verify(imageController).removeImageByTeaId(1L);
-            verify(imageController).removeImageByTeaId(2L);
-            verify(teaDao).deleteAll();
-            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
-        });
+            verify(imageController).removeImageByTeaId(1L)
+            verify(imageController).removeImageByTeaId(2L)
+            verify(teaDao).deleteAll()
+            assertThat(sharedSettings!!.musicName).isEqualTo("Default")
+        }
     }
 
     @Test
-    public void setFactorySettingsOnVersionCodeOlderAndroidQ() {
-        when(systemUtility.getSdkVersion()).thenReturn(Build.VERSION_CODES.P);
-        final Tea tea1 = new Tea();
-        tea1.setId(1L);
-        final Tea tea2 = new Tea();
-        tea2.setId(2L);
-        final List<Tea> teas = Arrays.asList(tea1, tea2);
-        when(teaDao.getTeas()).thenReturn(teas);
+    fun setFactorySettingsOnVersionCodeOlderAndroidQ() {
+        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.P)
+        val tea1 = Tea()
+        tea1.id = 1L
+        val tea2 = Tea()
+        tea2.id = 2L
+        val teas = listOf(tea1, tea2)
+        `when`(teaDao.getTeas()).thenReturn(teas)
 
-        final ActivityScenario<Settings> settingsActivityScenario = ActivityScenario.launch(Settings.class);
-        settingsActivityScenario.onActivity(settings -> {
-            final RecyclerView settingsRecyclerView = settings.findViewById(R.id.recycler_view_settings);
-            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS);
-            final AlertDialog alertDialog = getLatestAlertDialog();
+        val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
+        settingsActivityScenario.onActivity { settings: Settings ->
+            val settingsRecyclerView = settings.findViewById<RecyclerView>(R.id.recycler_view_settings)
+            clickAtPositionRecyclerView(settingsRecyclerView, FACTORY_SETTINGS)
+            val alertDialog = ShadowAlertDialog.getLatestAlertDialog()
 
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            verify(imageController, never()).removeImageByTeaId(anyLong());
-            verify(teaDao).deleteAll();
-            assertThat(sharedSettings.getMusicName()).isEqualTo("Default");
-        });
+            verify(imageController, never()).removeImageByTeaId(ArgumentMatchers.anyLong())
+            verify(teaDao).deleteAll()
+            assertThat(sharedSettings!!.musicName).isEqualTo("Default")
+        }
     }
 
-    private void clickAtPositionRecyclerView(final RecyclerView recyclerView, final int position) {
-        scrollToPosition(recyclerView, position);
-        final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-        itemView.performClick();
+    private fun clickAtPositionRecyclerView(recyclerView: RecyclerView, position: Int) {
+        scrollToPosition(recyclerView, position)
+        val itemView = recyclerView.findViewHolderForAdapterPosition(position)!!.itemView
+        itemView.performClick()
     }
 
-    private void scrollToPosition(final RecyclerView settingsRecyclerView, final int alarm) {
-        settingsRecyclerView.scrollToPosition(alarm);
-        shadowOf(getMainLooper()).idle();
+    private fun scrollToPosition(settingsRecyclerView: RecyclerView, alarm: Int) {
+        settingsRecyclerView.scrollToPosition(alarm)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
     }
 
-    private void checkHeadingAtPosition(final RecyclerView recyclerView, final int position, final String heading) {
-        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_heading, heading);
+    private fun checkHeadingAtPosition(recyclerView: RecyclerView, position: Int, heading: String) {
+        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_heading, heading)
     }
 
-    private void checkDescriptionAtPosition(final RecyclerView recyclerView, final int position, final String description) {
-        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_description, description);
+    private fun checkDescriptionAtPosition(recyclerView: RecyclerView, position: Int, description: String?) {
+        checkViewAtPositionInRecyclerView(recyclerView, position, R.id.text_view_recycler_view_description, description)
     }
 
-    private void checkViewAtPositionInRecyclerView(final RecyclerView recyclerView, final int position,
-                                                   final int viewId, final String toCheck) {
-        final View itemView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-        final TextView textViewHeading = itemView.findViewById(viewId);
-        assertThat(textViewHeading.getText()).hasToString(toCheck);
+    private fun checkViewAtPositionInRecyclerView(recyclerView: RecyclerView, position: Int,
+        viewId: Int, toCheck: String?) {
+        val itemView = recyclerView.findViewHolderForAdapterPosition(position)!!.itemView
+        val textViewHeading = itemView.findViewById<TextView>(viewId)
+        assertThat(textViewHeading.text).hasToString(toCheck)
+    }
+
+    companion object {
+        private const val ALARM = 0
+        private const val VIBRATION = 1
+        private const val ANIMATION = 2
+        private const val TEMPERATURE_UNIT = 3
+        private const val OVERVIEW_HEADER = 4
+        private const val DARK_MODE = 5
+        private const val HINTS = 6
+        private const val FACTORY_SETTINGS = 7
+        private const val OPTION_ON = 0
+        private const val OPTION_OFF = 1
+        private const val ON = "On"
+        private const val OFF = "Off"
+        private const val CELSIUS_TEXT = "Celsius"
+        private const val FAHRENHEIT_TEXT = "Fahrenheit"
     }
 }
