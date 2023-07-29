@@ -58,6 +58,8 @@ public class AmountPickerDialogTest {
 
     @Test
     public void showDialogAndExpectTitle() {
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -103,7 +105,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void setAmountKindGrAndExpectGrSuggestions() {
-        when(suggestions.getAmountTsSuggestions()).thenReturn(null);
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
         when(suggestions.getAmountGrSuggestions()).thenReturn(new int[]{10, 11, 12});
 
         dialogFragment.show(fragmentManager, TAG);
@@ -136,7 +138,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void setAmountKindTbAndExpectTbSuggestions() {
-        when(suggestions.getAmountTsSuggestions()).thenReturn(null);
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
         when(suggestions.getAmountTbSuggestions()).thenReturn(new int[]{10, 11, 12});
 
         dialogFragment.show(fragmentManager, TAG);
@@ -185,6 +187,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void acceptTsInputExceptSavedInput() {
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -204,6 +207,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void acceptGrInputExceptSavedInput() {
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -223,6 +227,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void acceptTbInputExceptSavedInput() {
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -242,6 +247,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void showExistingAmountConfiguration() {
+        when(suggestions.getAmountGrSuggestions()).thenReturn(new int[]{});
         when(newTeaViewModel.getAmount()).thenReturn(7.0);
         when(newTeaViewModel.getAmountKind()).thenReturn(GRAM);
 
@@ -259,6 +265,7 @@ public class AmountPickerDialogTest {
 
     @Test
     public void showExistingAmountConfigurationDecimal() {
+        when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{});
         when(newTeaViewModel.getAmount()).thenReturn(7.5);
 
         dialogFragment.show(fragmentManager, TAG);
@@ -278,8 +285,8 @@ public class AmountPickerDialogTest {
 
     @Test
     public void clickSuggestionAndExpectOverwrittenExistingConfiguration() {
-        when(newTeaViewModel.getAmount()).thenReturn(7.5);
         when(suggestions.getAmountTsSuggestions()).thenReturn(new int[]{4, 5});
+        when(newTeaViewModel.getAmount()).thenReturn(7.5);
 
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();

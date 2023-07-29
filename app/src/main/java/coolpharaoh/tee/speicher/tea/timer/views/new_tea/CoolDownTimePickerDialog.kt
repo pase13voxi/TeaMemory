@@ -1,140 +1,128 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.TextView
+import androidx.fragment.app.DialogFragment
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.celsiusToCoolDownTime
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.fahrenheitToCelsius
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.TextView;
+class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : DialogFragment() {
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
+    private var dialogView: View? = null
 
-import java.util.ArrayList;
-import java.util.List;
+    override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
+        val activity: Activity = requireActivity()
+        val parent = activity.findViewById<ViewGroup>(R.id.new_tea_parent)
+        val inflater = activity.layoutInflater
+        dialogView = inflater.inflate(R.layout.dialog_time_picker, parent, false)
 
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.TimeConverter;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
+        setTimePicker()
+        setCalculatedCoolDownTime()
 
-public class CoolDownTimePickerDialog extends DialogFragment {
-    public static final String TAG = "CoolDownTimePickerDialog";
-
-    private final NewTeaViewModel newTeaViewModel;
-    private View dialogView;
-
-    public CoolDownTimePickerDialog(final NewTeaViewModel newTeaViewModel) {
-        this.newTeaViewModel = newTeaViewModel;
+        return AlertDialog.Builder(activity, R.style.dialog_theme)
+            .setView(dialogView)
+            .setTitle(R.string.new_tea_dialog_cool_down_time_header)
+            .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
+            .setPositiveButton(R.string.new_tea_dialog_picker_positive) { dialog, which -> persistCoolDownTime() }
+            .create()
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        final Activity activity = requireActivity();
-        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        final LayoutInflater inflater = activity.getLayoutInflater();
-        dialogView = inflater.inflate(R.layout.dialog_time_picker, parent, false);
+    private fun setTimePicker() {
+        val timePickerMinutes = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        timePickerMinutes.minValue = 0
+        timePickerMinutes.maxValue = 59
+        val timePickerSeconds = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        timePickerSeconds.minValue = 0
+        timePickerSeconds.maxValue = 59
+        timePickerSeconds.setFormatter { value: Int -> String.format("%02d", value) }
 
-        setTimePicker();
-        setCalculatedCoolDownTime();
-
-        return new AlertDialog.Builder(activity, R.style.dialog_theme)
-                .setView(dialogView)
-                .setTitle(R.string.new_tea_dialog_cool_down_time_header)
-                .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> persistCoolDownTime())
-                .create();
+        setConfiguredValues(timePickerMinutes, timePickerSeconds)
     }
 
-    private void setTimePicker() {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        timePickerMinutes.setMinValue(0);
-        timePickerMinutes.setMaxValue(59);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        timePickerSeconds.setMinValue(0);
-        timePickerSeconds.setMaxValue(59);
-        timePickerSeconds.setFormatter(value -> String.format("%02d", value));
-
-        setConfiguredValues(timePickerMinutes, timePickerSeconds);
-    }
-
-    private void setConfiguredValues(final NumberPicker timePickerMinutes, final NumberPicker timePickerSeconds) {
-        final String coolDownTime = newTeaViewModel.getInfusionCoolDownTime();
+    private fun setConfiguredValues(timePickerMinutes: NumberPicker, timePickerSeconds: NumberPicker) {
+        val coolDownTime = newTeaViewModel.getInfusionCoolDownTime()
 
         if (coolDownTime != null) {
-            final TimeConverter timeConverter = new TimeConverter(coolDownTime);
+            val timeConverter = TimeConverter(coolDownTime)
 
-            timePickerMinutes.setValue(timeConverter.getMinutes());
-            timePickerSeconds.setValue(timeConverter.getSeconds());
+            timePickerMinutes.value = timeConverter.minutes
+            timePickerSeconds.value = timeConverter.seconds
         }
     }
 
-    private void setCalculatedCoolDownTime() {
-        final List<Button> buttons = new ArrayList<>();
-        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_1));
-        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_2));
-        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_3));
+    private fun setCalculatedCoolDownTime() {
+        val buttons: MutableList<Button> = ArrayList()
+        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_1))
+        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_2))
+        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_3))
 
-        final TemperatureUnit temperatureUnit = newTeaViewModel.getTemperatureUnit();
-        int temperature = newTeaViewModel.getInfusionTemperature();
+        val temperatureUnit = newTeaViewModel.getTemperatureUnit()
+        var temperature = newTeaViewModel.getInfusionTemperature()
 
         //Falls nötig in Celsius umwandeln
-        if (FAHRENHEIT.equals(temperatureUnit)) {
-            temperature = TemperatureConversation.fahrenheitToCelsius(temperature);
+        if (TemperatureUnit.FAHRENHEIT == temperatureUnit) {
+            temperature = fahrenheitToCelsius(temperature)
         }
         if (temperature != -500 && temperature != 100) {
-            final String coolDownTime = TemperatureConversation.celsiusToCoolDownTime(temperature);
-            fillSuggestions(buttons, coolDownTime);
-            setClickListener(buttons, coolDownTime);
+            val coolDownTime = celsiusToCoolDownTime(temperature)
+            fillSuggestions(buttons, coolDownTime)
+            setClickListener(buttons, coolDownTime)
         } else {
-            disableSuggestions();
+            disableSuggestions()
         }
     }
 
-    private void setClickListener(final List<Button> buttons, final String coolDownTime) {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        final TimeConverter timeConverter = new TimeConverter(coolDownTime);
+    private fun setClickListener(buttons: List<Button>, coolDownTime: String?) {
+        val timePickerMinutes = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        val timePickerSeconds = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
 
-        buttons.get(0).setOnClickListener(view -> {
-            timePickerMinutes.setValue(timeConverter.getMinutes());
-            timePickerSeconds.setValue(timeConverter.getSeconds());
-        });
+        val timeConverter = TimeConverter(coolDownTime)
+        buttons[0].setOnClickListener { view: View? ->
+            timePickerMinutes.value = timeConverter.minutes
+            timePickerSeconds.value = timeConverter.seconds
+        }
     }
 
-    private void fillSuggestions(final List<Button> buttons, final String coolDownTime) {
-        final TextView textViewSuggestions = dialogView.findViewById(R.id.text_view_new_tea_suggestions_description);
-        textViewSuggestions.setText(R.string.new_tea_dialog_cool_down_time_calculated_suggestion);
+    private fun fillSuggestions(buttons: List<Button>, coolDownTime: String?) {
+        val textViewSuggestions = dialogView!!.findViewById<TextView>(R.id.text_view_new_tea_suggestions_description)
+        textViewSuggestions.setText(R.string.new_tea_dialog_cool_down_time_calculated_suggestion)
 
-        buttons.get(0).setText(coolDownTime);
-        buttons.get(1).setVisibility(View.GONE);
-        buttons.get(2).setVisibility(View.GONE);
+        buttons[0].text = coolDownTime
+        buttons[1].visibility = View.GONE
+        buttons[2].visibility = View.GONE
     }
 
-    private void disableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_new_tea_custom_variety);
-        layoutSuggestions.setVisibility(View.GONE);
+    private fun disableSuggestions() {
+        val layoutSuggestions = dialogView!!.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        layoutSuggestions.visibility = View.GONE
     }
 
-    private void persistCoolDownTime() {
-        final NumberPicker timePickerMinutes = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        final NumberPicker timePickerSeconds = dialogView.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        final int minutes = timePickerMinutes.getValue();
-        final int seconds = timePickerSeconds.getValue();
+    private fun persistCoolDownTime() {
+        val timePickerMinutes = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        val timePickerSeconds = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        val minutes = timePickerMinutes.value
+        val seconds = timePickerSeconds.value
 
         if (minutes == 0 && seconds == 0) {
-            newTeaViewModel.setInfusionCoolDownTime(null);
+            newTeaViewModel.setInfusionCoolDownTime(null)
         } else {
-            final TimeConverter timeConverter = new TimeConverter(minutes, seconds);
-            newTeaViewModel.setInfusionCoolDownTime(timeConverter.getTime());
+            val timeConverter = TimeConverter(minutes, seconds)
+            newTeaViewModel.setInfusionCoolDownTime(timeConverter.time)
         }
+    }
+
+    companion object {
+        const val TAG = "CoolDownTimePickerDialog"
     }
 }

@@ -1,169 +1,154 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.GRAM;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_BAG;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import androidx.fragment.app.DialogFragment
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.Companion.fromChoice
+import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
+class AmountPickerDialog(private val suggestions: Suggestions, private val newTeaViewModel: NewTeaViewModel) : DialogFragment() {
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
+    private var dialogView: View? = null
 
-import java.util.ArrayList;
-import java.util.List;
+    override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
+        val activity: Activity = requireActivity()
+        val parent = activity.findViewById<ViewGroup>(R.id.new_tea_parent)
+        val inflater = activity.layoutInflater
+        dialogView = inflater.inflate(R.layout.dialog_amount_picker, parent, false)
 
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
-import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
+        setAmountPicker()
+        setSuggestions()
 
-public class AmountPickerDialog extends DialogFragment {
-    public static final String TAG = "AmountPickerDialog";
-
-    private final Suggestions suggestions;
-    private final NewTeaViewModel newTeaViewModel;
-    private View dialogView;
-
-    public AmountPickerDialog(final Suggestions suggestions, final NewTeaViewModel newTeaViewModel) {
-        this.suggestions = suggestions;
-        this.newTeaViewModel = newTeaViewModel;
+        return AlertDialog.Builder(activity, R.style.dialog_theme)
+            .setView(dialogView)
+            .setTitle(R.string.new_tea_dialog_amount_header)
+            .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
+            .setPositiveButton(R.string.new_tea_dialog_picker_positive) { dialog, which -> persistAmount() }
+            .create()
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        final Activity activity = requireActivity();
-        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        final LayoutInflater inflater = activity.getLayoutInflater();
-        dialogView = inflater.inflate(R.layout.dialog_amount_picker, parent, false);
+    private fun setAmountPicker() {
+        val amountPicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount)
+        amountPicker.minValue = 0
+        amountPicker.maxValue = 100
 
-        setAmountPicker();
-        setSuggestions();
+        val amountPickerDecimal = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount_decimal)
+        amountPickerDecimal.minValue = 0
+        amountPickerDecimal.maxValue = 9
 
-        return new AlertDialog.Builder(activity, R.style.dialog_theme)
-                .setView(dialogView)
-                .setTitle(R.string.new_tea_dialog_amount_header)
-                .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> persistAmount())
-                .create();
+        val amountPickerKind = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount_kind)
+        amountPickerKind.minValue = 0
+        amountPickerKind.maxValue = 2
+        amountPickerKind.displayedValues = resources.getStringArray(R.array.new_tea_dialog_amount_kind)
+        amountPickerKind.setOnValueChangedListener { numberPicker, oldValue, newValue -> setSuggestions() }
+
+        setConfiguredValues(amountPicker, amountPickerDecimal, amountPickerKind)
     }
 
-    private void setAmountPicker() {
-        final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount);
-        amountPicker.setMinValue(0);
-        amountPicker.setMaxValue(100);
+    private fun setConfiguredValues(amountPicker: NumberPicker, amountPickerDecimal: NumberPicker,
+        amountKindPicker: NumberPicker) {
 
-        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
-        amountPickerDecimal.setMinValue(0);
-        amountPickerDecimal.setMaxValue(9);
+        val amount = newTeaViewModel.amount
+        val amountPreDecimal = amount.toInt()
+        val amountDecimal = ((amount - amountPreDecimal) * 10).toInt()
 
-        final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
-        amountPickerKind.setMinValue(0);
-        amountPickerKind.setMaxValue(2);
-        amountPickerKind.setDisplayedValues(getResources().getStringArray(R.array.new_tea_dialog_amount_kind));
-        amountPickerKind.setOnValueChangedListener((numberPicker, oldValue, newValue) -> setSuggestions());
-
-        setConfiguredValues(amountPicker, amountPickerDecimal, amountPickerKind);
-    }
-
-    private void setConfiguredValues(final NumberPicker amountPicker, final NumberPicker amountPickerDecimal,
-                                     final NumberPicker amountKindPicker) {
-        final double amount = newTeaViewModel.getAmount();
-        final int amountPreDecimal = (int) amount;
-        final int amountDecimal = (int) ((amount - amountPreDecimal) * 10);
-
-        if (amount != -500) {
-            amountPicker.setValue(amountPreDecimal);
-            amountPickerDecimal.setValue(amountDecimal);
+        if (amount != -500.0) {
+            amountPicker.value = amountPreDecimal
+            amountPickerDecimal.value = amountDecimal
         }
 
-        final AmountKind amountKind = newTeaViewModel.getAmountKind();
-        amountKindPicker.setValue(amountKind.getChoice());
+        val amountKind = newTeaViewModel.amountKind
+        amountKindPicker.value = amountKind.choice
     }
 
-    private void setSuggestions() {
-        final List<Button> buttons = new ArrayList<>();
-        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_1));
-        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_2));
-        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_3));
+    private fun setSuggestions() {
+        val buttons: MutableList<Button> = ArrayList()
+        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_1))
+        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_2))
+        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_3))
 
-        if (getSuggestions() != null && getSuggestions().length > 0) {
-            enableSuggestions();
-            fillSuggestions(buttons);
-            setClickListener(buttons);
+        if (getSuggestions().isNotEmpty()) {
+            enableSuggestions()
+            fillSuggestions(buttons)
+            setClickListener(buttons)
         } else {
-            disableSuggestions();
+            disableSuggestions()
         }
     }
 
-    private int[] getSuggestions() {
-        final NumberPicker amountPickerKind = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
-        if (GRAM.getChoice() == amountPickerKind.getValue()) {
-            return suggestions.getAmountGrSuggestions();
-        } else if (TEA_BAG.getChoice() == amountPickerKind.getValue()) {
-            return suggestions.getAmountTbSuggestions();
+    private fun getSuggestions(): IntArray {
+        val amountPickerKind = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount_kind)
+        return if (AmountKind.GRAM.choice == amountPickerKind.value) {
+            suggestions.amountGrSuggestions
+        } else if (AmountKind.TEA_BAG.choice == amountPickerKind.value) {
+            suggestions.amountTbSuggestions
         } else {
-            return suggestions.getAmountTsSuggestions();
+            suggestions.amountTsSuggestions
         }
     }
 
-    private void fillSuggestions(final List<Button> buttons) {
-        final int[] amountSuggestions = getSuggestions();
+    private fun fillSuggestions(buttons: List<Button>) {
+        val amountSuggestions = getSuggestions()
 
-        for (int i = 0; i < 3; i++) {
-            if (i < amountSuggestions.length) {
-                buttons.get(i).setVisibility(View.VISIBLE);
-                buttons.get(i).setText(String.valueOf(amountSuggestions[i]));
+        for (i in 0..2) {
+            if (i < amountSuggestions.size) {
+                buttons[i].visibility = View.VISIBLE
+                buttons[i].text = amountSuggestions[i].toString()
             } else {
-                buttons.get(i).setVisibility(View.GONE);
+                buttons[i].visibility = View.GONE
             }
         }
     }
 
-    private void setClickListener(final List<Button> buttons) {
-        final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount);
-        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
-        final int[] amountSuggestions = getSuggestions();
+    private fun setClickListener(buttons: List<Button>) {
+        val amountPicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount)
+        val amountPickerDecimal = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount_decimal)
+        val amountSuggestions = getSuggestions()
 
-        for (int i = 0; i < amountSuggestions.length; i++) {
-            final int amount = amountSuggestions[i];
-            buttons.get(i).setOnClickListener(view -> {
-                amountPicker.setValue(amount);
-                amountPickerDecimal.setValue(0);
-            });
+        for (i in amountSuggestions.indices) {
+            val amount = amountSuggestions[i]
+            buttons[i].setOnClickListener {
+                amountPicker.value = amount
+                amountPickerDecimal.value = 0
+            }
         }
     }
 
-    private void enableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_new_tea_custom_variety);
-        layoutSuggestions.setVisibility(View.VISIBLE);
+    private fun enableSuggestions() {
+        val layoutSuggestions = dialogView!!.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        layoutSuggestions.visibility = View.VISIBLE
     }
 
-    private void disableSuggestions() {
-        final LinearLayout layoutSuggestions = dialogView.findViewById(R.id.layout_new_tea_custom_variety);
-        layoutSuggestions.setVisibility(View.GONE);
+    private fun disableSuggestions() {
+        val layoutSuggestions = dialogView!!.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        layoutSuggestions.visibility = View.GONE
     }
 
-    private void persistAmount() {
-        final NumberPicker amountPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount);
-        final double amountPreDecimal = amountPicker.getValue();
+    private fun persistAmount() {
+        val amountPicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount)
+        val amountPreDecimal = amountPicker.value.toDouble()
 
-        final NumberPicker amountPickerDecimal = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_decimal);
-        final double amountDecimal = amountPickerDecimal.getValue();
+        val amountPickerDecimal = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount_decimal)
+        val amountDecimal = amountPickerDecimal.value.toDouble()
 
-        final double amount = amountPreDecimal + amountDecimal / 10;
+        val amount = amountPreDecimal + amountDecimal / 10
 
-        final NumberPicker amountKindPicker = dialogView.findViewById(R.id.number_picker_new_tea_dialog_amount_kind);
-        final int amountKindChoice = amountKindPicker.getValue();
+        val amountKindPicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_amount_kind)
+        val amountKindChoice = amountKindPicker.value
 
-        newTeaViewModel.setAmount(amount, AmountKind.fromChoice(amountKindChoice));
+        newTeaViewModel.setAmount(amount, fromChoice(amountKindChoice))
     }
 
+    companion object {
+        const val TAG = "AmountPickerDialog"
+    }
 }

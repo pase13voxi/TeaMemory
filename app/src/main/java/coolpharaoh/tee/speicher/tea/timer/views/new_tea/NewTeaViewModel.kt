@@ -1,267 +1,243 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.celsiusToFahrenheit;
-import static coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.fahrenheitToCelsius;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
+import android.app.Application
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.celsiusToFahrenheit
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.TemperatureConversation.fahrenheitToCelsius
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.Companion.fromText
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertTextToStoredVariety
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromStoredText
 
-import android.app.Application;
+class NewTeaViewModel
+@VisibleForTesting constructor(
+    teaId: Long?, private val application: Application, private val teaRepository: TeaRepository,
+    private val infusionRepository: InfusionRepository, private val sharedSettings: SharedSettings
+) {
 
-import androidx.annotation.VisibleForTesting;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+    private var infusionIndex: MutableLiveData<Int>? = null
+    private var tea: Tea? = null
+    private var infusions: MutableList<Infusion> = ArrayList()
 
-import java.util.ArrayList;
-import java.util.List;
+    constructor(application: Application) : this(null, application, TeaRepository(application),
+        InfusionRepository(application), SharedSettings(application))
 
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
+    constructor(teaId: Long, application: Application) : this(teaId, application, TeaRepository(application),
+        InfusionRepository(application), SharedSettings(application))
 
-class NewTeaViewModel {
-    private final Application application;
-
-    private final TeaRepository teaRepository;
-    private final InfusionRepository infusionRepository;
-    private final SharedSettings sharedSettings;
-
-    private MutableLiveData<Integer> infusionIndex;
-    private Tea tea;
-    private List<Infusion> infusions;
-
-    NewTeaViewModel(final Application application) {
-        this(null, application, new TeaRepository(application),
-                new InfusionRepository(application), new SharedSettings(application));
+    init {
+        initializeTeaAndInfusions(teaId)
     }
 
-    NewTeaViewModel(final long teaId, final Application application) {
-        this(teaId, application, new TeaRepository(application),
-                new InfusionRepository(application), new SharedSettings(application));
-    }
-
-    @VisibleForTesting
-    NewTeaViewModel(final Long teaId, final Application application, final TeaRepository teaRepository,
-                    final InfusionRepository infusionRepository,
-                    final SharedSettings sharedSettings) {
-        this.application = application;
-        this.teaRepository = teaRepository;
-        this.infusionRepository = infusionRepository;
-        this.sharedSettings = sharedSettings;
-
-        initializeTeaAndInfusions(teaId);
-    }
-
-    private void initializeTeaAndInfusions(final Long teaId) {
-        infusionIndex = new MutableLiveData<>(0);
+    private fun initializeTeaAndInfusions(teaId: Long?) {
+        infusionIndex = MutableLiveData(0)
         if (teaId == null) {
-            tea = new Tea();
-            tea.setVariety("01_black");
-            tea.setColor(-15461296);
-            tea.setAmount(-500);
-            tea.setAmountKind("Ts");
-            tea.setRating(0);
-            tea.setInStock(true);
-            infusions = new ArrayList<>();
-            addInfusion();
+            tea = Tea()
+            tea!!.variety = "01_black"
+            tea!!.color = -15461296
+            tea!!.amount = (-500).toDouble()
+            tea!!.amountKind = "Ts"
+            tea!!.rating = 0
+            tea!!.inStock = true
+            infusions = ArrayList()
+            addInfusion()
         } else {
-            tea = teaRepository.getTeaById(teaId);
-            infusions = infusionRepository.getInfusionsByTeaId(teaId);
+            tea = teaRepository.getTeaById(teaId)
+            infusions.addAll(infusionRepository.getInfusionsByTeaId(teaId))
         }
     }
 
     // Tea
-    long getTeaId() {
-        return tea.getId();
+    val teaId: Long
+        get() = tea!!.id!!
+
+    val name: String?
+        get() = tea!!.name
+
+    val varietyAsText: String?
+        get() = convertStoredVarietyToText(tea!!.variety, application)
+
+    fun setVariety(variety: String) {
+        tea!!.variety = convertTextToStoredVariety(variety, application)
+        signalDataChanged()
     }
 
-    String getName() {
-        return tea.getName();
+    val variety: Variety
+        get() = fromStoredText(tea!!.variety)
+
+    fun setAmount(amount: Double, amountKind: AmountKind) {
+        tea!!.amount = amount
+        tea!!.amountKind = amountKind.text
+        signalDataChanged()
     }
 
-    String getVarietyAsText() {
-        return Variety.convertStoredVarietyToText(tea.getVariety(), application);
-    }
+    val amount: Double
+        get() = tea!!.amount
 
-    void setVariety(final String variety) {
-        tea.setVariety(Variety.convertTextToStoredVariety(variety, application));
-        signalDataChanged();
-    }
+    val amountKind: AmountKind
+        get() = fromText(tea!!.amountKind)
 
-    Variety getVariety() {
-        return Variety.fromStoredText(tea.getVariety());
-    }
-
-    void setAmount(final double amount, final AmountKind amountKind) {
-        tea.setAmount(amount);
-        tea.setAmountKind(amountKind.getText());
-        signalDataChanged();
-    }
-
-    double getAmount() {
-        return tea.getAmount();
-    }
-
-    AmountKind getAmountKind() {
-        return AmountKind.fromText(tea.getAmountKind());
-    }
-
-    int getColor() {
-        return tea.getColor();
-    }
-
-    void setColor(final int color) {
-        tea.setColor(color);
-        signalDataChanged();
-    }
+    var color: Int
+        get() = tea!!.color
+        set(color) {
+            tea!!.color = color
+            signalDataChanged()
+        }
 
     // Infusion
-    LiveData<Integer> dataChanges() {
-        return infusionIndex;
+    fun dataChanges(): LiveData<Int>? {
+        return infusionIndex
     }
 
-    int getInfusionIndex() {
-        if (infusionIndex != null) {
-            return infusionIndex.getValue();
+    fun getInfusionIndex(): Int {
+        return if (infusionIndex != null) {
+            infusionIndex!!.value!!
         } else {
-            infusionIndex = new MutableLiveData<>(0);
-            return infusionIndex.getValue();
+            infusionIndex = MutableLiveData(0)
+            infusionIndex!!.value!!
         }
     }
 
-    void addInfusion() {
-        final Infusion infusion = new Infusion();
-        infusion.setTemperatureCelsius(-500);
-        infusion.setTemperatureFahrenheit(-500);
-        infusions.add(infusion);
+    fun addInfusion() {
+        val infusion = Infusion()
+        infusion.temperatureCelsius = -500
+        infusion.temperatureFahrenheit = -500
+        infusions.add(infusion)
         if (getInfusionSize() > 1) {
-            infusionIndex.setValue(getInfusionIndex() + 1);
+            infusionIndex!!.value = getInfusionIndex() + 1
         }
-        signalDataChanged();
+        signalDataChanged()
     }
 
-    void deleteInfusion() {
+    fun deleteInfusion() {
         if (getInfusionSize() > 1) {
-            infusions.remove(getInfusionIndex());
+            infusions.removeAt(getInfusionIndex())
             if (getInfusionIndex() == getInfusionSize()) {
-                infusionIndex.setValue(getInfusionIndex() - 1);
+                infusionIndex!!.value = getInfusionIndex() - 1
             }
-            signalDataChanged();
+            signalDataChanged()
         }
     }
 
-    void previousInfusion() {
+    fun previousInfusion() {
         if (getInfusionIndex() - 1 >= 0) {
-            infusionIndex.setValue(getInfusionIndex() - 1);
+            infusionIndex!!.value = getInfusionIndex() - 1
         }
     }
 
-    void nextInfusion() {
+    fun nextInfusion() {
         if (getInfusionIndex() + 1 < getInfusionSize()) {
-            infusionIndex.setValue(getInfusionIndex() + 1);
+            infusionIndex!!.value = getInfusionIndex() + 1
         }
     }
 
-    int getInfusionSize() {
-        return infusions.size();
+    fun getInfusionSize(): Int {
+        return infusions.size
     }
 
-    void setInfusionTemperature(final int temperature) {
+    fun setInfusionTemperature(temperature: Int) {
         if (isFahrenheit()) {
-            infusions.get(getInfusionIndex()).setTemperatureFahrenheit(temperature);
-            infusions.get(getInfusionIndex()).setTemperatureCelsius(fahrenheitToCelsius(temperature));
+            infusions[getInfusionIndex()].temperatureFahrenheit = temperature
+            infusions[getInfusionIndex()].temperatureCelsius = fahrenheitToCelsius(temperature)
         } else {
-            infusions.get(getInfusionIndex()).setTemperatureCelsius(temperature);
-            infusions.get(getInfusionIndex()).setTemperatureFahrenheit(celsiusToFahrenheit(temperature));
+            infusions[getInfusionIndex()].temperatureCelsius = temperature
+            infusions[getInfusionIndex()].temperatureFahrenheit = celsiusToFahrenheit(temperature)
         }
-        signalDataChanged();
+        signalDataChanged()
     }
 
-    int getInfusionTemperature() {
-        if (isFahrenheit()) {
-            return infusions.get(getInfusionIndex()).getTemperatureFahrenheit();
+    fun getInfusionTemperature(): Int {
+        return if (isFahrenheit()) {
+            infusions[getInfusionIndex()].temperatureFahrenheit
         } else {
-            return infusions.get(getInfusionIndex()).getTemperatureCelsius();
+            infusions[getInfusionIndex()].temperatureCelsius
         }
     }
 
-    void setInfusionTime(final String time) {
-        infusions.get(getInfusionIndex()).setTime(time);
-        signalDataChanged();
+    fun setInfusionTime(time: String?) {
+        infusions[getInfusionIndex()].time = time
+        signalDataChanged()
     }
 
-    String getInfusionTime() {
-        return infusions.get(getInfusionIndex()).getTime();
+    fun getInfusionTime(): String? {
+        return infusions[getInfusionIndex()].time
     }
 
-    void setInfusionCoolDownTime(final String time) {
-        infusions.get(getInfusionIndex()).setCoolDownTime(time);
-        signalDataChanged();
+    fun setInfusionCoolDownTime(time: String?) {
+        infusions[getInfusionIndex()].coolDownTime = time
+        signalDataChanged()
     }
 
-    void resetInfusionCoolDownTime() {
-        infusions.get(getInfusionIndex()).setCoolDownTime(null);
+    fun resetInfusionCoolDownTime() {
+        infusions[getInfusionIndex()].coolDownTime = null
     }
 
-    String getInfusionCoolDownTime() {
-        return infusions.get(getInfusionIndex()).getCoolDownTime();
+    fun getInfusionCoolDownTime(): String? {
+        return infusions[getInfusionIndex()].coolDownTime
     }
 
     // Settings
-    TemperatureUnit getTemperatureUnit() {
-        return sharedSettings.getTemperatureUnit();
+    fun getTemperatureUnit(): TemperatureUnit {
+        return sharedSettings.temperatureUnit
     }
 
     // Overall
-    void saveTea(final String name) {
+    fun saveTea(name: String) {
         // if id is null a new Tea will be created
-        if (tea.getId() == null) {
-            insertTea(name);
+        if (tea!!.id == null) {
+            insertTea(name)
         } else {
-            updateTea(name);
+            updateTea(name)
         }
     }
 
-    private void updateTea(final String name) {
-        setTeaInformation(name);
+    private fun updateTea(name: String) {
+        setTeaInformation(name)
 
-        teaRepository.updateTea(tea);
+        teaRepository.updateTea(tea!!)
 
-        saveInfusions(tea.getId());
+        saveInfusions(tea!!.id!!)
     }
 
-    private void insertTea(final String name) {
-        setTeaInformation(name);
-        tea.setNextInfusion(0);
+    private fun insertTea(name: String) {
+        setTeaInformation(name)
+        tea!!.nextInfusion = 0
 
-        final long teaId = teaRepository.insertTea(tea);
+        val teaId = teaRepository.insertTea(tea!!)
 
-        saveInfusions(teaId);
+        saveInfusions(teaId)
     }
 
-    private void setTeaInformation(final String name) {
-        tea.setName(name);
-        tea.setDate(CurrentDate.getDate());
+    private fun setTeaInformation(name: String) {
+        tea!!.name = name
+        tea!!.date = getDate()
     }
 
-    private void saveInfusions(final long teaId) {
-        infusionRepository.deleteInfusionsByTeaId(teaId);
-        for (int i = 0; i < getInfusionSize(); i++) {
-            infusions.get(i).setTeaId(teaId);
-            infusions.get(i).setInfusionIndex(i);
-            infusionRepository.insertInfusion(infusions.get(i));
+    private fun saveInfusions(teaId: Long) {
+        infusionRepository.deleteInfusionsByTeaId(teaId)
+        for (i in 0 until getInfusionSize()) {
+            infusions[i].teaId = teaId
+            infusions[i].infusionIndex = i
+            infusionRepository.insertInfusion(infusions[i])
         }
     }
 
-    private boolean isFahrenheit() {
-        return FAHRENHEIT.equals(getTemperatureUnit());
+    private fun isFahrenheit(): Boolean {
+        return TemperatureUnit.FAHRENHEIT == getTemperatureUnit()
     }
 
-    private void signalDataChanged() {
-        infusionIndex.setValue(getInfusionIndex());
+    private fun signalDataChanged() {
+        infusionIndex!!.value = getInfusionIndex()
     }
 }

@@ -1,163 +1,146 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.OTHER;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.res.ColorStateList
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromChoice
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.res.ColorStateList;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : DialogFragment() {
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
+    private var dialogView: View? = null
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+    override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
+        val activity: Activity = requireActivity()
+        val parent = activity.findViewById<ViewGroup>(R.id.new_tea_parent)
+        val inflater = activity.layoutInflater
+        dialogView = inflater.inflate(R.layout.dialog_variety_picker, parent, false)
 
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
+        defineVarietyRadioGroup()
 
-public class VarietyPickerDialog extends DialogFragment {
-    public static final String TAG = "VarietyPickerDialog";
-
-    private final NewTeaViewModel newTeaViewModel;
-    private View dialogView;
-
-    public VarietyPickerDialog(final NewTeaViewModel newTeaViewModel) {
-        this.newTeaViewModel = newTeaViewModel;
+        return AlertDialog.Builder(activity, R.style.dialog_theme)
+            .setView(dialogView)
+            .setTitle(R.string.new_tea_dialog_variety_header)
+            .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
+            .setPositiveButton(R.string.new_tea_dialog_picker_positive) { _, _ ->
+                persistVariety()
+                persistColor()
+            }
+            .create()
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstancesState) {
-        final Activity activity = requireActivity();
-        final ViewGroup parent = activity.findViewById(R.id.new_tea_parent);
-        final LayoutInflater inflater = activity.getLayoutInflater();
-        dialogView = inflater.inflate(R.layout.dialog_variety_picker, parent, false);
+    private fun defineVarietyRadioGroup() {
+        val varietyList = resources.getStringArray(R.array.new_tea_variety_teas)
+        val varietyRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
 
-        defineVarietyRadioGroup();
-
-        return new AlertDialog.Builder(activity, R.style.dialog_theme)
-                .setView(dialogView)
-                .setTitle(R.string.new_tea_dialog_variety_header)
-                .setNegativeButton(R.string.new_tea_dialog_picker_negative, null)
-                .setPositiveButton(R.string.new_tea_dialog_picker_positive, (dialog, which) -> {
-                    persistVariety();
-                    persistColor();
-                })
-                .create();
-    }
-
-    private void defineVarietyRadioGroup() {
-        final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
-        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.radio_group_new_tea_variety_input);
-
-        for (final String variety : varietyList) {
-            final RadioButton varietyRadioButton = createRadioButton(variety);
-            varietyRadioGroup.addView(varietyRadioButton);
+        for (variety in varietyList) {
+            val varietyRadioButton = createRadioButton(variety)
+            varietyRadioGroup.addView(varietyRadioButton)
         }
 
-        varietyRadioGroup.setOnCheckedChangeListener(this::showCustomVariety);
+        varietyRadioGroup.setOnCheckedChangeListener { radioGroup: RadioGroup, checkedId: Int -> showCustomVariety(radioGroup, checkedId) }
 
-        setConfiguredValues(varietyRadioGroup, varietyList);
+        setConfiguredValues(varietyRadioGroup, varietyList)
     }
 
-    private void setConfiguredValues(final RadioGroup varietyRadioGroup, final String[] varietyList) {
-        final String varietyAsText = newTeaViewModel.getVarietyAsText();
-        final int varietyIndex = Arrays.asList(varietyList).indexOf(varietyAsText);
-        final List<RadioButton> radioButtons = getRadioButtons(varietyRadioGroup);
+    private fun setConfiguredValues(varietyRadioGroup: RadioGroup, varietyList: Array<String>) {
+        val varietyAsText = newTeaViewModel.varietyAsText
+        val varietyIndex = listOf(*varietyList).indexOf(varietyAsText)
+        val radioButtons = getRadioButtons(varietyRadioGroup)
 
         if (varietyIndex == -1) {
-            radioButtons.get(OTHER.getChoice()).setChecked(true);
-            final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
-            editTextCustomVariety.setText(varietyAsText);
+            radioButtons[Variety.OTHER.choice].isChecked = true
+            val editTextCustomVariety = dialogView!!.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+            editTextCustomVariety.setText(varietyAsText)
         } else {
-            final Variety variety = newTeaViewModel.getVariety();
-            radioButtons.get(variety.getChoice()).setChecked(true);
+            val variety = newTeaViewModel.variety
+            radioButtons[variety.choice].isChecked = true
         }
     }
 
-    private List<RadioButton> getRadioButtons(final RadioGroup radioGroup) {
-        final ArrayList<RadioButton> listRadioButtons = new ArrayList<>();
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            final View o = radioGroup.getChildAt(i);
-            if (o instanceof RadioButton) {
-                listRadioButtons.add((RadioButton) o);
+    private fun getRadioButtons(radioGroup: RadioGroup): List<RadioButton> {
+        val listRadioButtons = ArrayList<RadioButton>()
+        for (i in 0 until radioGroup.childCount) {
+            val o = radioGroup.getChildAt(i)
+            if (o is RadioButton) {
+                listRadioButtons.add(o)
             }
         }
-        return listRadioButtons;
+        return listRadioButtons
     }
 
-    private RadioButton createRadioButton(final String variety) {
-        final RadioButton varietyRadioButton = new RadioButton(getActivity());
-        varietyRadioButton.setText(variety);
+    private fun createRadioButton(variety: String): RadioButton {
+        val varietyRadioButton = RadioButton(activity)
+        varietyRadioButton.text = variety
 
-        final ColorStateList colorStateList = new ColorStateList(
-                new int[][]{
-                        new int[]{-android.R.attr.state_checked}, // unchecked
-                        new int[]{android.R.attr.state_checked}  // checked
-                },
-                new int[]{
-                        ContextCompat.getColor(getActivity().getApplication(), R.color.background_grey),
-                        ContextCompat.getColor(getActivity().getApplication(), R.color.background_green)
-                }
-        );
-        varietyRadioButton.setButtonTintList(colorStateList);
-        final RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(dpToPixel(20), dpToPixel(10), 0, 0);
-        varietyRadioButton.setLayoutParams(params);
-        varietyRadioButton.setPadding(dpToPixel(15), 0, 0, 0);
-        varietyRadioButton.setTextSize(16);
-        return varietyRadioButton;
+        val colorStateList = ColorStateList(
+            arrayOf(intArrayOf(-android.R.attr.state_checked), intArrayOf(android.R.attr.state_checked)),
+            intArrayOf(
+                ContextCompat.getColor(requireActivity().application, R.color.background_grey),
+                ContextCompat.getColor(requireActivity().application, R.color.background_green)
+            )
+        )
+        varietyRadioButton.buttonTintList = colorStateList
+        val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.setMargins(dpToPixel(20), dpToPixel(10), 0, 0)
+        varietyRadioButton.layoutParams = params
+        varietyRadioButton.setPadding(dpToPixel(15), 0, 0, 0)
+        varietyRadioButton.textSize = 16f
+        return varietyRadioButton
     }
 
-    private int dpToPixel(final int dpValue) {
-        final float density = getActivity().getApplication().getResources().getDisplayMetrics().density;
-        return (int) (dpValue * density); // margin in pixels
+    private fun dpToPixel(dpValue: Int): Int {
+        val density = requireActivity().application.resources.displayMetrics.density
+        return (dpValue * density).toInt() // margin in pixels
     }
 
-    private void showCustomVariety(final RadioGroup radioGroup, final int checkedId) {
-        final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
-        final RadioButton radioButton = radioGroup.findViewById(checkedId);
-        final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
+    private fun showCustomVariety(radioGroup: RadioGroup, checkedId: Int) {
+        val varietyList = resources.getStringArray(R.array.new_tea_variety_teas)
+        val radioButton = radioGroup.findViewById<RadioButton>(checkedId)
+        val editTextCustomVariety = dialogView!!.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
 
-        if (varietyList[OTHER.getChoice()].equals(radioButton.getText().toString())) {
-            editTextCustomVariety.setVisibility(View.VISIBLE);
+        if (varietyList[Variety.OTHER.choice] == radioButton.text.toString()) {
+            editTextCustomVariety.visibility = View.VISIBLE
         } else {
-            editTextCustomVariety.setVisibility(View.GONE);
+            editTextCustomVariety.visibility = View.GONE
         }
     }
 
-    private void persistVariety() {
-        final EditText editTextCustomVariety = dialogView.findViewById(R.id.edit_text_new_tea_custom_variety);
+    private fun persistVariety() {
+        val editTextCustomVariety = dialogView!!.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
 
-        if (editTextCustomVariety.getVisibility() == View.VISIBLE &&
-                !editTextCustomVariety.getText().toString().isEmpty()) {
-            newTeaViewModel.setVariety(editTextCustomVariety.getText().toString());
+        if (editTextCustomVariety.visibility == View.VISIBLE && editTextCustomVariety.text.toString().isNotEmpty()) {
+            newTeaViewModel.setVariety(editTextCustomVariety.text.toString())
         } else {
-            final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.radio_group_new_tea_variety_input);
-            final RadioButton radioButton = varietyRadioGroup.findViewById(varietyRadioGroup.getCheckedRadioButtonId());
+            val varietyRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
+            val radioButton = varietyRadioGroup.findViewById<RadioButton>(varietyRadioGroup.checkedRadioButtonId)
 
-            newTeaViewModel.setVariety(radioButton.getText().toString());
+            newTeaViewModel.setVariety(radioButton.text.toString())
         }
     }
 
-    private void persistColor() {
-        final String[] varietyList = getResources().getStringArray(R.array.new_tea_variety_teas);
-        final RadioGroup varietyRadioGroup = dialogView.findViewById(R.id.radio_group_new_tea_variety_input);
-        final RadioButton radioButton = varietyRadioGroup.findViewById(varietyRadioGroup.getCheckedRadioButtonId());
+    private fun persistColor() {
+        val varietyList = resources.getStringArray(R.array.new_tea_variety_teas)
+        val varietyRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
+        val radioButton = varietyRadioGroup.findViewById<RadioButton>(varietyRadioGroup.checkedRadioButtonId)
 
-        final int varietyIndex = Arrays.asList(varietyList).indexOf(radioButton.getText().toString());
-        final int varietyColor = ContextCompat.getColor(getActivity().getApplication(), Variety.fromChoice(varietyIndex).getColor());
+        val varietyIndex = listOf(*varietyList).indexOf(radioButton.text.toString())
+        val varietyColor = ContextCompat.getColor(requireActivity().application, fromChoice(varietyIndex).color)
 
-        newTeaViewModel.setColor(varietyColor);
+        newTeaViewModel.color = varietyColor
+    }
+
+    companion object {
+        const val TAG = "VarietyPickerDialog"
     }
 }

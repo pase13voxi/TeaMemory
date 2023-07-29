@@ -57,6 +57,8 @@ public class TemperaturePickerDialogTest {
 
     @Test
     public void showDialogAndExpectTitle() {
+        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -67,6 +69,8 @@ public class TemperaturePickerDialogTest {
 
     @Test
     public void showDialogAndExpectCelsiusUnit() {
+        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -78,6 +82,7 @@ public class TemperaturePickerDialogTest {
 
     @Test
     public void showDialogAndExpectFahrenheitUnit() {
+        when(suggestions.getTemperatureFahrenheitSuggestions()).thenReturn(new int[]{});
         when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
 
         dialogFragment.show(fragmentManager, TAG);
@@ -166,6 +171,8 @@ public class TemperaturePickerDialogTest {
 
     @Test
     public void acceptInputAndExpectSavedTemperature() {
+        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -182,6 +189,7 @@ public class TemperaturePickerDialogTest {
 
     @Test
     public void showExistingTemperatureConfiguration() {
+        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
         when(newTeaViewModel.getInfusionTemperature()).thenReturn(85);
 
         dialogFragment.show(fragmentManager, TAG);

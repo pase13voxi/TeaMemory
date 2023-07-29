@@ -314,8 +314,7 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setView(alertLayoutDialog)
             .setTitle(R.string.settings_show_hints_header)
-            .setPositiveButton(R.string.settings_show_hints_ok)
-            { dialog: DialogInterface?, which: Int -> displayedHintsChanged(checkBoxUpdate, checkBoxDescription) }
+            .setPositiveButton(R.string.settings_show_hints_ok) { _, _ -> displayedHintsChanged(checkBoxUpdate, checkBoxDescription) }
             .setNegativeButton(R.string.settings_show_hints_cancel, null)
             .show()
     }
@@ -329,7 +328,7 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setMessage(R.string.settings_factory_settings_text)
             .setTitle(R.string.settings_factory_settings)
-            .setPositiveButton(R.string.settings_factory_settings_ok) { dialogInterface: DialogInterface?, i: Int -> resetToFactorySettings() }
+            .setPositiveButton(R.string.settings_factory_settings_ok) { _, _ -> resetToFactorySettings() }
             .setNegativeButton(R.string.settings_factory_settings_cancel, null)
             .show()
     }

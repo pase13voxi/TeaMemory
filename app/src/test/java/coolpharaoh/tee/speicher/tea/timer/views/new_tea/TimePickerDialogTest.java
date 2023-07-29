@@ -54,6 +54,8 @@ public class TimePickerDialogTest {
 
     @Test
     public void showDialogAndExpectTitle() {
+        when(suggestions.getTimeSuggestions()).thenReturn(new String[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -118,6 +120,8 @@ public class TimePickerDialogTest {
 
     @Test
     public void acceptInputAndExpectSavedTime() {
+        when(suggestions.getTimeSuggestions()).thenReturn(new String[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -137,6 +141,8 @@ public class TimePickerDialogTest {
 
     @Test
     public void inputZeroTimeAndExpectSavedNull() {
+        when(suggestions.getTimeSuggestions()).thenReturn(new String[]{});
+
         dialogFragment.show(fragmentManager, TAG);
         shadowOf(getMainLooper()).idle();
 
@@ -156,6 +162,7 @@ public class TimePickerDialogTest {
 
     @Test
     public void showExistingTimeConfiguration() {
+        when(suggestions.getTimeSuggestions()).thenReturn(new String[]{});
         when(newTeaViewModel.getInfusionTime()).thenReturn("05:15");
 
         dialogFragment.show(fragmentManager, TAG);

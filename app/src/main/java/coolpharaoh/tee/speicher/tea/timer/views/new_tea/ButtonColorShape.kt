@@ -1,37 +1,31 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
+import android.app.Application
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import androidx.core.content.ContextCompat
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
 
-import android.app.Application;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
+internal class ButtonColorShape(drawable: Drawable, application: Application) {
 
-import androidx.core.content.ContextCompat;
+    private val application: Application
+    private val gradientDrawable: GradientDrawable
 
-class ButtonColorShape {
+    init {
+        gradientDrawable = drawable as GradientDrawable
+        this.application = application
 
-    private final Application application;
-    private final GradientDrawable gradientDrawable;
-    private int color;
-
-    ButtonColorShape(final Drawable drawable, final Application application) {
-        gradientDrawable = (GradientDrawable) drawable;
-        this.application = application;
-
-        setDefaultColor();
+        setDefaultColor()
     }
 
-    private void setDefaultColor() {
-        final int varietyColor = ContextCompat.getColor(application, BLACK_TEA.getColor());
-        setColor(varietyColor);
+    private fun setDefaultColor() {
+        val varietyColor = ContextCompat.getColor(application, Variety.BLACK_TEA.color)
+        color = varietyColor
     }
 
-    void setColor(final int color) {
-        this.color = color;
-        gradientDrawable.setColor(color);
-    }
-
-    int getColor() {
-        return color;
-    }
+    var color = 0
+        set(color) {
+            field = color
+            gradientDrawable.setColor(color)
+        }
 }

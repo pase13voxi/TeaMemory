@@ -327,8 +327,8 @@ class ShowTea : AppCompatActivity() {
         val builder = AlertDialog.Builder(this, R.style.dialog_theme)
         builder.setTitle(R.string.show_tea_dialog_following_infusion_header)
         builder.setMessage(resources.getString(R.string.show_tea_dialog_following_infusion_description, lastInfusion, nextInfusion))
-        builder.setPositiveButton(R.string.show_tea_dialog_following_infusion_yes) { dialog: DialogInterface?, which: Int -> continueNextInfusion() }
-        builder.setNegativeButton(R.string.show_tea_dialog_following_infusion_no) { dialog: DialogInterface?, which: Int -> showTeaViewModel!!.resetNextInfusion() }
+        builder.setPositiveButton(R.string.show_tea_dialog_following_infusion_yes) { _, _ -> continueNextInfusion() }
+        builder.setNegativeButton(R.string.show_tea_dialog_following_infusion_no) { _, _ -> showTeaViewModel!!.resetNextInfusion() }
         builder.show()
     }
 
