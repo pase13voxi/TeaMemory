@@ -1,196 +1,188 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static android.os.Looper.getMainLooper;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.CoolDownTimePickerDialog.TAG;
+import android.content.DialogInterface
+import android.os.Looper
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import org.assertj.core.api.Assertions.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows
+import org.robolectric.shadows.ShadowAlertDialog
+import java.util.function.Function
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.TextView;
-
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowAlertDialog;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-
-@RunWith(RobolectricTestRunner.class)
-public class CoolDownTimePickerDialogTest {
-
+@RunWith(RobolectricTestRunner::class)
+class CoolDownTimePickerDialogTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    NewTeaViewModel newTeaViewModel;
+    var rule = MockitoJUnit.rule()
 
-    private CoolDownTimePickerDialog dialogFragment;
-    private FragmentManager fragmentManager;
+    @Mock
+    lateinit var newTeaViewModel: NewTeaViewModel
+    @InjectMocks
+    lateinit var dialogFragment: CoolDownTimePickerDialog
+
+    private var fragmentManager: FragmentManager? = null
 
     @Before
-    public void setUp() {
-        final FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
-        fragmentManager = activity.getSupportFragmentManager();
-        dialogFragment = new CoolDownTimePickerDialog(newTeaViewModel);
+    fun setUp() {
+        val activity = Robolectric.buildActivity(FragmentActivity::class.java).create().start().resume().get()
+        fragmentManager = activity.supportFragmentManager
     }
 
     @Test
-    public void showDialog() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun showDialog() {
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val shadowDialog = Shadows.shadowOf(dialog)
+        assertThat(shadowDialog.title).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header))
     }
 
     @Test
-    public void showDialogWithNoConfiguredTemperatureAndExpectNoCalculatedCoolDownTime() {
-        when(newTeaViewModel.getInfusionTemperature()).thenReturn(-500);
-        when(newTeaViewModel.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun showDialogWithNoConfiguredTemperatureAndExpectNoCalculatedCoolDownTime() {
+        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(-500)
+        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.CELSIUS)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val shadowDialog = Shadows.shadowOf(dialog)
+        assertThat(shadowDialog.title).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header))
 
-        final LinearLayout linearLayout = dialog.findViewById(R.id.layout_new_tea_custom_variety);
-        assertThat(linearLayout.getVisibility()).isEqualTo(View.GONE);
+        val linearLayout = dialog.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        assertThat(linearLayout.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void showDialogWith100CelsiusAndExpectNoCalculatedCoolDownTime() {
-        when(newTeaViewModel.getInfusionTemperature()).thenReturn(212);
-        when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+    fun showDialogWith100CelsiusAndExpectNoCalculatedCoolDownTime() {
+        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(212)
+        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.FAHRENHEIT)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val shadowDialog = Shadows.shadowOf(dialog)
+        assertThat(shadowDialog.title).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_header))
 
-        final LinearLayout linearLayout = dialog.findViewById(R.id.layout_new_tea_custom_variety);
-        assertThat(linearLayout.getVisibility()).isEqualTo(View.GONE);
+        val linearLayout = dialog.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        assertThat(linearLayout.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void showDialogAndExpectCalculatedCoolDownTime() {
-        when(newTeaViewModel.getInfusionTemperature()).thenReturn(90);
-        when(newTeaViewModel.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun showDialogAndExpectCalculatedCoolDownTime() {
+        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(90)
+        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.CELSIUS)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final TextView textViewSuggestions = dialog.findViewById(R.id.text_view_new_tea_suggestions_description);
-        assertThat(textViewSuggestions.getText()).hasToString(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_calculated_suggestion));
+        val textViewSuggestions = dialog.findViewById<TextView>(R.id.text_view_new_tea_suggestions_description)
+        assertThat(textViewSuggestions.text).hasToString(dialogFragment.getString(R.string.new_tea_dialog_cool_down_time_calculated_suggestion))
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
+        val buttonSuggestion1 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_1)
         assertThat(buttonSuggestion1)
-                .extracting(View::getVisibility, tv -> tv.getText().toString())
-                .containsExactly(View.VISIBLE, "5:00");
+            .extracting(Function<Button, Any> { obj: Button -> obj.visibility }, Function<Button, Any> { tv: Button -> tv.text.toString() })
+            .containsExactly(View.VISIBLE, "5:00")
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
-        assertThat(buttonSuggestion2.getVisibility()).isEqualTo(View.GONE);
+        val buttonSuggestion2 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_2)
+        assertThat(buttonSuggestion2.visibility).isEqualTo(View.GONE)
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
-        assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
+        val buttonSuggestion3 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_3)
+        assertThat(buttonSuggestion3.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void clickCalculatedCoolDownTimeAndExpectShownCalculatedCoolDownTime() {
-        when(newTeaViewModel.getInfusionTemperature()).thenReturn(95);
-        when(newTeaViewModel.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun clickCalculatedCoolDownTimeAndExpectShownCalculatedCoolDownTime() {
+        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(95)
+        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.CELSIUS)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final Button buttonSuggestion = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
-        buttonSuggestion.performClick();
+        val buttonSuggestion = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_1)
+        buttonSuggestion.performClick()
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        assertThat(numberPickerTimeMinutes.getValue()).isEqualTo(2);
+        val numberPickerTimeMinutes = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        assertThat(numberPickerTimeMinutes.value).isEqualTo(2)
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        assertThat(numberPickerTimeSeconds.getValue()).isEqualTo(30);
+        val numberPickerTimeSeconds = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        assertThat(numberPickerTimeSeconds.value).isEqualTo(30)
     }
 
     @Test
-    public void acceptInputAndExpectSavedCoolDownTime() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun acceptInputAndExpectSavedCoolDownTime() {
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        numberPickerTimeMinutes.setValue(5);
+        val numberPickerTimeMinutes = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        numberPickerTimeMinutes.value = 5
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        numberPickerTimeSeconds.setValue(45);
+        val numberPickerTimeSeconds = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        numberPickerTimeSeconds.value = 45
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionCoolDownTime("05:45");
+        verify(newTeaViewModel).setInfusionCoolDownTime("05:45")
     }
 
     @Test
-    public void inputZeroTimeAndExpectSavedNull() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun inputZeroTimeAndExpectSavedNull() {
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        numberPickerTimeMinutes.setValue(0);
+        val numberPickerTimeMinutes = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        numberPickerTimeMinutes.value = 0
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        numberPickerTimeSeconds.setValue(0);
+        val numberPickerTimeSeconds = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        numberPickerTimeSeconds.value = 0
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionCoolDownTime(null);
+        verify(newTeaViewModel).setInfusionCoolDownTime(null)
     }
 
     @Test
-    public void showExistingCoolDownTimeConfiguration() {
-        when(newTeaViewModel.getInfusionCoolDownTime()).thenReturn("05:15");
+    fun showExistingCoolDownTimeConfiguration() {
+        `when`(newTeaViewModel.getInfusionCoolDownTime()).thenReturn("05:15")
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final NumberPicker numberPickerTimeMinutes = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_minutes);
-        assertThat(numberPickerTimeMinutes.getValue()).isEqualTo(5);
+        val numberPickerTimeMinutes = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        assertThat(numberPickerTimeMinutes.value).isEqualTo(5)
 
-        final NumberPicker numberPickerTimeSeconds = dialog.findViewById(R.id.number_picker_new_tea_dialog_time_seconds);
-        assertThat(numberPickerTimeSeconds.getValue()).isEqualTo(15);
+        val numberPickerTimeSeconds = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        assertThat(numberPickerTimeSeconds.value).isEqualTo(15)
     }
 }

@@ -1,66 +1,64 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
 
-import android.app.Application;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-@ExtendWith(MockitoExtension.class)
-class InputValidatorTest {
+@ExtendWith(MockitoExtension::class)
+internal class InputValidatorTest {
     @Mock
-    private Application application;
+    lateinit var application: Application
 
-    private InputValidator inputValidator;
+    private var inputValidator: InputValidator? = null
 
     @BeforeEach
-    void setUp() {
-        inputValidator = new InputValidator(application, System.out::println);
+    fun setUp() {
+        inputValidator = InputValidator(application, object : Printer { override fun print(message: String?) { println(message) } })
     }
 
     @Test
-    void nameIsNotEmptyReturnsFalse() {
-        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+    fun nameIsNotEmptyReturnsFalse() {
+        `when`(application.getString(anyInt())).thenReturn("ErrorMessage")
 
-        assertThat(inputValidator.nameIsNotEmpty("")).isFalse();
+        assertThat(inputValidator!!.nameIsNotEmpty("")).isFalse
     }
 
     @Test
-    void nameIsNotEmptyReturnsTrue() {
-        assertThat(inputValidator.nameIsNotEmpty("Tea")).isTrue();
+    fun nameIsNotEmptyReturnsTrue() {
+        assertThat(inputValidator!!.nameIsNotEmpty("Tea")).isTrue
     }
 
     @Test
-    void nameIsValidReturnsFalse() {
-        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+    fun nameIsValidReturnsFalse() {
+        `when`(application.getString(anyInt())).thenReturn("ErrorMessage")
 
-        final char[] data = new char[350];
-        final String largeName = new String(data);
-        assertThat(inputValidator.nameIsValid(largeName)).isFalse();
+        val data = CharArray(350)
+        val largeName = String(data)
+        assertThat(inputValidator!!.nameIsValid(largeName)).isFalse
     }
 
     @Test
-    void nameIsValidReturnsTrue() {
-        assertThat(inputValidator.nameIsValid("Tea")).isTrue();
+    fun nameIsValidReturnsTrue() {
+        assertThat(inputValidator!!.nameIsValid("Tea")).isTrue
     }
 
     @Test
-    void varietyIsValidReturnsFalse() {
-        when(application.getString(anyInt())).thenReturn("ErrorMessage");
+    fun varietyIsValidReturnsFalse() {
+        `when`(application.getString(anyInt())).thenReturn("ErrorMessage")
 
-        final char[] data = new char[50];
-        final String largeVariety = new String(data);
-        assertThat(inputValidator.varietyIsValid(largeVariety)).isFalse();
+        val data = CharArray(50)
+        val largeVariety = String(data)
+        assertThat(inputValidator!!.varietyIsValid(largeVariety)).isFalse
     }
 
     @Test
-    void varietyIsValidReturnsTrue() {
-        assertThat(inputValidator.varietyIsValid("Variety")).isTrue();
+    fun varietyIsValidReturnsTrue() {
+        assertThat(inputValidator!!.varietyIsValid("Variety")).isTrue
     }
 }

@@ -1,293 +1,293 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.YELLOW_TEA;
+import android.app.Application
+import android.content.res.Resources
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromStoredText
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import java.time.Instant
+import java.util.Date
 
-import android.app.Application;
-import android.content.res.Resources;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety;
-
-@ExtendWith({MockitoExtension.class, TaskExecutorExtension.class})
-class NewTeaViewModelTest {
-    private static final String TIME_1 = "05:45";
-    private static final String[] VARIETY_TEAS = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
-            "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-    private NewTeaViewModel newTeaViewModelEmpty;
-    private NewTeaViewModel newTeaViewModelFilled;
+@ExtendWith(MockitoExtension::class, TaskExecutorExtension::class)
+internal class NewTeaViewModelTest {
+    private var newTeaViewModelEmpty: NewTeaViewModel? = null
+    private var newTeaViewModelFilled: NewTeaViewModel? = null
 
     @Mock
-    Application application;
-    @Mock
-    Resources resources;
-    @Mock
-    TeaRepository teaRepository;
-    @Mock
-    InfusionRepository infusionRepository;
-    @Mock
-    SharedSettings sharedSettings;
+    lateinit var application: Application
 
-    private static final long TEA_ID_FILLED = 1L;
-    private Tea tea;
+    @Mock
+    lateinit var resources: Resources
+
+    @Mock
+    lateinit var teaRepository: TeaRepository
+
+    @Mock
+    lateinit var infusionRepository: InfusionRepository
+
+    @Mock
+    lateinit var sharedSettings: SharedSettings
+
+    private var tea: Tea? = null
 
     @BeforeEach
-    void setUp() {
-        newTeaViewModelEmpty = new NewTeaViewModel(null, application, teaRepository,
-                infusionRepository, sharedSettings);
-        mockStoredTea();
-        newTeaViewModelFilled = new NewTeaViewModel(TEA_ID_FILLED, application, teaRepository,
-                infusionRepository, sharedSettings);
+    fun setUp() {
+        newTeaViewModelEmpty = NewTeaViewModel(null, application, teaRepository, infusionRepository, sharedSettings)
+        mockStoredTea()
+        newTeaViewModelFilled = NewTeaViewModel(TEA_ID_FILLED, application, teaRepository, infusionRepository, sharedSettings)
     }
 
     @Test
-    void getTeaId() {
-        assertThat(newTeaViewModelFilled.getTeaId()).isEqualTo(tea.getId());
+    fun getTeaId() {
+        assertThat(newTeaViewModelFilled!!.teaId).isEqualTo(tea!!.id)
     }
 
     @Test
-    void getName() {
-        assertThat(newTeaViewModelFilled.getName()).isEqualTo(tea.getName());
+    fun getName() {
+        assertThat(newTeaViewModelFilled!!.name).isEqualTo(tea!!.name)
     }
 
     @Test
-    void getVarietyAsText() {
-        mockStringResource();
+    fun getVarietyAsText() {
+        mockStringResource()
 
-        assertThat(newTeaViewModelFilled.getVarietyAsText())
-                .isEqualTo(Variety.convertStoredVarietyToText(tea.getVariety(), application));
+        assertThat(newTeaViewModelFilled!!.varietyAsText).isEqualTo(convertStoredVarietyToText(tea!!.variety, application))
     }
 
     @Test
-    void getVariety() {
-        assertThat(newTeaViewModelFilled.getVariety())
-                .isEqualTo(Variety.fromStoredText(tea.getVariety()));
+    fun getVariety() {
+        assertThat(newTeaViewModelFilled!!.variety).isEqualTo(fromStoredText(tea!!.variety))
     }
 
     @Test
-    void setVariety() {
-        mockStringResource();
+    fun setVariety() {
+        mockStringResource()
 
-        newTeaViewModelEmpty.setVariety("VARIETY");
+        newTeaViewModelEmpty!!.setVariety("VARIETY")
 
-        assertThat(newTeaViewModelEmpty.getVarietyAsText()).isEqualTo("VARIETY");
+        assertThat(newTeaViewModelEmpty!!.varietyAsText).isEqualTo("VARIETY")
     }
 
     @Test
-    void setAmountAndExpectAmountAndAmountKind() {
-        newTeaViewModelEmpty.setAmount(5.5, TEA_SPOON);
+    fun setAmountAndExpectAmountAndAmountKind() {
+        newTeaViewModelEmpty!!.setAmount(5.5, AmountKind.TEA_SPOON)
 
-        assertThat(newTeaViewModelEmpty.getAmount()).isEqualTo(5.5);
-        assertThat(newTeaViewModelEmpty.getAmountKind()).isEqualTo(TEA_SPOON);
+        assertThat(newTeaViewModelEmpty!!.amount).isEqualTo(5.5)
+        assertThat(newTeaViewModelEmpty!!.amountKind).isEqualTo(AmountKind.TEA_SPOON)
     }
 
     @Test
-    void setColorAndExpectColor() {
-        newTeaViewModelEmpty.setColor(1234);
+    fun setColorAndExpectColor() {
+        newTeaViewModelEmpty!!.color = 1234
 
-        assertThat(newTeaViewModelEmpty.getColor()).isEqualTo(1234);
+        assertThat(newTeaViewModelEmpty!!.color).isEqualTo(1234)
     }
 
     @Test
-    void setTemperatureCelsiusAndExpectTemperature() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun setTemperatureCelsiusAndExpectTemperature() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
 
-        newTeaViewModelEmpty.setInfusionTemperature(90);
+        newTeaViewModelEmpty!!.setInfusionTemperature(90)
 
-        assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(90);
-        assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(CELSIUS);
+        assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(90)
+        assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
-    void setTemperatureCelsiusAndExpectFahrenheitTemperature() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun setTemperatureCelsiusAndExpectFahrenheitTemperature() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
 
-        newTeaViewModelEmpty.setInfusionTemperature(90);
+        newTeaViewModelEmpty!!.setInfusionTemperature(90)
 
-        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
-        assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(194);
-        assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
+        assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(194)
+        assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.FAHRENHEIT)
     }
 
     @Test
-    void setTemperatureFahrenheitAndExpectTemperature() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+    fun setTemperatureFahrenheitAndExpectTemperature() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
 
-        newTeaViewModelEmpty.setInfusionTemperature(194);
+        newTeaViewModelEmpty!!.setInfusionTemperature(194)
 
-        assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(194);
-        assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(FAHRENHEIT);
+        assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(194)
+        assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.FAHRENHEIT)
     }
 
     @Test
-    void setTemperatureFahrenheitAndExpectCelsiusTemperature() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+    fun setTemperatureFahrenheitAndExpectCelsiusTemperature() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
 
-        newTeaViewModelEmpty.setInfusionTemperature(194);
+        newTeaViewModelEmpty!!.setInfusionTemperature(194)
 
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
-        assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(90);
-        assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(CELSIUS);
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(90)
+        assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
-    void setTemperatureFahrenheitAndExpectStoredTemperatureFahrenheitAndTemperature() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
+    fun setTemperatureFahrenheitAndExpectStoredTemperatureFahrenheitAndTemperature() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
 
-        newTeaViewModelEmpty.setInfusionTemperature(90);
+        newTeaViewModelEmpty!!.setInfusionTemperature(90)
 
-        assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(90);
-        assertThat(newTeaViewModelEmpty.getTemperatureUnit()).isEqualTo(CELSIUS);
+        assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(90)
+        assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
-    void setCoolDownTimeAndExpectCoolDownTime() {
-        newTeaViewModelEmpty.setInfusionCoolDownTime(TIME_1);
+    fun setCoolDownTimeAndExpectCoolDownTime() {
+        newTeaViewModelEmpty!!.setInfusionCoolDownTime(TIME_1)
 
-        assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isEqualTo(TIME_1);
+        assertThat(newTeaViewModelEmpty!!.getInfusionCoolDownTime()).isEqualTo(TIME_1)
     }
 
     @Test
-    void resetCoolDownTimeAndExpectNull() {
-        newTeaViewModelEmpty.resetInfusionCoolDownTime();
+    fun resetCoolDownTimeAndExpectNull() {
+        newTeaViewModelEmpty!!.resetInfusionCoolDownTime()
 
-        assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isNull();
+        assertThat(newTeaViewModelEmpty!!.getInfusionCoolDownTime()).isNull()
     }
 
     @Test
-    void setTimeAndExpectTime() {
-        newTeaViewModelEmpty.setInfusionTime(TIME_1);
+    fun setTimeAndExpectTime() {
+        newTeaViewModelEmpty!!.setInfusionTime(TIME_1)
 
-        assertThat(newTeaViewModelEmpty.getInfusionTime()).isEqualTo(TIME_1);
+        assertThat(newTeaViewModelEmpty!!.getInfusionTime()).isEqualTo(TIME_1)
     }
 
     @Test
-    void addInfusion() {
-        when(sharedSettings.getTemperatureUnit()).thenReturn(CELSIUS);
-        assertThat(newTeaViewModelEmpty.getInfusionSize()).isEqualTo(1);
+    fun addInfusion() {
+        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        assertThat(newTeaViewModelEmpty!!.getInfusionSize()).isEqualTo(1)
 
-        newTeaViewModelEmpty.addInfusion();
+        newTeaViewModelEmpty!!.addInfusion()
 
-        assertThat(newTeaViewModelEmpty.dataChanges().getValue()).isEqualTo(1);
-        assertThat(newTeaViewModelEmpty.getInfusionSize()).isEqualTo(2);
-        assertThat(newTeaViewModelEmpty.getInfusionTime()).isNull();
-        assertThat(newTeaViewModelEmpty.getInfusionCoolDownTime()).isNull();
-        assertThat(newTeaViewModelEmpty.getInfusionTemperature()).isEqualTo(-500);
+        assertThat(newTeaViewModelEmpty!!.dataChanges()!!.value).isEqualTo(1)
+        assertThat(newTeaViewModelEmpty!!.getInfusionSize()).isEqualTo(2)
+        assertThat(newTeaViewModelEmpty!!.getInfusionTime()).isNull()
+        assertThat(newTeaViewModelEmpty!!.getInfusionCoolDownTime()).isNull()
+        assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(-500)
     }
 
     @Test
-    void deleteInfusionAndExpectTwoInfusions() {
-        assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(2);
+    fun deleteInfusionAndExpectTwoInfusions() {
+        assertThat(newTeaViewModelFilled!!.getInfusionSize()).isEqualTo(2)
 
-        newTeaViewModelFilled.deleteInfusion();
+        newTeaViewModelFilled!!.deleteInfusion()
 
-        assertThat(newTeaViewModelFilled.getInfusionSize()).isEqualTo(1);
+        assertThat(newTeaViewModelFilled!!.getInfusionSize()).isEqualTo(1)
     }
 
     @Test
-    void deleteFirstInfusionAndExpectIndexZero() {
-        newTeaViewModelFilled.deleteInfusion();
+    fun deleteFirstInfusionAndExpectIndexZero() {
+        newTeaViewModelFilled!!.deleteInfusion()
 
-        assertThat(newTeaViewModelFilled.dataChanges().getValue()).isZero();
+        assertThat(newTeaViewModelFilled!!.dataChanges()!!.value).isZero
     }
 
     @Test
-    void deleteLastInfusionAndExpectIndexOne() {
-        newTeaViewModelFilled.nextInfusion();
+    fun deleteLastInfusionAndExpectIndexOne() {
+        newTeaViewModelFilled!!.nextInfusion()
 
-        newTeaViewModelFilled.deleteInfusion();
+        newTeaViewModelFilled!!.deleteInfusion()
 
-        assertThat(newTeaViewModelFilled.dataChanges().getValue()).isZero();
+        assertThat(newTeaViewModelFilled!!.dataChanges()!!.value).isZero
     }
 
     @Test
-    void navigateToNextAndPreviousInfusion() {
-        newTeaViewModelFilled.nextInfusion();
-        assertThat(newTeaViewModelFilled.dataChanges().getValue()).isEqualTo(1);
+    fun navigateToNextAndPreviousInfusion() {
+        newTeaViewModelFilled!!.nextInfusion()
+        assertThat(newTeaViewModelFilled!!.dataChanges()!!.value).isEqualTo(1)
 
-        newTeaViewModelFilled.previousInfusion();
+        newTeaViewModelFilled!!.previousInfusion()
 
-        assertThat(newTeaViewModelFilled.dataChanges().getValue()).isZero();
+        assertThat(newTeaViewModelFilled!!.dataChanges()!!.value).isZero
     }
 
     @Test
-    void couldNotNavigateToNextInfusion() {
-        newTeaViewModelEmpty.nextInfusion();
+    fun couldNotNavigateToNextInfusion() {
+        newTeaViewModelEmpty!!.nextInfusion()
 
-        assertThat(newTeaViewModelFilled.dataChanges().getValue()).isZero();
+        assertThat(newTeaViewModelFilled!!.dataChanges()!!.value).isZero
     }
 
     @Test
-    void couldNotNavigateToPreviousInfusion() {
-        newTeaViewModelEmpty.previousInfusion();
+    fun couldNotNavigateToPreviousInfusion() {
+        newTeaViewModelEmpty!!.previousInfusion()
 
-        assertThat(newTeaViewModelEmpty.dataChanges().getValue()).isZero();
+        assertThat(newTeaViewModelEmpty!!.dataChanges()!!.value).isZero
     }
 
     @Test
-    void saveTeaAndExpectNewTea() {
-        newTeaViewModelEmpty.saveTea("name");
-
-        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).insertTea(captor.capture());
-        final Tea savedTea = captor.getValue();
-        assertThat(savedTea.getName()).isEqualTo("name");
-        verify(infusionRepository).insertInfusion(any());
+    fun saveTeaAndExpectNewTea() {
+        newTeaViewModelEmpty!!.saveTea("name")
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).insertTea(capture())
+            val (_, name1) = lastValue
+            assertThat(name1).isEqualTo("name")
+            verify(infusionRepository).insertInfusion(any())
+        }
     }
 
     @Test
-    void saveTeaAndExpectEditedExistingTea() {
-        newTeaViewModelFilled.saveTea("name");
+    fun saveTeaAndExpectEditedExistingTea() {
+        newTeaViewModelFilled!!.saveTea("name")
 
-        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).updateTea(captor.capture());
-        final Tea savedTea = captor.getValue();
-        assertThat(savedTea.getName()).isEqualTo("name");
-        verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED);
-        verify(infusionRepository, times(2)).insertInfusion(any());
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).updateTea(capture())
+            val (_, name1) = lastValue
+            assertThat(name1).isEqualTo("name")
+            verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED)
+            verify(infusionRepository, times(2)).insertInfusion(any())
+        }
     }
 
-    private void mockStoredTea() {
-        final Date today = Date.from(Instant.now());
-        tea = new Tea("TEA", YELLOW_TEA.getCode(), 3, TEA_SPOON.getText(), 5, 0, today);
-        tea.setId(TEA_ID_FILLED);
-        when(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea);
+    private fun mockStoredTea() {
+        val today = Date.from(Instant.now())
+        tea = Tea("TEA", Variety.YELLOW_TEA.code, 3.0, AmountKind.TEA_SPOON.text, 5, 0, today)
+        tea!!.id = TEA_ID_FILLED
+        `when`(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea)
 
-        final List<Infusion> infusions = new ArrayList<>();
-        final Infusion infusion1 = new Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5);
-        infusions.add(infusion1);
-        final Infusion infusion2 = new Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100);
-        infusions.add(infusion2);
-        when(infusionRepository.getInfusionsByTeaId(TEA_ID_FILLED)).thenReturn(infusions);
+        val infusions: MutableList<Infusion> = ArrayList()
+        val infusion1 = Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5)
+        infusions.add(infusion1)
+        val infusion2 = Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100)
+        infusions.add(infusion2)
+        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID_FILLED)).thenReturn(infusions)
     }
 
-    private void mockStringResource() {
-        when(application.getResources()).thenReturn(resources);
-        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETY_TEAS);
+    private fun mockStringResource() {
+        `when`(application.resources).thenReturn(resources)
+        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETY_TEAS)
+    }
+
+    companion object {
+        private const val TIME_1 = "05:45"
+        private val VARIETY_TEAS = arrayOf(
+            "Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
+            "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"
+        )
+        private const val TEA_ID_FILLED = 1L
     }
 }

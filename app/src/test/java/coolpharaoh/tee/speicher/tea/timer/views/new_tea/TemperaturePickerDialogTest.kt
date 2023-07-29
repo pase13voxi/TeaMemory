@@ -1,203 +1,195 @@
-package coolpharaoh.tee.speicher.tea.timer.views.new_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
-import static android.os.Looper.getMainLooper;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.FAHRENHEIT;
-import static coolpharaoh.tee.speicher.tea.timer.views.new_tea.TemperaturePickerDialog.TAG;
+import android.content.DialogInterface
+import android.os.Looper
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions
+import org.assertj.core.api.Assertions.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows
+import org.robolectric.shadows.ShadowAlertDialog
+import java.util.function.Function
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.TextView;
-
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowAlertDialog;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions;
-
-@RunWith(RobolectricTestRunner.class)
-public class TemperaturePickerDialogTest {
-
+@RunWith(RobolectricTestRunner::class)
+class TemperaturePickerDialogTest {
+    @JvmField
     @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    NewTeaViewModel newTeaViewModel;
-    @Mock
-    Suggestions suggestions;
+    var rule = MockitoJUnit.rule()
 
-    private TemperaturePickerDialog dialogFragment;
-    private FragmentManager fragmentManager;
+    @Mock
+    lateinit var newTeaViewModel: NewTeaViewModel
+    @Mock
+    lateinit var suggestions: Suggestions
+    @InjectMocks
+    lateinit var dialogFragment: TemperaturePickerDialog
+
+    private var fragmentManager: FragmentManager? = null
 
     @Before
-    public void setUp() {
-        final FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
-        fragmentManager = activity.getSupportFragmentManager();
-        dialogFragment = new TemperaturePickerDialog(suggestions, newTeaViewModel);
+    fun setUp() {
+        val activity = Robolectric.buildActivity(FragmentActivity::class.java).create().start().resume().get()
+        fragmentManager = activity.supportFragmentManager
     }
 
     @Test
-    public void showDialogAndExpectTitle() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+    fun showDialogAndExpectTitle() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog.getTitle()).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_temperature_header));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val shadowDialog = Shadows.shadowOf(dialog)
+        assertThat(shadowDialog.title).isEqualTo(dialogFragment.getString(R.string.new_tea_dialog_temperature_header))
     }
 
     @Test
-    public void showDialogAndExpectCelsiusUnit() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+    fun showDialogAndExpectCelsiusUnit() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final TextView textViewUnit = dialog.findViewById(R.id.text_view_new_tea_temperature_picker_unit);
-
-        assertThat(textViewUnit.getText()).hasToString(dialogFragment.getString(R.string.new_tea_dialog_temperature_celsius));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val textViewUnit = dialog.findViewById<TextView>(R.id.text_view_new_tea_temperature_picker_unit)
+        assertThat(textViewUnit.text).hasToString(dialogFragment.getString(R.string.new_tea_dialog_temperature_celsius))
     }
 
     @Test
-    public void showDialogAndExpectFahrenheitUnit() {
-        when(suggestions.getTemperatureFahrenheitSuggestions()).thenReturn(new int[]{});
-        when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+    fun showDialogAndExpectFahrenheitUnit() {
+        `when`(suggestions.temperatureFahrenheitSuggestions).thenReturn(intArrayOf())
+        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.FAHRENHEIT)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final TextView textViewUnit = dialog.findViewById(R.id.text_view_new_tea_temperature_picker_unit);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val textViewUnit = dialog.findViewById<TextView>(R.id.text_view_new_tea_temperature_picker_unit)
 
-        assertThat(textViewUnit.getText()).hasToString(dialogFragment.getString(R.string.new_tea_dialog_temperature_fahrenheit));
+        assertThat(textViewUnit.text).hasToString(dialogFragment.getString(R.string.new_tea_dialog_temperature_fahrenheit))
     }
 
     @Test
-    public void showDialogAndExpectTwoCelsiusSuggestions() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{100, 90});
+    fun showDialogAndExpectTwoCelsiusSuggestions() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf(100, 90))
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
+        val buttonSuggestion1 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_1)
         assertThat(buttonSuggestion1)
-                .extracting(View::getVisibility, tv -> tv.getText().toString())
-                .containsExactly(View.VISIBLE, "100");
+            .extracting(Function<Button, Any> { obj: Button -> obj.visibility }, Function<Button, Any> { tv: Button -> tv.text.toString() })
+            .containsExactly(View.VISIBLE, "100")
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
+        val buttonSuggestion2 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_2)
         assertThat(buttonSuggestion2)
-                .extracting(View::getVisibility, tv -> tv.getText().toString())
-                .containsExactly(View.VISIBLE, "90");
+            .extracting(Function<Button, Any> { obj: Button -> obj.visibility }, Function<Button, Any> { tv: Button -> tv.text.toString() })
+            .containsExactly(View.VISIBLE, "90")
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
-        assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
+        val buttonSuggestion3 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_3)
+        assertThat(buttonSuggestion3.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void showDialogAndExpectTwoFahrenheitSuggestions() {
-        when(suggestions.getTemperatureFahrenheitSuggestions()).thenReturn(new int[]{212, 194});
-        when(newTeaViewModel.getTemperatureUnit()).thenReturn(FAHRENHEIT);
+    fun showDialogAndExpectTwoFahrenheitSuggestions() {
+        `when`(suggestions.temperatureFahrenheitSuggestions).thenReturn(intArrayOf(212, 194))
+        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.FAHRENHEIT)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final Button buttonSuggestion1 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_1);
+        val buttonSuggestion1 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_1)
         assertThat(buttonSuggestion1)
-                .extracting(View::getVisibility, tv -> tv.getText().toString())
-                .containsExactly(View.VISIBLE, "212");
+            .extracting(Function<Button, Any> { obj: Button -> obj.visibility }, Function<Button, Any> { tv: Button -> tv.text.toString() })
+            .containsExactly(View.VISIBLE, "212")
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
+        val buttonSuggestion2 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_2)
         assertThat(buttonSuggestion2)
-                .extracting(View::getVisibility, tv -> tv.getText().toString())
-                .containsExactly(View.VISIBLE, "194");
+            .extracting(Function<Button, Any> { obj: Button -> obj.visibility }, Function<Button, Any> { tv: Button -> tv.text.toString() })
+            .containsExactly(View.VISIBLE, "194")
 
-        final Button buttonSuggestion3 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_3);
-        assertThat(buttonSuggestion3.getVisibility()).isEqualTo(View.GONE);
+        val buttonSuggestion3 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_3)
+        assertThat(buttonSuggestion3.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void showDialogAndExpectNoSuggestions() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+    fun showDialogAndExpectNoSuggestions() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final LinearLayout layoutSuggestions = dialog.findViewById(R.id.layout_new_tea_custom_variety);
-        assertThat(layoutSuggestions.getVisibility()).isEqualTo(View.GONE);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val layoutSuggestions = dialog.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        assertThat(layoutSuggestions.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void showDialogAndClickSuggestions() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{100, 90, 80});
+    fun showDialogAndClickSuggestions() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf(100, 90, 80))
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final Button buttonSuggestion2 = dialog.findViewById(R.id.button_new_tea_picker_suggestion_2);
-        buttonSuggestion2.performClick();
+        val buttonSuggestion2 = dialog.findViewById<Button>(R.id.button_new_tea_picker_suggestion_2)
+        buttonSuggestion2.performClick()
 
-        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_new_tea_dialog_temperature);
-        assertThat(numberPickerTemperature.getValue()).isEqualTo(90);
+        val numberPickerTemperature = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
+        assertThat(numberPickerTemperature.value).isEqualTo(90)
     }
 
     @Test
-    public void acceptInputAndExpectSavedTemperature() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
+    fun acceptInputAndExpectSavedTemperature() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_new_tea_dialog_temperature);
-        numberPickerTemperature.setValue(80);
+        val numberPickerTemperature = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
+        numberPickerTemperature.value = 80
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionTemperature(80);
+        verify(newTeaViewModel).setInfusionTemperature(80)
     }
 
     @Test
-    public void showExistingTemperatureConfiguration() {
-        when(suggestions.getTemperatureCelsiusSuggestions()).thenReturn(new int[]{});
-        when(newTeaViewModel.getInfusionTemperature()).thenReturn(85);
+    fun showExistingTemperatureConfiguration() {
+        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
+        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(85)
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        final NumberPicker numberPickerTemperature = dialog.findViewById(R.id.number_picker_new_tea_dialog_temperature);
-        assertThat(numberPickerTemperature.getValue()).isEqualTo(85);
+        val numberPickerTemperature = dialog.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
+        assertThat(numberPickerTemperature.value).isEqualTo(85)
     }
 }
