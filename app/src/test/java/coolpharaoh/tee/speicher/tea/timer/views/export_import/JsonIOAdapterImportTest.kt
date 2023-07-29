@@ -1,278 +1,285 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import
 
-import static android.os.Build.VERSION_CODES.P;
-import static android.os.Build.VERSION_CODES.R;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static java.util.Collections.singletonList;
+import android.app.Application
+import android.content.ContentResolver
+import android.net.Uri
+import android.os.Build.VERSION_CODES
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note
+import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao
+import coolpharaoh.tee.speicher.tea.timer.core.print.Printer
+import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.setFixedSystem
+import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.init
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.read
+import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory.getDataIO
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.setMockedImageController
+import org.assertj.core.api.Assertions.*
+import org.assertj.core.groups.Tuple
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import java.io.ByteArrayInputStream
+import java.io.FileNotFoundException
 
-import android.app.Application;
-import android.content.ContentResolver;
-import android.net.Uri;
-
-import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao;
-import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk;
-import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory;
-
-@ExtendWith(MockitoExtension.class)
-class JsonIOAdapterImportTest {
-    private static final String DB_JSON_DUMP = "[\n" +
-            "  {\n" +
-            "    \"name\": \"name1\",\n" +
-            "    \"variety\": \"variety1\",\n" +
-            "    \"amount\": 1.0,\n" +
-            "    \"amountKind\": \"Gr\",\n" +
-            "    \"color\": 1,\n" +
-            "    \"rating\": 3,\n" +
-            "    \"inStock\": true,\n" +
-            "    \"nextInfusion\": 1,\n" +
-            "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
-            "    \"infusions\": [\n" +
-            "      {\n" +
-            "        \"infusionIndex\": 0,\n" +
-            "        \"time\": \"2:00\",\n" +
-            "        \"coolDownTime\": \"5:00\",\n" +
-            "        \"temperatureCelsius\": 100,\n" +
-            "        \"temperatureFahrenheit\": 212\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"infusionIndex\": 1,\n" +
-            "        \"time\": \"5:00\",\n" +
-            "        \"coolDownTime\": \"3:00\",\n" +
-            "        \"temperatureCelsius\": 90,\n" +
-            "        \"temperatureFahrenheit\": 195\n" +
-            "      }\n" +
-            "    ],\n" +
-            "    \"counters\": [\n" +
-            "      {\n" +
-            "        \"week\": 1,\n" +
-            "        \"month\": 2,\n" +
-            "        \"year\": 3,\n" +
-            "        \"overall\": 4,\n" +
-            "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"monthDate\": \"2020-09-15T10:09:01.789\"\n" +
-            "      }\n" +
-            "    ],\n" +
-            "    \"notes\": [\n" +
-            "      {\n" +
-            "        \"position\": 0,\n" +
-            "        \"header\": \"Header\",\n" +
-            "        \"description\": \"Description\"\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  },\n" +
-            "  {\n" +
-            "    \"name\": \"name2\",\n" +
-            "    \"variety\": \"variety2\",\n" +
-            "    \"amount\": 2.5,\n" +
-            "    \"amountKind\": \"Ts\",\n" +
-            "    \"color\": 2,\n" +
-            "    \"rating\": 0,\n" +
-            "    \"inStock\": false,\n" +
-            "    \"nextInfusion\": 2,\n" +
-            "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
-            "    \"infusions\": [\n" +
-            "      {\n" +
-            "        \"infusionIndex\": 0,\n" +
-            "        \"time\": \"6:00\",\n" +
-            "        \"coolDownTime\": \"5:00\",\n" +
-            "        \"temperatureCelsius\": 100,\n" +
-            "        \"temperatureFahrenheit\": 212\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"infusionIndex\": 1,\n" +
-            "        \"time\": \"7:00\",\n" +
-            "        \"coolDownTime\": \"3:00\",\n" +
-            "        \"temperatureCelsius\": 90,\n" +
-            "        \"temperatureFahrenheit\": 195\n" +
-            "      }\n" +
-            "    ],\n" +
-            "    \"counters\": [\n" +
-            "      {\n" +
-            "        \"week\": 5,\n" +
-            "        \"month\": 6,\n" +
-            "        \"year\": 7,\n" +
-            "        \"overall\": 8,\n" +
-            "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
-            "        \"monthDate\": \"2020-09-15T10:09:01.789\"\n" +
-            "      }\n" +
-            "    ],\n" +
-            "    \"notes\": [\n" +
-            "      {\n" +
-            "        \"position\": 0,\n" +
-            "        \"header\": \"Header\",\n" +
-            "        \"description\": \"Description\"\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  }\n" +
-            "]";
+@ExtendWith(MockitoExtension::class)
+internal class JsonIOAdapterImportTest {
+    @Mock
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
 
     @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
+    lateinit var teaDao: TeaDao
+
     @Mock
-    TeaDao teaDao;
+    lateinit var infusionDao: InfusionDao
+
     @Mock
-    InfusionDao infusionDao;
+    lateinit var noteDao: NoteDao
+
     @Mock
-    NoteDao noteDao;
+    lateinit var counterDao: CounterDao
+
     @Mock
-    CounterDao counterDao;
+    lateinit var application: Application
+
     @Mock
-    Application application;
+    lateinit var contentResolver: ContentResolver
+
     @Mock
-    ContentResolver contentResolver;
+    lateinit var imageController: ImageController
+
     @Mock
-    ImageController imageController;
+    lateinit var systemUtility: SystemUtility
+
     @Mock
-    SystemUtility systemUtility;
-    @Mock
-    Uri uri;
+    lateinit var uri: Uri
 
     @BeforeEach
-    void setUp() throws FileNotFoundException {
-        mockDB();
-        ImageControllerFactory.setMockedImageController(imageController);
-        CurrentSdk.setFixedSystem(systemUtility);
-        mockFileReader();
+    @Throws(FileNotFoundException::class)
+    fun setUp() {
+        mockDB()
+        setMockedImageController(imageController)
+        setFixedSystem(systemUtility)
+        mockFileReader()
     }
 
-    private void mockDB() {
-        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
-        when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getNoteDao()).thenReturn(noteDao);
-        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
-        when(teaDao.insert(any())).thenReturn(0L).thenReturn(1L);
+    private fun mockDB() {
+        setMockedDatabase(teaMemoryDatabase)
+        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
+        `when`(teaMemoryDatabase.infusionDao).thenReturn(infusionDao)
+        `when`(teaMemoryDatabase.noteDao).thenReturn(noteDao)
+        `when`(teaMemoryDatabase.counterDao).thenReturn(counterDao)
+        `when`(teaDao.insert(any())).thenReturn(0L).thenReturn(1L)
     }
 
-    private void mockFileReader() throws FileNotFoundException {
-        when(application.getContentResolver()).thenReturn(contentResolver);
-        when(contentResolver.openInputStream(any())).thenReturn(new ByteArrayInputStream(DB_JSON_DUMP.getBytes()));
-    }
-
-    @Test
-    void importTeasAndKeepStoredTeas() {
-        JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, uri), true);
-
-        verifyImportedTeas();
+    @Throws(FileNotFoundException::class)
+    private fun mockFileReader() {
+        `when`(application.contentResolver).thenReturn(contentResolver)
+        `when`(contentResolver.openInputStream(any())).thenReturn(ByteArrayInputStream(DB_JSON_DUMP.toByteArray()))
     }
 
     @Test
-    void importTeasAndDeleteStoredTeas() {
-        when(systemUtility.getSdkVersion()).thenReturn(R);
-        final Tea tea = new Tea();
-        tea.setId(1L);
-        when(teaDao.getTeas()).thenReturn(singletonList(tea));
+    fun importTeasAndKeepStoredTeas() {
+        init(application, object : Printer { override fun print(message: String?) { println(message) } })
+        read(getDataIO(application, object : Printer { override fun print(message: String?) { println(message) } }, uri), true)
 
-        JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, uri), false);
-
-        verify(imageController).removeImageByTeaId(anyLong());
-        verify(teaDao).deleteAll();
-        verifyImportedTeas();
+        verifyImportedTeas()
     }
 
     @Test
-    void importTeasAndDeleteStoredTeasButNotDeleteImagesForVersionsOlderAndroidQ() {
-        when(systemUtility.getSdkVersion()).thenReturn(P);
+    fun importTeasAndDeleteStoredTeas() {
+        `when`(systemUtility.sdkVersion).thenReturn(VERSION_CODES.R)
+        val tea = Tea()
+        tea.id = 1L
+        `when`(teaDao.getTeas()).thenReturn(listOf(tea))
 
-        JsonIOAdapter.init(application, System.out::println);
-        JsonIOAdapter.read(DataIOAdapterFactory.getDataIO(application, System.out::println, uri), false);
+        init(application, object : Printer { override fun print(message: String?) { println(message) } })
+        read(getDataIO(application, object : Printer { override fun print(message: String?) { println(message) } }, uri), false)
 
-        verify(imageController, never()).removeImageByTeaId(anyLong());
+        verify(imageController).removeImageByTeaId(ArgumentMatchers.anyLong())
+        verify(teaDao).deleteAll()
+        verifyImportedTeas()
     }
 
-    private void verifyImportedTeas() {
-        final ArgumentCaptor<Tea> captorTea = ArgumentCaptor.forClass(Tea.class);
-        verify(teaDao, times(2)).insert(captorTea.capture());
-        final List<Tea> teas = captorTea.getAllValues();
-        assertThat(teas).extracting(
-                Tea::getName,
-                Tea::getVariety,
-                Tea::getAmount,
-                Tea::getAmountKind,
-                Tea::getColor,
-                Tea::getRating,
-                Tea::getInStock,
-                Tea::getNextInfusion
-        ).containsExactly(
+    @Test
+    fun importTeasAndDeleteStoredTeasButNotDeleteImagesForVersionsOlderAndroidQ() {
+        `when`(systemUtility.sdkVersion).thenReturn(VERSION_CODES.P)
+
+        init(application, object : Printer { override fun print(message: String?) { println(message) } })
+        read(getDataIO(application, object : Printer { override fun print(message: String?) { println(message) } }, uri), false)
+
+        verify(imageController, never()).removeImageByTeaId(ArgumentMatchers.anyLong())
+    }
+
+    private fun verifyImportedTeas() {
+        argumentCaptor<Tea>().apply {
+            verify(teaDao, times(2)).insert(capture())
+            assertThat(allValues).extracting(
+                Tea::name,
+                Tea::variety,
+                Tea::amount,
+                Tea::amountKind,
+                Tea::color,
+                Tea::rating,
+                Tea::inStock,
+                Tea::nextInfusion
+            ).containsExactly(
                 Tuple.tuple("name1", "variety1", 1.0, "Gr", 1, 3, true, 1),
                 Tuple.tuple("name2", "variety2", 2.5, "Ts", 2, 0, false, 2)
-        );
+            )
+        }
 
-        final ArgumentCaptor<Infusion> captorInfusion = ArgumentCaptor.forClass(Infusion.class);
-        verify(infusionDao, times(4)).insert(captorInfusion.capture());
-        final List<Infusion> infusions = captorInfusion.getAllValues();
-        assertThat(infusions).extracting(
-                Infusion::getTeaId,
-                Infusion::getInfusionIndex,
-                Infusion::getTime,
-                Infusion::getCoolDownTime,
-                Infusion::getTemperatureCelsius,
-                Infusion::getTemperatureFahrenheit
-        ).containsExactly(
+        argumentCaptor<Infusion>().apply {
+            verify(infusionDao, times(4)).insert(capture())
+            assertThat(allValues).extracting(
+                Infusion::teaId,
+                Infusion::infusionIndex,
+                Infusion::time,
+                Infusion::coolDownTime,
+                Infusion::temperatureCelsius,
+                Infusion::temperatureFahrenheit
+            ).containsExactly(
                 Tuple.tuple(0L, 0, "2:00", "5:00", 100, 212),
                 Tuple.tuple(0L, 1, "5:00", "3:00", 90, 195),
                 Tuple.tuple(1L, 0, "6:00", "5:00", 100, 212),
                 Tuple.tuple(1L, 1, "7:00", "3:00", 90, 195)
-        );
+            )
+        }
 
-        final ArgumentCaptor<Counter> captorCounter = ArgumentCaptor.forClass(Counter.class);
-        verify(counterDao, times(2)).insert(captorCounter.capture());
-        final List<Counter> counters = captorCounter.getAllValues();
-        assertThat(counters).extracting(
-                Counter::getTeaId,
-                Counter::getWeek,
-                Counter::getMonth,
-                Counter::getYear,
-                Counter::getOverall
-        ).containsExactly(
+        argumentCaptor<Counter>().apply {
+            verify(counterDao, times(2)).insert(capture())
+            assertThat(allValues).extracting(
+                Counter::teaId,
+                Counter::week,
+                Counter::month,
+                Counter::year,
+                Counter::overall
+            ).containsExactly(
                 Tuple.tuple(0L, 1, 2, 3, 4L),
                 Tuple.tuple(1L, 5, 6, 7, 8L)
-        );
+            )
+        }
 
-        final ArgumentCaptor<Note> captorNote = ArgumentCaptor.forClass(Note.class);
-        verify(noteDao, times(2)).insert(captorNote.capture());
-        final List<Note> notes = captorNote.getAllValues();
-        assertThat(notes).extracting(
-                Note::getTeaId,
-                Note::getPosition,
-                Note::getHeader,
-                Note::getDescription
-        ).containsExactly(
+        argumentCaptor<Note>().apply {
+            verify(noteDao, times(2)).insert(capture())
+            assertThat(allValues).extracting(
+                Note::teaId,
+                Note::position,
+                Note::header,
+                Note::description
+            ).containsExactly(
                 Tuple.tuple(0L, 0, "Header", "Description"),
                 Tuple.tuple(1L, 0, "Header", "Description")
-        );
+            )
+        }
+    }
+
+    companion object {
+        private const val DB_JSON_DUMP = "[\n" +
+                "  {\n" +
+                "    \"name\": \"name1\",\n" +
+                "    \"variety\": \"variety1\",\n" +
+                "    \"amount\": 1.0,\n" +
+                "    \"amountKind\": \"Gr\",\n" +
+                "    \"color\": 1,\n" +
+                "    \"rating\": 3,\n" +
+                "    \"inStock\": true,\n" +
+                "    \"nextInfusion\": 1,\n" +
+                "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
+                "    \"infusions\": [\n" +
+                "      {\n" +
+                "        \"infusionIndex\": 0,\n" +
+                "        \"time\": \"2:00\",\n" +
+                "        \"coolDownTime\": \"5:00\",\n" +
+                "        \"temperatureCelsius\": 100,\n" +
+                "        \"temperatureFahrenheit\": 212\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"infusionIndex\": 1,\n" +
+                "        \"time\": \"5:00\",\n" +
+                "        \"coolDownTime\": \"3:00\",\n" +
+                "        \"temperatureCelsius\": 90,\n" +
+                "        \"temperatureFahrenheit\": 195\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"counters\": [\n" +
+                "      {\n" +
+                "        \"week\": 1,\n" +
+                "        \"month\": 2,\n" +
+                "        \"year\": 3,\n" +
+                "        \"overall\": 4,\n" +
+                "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
+                "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
+                "        \"monthDate\": \"2020-09-15T10:09:01.789\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"notes\": [\n" +
+                "      {\n" +
+                "        \"position\": 0,\n" +
+                "        \"header\": \"Header\",\n" +
+                "        \"description\": \"Description\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"name\": \"name2\",\n" +
+                "    \"variety\": \"variety2\",\n" +
+                "    \"amount\": 2.5,\n" +
+                "    \"amountKind\": \"Ts\",\n" +
+                "    \"color\": 2,\n" +
+                "    \"rating\": 0,\n" +
+                "    \"inStock\": false,\n" +
+                "    \"nextInfusion\": 2,\n" +
+                "    \"date\": \"2020-09-15T10:09:01.789\",\n" +
+                "    \"infusions\": [\n" +
+                "      {\n" +
+                "        \"infusionIndex\": 0,\n" +
+                "        \"time\": \"6:00\",\n" +
+                "        \"coolDownTime\": \"5:00\",\n" +
+                "        \"temperatureCelsius\": 100,\n" +
+                "        \"temperatureFahrenheit\": 212\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"infusionIndex\": 1,\n" +
+                "        \"time\": \"7:00\",\n" +
+                "        \"coolDownTime\": \"3:00\",\n" +
+                "        \"temperatureCelsius\": 90,\n" +
+                "        \"temperatureFahrenheit\": 195\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"counters\": [\n" +
+                "      {\n" +
+                "        \"week\": 5,\n" +
+                "        \"month\": 6,\n" +
+                "        \"year\": 7,\n" +
+                "        \"overall\": 8,\n" +
+                "        \"dayDate\": \"2020-09-15T10:09:01.789\",\n" +
+                "        \"weekDate\": \"2020-09-15T10:09:01.789\",\n" +
+                "        \"monthDate\": \"2020-09-15T10:09:01.789\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"notes\": [\n" +
+                "      {\n" +
+                "        \"position\": 0,\n" +
+                "        \"header\": \"Header\",\n" +
+                "        \"description\": \"Description\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]"
     }
 }

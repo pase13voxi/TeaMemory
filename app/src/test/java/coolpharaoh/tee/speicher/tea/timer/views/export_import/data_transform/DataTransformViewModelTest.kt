@@ -1,190 +1,180 @@
-package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform;
+package coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
+import coolpharaoh.tee.speicher.tea.timer.core.note.Note
+import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.argumentCaptor
+import java.util.GregorianCalendar
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.note.Note;
-import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
-
-@ExtendWith(MockitoExtension.class)
-class DataTransformViewModelTest {
-
-    private DataTransformViewModel dataTransformViewModel;
+@ExtendWith(MockitoExtension::class)
+internal class DataTransformViewModelTest {
+    @Mock
+    lateinit var teaRepository: TeaRepository
 
     @Mock
-    TeaRepository teaRepository;
+    lateinit var infusionRepository: InfusionRepository
+
     @Mock
-    InfusionRepository infusionRepository;
+    lateinit var counterRepository: CounterRepository
+
     @Mock
-    CounterRepository counterRepository;
+    lateinit var noteRepository: NoteRepository
+
     @Mock
-    NoteRepository noteRepository;
-    @Mock
-    ImageController imageController;
+    lateinit var imageController: ImageController
 
-    @BeforeEach
-    void setUp() {
-        dataTransformViewModel = new DataTransformViewModel(teaRepository, infusionRepository,
-                counterRepository, noteRepository, imageController);
+    @InjectMocks
+    lateinit var dataTransformViewModel: DataTransformViewModel
+
+    @Test
+    fun getTeaList() {
+        val date = GregorianCalendar(2020, 1, 18).time
+
+        val teasBefore: MutableList<Tea> = ArrayList()
+        val tea1 = Tea("Tea1", "Variety1", 1.0, "Kind1", 1, 1, date)
+        teasBefore.add(tea1)
+        val tea2 = Tea("Tea2", "Variety2", 2.0, "Kind2", 2, 2, date)
+        teasBefore.add(tea2)
+        `when`(teaRepository.teas).thenReturn(teasBefore)
+
+        val teasAfter = dataTransformViewModel.teas
+
+        assertThat(teasAfter).isEqualTo(teasBefore)
     }
 
     @Test
-    void getTeaList() {
-        final Date date = new GregorianCalendar(2020, 1, 18).getTime();
+    fun insertTea() {
+        val date = GregorianCalendar(2020, 1, 18).time
 
-        final List<Tea> teasBefore = new ArrayList<>();
-        final Tea tea1 = new Tea("Tea1", "Variety1", 1, "Kind1", 1, 1, date);
-        teasBefore.add(tea1);
-        final Tea tea2 = new Tea("Tea2", "Variety2", 2, "Kind2", 2, 2, date);
-        teasBefore.add(tea2);
-        when(teaRepository.getTeas()).thenReturn(teasBefore);
+        val teaBefore = Tea("Tea", "Variety", 1.0, "Kind", 1, 1, date)
 
-        final List<Tea> teasAfter = dataTransformViewModel.getTeas();
+        dataTransformViewModel.insertTea(teaBefore)
 
-        assertThat(teasAfter).isEqualTo(teasBefore);
+        argumentCaptor<Tea>().apply {
+            verify(teaRepository).insertTea(capture())
+
+            assertThat(lastValue).isEqualTo(teaBefore)
+        }
     }
 
     @Test
-    void insertTea() {
-        final Date date = new GregorianCalendar(2020, 1, 18).getTime();
-
-        final Tea teaBefore = new Tea("Tea", "Variety", 1, "Kind", 1, 1, date);
-
-        dataTransformViewModel.insertTea(teaBefore);
-
-        final ArgumentCaptor<Tea> captor = ArgumentCaptor.forClass(Tea.class);
-        verify(teaRepository).insertTea(captor.capture());
-        final Tea teaAfter = captor.getValue();
-
-        assertThat(teaAfter).isEqualTo(teaBefore);
+    fun deleteAll() {
+        dataTransformViewModel.deleteAllTeas()
+        verify(teaRepository).deleteAllTeas()
     }
 
     @Test
-    void deleteAll() {
-        dataTransformViewModel.deleteAllTeas();
-        verify(teaRepository).deleteAllTeas();
+    fun deleteAllTeaImages() {
+        val tea1 = Tea()
+        tea1.id = 1L
+        val tea2 = Tea()
+        tea2.id = 2L
+        val teas = listOf(tea1, tea2)
+        `when`(teaRepository.teas).thenReturn(teas)
+
+        dataTransformViewModel.deleteAllTeaImages()
+
+        verify(imageController).removeImageByTeaId(1L)
+        verify(imageController).removeImageByTeaId(2L)
     }
 
     @Test
-    void deleteAllTeaImages() {
-        final Tea tea1 = new Tea();
-        tea1.setId(1L);
-        final Tea tea2 = new Tea();
-        tea2.setId(2L);
-        final List<Tea> teas = Arrays.asList(tea1, tea2);
-        when(teaRepository.getTeas()).thenReturn(teas);
+    fun getInfusionList() {
+        val infusionsBefore: MutableList<Infusion> = ArrayList()
+        val infusion1 = Infusion(1L, 1, "1", "1", 1, 1)
+        infusionsBefore.add(infusion1)
+        val infusion2 = Infusion(2L, 2, "2", "2", 2, 2)
+        infusionsBefore.add(infusion2)
 
-        dataTransformViewModel.deleteAllTeaImages();
+        `when`(infusionRepository.infusions).thenReturn(infusionsBefore)
 
-        verify(imageController).removeImageByTeaId(1L);
-        verify(imageController).removeImageByTeaId(2L);
+        val infusionsAfter = dataTransformViewModel.infusions
+
+        assertThat(infusionsAfter).isEqualTo(infusionsBefore)
     }
 
     @Test
-    void getInfusionList() {
-        final List<Infusion> infusionsBefore = new ArrayList<>();
-        final Infusion infusion1 = new Infusion(1L, 1, "1", "1", 1, 1);
-        infusionsBefore.add(infusion1);
-        final Infusion infusion2 = new Infusion(2L, 2, "2", "2", 2, 2);
-        infusionsBefore.add(infusion2);
+    fun insertInfusion() {
+        val infusionBefore = Infusion(1L, 1, "1", "1", 1, 1)
 
-        when(infusionRepository.getInfusions()).thenReturn(infusionsBefore);
+        dataTransformViewModel.insertInfusion(infusionBefore)
 
-        final List<Infusion> infusionsAfter = dataTransformViewModel.getInfusions();
+        argumentCaptor<Infusion>().apply {
+            verify(infusionRepository).insertInfusion(capture())
 
-        assertThat(infusionsAfter).isEqualTo(infusionsBefore);
+            assertThat(lastValue).isEqualTo(infusionBefore)
+        }
     }
 
     @Test
-    void insertInfusion() {
-        final Infusion infusionBefore = new Infusion(1L, 1, "1", "1", 1, 1);
+    fun getCounterList() {
+        val date = GregorianCalendar(2020, 1, 18).time
 
-        dataTransformViewModel.insertInfusion(infusionBefore);
+        val countersBefore: MutableList<Counter> = ArrayList()
+        val counter1 = Counter(1L, 1, 1, 1, 1L, date, date, date)
+        countersBefore.add(counter1)
+        val counter2 = Counter(2L, 2, 2, 2, 2L, date, date, date)
+        countersBefore.add(counter2)
 
-        final ArgumentCaptor<Infusion> captor = ArgumentCaptor.forClass(Infusion.class);
-        verify(infusionRepository).insertInfusion(captor.capture());
-        final Infusion infusionAfter = captor.getValue();
+        `when`(counterRepository.counters).thenReturn(countersBefore)
 
-        assertThat(infusionAfter).isEqualTo(infusionBefore);
+        val countersAfter = dataTransformViewModel.counters
+
+        assertThat(countersAfter).isEqualTo(countersBefore)
     }
 
     @Test
-    void getCounterList() {
-        final Date date = new GregorianCalendar(2020, 1, 18).getTime();
+    fun insertCounter() {
+        val date = GregorianCalendar(2020, 1, 18).time
+        val counterBefore = Counter(1L, 1, 1, 1, 1L, date, date, date)
 
-        final List<Counter> countersBefore = new ArrayList<>();
-        final Counter counter1 = new Counter(1L, 1, 1, 1, 1L, date, date, date);
-        countersBefore.add(counter1);
-        final Counter counter2 = new Counter(2L, 2, 2, 2, 2L, date, date, date);
-        countersBefore.add(counter2);
+        dataTransformViewModel.insertCounter(counterBefore)
 
-        when(counterRepository.getCounters()).thenReturn(countersBefore);
+        argumentCaptor<Counter>().apply {
+            verify(counterRepository).insertCounter(capture())
 
-        final List<Counter> countersAfter = dataTransformViewModel.getCounters();
-
-        assertThat(countersAfter).isEqualTo(countersBefore);
+            assertThat(lastValue).isEqualTo(counterBefore)
+        }
     }
 
     @Test
-    void insertCounter() {
-        final Date date = new GregorianCalendar(2020, 1, 18).getTime();
-        final Counter counterBefore = new Counter(1L, 1, 1, 1, 1L, date, date, date);
+    fun getNoteList() {
+        val notesBefore: MutableList<Note> = ArrayList()
+        val note1 = Note(1L, 1, "Header1", "Description1")
+        notesBefore.add(note1)
+        val note2 = Note(2L, 2, "Header2", "Description2")
+        notesBefore.add(note2)
 
-        dataTransformViewModel.insertCounter(counterBefore);
+        `when`(noteRepository.notes).thenReturn(notesBefore)
 
-        final ArgumentCaptor<Counter> captor = ArgumentCaptor.forClass(Counter.class);
-        verify(counterRepository).insertCounter(captor.capture());
-        final Counter counterAfter = captor.getValue();
+        val notesAfter = dataTransformViewModel.notes
 
-        assertThat(counterAfter).isEqualTo(counterBefore);
+        assertThat(notesAfter).isEqualTo(notesBefore)
     }
 
     @Test
-    void getNoteList() {
-        final List<Note> notesBefore = new ArrayList<>();
-        final Note note1 = new Note(1L, 1, "Header1", "Description1");
-        notesBefore.add(note1);
-        final Note note2 = new Note(2L, 2, "Header2", "Description2");
-        notesBefore.add(note2);
+    fun insertNote() {
+        val noteBefore = Note(1L, 1, "Header", "Description")
 
-        when(noteRepository.getNotes()).thenReturn(notesBefore);
+        dataTransformViewModel.insertNote(noteBefore)
 
-        final List<Note> notesAfter = dataTransformViewModel.getNotes();
+        argumentCaptor<Note>().apply {
+            verify(noteRepository).insertNote(capture())
 
-        assertThat(notesAfter).isEqualTo(notesBefore);
-    }
-
-    @Test
-    void insertNote() {
-        final Note noteBefore = new Note(1L, 1, "Header", "Description");
-
-        dataTransformViewModel.insertNote(noteBefore);
-
-        final ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
-        verify(noteRepository).insertNote(captor.capture());
-        final Note noteAfter = captor.getValue();
-
-        assertThat(noteAfter).isEqualTo(noteBefore);
+            assertThat(lastValue).isEqualTo(noteBefore)
+        }
     }
 }
