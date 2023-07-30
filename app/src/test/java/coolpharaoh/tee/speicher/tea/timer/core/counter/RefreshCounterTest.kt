@@ -4,20 +4,20 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter.refreshCou
 import coolpharaoh.tee.speicher.tea.timer.core.counter.RefreshCounter.refreshCounters
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 import java.time.Clock
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Date
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class RefreshCounterTest {
 
     var weekBefore: Date? = null
@@ -25,8 +25,8 @@ internal class RefreshCounterTest {
     var yearBefore: Date? = null
     var today: Date? = null
 
-    @Mock
-    var fixedDate: DateUtility? = null
+    @MockK
+    lateinit var fixedDate: DateUtility
 
     @BeforeEach
     fun setUp() {
@@ -37,8 +37,8 @@ internal class RefreshCounterTest {
         monthBefore = Date.from(now.minus(Duration.ofDays(31)))
         yearBefore = Date.from(now.minus(Duration.ofDays(370)))
 
-        `when`(fixedDate!!.date).thenReturn(today)
-        setFixedDate(fixedDate!!)
+        every { fixedDate.date } returns today!!
+        setFixedDate(fixedDate)
     }
 
     private fun getFixedDate(): Instant {
@@ -62,15 +62,7 @@ internal class RefreshCounterTest {
                 Counter::monthDate,
                 Counter::yearDate
             )
-            .containsExactly(
-                0,
-                0,
-                0,
-                0L,
-                today,
-                today,
-                today
-            )
+            .containsExactly(0, 0, 0, 0L, today, today, today)
     }
 
     @Test
@@ -86,12 +78,7 @@ internal class RefreshCounterTest {
                 Counter::year,
                 Counter::overall
             )
-            .containsExactly(
-                WEEK,
-                MONTH,
-                YEAR,
-                OVERALL
-            )
+            .containsExactly(WEEK, MONTH, YEAR, OVERALL)
     }
 
     @Test
@@ -107,12 +94,7 @@ internal class RefreshCounterTest {
                 Counter::year,
                 Counter::overall
             )
-            .containsExactly(
-                0,
-                MONTH,
-                YEAR,
-                OVERALL
-            )
+            .containsExactly(0, MONTH, YEAR, OVERALL)
     }
 
     @Test
@@ -128,12 +110,7 @@ internal class RefreshCounterTest {
                 Counter::year,
                 Counter::overall
             )
-            .containsExactly(
-                0,
-                0,
-                YEAR,
-                OVERALL
-            )
+            .containsExactly(0, 0, YEAR, OVERALL)
     }
 
     @Test
@@ -149,12 +126,7 @@ internal class RefreshCounterTest {
                 Counter::year,
                 Counter::overall
             )
-            .containsExactly(
-                0,
-                0,
-                0,
-                OVERALL
-            )
+            .containsExactly(0, 0, 0, OVERALL)
     }
 
     @Test
@@ -173,12 +145,7 @@ internal class RefreshCounterTest {
                 Counter::year,
                 Counter::overall
             )
-            .containsExactly(
-                WEEK,
-                MONTH,
-                YEAR,
-                OVERALL
-            )
+            .containsExactly(WEEK, MONTH, YEAR, OVERALL)
 
         assertThat(counter2)
             .extracting(
@@ -187,12 +154,7 @@ internal class RefreshCounterTest {
                 Counter::year,
                 Counter::overall
             )
-            .containsExactly(
-                0,
-                0,
-                0,
-                OVERALL
-            )
+            .containsExactly(0, 0, 0, OVERALL)
     }
 
     companion object {

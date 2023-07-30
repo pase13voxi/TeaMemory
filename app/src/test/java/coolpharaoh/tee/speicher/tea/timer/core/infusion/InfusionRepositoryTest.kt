@@ -3,28 +3,29 @@ package coolpharaoh.tee.speicher.tea.timer.core.infusion
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class InfusionRepositoryTest {
-    @Mock
-    var teaMemoryDatabase: TeaMemoryDatabase? = null
-    @Mock
-    var infusionDao: InfusionDao? = null
+    @MockK
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+    @RelaxedMockK
+    lateinit var infusionDao: InfusionDao
 
     private var infusionRepository: InfusionRepository? = null
 
     @BeforeEach
     fun setUp() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase!!.infusionDao).thenReturn(infusionDao)
+        every { teaMemoryDatabase.infusionDao } returns infusionDao
 
         infusionRepository = InfusionRepository(Application())
     }
@@ -35,23 +36,23 @@ internal class InfusionRepositoryTest {
 
         infusionRepository!!.insertInfusion(infusion)
 
-        verify(infusionDao)?.insert(infusion)
+        verify { infusionDao.insert(infusion) }
     }
 
     @Test
     fun getInfusions() {
-        `when`(infusionDao!!.getInfusions()).thenReturn(listOf(Infusion(), Infusion()))
+        every { infusionDao.getInfusions() } returns listOf(Infusion(), Infusion())
 
         val infusions = infusionRepository!!.infusions
 
-        verify(infusionDao)?.getInfusions()
+        verify { infusionDao.getInfusions() }
         assertThat(infusions).hasSize(2)
     }
 
     @Test
     fun getInfusionsByTeaId() {
         val teaId: Long = 2
-        `when`(infusionDao!!.getInfusionsByTeaId(teaId)).thenReturn(listOf(Infusion(), Infusion()))
+        every { infusionDao.getInfusionsByTeaId(teaId) } returns listOf(Infusion(), Infusion())
 
         val infusions = infusionRepository!!.getInfusionsByTeaId(teaId)
 
@@ -64,6 +65,6 @@ internal class InfusionRepositoryTest {
 
         infusionRepository!!.deleteInfusionsByTeaId(teaId)
 
-        verify(infusionDao)?.deleteInfusionsByTeaId(teaId)
+        verify { infusionDao.deleteInfusionsByTeaId(teaId) }
     }
 }

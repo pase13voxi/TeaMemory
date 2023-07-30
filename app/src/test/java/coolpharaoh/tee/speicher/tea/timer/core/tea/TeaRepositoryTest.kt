@@ -3,30 +3,29 @@ package coolpharaoh.tee.speicher.tea.timer.core.tea
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class TeaRepositoryTest {
+    @MockK
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+    @RelaxedMockK
+    lateinit var teaDao: TeaDao
 
-    @Mock
-    var teaMemoryDatabase: TeaMemoryDatabase? = null
-
-    @Mock
-
-    var teaDao: TeaDao? = null
     private var teaRepository: TeaRepository? = null
 
     @BeforeEach
     fun setUp() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase!!.teaDao).thenReturn(teaDao)
+        every { teaMemoryDatabase.teaDao } returns teaDao
 
         teaRepository = TeaRepository(Application())
     }
@@ -37,7 +36,7 @@ internal class TeaRepositoryTest {
 
         teaRepository!!.insertTea(tea)
 
-        verify(teaDao)?.insert(tea)
+        verify { teaDao.insert(tea) }
     }
 
     @Test
@@ -46,7 +45,7 @@ internal class TeaRepositoryTest {
 
         teaRepository!!.updateTea(tea)
 
-        verify(teaDao)?.update(tea)
+        verify { teaDao.update(tea) }
     }
 
     @Test
@@ -55,19 +54,19 @@ internal class TeaRepositoryTest {
 
         teaRepository!!.deleteTeaById(teaId)
 
-        verify(teaDao)?.deleteTeaById(teaId)
+        verify { teaDao.deleteTeaById(teaId) }
     }
 
     @Test
     fun deleteAllTeas() {
         teaRepository!!.deleteAllTeas()
 
-        verify(teaDao)?.deleteAll()
+        verify { teaDao.deleteAll() }
     }
 
     @Test
     fun getTeas() {
-        `when`(teaDao!!.getTeas()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeas() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.teas
 
@@ -76,7 +75,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasOrderByActivity() {
-        `when`(teaDao!!.getTeasOrderByActivity()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasOrderByActivity() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByActivity(false)
 
@@ -85,7 +84,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasInStockOrderByActivity() {
-        `when`(teaDao!!.getTeasInStockOrderByActivity()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasInStockOrderByActivity() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByActivity(true)
 
@@ -94,7 +93,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasOrderByAlphabetic() {
-        `when`(teaDao!!.getTeasOrderByAlphabetic()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasOrderByAlphabetic() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByAlphabetic(false)
 
@@ -103,7 +102,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasInStockOrderByAlphabetic() {
-        `when`(teaDao!!.getTeasInStockOrderByAlphabetic()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasInStockOrderByAlphabetic() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByAlphabetic(true)
 
@@ -112,7 +111,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasOrderByVariety() {
-        `when`(teaDao!!.getTeasOrderByVariety()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasOrderByVariety() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByVariety(false)
 
@@ -121,7 +120,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasStockOrderByVariety() {
-        `when`(teaDao!!.getTeasInStockOrderByVariety()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasInStockOrderByVariety() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByVariety(true)
 
@@ -130,7 +129,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasOrderByRating() {
-        `when`(teaDao!!.getTeasOrderByRating()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasOrderByRating() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByRating(false)
 
@@ -139,7 +138,7 @@ internal class TeaRepositoryTest {
 
     @Test
     fun getTeasInStockOrderByRating() {
-        `when`(teaDao!!.getTeasInStockOrderByRating()).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasInStockOrderByRating() } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasOrderByRating(true)
 
@@ -150,7 +149,7 @@ internal class TeaRepositoryTest {
     fun getTeaById() {
         val teaId: Long = 1
         val tea = Tea()
-        `when`(teaDao!!.getTeaById(teaId)).thenReturn(tea)
+        every { teaDao.getTeaById(teaId) } returns tea
 
         val teaById = teaRepository!!.getTeaById(teaId)
 
@@ -160,7 +159,7 @@ internal class TeaRepositoryTest {
     @Test
     fun getRandomTeaInStock() {
         val tea = Tea()
-        `when`(teaDao!!.getRandomTeaInStock()).thenReturn(tea)
+        every { teaDao.getRandomTeaInStock() } returns tea
 
         val randomTea = teaRepository!!.randomTeaInStock
 
@@ -170,7 +169,7 @@ internal class TeaRepositoryTest {
     @Test
     fun getTeasBySearchString() {
         val searchString = "search"
-        `when`(teaDao!!.getTeasBySearchString(searchString)).thenReturn(listOf(Tea(), Tea()))
+        every { teaDao.getTeasBySearchString(searchString) } returns listOf(Tea(), Tea())
 
         val teas = teaRepository!!.getTeasBySearchString(searchString)
 

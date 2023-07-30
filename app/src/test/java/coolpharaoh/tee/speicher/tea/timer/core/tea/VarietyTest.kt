@@ -7,20 +7,19 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStor
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertTextToStoredVariety
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromChoice
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromStoredText
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class VarietyTest {
-    @Mock
-    private val application: Application? = null
-
-    @Mock
-    private val resources: Resources? = null
+    @MockK
+    lateinit var application: Application
+    @MockK
+    lateinit var resources: Resources
 
     private lateinit var varieties: Array<String>
 
@@ -73,14 +72,14 @@ internal class VarietyTest {
     @Test
     fun convertBlackTeaVarietyToCode() {
         mockVarietyStrings()
-        val code = convertTextToStoredVariety(varieties[0], application!!)
+        val code = convertTextToStoredVariety(varieties[0], application)
         assertThat(code).isEqualTo(Variety.BLACK_TEA.code)
     }
 
     @Test
     fun convertOolongTeaVarietyToCode() {
         mockVarietyStrings()
-        val code = convertTextToStoredVariety(varieties[4], application!!)
+        val code = convertTextToStoredVariety(varieties[4], application)
         assertThat(code).isEqualTo(Variety.OOLONG_TEA.code)
     }
 
@@ -88,21 +87,21 @@ internal class VarietyTest {
     fun convertVarietyToCodeReturnInputBecauseVarietyNotExist() {
         mockVarietyStrings()
         val otherVariety = "Other Variety"
-        val code = convertTextToStoredVariety(otherVariety, application!!)
+        val code = convertTextToStoredVariety(otherVariety, application)
         assertThat(code).isEqualTo(otherVariety)
     }
 
     @Test
     fun convertBlackTeaCodeToVariety() {
         mockVarietyStrings()
-        val variety = convertStoredVarietyToText(Variety.BLACK_TEA.code, application!!)
+        val variety = convertStoredVarietyToText(Variety.BLACK_TEA.code, application)
         assertThat(variety).isEqualTo(varieties[0])
     }
 
     @Test
     fun convertOolongTeaCodeToVariety() {
         mockVarietyStrings()
-        val variety = convertStoredVarietyToText(Variety.OOLONG_TEA.code, application!!)
+        val variety = convertStoredVarietyToText(Variety.OOLONG_TEA.code, application)
         assertThat(variety).isEqualTo(varieties[4])
     }
 
@@ -110,17 +109,16 @@ internal class VarietyTest {
     fun convertCodeToVarietyReturnInputBecauseCodeNotExist() {
         mockVarietyStrings()
         val otherCode = "Other Code"
-        val variety = convertStoredVarietyToText(otherCode, application!!)
+        val variety = convertStoredVarietyToText(otherCode, application)
         assertThat(variety).isEqualTo(otherCode)
     }
 
     private fun mockVarietyStrings() {
-        Mockito.`when`(application!!.resources).thenReturn(resources)
+        every { application.resources } returns resources
         varieties = arrayOf(
             "Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea",
             "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"
         )
-        Mockito.`when`(resources!!.getStringArray(R.array.new_tea_variety_teas))
-            .thenReturn(varieties)
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns varieties
     }
 }

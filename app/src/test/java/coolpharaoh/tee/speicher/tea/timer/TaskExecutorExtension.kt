@@ -1,37 +1,32 @@
-package coolpharaoh.tee.speicher.tea.timer;
+package coolpharaoh.tee.speicher.tea.timer
 
-import androidx.annotation.NonNull;
-import androidx.arch.core.executor.ArchTaskExecutor;
-import androidx.arch.core.executor.TaskExecutor;
+import androidx.arch.core.executor.ArchTaskExecutor
+import androidx.arch.core.executor.TaskExecutor
+import org.junit.jupiter.api.extension.AfterEachCallback
+import org.junit.jupiter.api.extension.BeforeEachCallback
+import org.junit.jupiter.api.extension.ExtensionContext
 
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+class TaskExecutorExtension : BeforeEachCallback, AfterEachCallback {
 
-public class TaskExecutorExtension implements BeforeEachCallback, AfterEachCallback {
-
-    @Override
-    public void beforeEach(final ExtensionContext context) throws Exception {
-        ArchTaskExecutor.getInstance().setDelegate(new TaskExecutor() {
-            @Override
-            public void executeOnDiskIO(@NonNull final Runnable runnable) {
-                runnable.run();
+    @Throws(Exception::class)
+    override fun beforeEach(context: ExtensionContext) {
+        ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
+            override fun executeOnDiskIO(runnable: Runnable) {
+                runnable.run()
             }
 
-            @Override
-            public void postToMainThread(@NonNull final Runnable runnable) {
-                runnable.run();
+            override fun postToMainThread(runnable: Runnable) {
+                runnable.run()
             }
 
-            @Override
-            public boolean isMainThread() {
-                return true;
+            override fun isMainThread(): Boolean {
+                return true
             }
-        });
+        })
     }
 
-    @Override
-    public void afterEach(final ExtensionContext context) throws Exception {
-        ArchTaskExecutor.getInstance().setDelegate(null);
+    @Throws(Exception::class)
+    override fun afterEach(context: ExtensionContext) {
+        ArchTaskExecutor.getInstance().setDelegate(null)
     }
 }

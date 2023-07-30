@@ -3,30 +3,29 @@ package coolpharaoh.tee.speicher.tea.timer.core.note
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class NoteRepositoryTest {
-
-    @Mock
-    var teaMemoryDatabase: TeaMemoryDatabase? = null
-
-    @Mock
-    var noteDao: NoteDao? = null
+    @MockK
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+    @RelaxedMockK
+    lateinit var noteDao: NoteDao
 
     private var noteRepository: NoteRepository? = null
 
     @BeforeEach
     fun setUp() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase!!.noteDao).thenReturn(noteDao)
+        every { teaMemoryDatabase.noteDao } returns noteDao
 
         noteRepository = NoteRepository(Application())
     }
@@ -37,7 +36,7 @@ internal class NoteRepositoryTest {
 
         noteRepository!!.insertNote(note)
 
-        verify(noteDao)?.insert(note)
+        verify { noteDao.insert(note) }
     }
 
     @Test
@@ -46,16 +45,16 @@ internal class NoteRepositoryTest {
 
         noteRepository!!.updateNote(note)
 
-        verify(noteDao)?.update(note)
+        verify { noteDao.update(note) }
     }
 
     @Test
     fun getNotes() {
-        `when`(noteDao!!.notes).thenReturn(listOf(Note(), Note()))
+        every { noteDao.notes } returns listOf(Note(), Note())
 
         val notes = noteRepository!!.notes
 
-        verify(noteDao)?.notes
+        verify { noteDao.notes }
         assertThat(notes).hasSize(2)
     }
 
@@ -63,7 +62,7 @@ internal class NoteRepositoryTest {
     fun getNoteByTeaIdAndPosition() {
         val teaId: Long = 2
         val note = Note()
-        `when`(noteDao!!.getNoteByTeaIdAndPosition(teaId, 1)).thenReturn(note)
+        every { noteDao.getNoteByTeaIdAndPosition(teaId, 1) } returns note
 
         val noteByTeaId = noteRepository!!.getNoteByTeaIdAndPosition(teaId, 1)
 
@@ -74,7 +73,7 @@ internal class NoteRepositoryTest {
     fun getNotesByTeaIdAndPositionBiggerZero() {
         val teaId: Long = 2
         val notes = listOf(Note(), Note())
-        `when`(noteDao!!.getNotesByTeaIdAndPositionBiggerZero(teaId)).thenReturn(notes)
+        every { noteDao.getNotesByTeaIdAndPositionBiggerZero(teaId) } returns notes
 
         val notesByTeaId = noteRepository!!.getNotesByTeaIdAndPositionBiggerZero(teaId)
 
@@ -88,6 +87,6 @@ internal class NoteRepositoryTest {
 
         noteRepository!!.deleteNoteByTeaIdAndPosition(teaId, position)
 
-        verify(noteDao)?.deleteNoteByTeaIdAndPosition(teaId, position)
+        verify { noteDao.deleteNoteByTeaIdAndPosition(teaId, position) }
     }
 }
