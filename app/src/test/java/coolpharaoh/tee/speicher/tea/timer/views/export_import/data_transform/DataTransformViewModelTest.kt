@@ -9,34 +9,30 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.NoteRepository
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.argumentCaptor
 import java.util.GregorianCalendar
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class DataTransformViewModelTest {
-    @Mock
+    @RelaxedMockK
     lateinit var teaRepository: TeaRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var infusionRepository: InfusionRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var counterRepository: CounterRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var noteRepository: NoteRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var imageController: ImageController
-
-    @InjectMocks
+    @InjectMockKs
     lateinit var dataTransformViewModel: DataTransformViewModel
 
     @Test
@@ -48,7 +44,7 @@ internal class DataTransformViewModelTest {
         teasBefore.add(tea1)
         val tea2 = Tea("Tea2", "Variety2", 2.0, "Kind2", 2, 2, date)
         teasBefore.add(tea2)
-        `when`(teaRepository.teas).thenReturn(teasBefore)
+        every { teaRepository.teas } returns teasBefore
 
         val teasAfter = dataTransformViewModel.teas
 
@@ -63,17 +59,15 @@ internal class DataTransformViewModelTest {
 
         dataTransformViewModel.insertTea(teaBefore)
 
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).insertTea(capture())
-
-            assertThat(lastValue).isEqualTo(teaBefore)
-        }
+        val slotTea = slot<Tea>()
+        verify { teaRepository.insertTea(capture(slotTea))}
+        assertThat(slotTea.captured).isEqualTo(teaBefore)
     }
 
     @Test
     fun deleteAll() {
         dataTransformViewModel.deleteAllTeas()
-        verify(teaRepository).deleteAllTeas()
+        verify { teaRepository.deleteAllTeas() }
     }
 
     @Test
@@ -83,12 +77,12 @@ internal class DataTransformViewModelTest {
         val tea2 = Tea()
         tea2.id = 2L
         val teas = listOf(tea1, tea2)
-        `when`(teaRepository.teas).thenReturn(teas)
+        every { teaRepository.teas } returns teas
 
         dataTransformViewModel.deleteAllTeaImages()
 
-        verify(imageController).removeImageByTeaId(1L)
-        verify(imageController).removeImageByTeaId(2L)
+        verify { imageController.removeImageByTeaId(1L) }
+        verify { imageController.removeImageByTeaId(2L) }
     }
 
     @Test
@@ -99,7 +93,7 @@ internal class DataTransformViewModelTest {
         val infusion2 = Infusion(2L, 2, "2", "2", 2, 2)
         infusionsBefore.add(infusion2)
 
-        `when`(infusionRepository.infusions).thenReturn(infusionsBefore)
+        every { infusionRepository.infusions } returns infusionsBefore
 
         val infusionsAfter = dataTransformViewModel.infusions
 
@@ -112,11 +106,9 @@ internal class DataTransformViewModelTest {
 
         dataTransformViewModel.insertInfusion(infusionBefore)
 
-        argumentCaptor<Infusion>().apply {
-            verify(infusionRepository).insertInfusion(capture())
-
-            assertThat(lastValue).isEqualTo(infusionBefore)
-        }
+        val slotInfusion = slot<Infusion>()
+        verify { infusionRepository.insertInfusion(capture(slotInfusion)) }
+        assertThat(slotInfusion.captured).isEqualTo(infusionBefore)
     }
 
     @Test
@@ -129,7 +121,7 @@ internal class DataTransformViewModelTest {
         val counter2 = Counter(2L, 2, 2, 2, 2L, date, date, date)
         countersBefore.add(counter2)
 
-        `when`(counterRepository.counters).thenReturn(countersBefore)
+        every { counterRepository.counters } returns countersBefore
 
         val countersAfter = dataTransformViewModel.counters
 
@@ -143,11 +135,9 @@ internal class DataTransformViewModelTest {
 
         dataTransformViewModel.insertCounter(counterBefore)
 
-        argumentCaptor<Counter>().apply {
-            verify(counterRepository).insertCounter(capture())
-
-            assertThat(lastValue).isEqualTo(counterBefore)
-        }
+        val slotCounter = slot<Counter>()
+        verify { counterRepository.insertCounter(capture(slotCounter)) }
+        assertThat(slotCounter.captured).isEqualTo(counterBefore)
     }
 
     @Test
@@ -158,7 +148,7 @@ internal class DataTransformViewModelTest {
         val note2 = Note(2L, 2, "Header2", "Description2")
         notesBefore.add(note2)
 
-        `when`(noteRepository.notes).thenReturn(notesBefore)
+        every { noteRepository.notes } returns notesBefore
 
         val notesAfter = dataTransformViewModel.notes
 
@@ -171,10 +161,8 @@ internal class DataTransformViewModelTest {
 
         dataTransformViewModel.insertNote(noteBefore)
 
-        argumentCaptor<Note>().apply {
-            verify(noteRepository).insertNote(capture())
-
-            assertThat(lastValue).isEqualTo(noteBefore)
-        }
+        val slotNote = slot<Note>()
+        verify { noteRepository.insertNote(capture(slotNote)) }
+        assertThat(slotNote.captured).isEqualTo(noteBefore)
     }
 }

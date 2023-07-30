@@ -22,50 +22,49 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.read
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory.getDataIO
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.setMockedImageController
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.assertj.core.groups.Tuple
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import java.io.ByteArrayInputStream
 import java.io.FileNotFoundException
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class JsonIOAdapterImportTest {
-    @Mock
+    @MockK
     lateinit var teaMemoryDatabase: TeaMemoryDatabase
 
-    @Mock
+    @RelaxedMockK
     lateinit var teaDao: TeaDao
 
-    @Mock
+    @RelaxedMockK
     lateinit var infusionDao: InfusionDao
 
-    @Mock
+    @RelaxedMockK
     lateinit var noteDao: NoteDao
 
-    @Mock
+    @RelaxedMockK
     lateinit var counterDao: CounterDao
 
-    @Mock
+    @RelaxedMockK
     lateinit var application: Application
 
-    @Mock
+    @MockK
     lateinit var contentResolver: ContentResolver
 
-    @Mock
+    @RelaxedMockK
     lateinit var imageController: ImageController
 
-    @Mock
+    @MockK
     lateinit var systemUtility: SystemUtility
 
-    @Mock
+    @MockK
     lateinit var uri: Uri
 
     @BeforeEach
@@ -79,17 +78,17 @@ internal class JsonIOAdapterImportTest {
 
     private fun mockDB() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
-        `when`(teaMemoryDatabase.infusionDao).thenReturn(infusionDao)
-        `when`(teaMemoryDatabase.noteDao).thenReturn(noteDao)
-        `when`(teaMemoryDatabase.counterDao).thenReturn(counterDao)
-        `when`(teaDao.insert(any())).thenReturn(0L).thenReturn(1L)
+        every { teaMemoryDatabase.teaDao } returns teaDao
+        every { teaMemoryDatabase.infusionDao } returns infusionDao
+        every { teaMemoryDatabase.noteDao } returns noteDao
+        every { teaMemoryDatabase.counterDao } returns counterDao
+        every { teaDao.insert(any()) } returns 0L andThen 1L
     }
 
     @Throws(FileNotFoundException::class)
     private fun mockFileReader() {
-        `when`(application.contentResolver).thenReturn(contentResolver)
-        `when`(contentResolver.openInputStream(any())).thenReturn(ByteArrayInputStream(DB_JSON_DUMP.toByteArray()))
+        every { application.contentResolver } returns contentResolver
+        every { contentResolver.openInputStream(any()) } returns ByteArrayInputStream(DB_JSON_DUMP.toByteArray())
     }
 
     @Test
@@ -102,90 +101,86 @@ internal class JsonIOAdapterImportTest {
 
     @Test
     fun importTeasAndDeleteStoredTeas() {
-        `when`(systemUtility.sdkVersion).thenReturn(VERSION_CODES.R)
+        every { systemUtility.sdkVersion } returns VERSION_CODES.R
         val tea = Tea()
         tea.id = 1L
-        `when`(teaDao.getTeas()).thenReturn(listOf(tea))
+        every { teaDao.getTeas() } returns listOf(tea)
 
         init(application, object : Printer { override fun print(message: String?) { println(message) } })
         read(getDataIO(application, object : Printer { override fun print(message: String?) { println(message) } }, uri), false)
 
-        verify(imageController).removeImageByTeaId(ArgumentMatchers.anyLong())
-        verify(teaDao).deleteAll()
+        verify { imageController.removeImageByTeaId(any()) }
+        verify { teaDao.deleteAll() }
         verifyImportedTeas()
     }
 
     @Test
     fun importTeasAndDeleteStoredTeasButNotDeleteImagesForVersionsOlderAndroidQ() {
-        `when`(systemUtility.sdkVersion).thenReturn(VERSION_CODES.P)
+        every { systemUtility.sdkVersion } returns VERSION_CODES.P
 
         init(application, object : Printer { override fun print(message: String?) { println(message) } })
         read(getDataIO(application, object : Printer { override fun print(message: String?) { println(message) } }, uri), false)
 
-        verify(imageController, never()).removeImageByTeaId(ArgumentMatchers.anyLong())
+        verify(exactly = 0) { imageController.removeImageByTeaId(any()) }
     }
 
     private fun verifyImportedTeas() {
-        argumentCaptor<Tea>().apply {
-            verify(teaDao, times(2)).insert(capture())
-            assertThat(allValues).extracting(
-                Tea::name,
-                Tea::variety,
-                Tea::amount,
-                Tea::amountKind,
-                Tea::color,
-                Tea::rating,
-                Tea::inStock,
-                Tea::nextInfusion
-            ).containsExactly(
-                Tuple.tuple("name1", "variety1", 1.0, "Gr", 1, 3, true, 1),
-                Tuple.tuple("name2", "variety2", 2.5, "Ts", 2, 0, false, 2)
-            )
-        }
+        val slotsTea = mutableListOf<Tea>()
+        verify(exactly = 2) { teaDao.insert(capture(slotsTea)) }
+        assertThat(slotsTea).extracting(
+            Tea::name,
+            Tea::variety,
+            Tea::amount,
+            Tea::amountKind,
+            Tea::color,
+            Tea::rating,
+            Tea::inStock,
+            Tea::nextInfusion
+        ).containsExactly(
+            Tuple.tuple("name1", "variety1", 1.0, "Gr", 1, 3, true, 1),
+            Tuple.tuple("name2", "variety2", 2.5, "Ts", 2, 0, false, 2)
+        )
 
-        argumentCaptor<Infusion>().apply {
-            verify(infusionDao, times(4)).insert(capture())
-            assertThat(allValues).extracting(
-                Infusion::teaId,
-                Infusion::infusionIndex,
-                Infusion::time,
-                Infusion::coolDownTime,
-                Infusion::temperatureCelsius,
-                Infusion::temperatureFahrenheit
-            ).containsExactly(
-                Tuple.tuple(0L, 0, "2:00", "5:00", 100, 212),
-                Tuple.tuple(0L, 1, "5:00", "3:00", 90, 195),
-                Tuple.tuple(1L, 0, "6:00", "5:00", 100, 212),
-                Tuple.tuple(1L, 1, "7:00", "3:00", 90, 195)
-            )
-        }
+        val slotsInfusion = mutableListOf<Infusion>()
+        verify(exactly = 4) { infusionDao.insert(capture(slotsInfusion)) }
+        assertThat(slotsInfusion).extracting(
+            Infusion::teaId,
+            Infusion::infusionIndex,
+            Infusion::time,
+            Infusion::coolDownTime,
+            Infusion::temperatureCelsius,
+            Infusion::temperatureFahrenheit
+        ).containsExactly(
+            Tuple.tuple(0L, 0, "2:00", "5:00", 100, 212),
+            Tuple.tuple(0L, 1, "5:00", "3:00", 90, 195),
+            Tuple.tuple(1L, 0, "6:00", "5:00", 100, 212),
+            Tuple.tuple(1L, 1, "7:00", "3:00", 90, 195)
+        )
 
-        argumentCaptor<Counter>().apply {
-            verify(counterDao, times(2)).insert(capture())
-            assertThat(allValues).extracting(
-                Counter::teaId,
-                Counter::week,
-                Counter::month,
-                Counter::year,
-                Counter::overall
-            ).containsExactly(
-                Tuple.tuple(0L, 1, 2, 3, 4L),
-                Tuple.tuple(1L, 5, 6, 7, 8L)
-            )
-        }
+        val slotsCounter = mutableListOf<Counter>()
+        verify(exactly = 2) { counterDao.insert(capture(slotsCounter)) }
+        assertThat(slotsCounter).extracting(
+            Counter::teaId,
+            Counter::week,
+            Counter::month,
+            Counter::year,
+            Counter::overall
+        ).containsExactly(
+            Tuple.tuple(0L, 1, 2, 3, 4L),
+            Tuple.tuple(1L, 5, 6, 7, 8L)
+        )
 
-        argumentCaptor<Note>().apply {
-            verify(noteDao, times(2)).insert(capture())
-            assertThat(allValues).extracting(
-                Note::teaId,
-                Note::position,
-                Note::header,
-                Note::description
-            ).containsExactly(
-                Tuple.tuple(0L, 0, "Header", "Description"),
-                Tuple.tuple(1L, 0, "Header", "Description")
-            )
-        }
+        val slotsNote = mutableListOf<Note>()
+        verify(exactly = 2) { noteDao.insert(capture(slotsNote)) }
+        assertThat(slotsNote).extracting(
+            Note::teaId,
+            Note::position,
+            Note::header,
+            Note::description
+        ).containsExactly(
+            Tuple.tuple(0L, 0, "Header", "Description"),
+            Tuple.tuple(1L, 0, "Header", "Description")
+        )
     }
 
     companion object {

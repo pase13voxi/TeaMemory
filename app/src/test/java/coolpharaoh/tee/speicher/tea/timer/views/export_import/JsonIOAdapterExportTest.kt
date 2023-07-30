@@ -20,13 +20,15 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.s
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.init
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.write
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapter
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 import java.text.SimpleDateFormat
 import java.time.Clock
@@ -36,32 +38,24 @@ import java.util.Date
 
 @RunWith(RobolectricTestRunner::class)
 class JsonIOAdapterExportTest {
-    private var exportedDate: String? = null
-
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var teaMemoryDatabase: TeaMemoryDatabase
-
-    @Mock
+    @MockK
     lateinit var teaDao: TeaDao
-
-    @Mock
+    @MockK
     lateinit var infusionDao: InfusionDao
-
-    @Mock
+    @MockK
     lateinit var noteDao: NoteDao
-
-    @Mock
+    @MockK
     lateinit var counterDao: CounterDao
-
-    @Mock
+    @MockK
     lateinit var fixedDate: DateUtility
-
-    @Mock
+    @RelaxedMockK
     lateinit var dataIOAdapter: DataIOAdapter
+
+    private var exportedDate: String? = null
 
     @Before
     fun setUp() {
@@ -74,7 +68,7 @@ class JsonIOAdapterExportTest {
         val clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"))
         val instant = Instant.now(clock)
         val date = Date.from(instant)
-        `when`(fixedDate.date).thenReturn(date)
+        every { fixedDate.date } returns date
         setFixedDate(fixedDate)
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
         exportedDate = formatter.format(date)
@@ -82,10 +76,10 @@ class JsonIOAdapterExportTest {
 
     private fun mockDB() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
-        `when`(teaMemoryDatabase.infusionDao).thenReturn(infusionDao)
-        `when`(teaMemoryDatabase.noteDao).thenReturn(noteDao)
-        `when`(teaMemoryDatabase.counterDao).thenReturn(counterDao)
+        every { teaMemoryDatabase.teaDao } returns teaDao
+        every { teaMemoryDatabase.infusionDao } returns infusionDao
+        every { teaMemoryDatabase.noteDao } returns noteDao
+        every { teaMemoryDatabase.counterDao } returns counterDao
     }
 
     private fun mockExistingTeas() {
@@ -99,7 +93,7 @@ class JsonIOAdapterExportTest {
         tea1.id = 1L
         tea0.rating = 5
         teas.add(tea1)
-        `when`(teaDao.getTeas()).thenReturn(teas)
+        every { teaDao.getTeas() } returns teas
 
         val infusions: MutableList<Infusion> = ArrayList()
         val infusion00 = Infusion(0L, 0, "2:00", "5:00", 100, 212)
@@ -114,7 +108,7 @@ class JsonIOAdapterExportTest {
         val infusion11 = Infusion(1L, 1, "7:00", "3:00", 90, 195)
         infusion11.id = 3L
         infusions.add(infusion11)
-        `when`(infusionDao.getInfusions()).thenReturn(infusions)
+        every { infusionDao.getInfusions() } returns infusions
 
         val notes: MutableList<Note> = ArrayList()
         val note0 = Note(0L, 0, "Header", "Description")
@@ -123,7 +117,7 @@ class JsonIOAdapterExportTest {
         val note1 = Note(1L, 0, "Header", "Description")
         notes.add(note1)
         note0.id = 1L
-        `when`(noteDao.notes).thenReturn(notes)
+        every { noteDao.notes } returns notes
         val counters: MutableList<Counter> = ArrayList()
         val counter0 = Counter(0L, 1, 2, 3, 4, getDate(), getDate(), getDate())
         counter0.id = 0L
@@ -131,7 +125,7 @@ class JsonIOAdapterExportTest {
         val counter1 = Counter(1L, 5, 6, 7, 8, getDate(), getDate(), getDate())
         counter1.id = 1L
         counters.add(counter1)
-        `when`(counterDao.getCounters()).thenReturn(counters)
+        every { counterDao.getCounters() } returns counters
     }
 
     @Test
@@ -141,7 +135,7 @@ class JsonIOAdapterExportTest {
         init((context as Application), object : Printer { override fun print(message: String?) { println(message) } })
         write(dataIOAdapter)
 
-        verify(dataIOAdapter).write(DB_JSON_DUMP.replace("DATE", exportedDate!!))
+        verify { dataIOAdapter.write(DB_JSON_DUMP.replace("DATE", exportedDate!!)) }
     }
 
     companion object {
