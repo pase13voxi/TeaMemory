@@ -1,725 +1,687 @@
-package coolpharaoh.tee.speicher.tea.timer.views.show_tea;
+package coolpharaoh.tee.speicher.tea.timer.views.show_tea
 
-import static android.os.Looper.getMainLooper;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit.CELSIUS;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind.TEA_SPOON;
+import android.app.AlertDialog
+import android.app.Application
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.os.Looper
+import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.SeekBar
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
+import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
+import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
+import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription
+import coolpharaoh.tee.speicher.tea.timer.views.information.Information
+import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea
+import coolpharaoh.tee.speicher.tea.timer.views.overview.Overview
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.slot
+import io.mockk.verify
+import org.assertj.core.api.Assertions.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.Shadows
+import org.robolectric.fakes.RoboMenuItem
+import org.robolectric.shadows.ShadowAlertDialog
 
-import android.app.AlertDialog;
-import android.app.Application;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
+@RunWith(RobolectricTestRunner::class)
+class ShowTeaTest {
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+    @RelaxedMockK
+    lateinit var teaDao: TeaDao
+    @MockK
+    lateinit var infusionDao: InfusionDao
+    @RelaxedMockK
+    lateinit var counterDao: CounterDao
 
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
-import org.robolectric.fakes.RoboMenuItem;
-import org.robolectric.shadows.ShadowAlertDialog;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter;
-import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao;
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionDao;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao;
-import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase;
-import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription;
-import coolpharaoh.tee.speicher.tea.timer.views.information.Information;
-import coolpharaoh.tee.speicher.tea.timer.views.new_tea.NewTea;
-import coolpharaoh.tee.speicher.tea.timer.views.overview.Overview;
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.TimerController;
-
-@RunWith(RobolectricTestRunner.class)
-public class
-ShowTeaTest {
-    private static final String TEA_ID_EXTRA = "teaId";
-    private static final long TEA_ID = 1L;
-    private static final String VARIETY = "variety";
-    private static final String BROADCAST_EXTRA_READY = "ready";
-    private static final String BROADCAST_EXTRA_COUNTDOWN = "countdown";
-
-    Tea tea;
-    List<Infusion> infusions;
-    Counter counter;
-
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    TeaMemoryDatabase teaMemoryDatabase;
-    @Mock
-    TeaDao teaDao;
-    @Mock
-    InfusionDao infusionDao;
-    @Mock
-    CounterDao counterDao;
+    var tea: Tea? = null
+    private var infusions: ArrayList<Infusion> = ArrayList()
+    var counter: Counter? = null
 
     @Test
-    public void launchActivityWithNoTeaIdAndExpectFailingDialog() {
-        final ActivityScenario<ShowTea> newTeaActivityScenario = ActivityScenario.launch(ShowTea.class);
-        newTeaActivityScenario.onActivity(showTea -> {
-            final AlertDialog dialogFail = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
-            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+    fun launchActivityWithNoTeaIdAndExpectFailingDialog() {
+        val newTeaActivityScenario = ActivityScenario.launch(ShowTea::class.java)
+        newTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val dialogFail = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header,
+                R.string.show_tea_dialog_tea_missing_description)
+            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final Intent expected = new Intent(showTea, Overview.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            val expected = Intent(showTea, Overview::class.java)
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        });
+            assertThat(actual.component).isEqualTo(expected.component)
+        }
     }
 
     @Test
-    public void launchActivityWithNotExistingTeaIdExpectFailingDialog() {
-        mockDB();
+    fun launchActivityWithNotExistingTeaIdExpectFailingDialog() {
+        mockDB()
+        every { teaDao.getTeaById(5L) } returns null
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, 5L);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, 5L)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final AlertDialog dialogFail = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header, R.string.show_tea_dialog_tea_missing_description);
-            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val dialogFail = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogFail, R.string.show_tea_dialog_tea_missing_header,
+                R.string.show_tea_dialog_tea_missing_description)
+            dialogFail.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final Intent expected = new Intent(showTea, Overview.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            val expected = Intent(showTea, Overview::class.java)
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        });
+            assertThat(actual.component).isEqualTo(expected.component)
+        }
     }
 
     @Test
-    public void launchActivityAndExpectDescriptionDialog() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, true, false);
+    fun launchActivityAndExpectDescriptionDialog() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, true, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final AlertDialog dialogDescription = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogDescription, R.string.show_tea_dialog_description_header);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val dialogDescription = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogDescription, R.string.show_tea_dialog_description_header)
 
-            final CheckBox checkBox = dialogDescription.findViewById(R.id.check_box_show_tea_dialog_description);
-            checkBox.setChecked(true);
+            val checkBox = dialogDescription.findViewById<CheckBox>(R.id.check_box_show_tea_dialog_description)
+            checkBox.isChecked = true
 
-            dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+            dialogDescription.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final SharedSettings sharedSettings = new SharedSettings(showTea.getApplication());
-            assertThat(sharedSettings.isShowTeaAlert()).isFalse();
+            val sharedSettings = SharedSettings(showTea.application)
+            assertThat(sharedSettings.isShowTeaAlert).isFalse
 
-            final Intent expected = new Intent(showTea, ShowTeaDescription.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            val expected = Intent(showTea, ShowTeaDescription::class.java)
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(actual.getData()).isEqualTo(expected.getData());
-        });
+            assertThat(actual.data).isEqualTo(expected.data)
+        }
     }
 
     @Test
-    public void launchActivityAndExpectDisplayNextInfusionDialog() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 2);
-        mockInfusions(
-                Arrays.asList("1:00", "2:00", "3:00"), Arrays.asList(new String[]{null, null, null}),
-                Arrays.asList(100, 100, 90), Arrays.asList(212, 212, 176));
-        setSharedSettings(CELSIUS, false, false);
+    fun launchActivityAndExpectDisplayNextInfusionDialog() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 2)
+        mockInfusions(listOf("1:00", "2:00", "3:00"), listOf<String?>(null, null, null), listOf(100, 100, 90), listOf(212, 212, 176))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final AlertDialog dialogNextInfusion = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3));
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val dialogNextInfusion = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3))
 
-            dialogNextInfusion.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+            dialogNextInfusion.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
-            final TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-            final Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
-            final Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
+            val textViewInfusionIndex = showTea.findViewById<TextView>(R.id.show_tea_tool_bar_text_infusion_index)
+            val textViewTemperature = showTea.findViewById<TextView>(R.id.text_view_show_tea_temperature)
+            val spinnerMinutes = showTea.findViewById<Spinner>(R.id.spinner_show_tea_minutes)
+            val spinnerSeconds = showTea.findViewById<Spinner>(R.id.spinner_show_tea_seconds)
 
-            assertThat(textViewInfusionIndex.getText()).hasToString("3.");
-            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(2).getTemperatureCelsius() + " °C");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
+            assertThat(textViewInfusionIndex.text).hasToString("3.")
+            assertThat(textViewTemperature.text).isEqualTo(infusions[2].temperatureCelsius.toString() + " °C")
+            assertThat(spinnerMinutes.selectedItem).hasToString("03")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
+        }
     }
 
     @Test
-    public void displayNextInfusionDialogClickCancelAndExpectNextInfusionZero() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 2);
-        mockInfusions(
-                Arrays.asList("1:00", "2:00", "3:00"), Arrays.asList(new String[]{null, null, null}),
-                Arrays.asList(100, 100, 90), Arrays.asList(212, 212, 176));
-        setSharedSettings(CELSIUS, false, false);
+    fun displayNextInfusionDialogClickCancelAndExpectNextInfusionZero() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 2)
+        mockInfusions(listOf("1:00", "2:00", "3:00"), listOf<String?>(null, null, null), listOf(100, 100, 90), listOf(212, 212, 176))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final AlertDialog dialogNextInfusion = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3));
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val dialogNextInfusion = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogNextInfusion, R.string.show_tea_dialog_following_infusion_header, showTea.getString(R.string.show_tea_dialog_following_infusion_description, 2, 3))
 
-            dialogNextInfusion.getButton(DialogInterface.BUTTON_NEGATIVE).performClick();
-            shadowOf(getMainLooper()).idle();
+            dialogNextInfusion.getButton(DialogInterface.BUTTON_NEGATIVE).performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final ArgumentCaptor<Tea> teaCaptor = ArgumentCaptor.forClass(Tea.class);
-            verify(teaDao).update(teaCaptor.capture());
+            val teaSlot = slot<Tea>()
+            verify { teaDao.update(capture(teaSlot)) }
 
-            assertThat(teaCaptor.getValue().getNextInfusion()).isZero();
-        });
+            assertThat(teaSlot.captured.nextInfusion).isZero()
+        }
     }
 
     @Test
-    public void launchActivityWithCelsiusAndTeaSpoonStandardValuesAndExpectFilledActivity() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, false, false);
+    fun launchActivityWithCelsiusAndTeaSpoonStandardValuesAndExpectFilledActivity() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final ImageButton buttonInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_infusion_index);
-            final TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
-            final ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-            final TextView textViewName = showTea.findViewById(R.id.text_view_show_tea_name);
-            final TextView textViewVariety = showTea.findViewById(R.id.text_view_show_tea_variety);
-            final TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-            final TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
-            final Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
-            final Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val buttonInfusionIndex = showTea.findViewById<ImageButton>(R.id.show_tea_tool_bar_infusion_index)
+            val textViewInfusionIndex = showTea.findViewById<TextView>(R.id.show_tea_tool_bar_text_infusion_index)
+            val buttonNextInfusion = showTea.findViewById<ImageButton>(R.id.show_tea_tool_bar_next_infusion)
+            val textViewName = showTea.findViewById<TextView>(R.id.text_view_show_tea_name)
+            val textViewVariety = showTea.findViewById<TextView>(R.id.text_view_show_tea_variety)
+            val textViewTemperature = showTea.findViewById<TextView>(R.id.text_view_show_tea_temperature)
+            val textViewAmount = showTea.findViewById<TextView>(R.id.text_view_show_tea_amount)
+            val spinnerMinutes = showTea.findViewById<Spinner>(R.id.spinner_show_tea_minutes)
+            val spinnerSeconds = showTea.findViewById<Spinner>(R.id.spinner_show_tea_seconds)
 
-            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.GONE);
-            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.GONE);
-            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.GONE);
-            assertThat(textViewName.getText()).isEqualTo(tea.getName());
-            assertThat(textViewVariety.getText()).isEqualTo(tea.getVariety());
-            assertThat(textViewTemperature.getText()).isEqualTo(infusions.get(0).getTemperatureCelsius() + " °C");
-            assertThat(textViewAmount.getText()).contains(((int) tea.getAmount()) + " ts/l");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
+            assertThat(buttonInfusionIndex.visibility).isEqualTo(View.GONE)
+            assertThat(textViewInfusionIndex.visibility).isEqualTo(View.GONE)
+            assertThat(buttonNextInfusion.visibility).isEqualTo(View.GONE)
+            assertThat(textViewName.text).isEqualTo(tea!!.name)
+            assertThat(textViewVariety.text).isEqualTo(tea!!.variety)
+            assertThat(textViewTemperature.text).isEqualTo(infusions[0].temperatureCelsius.toString() + " °C")
+            assertThat(textViewAmount.text).contains(tea!!.amount.toInt().toString() + " ts/l")
+            assertThat(spinnerMinutes.selectedItem).hasToString("01")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
+        }
     }
 
     @Test
-    public void launchActivityWithEmptyValuesCelsiusAndTeaSpoonAndExpectFilledActivity() {
-        mockDB();
-        mockTea(null, -500, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList(null), Collections.singletonList(null),
-                Collections.singletonList(-500), Collections.singletonList(-500));
-        setSharedSettings(CELSIUS, false, false);
+    fun launchActivityWithEmptyValuesCelsiusAndTeaSpoonAndExpectFilledActivity() {
+        mockDB()
+        mockTea(null, -500, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf<String?>(null), listOf<String?>(null), listOf(-500), listOf(-500))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final TextView textViewVariety = showTea.findViewById(R.id.text_view_show_tea_variety);
-            final TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
-            final TextView textViewAmount = showTea.findViewById(R.id.text_view_show_tea_amount);
-            final Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
-            final Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val textViewVariety = showTea.findViewById<TextView>(R.id.text_view_show_tea_variety)
+            val textViewTemperature = showTea.findViewById<TextView>(R.id.text_view_show_tea_temperature)
+            val textViewAmount = showTea.findViewById<TextView>(R.id.text_view_show_tea_amount)
+            val spinnerMinutes = showTea.findViewById<Spinner>(R.id.spinner_show_tea_minutes)
+            val spinnerSeconds = showTea.findViewById<Spinner>(R.id.spinner_show_tea_seconds)
 
-            assertThat(textViewVariety.getText()).isEqualTo("-");
-            assertThat(textViewTemperature.getText()).isEqualTo("- °C");
-            assertThat(textViewAmount.getText()).contains("- ts/l");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("00");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
+            assertThat(textViewVariety.text).isEqualTo("-")
+            assertThat(textViewTemperature.text).isEqualTo("- °C")
+            assertThat(textViewAmount.text).contains("- ts/l")
+            assertThat(spinnerMinutes.selectedItem).hasToString("00")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
+        }
     }
 
     @Test
-    public void switchBetweenTimerAndCoolDownTimer() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, false, false);
+    fun switchBetweenTimerAndCoolDownTimer() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf("4:00"), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final ImageButton buttonTemperature = showTea.findViewById(R.id.button_show_tea_temperature);
-            final ImageButton buttonInfo = showTea.findViewById(R.id.button_show_tea_info);
-            final Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
-            final Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val buttonTemperature = showTea.findViewById<ImageButton>(R.id.button_show_tea_temperature)
+            val buttonInfo = showTea.findViewById<ImageButton>(R.id.button_show_tea_info)
+            val spinnerMinutes = showTea.findViewById<Spinner>(R.id.spinner_show_tea_minutes)
+            val spinnerSeconds = showTea.findViewById<Spinner>(R.id.spinner_show_tea_seconds)
 
-            assertThat(buttonTemperature.isEnabled()).isTrue();
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+            assertThat(buttonTemperature.isEnabled).isTrue
+            assertThat(spinnerMinutes.selectedItem).hasToString("01")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
 
-            buttonTemperature.performClick();
-            assertThat(buttonInfo.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("04");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+            buttonTemperature.performClick()
+            assertThat(buttonInfo.visibility).isEqualTo(View.VISIBLE)
+            assertThat(spinnerMinutes.selectedItem).hasToString("04")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
 
-            buttonInfo.performClick();
-            final AlertDialog dialogInfo = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogInfo, R.string.show_tea_cool_down_time_header, R.string.show_tea_cool_down_time_description);
-            dialogInfo.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            buttonInfo.performClick()
+            val dialogInfo = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogInfo, R.string.show_tea_cool_down_time_header, R.string.show_tea_cool_down_time_description)
+            dialogInfo.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
 
-            buttonTemperature.performClick();
-            assertThat(buttonInfo.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
+            buttonTemperature.performClick()
+            assertThat(buttonInfo.visibility).isEqualTo(View.INVISIBLE)
+            assertThat(spinnerMinutes.selectedItem).hasToString("01")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
+        }
     }
 
     @Test
-    public void showDialogAmountAndCalculateAmountTeaSpoon() {
-        mockDB();
-        mockTea(VARIETY, 4, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("4:00"),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, false, false);
+    fun showDialogAmountAndCalculateAmountTeaSpoon() {
+        mockDB()
+        mockTea(VARIETY, 4, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf("4:00"), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final ImageButton buttonCalculateAmount = showTea.findViewById(R.id.button_show_tea_calculate_amount);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val buttonCalculateAmount = showTea.findViewById<ImageButton>(R.id.button_show_tea_calculate_amount)
 
-            buttonCalculateAmount.performClick();
-            final AlertDialog dialogCalculateAmount = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.show_tea_dialog_amount);
+            buttonCalculateAmount.performClick()
+            val dialogCalculateAmount = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogCalculateAmount, R.string.show_tea_dialog_amount)
 
-            final SeekBar seekBarAmountPerAmount = dialogCalculateAmount.findViewById(R.id.seek_bar_show_tea_amount_per_amount);
-            final TextView textViewAmountPerAmount = dialogCalculateAmount.findViewById(R.id.text_view_show_tea_show_amount_per_amount);
+            val seekBarAmountPerAmount = dialogCalculateAmount.findViewById<SeekBar>(R.id.seek_bar_show_tea_amount_per_amount)
+            val textViewAmountPerAmount = dialogCalculateAmount.findViewById<TextView>(R.id.text_view_show_tea_show_amount_per_amount)
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("4.0 ts / 1.0 l");
+            assertThat(textViewAmountPerAmount.text).hasToString("4.0 ts / 1.0 l")
 
-            seekBarAmountPerAmount.setProgress(5);
+            seekBarAmountPerAmount.progress = 5
 
-            assertThat(textViewAmountPerAmount.getText()).hasToString("2.0 ts / 0.5 l");
-        });
+            assertThat(textViewAmountPerAmount.text).hasToString("2.0 ts / 0.5 l")
+        }
     }
 
     @Test
-    public void navigationToDetailedInformationView() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, false, false);
+    fun navigationToDetailedInformationView() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final TextView toolbarTitle = showTea.findViewById(R.id.tool_bar_title);
-            toolbarTitle.performClick();
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val toolbarTitle = showTea.findViewById<TextView>(R.id.tool_bar_title)
+            toolbarTitle.performClick()
 
-            final Intent expected = new Intent(showTea, Information.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            val expected = Intent(showTea, Information::class.java)
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        });
+            assertThat(actual.component).isEqualTo(expected.component)
+        }
     }
 
     @Test
-    public void navigationToDetailedInformationViewByMenu() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, false, false);
+    fun navigationToDetailedInformationViewByMenu() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_show_tea_information));
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            showTea.onOptionsItemSelected(RoboMenuItem(R.id.action_show_tea_information))
 
-            final Intent expected = new Intent(showTea, Information.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            val expected = Intent(showTea, Information::class.java)
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        });
+            assertThat(actual.component).isEqualTo(expected.component)
+        }
     }
 
     @Test
-    public void editTea() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        setSharedSettings(CELSIUS, false, false);
+    fun editTea() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            showTea.onOptionsItemSelected(new RoboMenuItem(R.id.action_show_tea_edit));
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            showTea.onOptionsItemSelected(RoboMenuItem(R.id.action_show_tea_edit))
 
-            final Intent expected = new Intent(showTea, NewTea.class);
-            final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+            val expected = Intent(showTea, NewTea::class.java)
+            val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-            assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        });
+            assertThat(actual.component).isEqualTo(expected.component)
+        }
     }
 
     @Test
-    public void switchBetweenInfusionsCelsius() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(
-                Arrays.asList("1:00", "2:00", "3:00"), Arrays.asList(null, "5:00", null),
-                Arrays.asList(100, -500, 100), Arrays.asList(212, -500, 212));
-        setSharedSettings(CELSIUS, false, false);
+    fun switchBetweenInfusionsCelsius() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00", "2:00", "3:00"), listOf(null, "5:00", null), listOf(100, -500, 100), listOf(212, -500, 212))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final ImageButton buttonInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_infusion_index);
-            final TextView textViewInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_text_infusion_index);
-            final ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-            final Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
-            final Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
-            final TextView textViewTemperature = showTea.findViewById(R.id.text_view_show_tea_temperature);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val buttonInfusionIndex = showTea.findViewById<ImageButton>(R.id.show_tea_tool_bar_infusion_index)
+            val textViewInfusionIndex = showTea.findViewById<TextView>(R.id.show_tea_tool_bar_text_infusion_index)
+            val buttonNextInfusion = showTea.findViewById<ImageButton>(R.id.show_tea_tool_bar_next_infusion)
+            val spinnerMinutes = showTea.findViewById<Spinner>(R.id.spinner_show_tea_minutes)
+            val spinnerSeconds = showTea.findViewById<Spinner>(R.id.spinner_show_tea_seconds)
+            val textViewTemperature = showTea.findViewById<TextView>(R.id.text_view_show_tea_temperature)
 
-            assertThat(buttonInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewInfusionIndex.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(buttonNextInfusion.getVisibility()).isEqualTo(View.VISIBLE);
-            assertThat(textViewTemperature.getText()).hasToString("100 °C");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("01");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+            assertThat(buttonInfusionIndex.visibility).isEqualTo(View.VISIBLE)
+            assertThat(textViewInfusionIndex.visibility).isEqualTo(View.VISIBLE)
+            assertThat(buttonNextInfusion.visibility).isEqualTo(View.VISIBLE)
+            assertThat(textViewTemperature.text).hasToString("100 °C")
+            assertThat(spinnerMinutes.selectedItem).hasToString("01")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
 
-            buttonNextInfusion.performClick();
-            assertThat(textViewTemperature.getText()).hasToString("- °C");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("02");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
+            buttonNextInfusion.performClick()
+            assertThat(textViewTemperature.text).hasToString("- °C")
+            assertThat(spinnerMinutes.selectedItem).hasToString("02")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
 
-            buttonInfusionIndex.performClick();
-            final AlertDialog dialogInfusionIndex = getLatestAlertDialog();
-            checkTitleAndMessageOfLatestDialog(showTea, dialogInfusionIndex, R.string.show_tea_dialog_infusion_count_title);
+            buttonInfusionIndex.performClick()
+            val dialogInfusionIndex = ShadowAlertDialog.getLatestAlertDialog()
+            checkTitleAndMessageOfLatestDialog(showTea, dialogInfusionIndex, R.string.show_tea_dialog_infusion_count_title)
 
-            final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialogInfusionIndex);
-            shadowDialog.clickOnItem(2);
-            assertThat(textViewTemperature.getText()).hasToString("100 °C");
-            assertThat(spinnerMinutes.getSelectedItem()).hasToString("03");
-            assertThat(spinnerSeconds.getSelectedItem()).hasToString("00");
-        });
+            val shadowDialog = Shadows.shadowOf(dialogInfusionIndex)
+            shadowDialog.clickOnItem(2)
+            assertThat(textViewTemperature.text).hasToString("100 °C")
+            assertThat(spinnerMinutes.selectedItem).hasToString("03")
+            assertThat(spinnerSeconds.selectedItem).hasToString("00")
+        }
     }
 
     @Test
-    public void startTimer() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(
-                Arrays.asList("1:00", "2:00"), Arrays.asList("1:00", "1:00"),
-                Arrays.asList(95, 95), Arrays.asList(203, 203));
-        mockCounter();
-        setSharedSettings(CELSIUS, false, true);
+    fun startTimer() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00", "2:00"), listOf("1:00", "1:00"), listOf(95, 95), listOf(203, 203))
+        mockCounter()
+        setSharedSettings(TemperatureUnit.CELSIUS, false, true)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> checkStartOrReset(showTea, true));
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea -> checkStartOrReset(showTea, true) }
     }
 
     @Test
-    public void timerUpdate() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockCounter();
-        setSharedSettings(CELSIUS, false, true);
+    fun timerUpdate() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        mockCounter()
+        setSharedSettings(TemperatureUnit.CELSIUS, false, true)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
-            final TextView textViewTimer = showTea.findViewById(R.id.text_view_show_tea_timer);
-            final ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val startButton = showTea.findViewById<Button>(R.id.button_show_tea_start_timer)
+            val textViewTimer = showTea.findViewById<TextView>(R.id.text_view_show_tea_timer)
+            val imageViewFill = showTea.findViewById<ImageView>(R.id.image_view_show_tea_fill)
 
-            startButton.performClick();
-            shadowOf(getMainLooper()).idle();
+            startButton.performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastIntent.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
-            broadcastIntent.putExtra(BROADCAST_EXTRA_READY, false);
-            showTea.sendBroadcast(broadcastIntent);
-            shadowOf(getMainLooper()).idle();
+            val broadcastIntent = Intent(TimerController.COUNTDOWN_BR)
+            broadcastIntent.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L)
+            broadcastIntent.putExtra(BROADCAST_EXTRA_READY, false)
+            showTea.sendBroadcast(broadcastIntent)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(textViewTimer.getText()).hasToString("00 : 30");
-            final int imageId = showTea.getResources().getIdentifier("cup_fill50pr", "drawable", showTea.getPackageName());
-            assertThat(imageViewFill.getTag()).isEqualTo(imageId);
-        });
+            assertThat(textViewTimer.text).hasToString("00 : 30")
+            val imageId = showTea.resources.getIdentifier("cup_fill50pr", "drawable", showTea.packageName)
+            assertThat(imageViewFill.tag).isEqualTo(imageId)
+        }
     }
 
     @Test
-    public void timerFinish() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockCounter();
-        setSharedSettings(CELSIUS, false, true);
+    fun timerFinish() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        mockCounter()
+        setSharedSettings(TemperatureUnit.CELSIUS, false, true)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
-            final TextView textViewTimer = showTea.findViewById(R.id.text_view_show_tea_timer);
-            final ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val startButton = showTea.findViewById<Button>(R.id.button_show_tea_start_timer)
+            val textViewTimer = showTea.findViewById<TextView>(R.id.text_view_show_tea_timer)
+            val imageViewSteam = showTea.findViewById<ImageView>(R.id.image_view_show_tea_steam)
 
-            startButton.performClick();
-            shadowOf(getMainLooper()).idle();
+            startButton.performClick()
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            final Intent broadcastIntent = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastIntent.putExtra(BROADCAST_EXTRA_READY, true);
-            showTea.sendBroadcast(broadcastIntent);
-            shadowOf(getMainLooper()).idle();
+            val broadcastIntent = Intent(TimerController.COUNTDOWN_BR)
+            broadcastIntent.putExtra(BROADCAST_EXTRA_READY, true)
+            showTea.sendBroadcast(broadcastIntent)
+            Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            assertThat(textViewTimer.getText()).hasToString(showTea.getString(R.string.show_tea_tea_ready));
-            assertThat(imageViewSteam.getVisibility()).isEqualTo(View.VISIBLE);
-        });
+            assertThat(textViewTimer.text).hasToString(showTea.getString(R.string.show_tea_tea_ready))
+            assertThat(imageViewSteam.visibility).isEqualTo(View.VISIBLE)
+        }
     }
 
     @Test
-    public void startCoolDownTimerAndExpectNoAnimation() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList("1:00"),
-                Collections.singletonList(95), Collections.singletonList(203));
-        setSharedSettings(CELSIUS, false, true);
+    fun startCoolDownTimerAndExpectNoAnimation() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf("1:00"), listOf(95), listOf(203))
+        setSharedSettings(TemperatureUnit.CELSIUS, false, true)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final ImageButton buttonTemperature = showTea.findViewById(R.id.button_show_tea_temperature);
-            final Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
-            final ImageView imageViewCup = showTea.findViewById(R.id.image_view_show_tea_cup);
-            final ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
-            final ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val buttonTemperature = showTea.findViewById<ImageButton>(R.id.button_show_tea_temperature)
+            val startButton = showTea.findViewById<Button>(R.id.button_show_tea_start_timer)
+            val imageViewCup = showTea.findViewById<ImageView>(R.id.image_view_show_tea_cup)
+            val imageViewFill = showTea.findViewById<ImageView>(R.id.image_view_show_tea_fill)
+            val imageViewSteam = showTea.findViewById<ImageView>(R.id.image_view_show_tea_steam)
 
-            buttonTemperature.performClick();
-            startButton.performClick();
+            buttonTemperature.performClick()
+            startButton.performClick()
 
-            final Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastUpdate.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
-            broadcastUpdate.putExtra(BROADCAST_EXTRA_READY, false);
-            showTea.sendBroadcast(broadcastUpdate);
+            val broadcastUpdate = Intent(TimerController.COUNTDOWN_BR)
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L)
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_READY, false)
+            showTea.sendBroadcast(broadcastUpdate)
 
-            final Intent broadcastFinish = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastFinish.putExtra(BROADCAST_EXTRA_READY, true);
-            showTea.sendBroadcast(broadcastFinish);
+            val broadcastFinish = Intent(TimerController.COUNTDOWN_BR)
+            broadcastFinish.putExtra(BROADCAST_EXTRA_READY, true)
+            showTea.sendBroadcast(broadcastFinish)
 
-            verify(counterDao, times(0)).update(any(Counter.class));
-            assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(imageViewFill.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(imageViewSteam.getVisibility()).isEqualTo(View.INVISIBLE);
-        });
+            verify (exactly = 0) { counterDao.update(any()) }
+            assertThat(imageViewCup.visibility).isEqualTo(View.INVISIBLE)
+            assertThat(imageViewFill.visibility).isEqualTo(View.INVISIBLE)
+            assertThat(imageViewSteam.visibility).isEqualTo(View.INVISIBLE)
+        }
     }
 
     @Test
-    public void startTimerWithSettingAnimationFalseAndExpectNoAnimation() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(Collections.singletonList("1:00"), Collections.singletonList(null),
-                Collections.singletonList(100), Collections.singletonList(212));
-        mockCounter();
-        setSharedSettings(CELSIUS, false, false);
+    fun startTimerWithSettingAnimationFalseAndExpectNoAnimation() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00"), listOf<String?>(null), listOf(100), listOf(212))
+        mockCounter()
+        setSharedSettings(TemperatureUnit.CELSIUS, false, false)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> {
-            final Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
-            final ImageView imageViewCup = showTea.findViewById(R.id.image_view_show_tea_cup);
-            final ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
-            final ImageView imageViewSteam = showTea.findViewById(R.id.image_view_show_tea_steam);
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea ->
+            val startButton = showTea.findViewById<Button>(R.id.button_show_tea_start_timer)
+            val imageViewCup = showTea.findViewById<ImageView>(R.id.image_view_show_tea_cup)
+            val imageViewFill = showTea.findViewById<ImageView>(R.id.image_view_show_tea_fill)
+            val imageViewSteam = showTea.findViewById<ImageView>(R.id.image_view_show_tea_steam)
 
-            startButton.performClick();
+            startButton.performClick()
 
-            final Intent broadcastUpdate = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastUpdate.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L);
-            broadcastUpdate.putExtra(BROADCAST_EXTRA_READY, false);
-            showTea.sendBroadcast(broadcastUpdate);
+            val broadcastUpdate = Intent(TimerController.COUNTDOWN_BR)
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_COUNTDOWN, 30000L)
+            broadcastUpdate.putExtra(BROADCAST_EXTRA_READY, false)
+            showTea.sendBroadcast(broadcastUpdate)
 
-            final Intent broadcastFinish = new Intent(TimerController.COUNTDOWN_BR);
-            broadcastFinish.putExtra(BROADCAST_EXTRA_READY, true);
-            showTea.sendBroadcast(broadcastFinish);
+            val broadcastFinish = Intent(TimerController.COUNTDOWN_BR)
+            broadcastFinish.putExtra(BROADCAST_EXTRA_READY, true)
+            showTea.sendBroadcast(broadcastFinish)
 
-            assertThat(imageViewCup.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(imageViewFill.getVisibility()).isEqualTo(View.INVISIBLE);
-            assertThat(imageViewSteam.getVisibility()).isEqualTo(View.INVISIBLE);
-        });
+            assertThat(imageViewCup.visibility).isEqualTo(View.INVISIBLE)
+            assertThat(imageViewFill.visibility).isEqualTo(View.INVISIBLE)
+            assertThat(imageViewSteam.visibility).isEqualTo(View.INVISIBLE)
+        }
     }
 
     @Test
-    public void resetTimer() {
-        mockDB();
-        mockTea(VARIETY, 1, TEA_SPOON.getText(), 0);
-        mockInfusions(
-                Arrays.asList("1:00", "2:00"), Arrays.asList("1:00", "1:00"),
-                Arrays.asList(95, 95), Arrays.asList(203, 203));
-        mockCounter();
-        setSharedSettings(CELSIUS, false, true);
+    fun resetTimer() {
+        mockDB()
+        mockTea(VARIETY, 1, AmountKind.TEA_SPOON.text, 0)
+        mockInfusions(listOf("1:00", "2:00"), listOf("1:00", "1:00"), listOf(95, 95), listOf(203, 203))
+        mockCounter()
+        setSharedSettings(TemperatureUnit.CELSIUS, false, true)
 
-        final Intent intent = new Intent(RuntimeEnvironment.getApplication(), ShowTea.class);
-        intent.putExtra(TEA_ID_EXTRA, TEA_ID);
+        val intent = Intent(RuntimeEnvironment.getApplication(), ShowTea::class.java)
+        intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
-        final ActivityScenario<ShowTea> showTeaActivityScenario = ActivityScenario.launch(intent);
-        showTeaActivityScenario.onActivity(showTea -> checkStartOrReset(showTea, false));
+        val showTeaActivityScenario = ActivityScenario.launch<ShowTea>(intent)
+        showTeaActivityScenario.onActivity { showTea: ShowTea -> checkStartOrReset(showTea, false) }
     }
 
-    private void checkStartOrReset(final ShowTea showTea, final boolean start) {
-        final Button startButton = showTea.findViewById(R.id.button_show_tea_start_timer);
-        final ImageButton buttonTemperature = showTea.findViewById(R.id.button_show_tea_temperature);
-        final ImageButton buttonInfusionIndex = showTea.findViewById(R.id.show_tea_tool_bar_infusion_index);
-        final ImageButton buttonNextInfusion = showTea.findViewById(R.id.show_tea_tool_bar_next_infusion);
-        final Spinner spinnerMinutes = showTea.findViewById(R.id.spinner_show_tea_minutes);
-        final Spinner spinnerSeconds = showTea.findViewById(R.id.spinner_show_tea_seconds);
-        final TextView textViewMinutes = showTea.findViewById(R.id.text_view_show_tea_minutes);
-        final TextView textViewSeconds = showTea.findViewById(R.id.text_view_show_tea_seconds);
-        final TextView textViewDoublePoint = showTea.findViewById(R.id.text_view_show_tea_double_point);
-        final TextView textViewTimer = showTea.findViewById(R.id.text_view_show_tea_timer);
-        final ImageView imageViewCup = showTea.findViewById(R.id.image_view_show_tea_cup);
-        final ImageView imageViewFill = showTea.findViewById(R.id.image_view_show_tea_fill);
+    private fun checkStartOrReset(showTea: ShowTea, start: Boolean) {
+        val startButton = showTea.findViewById<Button>(R.id.button_show_tea_start_timer)
+        val buttonTemperature = showTea.findViewById<ImageButton>(R.id.button_show_tea_temperature)
+        val buttonInfusionIndex = showTea.findViewById<ImageButton>(R.id.show_tea_tool_bar_infusion_index)
+        val buttonNextInfusion = showTea.findViewById<ImageButton>(R.id.show_tea_tool_bar_next_infusion)
+        val spinnerMinutes = showTea.findViewById<Spinner>(R.id.spinner_show_tea_minutes)
+        val spinnerSeconds = showTea.findViewById<Spinner>(R.id.spinner_show_tea_seconds)
+        val textViewMinutes = showTea.findViewById<TextView>(R.id.text_view_show_tea_minutes)
+        val textViewSeconds = showTea.findViewById<TextView>(R.id.text_view_show_tea_seconds)
+        val textViewDoublePoint = showTea.findViewById<TextView>(R.id.text_view_show_tea_double_point)
+        val textViewTimer = showTea.findViewById<TextView>(R.id.text_view_show_tea_timer)
+        val imageViewCup = showTea.findViewById<ImageView>(R.id.image_view_show_tea_cup)
+        val imageViewFill = showTea.findViewById<ImageView>(R.id.image_view_show_tea_fill)
 
         if (!start) {
             // start before reset
-            startButton.performClick();
+            startButton.performClick()
         }
-        startButton.performClick();
+        startButton.performClick()
 
-        assertThat(startButton.getText())
-                .hasToString(showTea.getString(start ? R.string.show_tea_timer_reset :
-                        R.string.show_tea_timer_start));
+        assertThat(startButton.text)
+            .hasToString(showTea.getString(if (start) R.string.show_tea_timer_reset else R.string.show_tea_timer_start))
         // disableInfusionBarAndCooldownSwitch
-        assertThat(buttonTemperature.isEnabled()).isEqualTo(!start);
-        assertThat(buttonInfusionIndex.isEnabled()).isEqualTo(!start);
-        assertThat(buttonNextInfusion.isEnabled()).isEqualTo(!start);
+        assertThat(buttonTemperature.isEnabled).isEqualTo(!start)
+        assertThat(buttonInfusionIndex.isEnabled).isEqualTo(!start)
+        assertThat(buttonNextInfusion.isEnabled).isEqualTo(!start)
         // hideTimeInputAndVisualizeTimerDisplay
-        assertThat(spinnerMinutes.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
-        assertThat(spinnerSeconds.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
-        assertThat(textViewMinutes.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
-        assertThat(textViewSeconds.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
-        assertThat(textViewDoublePoint.getVisibility()).isEqualTo(start ? View.INVISIBLE : View.VISIBLE);
-        assertThat(textViewTimer.getVisibility()).isEqualTo(start ? View.VISIBLE : View.INVISIBLE);
+        assertThat(spinnerMinutes.visibility).isEqualTo(if (start) View.INVISIBLE else View.VISIBLE)
+        assertThat(spinnerSeconds.visibility).isEqualTo(if (start) View.INVISIBLE else View.VISIBLE)
+        assertThat(textViewMinutes.visibility).isEqualTo(if (start) View.INVISIBLE else View.VISIBLE)
+        assertThat(textViewSeconds.visibility).isEqualTo(if (start) View.INVISIBLE else View.VISIBLE)
+        assertThat(textViewDoublePoint.visibility).isEqualTo(if (start) View.INVISIBLE else View.VISIBLE)
+        assertThat(textViewTimer.visibility).isEqualTo(if (start) View.VISIBLE else View.INVISIBLE)
         // visualizeTeaCup
-        assertThat(imageViewCup.getVisibility()).isEqualTo(start ? View.VISIBLE : View.INVISIBLE);
-        assertThat(imageViewFill.getVisibility()).isEqualTo(start ? View.VISIBLE : View.INVISIBLE);
+        assertThat(imageViewCup.visibility).isEqualTo(if (start) View.VISIBLE else View.INVISIBLE)
+        assertThat(imageViewFill.visibility).isEqualTo(if (start) View.VISIBLE else View.INVISIBLE)
     }
 
-    private void mockDB() {
-        TeaMemoryDatabase.setMockedDatabase(teaMemoryDatabase);
-        when(teaMemoryDatabase.getTeaDao()).thenReturn(teaDao);
-        when(teaMemoryDatabase.getInfusionDao()).thenReturn(infusionDao);
-        when(teaMemoryDatabase.getCounterDao()).thenReturn(counterDao);
+    private fun mockDB() {
+        setMockedDatabase(teaMemoryDatabase)
+        every { teaMemoryDatabase.teaDao } returns teaDao
+        every { teaMemoryDatabase.infusionDao } returns infusionDao
+        every { teaMemoryDatabase.counterDao } returns counterDao
     }
 
-    private void mockTea(final String variety, final int amount, final String amountKind, final int nextInfusion) {
-        tea = new Tea("name", variety, amount, amountKind, 1, nextInfusion, CurrentDate.getDate());
-        tea.setId(TEA_ID);
-        when(teaDao.getTeaById(TEA_ID)).thenReturn(tea);
+    private fun mockTea(variety: String?, amount: Int, amountKind: String, nextInfusion: Int) {
+        tea = Tea("name", variety, amount.toDouble(), amountKind, 1, nextInfusion, getDate())
+        tea!!.id = TEA_ID
+        every { teaDao.getTeaById(TEA_ID) } returns tea
     }
 
-    private void mockInfusions(final List<String> time, final List<String> coolDownTime, final List<Integer> temperatureCelsius,
-                               final List<Integer> temperatureFahrenheit) {
-        infusions = new ArrayList<>();
-        for (int i = 0; i < time.size(); i++) {
-            final Infusion infusion = new Infusion(TEA_ID, i, time.get(i), coolDownTime.get(i), temperatureCelsius.get(i), temperatureFahrenheit.get(i));
-            infusion.setId((long) (i + 1));
-            infusions.add(infusion);
+    private fun mockInfusions(time: List<String?>, coolDownTime: List<String?>, temperatureCelsius: List<Int>, temperatureFahrenheit: List<Int>) {
+        for (i in time.indices) {
+            val infusion = Infusion(TEA_ID, i, time[i], coolDownTime[i], temperatureCelsius[i], temperatureFahrenheit[i])
+            infusion.id = (i + 1).toLong()
+            infusions.add(infusion)
         }
-        when(infusionDao.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions);
+        every { infusionDao.getInfusionsByTeaId(TEA_ID) } returns infusions
     }
 
-    private void mockCounter() {
-        counter = new Counter(TEA_ID, 1, 2, 3, 4, CurrentDate.getDate(), CurrentDate.getDate(), CurrentDate.getDate());
-        counter.setId(1L);
-        when(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter);
+    private fun mockCounter() {
+        counter = Counter(TEA_ID, 1, 2, 3, 4, getDate(), getDate(), getDate())
+        counter!!.id = 1L
+        every { counterDao.getCounterByTeaId(TEA_ID) } returns counter
     }
 
-    private void setSharedSettings(final TemperatureUnit temperatureUnit, final boolean dialog, final boolean animation) {
-        final SharedSettings sharedSettings = new SharedSettings(RuntimeEnvironment.getApplication());
-        sharedSettings.setTemperatureUnit(temperatureUnit);
-        sharedSettings.setShowTeaAlert(dialog);
-        sharedSettings.setAnimation(animation);
+    private fun setSharedSettings(temperatureUnit: TemperatureUnit, dialog: Boolean, animation: Boolean) {
+        val sharedSettings = SharedSettings(RuntimeEnvironment.getApplication())
+        sharedSettings.temperatureUnit = temperatureUnit
+        sharedSettings.isShowTeaAlert = dialog
+        sharedSettings.isAnimation = animation
     }
 
-    private void checkTitleAndMessageOfLatestDialog(final ShowTea showTea, final AlertDialog dialog, final int title) {
-        checkTitleAndMessageOfLatestDialog(showTea, dialog, title, null);
+    private fun checkTitleAndMessageOfLatestDialog(showTea: ShowTea, dialog: AlertDialog, title: Int, message: Int) {
+        checkTitleAndMessageOfLatestDialog(showTea, dialog, title, showTea.getString(message))
     }
 
-    private void checkTitleAndMessageOfLatestDialog(final ShowTea showTea, final AlertDialog dialog, final int title, final int message) {
-        checkTitleAndMessageOfLatestDialog(showTea, dialog, title, showTea.getString(message));
-    }
-
-    private void checkTitleAndMessageOfLatestDialog(final ShowTea showTea, final AlertDialog dialog, final int title, final String message) {
-        final ShadowAlertDialog shadowDialog = Shadows.shadowOf(dialog);
-        assertThat(shadowDialog).isNotNull();
-        assertThat(shadowDialog.getTitle()).isEqualTo(showTea.getString(title));
+    private fun checkTitleAndMessageOfLatestDialog(showTea: ShowTea, dialog: AlertDialog, title: Int, message: String? = null) {
+        val shadowDialog = Shadows.shadowOf(dialog)
+        assertThat(shadowDialog).isNotNull
+        assertThat(shadowDialog.title).isEqualTo(showTea.getString(title))
         if (message != null) {
-            assertThat(shadowDialog.getMessage()).isEqualTo(message);
+            assertThat(shadowDialog.message).isEqualTo(message)
         }
     }
 
+    companion object {
+        private const val TEA_ID_EXTRA = "teaId"
+        private const val TEA_ID = 1L
+        private const val VARIETY = "variety"
+        private const val BROADCAST_EXTRA_READY = "ready"
+        private const val BROADCAST_EXTRA_COUNTDOWN = "countdown"
+    }
 }
