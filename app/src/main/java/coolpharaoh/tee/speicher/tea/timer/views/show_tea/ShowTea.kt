@@ -383,7 +383,7 @@ class ShowTea : AppCompatActivity() {
     private val requestPermissionLauncher = registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
         if (!isGranted) {
             Snackbar.make(findViewById(R.id.show_tea_parent), R.string.show_tea_snack_bar_notification_description, Snackbar.LENGTH_LONG)
-                .setAction(R.string.show_tea_snack_bar_notification_button) { v: View? ->
+                .setAction(R.string.show_tea_snack_bar_notification_button) {
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", packageName, null)
                     intent.data = uri
@@ -516,7 +516,7 @@ class ShowTea : AppCompatActivity() {
                 val reviewInfo = task.result
 
                 val flow = reviewManager.launchReviewFlow(this, reviewInfo)
-                flow.addOnCompleteListener { task1: Task<Void?>? -> }
+                flow.addOnCompleteListener { }
             }
         }
     }

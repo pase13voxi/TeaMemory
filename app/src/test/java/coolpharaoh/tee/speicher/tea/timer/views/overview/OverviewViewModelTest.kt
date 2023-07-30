@@ -1,333 +1,324 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview;
+package coolpharaoh.tee.speicher.tea.timer.views.overview
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.ALPHABETICAL;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.BY_VARIETY;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.LAST_USED;
-import static coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.RATING;
+import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension
+import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
+import coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
-import android.app.Application;
+@ExtendWith(MockKExtension::class, TaskExecutorExtension::class)
+internal class OverviewViewModelTest {
+    private var overviewViewModel: OverviewViewModel? = null
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+    @MockK
+    lateinit var application: Application
 
-import java.util.ArrayList;
-import java.util.List;
+    @RelaxedMockK
+    lateinit var teaRepository: TeaRepository
 
-import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension;
-import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings;
-import coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository;
+    @MockK
+    lateinit var infusionRepository: InfusionRepository
 
-@ExtendWith({MockitoExtension.class, TaskExecutorExtension.class})
-class OverviewViewModelTest {
-    private OverviewViewModel overviewViewModel;
-    @Mock
-    Application application;
-    @Mock
-    TeaRepository teaRepository;
-    @Mock
-    InfusionRepository infusionRepository;
-    @Mock
-    SharedSettings sharedSettings;
+    @RelaxedMockK
+    lateinit var sharedSettings: SharedSettings
+
 
     @BeforeEach
-    void setUp() {
-        mockSettings();
+    fun setUp() {
+        mockSettings()
     }
 
-    private void mockSettings() {
-        when(sharedSettings.isFirstStart()).thenReturn(false);
-        when(sharedSettings.getSortMode()).thenReturn(LAST_USED);
-    }
-
-    @Test
-    void getTeas() {
-        final List<Tea> teas = mockTeas(LAST_USED);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        final List<Tea> teasAfter = overviewViewModel.getTeas().getValue();
-        assertThat(teasAfter).isEqualTo(teas);
+    private fun mockSettings() {
+        every { sharedSettings.isFirstStart } returns false
+        every { sharedSettings.sortMode } returns SortMode.LAST_USED
     }
 
     @Test
-    void getTeaById() {
-        final long teaId = 1;
+    fun getTeas() {
+        val teas = mockTeas(SortMode.LAST_USED)
 
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.getTeaBy(teaId);
-        verify(teaRepository).getTeaById(teaId);
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+
+        val teasAfter = overviewViewModel!!.getTeas().value!!
+        assertThat(teasAfter).isEqualTo(teas)
     }
 
     @Test
-    void deleteTea() {
-        final long teaId = 1;
+    fun getTeaById() {
+        val teaId: Long = 1
 
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.deleteTea(teaId);
-        verify(teaRepository).deleteTeaById(teaId);
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.getTeaBy(teaId)
+
+        verify { teaRepository.getTeaById(teaId) }
     }
 
     @Test
-    void isTeaInStock() {
-        final long teaId = 1;
-        final Tea tea = new Tea();
-        tea.setInStock(true);
-        when(teaRepository.getTeaById(teaId)).thenReturn(tea);
+    fun deleteTea() {
+        val teaId: Long = 1
 
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        assertThat(overviewViewModel.isTeaInStock(teaId)).isTrue();
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.deleteTea(teaId)
+
+        verify {teaRepository.deleteTeaById(teaId) }
     }
 
     @Test
-    void updateInStockOfTea() {
-        final long teaId = 1;
-        when(teaRepository.getTeaById(teaId)).thenReturn(new Tea());
+    fun isTeaInStock() {
+        val teaId: Long = 1
+        val tea = Tea()
+        tea.inStock = true
+        every { teaRepository.getTeaById(teaId) } returns tea
 
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.updateInStockOfTea(teaId, true);
-        verify(teaRepository).updateTea(any(Tea.class));
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+
+        assertThat(overviewViewModel!!.isTeaInStock(teaId)).isTrue
     }
 
     @Test
-    void showTeasBySearchString() {
-        final String searchString = "search";
+    fun updateInStockOfTea() {
+        val teaId: Long = 1
+        every { teaRepository.getTeaById(teaId) } returns Tea()
 
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.visualizeTeasBySearchString(searchString);
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.updateInStockOfTea(teaId, true)
 
-        verify(teaRepository).getTeasBySearchString(searchString);
+        verify { teaRepository.updateTea(any()) }
     }
 
     @Test
-    void showTeasByEmptySearchString() {
-        final String searchString = "";
+    fun showTeasBySearchString() {
+        val searchString = "search"
 
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.visualizeTeasBySearchString(searchString);
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.visualizeTeasBySearchString(searchString)
 
-        verify(teaRepository, never()).getTeasBySearchString(any());
-        verify(teaRepository, atLeastOnce()).getTeasOrderByActivity(false);
+        verify { teaRepository.getTeasBySearchString(searchString) }
     }
 
     @Test
-    void getSort() {
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        final SortMode sort = overviewViewModel.getSort();
+    fun showTeasByEmptySearchString() {
+        val searchString = ""
 
-        assertThat(sort).isEqualTo(LAST_USED);
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.visualizeTeasBySearchString(searchString)
+
+        verify (exactly = 0) { teaRepository.getTeasBySearchString(any()) }
+        verify (atLeast = 1) { teaRepository.getTeasOrderByActivity(false) }
     }
 
     @Test
-    void setSort() {
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.setSort(BY_VARIETY);
+    fun getSort() {
+            overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+            val sort = overviewViewModel!!.sort
 
-        verify(sharedSettings).setSortMode(BY_VARIETY);
-    }
-
-    @Test
-    void isOverviewHeader() {
-        when(sharedSettings.isOverviewHeader()).thenReturn(false);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        final boolean isOverviewHeader = overviewViewModel.isOverviewHeader();
-
-        assertThat(isOverviewHeader).isFalse();
-    }
-
-    @Test
-    void setOverviewFavorites() {
-        final boolean overviewFavorites = true;
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.setOverviewInStock(overviewFavorites);
-
-        verify(sharedSettings).setOverviewInStock(overviewFavorites);
-    }
-
-    @Test
-    void isOverviewFavorites() {
-        when(sharedSettings.isOverviewInStock()).thenReturn(false);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        final boolean overViewFavorites = overviewViewModel.isOverviewInStock();
-
-        assertThat(overViewFavorites).isFalse();
-    }
-
-    @Test
-    void isMainUpdateAlert() {
-        final boolean overviewUpdateAlert = true;
-        when(sharedSettings.isOverviewUpdateAlert()).thenReturn(overviewUpdateAlert);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        assertThat(overviewViewModel.isOverviewUpdateAlert()).isEqualTo(overviewUpdateAlert);
-    }
-
-    @Test
-    void setOverviewUpdateAlert() {
-        final boolean alert = true;
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.setOverviewUpdateAlert(alert);
-
-        verify(sharedSettings).setOverviewUpdateAlert(alert);
-    }
-
-    @Test
-    void refreshTeasWithSort0() {
-        when(sharedSettings.getSortMode()).thenReturn(LAST_USED);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByActivity(false);
-    }
-
-    @Test
-    void refreshTeasWithSort0OnlyFavorites() {
-        when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        when(sharedSettings.getSortMode()).thenReturn(LAST_USED);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByActivity(true);
-    }
-
-    @Test
-    void refreshTeasWithSort1() {
-        when(sharedSettings.getSortMode()).thenReturn(ALPHABETICAL);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByAlphabetic(false);
-    }
-
-    @Test
-    void refreshTeasWithSort1OnlyFavorites() {
-        when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        when(sharedSettings.getSortMode()).thenReturn(ALPHABETICAL);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByAlphabetic(true);
-    }
-
-    @Test
-    void refreshTeasWithSort2() {
-        when(sharedSettings.getSortMode()).thenReturn(BY_VARIETY);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByVariety(false);
-    }
-
-    @Test
-    void refreshTeasWithSort2OnlyFavorites() {
-        when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        when(sharedSettings.getSortMode()).thenReturn(BY_VARIETY);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByVariety(true);
-    }
-
-    @Test
-    void refreshTeasWithSort3() {
-        when(sharedSettings.getSortMode()).thenReturn(RATING);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByRating(false);
-    }
-
-    @Test
-    void refreshTeasWithSort3OnlyFavorites() {
-        when(sharedSettings.isOverviewInStock()).thenReturn(true);
-        when(sharedSettings.getSortMode()).thenReturn(RATING);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        verify(teaRepository, atLeastOnce()).getTeasOrderByRating(true);
-    }
-
-    @Test
-    void getSortWithHeaderIsSort3() {
-        mockTeas(RATING);
-        when(sharedSettings.isOverviewHeader()).thenReturn(true);
-        when(sharedSettings.getSortMode()).thenReturn(RATING);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.refreshTeas();
-
-        assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(3);
-    }
-
-    @Test
-    void getSortWithHeaderIsFalse() {
-        when(sharedSettings.isOverviewHeader()).thenReturn(false);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(-1);
-    }
-
-    @Test
-    void getRandomTeaInStock() {
-        final Tea tea = new Tea();
-        when(teaRepository.getRandomTeaInStock()).thenReturn(tea);
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        final Tea randomTea = overviewViewModel.getRandomTeaInStock();
-
-        assertThat(randomTea).isEqualTo(tea);
-    }
-
-    @Test
-    void getSortWithHeaderIsInSearchMode() {
-        final String searchString = "search";
-
-        overviewViewModel = new OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings);
-        overviewViewModel.visualizeTeasBySearchString(searchString);
-
-        assertThat(overviewViewModel.getSortWithHeader()).isEqualTo(-1);
-    }
-
-    private List<Tea> mockTeas(final SortMode sortMode) {
-        final List<Tea> teas = new ArrayList<>();
-        teas.add(new Tea("name", "variety", 5, "amount", 5, 0, null));
-        teas.add(new Tea("name", "variety", 5, "amount", 5, 0, null));
-        switch (sortMode) {
-            case LAST_USED:
-                when(teaRepository.getTeasOrderByActivity(false)).thenReturn(teas);
-                break;
-            case BY_VARIETY:
-                when(teaRepository.getTeasOrderByVariety(false)).thenReturn(teas);
-                break;
-            case ALPHABETICAL:
-                when(teaRepository.getTeasOrderByAlphabetic(false)).thenReturn(teas);
-                break;
-            case RATING:
-                when(teaRepository.getTeasOrderByRating(false)).thenReturn(teas);
-                break;
+            assertThat(sort).isEqualTo(SortMode.LAST_USED)
         }
-        return teas;
+
+    @Test
+    fun setSort() {
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.sort = SortMode.BY_VARIETY
+
+        verify { sharedSettings.sortMode = SortMode.BY_VARIETY }
+    }
+
+    @Test
+    fun isOverviewHeader() {
+        every { sharedSettings.isOverviewHeader } returns false
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        val isOverviewHeader = overviewViewModel!!.isOverviewHeader
+
+        assertThat(isOverviewHeader).isFalse
+    }
+
+    @Test
+    fun setOverviewFavorites() {
+        val overviewFavorites = true
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.isOverviewInStock = overviewFavorites
+
+        verify { sharedSettings.isOverviewInStock = overviewFavorites }
+    }
+
+    @Test
+    fun isOverviewFavorites() {
+        every { sharedSettings.isOverviewInStock } returns false
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        val overViewFavorites = overviewViewModel!!.isOverviewInStock
+
+        assertThat(overViewFavorites).isFalse
+    }
+
+    @Test
+    fun isMainUpdateAlert() {
+        val overviewUpdateAlert = true
+        every { sharedSettings.isOverviewUpdateAlert } returns overviewUpdateAlert
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+
+        assertThat(overviewViewModel!!.isOverviewUpdateAlert).isEqualTo(overviewUpdateAlert)
+    }
+
+    @Test
+    fun setOverviewUpdateAlert() {
+        val alert = true
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.isOverviewUpdateAlert = alert
+
+        verify { sharedSettings.isOverviewUpdateAlert = alert }
+    }
+
+    @Test
+    fun refreshTeasWithSort0() {
+        every { sharedSettings.sortMode } returns SortMode.LAST_USED
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByActivity(false) }
+    }
+
+    @Test
+    fun refreshTeasWithSort0OnlyFavorites() {
+        every { sharedSettings.isOverviewInStock } returns true
+        every { sharedSettings.sortMode } returns SortMode.LAST_USED
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByActivity(true) }
+    }
+
+    @Test
+    fun refreshTeasWithSort1() {
+        every { sharedSettings.sortMode} returns SortMode.ALPHABETICAL
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByAlphabetic(false) }
+    }
+
+    @Test
+    fun refreshTeasWithSort1OnlyFavorites() {
+        every { sharedSettings.isOverviewInStock } returns true
+        every { sharedSettings.sortMode } returns SortMode.ALPHABETICAL
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByAlphabetic(true) }
+    }
+
+    @Test
+    fun refreshTeasWithSort2() {
+        every { sharedSettings.sortMode } returns SortMode.BY_VARIETY
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByVariety(false) }
+    }
+
+    @Test
+    fun refreshTeasWithSort2OnlyFavorites() {
+        every { sharedSettings.isOverviewInStock } returns true
+        every { sharedSettings.sortMode } returns SortMode.BY_VARIETY
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByVariety(true) }
+    }
+
+    @Test
+    fun refreshTeasWithSort3() {
+        every { sharedSettings.sortMode } returns SortMode.RATING
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByRating(false) }
+    }
+
+    @Test
+    fun refreshTeasWithSort3OnlyFavorites() {
+        every { sharedSettings.isOverviewInStock } returns true
+        every { sharedSettings.sortMode } returns SortMode.RATING
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        verify (atLeast = 1) { teaRepository.getTeasOrderByRating(true) }
+    }
+
+    @Test
+    fun getSortWithHeaderIsSort3() {
+        mockTeas(SortMode.RATING)
+        every { sharedSettings.isOverviewHeader } returns true
+        every { sharedSettings.sortMode } returns SortMode.RATING
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.refreshTeas()
+
+        assertThat(overviewViewModel!!.sortWithHeader).isEqualTo(3)
+    }
+
+    @Test
+    fun getSortWithHeaderIsFalse() {
+        every { sharedSettings.isOverviewHeader } returns false
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        assertThat(overviewViewModel!!.sortWithHeader).isEqualTo(-1)
+    }
+
+    @Test
+    fun getRandomTeaInStock() {
+        val tea = Tea()
+        every { teaRepository.randomTeaInStock } returns tea
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        val randomTea = overviewViewModel!!.randomTeaInStock
+
+        assertThat(randomTea).isEqualTo(tea)
+    }
+
+    @Test
+    fun getSortWithHeaderIsInSearchMode() {
+        val searchString = "search"
+
+        overviewViewModel = OverviewViewModel(application, teaRepository, infusionRepository, sharedSettings)
+        overviewViewModel!!.visualizeTeasBySearchString(searchString)
+
+        assertThat(overviewViewModel!!.sortWithHeader).isEqualTo(-1)
+    }
+
+    private fun mockTeas(sortMode: SortMode): List<Tea> {
+        val teas: MutableList<Tea> = ArrayList()
+        teas.add(Tea("name", "variety", 5.0, "amount", 5, 0, null))
+        teas.add(Tea("name", "variety", 5.0, "amount", 5, 0, null))
+        when (sortMode) {
+            SortMode.LAST_USED -> every { teaRepository.getTeasOrderByActivity(false) } returns teas
+            SortMode.BY_VARIETY -> every { teaRepository.getTeasOrderByVariety(false) } returns teas
+            SortMode.ALPHABETICAL -> every { teaRepository.getTeasOrderByAlphabetic(false) } returns teas
+            SortMode.RATING -> every { teaRepository.getTeasOrderByRating(false) } returns teas
+        }
+        return teas
     }
 }
