@@ -1,74 +1,81 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import android.content.res.Resources
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import org.assertj.core.api.Assertions.*
+import org.assertj.core.groups.Tuple
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
-import android.app.Application;
-import android.content.res.Resources;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-
-@ExtendWith(MockitoExtension.class)
-class RecyclerItemsHeaderStrategyAlphabeticalTest {
-    private static final String[] VARIETIES = {"Black tea", "Green tea", "Yellow tea", "White tea", "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-
-    @Mock
-    Application application;
-    @Mock
-    Resources resources;
+@ExtendWith(MockKExtension::class)
+internal class RecyclerItemsHeaderStrategyAlphabeticalTest {
+    @MockK
+    lateinit var application: Application
+    @MockK
+    lateinit var resources: Resources
 
     @BeforeEach
-    void setUp() throws Exception {
-        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
-        when(application.getResources()).thenReturn(resources);
+    @Throws(Exception::class)
+    fun setUp() {
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns VARIETIES
+        every { application.resources } returns resources
     }
 
     @Test
-    void generateRecyclerItemsHeader() {
-        final ArrayList<Tea> teas = createTeas();
+    fun generateRecyclerItemsHeader() {
+        val teas = createTeas()
 
-        final RecyclerItemsHeaderStrategy recyclerItemsHeader = new RecyclerItemsHeaderStrategyAlphabetical(application);
-        final List<RecyclerItemOverview> recyclerItems = recyclerItemsHeader.generateFrom(teas);
+        val recyclerItemsHeader: RecyclerItemsHeaderStrategy = RecyclerItemsHeaderStrategyAlphabetical(application)
+        val recyclerItems = recyclerItemsHeader.generateFrom(teas)
 
         assertThat(recyclerItems)
-                .extracting(
-                        RecyclerItemOverview::getTeaId,
-                        RecyclerItemOverview::getTeaName,
-                        RecyclerItemOverview::getVariety,
-                        RecyclerItemOverview::getColor,
-                        RecyclerItemOverview::getFavorite,
-                        RecyclerItemOverview::getCategory
-                ).contains(
-                tuple(null, null, null, null, false, "- T -"),
-                tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),
-                tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), teas.get(1).getColor(), true, null),
-                tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), teas.get(2).getColor(), true, null)
-        );
+            .extracting(
+                RecyclerItemOverview::teaId,
+                RecyclerItemOverview::teaName,
+                RecyclerItemOverview::variety,
+                RecyclerItemOverview::color,
+                RecyclerItemOverview::favorite,
+                RecyclerItemOverview::category
+            ).contains(
+                Tuple.tuple(null, null, null, null, false, "- T -"),
+                Tuple.tuple(teas[0].id, teas[0].name, teas[0].variety, teas[0].color, true, null),
+                Tuple.tuple(teas[1].id, teas[1].name, teas[1].variety, teas[1].color, true, null),
+                Tuple.tuple(teas[2].id, teas[2].name, teas[2].variety, teas[2].color, true, null)
+            )
     }
 
-    private ArrayList<Tea> createTeas() {
-        final ArrayList<Tea> teas = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            final Tea tea = new Tea();
-            tea.setId((long) i);
-            tea.setName("TEA" + i + 1);
-            tea.setVariety("VARIETY" + i + 1);
-            tea.setColor(i);
-            tea.setInStock(true);
-            teas.add(tea);
+    private fun createTeas(): ArrayList<Tea> {
+        val teas = ArrayList<Tea>()
+        for (i in 0..2) {
+            val tea = Tea()
+            tea.id = i.toLong()
+            tea.name = "TEA" + i + 1
+            tea.variety = "VARIETY" + i + 1
+            tea.color = i
+            tea.inStock = true
+            teas.add(tea)
         }
-        return teas;
+        return teas
     }
 
+    companion object {
+        private val VARIETIES = arrayOf(
+            "Black tea",
+            "Green tea",
+            "Yellow tea",
+            "White tea",
+            "Oolong tea",
+            "Pu-erh tea",
+            "Herbal tea",
+            "Fruit tea",
+            "Rooibus tea",
+            "Other"
+        )
+    }
 }

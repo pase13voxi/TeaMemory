@@ -1,176 +1,171 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview;
+package coolpharaoh.tee.speicher.tea.timer.views.overview
 
-import static android.os.Looper.getMainLooper;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.shadows.ShadowAlertDialog.getLatestAlertDialog;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.BLACK_TEA;
-import static coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.convertStoredVarietyToText;
-import static coolpharaoh.tee.speicher.tea.timer.views.overview.RandomChoiceDialog.TAG;
+import android.app.Application
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
+import android.os.Looper
+import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.test.core.app.ApplicationProvider
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.getDate
+import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
+import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea
+import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import org.assertj.core.api.Assertions.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows
+import org.robolectric.shadows.ShadowAlertDialog
+import java.util.function.Function
 
-import android.app.AlertDialog;
-import android.app.Application;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+@RunWith(RobolectricTestRunner::class)
+class RandomChoiceDialogTest {
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
+    lateinit var overviewViewModel: OverviewViewModel
+    @RelaxedMockK
+    lateinit var imageController: ImageController
+    @InjectMockKs
+    lateinit var dialogFragment: RandomChoiceDialog
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.test.core.app.ApplicationProvider;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea;
-import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController;
-
-@RunWith(RobolectricTestRunner.class)
-public class RandomChoiceDialogTest {
-
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-    @Mock
-    OverviewViewModel overviewViewModel;
-    @Mock
-    ImageController imageController;
-
-    private RandomChoiceDialog dialogFragment;
-    private FragmentManager fragmentManager;
+    private var fragmentManager: FragmentManager? = null
 
     @Before
-    public void setUp() {
-        final FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
-        fragmentManager = activity.getSupportFragmentManager();
-        dialogFragment = new RandomChoiceDialog(overviewViewModel, imageController);
+    fun setUp() {
+        val activity = Robolectric.buildActivity(FragmentActivity::class.java).create().start().resume().get()
+        fragmentManager = activity.supportFragmentManager
     }
 
     @Test
-    public void showDialogAndExpectFilledViewWithoutImage() {
-        final Tea tea = new Tea("TeaName", BLACK_TEA.getCode(), 1.0,
-                AmountKind.TEA_SPOON.getText(), 1, 1, CurrentDate.getDate());
-        tea.setId(1L);
-        when(overviewViewModel.getRandomTeaInStock()).thenReturn(tea);
+    fun showDialogAndExpectFilledViewWithoutImage() {
+        every { imageController.getImageUriByTeaId(any()) } returns null
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        val tea = Tea("TeaName", Variety.BLACK_TEA.code, 1.0, AmountKind.TEA_SPOON.text, 1, 1, getDate())
+        tea.id = 1L
+        every { overviewViewModel.randomTeaInStock } returns tea
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final TextView textViewTeaName = dialog.findViewById(R.id.text_view_random_choice_dialog_tea_name);
-        assertThat(textViewTeaName.getText()).isEqualTo(tea.getName());
+        dialogFragment.show(fragmentManager!!, RandomChoiceDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final TextView textViewVariety = dialog.findViewById(R.id.text_view_random_choice_dialog_variety);
-        assertThat(textViewVariety.getText()).isEqualTo(convertStoredVarietyToText(tea.getVariety(),
-                ApplicationProvider.getApplicationContext()));
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val textViewTeaName = dialog.findViewById<TextView>(R.id.text_view_random_choice_dialog_tea_name)
+        assertThat(textViewTeaName.text).isEqualTo(tea.name)
 
-        final TextView textViewImage = dialog.findViewById(R.id.text_view_random_choice_dialog_image);
+        val textViewVariety = dialog.findViewById<TextView>(R.id.text_view_random_choice_dialog_variety)
+        assertThat(textViewVariety.text).isEqualTo(convertStoredVarietyToText(tea.variety, ApplicationProvider.getApplicationContext()))
+        val textViewImage = dialog.findViewById<TextView>(R.id.text_view_random_choice_dialog_image)
         assertThat(textViewImage)
-                .extracting(View::getVisibility, TextView::getText)
-                .contains(View.VISIBLE, "T");
+            .extracting(Function<TextView, Any> { obj: TextView -> obj.visibility }, Function<TextView, Any> { obj: TextView -> obj.text })
+            .contains(View.VISIBLE, "T")
 
-        final ImageView imageViewImage = dialog.findViewById(R.id.image_view_random_tea_choice_image);
-        assertThat(imageViewImage.getTag()).isNull();
+        val imageViewImage = dialog.findViewById<ImageView>(R.id.image_view_random_tea_choice_image)
+        assertThat(imageViewImage.tag).isNull()
 
-        final TextView textViewNoTea = dialog.findViewById(R.id.text_view_random_choice_no_tea);
-        assertThat(textViewNoTea.getVisibility()).isEqualTo(View.GONE);
+        val textViewNoTea = dialog.findViewById<TextView>(R.id.text_view_random_choice_no_tea)
+        assertThat(textViewNoTea.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void showDialogAndExpectImage() {
-        final String uri = "image/uri";
-        when(imageController.getImageUriByTeaId(1L)).thenReturn(Uri.parse(uri));
+    fun showDialogAndExpectImage() {
+        val uri = "image/uri"
+        every { imageController.getImageUriByTeaId(1L) } returns Uri.parse(uri)
 
-        final Tea tea = new Tea("TeaName", BLACK_TEA.getCode(), 1.0,
-                AmountKind.TEA_SPOON.getText(), 1, 1, CurrentDate.getDate());
-        tea.setId(1L);
-        when(overviewViewModel.getRandomTeaInStock()).thenReturn(tea);
+        val tea = Tea("TeaName", Variety.BLACK_TEA.code, 1.0, AmountKind.TEA_SPOON.text, 1, 1, getDate())
+        tea.id = 1L
+        every { overviewViewModel.randomTeaInStock } returns tea
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, RandomChoiceDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final TextView textViewImage = dialog.findViewById(R.id.text_view_random_choice_dialog_image);
-        assertThat(textViewImage.getVisibility()).isEqualTo(View.INVISIBLE);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val textViewImage = dialog.findViewById<TextView>(R.id.text_view_random_choice_dialog_image)
+        assertThat(textViewImage.visibility).isEqualTo(View.INVISIBLE)
 
-        final ImageView imageViewImage = dialog.findViewById(R.id.image_view_random_tea_choice_image);
-        assertThat(imageViewImage.getTag()).isEqualTo(uri);
+        val imageViewImage = dialog.findViewById<ImageView>(R.id.image_view_random_tea_choice_image)
+        assertThat(imageViewImage.tag).isEqualTo(uri)
     }
 
     @Test
-    public void refreshDialogAndExpectOtherTea() {
-        final String teaName1 = "TeaName 1";
-        final String teaName2 = "TeaName 2";
-        final Tea tea = new Tea();
-        tea.setId(1L);
-        tea.setName(teaName1);
-        when(overviewViewModel.getRandomTeaInStock()).thenReturn(tea);
+    fun refreshDialogAndExpectOtherTea() {
+        val teaName1 = "TeaName 1"
+        val teaName2 = "TeaName 2"
+        val tea = Tea()
+        tea.id = 1L
+        tea.name = teaName1
+        every { overviewViewModel.randomTeaInStock } returns tea
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, RandomChoiceDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final TextView textViewTeaName = dialog.findViewById(R.id.text_view_random_choice_dialog_tea_name);
-        assertThat(textViewTeaName.getText()).isEqualTo(teaName1);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val textViewTeaName = dialog.findViewById<TextView>(R.id.text_view_random_choice_dialog_tea_name)
+        assertThat(textViewTeaName.text).isEqualTo(teaName1)
 
-        tea.setName(teaName2);
+        tea.name = teaName2
 
-        final ImageButton buttonRefresh = dialog.findViewById(R.id.button_random_choice_dialog_refresh);
-        buttonRefresh.performClick();
+        val buttonRefresh = dialog.findViewById<ImageButton>(R.id.button_random_choice_dialog_refresh)
+        buttonRefresh.performClick()
 
-        assertThat(textViewTeaName.getText()).isEqualTo(teaName2);
+        assertThat(textViewTeaName.text).isEqualTo(teaName2)
     }
 
     @Test
-    public void whenNoRandomChoiceIsAvailableShowMessage() {
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+    fun whenNoRandomChoiceIsAvailableShowMessage() {
+        every { overviewViewModel.randomTeaInStock } returns null
 
-        final AlertDialog dialog = getLatestAlertDialog();
-        final TextView textViewNoTea = dialog.findViewById(R.id.text_view_random_choice_no_tea);
-        assertThat(textViewNoTea.getVisibility()).isEqualTo(View.VISIBLE);
+        dialogFragment.show(fragmentManager!!, RandomChoiceDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final RelativeLayout layoutTeaAvailable = dialog.findViewById(R.id.layout_random_choice_tea_available);
-        assertThat(layoutTeaAvailable.getVisibility()).isEqualTo(View.GONE);
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
+        val textViewNoTea = dialog.findViewById<TextView>(R.id.text_view_random_choice_no_tea)
+        assertThat(textViewNoTea.visibility).isEqualTo(View.VISIBLE)
 
-        final TextView textViewHint = dialog.findViewById(R.id.text_view_random_choice_hint);
-        assertThat(textViewHint.getVisibility()).isEqualTo(View.GONE);
+        val layoutTeaAvailable = dialog.findViewById<RelativeLayout>(R.id.layout_random_choice_tea_available)
+        assertThat(layoutTeaAvailable.visibility).isEqualTo(View.GONE)
+
+        val textViewHint = dialog.findViewById<TextView>(R.id.text_view_random_choice_hint)
+        assertThat(textViewHint.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    public void chooseRandomTeaAndExpectShowTeaActivity() {
-        final Tea tea = new Tea("TeaName", BLACK_TEA.getCode(), 1.0,
-                AmountKind.TEA_SPOON.getText(), 1, 1, CurrentDate.getDate());
-        tea.setId(1L);
-        when(overviewViewModel.getRandomTeaInStock()).thenReturn(tea);
+    fun chooseRandomTeaAndExpectShowTeaActivity() {
+        val tea = Tea("TeaName", Variety.BLACK_TEA.code, 1.0, AmountKind.TEA_SPOON.text, 1, 1, getDate())
+        tea.id = 1L
+        every { overviewViewModel.randomTeaInStock } returns tea
 
-        dialogFragment.show(fragmentManager, TAG);
-        shadowOf(getMainLooper()).idle();
+        dialogFragment.show(fragmentManager!!, RandomChoiceDialog.TAG)
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final AlertDialog dialog = getLatestAlertDialog();
+        val dialog = ShadowAlertDialog.getLatestAlertDialog()
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-        shadowOf(getMainLooper()).idle();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        final Intent expected = new Intent(ApplicationProvider.getApplicationContext(), ShowTea.class);
-        final Intent actual = shadowOf((Application) ApplicationProvider.getApplicationContext()).getNextStartedActivity();
+        val expected = Intent(ApplicationProvider.getApplicationContext(), ShowTea::class.java)
+        val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
 
-        assertThat(actual.getComponent()).isEqualTo(expected.getComponent());
-        assertThat(actual.getExtras().get("teaId")).isEqualTo((long) (tea.getId()));
+        assertThat(actual.component).isEqualTo(expected.component)
+        assertThat(actual.extras!!["teaId"]).isEqualTo(tea.id as Long)
     }
 }

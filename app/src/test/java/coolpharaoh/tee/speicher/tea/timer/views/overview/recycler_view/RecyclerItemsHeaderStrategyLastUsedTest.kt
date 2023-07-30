@@ -1,128 +1,129 @@
-package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view;
+package coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
-import static org.mockito.Mockito.when;
+import android.app.Application
+import android.content.res.Resources
+import coolpharaoh.tee.speicher.tea.timer.R
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
+import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
+import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import org.assertj.core.api.Assertions
+import org.assertj.core.groups.Tuple
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import java.time.Clock
+import java.time.Duration
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Date
 
-import android.app.Application;
-import android.content.res.Resources;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import coolpharaoh.tee.speicher.tea.timer.R;
-import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate;
-import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility;
-import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea;
-
-@ExtendWith(MockitoExtension.class)
-class RecyclerItemsHeaderStrategyLastUsedTest {
-    public static final String CURRENT_DATE = "2020-08-19T10:15:30Z";
-    private static final String[] VARIETIES = {"Black tea", "Green tea", "Yellow tea", "White tea",
-            "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"};
-    private static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"};
-    private static final String[] MONTH_NAMES_SHORT = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
-            "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
-
-    @Mock
-    Application application;
-    @Mock
-    Resources resources;
-    @Mock
-    DateUtility dateUtility;
+@ExtendWith(MockKExtension::class)
+internal class RecyclerItemsHeaderStrategyLastUsedTest {
+    @MockK
+    lateinit var application: Application
+    @MockK
+    lateinit var resources: Resources
+    @MockK
+    lateinit var dateUtility: DateUtility
 
     @BeforeEach
-    void setUp() {
-        when(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES);
-        when(resources.getStringArray(R.array.overview_sort_last_used_month)).thenReturn(MONTH_NAMES);
-        when(resources.getStringArray(R.array.overview_sort_last_used_month_short)).thenReturn(MONTH_NAMES_SHORT);
-        when(application.getResources()).thenReturn(resources);
-        when(application.getString(R.string.overview_sort_last_used_this_week)).thenReturn("This week");
-        when(application.getString(R.string.overview_sort_last_used_this_month)).thenReturn("This month");
-
-        when(dateUtility.getDate()).thenReturn(Date.from(getFixedDate()));
-        CurrentDate.setFixedDate(dateUtility);
+    fun setUp() {
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns VARIETIES
+        every { resources.getStringArray(R.array.overview_sort_last_used_month) } returns MONTH_NAMES
+        every { resources.getStringArray(R.array.overview_sort_last_used_month_short) } returns MONTH_NAMES_SHORT
+        every { application.resources } returns resources
+        every { application.getString(R.string.overview_sort_last_used_this_week) } returns "This week"
+        every { application.getString(R.string.overview_sort_last_used_this_month) } returns "This month"
+        every { dateUtility.date } returns Date.from(fixedDate)
+        setFixedDate(dateUtility)
     }
 
-    private Instant getFixedDate() {
-        final Clock clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"));
-        return Instant.now(clock);
-    }
+    private val fixedDate: Instant
+        get() {
+            val clock = Clock.fixed(Instant.parse(CURRENT_DATE), ZoneId.of("UTC"))
+            return Instant.now(clock)
+        }
 
     @Test
-    void generateRecyclerItemsHeader() {
-        final ArrayList<Tea> teas = createTeas();
+    fun generateRecyclerItemsHeader() {
+        val teas = createTeas()
 
-        final RecyclerItemsHeaderStrategy recyclerItemsHeader = new RecyclerItemsHeaderStrategyLastUsed(application);
-        final List<RecyclerItemOverview> recyclerItems = recyclerItemsHeader.generateFrom(teas);
+        val recyclerItemsHeader: RecyclerItemsHeaderStrategy = RecyclerItemsHeaderStrategyLastUsed(application)
+        val recyclerItems = recyclerItemsHeader.generateFrom(teas)
 
-        assertThat(recyclerItems)
-                .extracting(
-                        RecyclerItemOverview::getTeaId,
-                        RecyclerItemOverview::getTeaName,
-                        RecyclerItemOverview::getVariety,
-                        RecyclerItemOverview::getColor,
-                        RecyclerItemOverview::getFavorite,
-                        RecyclerItemOverview::getCategory
-                ).contains(
-                        tuple(null, null, null, null, false, "- This week -"),
-                        tuple(teas.get(0).getId(), teas.get(0).getName(), teas.get(0).getVariety(), teas.get(0).getColor(), true, null),
-                        tuple(null, null, null, null, false, "- This month -"),
-                        tuple(teas.get(1).getId(), teas.get(1).getName(), teas.get(1).getVariety(), teas.get(1).getColor(), true, null),
-                        tuple(null, null, null, null, false, "- June -"),
-                        tuple(teas.get(2).getId(), teas.get(2).getName(), teas.get(2).getVariety(), teas.get(2).getColor(), true, null),
-                        tuple(null, null, null, null, false, "- Oct. 2019 -"),
-                        tuple(teas.get(3).getId(), teas.get(3).getName(), teas.get(3).getVariety(), teas.get(3).getColor(), true, null),
-                        tuple(null, null, null, null, false, "- 2019 -"),
-                        tuple(teas.get(4).getId(), teas.get(4).getName(), teas.get(4).getVariety(), teas.get(4).getColor(), true, null)
-                );
+        Assertions.assertThat(recyclerItems)
+            .extracting(
+                RecyclerItemOverview::teaId,
+                RecyclerItemOverview::teaName,
+                RecyclerItemOverview::variety,
+                RecyclerItemOverview::color,
+                RecyclerItemOverview::favorite,
+                RecyclerItemOverview::category
+            ).contains(
+                Tuple.tuple(null, null, null, null, false, "- This week -"),
+                Tuple.tuple(teas[0].id, teas[0].name, teas[0].variety, teas[0].color, true, null),
+                Tuple.tuple(null, null, null, null, false, "- This month -"),
+                Tuple.tuple(teas[1].id, teas[1].name, teas[1].variety, teas[1].color, true, null),
+                Tuple.tuple(null, null, null, null, false, "- June -"),
+                Tuple.tuple(teas[2].id, teas[2].name, teas[2].variety, teas[2].color, true, null),
+                Tuple.tuple(null, null, null, null, false, "- Oct. 2019 -"),
+                Tuple.tuple(teas[3].id, teas[3].name, teas[3].variety, teas[3].color, true, null),
+                Tuple.tuple(null, null, null, null, false, "- 2019 -"),
+                Tuple.tuple(teas[4].id, teas[4].name, teas[4].variety, teas[4].color, true, null)
+            )
     }
 
-    private ArrayList<Tea> createTeas() {
-        final List<Date> dates = generateDifferentDates();
-
-        final ArrayList<Tea> teas = new ArrayList<>();
-        for (int i = 0; i < dates.size(); i++) {
-            final Tea tea = new Tea();
-            tea.setId((long) i);
-            tea.setName("TEA" + i + 1);
-            tea.setVariety("VARIETY" + i + 1);
-            tea.setColor(i);
-            tea.setInStock(true);
-            tea.setDate(dates.get(i));
-            teas.add(tea);
+    private fun createTeas(): ArrayList<Tea> {
+        val dates = generateDifferentDates()
+        val teas = ArrayList<Tea>()
+        for (i in dates.indices) {
+            val tea = Tea()
+            tea.id = i.toLong()
+            tea.name = "TEA" + i + 1
+            tea.variety = "VARIETY" + i + 1
+            tea.color = i
+            tea.inStock = true
+            tea.date = dates[i]
+            teas.add(tea)
         }
-        return teas;
+        return teas
     }
 
-    private List<Date> generateDifferentDates() {
-        final Instant now = getFixedDate();
+    private fun generateDifferentDates(): List<Date> {
+        val now = fixedDate
 
-        final ArrayList<Date> dates = new ArrayList<>();
+        val dates = ArrayList<Date>()
 
-        final Date thisWeek = Date.from(now);
-        dates.add(thisWeek);
-        final Date thisMonth = Date.from(now.minus(Duration.ofDays(8)));
-        dates.add(thisMonth);
-        final Date thisYear = Date.from(now.minus(Duration.ofDays(50)));
-        dates.add(thisYear);
-        final Date lastYearBetweenLastTwelveMonth = Date.from(now.minus(Duration.ofDays(300)));
-        dates.add(lastYearBetweenLastTwelveMonth);
-        final Date lastYear = Date.from(now.minus(Duration.ofDays(500)));
-        dates.add(lastYear);
+        val thisWeek = Date.from(now)
+        dates.add(thisWeek)
+        val thisMonth = Date.from(now.minus(Duration.ofDays(8)))
+        dates.add(thisMonth)
+        val thisYear = Date.from(now.minus(Duration.ofDays(50)))
+        dates.add(thisYear)
+        val lastYearBetweenLastTwelveMonth = Date.from(now.minus(Duration.ofDays(300)))
+        dates.add(lastYearBetweenLastTwelveMonth)
+        val lastYear = Date.from(now.minus(Duration.ofDays(500)))
+        dates.add(lastYear)
 
-        return dates;
+        return dates
+    }
+
+    companion object {
+        const val CURRENT_DATE = "2020-08-19T10:15:30Z"
+        private val VARIETIES = arrayOf(
+            "Black tea", "Green tea", "Yellow tea", "White tea",
+            "Oolong tea", "Pu-erh tea", "Herbal tea", "Fruit tea", "Rooibus tea", "Other"
+        )
+        private val MONTH_NAMES = arrayOf(
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        )
+        private val MONTH_NAMES_SHORT = arrayOf(
+            "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+            "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
+        )
     }
 }
