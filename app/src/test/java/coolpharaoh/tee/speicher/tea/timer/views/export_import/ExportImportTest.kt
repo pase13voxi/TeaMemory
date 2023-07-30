@@ -66,6 +66,7 @@ class ExportImportTest {
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonExport = exportImport.findViewById<Button>(R.id.button_export_import_export)
             buttonExport.performClick()
+
             val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
             assertThat(actual.action).isEqualTo(Intent.ACTION_OPEN_DOCUMENT_TREE)
         }
@@ -75,11 +76,14 @@ class ExportImportTest {
     fun exportTeasAndExpectDialogFileLocation() {
         every { databaseJsonTransformer.databaseToJson() } returns "json"
         every { dataIOAdapter.write(any()) } returns true
+
         val exportImportActivityScenario = ActivityScenario.launch(ExportImport::class.java)
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonExport = exportImport.findViewById<Button>(R.id.button_export_import_export)
             buttonExport.performClick()
+
             mockReturnActionActivityResult(exportImport, Intent.ACTION_OPEN_DOCUMENT_TREE)
+
             val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
             assertThat(shadowAlertDialog.title).isEqualTo(exportImport.getString(R.string.export_import_location_dialog_header))
             assertThat(shadowAlertDialog.message).isEqualTo(exportImport.getString(R.string.export_import_location_dialog_description))
@@ -90,11 +94,14 @@ class ExportImportTest {
     fun exportTeasFailedAndExpectDialogExportFailed() {
         every { databaseJsonTransformer.databaseToJson() } returns "json"
         every { dataIOAdapter.write(any()) } returns false
+
         val exportImportActivityScenario = ActivityScenario.launch(ExportImport::class.java)
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonExport = exportImport.findViewById<Button>(R.id.button_export_import_export)
             buttonExport.performClick()
+
             mockReturnActionActivityResult(exportImport, Intent.ACTION_OPEN_DOCUMENT_TREE)
+
             val shadowAlertDialog = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
             assertThat(shadowAlertDialog.title).isEqualTo(exportImport.getString(R.string.export_import_export_failed_dialog_header))
             assertThat(shadowAlertDialog.message).isEqualTo(exportImport.getString(R.string.export_import_export_failed_dialog_description))
@@ -107,6 +114,7 @@ class ExportImportTest {
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonImport = exportImport.findViewById<Button>(R.id.button_export_import_import)
             buttonImport.performClick()
+
             val alertDialog = ShadowAlertDialog.getLatestAlertDialog()
             val shadowAlertDialog = Shadows.shadowOf(alertDialog)
             assertThat(shadowAlertDialog.title).isEqualTo(exportImport.getString(R.string.export_import_import_dialog_header))
@@ -116,15 +124,20 @@ class ExportImportTest {
     @Test
     fun importTeasDeleteExistingAndExpectDialogImportComplete() {
         every { databaseJsonTransformer.jsonToDatabase(any(), eq(false)) } returns true
+
         val exportImportActivityScenario = ActivityScenario.launch(ExportImport::class.java)
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonImport = exportImport.findViewById<Button>(R.id.button_export_import_import)
             buttonImport.performClick()
+
             val alertDialog = ShadowAlertDialog.getLatestAlertDialog()
             alertDialog.findViewById<View>(R.id.button_export_import_import_delete).performClick()
+
             val actual = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
             assertThat(actual.action).isEqualTo(Intent.ACTION_CHOOSER)
+
             mockReturnActionActivityResult(exportImport, Intent.ACTION_CHOOSER)
+
             val shadowAlertDialogImportComplete = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
             assertThat(shadowAlertDialogImportComplete.title).isEqualTo(exportImport.getString(R.string.export_import_import_complete_dialog_header))
             assertThat(shadowAlertDialogImportComplete.message).isEqualTo(exportImport.getString(R.string.export_import_import_complete_delete_dialog_description))
@@ -134,15 +147,20 @@ class ExportImportTest {
     @Test
     fun importTeasKeepExistingAndExpectDialogImportComplete() {
         every { databaseJsonTransformer.jsonToDatabase(any(), eq(true)) } returns true
+
         val exportImportActivityScenario = ActivityScenario.launch(ExportImport::class.java)
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonImport = exportImport.findViewById<Button>(R.id.button_export_import_import)
             buttonImport.performClick()
+
             val alertDialogImport = ShadowAlertDialog.getLatestAlertDialog()
             alertDialogImport.findViewById<View>(R.id.button_export_import_import_keep).performClick()
+
             val intentChooser = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
             assertThat(intentChooser.action).isEqualTo(Intent.ACTION_CHOOSER)
+
             mockReturnActionActivityResult(exportImport, Intent.ACTION_CHOOSER)
+
             val shadowAlertDialogImportComplete = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
             assertThat(shadowAlertDialogImportComplete.title).isEqualTo(exportImport.getString(R.string.export_import_import_complete_dialog_header))
             assertThat(shadowAlertDialogImportComplete.message).isEqualTo(exportImport.getString(R.string.export_import_import_complete_keep_dialog_description))
@@ -152,15 +170,20 @@ class ExportImportTest {
     @Test
     fun importTeasAndExpectDialogImportFailed() {
         every { databaseJsonTransformer.jsonToDatabase(any(), any()) } returns false
+
         val exportImportActivityScenario = ActivityScenario.launch(ExportImport::class.java)
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val buttonImport = exportImport.findViewById<Button>(R.id.button_export_import_import)
             buttonImport.performClick()
+
             val alertDialogImport = ShadowAlertDialog.getLatestAlertDialog()
             alertDialogImport.findViewById<View>(R.id.button_export_import_import_keep).performClick()
+
             val intentChooser = Shadows.shadowOf(ApplicationProvider.getApplicationContext<Context>() as Application).nextStartedActivity
             assertThat(intentChooser.action).isEqualTo(Intent.ACTION_CHOOSER)
+
             mockReturnActionActivityResult(exportImport, Intent.ACTION_CHOOSER)
+
             val shadowAlertDialogImportComplete = Shadows.shadowOf(ShadowAlertDialog.getLatestAlertDialog())
             assertThat(shadowAlertDialogImportComplete.title).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_header))
             assertThat(shadowAlertDialogImportComplete.message).isEqualTo(exportImport.getString(R.string.export_import_import_failed_dialog_description))
@@ -170,10 +193,12 @@ class ExportImportTest {
     @Test
     fun startActivityWithAndroidVersionOlderQAndExpectNoWarning() {
         every { systemUtility.sdkVersion } returns Build.VERSION_CODES.P
+
         val exportImportActivityScenario = ActivityScenario.launch(ExportImport::class.java)
         exportImportActivityScenario.onActivity { exportImport: ExportImport ->
             val textViewWarning = exportImport.findViewById<TextView>(R.id.text_view_export_import_warning)
             assertThat(textViewWarning.visibility).isEqualTo(View.GONE)
+
             val textViewWarningText = exportImport.findViewById<TextView>(R.id.text_view_export_import_warning_text)
             assertThat(textViewWarningText.visibility).isEqualTo(View.GONE)
         }
