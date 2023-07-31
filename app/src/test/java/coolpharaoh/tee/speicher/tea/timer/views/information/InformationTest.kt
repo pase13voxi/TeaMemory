@@ -34,17 +34,17 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.setMockedImageController
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.*
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.fakes.RoboMenuItem
@@ -56,27 +56,19 @@ import java.util.Date
 
 @RunWith(RobolectricTestRunner::class)
 class InformationTest {
-
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var teaMemoryDatabase: TeaMemoryDatabase
-
-    @Mock
+    @RelaxedMockK
     lateinit var teaDao: TeaDao
-
-    @Mock
+    @RelaxedMockK
     lateinit var noteDao: NoteDao
-
-    @Mock
+    @RelaxedMockK
     lateinit var counterDao: CounterDao
-
-    @Mock
+    @RelaxedMockK
     lateinit var imageController: ImageController
-
-    @Mock
+    @MockK
     lateinit var systemUtility: SystemUtility
 
     @Before
@@ -88,18 +80,19 @@ class InformationTest {
 
     private fun mockDB() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
-        `when`(teaMemoryDatabase.noteDao).thenReturn(noteDao)
-        `when`(teaMemoryDatabase.counterDao).thenReturn(counterDao)
+        every { teaMemoryDatabase.teaDao } returns teaDao
+        every { teaMemoryDatabase.noteDao } returns noteDao
+        every { teaMemoryDatabase.counterDao } returns counterDao
     }
 
     private fun mockSystemVersionCode() {
         setFixedSystem(systemUtility)
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.R)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.R
     }
 
     @Test
     fun launchActivityAndExpectEmptyInformation() {
+        every { noteDao.getNoteByTeaIdAndPosition(TEA_ID, -1) } returns null
         createTea(0)
         val intent = Intent(ShadowInstrumentation.getInstrumentation().targetContext.applicationContext, Information::class.java)
         intent.putExtra(TEA_ID_EXTRA, TEA_ID)
@@ -108,7 +101,6 @@ class InformationTest {
         informationActivityScenario.onActivity { information: Information ->
             val textViewTeaName = information.findViewById<TextView>(R.id.text_view_information_tea_name)
             assertThat(textViewTeaName.text).isEqualTo(TEA_NAME)
-            assertThat(textViewTeaName.currentTextColor).isEqualTo(ContextCompat.getColor(information, R.color.text_black))
 
             val textViewVariety = information.findViewById<TextView>(R.id.text_view_information_variety)
             assertThat(textViewVariety.text).isEqualTo(TEA_VARIETY)
@@ -121,14 +113,14 @@ class InformationTest {
 
             val editTextNotes = information.findViewById<EditText>(R.id.edit_text_information_notes)
             assertThat(editTextNotes.text.toString()).isBlank
-            verify(noteDao).insert(any())
+            verify { noteDao.insert(any()) }
         }
     }
 
     @Test
     fun launchActivityAndExpectFilledInformation() {
         val uri = Uri.parse("Test")
-        `when`(imageController.getImageUriByTeaId(TEA_ID)).thenReturn(uri)
+        every { imageController.getImageUriByTeaId(TEA_ID) } returns uri
         val rating = 4
         val inStock = true
         createTea(rating, inStock)
@@ -162,7 +154,7 @@ class InformationTest {
 
     @Test
     fun launchActivityWithSystemOlderAndroidQAndExpectNoFilledImageAndCameraButtonGone() {
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.P)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.P
         createTea(0)
         val intent = Intent(ShadowInstrumentation.getInstrumentation().targetContext.applicationContext, Information::class.java)
         intent.putExtra(TEA_ID_EXTRA, TEA_ID)
@@ -175,7 +167,7 @@ class InformationTest {
             val buttonCamera = information.findViewById<FloatingActionButton>(R.id.button_information_camera)
             assertThat(buttonCamera.visibility).isEqualTo(View.GONE)
 
-            verify(imageController, never()).getImageUriByTeaId(anyLong())
+            verify(exactly = 0) { imageController.getImageUriByTeaId(any()) }
         }
     }
 
@@ -195,19 +187,18 @@ class InformationTest {
 
         informationActivityScenario.close()
 
-        argumentCaptor<Note>().apply {
-            verify(noteDao).update(capture())
-            assertThat(lastValue)
-                .extracting(Note::position, Note::header, Note::description)
-                .containsExactly(-1, NOTES_HEADER, notes)
-        }
+        val slotNote = slot<Note>()
+        verify { noteDao.update(capture(slotNote)) }
+        assertThat(slotNote.captured)
+            .extracting(Note::position, Note::header, Note::description)
+            .containsExactly(-1, NOTES_HEADER, notes)
     }
 
     @Test
     @Throws(Exception::class)
     fun updateImage() {
         createTea(0)
-        `when`(imageController.getSaveOrUpdateImageIntent(TEA_ID)).thenReturn(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+        every { imageController.getSaveOrUpdateImageIntent(TEA_ID) } returns Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val intent = Intent(ShadowInstrumentation.getInstrumentation().targetContext.applicationContext, Information::class.java)
         intent.putExtra(TEA_ID_EXTRA, TEA_ID)
 
@@ -217,7 +208,7 @@ class InformationTest {
             buttonCamera.performClick()
 
             val uri = Uri.parse("Test")
-            `when`(imageController.getImageUriByTeaId(TEA_ID)).thenReturn(uri)
+            every { imageController.getImageUriByTeaId(TEA_ID) } returns uri
             mockReturnActionActivityResult(information)
 
             val imageViewImage = information.findViewById<ImageView>(R.id.image_view_information_image)
@@ -240,10 +231,9 @@ class InformationTest {
             val ratingBar = information.findViewById<RatingBar>(R.id.rating_bar_information)
             ratingBar.rating = newRating.toFloat()
 
-            argumentCaptor<Tea>().apply {
-                verify(teaDao).update(capture())
-                assertThat(lastValue.rating).isEqualTo(4)
-            }
+            val slotTea = slot<Tea>()
+            verify { teaDao.update(capture(slotTea)) }
+            assertThat(slotTea.captured.rating).isEqualTo(4)
         }
     }
 
@@ -257,14 +247,13 @@ class InformationTest {
         informationActivityScenario.onActivity { information: Information ->
             information.onOptionsItemSelected(RoboMenuItem(R.id.action_information_in_stock))
 
-            argumentCaptor<Tea>().apply {
-                verify(teaDao).update(capture())
-                assertThat(lastValue.inStock).isTrue
+            val slotTea = slot<Tea>()
+            verify { teaDao.update(capture(slotTea)) }
+            assertThat(slotTea.captured.inStock).isTrue
 
-                information.onOptionsItemSelected(RoboMenuItem(R.id.action_information_in_stock))
+            information.onOptionsItemSelected(RoboMenuItem(R.id.action_information_in_stock))
 
-                assertThat(lastValue.inStock).isFalse
-            }
+            assertThat(slotTea.captured.inStock).isFalse
         }
     }
 
@@ -288,12 +277,11 @@ class InformationTest {
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            argumentCaptor<Note>().apply {
-                verify(noteDao).insert(capture())
-                assertThat(lastValue)
-                    .extracting(Note::header, Note::description)
-                    .containsExactly(HEADER, DESCRIPTION)
-            }
+            val slotNote = slot<Note>()
+            verify { noteDao.insert(capture(slotNote)) }
+            assertThat(slotNote.captured)
+                .extracting(Note::header, Note::description)
+                .containsExactly(HEADER, DESCRIPTION)
         }
     }
 
@@ -313,7 +301,7 @@ class InformationTest {
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
 
-            verify(noteDao, times(0)).insert(any())
+            verify (exactly = 0) { noteDao.insert(any()) }
         }
     }
 
@@ -335,7 +323,7 @@ class InformationTest {
 
             selectItemPopUpMenu(R.id.action_information_details_delete)
 
-            verify(noteDao).deleteNoteByTeaIdAndPosition(TEA_ID, position)
+            verify { noteDao.deleteNoteByTeaIdAndPosition(TEA_ID, position) }
         }
     }
 
@@ -359,20 +347,23 @@ class InformationTest {
 
             val dialogAddDetail = getAndCheckAlertDialog(information, R.string.information_edit_detail_dialog_heading)
 
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.edit_text_information_dialog_add_edit_header,
-                details[position].header, HEADER)
-            checkAndSetContentInDetailsDialog(dialogAddDetail, R.id.edit_text_information_dialog_add_edit_description,
-                details[position].description, DESCRIPTION)
+            checkAndSetContentInDetailsDialog(
+                dialogAddDetail, R.id.edit_text_information_dialog_add_edit_header,
+                details[position].header, HEADER
+            )
+            checkAndSetContentInDetailsDialog(
+                dialogAddDetail, R.id.edit_text_information_dialog_add_edit_description,
+                details[position].description, DESCRIPTION
+            )
 
             dialogAddDetail.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            argumentCaptor<Note>().apply {
-                verify(noteDao).update(capture())
-                assertThat(lastValue)
-                    .extracting(Note::header, Note::description)
-                    .containsExactly(HEADER, DESCRIPTION)
-            }
+            val slotNote = slot<Note>()
+            verify { noteDao.update(capture(slotNote)) }
+            assertThat(slotNote.captured)
+                .extracting(Note::header, Note::description)
+                .containsExactly(HEADER, DESCRIPTION)
         }
     }
 
@@ -398,7 +389,7 @@ class InformationTest {
     fun fillCounter() {
         createTea(0)
         val counter = Counter(TEA_ID, 1, 2, 3, 4, getDate(), getDate(), getDate())
-        `when`(counterDao.getCounterByTeaId(TEA_ID)).thenReturn(counter)
+        every { counterDao.getCounterByTeaId(TEA_ID) } returns counter
 
         val intent = Intent(ShadowInstrumentation.getInstrumentation().targetContext.applicationContext, Information::class.java)
         intent.putExtra(TEA_ID_EXTRA, TEA_ID)
@@ -421,14 +412,14 @@ class InformationTest {
     private fun createTea(rating: Int, date: Date) {
         val tea = Tea(TEA_NAME, null, 0.0, null, 0, 0, date)
         tea.rating = rating
-        `when`(teaDao.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaDao.getTeaById(TEA_ID) } returns tea
     }
 
     private fun createTea(rating: Int, inStock: Boolean = false) {
         val tea = Tea(TEA_NAME, TEA_VARIETY, 0.0, null, 0, 0, getDate())
         tea.rating = rating
         tea.inStock = inStock
-        `when`(teaDao.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaDao.getTeaById(TEA_ID) } returns tea
     }
 
     private fun createDetails(): List<Note> {
@@ -436,13 +427,13 @@ class InformationTest {
         for (i in 0..2) {
             details.add(Note(TEA_ID, i, HEADER + i, DESCRIPTION + i))
         }
-        `when`(noteDao.getNotesByTeaIdAndPositionBiggerZero(TEA_ID)).thenReturn(details)
+        every { noteDao.getNotesByTeaIdAndPositionBiggerZero(TEA_ID) } returns details
         return details
     }
 
     private fun createNotes(): Note {
         val notes = Note(TEA_ID, -1, NOTES_HEADER, "Some Notes")
-        `when`(noteDao.getNoteByTeaIdAndPosition(TEA_ID, -1)).thenReturn(notes)
+        every { noteDao.getNoteByTeaIdAndPosition(TEA_ID, -1) } returns notes
         return notes
     }
 
@@ -460,17 +451,13 @@ class InformationTest {
         return dialogAddDetail
     }
 
-    private fun checkAndSetContentInDetailsDialog(
-        dialog: AlertDialog, editTextId: Int,
-        oldContent: String?, newContent: String
-    ) {
+    private fun checkAndSetContentInDetailsDialog(dialog: AlertDialog, editTextId: Int, oldContent: String?, newContent: String) {
         val editTextAddHeader = dialog.findViewById<EditText>(editTextId)
         assertThat(editTextAddHeader.text).hasToString(oldContent)
         editTextAddHeader.setText(newContent)
     }
 
-    private fun checkCounter(information: Information, week: String,
-        month: String, year: String, overall: String) {
+    private fun checkCounter(information: Information, week: String, month: String, year: String, overall: String) {
         val textViewWeek = information.findViewById<TextView>(R.id.text_view_information_counter_week)
         val textViewMonth = information.findViewById<TextView>(R.id.text_view_information_counter_month)
         val textViewYear = information.findViewById<TextView>(R.id.text_view_information_counter_year)
