@@ -2,17 +2,17 @@ package coolpharaoh.tee.speicher.tea.timer.views.new_tea
 
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.core.print.Printer
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class InputValidatorTest {
-    @Mock
+    @MockK
     lateinit var application: Application
 
     private var inputValidator: InputValidator? = null
@@ -24,7 +24,7 @@ internal class InputValidatorTest {
 
     @Test
     fun nameIsNotEmptyReturnsFalse() {
-        `when`(application.getString(anyInt())).thenReturn("ErrorMessage")
+         every { application.getString(any()) } returns "ErrorMessage"
 
         assertThat(inputValidator!!.nameIsNotEmpty("")).isFalse
     }
@@ -36,7 +36,7 @@ internal class InputValidatorTest {
 
     @Test
     fun nameIsValidReturnsFalse() {
-        `when`(application.getString(anyInt())).thenReturn("ErrorMessage")
+         every { application.getString(any()) } returns "ErrorMessage"
 
         val data = CharArray(350)
         val largeName = String(data)
@@ -50,7 +50,7 @@ internal class InputValidatorTest {
 
     @Test
     fun varietyIsValidReturnsFalse() {
-        `when`(application.getString(anyInt())).thenReturn("ErrorMessage")
+         every { application.getString(any()) } returns "ErrorMessage"
 
         val data = CharArray(50)
         val largeVariety = String(data)

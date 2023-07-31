@@ -11,15 +11,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
@@ -28,13 +29,11 @@ import java.util.function.Function
 
 @RunWith(RobolectricTestRunner::class)
 class CoolDownTimePickerDialogTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var newTeaViewModel: NewTeaViewModel
-    @InjectMocks
+    @InjectMockKs
     lateinit var dialogFragment: CoolDownTimePickerDialog
 
     private var fragmentManager: FragmentManager? = null
@@ -47,6 +46,8 @@ class CoolDownTimePickerDialogTest {
 
     @Test
     fun showDialog() {
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
@@ -57,8 +58,9 @@ class CoolDownTimePickerDialogTest {
 
     @Test
     fun showDialogWithNoConfiguredTemperatureAndExpectNoCalculatedCoolDownTime() {
-        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(-500)
-        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.CELSIUS)
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+        every { newTeaViewModel.getInfusionTemperature() } returns -500
+        every { newTeaViewModel.getTemperatureUnit() } returns TemperatureUnit.CELSIUS
 
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -73,8 +75,9 @@ class CoolDownTimePickerDialogTest {
 
     @Test
     fun showDialogWith100CelsiusAndExpectNoCalculatedCoolDownTime() {
-        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(212)
-        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+        every { newTeaViewModel.getInfusionTemperature() } returns 212
+        every { newTeaViewModel.getTemperatureUnit() } returns TemperatureUnit.FAHRENHEIT
 
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -89,8 +92,9 @@ class CoolDownTimePickerDialogTest {
 
     @Test
     fun showDialogAndExpectCalculatedCoolDownTime() {
-        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(90)
-        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.CELSIUS)
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+        every { newTeaViewModel.getInfusionTemperature() } returns 90
+        every { newTeaViewModel.getTemperatureUnit() } returns TemperatureUnit.CELSIUS
 
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -114,8 +118,9 @@ class CoolDownTimePickerDialogTest {
 
     @Test
     fun clickCalculatedCoolDownTimeAndExpectShownCalculatedCoolDownTime() {
-        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(95)
-        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.CELSIUS)
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+        every { newTeaViewModel.getInfusionTemperature() } returns 95
+        every { newTeaViewModel.getTemperatureUnit() } returns TemperatureUnit.CELSIUS
 
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -134,6 +139,8 @@ class CoolDownTimePickerDialogTest {
 
     @Test
     fun acceptInputAndExpectSavedCoolDownTime() {
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
@@ -148,11 +155,13 @@ class CoolDownTimePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionCoolDownTime("05:45")
+        verify { newTeaViewModel.setInfusionCoolDownTime("05:45") }
     }
 
     @Test
     fun inputZeroTimeAndExpectSavedNull() {
+        every { newTeaViewModel.getInfusionCoolDownTime() } returns null
+
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
@@ -167,12 +176,12 @@ class CoolDownTimePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionCoolDownTime(null)
+        verify { newTeaViewModel.setInfusionCoolDownTime(null) }
     }
 
     @Test
     fun showExistingCoolDownTimeConfiguration() {
-        `when`(newTeaViewModel.getInfusionCoolDownTime()).thenReturn("05:15")
+         every { newTeaViewModel.getInfusionCoolDownTime() } returns "05:15"
 
         dialogFragment.show(fragmentManager!!, CoolDownTimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()

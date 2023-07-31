@@ -11,15 +11,17 @@ import androidx.fragment.app.FragmentManager
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
@@ -28,15 +30,13 @@ import java.util.function.Function
 
 @RunWith(RobolectricTestRunner::class)
 class AmountPickerDialogTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var newTeaViewModel: NewTeaViewModel
-    @Mock
+    @MockK
     lateinit var suggestions: Suggestions
-    @InjectMocks
+    @InjectMockKs
     lateinit var dialogFragment: AmountPickerDialog
 
     private var fragmentManager: FragmentManager? = null
@@ -46,12 +46,12 @@ class AmountPickerDialogTest {
         val activity = Robolectric.buildActivity(FragmentActivity::class.java).create().start().resume().get()
         fragmentManager = activity.supportFragmentManager
         // always default
-        `when`(newTeaViewModel.amountKind).thenReturn(AmountKind.TEA_SPOON)
+         every { newTeaViewModel.amountKind } returns AmountKind.TEA_SPOON
     }
 
     @Test
     fun showDialogAndExpectTitle() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -63,7 +63,7 @@ class AmountPickerDialogTest {
 
     @Test
     fun showDialogAndExpectTwoTsSuggestions() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf(4, 5))
+         every { suggestions.amountTsSuggestions } returns intArrayOf(4, 5)
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -86,7 +86,7 @@ class AmountPickerDialogTest {
 
     @Test
     fun showDialogAndExpectNoSuggestions() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -98,8 +98,8 @@ class AmountPickerDialogTest {
 
     @Test
     fun setAmountKindGrAndExpectGrSuggestions() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
-        `when`(suggestions.amountGrSuggestions).thenReturn(intArrayOf(10, 11, 12))
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
+         every { suggestions.amountGrSuggestions } returns intArrayOf(10, 11, 12)
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -131,8 +131,8 @@ class AmountPickerDialogTest {
 
     @Test
     fun setAmountKindTbAndExpectTbSuggestions() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
-        `when`(suggestions.amountTbSuggestions).thenReturn(intArrayOf(10, 11, 12))
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
+         every { suggestions.amountTbSuggestions } returns intArrayOf(10, 11, 12)
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -164,7 +164,7 @@ class AmountPickerDialogTest {
 
     @Test
     fun clickSuggestionAndExpectShownSuggestion() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf(4, 5))
+         every { suggestions.amountTsSuggestions } returns intArrayOf(4, 5)
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -180,7 +180,7 @@ class AmountPickerDialogTest {
 
     @Test
     fun acceptTsInputExceptSavedInput() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
@@ -195,12 +195,12 @@ class AmountPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setAmount(7.0, AmountKind.TEA_SPOON)
+        verify { newTeaViewModel.setAmount(7.0, AmountKind.TEA_SPOON) }
     }
 
     @Test
     fun acceptGrInputExceptSavedInput() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
@@ -215,12 +215,12 @@ class AmountPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setAmount(7.0, AmountKind.GRAM)
+        verify { newTeaViewModel.setAmount(7.0, AmountKind.GRAM) }
     }
 
     @Test
     fun acceptTbInputExceptSavedInput() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
@@ -235,14 +235,14 @@ class AmountPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setAmount(7.0, AmountKind.TEA_BAG)
+        verify { newTeaViewModel.setAmount(7.0, AmountKind.TEA_BAG) }
     }
 
     @Test
     fun showExistingAmountConfiguration() {
-        `when`(suggestions.amountGrSuggestions).thenReturn(intArrayOf())
-        `when`(newTeaViewModel.amount).thenReturn(7.0)
-        `when`(newTeaViewModel.amountKind).thenReturn(AmountKind.GRAM)
+         every { suggestions.amountGrSuggestions } returns intArrayOf()
+         every { newTeaViewModel.amount } returns 7.0
+         every { newTeaViewModel.amountKind } returns AmountKind.GRAM
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -258,8 +258,8 @@ class AmountPickerDialogTest {
 
     @Test
     fun showExistingAmountConfigurationDecimal() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf())
-        `when`(newTeaViewModel.amount).thenReturn(7.5)
+         every { suggestions.amountTsSuggestions } returns intArrayOf()
+         every { newTeaViewModel.amount } returns 7.5
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -278,8 +278,8 @@ class AmountPickerDialogTest {
 
     @Test
     fun clickSuggestionAndExpectOverwrittenExistingConfiguration() {
-        `when`(suggestions.amountTsSuggestions).thenReturn(intArrayOf(4, 5))
-        `when`(newTeaViewModel.amount).thenReturn(7.5)
+         every { suggestions.amountTsSuggestions } returns intArrayOf(4, 5)
+         every { newTeaViewModel.amount } returns 7.5
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()

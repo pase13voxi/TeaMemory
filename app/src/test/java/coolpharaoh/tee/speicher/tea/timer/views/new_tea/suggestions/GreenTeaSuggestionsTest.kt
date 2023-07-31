@@ -3,35 +3,35 @@ package coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions
 import android.app.Application
 import android.content.res.Resources
 import coolpharaoh.tee.speicher.tea.timer.R
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class GreenTeaSuggestionsTest {
-    @Mock
+    @MockK
     lateinit var application: Application
 
-    @Mock
+    @MockK
     lateinit var resources: Resources
 
-    @InjectMocks
+    @InjectMockKs
     lateinit var greenTeaSuggestions: GreenTeaSuggestions
 
     @BeforeEach
     fun setUp() {
-        `when`(application.resources).thenReturn(resources)
+         every { application.resources } returns resources
     }
 
     @Test
     fun getAmountTsSuggestion() {
         val arrayTs = intArrayOf(1, 2)
-        `when`(resources.getIntArray(R.array.new_tea_suggestions_green_tea_amount_ts)).thenReturn(arrayTs)
+         every { resources.getIntArray(R.array.new_tea_suggestions_green_tea_amount_ts) } returns arrayTs
 
         assertThat(greenTeaSuggestions.amountTsSuggestions).isEqualTo(arrayTs)
     }
@@ -39,7 +39,7 @@ internal class GreenTeaSuggestionsTest {
     @Test
     fun getAmountGrSuggestion() {
         val arrayGr = intArrayOf(1, 2)
-        `when`(resources.getIntArray(R.array.new_tea_suggestions_green_tea_amount_gr)).thenReturn(arrayGr)
+         every { resources.getIntArray(R.array.new_tea_suggestions_green_tea_amount_gr) } returns arrayGr
 
         assertThat(greenTeaSuggestions.amountGrSuggestions).isEqualTo(arrayGr)
     }
@@ -47,7 +47,7 @@ internal class GreenTeaSuggestionsTest {
     @Test
     fun getAmountTbSuggestion() {
         val arrayTb = intArrayOf(1, 2)
-        `when`(resources.getIntArray(R.array.new_tea_suggestions_green_tea_amount_tb)).thenReturn(arrayTb)
+         every { resources.getIntArray(R.array.new_tea_suggestions_green_tea_amount_tb) } returns arrayTb
 
         assertThat(greenTeaSuggestions.amountTbSuggestions).isEqualTo(arrayTb)
     }
@@ -55,7 +55,7 @@ internal class GreenTeaSuggestionsTest {
     @Test
     fun getTemperatureCelsiusSuggestion() {
         val arrayCelsius = intArrayOf(1, 2)
-        `when`(resources.getIntArray(R.array.new_tea_suggestions_green_tea_temperature_celsius)).thenReturn(arrayCelsius)
+         every { resources.getIntArray(R.array.new_tea_suggestions_green_tea_temperature_celsius) } returns arrayCelsius
 
         assertThat(greenTeaSuggestions.temperatureCelsiusSuggestions).isEqualTo(arrayCelsius)
     }
@@ -63,7 +63,7 @@ internal class GreenTeaSuggestionsTest {
     @Test
     fun getTemperatureFahrenheitSuggestion() {
         val arrayFahrenheit = intArrayOf(1, 2)
-        `when`(resources.getIntArray(R.array.new_tea_suggestions_green_tea_temperature_fahrenheit)).thenReturn(arrayFahrenheit)
+         every { resources.getIntArray(R.array.new_tea_suggestions_green_tea_temperature_fahrenheit) } returns arrayFahrenheit
 
         assertThat(greenTeaSuggestions.temperatureFahrenheitSuggestions).isEqualTo(arrayFahrenheit)
     }
@@ -71,7 +71,7 @@ internal class GreenTeaSuggestionsTest {
     @Test
     fun getSteepingTimeSuggestion() {
         val arrayTime = arrayOf("1:00", "2:30")
-        `when`(resources.getStringArray(R.array.new_tea_suggestions_green_tea_time)).thenReturn(arrayTime)
+         every { resources.getStringArray(R.array.new_tea_suggestions_green_tea_time) } returns arrayTime
 
         assertThat(greenTeaSuggestions.timeSuggestions).isEqualTo(arrayTime)
     }
