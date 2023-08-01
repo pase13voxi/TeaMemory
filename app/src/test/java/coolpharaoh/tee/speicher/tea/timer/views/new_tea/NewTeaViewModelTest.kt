@@ -14,38 +14,33 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.convertStoredVarietyToText
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromStoredText
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import java.time.Instant
 import java.util.Date
 
-@ExtendWith(MockitoExtension::class, TaskExecutorExtension::class)
+@ExtendWith(MockKExtension::class, TaskExecutorExtension::class)
 internal class NewTeaViewModelTest {
     private var newTeaViewModelEmpty: NewTeaViewModel? = null
     private var newTeaViewModelFilled: NewTeaViewModel? = null
 
-    @Mock
+    @MockK
     lateinit var application: Application
-
-    @Mock
+    @MockK
     lateinit var resources: Resources
-
-    @Mock
+    @RelaxedMockK
     lateinit var teaRepository: TeaRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var infusionRepository: InfusionRepository
-
-    @Mock
+    @MockK
     lateinit var sharedSettings: SharedSettings
 
     private var tea: Tea? = null
@@ -105,7 +100,7 @@ internal class NewTeaViewModelTest {
 
     @Test
     fun setTemperatureCelsiusAndExpectTemperature() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
 
         newTeaViewModelEmpty!!.setInfusionTemperature(90)
 
@@ -115,18 +110,18 @@ internal class NewTeaViewModelTest {
 
     @Test
     fun setTemperatureCelsiusAndExpectFahrenheitTemperature() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
 
         newTeaViewModelEmpty!!.setInfusionTemperature(90)
 
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.FAHRENHEIT
         assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(194)
         assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.FAHRENHEIT)
     }
 
     @Test
     fun setTemperatureFahrenheitAndExpectTemperature() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.FAHRENHEIT
 
         newTeaViewModelEmpty!!.setInfusionTemperature(194)
 
@@ -136,18 +131,18 @@ internal class NewTeaViewModelTest {
 
     @Test
     fun setTemperatureFahrenheitAndExpectCelsiusTemperature() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.FAHRENHEIT
 
         newTeaViewModelEmpty!!.setInfusionTemperature(194)
 
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
         assertThat(newTeaViewModelEmpty!!.getInfusionTemperature()).isEqualTo(90)
         assertThat(newTeaViewModelEmpty!!.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
     fun setTemperatureFahrenheitAndExpectStoredTemperatureFahrenheitAndTemperature() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
 
         newTeaViewModelEmpty!!.setInfusionTemperature(90)
 
@@ -178,7 +173,7 @@ internal class NewTeaViewModelTest {
 
     @Test
     fun addInfusion() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
         assertThat(newTeaViewModelEmpty!!.getInfusionSize()).isEqualTo(1)
 
         newTeaViewModelEmpty!!.addInfusion()
@@ -242,44 +237,43 @@ internal class NewTeaViewModelTest {
     @Test
     fun saveTeaAndExpectNewTea() {
         newTeaViewModelEmpty!!.saveTea("name")
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).insertTea(capture())
-            val (_, name1) = lastValue
-            assertThat(name1).isEqualTo("name")
-            verify(infusionRepository).insertInfusion(any())
-        }
+
+        val slotTea = slot<Tea>()
+        verify { teaRepository.insertTea(capture(slotTea)) }
+        val (_, name1) = slotTea.captured
+        assertThat(name1).isEqualTo("name")
+        verify { infusionRepository.insertInfusion(any()) }
     }
 
     @Test
     fun saveTeaAndExpectEditedExistingTea() {
         newTeaViewModelFilled!!.saveTea("name")
 
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).updateTea(capture())
-            val (_, name1) = lastValue
-            assertThat(name1).isEqualTo("name")
-            verify(infusionRepository).deleteInfusionsByTeaId(TEA_ID_FILLED)
-            verify(infusionRepository, times(2)).insertInfusion(any())
-        }
+        val slotTea = slot<Tea>()
+        verify { teaRepository.updateTea(capture(slotTea)) }
+        val (_, name1) = slotTea.captured
+        assertThat(name1).isEqualTo("name")
+        verify { infusionRepository.deleteInfusionsByTeaId(TEA_ID_FILLED) }
+        verify(exactly = 2) { infusionRepository.insertInfusion(any()) }
     }
 
     private fun mockStoredTea() {
         val today = Date.from(Instant.now())
         tea = Tea("TEA", Variety.YELLOW_TEA.code, 3.0, AmountKind.TEA_SPOON.text, 5, 0, today)
         tea!!.id = TEA_ID_FILLED
-        `when`(teaRepository.getTeaById(TEA_ID_FILLED)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID_FILLED) } returns tea
 
         val infusions: MutableList<Infusion> = ArrayList()
         val infusion1 = Infusion(TEA_ID_FILLED, 0, "2", "0:30", 5, 5)
         infusions.add(infusion1)
         val infusion2 = Infusion(TEA_ID_FILLED, 1, "4", "1", 50, 100)
         infusions.add(infusion2)
-        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID_FILLED)).thenReturn(infusions)
+        every { infusionRepository.getInfusionsByTeaId(TEA_ID_FILLED) } returns infusions
     }
 
     private fun mockStringResource() {
-        `when`(application.resources).thenReturn(resources)
-        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETY_TEAS)
+        every { application.resources } returns resources
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns VARIETY_TEAS
     }
 
     companion object {

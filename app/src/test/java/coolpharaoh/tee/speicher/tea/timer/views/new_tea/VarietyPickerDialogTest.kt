@@ -11,15 +11,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
@@ -27,14 +28,12 @@ import org.robolectric.shadows.ShadowAlertDialog
 
 @RunWith(RobolectricTestRunner::class)
 class VarietyPickerDialogTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var newTeaViewModel: NewTeaViewModel
 
-    @InjectMocks
+    @InjectMockKs
     lateinit var dialogFragment: VarietyPickerDialog
 
     private var fragmentManager: FragmentManager? = null
@@ -68,7 +67,7 @@ class VarietyPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setVariety(YELLOW_TEA_TEXT)
+        verify { newTeaViewModel.setVariety(YELLOW_TEA_TEXT) }
     }
 
     @Test
@@ -84,13 +83,13 @@ class VarietyPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).color = -15797
+        verify { newTeaViewModel.color = -15797 }
     }
 
     @Test
     fun showAndHideCustomVarityInputField() {
-        `when`(newTeaViewModel.varietyAsText).thenReturn(YELLOW_TEA_TEXT)
-        `when`(newTeaViewModel.variety).thenReturn(Variety.YELLOW_TEA)
+        every { newTeaViewModel.varietyAsText } returns YELLOW_TEA_TEXT
+        every { newTeaViewModel.variety } returns Variety.YELLOW_TEA
 
         dialogFragment.show(fragmentManager!!, VarietyPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -123,13 +122,13 @@ class VarietyPickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setVariety(CUSTOM_VARIETY)
+        verify { newTeaViewModel.setVariety(CUSTOM_VARIETY) }
     }
 
     @Test
     fun showExistingVarietyConfiguration() {
-        `when`(newTeaViewModel.varietyAsText).thenReturn(YELLOW_TEA_TEXT)
-        `when`(newTeaViewModel.variety).thenReturn(Variety.YELLOW_TEA)
+        every { newTeaViewModel.varietyAsText } returns YELLOW_TEA_TEXT
+        every { newTeaViewModel.variety } returns Variety.YELLOW_TEA
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -142,8 +141,8 @@ class VarietyPickerDialogTest {
 
     @Test
     fun showExistingCustomVarietyConfiguration() {
-        `when`(newTeaViewModel.variety).thenReturn(Variety.OTHER)
-        `when`(newTeaViewModel.varietyAsText).thenReturn(CUSTOM_VARIETY)
+        every { newTeaViewModel.variety } returns Variety.OTHER
+        every { newTeaViewModel.varietyAsText } returns CUSTOM_VARIETY
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()

@@ -10,15 +10,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
@@ -27,15 +29,13 @@ import java.util.function.Function
 
 @RunWith(RobolectricTestRunner::class)
 class TimePickerDialogTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var newTeaViewModel: NewTeaViewModel
-    @Mock
+    @MockK
     lateinit var suggestions: Suggestions
-    @InjectMocks
+    @InjectMockKs
     lateinit var dialogFragment: TimePickerDialog
 
     private var fragmentManager: FragmentManager? = null
@@ -48,7 +48,8 @@ class TimePickerDialogTest {
 
     @Test
     fun showDialogAndExpectTitle() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf())
+        every { suggestions.timeSuggestions } returns arrayOf()
+        every { newTeaViewModel.getInfusionTime()} returns null
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -60,7 +61,8 @@ class TimePickerDialogTest {
 
     @Test
     fun showDialogAndExpectTwoSuggestions() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf("2:00", "3:00"))
+        every { suggestions.timeSuggestions } returns arrayOf("2:00", "3:00")
+        every { newTeaViewModel.getInfusionTime()} returns null
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -83,7 +85,8 @@ class TimePickerDialogTest {
 
     @Test
     fun clickSuggestionAndExpectShownSuggestion() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf("2:30", "3:00"))
+        every { suggestions.timeSuggestions } returns arrayOf("2:30", "3:00")
+        every { newTeaViewModel.getInfusionTime()} returns null
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -102,7 +105,8 @@ class TimePickerDialogTest {
 
     @Test
     fun showDialogAndExpectNoSuggestions() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf())
+        every { suggestions.timeSuggestions } returns arrayOf()
+        every { newTeaViewModel.getInfusionTime()} returns null
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -114,7 +118,8 @@ class TimePickerDialogTest {
 
     @Test
     fun acceptInputAndExpectSavedTime() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf())
+        every { suggestions.timeSuggestions } returns arrayOf()
+        every { newTeaViewModel.getInfusionTime()} returns null
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -130,12 +135,13 @@ class TimePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionTime("05:45")
+        verify { newTeaViewModel.setInfusionTime("05:45") }
     }
 
     @Test
     fun inputZeroTimeAndExpectSavedNull() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf())
+        every { suggestions.timeSuggestions } returns arrayOf()
+        every { newTeaViewModel.getInfusionTime()} returns null
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -151,13 +157,13 @@ class TimePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionTime(null)
+        verify { newTeaViewModel.setInfusionTime(null) }
     }
 
     @Test
     fun showExistingTimeConfiguration() {
-        `when`(suggestions.timeSuggestions).thenReturn(arrayOf())
-        `when`(newTeaViewModel.getInfusionTime()).thenReturn("05:15")
+        every { suggestions.timeSuggestions } returns arrayOf()
+        every { newTeaViewModel.getInfusionTime() } returns "05:15"
 
         dialogFragment.show(fragmentManager!!, TimePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()

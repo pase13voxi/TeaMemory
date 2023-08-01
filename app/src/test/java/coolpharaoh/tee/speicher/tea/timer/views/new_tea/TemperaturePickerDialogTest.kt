@@ -12,15 +12,17 @@ import androidx.fragment.app.FragmentManager
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
 import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
@@ -29,15 +31,13 @@ import java.util.function.Function
 
 @RunWith(RobolectricTestRunner::class)
 class TemperaturePickerDialogTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var newTeaViewModel: NewTeaViewModel
-    @Mock
+    @MockK
     lateinit var suggestions: Suggestions
-    @InjectMocks
+    @InjectMockKs
     lateinit var dialogFragment: TemperaturePickerDialog
 
     private var fragmentManager: FragmentManager? = null
@@ -50,7 +50,7 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndExpectTitle() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -62,7 +62,7 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndExpectCelsiusUnit() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -74,8 +74,8 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndExpectFahrenheitUnit() {
-        `when`(suggestions.temperatureFahrenheitSuggestions).thenReturn(intArrayOf())
-        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { suggestions.temperatureFahrenheitSuggestions } returns intArrayOf()
+        every { newTeaViewModel.getTemperatureUnit() } returns TemperatureUnit.FAHRENHEIT
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -88,7 +88,7 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndExpectTwoCelsiusSuggestions() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf(100, 90))
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf(100, 90)
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -111,8 +111,8 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndExpectTwoFahrenheitSuggestions() {
-        `when`(suggestions.temperatureFahrenheitSuggestions).thenReturn(intArrayOf(212, 194))
-        `when`(newTeaViewModel.getTemperatureUnit()).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { suggestions.temperatureFahrenheitSuggestions } returns intArrayOf(212, 194)
+        every { newTeaViewModel.getTemperatureUnit() } returns TemperatureUnit.FAHRENHEIT
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -135,7 +135,7 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndExpectNoSuggestions() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -147,7 +147,7 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun showDialogAndClickSuggestions() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf(100, 90, 80))
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf(100, 90, 80)
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -163,7 +163,7 @@ class TemperaturePickerDialogTest {
 
     @Test
     fun acceptInputAndExpectSavedTemperature() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -176,13 +176,13 @@ class TemperaturePickerDialogTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
         Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-        verify(newTeaViewModel).setInfusionTemperature(80)
+        verify  { newTeaViewModel.setInfusionTemperature(80) }
     }
 
     @Test
     fun showExistingTemperatureConfiguration() {
-        `when`(suggestions.temperatureCelsiusSuggestions).thenReturn(intArrayOf())
-        `when`(newTeaViewModel.getInfusionTemperature()).thenReturn(85)
+        every { suggestions.temperatureCelsiusSuggestions } returns intArrayOf()
+        every { newTeaViewModel.getInfusionTemperature() } returns 85
 
         dialogFragment.show(fragmentManager!!, TemperaturePickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
