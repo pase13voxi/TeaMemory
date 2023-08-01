@@ -6,27 +6,25 @@ import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
 import java.util.Arrays
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class SettingsViewModelTest {
-    @Mock
+    @RelaxedMockK
     lateinit var teaRepository: TeaRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var sharedSettings: SharedSettings
-
-    @Mock
+    @RelaxedMockK
     lateinit var imageController: ImageController
-
-    @InjectMocks
+    @InjectMockKs
     lateinit var settingsViewModel: SettingsViewModel
 
     @Test
@@ -34,7 +32,7 @@ internal class SettingsViewModelTest {
         val musicChoice = "MUSIC_CHOICE"
         settingsViewModel.setMusicChoice(musicChoice)
 
-        verify(sharedSettings).musicChoice = musicChoice
+        verify { sharedSettings.musicChoice = musicChoice }
     }
 
     @Test
@@ -42,13 +40,13 @@ internal class SettingsViewModelTest {
         val musicName = "MUSIC_NAME"
         settingsViewModel.musicName = musicName
 
-        verify(sharedSettings).musicName = musicName
+        verify { sharedSettings.musicName = musicName } 
     }
 
     @Test
     fun getMusicName() {
         val musicName = "MUSIC_NAME"
-        `when`(sharedSettings.musicName).thenReturn(musicName)
+        every { sharedSettings.musicName } returns musicName
 
         assertThat(settingsViewModel.musicName).isEqualTo(musicName)
     }
@@ -58,13 +56,13 @@ internal class SettingsViewModelTest {
         val vibration = true
         settingsViewModel.isVibration = vibration
 
-        verify(sharedSettings).isVibration = vibration
+        verify { sharedSettings.isVibration = vibration }
     }
 
     @Test
     fun isVibration() {
         val vibration = true
-        `when`(sharedSettings.isVibration).thenReturn(vibration)
+        every { sharedSettings.isVibration } returns vibration
 
         assertThat(settingsViewModel.isVibration).isEqualTo(vibration)
     }
@@ -74,13 +72,13 @@ internal class SettingsViewModelTest {
         val animation = true
         settingsViewModel.isAnimation = animation
 
-        verify(sharedSettings).isAnimation = animation
+        verify { sharedSettings.isAnimation = animation }
     }
 
     @Test
     fun isAnimation() {
         val animation = true
-        `when`(sharedSettings.isAnimation).thenReturn(animation)
+        every { sharedSettings.isAnimation } returns animation
 
         assertThat(settingsViewModel.isAnimation).isEqualTo(animation)
     }
@@ -89,12 +87,12 @@ internal class SettingsViewModelTest {
     fun setTemperatureUnit() {
         settingsViewModel.temperatureUnit = TemperatureUnit.CELSIUS
 
-        verify(sharedSettings).temperatureUnit = TemperatureUnit.CELSIUS
+        verify { sharedSettings.temperatureUnit = TemperatureUnit.CELSIUS }
     }
 
     @Test
     fun getTemperatureUnit() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
 
         assertThat(settingsViewModel.temperatureUnit).isEqualTo(TemperatureUnit.CELSIUS)
     }
@@ -104,12 +102,12 @@ internal class SettingsViewModelTest {
         val overviewHeader = true
         settingsViewModel.isOverviewHeader = overviewHeader
 
-        verify(sharedSettings).isOverviewHeader = overviewHeader
+        verify { sharedSettings.isOverviewHeader = overviewHeader }
     }
 
     @Test
     fun isOverviewHeader() {
-        `when`(sharedSettings.isOverviewHeader).thenReturn(false)
+        every { sharedSettings.isOverviewHeader } returns false
         val isOverviewHeader = settingsViewModel.isOverviewHeader
 
         assertThat(isOverviewHeader).isFalse
@@ -120,12 +118,12 @@ internal class SettingsViewModelTest {
         val darkMode = DarkMode.ENABLED
         settingsViewModel.darkMode = darkMode
 
-        verify(sharedSettings).darkMode = darkMode
+        verify { sharedSettings.darkMode = darkMode }
     }
 
     @Test
     fun getDarkMode() {
-        `when`(sharedSettings.darkMode).thenReturn(DarkMode.ENABLED)
+        every { sharedSettings.darkMode } returns DarkMode.ENABLED
         val darkMode = settingsViewModel.darkMode
 
         assertThat(darkMode).isEqualTo(DarkMode.ENABLED)
@@ -136,13 +134,13 @@ internal class SettingsViewModelTest {
         val showTeaAlert = true
         settingsViewModel.isShowTeaAlert = showTeaAlert
 
-        verify(sharedSettings).isShowTeaAlert = showTeaAlert
+        verify { sharedSettings.isShowTeaAlert = showTeaAlert }
     }
 
     @Test
     fun isShowTeaAlert() {
         val showTeaAlert = true
-        `when`(sharedSettings.isShowTeaAlert).thenReturn(showTeaAlert)
+        every { sharedSettings.isShowTeaAlert } returns showTeaAlert
 
         assertThat(settingsViewModel.isShowTeaAlert).isEqualTo(showTeaAlert)
     }
@@ -150,7 +148,7 @@ internal class SettingsViewModelTest {
     @Test
     fun setMainUpdateAlert() {
         val overviewUpdateAlert = true
-        `when`(sharedSettings.isOverviewUpdateAlert).thenReturn(overviewUpdateAlert)
+        every { sharedSettings.isOverviewUpdateAlert } returns overviewUpdateAlert
 
         assertThat(settingsViewModel.overviewUpdateAlert).isEqualTo(overviewUpdateAlert)
     }
@@ -160,14 +158,14 @@ internal class SettingsViewModelTest {
         val overviewUpdateAlert = true
         settingsViewModel.overviewUpdateAlert = overviewUpdateAlert
 
-        verify(sharedSettings).isOverviewUpdateAlert = overviewUpdateAlert
+        verify { sharedSettings.isOverviewUpdateAlert = overviewUpdateAlert }
     }
 
     @Test
     fun setDefaultSettings() {
         settingsViewModel.setDefaultSettings()
 
-        verify(sharedSettings).setFactorySettings()
+        verify { sharedSettings.setFactorySettings() }
     }
 
     @Test
@@ -177,17 +175,17 @@ internal class SettingsViewModelTest {
         val tea2 = Tea()
         tea2.id = 2L
         val teas = Arrays.asList(tea1, tea2)
-        `when`(teaRepository.teas).thenReturn(teas)
+        every { teaRepository.teas } returns teas
 
         settingsViewModel.deleteAllTeaImages()
 
-        verify(imageController).removeImageByTeaId(1L)
-        verify(imageController).removeImageByTeaId(2L)
+        verify { imageController.removeImageByTeaId(1L) }
+        verify { imageController.removeImageByTeaId(2L) }
     }
 
     @Test
     fun deleteAllTeas() {
         settingsViewModel.deleteAllTeas()
-        verify(teaRepository).deleteAllTeas()
+        verify { teaRepository.deleteAllTeas() }
     }
 }

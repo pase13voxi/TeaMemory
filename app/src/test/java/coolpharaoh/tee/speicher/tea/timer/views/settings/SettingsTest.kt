@@ -24,16 +24,17 @@ import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageController
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.setMockedImageController
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows
@@ -41,20 +42,15 @@ import org.robolectric.shadows.ShadowAlertDialog
 
 @RunWith(RobolectricTestRunner::class)
 class SettingsTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var teaMemoryDatabase: TeaMemoryDatabase
-
-    @Mock
+    @RelaxedMockK
     lateinit var teaDao: TeaDao
-
-    @Mock
+    @RelaxedMockK
     lateinit var imageController: ImageController
-
-    @Mock
+    @MockK
     lateinit var systemUtility: SystemUtility
 
     private var sharedSettings: SharedSettings? = null
@@ -69,7 +65,7 @@ class SettingsTest {
 
     private fun mockDB() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
+        every { teaMemoryDatabase.teaDao } returns teaDao
     }
 
     private fun setSharedSettings() {
@@ -85,7 +81,7 @@ class SettingsTest {
 
     private fun mockSystemVersionCode() {
         setFixedSystem(systemUtility)
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.R)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.R
     }
 
     @Test
@@ -339,7 +335,7 @@ class SettingsTest {
 
     @Test
     fun setDarkModeSystemOnVersionCodeOlderAndroidQ() {
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.P)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.P
 
         val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
         settingsActivityScenario.onActivity { settings: Settings ->
@@ -418,7 +414,7 @@ class SettingsTest {
         val tea2 = Tea()
         tea2.id = 2L
         val teas = listOf(tea1, tea2)
-        `when`(teaDao.getTeas()).thenReturn(teas)
+        every { teaDao.getTeas() } returns teas
 
         val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
         settingsActivityScenario.onActivity { settings: Settings ->
@@ -429,22 +425,22 @@ class SettingsTest {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            verify(imageController).removeImageByTeaId(1L)
-            verify(imageController).removeImageByTeaId(2L)
-            verify(teaDao).deleteAll()
+            verify { imageController.removeImageByTeaId(1L) }
+            verify { imageController.removeImageByTeaId(2L) }
+            verify { teaDao.deleteAll() }
             assertThat(sharedSettings!!.musicName).isEqualTo("Default")
         }
     }
 
     @Test
     fun setFactorySettingsOnVersionCodeOlderAndroidQ() {
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.P)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.P
         val tea1 = Tea()
         tea1.id = 1L
         val tea2 = Tea()
         tea2.id = 2L
         val teas = listOf(tea1, tea2)
-        `when`(teaDao.getTeas()).thenReturn(teas)
+        every { teaDao.getTeas() } returns teas
 
         val settingsActivityScenario = ActivityScenario.launch(Settings::class.java)
         settingsActivityScenario.onActivity { settings: Settings ->
@@ -455,8 +451,8 @@ class SettingsTest {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-            verify(imageController, never()).removeImageByTeaId(ArgumentMatchers.anyLong())
-            verify(teaDao).deleteAll()
+            verify (exactly = 0) { imageController.removeImageByTeaId(any()) }
+            verify { teaDao.deleteAll() }
             assertThat(sharedSettings!!.musicName).isEqualTo("Default")
         }
     }
