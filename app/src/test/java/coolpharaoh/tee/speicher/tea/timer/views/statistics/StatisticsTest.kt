@@ -7,14 +7,15 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterDao
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.fakes.RoboMenuItem
@@ -22,16 +23,12 @@ import org.robolectric.shadows.ShadowAlertDialog
 
 @RunWith(RobolectricTestRunner::class)
 class StatisticsTest {
-
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
-    var teaMemoryDatabase: TeaMemoryDatabase? = null
-
-    @Mock
-    var counterDao: CounterDao? = null
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
+    lateinit var teaMemoryDatabase: TeaMemoryDatabase
+    @RelaxedMockK
+    lateinit var counterDao: CounterDao
 
     @Before
     fun setUp() {
@@ -40,14 +37,14 @@ class StatisticsTest {
 
     private fun mockDB() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase!!.counterDao).thenReturn(counterDao)
+        every { teaMemoryDatabase.counterDao } returns counterDao
     }
 
     @Test
     fun launchActivityAndExpectListWeek() {
         val countSize = 2
         val statisticsPOJOs = getStatisticsPOJOs("LAUNCH", countSize)
-        `when`(counterDao!!.getTeaCounterWeek()).thenReturn(statisticsPOJOs)
+        every { counterDao.getTeaCounterWeek() } returns statisticsPOJOs
 
         val statisticsActivityScenario = ActivityScenario.launch(Statistics::class.java)
 
@@ -58,7 +55,7 @@ class StatisticsTest {
     fun setPeriodWeekAndExpectListWeek() {
         val countSize = 5
         val statisticsPOJOs = getStatisticsPOJOs("WEEK", countSize)
-        `when`(counterDao!!.getTeaCounterWeek()).thenReturn(statisticsPOJOs)
+        every { counterDao.getTeaCounterWeek() } returns statisticsPOJOs
 
         val statisticsActivityScenario = ActivityScenario.launch(Statistics::class.java)
 
@@ -76,7 +73,7 @@ class StatisticsTest {
     fun setPeriodMonthAndExpectListMonth() {
         val countSize = 4
         val statisticsPOJOs = getStatisticsPOJOs("MONTH", countSize)
-        `when`(counterDao!!.getTeaCounterMonth()).thenReturn(statisticsPOJOs)
+        every { counterDao.getTeaCounterMonth() } returns statisticsPOJOs
 
         val statisticsActivityScenario = ActivityScenario.launch(Statistics::class.java)
 
@@ -94,7 +91,7 @@ class StatisticsTest {
     fun setPeriodDayAndExpectListYear() {
         val countSize = 6
         val statisticsPOJOs = getStatisticsPOJOs("YEAR", countSize)
-        `when`(counterDao!!.getTeaCounterYear()).thenReturn(statisticsPOJOs)
+        every { counterDao.getTeaCounterYear() } returns statisticsPOJOs
 
         val statisticsActivityScenario = ActivityScenario.launch(Statistics::class.java)
 
@@ -112,7 +109,7 @@ class StatisticsTest {
     fun setPeriodOverallAndExpectListOverall() {
         val countSize = 3
         val statisticsPOJOs = getStatisticsPOJOs("OVERALL", countSize)
-        `when`(counterDao!!.getTeaCounterOverall()).thenReturn(statisticsPOJOs)
+        every { counterDao.getTeaCounterOverall() } returns statisticsPOJOs
 
         val statisticsActivityScenario = ActivityScenario.launch(Statistics::class.java)
 

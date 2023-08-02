@@ -8,48 +8,42 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.BaseColumns
 import android.provider.MediaStore
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 import java.io.File
 import java.io.IOException
 
 @RunWith(RobolectricTestRunner::class)
 class ContentResolverImageControllerTest {
-
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
-    var context: Context? = null
-
-    @Mock
-    var contentResolver: ContentResolver? = null
-
-    @Mock
-    var cursor: Cursor? = null
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
+    lateinit var context: Context
+    @RelaxedMockK
+    lateinit var contentResolver: ContentResolver
+    @RelaxedMockK
+    lateinit var cursor: Cursor
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        `when`(context!!.contentResolver).thenReturn(contentResolver)
+        every { context.contentResolver } returns contentResolver
     }
 
     @Test
     fun getImageUriByTeaId() {
         mockImageAvailable()
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         val uri = contentResolverImageController.getImageUriByTeaId(TEA_ID)
 
         assertThat(uri).isEqualTo(Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString() + "/2"))
@@ -59,7 +53,7 @@ class ContentResolverImageControllerTest {
     fun getImageUriByTeaIdImageNotAvailable() {
         mockImageNotAvailable()
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         val uri = contentResolverImageController.getImageUriByTeaId(TEA_ID)
 
         assertThat(uri).isNull()
@@ -72,7 +66,7 @@ class ContentResolverImageControllerTest {
         val uri = Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString() + "/13")
         mockContentResolverInsert(uri)
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         val saveIntent = contentResolverImageController.getSaveOrUpdateImageIntent(TEA_ID)
 
         assertThat(saveIntent.action).isEqualTo(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -81,9 +75,10 @@ class ContentResolverImageControllerTest {
 
     @Test
     fun getSaveImageIntentCouldNotCreateUri() {
+        every { contentResolver.insert(any(), any()) } returns null
         mockImageNotAvailable()
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         assertThatExceptionOfType(IOException::class.java)
             .isThrownBy { contentResolverImageController.getSaveOrUpdateImageIntent(TEA_ID) }
             .withMessage("Failed to create new MediaStore record.")
@@ -94,7 +89,7 @@ class ContentResolverImageControllerTest {
     fun getUpdateImageIntent() {
         mockImageAvailable()
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         val updateIntent = contentResolverImageController.getSaveOrUpdateImageIntent(TEA_ID)
 
         assertThat(updateIntent.action).isEqualTo(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -106,36 +101,32 @@ class ContentResolverImageControllerTest {
     fun removeImageByTeaId() {
         mockImageAvailable()
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         contentResolverImageController.removeImageByTeaId(TEA_ID)
 
         val uri = Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString() + "/2")
-        verify(contentResolver)?.delete(uri, null, null)
+        verify { contentResolver.delete(uri, null, null) }
     }
 
     @Test
     fun removeImageByTeaIdImageNotAvailable() {
         mockImageNotAvailable()
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         contentResolverImageController.removeImageByTeaId(TEA_ID)
 
-        verify(contentResolver, Mockito.never())?.delete(
-            ArgumentMatchers.any(),
-            ArgumentMatchers.eq<String?>(null),
-            ArgumentMatchers.eq<Array<String>?>(null)
-        )
+        verify(exactly = 0) { contentResolver.delete(any(), null, null) }
     }
 
     @Test
     fun getLastModified() {
         val uri = Uri.parse("Uri")
         val modificationDate = "1234"
-        `when`(contentResolver!!.query(uri, null, null, null, null)).thenReturn(cursor)
-        `when`(cursor!!.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)).thenReturn(2)
-        `when`(cursor!!.getString(2)).thenReturn(modificationDate)
+        every { contentResolver.query(uri, null, null, null, null) } returns cursor
+        every { cursor.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED) } returns 2
+        every { cursor.getString(2) } returns modificationDate
 
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         val lastModified = contentResolverImageController.getLastModified(uri)
 
         assertThat(lastModified).isEqualTo(modificationDate)
@@ -143,7 +134,7 @@ class ContentResolverImageControllerTest {
 
     @Test
     fun getLastModifiedReturnEmpty() {
-        val contentResolverImageController = ContentResolverImageController(context!!)
+        val contentResolverImageController = ContentResolverImageController(context)
         val lastModified = contentResolverImageController.getLastModified(Uri.parse("Uri"))
 
         assertThat(lastModified).isEmpty()
@@ -152,16 +143,16 @@ class ContentResolverImageControllerTest {
     private fun mockImageAvailable() {
         mockContentResolverQuery()
 
-        `when`(cursor!!.count).thenReturn(1)
-        `when`(cursor!!.moveToFirst()).thenReturn(true)
-        `when`(cursor!!.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(2)
-        `when`(cursor!!.getLong(2)).thenReturn(2L)
+        every { cursor.count } returns 1
+        every { cursor.moveToFirst() } returns true
+        every { cursor.getColumnIndexOrThrow(BaseColumns._ID) } returns 2
+        every { cursor.getLong(2) } returns 2L
     }
 
     private fun mockImageNotAvailable() {
         mockContentResolverQuery()
 
-        `when`(cursor!!.count).thenReturn(0)
+        every { cursor.count } returns 0
     }
 
     private fun mockContentResolverQuery() {
@@ -176,7 +167,7 @@ class ContentResolverImageControllerTest {
                 Environment.DIRECTORY_PICTURES + File.separator + "TeaMemory" + File.separator +
                 "' AND " + MediaStore.MediaColumns.DISPLAY_NAME + "='" + TEA_ID + ".jpg'"
 
-        `when`(contentResolver!!.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null)).thenReturn(cursor)
+        every { contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null) } returns cursor
     }
 
     private fun mockContentResolverInsert(uri: Uri) {
@@ -185,7 +176,7 @@ class ContentResolverImageControllerTest {
         values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
         values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "TeaMemory")
 
-        `when`(contentResolver!!.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)).thenReturn(uri)
+        every { contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) } returns uri
     }
 
     companion object {

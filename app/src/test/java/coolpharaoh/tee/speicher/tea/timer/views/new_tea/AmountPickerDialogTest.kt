@@ -46,12 +46,12 @@ class AmountPickerDialogTest {
         val activity = Robolectric.buildActivity(FragmentActivity::class.java).create().start().resume().get()
         fragmentManager = activity.supportFragmentManager
         // always default
-         every { newTeaViewModel.amountKind } returns AmountKind.TEA_SPOON
+        every { newTeaViewModel.amountKind } returns AmountKind.TEA_SPOON
     }
 
     @Test
     fun showDialogAndExpectTitle() {
-         every { suggestions.amountTsSuggestions } returns intArrayOf()
+        every { suggestions.amountTsSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -63,7 +63,7 @@ class AmountPickerDialogTest {
 
     @Test
     fun showDialogAndExpectTwoTsSuggestions() {
-         every { suggestions.amountTsSuggestions } returns intArrayOf(4, 5)
+        every { suggestions.amountTsSuggestions } returns intArrayOf(4, 5)
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -86,7 +86,7 @@ class AmountPickerDialogTest {
 
     @Test
     fun showDialogAndExpectNoSuggestions() {
-         every { suggestions.amountTsSuggestions } returns intArrayOf()
+        every { suggestions.amountTsSuggestions } returns intArrayOf()
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()
@@ -98,8 +98,8 @@ class AmountPickerDialogTest {
 
     @Test
     fun setAmountKindGrAndExpectGrSuggestions() {
-         every { suggestions.amountTsSuggestions } returns intArrayOf()
-         every { suggestions.amountGrSuggestions } returns intArrayOf(10, 11, 12)
+        every { suggestions.amountTsSuggestions } returns intArrayOf()
+        every { suggestions.amountGrSuggestions } returns intArrayOf(10, 11, 12)
 
         dialogFragment.show(fragmentManager!!, AmountPickerDialog.TAG)
         Shadows.shadowOf(Looper.getMainLooper()).idle()

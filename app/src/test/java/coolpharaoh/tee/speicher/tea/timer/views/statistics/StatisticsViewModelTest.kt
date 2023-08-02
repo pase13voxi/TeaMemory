@@ -5,35 +5,29 @@ import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_transform.pojo.StatisticsPOJO
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.argumentCaptor
 import java.time.Clock
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Date
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class StatisticsViewModelTest {
-
-    private var statisticsViewModel: StatisticsViewModel? = null
-
-    @Mock
-    var counterRepository: CounterRepository? = null
-
-    @Mock
-    var fixedDate: DateUtility? = null
-
-    @BeforeEach
-    fun setUp() {
-        statisticsViewModel = StatisticsViewModel(counterRepository!!)
-    }
+    @RelaxedMockK
+    lateinit var counterRepository: CounterRepository
+    @MockK
+    lateinit var fixedDate: DateUtility
+    @InjectMockKs
+    lateinit var statisticsViewModel: StatisticsViewModel
 
     @Test
     fun getStatisticsOverall() {
@@ -51,9 +45,9 @@ internal class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18
         counterOverallBefore.add(statisticsPOJO2)
 
-        `when`(counterRepository!!.teaCounterOverall).thenReturn(counterOverallBefore)
+        every { counterRepository.teaCounterOverall } returns counterOverallBefore
 
-        val counterOverallAfter = statisticsViewModel!!.statisticsOverall
+        val counterOverallAfter = statisticsViewModel.statisticsOverall
 
         assertThat(counterOverallAfter).isEqualTo(counterOverallBefore)
     }
@@ -74,9 +68,9 @@ internal class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18
         counterYearBefore.add(statisticsPOJO2)
 
-        `when`(counterRepository!!.teaCounterYear).thenReturn(counterYearBefore)
+        every { counterRepository.teaCounterYear } returns counterYearBefore
 
-        val counterDayAfter = statisticsViewModel!!.statisticsYear
+        val counterDayAfter = statisticsViewModel.statisticsYear
 
         assertThat(counterDayAfter).isEqualTo(counterYearBefore)
     }
@@ -97,9 +91,9 @@ internal class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18
         counterMonthBefore.add(statisticsPOJO2)
 
-        `when`(counterRepository!!.teaCounterMonth).thenReturn(counterMonthBefore)
+        every { counterRepository.teaCounterMonth } returns counterMonthBefore
 
-        val counterMonthAfter = statisticsViewModel!!.statisticsMonth
+        val counterMonthAfter = statisticsViewModel.statisticsMonth
 
         assertThat(counterMonthAfter).isEqualTo(counterMonthBefore)
     }
@@ -120,9 +114,9 @@ internal class StatisticsViewModelTest {
         statisticsPOJO2.counter = 18
         counterWeekBefore.add(statisticsPOJO2)
 
-        `when`(counterRepository!!.teaCounterWeek).thenReturn(counterWeekBefore)
+        every { counterRepository.teaCounterWeek } returns counterWeekBefore
 
-        val counterWeekAfter = statisticsViewModel!!.statisticsWeek
+        val counterWeekAfter = statisticsViewModel.statisticsWeek
 
         assertThat(counterWeekAfter).isEqualTo(counterWeekBefore)
     }
@@ -135,8 +129,8 @@ internal class StatisticsViewModelTest {
         val monthBefore = Date.from(now.minus(Duration.ofDays(31)))
         val yearBefore = Date.from(now.minus(Duration.ofDays(370)))
 
-        `when`(fixedDate!!.date).thenReturn(today)
-        setFixedDate(fixedDate!!)
+        every { fixedDate.date } returns today
+        setFixedDate(fixedDate)
 
         val countersBefore: MutableList<Counter> = ArrayList()
 
@@ -151,37 +145,35 @@ internal class StatisticsViewModelTest {
         val refreshAll = Counter(1L, 4, 7, 9, 15L, yearBefore, yearBefore, yearBefore)
         countersBefore.add(refreshAll)
 
-        `when`(counterRepository!!.counters).thenReturn(countersBefore)
+        every { counterRepository.counters } returns countersBefore
 
-        statisticsViewModel!!.refreshAllCounter()
+        statisticsViewModel.refreshAllCounter()
 
-        argumentCaptor<Counter>().apply {
-            verify(counterRepository!!, times(5)).updateCounter(capture())
 
-            val counterAfter = allValues
+        val slotsCounter = mutableListOf<Counter>()
+        verify(exactly = 5) { counterRepository.updateCounter(capture(slotsCounter)) }
 
-            assertThat(counterAfter[0]).isEqualTo(noRefresh)
+        assertThat(slotsCounter[0]).isEqualTo(noRefresh)
 
-            assertThat(counterAfter[1].week).isZero
-            assertThat(counterAfter[1].month).isEqualTo(7)
-            assertThat(counterAfter[1].year).isEqualTo(9)
-            assertThat(counterAfter[1].overall).isEqualTo(15L)
+        assertThat(slotsCounter[1].week).isZero
+        assertThat(slotsCounter[1].month).isEqualTo(7)
+        assertThat(slotsCounter[1].year).isEqualTo(9)
+        assertThat(slotsCounter[1].overall).isEqualTo(15L)
 
-            assertThat(counterAfter[2].week).isEqualTo(4)
-            assertThat(counterAfter[2].month).isZero
-            assertThat(counterAfter[2].year).isEqualTo(9)
-            assertThat(counterAfter[2].overall).isEqualTo(15L)
+        assertThat(slotsCounter[2].week).isEqualTo(4)
+        assertThat(slotsCounter[2].month).isZero
+        assertThat(slotsCounter[2].year).isEqualTo(9)
+        assertThat(slotsCounter[2].overall).isEqualTo(15L)
 
-            assertThat(counterAfter[3].week).isEqualTo(4)
-            assertThat(counterAfter[3].month).isEqualTo(7)
-            assertThat(counterAfter[3].year).isZero
-            assertThat(counterAfter[3].overall).isEqualTo(15L)
+        assertThat(slotsCounter[3].week).isEqualTo(4)
+        assertThat(slotsCounter[3].month).isEqualTo(7)
+        assertThat(slotsCounter[3].year).isZero
+        assertThat(slotsCounter[3].overall).isEqualTo(15L)
 
-            assertThat(counterAfter[4].week).isZero
-            assertThat(counterAfter[4].month).isZero
-            assertThat(counterAfter[4].year).isZero
-            assertThat(counterAfter[4].overall).isEqualTo(15L)
-        }
+        assertThat(slotsCounter[4].week).isZero
+        assertThat(slotsCounter[4].month).isZero
+        assertThat(slotsCounter[4].year).isZero
+        assertThat(slotsCounter[4].overall).isEqualTo(15L)
     }
 
     private fun getFixedDate(): Instant {

@@ -2,66 +2,60 @@ package coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind
 
 import android.app.Application
 import coolpharaoh.tee.speicher.tea.timer.R
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class DisplayAmountKindStrategyTeaBagTest {
-
-    private var displayAmountKindStrategyTeaBag: DisplayAmountKindStrategyTeaBag? = null
-
-    @Mock
-    var application: Application? = null
-
-    @BeforeEach
-    fun setUp() {
-        displayAmountKindStrategyTeaBag = DisplayAmountKindStrategyTeaBag(application!!)
-    }
+    @MockK
+    lateinit var application: Application
+    @InjectMockKs
+    lateinit var displayAmountKindStrategyTeaBag: DisplayAmountKindStrategyTeaBag
 
     @Test
     fun getTextShowTea() {
-        `when`(application!!.getString(eq(R.string.show_tea_display_tb), anyString())).thenReturn("1.5 tb/l")
+        every { application.getString(eq(R.string.show_tea_display_tb), any()) } returns "1.5 tb/l"
 
-        assertThat(displayAmountKindStrategyTeaBag!!.getTextShowTea(1.5)).isEqualTo("1.5 tb/l")
+        assertThat(displayAmountKindStrategyTeaBag.getTextShowTea(1.5)).isEqualTo("1.5 tb/l")
     }
 
     @Test
     fun getEmptyTextShowTea() {
-        `when`(application!!.getString(R.string.show_tea_display_tb, "-")).thenReturn("- tb/l")
+        every { application.getString(R.string.show_tea_display_tb, "-") } returns "- tb/l"
 
-        assertThat(displayAmountKindStrategyTeaBag!!.getTextShowTea(-500.0)).isEqualTo("- tb/l")
+        assertThat(displayAmountKindStrategyTeaBag.getTextShowTea(-500.0)).isEqualTo("- tb/l")
     }
 
     @Test
     fun getResourceIdShowTea() {
-        assertThat(displayAmountKindStrategyTeaBag!!.getImageResourceIdShowTea()).isEqualTo(R.drawable.tea_bag_black)
+        assertThat(displayAmountKindStrategyTeaBag.getImageResourceIdShowTea()).isEqualTo(R.drawable.tea_bag_black)
     }
 
     @Test
     fun getTextCalculatorShowTea() {
         val amountPerLiter = 1.5f
         val liter = 0.5f
-        `when`(application!!.getString(R.string.show_tea_dialog_amount_per_amount_tb, amountPerLiter, liter)).thenReturn("1.5 tb / 0.5 l")
+        every { application.getString(R.string.show_tea_dialog_amount_per_amount_tb, amountPerLiter, liter) } returns "1.5 tb / 0.5 l"
 
-        assertThat(displayAmountKindStrategyTeaBag!!.getTextCalculatorShowTea(amountPerLiter, liter)).isEqualTo("1.5 tb / 0.5 l")
+        assertThat(displayAmountKindStrategyTeaBag.getTextCalculatorShowTea(amountPerLiter, liter)).isEqualTo("1.5 tb / 0.5 l")
     }
 
     @Test
     fun getTextNewTea() {
-        `when`(application!!.getString(eq(R.string.new_tea_edit_text_amount_text_tb), anyString())).thenReturn("1.5 tb/l (teabag/liter)")
+        every { application.getString(eq(R.string.new_tea_edit_text_amount_text_tb), any()) } returns "1.5 tb/l (teabag/liter)"
 
-        assertThat(displayAmountKindStrategyTeaBag!!.getTextNewTea(1.5)).isEqualTo("1.5 tb/l (teabag/liter)")
+        assertThat(displayAmountKindStrategyTeaBag.getTextNewTea(1.5)).isEqualTo("1.5 tb/l (teabag/liter)")
     }
 
     @Test
     fun getEmptyTextNewTea() {
-        `when`(application!!.getString(R.string.new_tea_edit_text_amount_text_tb, "-")).thenReturn("- tb/l (teabag/liter)")
+        every { application.getString(R.string.new_tea_edit_text_amount_text_tb, "-") } returns "- tb/l (teabag/liter)"
 
-        assertThat(displayAmountKindStrategyTeaBag!!.getTextNewTea(-500.0)).isEqualTo("- tb/l (teabag/liter)")
+        assertThat(displayAmountKindStrategyTeaBag.getTextNewTea(-500.0)).isEqualTo("- tb/l (teabag/liter)")
     }
 }
