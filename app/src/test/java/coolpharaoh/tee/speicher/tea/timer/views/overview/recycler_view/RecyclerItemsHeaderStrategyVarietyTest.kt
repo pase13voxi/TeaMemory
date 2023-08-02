@@ -4,27 +4,26 @@ import android.app.Application
 import android.content.res.Resources
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.*
 import org.assertj.core.groups.Tuple
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class RecyclerItemsHeaderStrategyVarietyTest {
-    @Mock
+    @MockK
     lateinit var application: Application
-
-    @Mock
+    @MockK
     lateinit var resources: Resources
 
     @BeforeEach
     fun setUp() {
-        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(VARIETIES)
-        `when`(application.resources).thenReturn(resources)
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns VARIETIES
+        every { application.resources } returns resources
     }
 
     @Test

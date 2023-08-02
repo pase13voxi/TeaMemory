@@ -85,10 +85,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'                         //needed for junit4 only
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'  //needed for junit4 only
     testImplementation 'org.assertj:assertj-core:3.22.0'
-    testImplementation 'org.mockito:mockito-core:4.3.1'
-    testImplementation 'org.mockito:mockito-junit-jupiter:4.3.1'
-    testImplementation 'org.mockito:mockito-inline:2.8.47'
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
     testImplementation "io.mockk:mockk:1.13.5"
     testImplementation 'org.robolectric:robolectric:4.7.3'
     testImplementation 'androidx.test:core:1.5.0'
