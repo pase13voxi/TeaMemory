@@ -1,29 +1,26 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
 import android.app.Application
-import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 
 @RunWith(RobolectricTestRunner::class)
 class AudioPlayerTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var timerViewModel: TimerViewModel
-
-    @Mock
+    @RelaxedMockK
     lateinit var mediaPlayer: MediaPlayer
 
     @Test
@@ -32,39 +29,39 @@ class AudioPlayerTest {
         val application = Application()
         val musicChoice = "/music/choice"
         val uri = Uri.parse(musicChoice)
-        `when`(timerViewModel.musicChoice).thenReturn(musicChoice)
+        every { timerViewModel.musicChoice } returns musicChoice
 
         val audioPlayer = AudioPlayer(application, timerViewModel, mediaPlayer)
         audioPlayer.start()
 
-        verify(mediaPlayer).setAudioAttributes(ArgumentMatchers.any(AudioAttributes::class.java))
-        verify(mediaPlayer).setDataSource(application, uri)
-        verify(mediaPlayer).prepare()
-        verify(mediaPlayer).start()
+        verify { mediaPlayer.setAudioAttributes(any()) }
+        verify { mediaPlayer.setDataSource(application, uri) }
+        verify { mediaPlayer.prepare() }
+        verify { mediaPlayer.start() }
     }
 
     @Test
     fun startAudioPlayerButDoNothingWhenMusicChoiceIsNull() {
-        `when`(timerViewModel.musicChoice).thenReturn(null)
+        every { timerViewModel.musicChoice } returns null
 
         val audioPlayer = AudioPlayer(Application(), timerViewModel, mediaPlayer)
         audioPlayer.start()
 
-        verify(mediaPlayer, times(0)).start()
+        verify (exactly = 0) { mediaPlayer.start() }
     }
 
     @Test
     @Throws(IOException::class)
     fun startAudioPlayerButDoNothingWhenIOExceptionIsThrown() {
         val musicChoice = "/music/choice"
-        `when`(timerViewModel.musicChoice).thenReturn(musicChoice)
+        every { timerViewModel.musicChoice } returns musicChoice
 
-        doThrow(IOException::class.java).`when`(mediaPlayer).setDataSource(ArgumentMatchers.any(), ArgumentMatchers.any())
+       every { mediaPlayer.setDataSource(any(), any()) } throws IOException()
 
         val audioPlayer = AudioPlayer(Application(), timerViewModel, mediaPlayer)
         audioPlayer.start()
 
-        verify(mediaPlayer, times(0)).start()
+        verify (exactly = 0) { mediaPlayer.start() }
     }
 
     @Test
@@ -73,6 +70,6 @@ class AudioPlayerTest {
 
         audioPlayer.reset()
 
-        verify(mediaPlayer).release()
+        verify { mediaPlayer.release() }
     }
 }

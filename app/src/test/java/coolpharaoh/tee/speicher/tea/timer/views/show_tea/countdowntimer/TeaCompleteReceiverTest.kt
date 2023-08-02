@@ -2,23 +2,21 @@ package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
 import android.app.Application
 import android.content.Intent
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class TeaCompleteReceiverTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var application: Application
 
     @Test
@@ -29,9 +27,9 @@ class TeaCompleteReceiverTest {
         intent.putExtra(TEA_ID, 1L)
         teaCompleteReceiver.onReceive(application, intent)
 
-        val serviceCaptor = ArgumentCaptor.forClass(Intent::class.java)
-        verify(application).startForegroundService(serviceCaptor.capture())
-        val service = serviceCaptor.value
+        val slotIntent = slot<Intent>()
+        verify { application.startForegroundService(capture(slotIntent)) }
+        val service = slotIntent.captured
 
         assertThat(service.getLongExtra(TEA_ID, 0L)).isEqualTo(1L)
     }

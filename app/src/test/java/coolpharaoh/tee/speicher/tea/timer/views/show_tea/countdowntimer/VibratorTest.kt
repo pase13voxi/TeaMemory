@@ -8,100 +8,94 @@ import android.os.VibrationEffect
 import android.os.VibratorManager
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.setFixedSystem
 import coolpharaoh.tee.speicher.tea.timer.core.system.SystemUtility
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class VibratorTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var application: Application
-
-    @Mock
+    @MockK
     lateinit var timerViewModel: TimerViewModel
-
-    @Mock
+    @MockK
     lateinit var vibratorManager: VibratorManager
-
-    @Mock
+    @RelaxedMockK
     lateinit var systemVibrator: android.os.Vibrator
-
-    @Mock
+    @MockK
     lateinit var audioManager: AudioManager
-
-    @Mock
+    @MockK
     lateinit var systemUtility: SystemUtility
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
         setFixedSystem(systemUtility)
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.R)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.R
     }
 
     @Test
     fun whenSettingVibrationIsFalseDoNothing() {
-        `when`(timerViewModel.isVibration).thenReturn(false)
+        every { timerViewModel.isVibration } returns false
 
         val vibrator = Vibrator(application, timerViewModel)
         vibrator.vibrate()
 
-        verify(systemVibrator, times(0)).vibrate(ArgumentMatchers.any<VibrationEffect>())
+        verify (exactly = 0) { systemVibrator.vibrate(any<VibrationEffect>()) }
     }
 
     @Test
     fun whenRingerModeIsSilentDoNothing() {
-        `when`(timerViewModel.isVibration).thenReturn(true)
+        every { timerViewModel.isVibration } returns true
         mockAudioManager(AudioManager.RINGER_MODE_SILENT)
 
         val vibrator = Vibrator(application, timerViewModel)
         vibrator.vibrate()
 
-        verify(systemVibrator, times(0)).vibrate(ArgumentMatchers.any<VibrationEffect>())
+        verify (exactly=0) { systemVibrator.vibrate(any<VibrationEffect>()) }
     }
 
     @Test
     fun vibrate() {
-        `when`(application.getSystemService(Context.VIBRATOR_SERVICE)).thenReturn(systemVibrator)
-        `when`(timerViewModel.isVibration).thenReturn(true)
+        every { application.getSystemService(Context.VIBRATOR_SERVICE) } returns systemVibrator
+        every { timerViewModel.isVibration } returns true
         mockAudioManager(AudioManager.RINGER_MODE_NORMAL)
 
         val vibrator = Vibrator(application, timerViewModel)
         vibrator.vibrate()
 
-        verify(systemVibrator).vibrate(ArgumentMatchers.any(VibrationEffect::class.java))
+        verify { systemVibrator.vibrate(any<VibrationEffect>()) }
     }
 
     @Test
     fun vibrateVersionAndroidSOrNewer() {
-        `when`(systemUtility.sdkVersion).thenReturn(Build.VERSION_CODES.S)
-        `when`(application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE)).thenReturn(vibratorManager)
-        `when`(vibratorManager.defaultVibrator).thenReturn(systemVibrator)
-        `when`(timerViewModel.isVibration).thenReturn(true)
+        every { systemUtility.sdkVersion } returns Build.VERSION_CODES.S
+        every { application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) } returns vibratorManager
+        every { vibratorManager.defaultVibrator } returns systemVibrator
+        every { timerViewModel.isVibration } returns true
         mockAudioManager(AudioManager.RINGER_MODE_NORMAL)
 
         val vibrator = Vibrator(application, timerViewModel)
         vibrator.vibrate()
 
-        verify(systemVibrator).vibrate(ArgumentMatchers.any(VibrationEffect::class.java))
+        verify { systemVibrator.vibrate(any<VibrationEffect>()) }
     }
 
     private fun mockAudioManager(ringerMode: Int?) {
         if (ringerMode == null) {
-            `when`(application.getSystemService(Context.AUDIO_SERVICE)).thenReturn(null)
+            every { application.getSystemService(Context.AUDIO_SERVICE) } returns null
         } else {
-            `when`(application.getSystemService(Context.AUDIO_SERVICE)).thenReturn(audioManager)
-            `when`(audioManager.ringerMode).thenReturn(ringerMode)
+            every { application.getSystemService(Context.AUDIO_SERVICE) } returns audioManager
+            every { audioManager.ringerMode } returns ringerMode
         }
     }
 }

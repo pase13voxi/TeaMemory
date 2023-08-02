@@ -15,42 +15,37 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.AmountKind
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.argumentCaptor
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Date
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class ShowTeaViewModelTest {
     private var showTeaViewModel: ShowTeaViewModel? = null
-
-    @Mock
+    @MockK
     lateinit var application: Application
-
-    @Mock
+    @MockK
     lateinit var resources: Resources
-
-    @Mock
+    @RelaxedMockK
     lateinit var teaRepository: TeaRepository
-
-    @Mock
+    @MockK
     lateinit var infusionRepository: InfusionRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var counterRepository: CounterRepository
-
-    @Mock
+    @RelaxedMockK
     lateinit var sharedSettings: SharedSettings
-
-    @Mock
+    @MockK
     lateinit var dateUtility: DateUtility
 
     @BeforeEach
@@ -62,13 +57,15 @@ internal class ShowTeaViewModelTest {
     @Test
     fun teaExist() {
         val tea = Tea()
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         assertThat(showTeaViewModel!!.teaExists()).isTrue
     }
 
     @Test
     fun teaDoesNotExist() {
+        every { teaRepository.getTeaById(any()) } returns null
+
         assertThat(showTeaViewModel!!.teaExists()).isFalse
     }
 
@@ -78,7 +75,7 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.id = teaIdBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val teaIdAfter = showTeaViewModel!!.getTeaId()
 
@@ -91,7 +88,7 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.name = teaNameBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val teaNameAfter = showTeaViewModel!!.name
 
@@ -107,10 +104,10 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.variety = Variety.OOLONG_TEA.code
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
-        `when`(application.resources).thenReturn(resources)
-        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas)
+        every { application.resources } returns resources
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns varietyTeas
 
         val varietyAfter = showTeaViewModel!!.variety
 
@@ -128,10 +125,10 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.variety = varietyBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
-        `when`(application.resources).thenReturn(resources)
-        `when`(resources.getStringArray(R.array.new_tea_variety_teas)).thenReturn(varietyTeas)
+        every { application.resources } returns resources
+        every { resources.getStringArray(R.array.new_tea_variety_teas) } returns varietyTeas
 
         val varietyAfter = showTeaViewModel!!.variety
 
@@ -144,7 +141,7 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.variety = varietyBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val varietyAfter = showTeaViewModel!!.variety
 
@@ -157,7 +154,7 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.amount = amountBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val amountAfter = showTeaViewModel!!.amount
 
@@ -168,7 +165,7 @@ internal class ShowTeaViewModelTest {
     fun getAmountKind() {
         val tea = Tea()
         tea.amountKind = AmountKind.TEA_SPOON.text
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val amountKind = showTeaViewModel!!.amountKind
 
@@ -181,7 +178,7 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.color = colorBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val colorAfter = showTeaViewModel!!.color
 
@@ -192,16 +189,14 @@ internal class ShowTeaViewModelTest {
     fun setCurrentDate() {
         val fixedDate = mockFixedDate()
         val teaBefore = Tea()
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(teaBefore)
+        every { teaRepository.getTeaById(TEA_ID) } returns teaBefore
 
         showTeaViewModel!!.setCurrentDate()
 
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).updateTea(capture())
-            val (_, _, _, _, _, _, _, _, _, date) = lastValue
-
-            assertThat(date).isEqualTo(fixedDate)
-        }
+        val slotTea = slot<Tea>()
+        verify { teaRepository.updateTea(capture(slotTea)) }
+        val (_, _, _, _, _, _, _, _, _, date) = slotTea.captured
+        assertThat(date).isEqualTo(fixedDate)
     }
 
     @Test
@@ -210,7 +205,7 @@ internal class ShowTeaViewModelTest {
 
         val tea = Tea()
         tea.nextInfusion = nextInfusionBefore
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         val nextInfusionAfter = showTeaViewModel!!.nextInfusion
 
@@ -221,57 +216,52 @@ internal class ShowTeaViewModelTest {
     fun updateNextInfusion() {
         val tea = Tea()
         tea.nextInfusion = 0
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
-        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(listOf(Infusion(), Infusion()))
+        every { infusionRepository.getInfusionsByTeaId(TEA_ID) } returns listOf(Infusion(), Infusion())
 
         showTeaViewModel!!.updateNextInfusion()
 
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).updateTea(capture())
-            val (_, _, _, _, _, _, _, _, nextInfusion1) = lastValue
-
-            assertThat(nextInfusion1).isEqualTo(1)
-        }
+        val slotTea = slot<Tea>()
+        verify { teaRepository.updateTea(capture(slotTea)) }
+        val (_, _, _, _, _, _, _, _, nextInfusion1) = slotTea.captured
+        assertThat(nextInfusion1).isEqualTo(1)
     }
 
     @Test
     fun resetNextInfusion() {
         val tea = Tea()
         tea.nextInfusion = 2
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
         showTeaViewModel!!.resetNextInfusion()
 
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).updateTea(capture())
-            val (_, _, _, _, _, _, _, _, nextInfusion1) = lastValue
-
-            assertThat(nextInfusion1).isZero
-        }
+        val slotTea = slot<Tea>()
+        verify { teaRepository.updateTea(capture(slotTea)) }
+        val (_, _, _, _, _, _, _, _, nextInfusion1) = slotTea.captured
+        assertThat(nextInfusion1).isZero
     }
 
     @Test
     fun updateLastInfusionBiggerOrEqual() {
         val tea = Tea()
         tea.nextInfusion = 0
-        `when`(teaRepository.getTeaById(TEA_ID)).thenReturn(tea)
+        every { teaRepository.getTeaById(TEA_ID) } returns tea
 
-        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(listOf(Infusion()))
+        every { infusionRepository.getInfusionsByTeaId(TEA_ID) } returns listOf(Infusion())
 
         showTeaViewModel!!.updateNextInfusion()
 
-        argumentCaptor<Tea>().apply {
-            verify(teaRepository).updateTea(capture())
-            val (_, _, _, _, _, _, _, _, nextInfusion1) = lastValue
 
-            assertThat(nextInfusion1).isZero
-        }
+        val slotTea = slot<Tea>()
+        verify { teaRepository.updateTea(capture(slotTea)) }
+        val (_, _, _, _, _, _, _, _, nextInfusion1) = slotTea.captured
+        assertThat(nextInfusion1).isZero
     }
 
     @Test
     fun navigateBetweenInfusions() {
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.CELSIUS)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.CELSIUS
 
         val infusions: MutableList<Infusion> = ArrayList()
         val infusion1 = Infusion(1L, 1, "1", "2", 1, 32)
@@ -280,7 +270,7 @@ internal class ShowTeaViewModelTest {
         val infusion2 = Infusion(1L, 2, "2:30", "5:30", 2, 33)
         infusions.add(infusion2)
 
-        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions)
+        every { infusionRepository.getInfusionsByTeaId(TEA_ID) } returns infusions
 
         assertThat(showTeaViewModel!!.getInfusionSize()).isEqualTo(infusions.size)
         assertThat(showTeaViewModel!!.infusionIndex).isZero
@@ -312,7 +302,7 @@ internal class ShowTeaViewModelTest {
         assertThat(coolDownTime2.seconds).isEqualTo(30)
         assertThat(temperature2).isEqualTo(infusions[1].temperatureCelsius)
 
-        `when`(sharedSettings.temperatureUnit).thenReturn(TemperatureUnit.FAHRENHEIT)
+        every { sharedSettings.temperatureUnit } returns TemperatureUnit.FAHRENHEIT
         showTeaViewModel!!.infusionIndex = 0
         assertThat(showTeaViewModel!!.infusionIndex).isZero
 
@@ -326,7 +316,7 @@ internal class ShowTeaViewModelTest {
         val infusion1 = Infusion(1L, 1, null, null, 1, 1)
         infusions.add(infusion1)
 
-        `when`(infusionRepository.getInfusionsByTeaId(TEA_ID)).thenReturn(infusions)
+        every { infusionRepository.getInfusionsByTeaId(TEA_ID) } returns infusions
 
         val timeAfter = showTeaViewModel!!.time
 
@@ -339,37 +329,36 @@ internal class ShowTeaViewModelTest {
     fun countCounter() {
         val currentDate = mockFixedDate()
         val counterBefore = Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate)
-        `when`(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore)
+        every { counterRepository.getCounterByTeaId(TEA_ID) } returns counterBefore
 
         showTeaViewModel!!.countCounter()
 
-        argumentCaptor<Counter>().apply {
-            verify(counterRepository).updateCounter(capture())
-
-            assertThat(lastValue)
-                .extracting(Counter::week, Counter::month, Counter::year, Counter::overall)
-                .containsExactly(2, 2, 2, 2L)
-        }
+        val slotCounter = slot<Counter>()
+        verify { counterRepository.updateCounter(capture(slotCounter)) }
+        assertThat(slotCounter.captured)
+            .extracting(Counter::week, Counter::month, Counter::year, Counter::overall)
+            .containsExactly(2, 2, 2, 2L)
     }
 
     @Test
     fun countCounterAndCounterIsNull() {
+        every { counterRepository.getCounterByTeaId(any()) } returns null
+
         showTeaViewModel!!.countCounter()
 
-        argumentCaptor<Counter>().apply {
-            verify(counterRepository).updateCounter(capture())
+        val slotCounter = slot<Counter>()
+        verify { counterRepository.updateCounter(capture(slotCounter)) }
 
-            assertThat(lastValue)
-                .extracting(Counter::week, Counter::month, Counter::year, Counter::overall)
-                .containsExactly(1, 1, 1, 1L)
-        }
+        assertThat(slotCounter.captured)
+            .extracting(Counter::week, Counter::month, Counter::year, Counter::overall)
+            .containsExactly(1, 1, 1, 1L)
     }
 
     @Test
     fun getOverallCounter() {
         val currentDate = Date.from(Instant.now())
         val counterBefore = Counter(1L, 1, 1, 1, 1, currentDate, currentDate, currentDate)
-        `when`(counterRepository.getCounterByTeaId(TEA_ID)).thenReturn(counterBefore)
+        every { counterRepository.getCounterByTeaId(TEA_ID) } returns counterBefore
 
         val overallCounter = showTeaViewModel!!.getOverallCounter()
 
@@ -380,7 +369,7 @@ internal class ShowTeaViewModelTest {
     fun isAnimation() {
         val animation = true
 
-        `when`(sharedSettings.isAnimation).thenReturn(animation)
+        every { sharedSettings.isAnimation } returns animation
 
         assertThat(showTeaViewModel!!.isAnimation()).isEqualTo(animation)
     }
@@ -389,7 +378,7 @@ internal class ShowTeaViewModelTest {
     fun isShowTeaAlert() {
         val showTeaAlert = true
 
-        `when`(sharedSettings.isShowTeaAlert).thenReturn(showTeaAlert)
+        every { sharedSettings.isShowTeaAlert } returns showTeaAlert
 
         assertThat(showTeaViewModel!!.isShowTeaAlert()).isEqualTo(showTeaAlert)
     }
@@ -400,7 +389,7 @@ internal class ShowTeaViewModelTest {
 
         showTeaViewModel!!.setShowTeaAlert(showTeaAlert)
 
-        verify(sharedSettings).isShowTeaAlert = showTeaAlert
+        verify { sharedSettings.isShowTeaAlert = showTeaAlert }
     }
 
     private fun mockFixedDate(): Date {
@@ -409,7 +398,7 @@ internal class ShowTeaViewModelTest {
         val fixedDate = Date.from(now)
 
         setFixedDate(dateUtility)
-        `when`(dateUtility.date).thenReturn(fixedDate)
+        every { dateUtility.date } returns fixedDate
         return fixedDate
     }
 

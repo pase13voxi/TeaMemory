@@ -3,28 +3,26 @@ package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 import android.app.Application
 import androidx.test.core.app.ApplicationProvider
 import coolpharaoh.tee.speicher.tea.timer.R
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit4.MockKRule
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class NotifierTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var timerViewModel: TimerViewModel
 
     @Before
     fun setUp() {
-        `when`(timerViewModel.getName(1L)).thenReturn(TEA_NAME)
+        every { timerViewModel.getName(1L) } returns TEA_NAME
     }
 
     @Test

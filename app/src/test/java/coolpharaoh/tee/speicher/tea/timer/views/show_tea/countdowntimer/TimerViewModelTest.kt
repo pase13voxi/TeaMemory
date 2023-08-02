@@ -3,32 +3,32 @@ package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaRepository
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class TimerViewModelTest {
-    @Mock
+    @MockK
     lateinit var sharedSettings: SharedSettings
 
-    @Mock
+    @MockK
     lateinit var teaRepository: TeaRepository
 
-    @InjectMocks
+    @InjectMockKs
     lateinit var timerViewModel: TimerViewModel
 
     @Test
     fun isVibration() {
-        `when`(sharedSettings.isVibration).thenReturn(true)
+        every { sharedSettings.isVibration } returns true
 
         assertThat(timerViewModel.isVibration).isTrue
 
-        `when`(sharedSettings.isVibration).thenReturn(false)
+        every { sharedSettings.isVibration } returns false
 
         assertThat(timerViewModel.isVibration).isFalse
     }
@@ -37,7 +37,7 @@ internal class TimerViewModelTest {
     fun getMusicChoice() {
         val musicChoice = "MUSICPATH"
 
-        `when`(sharedSettings.musicChoice).thenReturn(musicChoice)
+        every { sharedSettings.musicChoice } returns musicChoice
 
         assertThat(timerViewModel.musicChoice).isEqualTo(musicChoice)
     }
@@ -49,7 +49,7 @@ internal class TimerViewModelTest {
         val tea = Tea()
         tea.name = teaName
 
-        `when`(teaRepository.getTeaById(1L)).thenReturn(tea)
+        every { teaRepository.getTeaById(1L) } returns tea
 
         assertThat(timerViewModel.getName(0L)).isEqualTo("Default Tea")
         assertThat(timerViewModel.getName(1L)).isEqualTo(teaName)

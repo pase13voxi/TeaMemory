@@ -6,28 +6,24 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase
 import coolpharaoh.tee.speicher.tea.timer.database.TeaMemoryDatabase.Companion.setMockedDatabase
-import coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer.NotificationService
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit4.MockKRule
 import org.assertj.core.api.Assertions.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class NotificationServiceTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @MockK
     lateinit var teaMemoryDatabase: TeaMemoryDatabase
-
-    @Mock
+    @MockK
     lateinit var teaDao: TeaDao
 
     @Test
@@ -58,10 +54,10 @@ class NotificationServiceTest {
 
     private fun mockDB() {
         setMockedDatabase(teaMemoryDatabase)
-        `when`(teaMemoryDatabase.teaDao).thenReturn(teaDao)
+        every { teaMemoryDatabase.teaDao } returns teaDao
         val tea = Tea()
         tea.name = "Tea"
-        `when`(teaDao.getTeaById(1L)).thenReturn(tea)
+        every { teaDao.getTeaById(1L) } returns tea
 
         val sharedSettings = SharedSettings(RuntimeEnvironment.getApplication())
         sharedSettings.musicChoice = null

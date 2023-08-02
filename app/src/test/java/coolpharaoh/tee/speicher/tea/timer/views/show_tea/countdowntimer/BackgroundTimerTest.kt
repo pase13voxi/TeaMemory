@@ -5,75 +5,71 @@ import android.app.AlarmManager.AlarmClockInfo
 import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
+import io.mockk.every
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class BackgroundTimerTest {
-    @JvmField
-    @Rule
-    var rule = MockitoJUnit.rule()
-
-    @Mock
+    @get:Rule
+    val mockkRule = MockKRule(this)
+    @RelaxedMockK
     lateinit var application: Application
-
-    @Mock
+    @RelaxedMockK
     lateinit var sharedTimerPreferences: SharedTimerPreferences
-
-    @Mock
+    @RelaxedMockK
     lateinit var alarmManager: AlarmManager
 
     @Test
     fun setAlarmManager() {
-        `when`(sharedTimerPreferences.startedTime).thenReturn(2000L)
-        `when`(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(alarmManager)
+        every { sharedTimerPreferences.startedTime } returns 2000L
+        every { application.getSystemService(Context.ALARM_SERVICE) } returns alarmManager
 
         val backgroundTimer = BackgroundTimer(application, sharedTimerPreferences)
         backgroundTimer.setAlarmManager(1L, 6000L)
 
-        val captorAlarmClockInfo = ArgumentCaptor.forClass(AlarmClockInfo::class.java)
-        verify(alarmManager).setAlarmClock(captorAlarmClockInfo.capture(), ArgumentMatchers.any(PendingIntent::class.java))
+        val slotAlarmClockInfo = slot<AlarmClockInfo>()
+        verify { alarmManager.setAlarmClock(capture(slotAlarmClockInfo),any()) }
 
-        val alarmClockInfo = captorAlarmClockInfo.value
+        val alarmClockInfo = slotAlarmClockInfo.captured
         assertThat(alarmClockInfo.triggerTime).isEqualTo(8000L)
         assertThat(alarmClockInfo.showIntent).isNotNull
     }
 
     @Test(expected = NullPointerException::class)
     fun whenSetAlarmManagerAndItIsNullThrowException() {
-        `when`(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(null)
+        every { application.getSystemService(Context.ALARM_SERVICE) } returns null
 
         val backgroundTimer = BackgroundTimer(application, sharedTimerPreferences)
         backgroundTimer.setAlarmManager(1L, 6000L)
 
-        verify(alarmManager, times(0)).setAlarmClock(ArgumentMatchers.any(), ArgumentMatchers.any())
+        verify (exactly = 0) { alarmManager.setAlarmClock(any(), any()) }
     }
 
     @Test
     fun removeAlarmManager() {
-        `when`(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(alarmManager)
+        every { application.getSystemService(Context.ALARM_SERVICE) } returns alarmManager
 
         val backgroundTimer = BackgroundTimer(application, sharedTimerPreferences)
         backgroundTimer.removeAlarmManager()
 
-        verify(alarmManager).cancel(ArgumentMatchers.any(PendingIntent::class.java))
+        verify { alarmManager.cancel(any<PendingIntent>()) }
     }
 
     @Test(expected = NullPointerException::class)
     fun whenRemoveAlarmManagerAndItIsNullThrowException() {
-        `when`(application.getSystemService(Context.ALARM_SERVICE)).thenReturn(null)
+        every { application.getSystemService(Context.ALARM_SERVICE) } returns null
 
         val backgroundTimer = BackgroundTimer(application, sharedTimerPreferences)
         backgroundTimer.removeAlarmManager()
 
-        verify(alarmManager, times(0)).setAlarmClock(ArgumentMatchers.any(), ArgumentMatchers.any())
+        verify (exactly = 1) { alarmManager.setAlarmClock(any(), any()) }
     }
 }
