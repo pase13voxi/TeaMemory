@@ -28,14 +28,14 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.tasks.Task
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.views.description.ShowTeaDescription
 import coolpharaoh.tee.speicher.tea.timer.views.information.Information
@@ -46,7 +46,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.Displa
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory
 import org.apache.commons.lang3.StringUtils
 import java.util.Locale
-import java.util.Objects
 import java.util.concurrent.TimeUnit
 
 // This class has 9 Parent because of AppCompatActivity
@@ -160,7 +159,7 @@ class ShowTea : AppCompatActivity() {
         val toolbarTitle = findViewById<TextView>(R.id.tool_bar_title)
         toolbarTitle.setText(R.string.show_tea_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
 
         toolbarTitle.setOnClickListener { navigateToDetailInformation() }
     }
@@ -173,8 +172,8 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun declareViewElements() {
@@ -515,7 +514,7 @@ class ShowTea : AppCompatActivity() {
             if (task.isSuccessful) {
                 val reviewInfo = task.result
 
-                val flow = reviewManager.launchReviewFlow(this, reviewInfo)
+                val flow = reviewManager.launchReviewFlow(this, reviewInfo!!)
                 flow.addOnCompleteListener { }
             }
         }
