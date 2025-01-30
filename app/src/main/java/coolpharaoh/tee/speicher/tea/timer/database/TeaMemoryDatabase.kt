@@ -13,20 +13,20 @@ import coolpharaoh.tee.speicher.tea.timer.core.note.Note
 import coolpharaoh.tee.speicher.tea.timer.core.note.NoteDao
 import coolpharaoh.tee.speicher.tea.timer.core.tea.Tea
 import coolpharaoh.tee.speicher.tea.timer.core.tea.TeaDao
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_10_11
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_11_12
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_12_13
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_13_14
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_14_15
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_1_2
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_2_3
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_3_4
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_4_5
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_5_6
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_6_7
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_7_8
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_8_9
-import coolpharaoh.tee.speicher.tea.timer.database.Migrations.MIGRATION_9_10
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_10_11
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_11_12
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_12_13
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_13_14
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_14_15
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_1_2
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_2_3
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_3_4
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_4_5
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_5_6
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_6_7
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_7_8
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_8_9
+import coolpharaoh.tee.speicher.tea.timer.db.Migrations.MIGRATION_9_10
 
 @Database(
     entities = [Tea::class, Infusion::class, Counter::class, Note::class],

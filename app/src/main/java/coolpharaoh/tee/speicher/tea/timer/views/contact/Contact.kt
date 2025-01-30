@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.pm.PackageInfoCompat
 import coolpharaoh.tee.speicher.tea.timer.R
-import java.util.Objects
 
 class Contact : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +29,11 @@ class Contact : AppCompatActivity() {
         val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         mToolbarCustomTitle.setText(R.string.contact_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 

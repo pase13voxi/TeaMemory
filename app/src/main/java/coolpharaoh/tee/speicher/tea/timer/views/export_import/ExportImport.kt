@@ -11,7 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import coolpharaoh.tee.speicher.tea.timer.R
@@ -21,7 +21,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.init
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.read
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.JsonIOAdapter.write
 import coolpharaoh.tee.speicher.tea.timer.views.export_import.data_io.DataIOAdapterFactory.getDataIO
-import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
 class ExportImport : AppCompatActivity(), Printer {
@@ -72,12 +71,12 @@ class ExportImport : AppCompatActivity(), Printer {
         val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         mToolbarCustomTitle.setText(R.string.export_import_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun chooseExportFolder() {

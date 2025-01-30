@@ -10,8 +10,8 @@ android {
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
         minSdkVersion 28
-        compileSdk 34
-        targetSdkVersion 34
+        compileSdk 35
+        targetSdkVersion 35
         versionCode 200
         versionName "4.3"
         // androidTest
@@ -59,23 +59,22 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.documentfile:documentfile:1.0.1'
-    implementation 'androidx.work:work-runtime:2.9.1'
+    implementation 'androidx.work:work-runtime:2.10.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5'
-    implementation 'com.google.android.play:asset-delivery-ktx:2.2.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
+    implementation 'com.google.android.play:asset-delivery-ktx:2.3.0'
     implementation 'com.google.android.play:feature-delivery-ktx:2.1.0'
-    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation 'com.google.android.play:review-ktx:2.0.2'
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
     // room
-    implementation("androidx.room:room-runtime:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.5'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.8.5'
+    implementation 'androidx.room:room-runtime:2.6.1'
+    ksp 'androidx.room:room-compiler:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.8.7'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // test
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
@@ -98,12 +97,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
-    androidTestUtil 'androidx.test:orchestrator:1.5.0'
+    androidTestUtil 'androidx.test:orchestrator:1.5.1'
     // extra UI
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+    ksp 'com.github.bumptech.glide:compiler:4.13.0'
     // gson
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
