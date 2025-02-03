@@ -40,12 +40,12 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         mToolbarCustomTitle.setText(R.string.more_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun configureAndShowListView() {
@@ -91,7 +91,7 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     override fun onRecyclerItemClick(position: Int) {
-        when (ListItems.values()[position]) {
+        when (ListItems.entries[position]) {
             ListItems.CONTACT -> navigateToContact()
             ListItems.RATING -> navigateToStore()
             ListItems.STATISTICS -> navigateToStatistics()

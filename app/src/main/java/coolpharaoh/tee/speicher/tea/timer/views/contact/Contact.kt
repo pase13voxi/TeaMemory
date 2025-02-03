@@ -34,7 +34,7 @@ class Contact : AppCompatActivity() {
 
     private fun enableAndShowBackButton() {
         supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun writeEmail() {

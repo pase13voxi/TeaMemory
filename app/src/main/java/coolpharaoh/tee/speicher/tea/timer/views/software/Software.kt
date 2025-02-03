@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
-import java.util.Objects
 
 class Software : AppCompatActivity(), RecyclerViewAdapter.OnClickListener  {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +26,12 @@ class Software : AppCompatActivity(), RecyclerViewAdapter.OnClickListener  {
         val toolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         toolbarCustomTitle.setText(R.string.software_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun configureAndShowListView() {

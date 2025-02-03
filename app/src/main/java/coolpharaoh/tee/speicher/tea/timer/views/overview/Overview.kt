@@ -31,15 +31,14 @@ import coolpharaoh.tee.speicher.tea.timer.views.overview.recycler_view.StickyHea
 import coolpharaoh.tee.speicher.tea.timer.views.settings.Settings
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea
 import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageControllerFactory.getImageController
-import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
 class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListener {
 
     private val teaListData: MutableList<RecyclerItemOverview> = ArrayList()
 
-    private var overviewViewModel: OverviewViewModel? = null
-    private var teaListAdapter: RecyclerViewAdapterOverview? = null
+    private lateinit var overviewViewModel: OverviewViewModel
+    private lateinit var teaListAdapter: RecyclerViewAdapterOverview
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,7 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
         toolbarCustomTitle.setPadding(40, 0, 0, 0)
         toolbarCustomTitle.setText(R.string.app_name)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun initializeTeaList() {
@@ -73,19 +72,19 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
     }
 
     private fun bindTeaListWithTeaAdapterAndObserve(teaList: RecyclerView) {
-        overviewViewModel!!.getTeas().observe(this) { teas: List<Tea> ->
-            val recyclerItemsHeader = getStrategy(overviewViewModel!!.sortWithHeader, application)
+        overviewViewModel.getTeas().observe(this) { teas: List<Tea> ->
+            val recyclerItemsHeader = getStrategy(overviewViewModel.sortWithHeader, application)
             teaListData.clear()
             teaListData.addAll(recyclerItemsHeader.generateFrom(teas))
 
-            teaListAdapter!!.notifyDataSetChanged()
+            teaListAdapter.notifyDataSetChanged()
 
             updateStickyHeaderOnRecyclerView(teaList, teaListAdapter)
         }
     }
 
     private fun updateStickyHeaderOnRecyclerView(teaList: RecyclerView, adapter: RecyclerViewAdapterOverview?) {
-        if (overviewViewModel!!.sortWithHeader != -1) {
+        if (overviewViewModel.sortWithHeader != -1) {
             teaList.addItemDecoration(StickyHeaderItemDecoration(adapter!!))
         }
 
@@ -93,7 +92,7 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
             teaList.removeItemDecorationAt(1)
         }
 
-        if (teaList.itemDecorationCount > 0 && overviewViewModel!!.sortWithHeader == -1) {
+        if (teaList.itemDecorationCount > 0 && overviewViewModel.sortWithHeader == -1) {
             teaList.removeItemDecorationAt(0)
         }
     }
@@ -112,7 +111,7 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
         val popup = PopupMenu(application, itemView, Gravity.END)
         popup.inflate(R.menu.menu_overview_tea_list)
 
-        val tea = overviewViewModel!!.getTeaBy(teaId)
+        val tea = overviewViewModel.getTeaBy(teaId)
         val inStockTitle = if (tea!!.inStock) R.string.overview_tea_list_menu_not_in_stock else R.string.overview_tea_list_menu_in_stock
         popup.menu.findItem(R.id.action_overview_tea_list_in_stock).setTitle(inStockTitle)
 
@@ -137,11 +136,11 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
     }
 
     private fun updateTeaInStock(teaId: Long, inStock: Boolean) {
-        overviewViewModel!!.updateInStockOfTea(teaId, inStock)
+        overviewViewModel.updateInStockOfTea(teaId, inStock)
     }
 
     private fun removeTeaDialog(teaId: Long) {
-        val tea = overviewViewModel!!.getTeaBy(teaId)
+        val tea = overviewViewModel.getTeaBy(teaId)
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setTitle(getString(R.string.overview_dialog_delete_tea_title, tea!!.name))
             .setMessage(R.string.overview_dialog_delete_tea_message)
@@ -151,7 +150,7 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
     }
 
     private fun removeTeaByTeaId(teaId: Long) {
-        overviewViewModel!!.deleteTea(teaId.toInt().toLong())
+        overviewViewModel.deleteTea(teaId.toInt().toLong())
 
         if (sdkVersion >= VERSION_CODES.Q) {
             val imageController = getImageController(this)
@@ -179,7 +178,7 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
 
     private fun dialogRandomChoice() {
         val randomChoiceDialog = RandomChoiceDialog(
-            overviewViewModel!!,
+            overviewViewModel,
             getImageController(this)
         )
         randomChoiceDialog.show(supportFragmentManager, RandomChoiceDialog.TAG)
@@ -187,26 +186,26 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
 
     private fun showUpdateDialogOnStart() {
         val application = application as TeaMemory
-        if (application != null && !application.overviewDialogsShown) {
+        if (!application.overviewDialogsShown) {
             application.overviewDialogsShown = true
             showUpdateDialog()
         }
     }
 
     private fun showUpdateDialog() {
-        if (overviewViewModel!!.isOverviewUpdateAlert) {
+        if (overviewViewModel.isOverviewUpdateAlert) {
             AlertDialog.Builder(this, R.style.dialog_theme)
                 .setTitle(R.string.overview_dialog_update_header)
                 .setMessage(R.string.overview_dialog_update_description)
                 .setPositiveButton(R.string.overview_dialog_update_positive) { dialog: DialogInterface?, which: Int -> navigateToUpdateWindow() }
                 .setNeutralButton(R.string.overview_dialog_update_neutral, null)
-                .setNegativeButton(R.string.overview_dialog_update_negative) { dialog: DialogInterface?, which: Int -> overviewViewModel!!.isOverviewUpdateAlert = false }
+                .setNegativeButton(R.string.overview_dialog_update_negative) { dialog: DialogInterface?, which: Int -> overviewViewModel.isOverviewUpdateAlert = false }
                 .show()
         }
     }
 
     private fun navigateToUpdateWindow() {
-        overviewViewModel!!.isOverviewUpdateAlert = false
+        overviewViewModel.isOverviewUpdateAlert = false
         val intent = Intent(this@Overview, UpdateDescription::class.java)
         startActivity(intent)
     }
@@ -215,7 +214,7 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_overview, menu)
 
-        configureSearchView(menu, overviewViewModel!!)
+        configureSearchView(menu, overviewViewModel)
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -243,12 +242,12 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
     }
 
     private fun dialogSortOption() {
-        val recyclerViewConfigurationDialog = RecyclerViewConfigurationDialog(overviewViewModel!!)
+        val recyclerViewConfigurationDialog = RecyclerViewConfigurationDialog(overviewViewModel)
         recyclerViewConfigurationDialog.show(supportFragmentManager, RecyclerViewConfigurationDialog.TAG)
     }
 
     public override fun onResume() {
         super.onResume()
-        overviewViewModel!!.refreshTeas()
+        overviewViewModel.refreshTeas()
     }
 }

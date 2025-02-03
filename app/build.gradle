@@ -9,7 +9,7 @@ apply plugin: 'com.google.devtools.ksp'
 android {
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
-        minSdkVersion 28
+        minSdkVersion 32
         compileSdk 35
         targetSdkVersion 35
         versionCode 200
@@ -83,7 +83,7 @@ dependencies {
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'  //needed for junit4 only
     testImplementation 'org.assertj:assertj-core:3.22.0'
     testImplementation "io.mockk:mockk:1.13.5"
-    testImplementation 'org.robolectric:robolectric:4.7.3'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
     testImplementation 'androidx.test:core:1.6.1'
     testImplementation 'android.arch.core:core-testing:1.1.1'
     testImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

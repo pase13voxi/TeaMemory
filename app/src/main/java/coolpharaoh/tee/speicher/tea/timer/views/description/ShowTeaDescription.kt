@@ -12,7 +12,7 @@ import coolpharaoh.tee.speicher.tea.timer.R
 
 class ShowTeaDescription : AppCompatActivity() {
 
-    private var dotLayout: LinearLayout? = null
+    private lateinit var dotLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +33,14 @@ class ShowTeaDescription : AppCompatActivity() {
 
     fun addDotsIndicator(position: Int, size: Int) {
         val dots = arrayOfNulls<TextView>(size)
-        dotLayout!!.removeAllViews()
+        dotLayout.removeAllViews()
         for (i in dots.indices) {
             dots[i] = TextView(this)
             dots[i]!!.setText(R.string.description_dots)
             dots[i]!!.textSize = 35f
             dots[i]!!.setTextColor(ContextCompat.getColor(application, R.color.background_green))
 
-            dotLayout!!.addView(dots[i])
+            dotLayout.addView(dots[i])
         }
 
         dots[position]!!.setTextColor(ContextCompat.getColor(application, R.color.background_green_dark))

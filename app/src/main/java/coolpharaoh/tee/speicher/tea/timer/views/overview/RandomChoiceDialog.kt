@@ -28,7 +28,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageCont
 class RandomChoiceDialog(private val overviewViewModel: OverviewViewModel, private val imageController: ImageController) :
     DialogFragment() {
 
-    private var dialogView: View? = null
+    private lateinit var dialogView: View
     private var randomChoiceItem: RecyclerItemOverview? = null
 
     override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
@@ -39,7 +39,7 @@ class RandomChoiceDialog(private val overviewViewModel: OverviewViewModel, priva
 
         refreshRandomChoice()
 
-        val buttonRefreshRandomChoice = dialogView!!.findViewById<ImageButton>(R.id.button_random_choice_dialog_refresh)
+        val buttonRefreshRandomChoice = dialogView.findViewById<ImageButton>(R.id.button_random_choice_dialog_refresh)
         buttonRefreshRandomChoice.setOnClickListener { refreshRandomChoice() }
 
         val builder = AlertDialog.Builder(activity, R.style.dialog_theme)
@@ -72,21 +72,21 @@ class RandomChoiceDialog(private val overviewViewModel: OverviewViewModel, priva
     }
 
     private fun fillRandomChoice() {
-        val textViewTeaName = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_dialog_tea_name)
+        val textViewTeaName = dialogView.findViewById<TextView>(R.id.text_view_random_choice_dialog_tea_name)
         textViewTeaName.text = randomChoiceItem!!.teaName
 
-        val textViewTeaVariety = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_dialog_variety)
+        val textViewTeaVariety = dialogView.findViewById<TextView>(R.id.text_view_random_choice_dialog_variety)
         textViewTeaVariety.text = randomChoiceItem!!.variety
 
         updateImage()
     }
 
     private fun updateImage() {
-        val imageViewImage = dialogView!!.findViewById<ImageView>(R.id.image_view_random_tea_choice_image)
-        Glide.with(dialogView!!.context).clear(imageViewImage)
+        val imageViewImage = dialogView.findViewById<ImageView>(R.id.image_view_random_tea_choice_image)
+        Glide.with(dialogView.context).clear(imageViewImage)
         imageViewImage.tag = null
 
-        val textViewImageText = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_dialog_image)
+        val textViewImageText = dialogView.findViewById<TextView>(R.id.text_view_random_choice_dialog_image)
 
         var imageUri: Uri? = null
         if (sdkVersion >= VERSION_CODES.Q) {
@@ -101,7 +101,7 @@ class RandomChoiceDialog(private val overviewViewModel: OverviewViewModel, priva
     }
 
     private fun fillImage(imageViewImage: ImageView, textViewImageText: TextView, imageUri: Uri) {
-        Glide.with(dialogView!!.context)
+        Glide.with(dialogView.context)
             .load(imageUri)
             .override(100, 100)
             .centerCrop()
@@ -118,18 +118,18 @@ class RandomChoiceDialog(private val overviewViewModel: OverviewViewModel, priva
     }
 
     private fun noRandomChoiceAvailable() {
-        val textViewNoTea = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_no_tea)
+        val textViewNoTea = dialogView.findViewById<TextView>(R.id.text_view_random_choice_no_tea)
         textViewNoTea.visibility = View.VISIBLE
 
-        val layoutTeaAvailable = dialogView!!.findViewById<RelativeLayout>(R.id.layout_random_choice_tea_available)
+        val layoutTeaAvailable = dialogView.findViewById<RelativeLayout>(R.id.layout_random_choice_tea_available)
         layoutTeaAvailable.visibility = View.GONE
 
-        val textViewHint = dialogView!!.findViewById<TextView>(R.id.text_view_random_choice_hint)
+        val textViewHint = dialogView.findViewById<TextView>(R.id.text_view_random_choice_hint)
         textViewHint.visibility = View.GONE
     }
 
     private fun navigateToRandomTea() {
-        val showTeaScreen = Intent(dialogView!!.context, ShowTea::class.java)
+        val showTeaScreen = Intent(dialogView.context, ShowTea::class.java)
         showTeaScreen.putExtra("teaId", randomChoiceItem!!.teaId)
         startActivity(showTeaScreen)
     }

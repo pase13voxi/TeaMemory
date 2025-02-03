@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
 import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
 
 class BackgroundTimer(private val application: Application, private val sharedPreferences: SharedTimerPreferences) {
@@ -17,7 +18,11 @@ class BackgroundTimer(private val application: Application, private val sharedPr
         val teaCompleteReceiver = Intent(application, TeaCompleteReceiver::class.java)
         teaCompleteReceiver.putExtra("teaId", teaId)
         val sender = getSender(teaCompleteReceiver)
-        alarmManager.setAlarmClock(AlarmClockInfo(wakeUpTime, sender), sender)
+        if (alarmManager.canScheduleExactAlarms()) {
+            alarmManager.setAlarmClock(AlarmClockInfo(wakeUpTime, sender), sender)
+        } else {
+            Toast.makeText(application, "Cannot schedule exact alarm.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun removeAlarmManager() {
@@ -27,9 +32,14 @@ class BackgroundTimer(private val application: Application, private val sharedPr
         alarmManager.cancel(sender)
     }
 
-    fun getSender(teaCompleteReceiver: Intent?): PendingIntent {
+    private fun getSender(teaCompleteReceiver: Intent?): PendingIntent {
         return if (sdkVersion >= Build.VERSION_CODES.S) {
-            PendingIntent.getBroadcast(application, REQUEST_CODE, teaCompleteReceiver!!,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+            PendingIntent.getBroadcast(
+                application,
+                REQUEST_CODE,
+                teaCompleteReceiver!!,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            )
         } else {
             PendingIntent.getBroadcast(application, REQUEST_CODE, teaCompleteReceiver!!, PendingIntent.FLAG_UPDATE_CURRENT)
         }

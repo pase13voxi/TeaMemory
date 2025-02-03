@@ -19,7 +19,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.settings.SortMode.Companion.fromC
 
 class RecyclerViewConfigurationDialog(private val overviewViewModel: OverviewViewModel) : DialogFragment() {
 
-    private var dialogView: View? = null
+    private lateinit var dialogView: View
 
     override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
         val activity: Activity = requireActivity()
@@ -42,7 +42,7 @@ class RecyclerViewConfigurationDialog(private val overviewViewModel: OverviewVie
 
     private fun defineVarietyRadioGroup() {
         val sortOptions = resources.getStringArray(R.array.overview_sort_options)
-        val sortModeRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_overview_sort_mode)
+        val sortModeRadioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group_overview_sort_mode)
 
         for (variety in sortOptions) {
             val varietyRadioButton = createRadioButton(variety)
@@ -95,7 +95,7 @@ class RecyclerViewConfigurationDialog(private val overviewViewModel: OverviewVie
     }
 
     private fun setShowInStock() {
-        val checkBoxInStock = dialogView!!.findViewById<CheckBox>(R.id.checkbox_overview_in_stock)
+        val checkBoxInStock = dialogView.findViewById<CheckBox>(R.id.checkbox_overview_in_stock)
         checkBoxInStock.isChecked = overviewViewModel.isOverviewInStock
     }
 
@@ -106,7 +106,7 @@ class RecyclerViewConfigurationDialog(private val overviewViewModel: OverviewVie
     }
 
     private fun extractSortMode(): SortMode {
-        val sortModeRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_overview_sort_mode)
+        val sortModeRadioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group_overview_sort_mode)
         val radioButtons = getRadioButtons(sortModeRadioGroup)
 
         var sortMode = SortMode.LAST_USED
@@ -119,7 +119,7 @@ class RecyclerViewConfigurationDialog(private val overviewViewModel: OverviewVie
     }
 
     private fun persistShowInStock() {
-        val checkBoxInStock = dialogView!!.findViewById<CheckBox>(R.id.checkbox_overview_in_stock)
+        val checkBoxInStock = dialogView.findViewById<CheckBox>(R.id.checkbox_overview_in_stock)
 
         overviewViewModel.isOverviewInStock = checkBoxInStock.isChecked
     }

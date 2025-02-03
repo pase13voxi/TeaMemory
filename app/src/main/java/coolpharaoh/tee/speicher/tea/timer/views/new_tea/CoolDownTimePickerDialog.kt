@@ -19,7 +19,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.settings.TemperatureUnit
 
 class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : DialogFragment() {
 
-    private var dialogView: View? = null
+    private lateinit var dialogView: View
 
     override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
         val activity: Activity = requireActivity()
@@ -39,10 +39,10 @@ class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : D
     }
 
     private fun setTimePicker() {
-        val timePickerMinutes = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        val timePickerMinutes = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
         timePickerMinutes.minValue = 0
         timePickerMinutes.maxValue = 59
-        val timePickerSeconds = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        val timePickerSeconds = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
         timePickerSeconds.minValue = 0
         timePickerSeconds.maxValue = 59
         timePickerSeconds.setFormatter { value: Int -> String.format("%02d", value) }
@@ -63,9 +63,9 @@ class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : D
 
     private fun setCalculatedCoolDownTime() {
         val buttons: MutableList<Button> = ArrayList()
-        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_1))
-        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_2))
-        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_3))
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_1))
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_2))
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_3))
 
         val temperatureUnit = newTeaViewModel.getTemperatureUnit()
         var temperature = newTeaViewModel.getInfusionTemperature()
@@ -84,8 +84,8 @@ class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : D
     }
 
     private fun setClickListener(buttons: List<Button>, coolDownTime: String?) {
-        val timePickerMinutes = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
-        val timePickerSeconds = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        val timePickerMinutes = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        val timePickerSeconds = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
 
         val timeConverter = TimeConverter(coolDownTime)
         buttons[0].setOnClickListener { view: View? ->
@@ -95,7 +95,7 @@ class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : D
     }
 
     private fun fillSuggestions(buttons: List<Button>, coolDownTime: String?) {
-        val textViewSuggestions = dialogView!!.findViewById<TextView>(R.id.text_view_new_tea_suggestions_description)
+        val textViewSuggestions = dialogView.findViewById<TextView>(R.id.text_view_new_tea_suggestions_description)
         textViewSuggestions.setText(R.string.new_tea_dialog_cool_down_time_calculated_suggestion)
 
         buttons[0].text = coolDownTime
@@ -104,13 +104,13 @@ class CoolDownTimePickerDialog(private val newTeaViewModel: NewTeaViewModel) : D
     }
 
     private fun disableSuggestions() {
-        val layoutSuggestions = dialogView!!.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        val layoutSuggestions = dialogView.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
         layoutSuggestions.visibility = View.GONE
     }
 
     private fun persistCoolDownTime() {
-        val timePickerMinutes = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
-        val timePickerSeconds = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
+        val timePickerMinutes = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_minutes)
+        val timePickerSeconds = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_time_seconds)
         val minutes = timePickerMinutes.value
         val seconds = timePickerSeconds.value
 

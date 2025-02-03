@@ -9,13 +9,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import coolpharaoh.tee.speicher.tea.timer.R
-import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
 class Statistics : AppCompatActivity() {
 
-    private var horizontalBarGraph: HorizontalBarGraph? = null
-    private var statisticsViewModel: StatisticsViewModel? = null
+    private lateinit var horizontalBarGraph: HorizontalBarGraph
+    private lateinit var statisticsViewModel: StatisticsViewModel
     private var checkedItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +26,7 @@ class Statistics : AppCompatActivity() {
         statisticsViewModel = StatisticsViewModel(application)
 
         horizontalBarGraph = HorizontalBarGraph(findViewById(R.id.horizontal_graph_statistics), this)
-        horizontalBarGraph!!.display(statisticsViewModel!!.statisticsWeek)
+        horizontalBarGraph.display(statisticsViewModel.statisticsWeek)
     }
 
     private fun defineToolbarAsActionbar() {
@@ -35,12 +34,12 @@ class Statistics : AppCompatActivity() {
         val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         mToolbarCustomTitle.setText(R.string.statistics_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -71,23 +70,23 @@ class Statistics : AppCompatActivity() {
             checkedItem = item
             when (checkedItem) {
                 0 -> {
-                    horizontalBarGraph!!.reset()
-                    horizontalBarGraph!!.display(statisticsViewModel!!.statisticsWeek)
+                    horizontalBarGraph.reset()
+                    horizontalBarGraph.display(statisticsViewModel.statisticsWeek)
                 }
 
                 1 -> {
-                    horizontalBarGraph!!.reset()
-                    horizontalBarGraph!!.display(statisticsViewModel!!.statisticsMonth)
+                    horizontalBarGraph.reset()
+                    horizontalBarGraph.display(statisticsViewModel.statisticsMonth)
                 }
 
                 2 -> {
-                    horizontalBarGraph!!.reset()
-                    horizontalBarGraph!!.display(statisticsViewModel!!.statisticsYear)
+                    horizontalBarGraph.reset()
+                    horizontalBarGraph.display(statisticsViewModel.statisticsYear)
                 }
 
                 3 -> {
-                    horizontalBarGraph!!.reset()
-                    horizontalBarGraph!!.display(statisticsViewModel!!.statisticsOverall)
+                    horizontalBarGraph.reset()
+                    horizontalBarGraph.display(statisticsViewModel.statisticsOverall)
                 }
                 else -> {}
             }

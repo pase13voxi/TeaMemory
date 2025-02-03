@@ -25,16 +25,15 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.SuggestionsF
 import coolpharaoh.tee.speicher.tea.timer.views.show_tea.ShowTea
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_amount_kind.DisplayAmountKindFactory
 import coolpharaoh.tee.speicher.tea.timer.views.utils.display_temperature_unit.DisplayTemperatureUnitFactory
-import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
 class NewTea : AppCompatActivity(), Printer {
 
-    private var variety: Variety? = null
-    private var buttonColorShape: ButtonColorShape? = null
+    private lateinit var variety: Variety
+    private lateinit var buttonColorShape: ButtonColorShape
 
-    private var newTeaViewModel: NewTeaViewModel? = null
-    private var inputValidator: InputValidator? = null
+    private lateinit  var newTeaViewModel: NewTeaViewModel
+    private lateinit  var inputValidator: InputValidator
     private var teaId: Long = 0
     private var showTea = false
 
@@ -53,7 +52,7 @@ class NewTea : AppCompatActivity(), Printer {
 
         initializeNewOrEditTea()
 
-        newTeaViewModel!!.dataChanges()!!.observe(this) { onDataChanged() }
+        newTeaViewModel.dataChanges()!!.observe(this) { onDataChanged() }
 
         //showTea wird übergeben, falls die Navigation von showTea erfolgt
         showTea = this.intent.getBooleanExtra("showTea", false)
@@ -69,12 +68,12 @@ class NewTea : AppCompatActivity(), Printer {
         val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         mToolbarCustomTitle.setText(R.string.new_tea_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun defineColorPicker() {
@@ -87,11 +86,11 @@ class NewTea : AppCompatActivity(), Printer {
         ColorPickerDialogBuilder
             .with(this)
             .setTitle(R.string.new_tea_color_dialog_title)
-            .initialColor(buttonColorShape!!.color)
+            .initialColor(buttonColorShape.color)
             .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
             .lightnessSliderOnly()
             .density(12)
-            .setPositiveButton(R.string.new_tea_color_dialog_positive) { _, selectedColor, _ -> newTeaViewModel!!.color = selectedColor }
+            .setPositiveButton(R.string.new_tea_color_dialog_positive) { _, selectedColor, _ -> newTeaViewModel.color = selectedColor }
             .setNegativeButton(R.string.new_tea_color_dialog_negative, null)
             .build()
             .show()
@@ -99,16 +98,16 @@ class NewTea : AppCompatActivity(), Printer {
 
     private fun defineInfusionBar() {
         val buttonPreviousInfusion = findViewById<ImageButton>(R.id.button_new_tea_previous_infusion)
-        buttonPreviousInfusion.setOnClickListener { newTeaViewModel!!.previousInfusion() }
+        buttonPreviousInfusion.setOnClickListener { newTeaViewModel.previousInfusion() }
 
         val buttonNextInfusion = findViewById<ImageButton>(R.id.button_new_tea_next_infusion)
-        buttonNextInfusion.setOnClickListener { newTeaViewModel!!.nextInfusion() }
+        buttonNextInfusion.setOnClickListener { newTeaViewModel.nextInfusion() }
 
         val buttonDeleteInfusion = findViewById<ImageButton>(R.id.button_new_tea_delete_infusion)
-        buttonDeleteInfusion.setOnClickListener { newTeaViewModel!!.deleteInfusion() }
+        buttonDeleteInfusion.setOnClickListener { newTeaViewModel.deleteInfusion() }
 
         val buttonAddInfusion = findViewById<ImageButton>(R.id.button_new_tea_add_infusion)
-        buttonAddInfusion.setOnClickListener { newTeaViewModel!!.addInfusion() }
+        buttonAddInfusion.setOnClickListener { newTeaViewModel.addInfusion() }
     }
 
     private fun defineInputPicker() {
@@ -129,30 +128,30 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun dialogVarietyPicker() {
-        VarietyPickerDialog(newTeaViewModel!!)
+        VarietyPickerDialog(newTeaViewModel)
             .show(supportFragmentManager, VarietyPickerDialog.TAG)
     }
 
     private fun dialogAmountPicker() {
-        val hints = getSuggestions(variety!!.ordinal, application)
-        AmountPickerDialog(hints, newTeaViewModel!!)
+        val hints = getSuggestions(variety.ordinal, application)
+        AmountPickerDialog(hints, newTeaViewModel)
             .show(supportFragmentManager, AmountPickerDialog.TAG)
     }
 
     private fun dialogTemperaturePicker() {
-        val hints = getSuggestions(variety!!.ordinal, application)
-        TemperaturePickerDialog(hints, newTeaViewModel!!)
+        val hints = getSuggestions(variety.ordinal, application)
+        TemperaturePickerDialog(hints, newTeaViewModel)
             .show(supportFragmentManager, TemperaturePickerDialog.TAG)
     }
 
     private fun dialogCoolDownTimePicker() {
-        CoolDownTimePickerDialog(newTeaViewModel!!)
+        CoolDownTimePickerDialog(newTeaViewModel)
             .show(supportFragmentManager, CoolDownTimePickerDialog.TAG)
     }
 
     private fun dialogTimePicker() {
-        val hints = getSuggestions(variety!!.ordinal, application)
-        TimePickerDialog(hints, newTeaViewModel!!)
+        val hints = getSuggestions(variety.ordinal, application)
+        TimePickerDialog(hints, newTeaViewModel)
             .show(supportFragmentManager, TimePickerDialog.TAG)
     }
 
@@ -173,7 +172,7 @@ class NewTea : AppCompatActivity(), Printer {
         newTeaViewModel = NewTeaViewModel(teaId, application)
 
         val editTextName = findViewById<EditText>(R.id.edit_text_new_tea_name)
-        editTextName.setText(newTeaViewModel!!.name)
+        editTextName.setText(newTeaViewModel.name)
     }
 
     private fun onDataChanged() {
@@ -188,31 +187,31 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun bindVarietyToInputField() {
-        variety = newTeaViewModel!!.variety
+        variety = newTeaViewModel.variety
 
-        val varietyText = newTeaViewModel!!.varietyAsText
+        val varietyText = newTeaViewModel.varietyAsText
         val editTextVariety = findViewById<EditText>(R.id.edit_text_new_tea_variety)
 
         editTextVariety.setText(varietyText)
     }
 
     private fun bindColorToInputField() {
-        buttonColorShape!!.color = newTeaViewModel!!.color
+        buttonColorShape.color = newTeaViewModel.color
     }
 
     private fun bindAmountToInputField() {
         val editTextAmount = findViewById<EditText>(R.id.edit_text_new_tea_amount)
 
-        val amountKind = newTeaViewModel!!.amountKind
+        val amountKind = newTeaViewModel.amountKind
         val displayAmountKindStrategy = DisplayAmountKindFactory[amountKind, application]
 
-        val amount = newTeaViewModel!!.amount
+        val amount = newTeaViewModel.amount
         editTextAmount.setText(displayAmountKindStrategy.getTextNewTea(amount))
     }
 
     private fun bindTemperatureToInputField() {
-        val temperature = newTeaViewModel!!.getInfusionTemperature()
-        val temperatureUnit = newTeaViewModel!!.getTemperatureUnit()
+        val temperature = newTeaViewModel.getInfusionTemperature()
+        val temperatureUnit = newTeaViewModel.getTemperatureUnit()
         val displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory[temperatureUnit, application]
 
         val editTextTemperature = findViewById<EditText>(R.id.edit_text_new_tea_temperature)
@@ -221,7 +220,7 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun bindCoolDownTimeToInputField() {
-        val coolDownTime = newTeaViewModel!!.getInfusionCoolDownTime()
+        val coolDownTime = newTeaViewModel.getInfusionCoolDownTime()
         val editTextCoolDownTime = findViewById<EditText>(R.id.edit_text_new_tea_cool_down_time)
         if (coolDownTime == null) {
             editTextCoolDownTime.setText(R.string.new_tea_edit_text_cool_down_time_empty_text)
@@ -231,20 +230,20 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun showCoolDownTimeInput() {
-        val temperature = newTeaViewModel!!.getInfusionTemperature()
-        val temperatureUnit = newTeaViewModel!!.getTemperatureUnit()
+        val temperature = newTeaViewModel.getInfusionTemperature()
+        val temperatureUnit = newTeaViewModel.getTemperatureUnit()
         val layoutCoolDownTime = findViewById<LinearLayout>(R.id.layout_new_tea_cool_down_time)
 
         if (temperature == -500 || temperature == 100 && TemperatureUnit.CELSIUS == temperatureUnit || temperature == 212 && TemperatureUnit.FAHRENHEIT == temperatureUnit) {
             layoutCoolDownTime.visibility = View.GONE
-            newTeaViewModel!!.resetInfusionCoolDownTime()
+            newTeaViewModel.resetInfusionCoolDownTime()
         } else {
             layoutCoolDownTime.visibility = View.VISIBLE
         }
     }
 
     private fun bindTimeToInputField() {
-        val time = newTeaViewModel!!.getInfusionTime()
+        val time = newTeaViewModel.getInfusionTime()
         val editTextTime = findViewById<EditText>(R.id.edit_text_new_tea_time)
         if (time == null) {
             editTextTime.setText(R.string.new_tea_edit_text_time_empty_text)
@@ -255,7 +254,7 @@ class NewTea : AppCompatActivity(), Printer {
 
     private fun refreshInfusionBar() {
         val textViewInfusion = findViewById<TextView>(R.id.text_view_new_tea_count_infusion)
-        textViewInfusion.text = resources.getString(R.string.new_tea_count_infusion, newTeaViewModel!!.getInfusionIndex() + 1)
+        textViewInfusion.text = resources.getString(R.string.new_tea_count_infusion, newTeaViewModel.getInfusionIndex() + 1)
 
         showDeleteInfusion()
         showAddInfusion()
@@ -264,7 +263,7 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun showDeleteInfusion() {
-        if (newTeaViewModel!!.getInfusionSize() > 1) {
+        if (newTeaViewModel.getInfusionSize() > 1) {
             findViewById<View>(R.id.button_new_tea_delete_infusion).visibility = View.VISIBLE
         } else {
             findViewById<View>(R.id.button_new_tea_delete_infusion).visibility = View.GONE
@@ -272,7 +271,7 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun showAddInfusion() {
-        if (newTeaViewModel!!.getInfusionIndex() + 1 == newTeaViewModel!!.getInfusionSize() && newTeaViewModel!!.getInfusionSize() < 20) {
+        if (newTeaViewModel.getInfusionIndex() + 1 == newTeaViewModel.getInfusionSize() && newTeaViewModel.getInfusionSize() < 20) {
             findViewById<View>(R.id.button_new_tea_add_infusion).visibility = View.VISIBLE
         } else {
             findViewById<View>(R.id.button_new_tea_add_infusion).visibility = View.GONE
@@ -280,12 +279,12 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun showPreviousInfusion() {
-        val enabled = newTeaViewModel!!.getInfusionIndex() != 0
+        val enabled = newTeaViewModel.getInfusionIndex() != 0
         findViewById<View>(R.id.button_new_tea_previous_infusion).isEnabled = enabled
     }
 
     private fun showNextInfusion() {
-        val enabled = newTeaViewModel!!.getInfusionIndex() + 1 != newTeaViewModel!!.getInfusionSize()
+        val enabled = newTeaViewModel.getInfusionIndex() + 1 != newTeaViewModel.getInfusionSize()
         findViewById<View>(R.id.button_new_tea_next_infusion).isEnabled = enabled
     }
 
@@ -323,12 +322,12 @@ class NewTea : AppCompatActivity(), Printer {
     }
 
     private fun inputIsValid(nameInput: String): Boolean {
-        return (inputValidator!!.nameIsNotEmpty(nameInput)
-                && inputValidator!!.nameIsValid(nameInput))
+        return (inputValidator.nameIsNotEmpty(nameInput)
+                && inputValidator.nameIsValid(nameInput))
     }
 
     private fun createOrEditTea(name: String) {
-        newTeaViewModel!!.saveTea(name)
+        newTeaViewModel.saveTea(name)
     }
 
     private fun navigateToMainOrShowTea() {
@@ -341,7 +340,7 @@ class NewTea : AppCompatActivity(), Printer {
 
     private fun navigateToShowTeaActivity() {
         val showTeaScreen = Intent(this@NewTea, ShowTea::class.java)
-        showTeaScreen.putExtra("teaId", newTeaViewModel!!.teaId)
+        showTeaScreen.putExtra("teaId", newTeaViewModel.teaId)
         startActivity(showTeaScreen)
         finish()
     }

@@ -41,8 +41,8 @@ import java.util.Objects
 // This class has 9 Parent because of AppCompatActivity
 class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListener {
 
-    private var informationViewModel: InformationViewModel? = null
-    private var imageController: ImageController? = null
+    private lateinit var informationViewModel: InformationViewModel
+    private lateinit var imageController: ImageController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,28 +73,28 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
     private fun defineToolbarAsActionbar() {
         val toolbar = findViewById<Toolbar>(R.id.tool_bar)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun fillTexViewTeaName() {
         val texViewTeaName = findViewById<TextView>(R.id.text_view_information_tea_name)
         texViewTeaName.setTextColor(ContextCompat.getColor(this, R.color.text_black))
-        texViewTeaName.text = informationViewModel!!.teaName
+        texViewTeaName.text = informationViewModel.teaName
     }
 
     private fun fillTexViewTeaVariety() {
         val texViewTeaVariety = findViewById<TextView>(R.id.text_view_information_variety)
-        texViewTeaVariety.text = informationViewModel!!.varietyAsText
+        texViewTeaVariety.text = informationViewModel.varietyAsText
     }
 
     private fun fillImage() {
         if (sdkVersion >= VERSION_CODES.Q) {
-            val uri = imageController!!.getImageUriByTeaId(informationViewModel!!.teaId)
+            val uri = imageController.getImageUriByTeaId(informationViewModel.teaId)
             uri?.let { showImage(it) }
         }
     }
@@ -114,7 +114,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
 
     private fun fillRatingBar() {
         val ratingBar = findViewById<RatingBar>(R.id.rating_bar_information)
-        ratingBar.rating = informationViewModel!!.teaRating.toFloat()
+        ratingBar.rating = informationViewModel.teaRating.toFloat()
     }
 
     private fun showDetailsList() {
@@ -122,7 +122,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         recyclerViewDetails.addItemDecoration(DividerItemDecoration(recyclerViewDetails.context,
             DividerItemDecoration.VERTICAL))
 
-        informationViewModel!!.getDetails().observe(this) { details: List<Note> ->
+        informationViewModel.getDetails().observe(this) { details: List<Note> ->
             val detailsList: MutableList<RecyclerItem> = ArrayList()
             for ((_, _, _, header, description) in details) {
                 detailsList.add(RecyclerItem(header!!, description!!))
@@ -136,7 +136,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
     private fun fillLastUsed() {
         val textViewLastUsed = findViewById<TextView>(R.id.text_view_information_last_used)
         val formatter = SimpleDateFormat(DATE_FORMAT)
-        val date = formatter.format(informationViewModel!!.date)
+        val date = formatter.format(informationViewModel.date!!)
         textViewLastUsed.text = getString(R.string.information_counter_last_used, date)
     }
 
@@ -146,7 +146,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         val textViewYear = findViewById<TextView>(R.id.text_view_information_counter_year)
         val textViewOverall = findViewById<TextView>(R.id.text_view_information_counter_overall)
 
-        val (_, _, week, month, year, overall) = informationViewModel!!.counter
+        val (_, _, week, month, year, overall) = informationViewModel.counter
         textViewWeek.text = week.toString()
         textViewMonth.text = month.toString()
         textViewYear.text = year.toString()
@@ -155,7 +155,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
 
     private fun fillNotes() {
         val editTextNotes = findViewById<EditText>(R.id.edit_text_information_notes)
-        val (_, _, _, _, description) = informationViewModel!!.notes
+        val (_, _, _, _, description) = informationViewModel.notes
         editTextNotes.setText(description)
     }
 
@@ -175,7 +175,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
     }
 
     private fun updateTeaRating(rating: Float) {
-        informationViewModel!!.updateTeaRating(rating.toInt())
+        informationViewModel.updateTeaRating(rating.toInt())
     }
 
     private fun addDetail() {
@@ -200,7 +200,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         val heading = editTextHeading.text.toString()
         val description = editTextDescription.text.toString()
         if (heading.trim { it <= ' ' }.isNotEmpty() && description.trim { it <= ' ' }.isNotEmpty()) {
-            informationViewModel!!.addDetail(editTextHeading.text.toString(),
+            informationViewModel.addDetail(editTextHeading.text.toString(),
                 editTextDescription.text.toString())
         }
     }
@@ -218,7 +218,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
     private fun makeImage() {
         if (sdkVersion >= VERSION_CODES.Q) {
             try {
-                val takePictureIntent = imageController!!.getSaveOrUpdateImageIntent(informationViewModel!!.teaId)
+                val takePictureIntent = imageController.getSaveOrUpdateImageIntent(informationViewModel.teaId)
                 takePictureActivityResultLauncher.launch(takePictureIntent)
             } catch (exception: IOException) {
                 Log.e(LOG_TAG, "Something went wrong while open photo application. Error message: " + exception.message)
@@ -235,7 +235,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
                 editDetail(position)
                 return@setOnMenuItemClickListener true
             } else if (item.itemId == R.id.action_information_details_delete) {
-                informationViewModel!!.deleteDetail(position)
+                informationViewModel.deleteDetail(position)
                 return@setOnMenuItemClickListener true
             }
             false
@@ -249,7 +249,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.dialog_add_edit_information, parent, false)
 
-        val (_, _, _, header, description) = informationViewModel!!.getDetail(position)
+        val (_, _, _, header, description) = informationViewModel.getDetail(position)
 
         val editTextHeading = dialogLayout.findViewById<EditText>(R.id.edit_text_information_dialog_add_edit_header)
         editTextHeading.setText(header)
@@ -261,7 +261,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
             .setView(dialogLayout)
             .setNegativeButton(R.string.information_edit_detail_dialog_negative, null)
             .setPositiveButton(R.string.information_edit_detail_dialog_positive) { dialogInterface: DialogInterface?, i: Int ->
-                informationViewModel!!.updateDetail(position, editTextHeading.text.toString(),
+                informationViewModel.updateDetail(position, editTextHeading.text.toString(),
                     editTextDescription.text.toString()) }
             .show()
     }
@@ -270,7 +270,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         super.onPause()
 
         val editTextNotes = findViewById<EditText>(R.id.edit_text_information_notes)
-        informationViewModel!!.updateNotes(editTextNotes.text.toString())
+        informationViewModel.updateNotes(editTextNotes.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -284,7 +284,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
 
     private fun fillInStock(menu: Menu) {
         val item = menu.findItem(R.id.action_information_in_stock)
-        if (informationViewModel!!.isInStock) {
+        if (informationViewModel.isInStock) {
             item.setIcon(R.drawable.home_white)
         } else {
             item.setIcon(R.drawable.home_white_empty)
@@ -295,14 +295,14 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         val id = item.itemId
 
         if (id == R.id.action_information_in_stock) {
-            if (informationViewModel!!.isInStock) {
+            if (informationViewModel.isInStock) {
                 val homeIconEmpty = ContextCompat.getDrawable(application, R.drawable.home_white_empty)
                 item.icon = homeIconEmpty
-                informationViewModel!!.updateTeaInStock(false)
+                informationViewModel.updateTeaInStock(false)
             } else {
                 val homeIcon = ContextCompat.getDrawable(application, R.drawable.home_white)
                 item.icon = homeIcon
-                informationViewModel!!.updateTeaInStock(true)
+                informationViewModel.updateTeaInStock(true)
             }
         }
 

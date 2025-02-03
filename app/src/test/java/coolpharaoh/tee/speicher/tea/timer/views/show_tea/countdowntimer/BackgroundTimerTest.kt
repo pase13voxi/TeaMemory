@@ -31,6 +31,7 @@ class BackgroundTimerTest {
     fun setAlarmManager() {
         every { sharedTimerPreferences.startedTime } returns 2000L
         every { application.getSystemService(Context.ALARM_SERVICE) } returns alarmManager
+        every { alarmManager.canScheduleExactAlarms() } returns true
 
         val backgroundTimer = BackgroundTimer(application, sharedTimerPreferences)
         backgroundTimer.setAlarmManager(1L, 6000L)

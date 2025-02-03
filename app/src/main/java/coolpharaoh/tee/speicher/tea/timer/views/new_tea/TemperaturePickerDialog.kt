@@ -18,7 +18,7 @@ import coolpharaoh.tee.speicher.tea.timer.views.new_tea.suggestions.Suggestions
 
 class TemperaturePickerDialog(private val suggestions: Suggestions, private val newTeaViewModel: NewTeaViewModel) : DialogFragment() {
 
-    private var dialogView: View? = null
+    private lateinit var dialogView: View
 
     override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
         val activity: Activity = requireActivity()
@@ -39,7 +39,7 @@ class TemperaturePickerDialog(private val suggestions: Suggestions, private val 
     }
 
     private fun setTemperaturePicker() {
-        val temperaturePicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
+        val temperaturePicker = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
         if (isFahrenheit) {
             temperaturePicker.minValue = 122
             temperaturePicker.maxValue = 212
@@ -64,16 +64,16 @@ class TemperaturePickerDialog(private val suggestions: Suggestions, private val 
 
     private fun setTemperatureUnit() {
         if (isFahrenheit) {
-            val textViewTemperatureUnit = dialogView!!.findViewById<TextView>(R.id.text_view_new_tea_temperature_picker_unit)
+            val textViewTemperatureUnit = dialogView.findViewById<TextView>(R.id.text_view_new_tea_temperature_picker_unit)
             textViewTemperatureUnit.setText(R.string.new_tea_dialog_temperature_fahrenheit)
         }
     }
 
     private fun setSuggestions() {
         val buttons: MutableList<Button> = ArrayList()
-        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_1))
-        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_2))
-        buttons.add(dialogView!!.findViewById(R.id.button_new_tea_picker_suggestion_3))
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_1))
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_2))
+        buttons.add(dialogView.findViewById(R.id.button_new_tea_picker_suggestion_3))
 
         if (getSuggestions().isNotEmpty()) {
             fillSuggestions(buttons)
@@ -104,7 +104,7 @@ class TemperaturePickerDialog(private val suggestions: Suggestions, private val 
     }
 
     private fun setClickListener(buttons: List<Button>) {
-        val temperaturePicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
+        val temperaturePicker = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
         val temperatureSuggestions = getSuggestions()
 
         for (i in temperatureSuggestions.indices) {
@@ -114,12 +114,12 @@ class TemperaturePickerDialog(private val suggestions: Suggestions, private val 
     }
 
     private fun disableSuggestions() {
-        val layoutSuggestions = dialogView!!.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
+        val layoutSuggestions = dialogView.findViewById<LinearLayout>(R.id.layout_new_tea_custom_variety)
         layoutSuggestions.visibility = View.GONE
     }
 
     private fun persistTemperature() {
-        val temperaturePicker = dialogView!!.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
+        val temperaturePicker = dialogView.findViewById<NumberPicker>(R.id.number_picker_new_tea_dialog_temperature)
         val temperature = temperaturePicker.value
         newTeaViewModel.setInfusionTemperature(temperature)
     }

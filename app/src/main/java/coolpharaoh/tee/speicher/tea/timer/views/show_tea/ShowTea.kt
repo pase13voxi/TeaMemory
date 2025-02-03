@@ -1,6 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea
 
 import android.Manifest
+import android.app.AlarmManager
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,6 +14,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -51,35 +53,35 @@ import java.util.concurrent.TimeUnit
 // This class has 9 Parent because of AppCompatActivity
 class ShowTea : AppCompatActivity() {
 
-    private var textViewInfusionIndex: TextView? = null
-    private var buttonNextInfusion: ImageButton? = null
-    private var textViewTemperature: TextView? = null
-    private var spinnerMinutes: Spinner? = null
-    private var spinnerSeconds: Spinner? = null
-    private var textViewTimer: TextView? = null
-    private var buttonTemperature: ImageButton? = null
-    private var buttonInfo: ImageButton? = null
-    private var imageViewFill: ImageView? = null
-    private var imageViewSteam: ImageView? = null
-    private var buttonStartTimer: Button? = null
-    private var imageViewCup: ImageView? = null
-    private var textViewDoublePoint: TextView? = null
-    private var textViewSeconds: TextView? = null
-    private var textViewMinutes: TextView? = null
-    private var buttonInfusionIndex: ImageButton? = null
-    private var textViewName: TextView? = null
-    private var textViewVariety: TextView? = null
-    private var textViewAmount: TextView? = null
-    private var buttonCalculateAmount: ImageButton? = null
+    private lateinit var textViewInfusionIndex: TextView
+    private lateinit var buttonNextInfusion: ImageButton
+    private lateinit var textViewTemperature: TextView
+    private lateinit var spinnerMinutes: Spinner
+    private lateinit var spinnerSeconds: Spinner
+    private lateinit var textViewTimer: TextView
+    private lateinit var buttonTemperature: ImageButton
+    private lateinit var buttonInfo: ImageButton
+    private lateinit var imageViewFill: ImageView
+    private lateinit var imageViewSteam: ImageView
+    private lateinit var buttonStartTimer: Button
+    private lateinit var imageViewCup: ImageView
+    private lateinit var textViewDoublePoint: TextView
+    private lateinit var textViewSeconds: TextView
+    private lateinit var textViewMinutes: TextView
+    private lateinit var buttonInfusionIndex: ImageButton
+    private lateinit var textViewName: TextView
+    private lateinit var textViewVariety: TextView
+    private lateinit var textViewAmount: TextView
+    private lateinit var buttonCalculateAmount: ImageButton
 
-    private var showTeaViewModel: ShowTeaViewModel? = null
+    private lateinit var showTeaViewModel: ShowTeaViewModel
     private var infoShown = false
 
     //animation
     private var maxMilliSec: Long = 0
     private var percent = 0
 
-    private var foregroundTimer: TimerController? = null
+    private lateinit var foregroundTimer: TimerController
 
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
@@ -91,14 +93,14 @@ class ShowTea : AppCompatActivity() {
             if (intent.extras != null) {
                 val millis = intent.getLongExtra("countdown", 0)
                 val ready = intent.getBooleanExtra("ready", false)
-                if (!infoShown && showTeaViewModel!!.isAnimation()) {
+                if (!infoShown && showTeaViewModel.isAnimation()) {
                     updateImage(millis)
                 }
                 if (ready) {
-                    textViewTimer!!.setText(R.string.show_tea_tea_ready)
-                    if (!infoShown && showTeaViewModel!!.isAnimation()) {
-                        imageViewFill!!.setImageResource(R.drawable.cup_fill100pr)
-                        imageViewSteam!!.visibility = View.VISIBLE
+                    textViewTimer.setText(R.string.show_tea_tea_ready)
+                    if (!infoShown && showTeaViewModel.isAnimation()) {
+                        imageViewFill.setImageResource(R.drawable.cup_fill100pr)
+                        imageViewSteam.visibility = View.VISIBLE
                     }
                 } else {
                     val ms = String.format(
@@ -106,7 +108,7 @@ class ShowTea : AppCompatActivity() {
                         TimeUnit.MILLISECONDS.toMinutes(millis),
                         TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
                     )
-                    textViewTimer!!.text = ms
+                    textViewTimer.text = ms
                 }
             }
         }
@@ -118,8 +120,8 @@ class ShowTea : AppCompatActivity() {
                 val context = applicationContext
                 val imageName = String.format("cup_fill%spr", percent)
                 val imageId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-                imageViewFill!!.setImageResource(imageId)
-                imageViewFill!!.tag = imageId
+                imageViewFill.setImageResource(imageId)
+                imageViewFill.tag = imageId
             }
         }
     }
@@ -141,17 +143,17 @@ class ShowTea : AppCompatActivity() {
         foregroundTimer = TimerController(application, SharedTimerPreferences(application))
 
         buttonStartTimer = findViewById(R.id.button_show_tea_start_timer)
-        buttonStartTimer!!.setOnClickListener { startOrResetTimer() }
+        buttonStartTimer.setOnClickListener { startOrResetTimer() }
 
-        buttonInfusionIndex!!.setOnClickListener { showDialogChangeInfusion() }
+        buttonInfusionIndex.setOnClickListener { showDialogChangeInfusion() }
 
-        buttonNextInfusion!!.setOnClickListener { displayNextInfusion() }
+        buttonNextInfusion.setOnClickListener { displayNextInfusion() }
 
-        buttonTemperature!!.setOnClickListener { switchToCoolingPeriod() }
+        buttonTemperature.setOnClickListener { switchToCoolingPeriod() }
 
-        buttonInfo!!.setOnClickListener { showDialogCoolingPeriod() }
+        buttonInfo.setOnClickListener { showDialogCoolingPeriod() }
 
-        buttonCalculateAmount!!.setOnClickListener { decideToShowDialogAmount() }
+        buttonCalculateAmount.setOnClickListener { decideToShowDialogAmount() }
     }
 
     private fun defineToolbarAsActionbar() {
@@ -166,7 +168,7 @@ class ShowTea : AppCompatActivity() {
 
     private fun navigateToDetailInformation() {
         val informationScreen = Intent(this@ShowTea, Information::class.java)
-        informationScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel!!.getTeaId())
+        informationScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel.getTeaId())
         // Intent starten und zur zweiten Activity wechseln
         startActivity(informationScreen)
     }
@@ -200,10 +202,10 @@ class ShowTea : AppCompatActivity() {
 
     private fun setFieldsTransparent() {
         val alpha = 130
-        textViewName!!.background.mutate().alpha = alpha
-        textViewVariety!!.background.mutate().alpha = alpha
-        textViewDoublePoint!!.background.mutate().alpha = alpha
-        textViewTimer!!.background.mutate().alpha = alpha
+        textViewName.background.mutate().alpha = alpha
+        textViewVariety.background.mutate().alpha = alpha
+        textViewDoublePoint.background.mutate().alpha = alpha
+        textViewTimer.background.mutate().alpha = alpha
     }
 
     private fun initializeSpinnerWithBigCharacters() {
@@ -211,8 +213,8 @@ class ShowTea : AppCompatActivity() {
             this, R.array.show_tea_items_timer, R.layout.spinner_item
         )
         spinnerTimeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        spinnerMinutes!!.adapter = spinnerTimeAdapter
-        spinnerSeconds!!.adapter = spinnerTimeAdapter
+        spinnerMinutes.adapter = spinnerTimeAdapter
+        spinnerSeconds.adapter = spinnerTimeAdapter
     }
 
     private fun initializeInformationWindow() {
@@ -232,7 +234,7 @@ class ShowTea : AppCompatActivity() {
     private fun showTeaInformation(teaId: Long) {
         showTeaViewModel = ShowTeaViewModel(teaId, application)
 
-        if (showTeaViewModel!!.teaExists()) {
+        if (showTeaViewModel.teaExists()) {
             fillInformationFields()
 
             decideToShowInfusionBar()
@@ -247,41 +249,41 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun fillInformationFields() {
-        textViewName!!.text = showTeaViewModel!!.name
-        textViewVariety!!.text = showTeaViewModel!!.variety
+        textViewName.text = showTeaViewModel.name
+        textViewVariety.text = showTeaViewModel.variety
 
         fillTemperatureWithUnit()
 
         fillAmountWithUnit()
 
-        spinnerMinutes!!.setSelection(showTeaViewModel!!.time.minutes)
-        spinnerSeconds!!.setSelection(showTeaViewModel!!.time.seconds)
+        spinnerMinutes.setSelection(showTeaViewModel.time.minutes)
+        spinnerSeconds.setSelection(showTeaViewModel.time.seconds)
     }
 
     private fun fillTemperatureWithUnit() {
-        val displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory[showTeaViewModel!!.getTemperatureUnit(), application]
+        val displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory[showTeaViewModel.getTemperatureUnit(), application]
 
-        textViewTemperature!!.text = displayTemperatureUnitStrategy.getTextIdShowTea(showTeaViewModel!!.temperature)
+        textViewTemperature.text = displayTemperatureUnitStrategy.getTextIdShowTea(showTeaViewModel.temperature)
     }
 
     private fun fillAmountWithUnit() {
         val imageButtonAmount = findViewById<ImageButton>(R.id.button_show_tea_calculate_amount)
-        val displayAmountKindStrategy = DisplayAmountKindFactory[showTeaViewModel!!.amountKind, application]
+        val displayAmountKindStrategy = DisplayAmountKindFactory[showTeaViewModel.amountKind, application]
 
-        textViewAmount!!.text = StringUtils.rightPad(displayAmountKindStrategy.getTextShowTea(showTeaViewModel!!.amount), 10)
+        textViewAmount.text = StringUtils.rightPad(displayAmountKindStrategy.getTextShowTea(showTeaViewModel.amount), 10)
         imageButtonAmount.setImageResource(displayAmountKindStrategy.getImageResourceIdShowTea())
     }
 
     private fun decideToShowInfusionBar() {
-        if (showTeaViewModel!!.getInfusionSize() == 1) {
-            textViewInfusionIndex!!.visibility = View.GONE
-            buttonInfusionIndex!!.visibility = View.GONE
-            buttonNextInfusion!!.visibility = View.GONE
+        if (showTeaViewModel.getInfusionSize() == 1) {
+            textViewInfusionIndex.visibility = View.GONE
+            buttonInfusionIndex.visibility = View.GONE
+            buttonNextInfusion.visibility = View.GONE
         }
     }
 
     private fun decideToDisplayDescription() {
-        if (showTeaViewModel!!.isShowTeaAlert()) {
+        if (showTeaViewModel.isShowTeaAlert()) {
             dialogShowTeaDescription()
         }
     }
@@ -303,7 +305,7 @@ class ShowTea : AppCompatActivity() {
 
     private fun disableDescription(donNotShowAgain: CheckBox) {
         if (donNotShowAgain.isChecked) {
-            showTeaViewModel!!.setShowTeaAlert(false)
+            showTeaViewModel.setShowTeaAlert(false)
         }
     }
 
@@ -314,59 +316,61 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun decideToDisplayContinueNextInfusionDialog() {
-        if (showTeaViewModel!!.nextInfusion != 0 && showTeaViewModel!!.getInfusionSize() != 1) {
+        if (showTeaViewModel.nextInfusion != 0 && showTeaViewModel.getInfusionSize() != 1) {
             displayContinueNextInfusionDialog()
         }
     }
 
     private fun displayContinueNextInfusionDialog() {
-        val lastInfusion = showTeaViewModel!!.nextInfusion
-        val nextInfusion = showTeaViewModel!!.nextInfusion + 1
+        val lastInfusion = showTeaViewModel.nextInfusion
+        val nextInfusion = showTeaViewModel.nextInfusion + 1
         //Infomationen anzeigen
         val builder = AlertDialog.Builder(this, R.style.dialog_theme)
         builder.setTitle(R.string.show_tea_dialog_following_infusion_header)
         builder.setMessage(resources.getString(R.string.show_tea_dialog_following_infusion_description, lastInfusion, nextInfusion))
         builder.setPositiveButton(R.string.show_tea_dialog_following_infusion_yes) { _, _ -> continueNextInfusion() }
-        builder.setNegativeButton(R.string.show_tea_dialog_following_infusion_no) { _, _ -> showTeaViewModel!!.resetNextInfusion() }
+        builder.setNegativeButton(R.string.show_tea_dialog_following_infusion_no) { _, _ -> showTeaViewModel.resetNextInfusion() }
         builder.show()
     }
 
     private fun continueNextInfusion() {
-        showTeaViewModel!!.infusionIndex = showTeaViewModel!!.nextInfusion
+        showTeaViewModel.infusionIndex = showTeaViewModel.nextInfusion
         infusionIndexChanged()
     }
 
     private fun infusionIndexChanged() {
-        val displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory[showTeaViewModel!!.getTemperatureUnit(), application]
+        val displayTemperatureUnitStrategy = DisplayTemperatureUnitFactory[showTeaViewModel.getTemperatureUnit(), application]
 
-        textViewTemperature!!.text = displayTemperatureUnitStrategy.getTextIdShowTea(showTeaViewModel!!.temperature)
+        textViewTemperature.text = displayTemperatureUnitStrategy.getTextIdShowTea(showTeaViewModel.temperature)
 
-        spinnerMinutes!!.setSelection(showTeaViewModel!!.time.minutes)
-        spinnerSeconds!!.setSelection(showTeaViewModel!!.time.seconds)
-        textViewInfusionIndex!!.text = resources.getString(R.string.show_tea_break_count_point, showTeaViewModel!!.infusionIndex + 1)
+        spinnerMinutes.setSelection(showTeaViewModel.time.minutes)
+        spinnerSeconds.setSelection(showTeaViewModel.time.seconds)
+        textViewInfusionIndex.text = resources.getString(R.string.show_tea_break_count_point, showTeaViewModel.infusionIndex + 1)
 
         nextInfusionEnable()
 
-        buttonInfo!!.visibility = View.INVISIBLE
+        buttonInfo.visibility = View.INVISIBLE
         infoShown = false
     }
 
     private fun nextInfusionEnable() {
-        buttonNextInfusion!!.isEnabled = showTeaViewModel!!.infusionIndex != showTeaViewModel!!.getInfusionSize() - 1
+        buttonNextInfusion.isEnabled = showTeaViewModel.infusionIndex != showTeaViewModel.getInfusionSize() - 1
     }
 
     private fun startOrResetTimer() {
-        if (resources.getString(R.string.show_tea_timer_start).contentEquals(buttonStartTimer!!.text)) {
+        if (resources.getString(R.string.show_tea_timer_start).contentEquals(buttonStartTimer.text)) {
             startTimer()
-        } else if (resources.getString(R.string.show_tea_timer_reset).contentEquals(buttonStartTimer!!.text)) {
+        } else if (resources.getString(R.string.show_tea_timer_reset).contentEquals(buttonStartTimer.text)) {
             resetTimer()
         }
     }
 
     private fun startTimer() {
+        askAlarmPermission()
+
         askNotificationPermission()
 
-        buttonStartTimer!!.setText(R.string.show_tea_timer_reset)
+        buttonStartTimer.setText(R.string.show_tea_timer_reset)
 
         collectDrinkingBehaviorInformation()
 
@@ -391,6 +395,13 @@ class ShowTea : AppCompatActivity() {
         }
     }
 
+    private fun askAlarmPermission() {
+        val alarmManager = application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        if (!alarmManager.canScheduleExactAlarms()) {
+            startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+        }
+    }
+
     private fun askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(application, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
@@ -400,72 +411,76 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun collectDrinkingBehaviorInformation() {
-        if (!infoShown) showTeaViewModel!!.countCounter()
-        showTeaViewModel!!.setCurrentDate()
-        showTeaViewModel!!.updateNextInfusion()
+        if (!infoShown) showTeaViewModel.countCounter()
+        showTeaViewModel.setCurrentDate()
+        showTeaViewModel.updateNextInfusion()
     }
 
     private fun disableInfusionBarAndCooldownSwitch() {
-        buttonTemperature!!.isEnabled = false
-        buttonInfusionIndex!!.isEnabled = false
-        buttonNextInfusion!!.isEnabled = false
+        buttonTemperature.isEnabled = false
+        buttonInfusionIndex.isEnabled = false
+        buttonNextInfusion.isEnabled = false
     }
 
     private fun hideTimeInputAndVisualizeTimerDisplay() {
         setVisibilityTimeInput(View.INVISIBLE)
-        textViewTimer!!.visibility = View.VISIBLE
+        textViewTimer.visibility = View.VISIBLE
     }
 
     private fun setVisibilityTimeInput(visibility: Int) {
-        spinnerMinutes!!.visibility = visibility
-        spinnerSeconds!!.visibility = visibility
-        textViewMinutes!!.visibility = visibility
-        textViewSeconds!!.visibility = visibility
-        textViewDoublePoint!!.visibility = visibility
+        spinnerMinutes.visibility = visibility
+        spinnerSeconds.visibility = visibility
+        textViewMinutes.visibility = visibility
+        textViewSeconds.visibility = visibility
+        textViewDoublePoint.visibility = visibility
     }
 
     private fun visualizeTeaCup() {
-        if (!infoShown && showTeaViewModel!!.isAnimation()) {
-            imageViewCup!!.visibility = View.VISIBLE
-            imageViewFill!!.visibility = View.VISIBLE
+        if (!infoShown && showTeaViewModel.isAnimation()) {
+            imageViewCup.visibility = View.VISIBLE
+            imageViewFill.visibility = View.VISIBLE
             //choose color of the cup content
-            imageViewFill!!.setColorFilter(showTeaViewModel!!.color, PorterDuff.Mode.SRC_ATOP)
+            imageViewFill.setColorFilter(showTeaViewModel.color, PorterDuff.Mode.SRC_ATOP)
         }
     }
 
     private fun calculateInfusionTimeAndStartTimer() {
-        val min = spinnerMinutes!!.selectedItem.toString().toInt()
-        val sec = spinnerSeconds!!.selectedItem.toString().toInt()
+        val min = spinnerMinutes.selectedItem.toString().toInt()
+        val sec = spinnerSeconds.selectedItem.toString().toInt()
         val millisec = TimeUnit.MINUTES.toMillis(min.toLong()) + TimeUnit.SECONDS.toMillis(sec.toLong())
 
         maxMilliSec = millisec
 
-        foregroundTimer!!.startForegroundTimer(millisec, showTeaViewModel!!.getTeaId())
+        foregroundTimer.startForegroundTimer(millisec, showTeaViewModel.getTeaId())
     }
 
     override fun onResume() {
         super.onResume()
 
-        registerReceiver(broadcastReceiver, IntentFilter(TimerController.COUNTDOWN_BR))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(broadcastReceiver, IntentFilter(TimerController.COUNTDOWN_BR), RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(broadcastReceiver, IntentFilter(TimerController.COUNTDOWN_BR))
+        }
 
-        foregroundTimer!!.resumeForegroundTimer()
+        foregroundTimer.resumeForegroundTimer()
     }
 
     override fun onPause() {
         super.onPause()
 
-        foregroundTimer!!.startBackgroundTimer()
+        foregroundTimer.startBackgroundTimer()
     }
 
     override fun onDestroy() {
-        foregroundTimer!!.reset()
+        foregroundTimer.reset()
         unregisterReceiver(broadcastReceiver)
 
         super.onDestroy()
     }
 
     private fun resetTimer() {
-        buttonStartTimer!!.setText(R.string.show_tea_timer_start)
+        buttonStartTimer.setText(R.string.show_tea_timer_start)
 
         enableInfusionBarAndCooldownSwitch()
 
@@ -473,36 +488,36 @@ class ShowTea : AppCompatActivity() {
 
         hideAndResetTeaCup()
 
-        foregroundTimer!!.reset()
+        foregroundTimer.reset()
 
         askForRatingAfterTheCounterHasBeenUsed()
     }
 
     private fun enableInfusionBarAndCooldownSwitch() {
-        buttonTemperature!!.isEnabled = true
-        buttonInfusionIndex!!.isEnabled = true
+        buttonTemperature.isEnabled = true
+        buttonInfusionIndex.isEnabled = true
         nextInfusionEnable()
     }
 
     private fun visualizeTimerDisplayAndHideTimeInput() {
         setVisibilityTimeInput(View.VISIBLE)
-        textViewTimer!!.visibility = View.INVISIBLE
+        textViewTimer.visibility = View.INVISIBLE
     }
 
     private fun hideAndResetTeaCup() {
-        if (!infoShown && showTeaViewModel!!.isAnimation()) {
-            imageViewCup!!.visibility = View.INVISIBLE
-            imageViewFill!!.visibility = View.INVISIBLE
-            imageViewFill!!.setImageResource(R.drawable.cup_fill0pr)
-            imageViewSteam!!.visibility = View.INVISIBLE
+        if (!infoShown && showTeaViewModel.isAnimation()) {
+            imageViewCup.visibility = View.INVISIBLE
+            imageViewFill.visibility = View.INVISIBLE
+            imageViewFill.setImageResource(R.drawable.cup_fill0pr)
+            imageViewSteam.visibility = View.INVISIBLE
             //für animation zurücksetzen
-            imageViewCup!!.setImageResource(R.drawable.cup)
+            imageViewCup.setImageResource(R.drawable.cup)
             percent = 0
         }
     }
 
     private fun askForRatingAfterTheCounterHasBeenUsed() {
-        if (showTeaViewModel!!.getOverallCounter() % 3 == 0L) {
+        if (showTeaViewModel.getOverallCounter() % 3 == 0L) {
             askForRating()
         }
     }
@@ -521,21 +536,21 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun showDialogChangeInfusion() {
-        val tmpSize = showTeaViewModel!!.getInfusionSize()
+        val tmpSize = showTeaViewModel.getInfusionSize()
         val items = arrayOfNulls<String>(tmpSize)
         for (i in 0 until tmpSize) {
             items[i] = resources.getString(R.string.show_tea_dialog_infusion_count_description, i + 1)
         }
 
         //Get CheckedItem
-        val checkedItem = showTeaViewModel!!.infusionIndex
+        val checkedItem = showTeaViewModel.infusionIndex
 
         // Creating and Building the Dialog
         val builder = AlertDialog.Builder(this, R.style.dialog_theme)
         builder.setIcon(R.drawable.infusion_black)
         builder.setTitle(R.string.show_tea_dialog_infusion_count_title)
         builder.setSingleChoiceItems(items, checkedItem) { dialog: DialogInterface, item: Int ->
-            showTeaViewModel!!.infusionIndex = item
+            showTeaViewModel.infusionIndex = item
             infusionIndexChanged()
             dialog.dismiss()
         }
@@ -544,26 +559,26 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun displayNextInfusion() {
-        showTeaViewModel!!.incrementInfusionIndex()
+        showTeaViewModel.incrementInfusionIndex()
         infusionIndexChanged()
     }
 
     private fun switchToCoolingPeriod() {
         if (!infoShown) {
-            val cooldowntime = showTeaViewModel!!.coolDownTime
+            val cooldowntime = showTeaViewModel.coolDownTime
             if (cooldowntime.time != null) {
-                buttonInfo!!.visibility = View.VISIBLE
+                buttonInfo.visibility = View.VISIBLE
                 infoShown = true
-                spinnerMinutes!!.setSelection(cooldowntime.minutes)
-                spinnerSeconds!!.setSelection(cooldowntime.seconds)
+                spinnerMinutes.setSelection(cooldowntime.minutes)
+                spinnerSeconds.setSelection(cooldowntime.seconds)
             } else {
                 Toast.makeText(application, R.string.show_tea_cool_down_time_not_found, Toast.LENGTH_LONG).show()
             }
         } else {
-            buttonInfo!!.visibility = View.INVISIBLE
+            buttonInfo.visibility = View.INVISIBLE
             infoShown = false
-            spinnerMinutes!!.setSelection(showTeaViewModel!!.time.minutes)
-            spinnerSeconds!!.setSelection(showTeaViewModel!!.time.seconds)
+            spinnerMinutes.setSelection(showTeaViewModel.time.minutes)
+            spinnerSeconds.setSelection(showTeaViewModel.time.seconds)
         }
     }
 
@@ -576,7 +591,7 @@ class ShowTea : AppCompatActivity() {
     }
 
     private fun decideToShowDialogAmount() {
-        if (showTeaViewModel!!.amount == -500.0 || showTeaViewModel!!.amount == 0.0) {
+        if (showTeaViewModel.amount == -500.0 || showTeaViewModel.amount == 0.0) {
             Toast.makeText(application, R.string.show_tea_amount_not_found, Toast.LENGTH_LONG).show()
         } else {
             showDialogAmount()
@@ -610,16 +625,16 @@ class ShowTea : AppCompatActivity() {
         val dialogBuilder = AlertDialog.Builder(this, R.style.dialog_theme)
         dialogBuilder.setView(alertLayoutDialogAmount)
         dialogBuilder.setTitle(R.string.show_tea_dialog_amount)
-        dialogBuilder.setIcon(DisplayAmountKindFactory[showTeaViewModel!!.amountKind, application].getImageResourceIdShowTea())
+        dialogBuilder.setIcon(DisplayAmountKindFactory[showTeaViewModel.amountKind, application].getImageResourceIdShowTea())
         dialogBuilder.setPositiveButton(R.string.show_tea_dialog_amount_ok, null)
         dialogBuilder.show()
     }
 
     private fun fillAmountPerAmount(value: Int, textViewAmountPerAmount: TextView) {
         val liter = value.toFloat() / 10
-        val amountPerLiter = showTeaViewModel!!.amount.toFloat() * liter
+        val amountPerLiter = showTeaViewModel.amount.toFloat() * liter
 
-        val displayAmountKindStrategy = DisplayAmountKindFactory[showTeaViewModel!!.amountKind, application]
+        val displayAmountKindStrategy = DisplayAmountKindFactory[showTeaViewModel.amountKind, application]
         textViewAmountPerAmount.text = displayAmountKindStrategy.getTextCalculatorShowTea(amountPerLiter, liter)
     }
 
@@ -641,7 +656,7 @@ class ShowTea : AppCompatActivity() {
 
     private fun navigateToEditTea(): Boolean {
         val newTeaScreen = Intent(this@ShowTea, NewTea::class.java)
-        newTeaScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel!!.getTeaId())
+        newTeaScreen.putExtra(EXTRA_TEA_ID, showTeaViewModel.getTeaId())
         newTeaScreen.putExtra("showTea", true)
         startActivity(newTeaScreen)
         finish()

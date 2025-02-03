@@ -25,7 +25,6 @@ import coolpharaoh.tee.speicher.tea.timer.core.system.CurrentSdk.sdkVersion
 import coolpharaoh.tee.speicher.tea.timer.views.utils.ThemeManager.applyTheme
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
-import java.util.Objects
 
 class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
 
@@ -33,10 +32,10 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         ALARM, VIBRATION, ANIMATION, TEMPERATURE_UNIT, OVERVIEW_HEADER, DARK_MODE, HINTS, FACTORY_SETTINGS
     }
 
-    private var settingsViewModel: SettingsViewModel? = null
+    private lateinit var settingsViewModel: SettingsViewModel
 
-    private var settingsList: ArrayList<RecyclerItem>? = null
-    private var adapter: RecyclerViewAdapter? = null
+    private lateinit var settingsList: ArrayList<RecyclerItem>
+    private lateinit var adapter: RecyclerViewAdapter
 
     private val alarmRequestActivityResultLauncher = registerForActivityResult(StartActivityForResult())
         { result: ActivityResult ->
@@ -61,19 +60,19 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         val mToolbarCustomTitle = findViewById<TextView>(R.id.tool_bar_title)
         mToolbarCustomTitle.setText(R.string.settings_heading)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.title = null
+        supportActionBar?.title = null
     }
 
     private fun enableAndShowBackButton() {
-        Objects.requireNonNull(supportActionBar)?.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initializeSettingsListView() {
         settingsList = ArrayList()
         fillAndRefreshSettingsList()
 
-        adapter = RecyclerViewAdapter(R.layout.list_single_layout_setting, settingsList!!, this)
+        adapter = RecyclerViewAdapter(R.layout.list_single_layout_setting, settingsList, this)
 
         val recyclerViewDetails = findViewById<RecyclerView>(R.id.recycler_view_settings)
         recyclerViewDetails.addItemDecoration(DividerItemDecoration(recyclerViewDetails.context,
@@ -83,7 +82,7 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun fillAndRefreshSettingsList() {
-        settingsList!!.clear()
+        settingsList.clear()
 
         addMusicChoiceToSettingsList()
         addVibrationChoiceToSettingsList()
@@ -96,53 +95,53 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun addMusicChoiceToSettingsList() {
-        val itemSound = RecyclerItem(getString(R.string.settings_alarm), settingsViewModel!!.musicName!!)
-        settingsList!!.add(itemSound)
+        val itemSound = RecyclerItem(getString(R.string.settings_alarm), settingsViewModel.musicName!!)
+        settingsList.add(itemSound)
     }
 
     private fun addVibrationChoiceToSettingsList() {
         val itemsOnOff = resources.getStringArray(R.array.settings_options)
 
-        val vibrationOption = if (settingsViewModel!!.isVibration) 0 else 1
+        val vibrationOption = if (settingsViewModel.isVibration) 0 else 1
 
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_vibration), itemsOnOff[vibrationOption]))
+        settingsList.add(RecyclerItem(getString(R.string.settings_vibration), itemsOnOff[vibrationOption]))
     }
 
     private fun addAnimationChoiceToSettingsList() {
         val itemsOnOff = resources.getStringArray(R.array.settings_options)
 
-        val animationOption = if (settingsViewModel!!.isAnimation) 0 else 1
+        val animationOption = if (settingsViewModel.isAnimation) 0 else 1
 
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_animation), itemsOnOff[animationOption]))
+        settingsList.add(RecyclerItem(getString(R.string.settings_animation), itemsOnOff[animationOption]))
     }
 
     private fun addTemperatureChoiceToSettingsList() {
         val itemTemperature = resources.getStringArray(R.array.settings_temperature_units)
 
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_temperature_unit), itemTemperature[settingsViewModel!!.temperatureUnit!!.choice]))
+        settingsList.add(RecyclerItem(getString(R.string.settings_temperature_unit), itemTemperature[settingsViewModel.temperatureUnit!!.choice]))
     }
 
     private fun addOverviewHeaderToSettingsList() {
         val itemsOnOff = resources.getStringArray(R.array.settings_options)
 
-        val overviewHeaderOption = if (settingsViewModel!!.isOverviewHeader) 0 else 1
+        val overviewHeaderOption = if (settingsViewModel.isOverviewHeader) 0 else 1
 
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_overview_header), itemsOnOff[overviewHeaderOption]))
+        settingsList.add(RecyclerItem(getString(R.string.settings_overview_header), itemsOnOff[overviewHeaderOption]))
     }
 
     private fun addDarkModeChoiceToSettingsList() {
-        val darkMode = settingsViewModel!!.darkMode
+        val darkMode = settingsViewModel.darkMode
         val items = resources.getStringArray(R.array.settings_dark_mode)
 
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_dark_mode), items[darkMode!!.choice]))
+        settingsList.add(RecyclerItem(getString(R.string.settings_dark_mode), items[darkMode!!.choice]))
     }
 
     private fun addHintsDescriptionToSettingsList() {
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_show_hints), getString(R.string.settings_show_hints_description)))
+        settingsList.add(RecyclerItem(getString(R.string.settings_show_hints), getString(R.string.settings_show_hints_description)))
     }
 
     private fun addFactorySettingsDescriptionToSettingsList() {
-        settingsList!!.add(RecyclerItem(getString(R.string.settings_factory_settings), getString(R.string.settings_factory_settings_description)))
+        settingsList.add(RecyclerItem(getString(R.string.settings_factory_settings), getString(R.string.settings_factory_settings_description)))
     }
 
     override fun onRecyclerItemClick(position: Int) {
@@ -150,7 +149,7 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun applyOptionsSelection(position: Int) {
-        when (ListItems.values()[position]) {
+        when (ListItems.entries[position]) {
             ListItems.ALARM -> settingAlarm()
             ListItems.VIBRATION -> settingVibration()
             ListItems.ANIMATION -> settingAnimation()
@@ -179,20 +178,20 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         val ringtone = RingtoneManager.getRingtone(this, uri)
         val name = ringtone.getTitle(this)
         if (uri != null) {
-            settingsViewModel!!.setMusicChoice(uri.toString())
-            settingsViewModel!!.musicName = name
+            settingsViewModel.setMusicChoice(uri.toString())
+            settingsViewModel.musicName = name
         } else {
-            settingsViewModel!!.setMusicChoice(null)
-            settingsViewModel!!.musicName = "-"
+            settingsViewModel.setMusicChoice(null)
+            settingsViewModel.musicName = "-"
         }
         fillAndRefreshSettingsList()
-        adapter!!.notifyItemChanged(ListItems.ALARM.ordinal)
+        adapter.notifyItemChanged(ListItems.ALARM.ordinal)
     }
 
     private fun settingVibration() {
         val items = resources.getStringArray(R.array.settings_options)
 
-        val checkedItem = if (settingsViewModel!!.isVibration) 0 else 1
+        val checkedItem = if (settingsViewModel.isVibration) 0 else 1
 
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setTitle(R.string.settings_vibration)
@@ -203,17 +202,17 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun vibrationChanged(dialog: DialogInterface, item: Int) {
-        settingsViewModel!!.isVibration = item == 0
+        settingsViewModel.isVibration = item == 0
 
         fillAndRefreshSettingsList()
-        adapter!!.notifyItemChanged(ListItems.VIBRATION.ordinal)
+        adapter.notifyItemChanged(ListItems.VIBRATION.ordinal)
         dialog.dismiss()
     }
 
     private fun settingAnimation() {
         val items = resources.getStringArray(R.array.settings_options)
 
-        val checkedItem = if (settingsViewModel!!.isAnimation) 0 else 1
+        val checkedItem = if (settingsViewModel.isAnimation) 0 else 1
 
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setTitle(R.string.settings_animation)
@@ -224,17 +223,17 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun animationChanged(dialog: DialogInterface, item: Int) {
-        settingsViewModel!!.isAnimation = item == 0
+        settingsViewModel.isAnimation = item == 0
 
         fillAndRefreshSettingsList()
-        adapter!!.notifyItemChanged(ListItems.ANIMATION.ordinal)
+        adapter.notifyItemChanged(ListItems.ANIMATION.ordinal)
         dialog.dismiss()
     }
 
     private fun settingTemperatureUnit() {
         val items = resources.getStringArray(R.array.settings_temperature_units)
 
-        val checkedItem = settingsViewModel!!.temperatureUnit!!.choice
+        val checkedItem = settingsViewModel.temperatureUnit!!.choice
 
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setTitle(R.string.settings_temperature_unit)
@@ -245,16 +244,16 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun temperatureUnitChanged(dialog: DialogInterface, item: Int) {
-        settingsViewModel!!.temperatureUnit = TemperatureUnit.fromChoice(item)
+        settingsViewModel.temperatureUnit = TemperatureUnit.fromChoice(item)
         fillAndRefreshSettingsList()
-        adapter!!.notifyItemChanged(ListItems.TEMPERATURE_UNIT.ordinal)
+        adapter.notifyItemChanged(ListItems.TEMPERATURE_UNIT.ordinal)
         dialog.dismiss()
     }
 
     private fun settingOverviewHeader() {
         val items = resources.getStringArray(R.array.settings_options)
 
-        val checkedItem = if (settingsViewModel!!.isOverviewHeader) 0 else 1
+        val checkedItem = if (settingsViewModel.isOverviewHeader) 0 else 1
 
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setTitle(R.string.settings_overview_header)
@@ -265,17 +264,17 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun overviewHeaderChanged(dialog: DialogInterface, item: Int) {
-        settingsViewModel!!.isOverviewHeader = item == 0
+        settingsViewModel.isOverviewHeader = item == 0
 
         fillAndRefreshSettingsList()
-        adapter!!.notifyItemChanged(ListItems.OVERVIEW_HEADER.ordinal)
+        adapter.notifyItemChanged(ListItems.OVERVIEW_HEADER.ordinal)
         dialog.dismiss()
     }
 
     private fun settingDarkMode() {
         val items = resources.getStringArray(R.array.settings_dark_mode)
 
-        val checkedItem = settingsViewModel!!.darkMode!!.choice
+        val checkedItem = settingsViewModel.darkMode!!.choice
 
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setTitle(R.string.settings_dark_mode)
@@ -290,11 +289,11 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         val choice = listOf(*items).indexOf(item)
         val darkMode = DarkMode.fromChoice(choice)
 
-        settingsViewModel!!.darkMode = darkMode
+        settingsViewModel.darkMode = darkMode
         applyTheme(darkMode)
 
         fillAndRefreshSettingsList()
-        adapter!!.notifyItemChanged(ListItems.DARK_MODE.ordinal)
+        adapter.notifyItemChanged(ListItems.DARK_MODE.ordinal)
         dialog.dismiss()
     }
 
@@ -305,10 +304,10 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
         val alertLayoutDialog = inflater.inflate(R.layout.dialog_settings_hints, parent, false)
 
         val checkBoxUpdate = alertLayoutDialog.findViewById<CheckBox>(R.id.check_box_settings_dialog_update)
-        checkBoxUpdate.isChecked = settingsViewModel!!.overviewUpdateAlert
+        checkBoxUpdate.isChecked = settingsViewModel.overviewUpdateAlert
 
         val checkBoxDescription = alertLayoutDialog.findViewById<CheckBox>(R.id.check_box_settings_dialog_description)
-        checkBoxDescription.isChecked = settingsViewModel!!.isShowTeaAlert
+        checkBoxDescription.isChecked = settingsViewModel.isShowTeaAlert
 
         AlertDialog.Builder(this, R.style.dialog_theme)
             .setView(alertLayoutDialog)
@@ -319,8 +318,8 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     private fun displayedHintsChanged(checkBoxUpdate: CheckBox, checkBoxDescription: CheckBox) {
-        settingsViewModel!!.overviewUpdateAlert = checkBoxUpdate.isChecked
-        settingsViewModel!!.isShowTeaAlert = checkBoxDescription.isChecked
+        settingsViewModel.overviewUpdateAlert = checkBoxUpdate.isChecked
+        settingsViewModel.isShowTeaAlert = checkBoxDescription.isChecked
     }
 
     private fun settingFactorySettings() {
@@ -334,13 +333,13 @@ class Settings : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
 
     private fun resetToFactorySettings() {
         if (sdkVersion >= VERSION_CODES.Q) {
-            settingsViewModel!!.deleteAllTeaImages()
+            settingsViewModel.deleteAllTeaImages()
         }
-        settingsViewModel!!.deleteAllTeas()
-        settingsViewModel!!.setDefaultSettings()
+        settingsViewModel.deleteAllTeas()
+        settingsViewModel.setDefaultSettings()
 
         fillAndRefreshSettingsList()
-        adapter!!.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
         Toast.makeText(applicationContext, R.string.settings_factory_settings_toast, Toast.LENGTH_SHORT).show()
     }
 }

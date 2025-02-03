@@ -75,6 +75,7 @@ class TimerController(
     fun onTimerTick(millisUntilFinished: Long) {
         broadcastIntent.putExtra("countdown", millisUntilFinished)
         broadcastIntent.putExtra("ready", false)
+        broadcastIntent.setPackage(application.packageName)
         application.sendBroadcast(broadcastIntent)
     }
 

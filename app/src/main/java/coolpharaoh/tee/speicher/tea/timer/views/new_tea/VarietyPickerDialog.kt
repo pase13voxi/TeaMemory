@@ -18,7 +18,7 @@ import coolpharaoh.tee.speicher.tea.timer.core.tea.Variety.Companion.fromChoice
 
 class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : DialogFragment() {
 
-    private var dialogView: View? = null
+    private lateinit var dialogView: View
 
     override fun onCreateDialog(savedInstancesState: Bundle?): Dialog {
         val activity: Activity = requireActivity()
@@ -41,7 +41,7 @@ class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : Dialog
 
     private fun defineVarietyRadioGroup() {
         val varietyList = resources.getStringArray(R.array.new_tea_variety_teas)
-        val varietyRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
+        val varietyRadioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
 
         for (variety in varietyList) {
             val varietyRadioButton = createRadioButton(variety)
@@ -60,7 +60,7 @@ class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : Dialog
 
         if (varietyIndex == -1) {
             radioButtons[Variety.OTHER.choice].isChecked = true
-            val editTextCustomVariety = dialogView!!.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+            val editTextCustomVariety = dialogView.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
             editTextCustomVariety.setText(varietyAsText)
         } else {
             val variety = newTeaViewModel.variety
@@ -107,7 +107,7 @@ class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : Dialog
     private fun showCustomVariety(radioGroup: RadioGroup, checkedId: Int) {
         val varietyList = resources.getStringArray(R.array.new_tea_variety_teas)
         val radioButton = radioGroup.findViewById<RadioButton>(checkedId)
-        val editTextCustomVariety = dialogView!!.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+        val editTextCustomVariety = dialogView.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
 
         if (varietyList[Variety.OTHER.choice] == radioButton.text.toString()) {
             editTextCustomVariety.visibility = View.VISIBLE
@@ -117,12 +117,12 @@ class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : Dialog
     }
 
     private fun persistVariety() {
-        val editTextCustomVariety = dialogView!!.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
+        val editTextCustomVariety = dialogView.findViewById<EditText>(R.id.edit_text_new_tea_custom_variety)
 
         if (editTextCustomVariety.visibility == View.VISIBLE && editTextCustomVariety.text.toString().isNotEmpty()) {
             newTeaViewModel.setVariety(editTextCustomVariety.text.toString())
         } else {
-            val varietyRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
+            val varietyRadioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
             val radioButton = varietyRadioGroup.findViewById<RadioButton>(varietyRadioGroup.checkedRadioButtonId)
 
             newTeaViewModel.setVariety(radioButton.text.toString())
@@ -131,7 +131,7 @@ class VarietyPickerDialog(private val newTeaViewModel: NewTeaViewModel) : Dialog
 
     private fun persistColor() {
         val varietyList = resources.getStringArray(R.array.new_tea_variety_teas)
-        val varietyRadioGroup = dialogView!!.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
+        val varietyRadioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group_new_tea_variety_input)
         val radioButton = varietyRadioGroup.findViewById<RadioButton>(varietyRadioGroup.checkedRadioButtonId)
 
         val varietyIndex = listOf(*varietyList).indexOf(radioButton.text.toString())
