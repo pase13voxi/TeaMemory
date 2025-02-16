@@ -9,6 +9,7 @@
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" android:minSdkVersion="34" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -138,7 +139,10 @@
 
         <receiver android:name=".views.show_tea.countdowntimer.TeaCompleteReceiver" />
 
-        <service android:name=".views.show_tea.countdowntimer.NotificationService" />
+        <service android:name=".views.show_tea.countdowntimer.NotificationService" android:foregroundServiceType="specialUse" >
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="notification once the tea timer is ready" />
+        </service>
+
     </application>
 
 </manifest>

@@ -3,13 +3,17 @@ package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.os.Build
 import android.os.IBinder
 
 class NotificationService : Service() {
     @JvmField
     var audioPlayer: AudioPlayer? = null
+
     @JvmField
     var vibrator: Vibrator? = null
+
     @JvmField
     var notifier: Notifier? = null
 
@@ -29,7 +33,11 @@ class NotificationService : Service() {
 
     private fun showNotification(intent: Intent) {
         notifier = Notifier(application, intent.getLongExtra("teaId", 0))
-        startForeground(NOTIFICATION_ID, notifier!!.notification)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startForeground(NOTIFICATION_ID, notifier!!.notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+        } else {
+            startForeground(NOTIFICATION_ID, notifier!!.notification)
+        }
     }
 
     private fun startAlarm() {
