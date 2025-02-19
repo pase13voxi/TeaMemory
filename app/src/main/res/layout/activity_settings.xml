@@ -8,9 +8,15 @@
     android:background="@color/background"
     tools:context=".views.settings.Settings">
 
-    <include
-        android:id="@id/tool_bar"
-        layout="@layout/tool_bar" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:id="@+id/tool_bar_layout">
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_settings"

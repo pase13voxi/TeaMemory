@@ -12,7 +12,7 @@ android {
         minSdkVersion 32
         compileSdk 35
         targetSdkVersion 35
-        versionCode 203
+        versionCode 204
         versionName "4.5"
         // androidTest
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

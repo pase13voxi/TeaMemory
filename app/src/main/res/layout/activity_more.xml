@@ -7,16 +7,22 @@
     android:background="@color/background"
     tools:context=".views.more.More">
 
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/tool_bar" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:id="@+id/tool_bar_layout">
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_more"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/text_view_more_version"
-        android:layout_below="@+id/tool_bar" />
+        android:layout_below="@+id/tool_bar_layout" />
 
     <TextView
         android:id="@+id/text_view_more_version"
