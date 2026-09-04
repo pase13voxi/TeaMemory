@@ -134,7 +134,7 @@ class ShowTea : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_tea)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.show_tea_parent)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.show_tea_content)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
