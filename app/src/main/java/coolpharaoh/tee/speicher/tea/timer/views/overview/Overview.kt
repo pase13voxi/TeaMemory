@@ -11,6 +11,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,8 +44,16 @@ class Overview : AppCompatActivity(), RecyclerViewAdapterOverview.OnClickListene
     private lateinit var teaListAdapter: RecyclerViewAdapterOverview
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overview)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.overview_parent)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         defineToolbarAsActionbar()
 
         overviewViewModel = OverviewViewModel(application)

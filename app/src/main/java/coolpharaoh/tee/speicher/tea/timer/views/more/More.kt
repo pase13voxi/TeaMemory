@@ -5,8 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +21,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.software.Software
 import coolpharaoh.tee.speicher.tea.timer.views.statistics.Statistics
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewAdapter
-import java.util.Objects
 
 class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     private enum class ListItems {
@@ -26,8 +28,16 @@ class More : AppCompatActivity(), RecyclerViewAdapter.OnClickListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_more)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_more)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         defineToolbarAsActionbar()
         enableAndShowBackButton()
 

@@ -19,11 +19,14 @@ import android.widget.RatingBar
 import android.widget.RatingBar.OnRatingBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +39,6 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.image_controller.ImageCont
 import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerItem
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Objects
 
 // This class has 9 Parent because of AppCompatActivity
 class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListener {
@@ -45,8 +47,16 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
     private lateinit var imageController: ImageController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.information_parent)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         defineToolbarAsActionbar()
         enableAndShowBackButton()
 
@@ -219,7 +229,9 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
         if (sdkVersion >= VERSION_CODES.Q) {
             try {
                 val takePictureIntent = imageController.getSaveOrUpdateImageIntent(informationViewModel.teaId)
-                takePictureActivityResultLauncher.launch(takePictureIntent)
+                if (takePictureIntent != null) {
+                    takePictureActivityResultLauncher.launch(takePictureIntent)
+                }
             } catch (exception: IOException) {
                 Log.e(LOG_TAG, "Something went wrong while open photo application. Error message: " + exception.message)
                 Toast.makeText(this, "Something went wrong while open photo application.", Toast.LENGTH_SHORT).show()

@@ -2,6 +2,9 @@ package coolpharaoh.tee.speicher.tea.timer.views.software
 
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,8 +16,16 @@ import coolpharaoh.tee.speicher.tea.timer.views.utils.recyclerview.RecyclerViewA
 
 class Software : AppCompatActivity(), RecyclerViewAdapter.OnClickListener  {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_software)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_software)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         defineToolbarAsActionbar()
         enableAndShowBackButton()
 
