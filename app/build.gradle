@@ -7,11 +7,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.devtools.ksp'
 
 android {
+    compileSdk 36
+
     defaultConfig {
         applicationId "coolpharaoh.tee.speicher.tea.timer"
-        minSdkVersion 32
-        compileSdk 36
-        targetSdkVersion 36
+        minSdk 32
+        targetSdk 36
         versionCode 204
         versionName "4.5"
         // androidTest
