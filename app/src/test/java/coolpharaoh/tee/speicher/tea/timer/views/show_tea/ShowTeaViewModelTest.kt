@@ -5,6 +5,7 @@ import android.content.res.Resources
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.core.counter.Counter
 import coolpharaoh.tee.speicher.tea.timer.core.counter.CounterRepository
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
@@ -22,6 +23,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -52,6 +54,12 @@ internal class ShowTeaViewModelTest {
     internal fun setUp() {
         showTeaViewModel = ShowTeaViewModel(TEA_ID, application, teaRepository, infusionRepository,
             counterRepository, sharedSettings)
+        mockFixedDate()
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        CurrentDate.reset()
     }
 
     @Test

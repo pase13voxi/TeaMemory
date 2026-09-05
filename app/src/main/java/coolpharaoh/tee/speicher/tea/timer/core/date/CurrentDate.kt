@@ -13,6 +13,12 @@ object CurrentDate {
     }
 
     @JvmStatic
+    @VisibleForTesting
+    fun reset() {
+        dateUtility = DateUtility()
+    }
+
+    @JvmStatic
     fun getDate(): Date {
         return dateUtility.date
     }

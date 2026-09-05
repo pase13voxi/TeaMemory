@@ -18,6 +18,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -33,6 +34,11 @@ internal class InformationViewModelTest {
     lateinit var application: Application
     @MockK
     lateinit var resources: Resources
+
+    @AfterEach
+    internal fun tearDown() {
+        CurrentDate.reset()
+    }
 
     @Test
     fun getTeaIdt() {

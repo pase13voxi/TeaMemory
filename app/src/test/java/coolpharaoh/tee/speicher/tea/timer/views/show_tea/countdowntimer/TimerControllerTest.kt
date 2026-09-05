@@ -1,6 +1,7 @@
 package coolpharaoh.tee.speicher.tea.timer.views.show_tea.countdowntimer
 
 import android.app.Application
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate
 import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate.setFixedDate
 import coolpharaoh.tee.speicher.tea.timer.core.date.DateUtility
 import io.mockk.every
@@ -9,6 +10,8 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.util.Calendar
@@ -32,6 +35,16 @@ internal class TimerControllerTest {
 
     @InjectMockKs
     lateinit var timerController: TimerController
+
+    @BeforeEach
+    internal fun setUp() {
+        mockCurrentDate(0L)
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        CurrentDate.reset()
+    }
 
     @Test
     fun startForegroundTimer() {

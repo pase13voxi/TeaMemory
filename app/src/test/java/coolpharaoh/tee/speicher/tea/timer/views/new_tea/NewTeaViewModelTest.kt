@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.res.Resources
 import coolpharaoh.tee.speicher.tea.timer.R
 import coolpharaoh.tee.speicher.tea.timer.TaskExecutorExtension
+import coolpharaoh.tee.speicher.tea.timer.core.date.CurrentDate
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.Infusion
 import coolpharaoh.tee.speicher.tea.timer.core.infusion.InfusionRepository
 import coolpharaoh.tee.speicher.tea.timer.core.settings.SharedSettings
@@ -21,6 +22,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -44,6 +46,11 @@ internal class NewTeaViewModelTest {
     lateinit var sharedSettings: SharedSettings
 
     private var tea: Tea? = null
+
+    @AfterEach
+    fun tearDown() {
+        CurrentDate.reset()
+    }
 
     @BeforeEach
     fun setUp() {
