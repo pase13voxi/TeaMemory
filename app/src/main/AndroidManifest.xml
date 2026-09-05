@@ -24,7 +24,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/app_theme"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        android:intentMatchingFlags="enforceIntentFilter"
+        android:pageSizeCompat="enabled">
         <activity
             android:name=".views.overview.Overview"
             android:exported="true"
