@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'de.mannodermaus.android-junit5'
 apply plugin: 'org.sonarqube'
-apply from: '../jacoco.gradle'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.devtools.ksp'
@@ -27,8 +26,6 @@ android {
         }
         debug {
             debuggable false
-            enableUnitTestCoverage true
-            enableAndroidTestCoverage true
         }
     }
     compileOptions {
@@ -43,9 +40,6 @@ android {
         // Return default values for CountDownTimer
         unitTests.returnDefaultValues = true
         unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
             // Configure whether failing tests should fail the build
             ignoreFailures false
 
@@ -57,6 +51,7 @@ android {
     }
     namespace 'coolpharaoh.tee.speicher.tea.timer'
 }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.8.0'
