@@ -53,7 +53,7 @@ class Information : AppCompatActivity(), DetailRecyclerViewAdapter.OnClickListen
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.information_parent)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
 

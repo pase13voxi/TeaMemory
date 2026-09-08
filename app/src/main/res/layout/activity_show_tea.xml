@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/show_tea_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".views.show_tea.ShowTea">
 
     <ImageView
@@ -11,6 +13,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/show_tea_background_description"
         android:scaleType="centerCrop"
+        android:background="@color/background"
         android:src="@drawable/background" />
 
     <RelativeLayout
@@ -21,8 +24,10 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:background="@android:color/transparent"
-            android:id="@+id/tool_bar_layout">
+            android:background="@color/color_primary"
+            android:id="@+id/tool_bar_layout"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
             <include
                 android:id="@+id/tool_bar"
                 layout="@layout/tool_bar_show_tea" />

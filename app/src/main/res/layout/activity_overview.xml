@@ -12,7 +12,10 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@color/color_primary"
+        app:elevation="0dp">
         <include
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar" />
