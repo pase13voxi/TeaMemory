@@ -37,6 +37,7 @@ class Notifier
         val channel = NotificationChannel(CHANNEL_ID_NOTIFY, name, importance)
         channel.description = description
         channel.setSound(null, null)
+        channel.enableVibration(false)
 
         val notificationManager = application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
@@ -51,6 +52,6 @@ class Notifier
     }
 
     companion object {
-        private const val CHANNEL_ID_NOTIFY = "3422"
+        private const val CHANNEL_ID_NOTIFY = "3423"
     }
 }

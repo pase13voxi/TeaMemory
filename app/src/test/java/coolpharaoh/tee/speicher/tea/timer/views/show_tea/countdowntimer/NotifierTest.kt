@@ -38,7 +38,7 @@ class NotifierTest {
     }
 
     companion object {
-        const val CHANNEL_ID_NOTIFY = "3422"
+        const val CHANNEL_ID_NOTIFY = "3423"
         const val TEA_NAME = "Earl Grey"
     }
 }
